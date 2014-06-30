@@ -128,6 +128,9 @@ var dragAndDrop = (function() {
 
 			// Get count of all active items
 			_fn.items.init();
+
+			// Set the target image
+			_fn.$target.css('background', 'url(' + _fn.data.targetImg + ') no-repeat');
 		},
 
 		build: {
@@ -149,6 +152,7 @@ var dragAndDrop = (function() {
 			init: function() {
 				_fn.build.clickHandlers();
 				_fn.build.form.zone.add();
+				_fn.$target.css('background', 'url(' + _fn.data.targetImg + ') no-repeat');
 			},
 			clickHandlers: function() {
 				var $fbkTab = _fn.build.$el.feedback.tab,
@@ -176,6 +180,15 @@ var dragAndDrop = (function() {
 
 						$zoneTab.addClass('hidden');
 						$itemTab.removeClass('hidden');
+
+						// Placeholder shim for IE9
+						$.placeholder.shim();
+					})
+					.on( 'click', '.target-image-form button', function(e) {
+						e.preventDefault();
+
+						_fn.data.targetImg = $('.target-image-form input').val();
+						_fn.$target.css('background', 'url(' + _fn.data.targetImg + ') no-repeat');
 
 						// Placeholder shim for IE9
 						$.placeholder.shim();
@@ -639,11 +652,11 @@ var dragAndDrop = (function() {
 			}
 		},
 
-		// SAMPLE: What the data may look like
 		data: {
 			feedback: {},
 			items: [],
-			zones: []
+			zones: [],
+			targetImg: 'img/triangle.png'
 		}
 	};
 
