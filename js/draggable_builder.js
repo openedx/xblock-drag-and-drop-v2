@@ -414,6 +414,7 @@ var dragAndDrop = (function() {
 					_fn.build.$el.items.tab.addClass('hidden');
 					_fn.$app.removeClass('hidden');
 					_fn.$block.children('header, footer').removeClass('hidden');
+					_fn.$block.children('.feedback').removeClass('hidden');
 				}
 			}
 		},
@@ -430,8 +431,8 @@ var dragAndDrop = (function() {
 			// Disable any decoy items
 			_fn.$items.draggable('disable');
 
-			// Show final feedback - append so can still show last item's feedback
-			_fn.$feedback.append( '<br/>' + _fn.data.feedback.finish );
+			// Show final feedback
+			_fn.feedback.set( _fn.data.feedback.finish );
 		},
 
 		clickHandlers: {
@@ -462,7 +463,7 @@ var dragAndDrop = (function() {
 							.draggable('disable');
 
 						_fn.test.completed++;
-						_fn.feedback.set( _fn.feedback.get(val, true) );
+						_fn.feedback.popup( _fn.feedback.get(val, true) );
 
 						if ( _fn.items.allSubmitted() ) {
 							_fn.finish();
@@ -470,7 +471,7 @@ var dragAndDrop = (function() {
 					} else {			
 						// Return to original position
 						_fn.clickHandlers.drag.reset( $el );
-						_fn.feedback.set( _fn.feedback.get(val, false) );
+						_fn.feedback.popup( _fn.feedback.get(val, false) );
 					}
 				},
 	
@@ -584,6 +585,11 @@ var dragAndDrop = (function() {
 			// Update DOM with feedback
 			set: function(str) {
 				return _fn.$feedback.html(str);
+			},
+
+			// Show a feedback popup
+			popup: function(str) {
+				return $("<div>").attr('title', 'Feedback').text(str).dialog();
 			}
 		},
 

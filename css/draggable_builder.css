@@ -162,14 +162,8 @@
 
 /*** FEEDBACK ***/
 .xblock--drag-and-drop .feedback {
-	width: 740px;
-	border-top: #ccc 1px solid;
-	margin: 20px 10px;
-	padding-top: 10px;
-}
-
-.xblock--drag-and-drop .feedback .message {
-	margin: 5px 0 0;
+	line-height: 1.5em;
+	font-weight: bold;
 }
 
 /** Builder **/
