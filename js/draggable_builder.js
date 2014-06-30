@@ -35,6 +35,14 @@ var dragAndDrop = (function() {
 					'</li>'
 				].join('');
 			},
+			image_item: function() {
+				return [
+					'<li class="option" data-value="<%= id %>"',
+						'style="width: <%= size.width %>; height: <%= size.height %>">',
+						'<img src="<%= backgroundImage %>" />',
+					'</li>'
+				].join('');
+			},
 			zoneInput: function() {
 				return [
 					'<div class="zone-row <%= name %>">',
@@ -81,6 +89,10 @@ var dragAndDrop = (function() {
 							'</a>',
                         '</div>',                                
                         '<div class="row">',
+                            '<label>Background image URL (alternative to the text)</label>',
+                            '<textarea class="background-image"></textarea>',
+                        '</div>',
+                        '<div class="row">',
                             '<label>Success Feedback</label>',
                             '<textarea class="success-feedback"></textarea>',
                         '</div>',
@@ -89,7 +101,7 @@ var dragAndDrop = (function() {
                             '<textarea class="error-feedback"></textarea>',
                         '</div>',
                         '<div class="row">',
-                            '<label>Width (px)</label>',
+                            '<label>Width (px - 0 for auto)</label>',
                             '<input type="text" class="item-width" value="190"></input>',
                             '<label>Height (px - 0 for auto)</label>',
                             '<input type="text" class="item-height" value="0"></input>',
@@ -406,14 +418,18 @@ var dragAndDrop = (function() {
 
 					$form.each( function(i, el) {
 						var $el = $(el),
-							name = $el.find('.item-text').val();
+							name = $el.find('.item-text').val(),
+							backgroundImage = $el.find('.background-image').val();
 
-						if (name.length > 0) {
-							var width = $el.find('.item-width').val() + 'px',
+						if (name.length > 0 || backgroundImage.length > 0) {
+							var width = $el.find('.item-width').val(),
 								height = $el.find('.item-height').val();
 
 							if (height === '0') height = 'auto';
 							else height = height + 'px';
+
+							if (width === '0') width = 'auto';
+							else width = width + 'px';
 
 							items.push({
 								displayName: name,
@@ -426,7 +442,8 @@ var dragAndDrop = (function() {
 								size: {
 									width: width,
 									height: height
-								}
+								},
+								backgroundImage: backgroundImage
 							});
 						}
 					});
@@ -545,10 +562,15 @@ var dragAndDrop = (function() {
 			draw: function() {
 				var list = [],
 					items = _fn.data.items,
-					tpl = _fn.tpl.item();
+					tpl = _fn.tpl.item(),
+					img_tpl = _fn.tpl.image_item();
 
 				_.each(items, function(item) {
-					list.push( _.template( tpl, item ) );
+					if (item.backgroundImage.length > 0) {
+						list.push( _.template( img_tpl, item ) );
+					} else {
+						list.push( _.template( tpl, item ) );
+					}
 				});
 
 				// Update DOM
