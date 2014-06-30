@@ -463,7 +463,7 @@ var dragAndDrop = (function() {
 							.draggable('disable');
 
 						_fn.test.completed++;
-						_fn.feedback.popup( _fn.feedback.get(val, true) );
+						_fn.feedback.popup( _fn.feedback.get(val, true), true );
 
 						if ( _fn.items.allSubmitted() ) {
 							_fn.finish();
@@ -471,7 +471,7 @@ var dragAndDrop = (function() {
 					} else {			
 						// Return to original position
 						_fn.clickHandlers.drag.reset( $el );
-						_fn.feedback.popup( _fn.feedback.get(val, false) );
+						_fn.feedback.popup( _fn.feedback.get(val, false), false );
 					}
 				},
 	
@@ -588,8 +588,9 @@ var dragAndDrop = (function() {
 			},
 
 			// Show a feedback popup
-			popup: function(str) {
-				return $("<div>").attr('title', 'Feedback').text(str).dialog();
+			popup: function(str, boo) {
+				if (str === undefined || str === '') return;
+				return $("<div>").attr('title', boo ? 'Correct' : 'Error').text(str).dialog();
 			}
 		},
 
