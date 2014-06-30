@@ -284,6 +284,12 @@
 	margin-bottom: 20px;
 }
 
+.xblock--drag-and-drop .items-form .item-width,
+.xblock--drag-and-drop .items-form .item-height {
+	width: 30px;
+	margin-right: 50px;
+}
+
 
 /** Buttons **/
 .xblock--drag-and-drop .btn {

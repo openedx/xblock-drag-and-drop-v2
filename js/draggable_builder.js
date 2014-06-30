@@ -27,7 +27,14 @@ var dragAndDrop = (function() {
 
 		// item template
 		tpl: {
-			item: '<li class="option" data-value="<%= id %>"><%= displayName %></li>',
+			item: function() {
+				return [
+					'<li class="option" data-value="<%= id %>"',
+						'style="width: <%= size.width %>; height: <%= size.height %>">',
+						'<%= displayName %>',
+					'</li>'
+				].join('');
+			},
 			zoneInput: function() {
 				return [
 					'<div class="zone-row <%= name %>">',
@@ -80,6 +87,12 @@ var dragAndDrop = (function() {
                         '<div class="row">',
                             '<label>Error Feedback</label>',
                             '<textarea class="error-feedback"></textarea>',
+                        '</div>',
+                        '<div class="row">',
+                            '<label>Width (px)</label>',
+                            '<input type="text" class="item-width" value="190"></input>',
+                            '<label>Height (px - 0 for auto)</label>',
+                            '<input type="text" class="item-height" value="0"></input>',
                         '</div>',
                     '</div>'
                 ].join('');
@@ -396,6 +409,12 @@ var dragAndDrop = (function() {
 							name = $el.find('.item-text').val();
 
 						if (name.length > 0) {
+							var width = $el.find('.item-width').val() + 'px',
+								height = $el.find('.item-height').val();
+
+							if (height === '0') height = 'auto';
+							else height = height + 'px';
+
 							items.push({
 								displayName: name,
 								zone: $el.find('.zone-select').val(),
@@ -403,6 +422,10 @@ var dragAndDrop = (function() {
 								feedback: {
 									correct: $el.find('.success-feedback').val(),
 									incorrect: $el.find('.error-feedback').val()
+								},
+								size: {
+									width: width,
+									height: height
 								}
 							});
 						}
@@ -522,7 +545,7 @@ var dragAndDrop = (function() {
 			draw: function() {
 				var list = [],
 					items = _fn.data.items,
-					tpl = _fn.tpl.item;
+					tpl = _fn.tpl.item();
 
 				_.each(items, function(item) {
 					list.push( _.template( tpl, item ) );
