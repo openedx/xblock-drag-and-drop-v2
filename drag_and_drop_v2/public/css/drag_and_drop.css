@@ -1,0 +1,159 @@
+.xblock--drag-and-drop {
+    width: 770px;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+}
+
+.xblock--drag-and-drop .problem-header {
+    display: inline-block;
+    margin: 0 0 15px 0;
+}
+
+.xblock--drag-and-drop .problem-progress {
+    display: inline-block;
+    padding-left: 5px;
+    color: #666;
+    font-weight: 100;
+    font-size: 1em;
+}
+
+.xblock--drag-and-drop .problem p {
+    margin-bottom: 1.41575em;
+}
+
+.xblock--drag-and-drop .drag-container {
+    width: 760px;
+    background: #ebf0f2;
+    position: relative;
+}
+
+.xblock--drag-and-drop .clear {
+    clear: both;
+}
+
+
+/** Draggable Items **/
+.xblock--drag-and-drop .drag-container .items {
+    width: 210px;
+    margin: 10px;
+    padding: 0 !important; /* LMS tries to override this */
+    font-size: 14px;
+    position: relative;
+    display: inline;
+    float: left;
+    list-style-type: none;
+}
+
+.xblock--drag-and-drop .drag-container .items .option {
+    width: 190px;
+    background: #2e83cd;
+    color: #fff;
+    position: relative;
+    float: left;
+    display: inline;
+    z-index: 100;
+    margin-bottom: 5px;
+    padding: 10px;
+}
+
+.xblock--drag-and-drop .option.hover { background: #ccc; }
+.xblock--drag-and-drop .option.fade { opacity: 0.6; }
+
+
+/*** Drop Target ***/
+.xblock--drag-and-drop .target {
+    width: 515px;
+    height: 510px;
+    position: relative;
+    display: inline;
+    float: left;
+    margin: 10px 0 15px 5px;
+    background: #fff;
+    z-index: 1;
+}
+
+.xblock--drag-and-drop .target-img {
+    width: 100%;
+    height: 100%;
+}
+
+.xblock--drag-and-drop .zone {
+    /*border: 1px solid #000;*/
+    position: absolute;
+
+    display: -webkit-box;
+      display: -moz-box;
+        display: -ms-flexbox;
+          display: -webkit-flex;
+            display: flex;
+
+    /* Internet Explorer 10 */
+    -ms-flex-pack:center;
+    -ms-flex-align:center;
+
+    /* Firefox */
+    -moz-box-pack:center;
+    -moz-box-align:center;
+
+    /* Safari, Opera, and Chrome */
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+
+    /* W3C */
+    box-pack:center;
+    box-align:center;
+
+}
+
+.xblock--drag-and-drop .zone p {
+    width: 100%;
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.xblock--drag-and-drop .zone.one {
+    height: 75px;
+    width: 115px;
+    top: 130px;
+    left: 200px;
+}
+.xblock--drag-and-drop .zone.two {
+    height: 120px;
+    width: 200px;
+    top: 220px;
+    left: 157px;
+}
+.xblock--drag-and-drop .zone.three {
+    height: 120px;
+    width: 200px;
+    bottom: 30px;
+    left: 157px;
+}
+
+/*** IE9 alignment fix ***/
+.lt-ie10 .xblock--drag-and-drop .zone {
+    display: table;
+}
+
+.lt-ie10 .xblock--drag-and-drop .zone p {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+/*** FEEDBACK ***/
+.xblock--drag-and-drop .feedback p {
+    line-height: 1.5em;
+    font-weight: bold;
+    margin-bottom: 1.41575em;
+}
+
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}
