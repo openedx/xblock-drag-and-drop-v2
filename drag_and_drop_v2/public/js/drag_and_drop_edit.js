@@ -162,6 +162,7 @@ function DragAndDropEditBlock(runtime, element) {
                             e.preventDefault();
 
                             _fn.data.targetImg = $('.target-image-form input', element).val();
+                            _fn.$target.css('background', 'url(' + _fn.data.targetImg + ') no-repeat');
 
                             // Placeholder shim for IE9
                             $.placeholder.shim();
