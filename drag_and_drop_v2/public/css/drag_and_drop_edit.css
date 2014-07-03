@@ -6,36 +6,21 @@
     background: #fff;
 }
 
-.xblock--drag-and-drop h1,
-.xblock--drag-and-drop h2,
-.xblock--drag-and-drop h3,
-.xblock--drag-and-drop h4,
-.xblock--drag-and-drop h5,
-.xblock--drag-and-drop h6,
-.xblock--drag-and-drop p,
-.xblock--drag-and-drop li,
-.xblock--drag-and-drop a {
-    font-family: Arial;
+.xblock--drag-and-drop .problem-header {
+    display: inline-block;
+    margin: 0 0 15px 0;
 }
 
-.xblock--drag-and-drop h1 {
-    color: #adadad;
+.xblock--drag-and-drop .problem-progress {
+    display: inline-block;
+    padding-left: 5px;
+    color: #666;
+    font-weight: 100;
+    font-size: 1em;
 }
 
-.xblock--drag-and-drop h2 {
-    color: #333;
-    margin: 0;
-    text-transform: uppercase;
-}
-
-.xblock--drag-and-drop header p,
-.xblock--drag-and-drop footer p {
-    color: #adadad;
-    line-height: 1.5em;
-}
-
-.xblock--drag-and-drop .small {
-    font-size: 0.6em;
+.xblock--drag-and-drop .problem p {
+    margin-bottom: 1.41575em;
 }
 
 .xblock--drag-and-drop .drag-container {
@@ -44,6 +29,9 @@
     position: relative;
 }
 
+.xblock--drag-and-drop .clear {
+    clear: both;
+}
 
 /** Draggable Items **/
 .xblock--drag-and-drop .items {
@@ -86,20 +74,19 @@
 }
 
 .xblock--drag-and-drop .target-img {
-    background: url(../img/triangle.png) no-repeat;
+    background: url('../img/triangle.png') no-repeat;
     width: 100%;
     height: 100%;
 }
 
 .xblock--drag-and-drop .zone {
-    /*border: 1px solid #000;*/
     position: absolute;
 
     display: -webkit-box;
-      display: -moz-box;
-        display: -ms-flexbox;
-          display: -webkit-flex;
-            display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
 
     /* Internet Explorer 10 */
     -ms-flex-pack:center;
@@ -160,25 +147,13 @@
     text-align: center;
 }
 
-/*** FEEDBACK ***/
-.xblock--drag-and-drop .feedback {
-    width: 740px;
-    border-top: #ccc 1px solid;
-    margin: 20px 10px;
-    padding-top: 10px;
-}
-
-.xblock--drag-and-drop .feedback .message {
-    margin: 5px 0 0;
-}
-
 /** Builder **/
 .xblock--drag-and-drop .hidden {
     display: none !important;
 }
 
 .xblock--drag-and-drop .drag-builder {
-    /* TODO */
+    /* TODO avoid buttons scrolling without this hack */
     height: 375px;
     overflow: scroll;
 }
@@ -389,8 +364,8 @@
     top: 2px;
     left: 6px;
     -webkit-transform: rotate(45deg);
-      -ms-transform: rotate(45deg);
-        transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
 }
 
 .xblock--drag-and-drop .icon.remove:after {
@@ -404,8 +379,8 @@
     top: 6px;
     left: 0;
     -webkit-transform: rotate(45deg);
-      -ms-transform: rotate(45deg);
-        transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
 }
 
 .xblock--drag-and-drop .remove-item .icon.remove {

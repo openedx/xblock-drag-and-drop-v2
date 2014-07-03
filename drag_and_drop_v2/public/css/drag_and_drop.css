@@ -57,6 +57,10 @@
     padding: 10px;
 }
 
+.xblock--drag-and-drop .drag-container .items .option img {
+    max-width: 100%;
+}
+
 .xblock--drag-and-drop .option.hover { background: #ccc; }
 .xblock--drag-and-drop .option.fade { opacity: 0.6; }
 
@@ -74,19 +78,19 @@
 }
 
 .xblock--drag-and-drop .target-img {
+    background: url('../img/triangle.png') no-repeat;
     width: 100%;
     height: 100%;
 }
 
 .xblock--drag-and-drop .zone {
-    /*border: 1px solid #000;*/
     position: absolute;
 
     display: -webkit-box;
-      display: -moz-box;
-        display: -ms-flexbox;
-          display: -webkit-flex;
-            display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
 
     /* Internet Explorer 10 */
     -ms-flex-pack:center;
@@ -155,5 +159,5 @@
 }
 
 .no-close .ui-dialog-titlebar-close {
-  display: none;
+    display: none;
 }

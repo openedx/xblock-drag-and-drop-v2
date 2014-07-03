@@ -44,27 +44,6 @@ function DragAndDropBlock(runtime, element) {
                         '</li>'
                     ].join('');
                 },
-                zoneInput: function() {
-                    return [
-                        '<div class="zone-row <%= name %>">',
-                            '<label>Text</label>',
-                            '<input type="text" class="title" placeholder="<%= title %>" />',
-                            '<a href="#" class="remove-zone hidden">',
-                                '<div class="icon remove"></div>',
-                            '</a>',
-                            '<div class="layout">',
-                                '<label>width</label>',
-                                '<input type="text" class="size width" value="200" />',
-                                '<label>height</label>',
-                                '<input type="text" class="size height" value="100" />',
-                                '<label>x</label>',
-                                '<input type="text" class="coord x" value="0" />',
-                                '<label>y</label>',
-                                '<input type="text" class="coord y" value="0" />',
-                            '</div>',
-                        '</div>'
-                    ].join('');
-                },
                 zoneElement: function() {
                     return [
                         '<div id="<%= id %>" class="zone" data-zone="<%= title %>" style="',
@@ -73,40 +52,6 @@ function DragAndDropBlock(runtime, element) {
                             'width:<%= width %>px;',
                             'height:<%= height %>px;">',
                             '<p><%= title %></p>',
-                        '</div>'
-                    ].join('');
-                },
-                zoneDropdown: '<option value="<%= value %>"><%= value %></option>',
-                itemInput: function() {
-                    return [
-                        '<div class="item">',
-                            '<div class="row">',
-                                '<label>Text</label>',
-                                '<input type="text" class="item-text"></input>',
-                                '<label>Zone</label>',
-                                '<select class="zone-select"><%= dropdown %></select>',
-                                '<a href="#" class="remove-item hidden">',
-                                    '<div class="icon remove"></div>',
-                                '</a>',
-                            '</div>',
-                            '<div class="row">',
-                                '<label>Background image URL (alternative to the text)</label>',
-                                '<textarea class="background-image"></textarea>',
-                            '</div>',
-                            '<div class="row">',
-                                '<label>Success Feedback</label>',
-                                '<textarea class="success-feedback"></textarea>',
-                            '</div>',
-                            '<div class="row">',
-                                '<label>Error Feedback</label>',
-                                '<textarea class="error-feedback"></textarea>',
-                            '</div>',
-                            '<div class="row">',
-                                '<label>Width (px - 0 for auto)</label>',
-                                '<input type="text" class="item-width" value="190"></input>',
-                                '<label>Height (px - 0 for auto)</label>',
-                                '<input type="text" class="item-height" value="0"></input>',
-                            '</div>',
                         '</div>'
                     ].join('');
                 }
@@ -120,20 +65,21 @@ function DragAndDropBlock(runtime, element) {
                 _fn.zones.draw();
 
                 // Load welcome feedback
-                _fn.feedback.set( _fn.data.feedback.start );
+                _fn.feedback.set(_fn.data.feedback.start);
 
                 // Init drag and drop plugin
-                _fn.$items.draggable( _fn.options.drag );
-                _fn.$zones.droppable( _fn.options.drop );
+                _fn.$items.draggable(_fn.options.drag);
+                _fn.$zones.droppable(_fn.options.drop);
 
                 // Init click handlers
-                _fn.clickHandlers.init( _fn.$items, _fn.$zones );
+                _fn.clickHandlers.init(_fn.$items, _fn.$zones);
 
                 // Get count of all active items
                 _fn.items.init();
 
                 // Set the target image
-                _fn.$target.css('background', 'url(' + _fn.data.targetImg + ') no-repeat');
+                if (_fn.data.targetImg)
+                    _fn.$target.css('background', 'url(' + _fn.data.targetImg + ') no-repeat');
             },
 
             finish: function() {
@@ -141,48 +87,48 @@ function DragAndDropBlock(runtime, element) {
                 _fn.$items.draggable('disable');
 
                 // Show final feedback
-                _fn.feedback.set( _fn.data.feedback.finish );
+                _fn.feedback.set(_fn.data.feedback.finish);
             },
 
             clickHandlers: {
-                init: function( $drag, $dropzone ) {
+                init: function($drag, $dropzone) {
                     var clk = _fn.clickHandlers;
 
-                    $drag.on( 'dragstart', clk.drag.start );
-                    $drag.on( 'dragstop', clk.drag.stop );
+                    $drag.on('dragstart', clk.drag.start);
+                    $drag.on('dragstop', clk.drag.stop);
 
-                    $dropzone.on( 'drop', clk.drop.success );
-                    $dropzone.on( 'dropover', clk.drop.hover.in );
-                    $dropzone.on( 'dropout', clk.drop.hover.out );
+                    $dropzone.on('drop', clk.drop.success);
+                    $dropzone.on('dropover', clk.drop.hover.in);
+                    $dropzone.on('dropout', clk.drop.hover.out);
                 },
                 drag: {
-                    start: function( event, ui ) {
+                    start: function(event, ui) {
                         $(event.currentTarget).removeClass('within-dropzone fade');
                     },
 
-                    stop: function( event, ui ) {
+                    stop: function(event, ui) {
                         var $el = $(event.currentTarget),
                             val = $el.data('value'),
                             zone = $el.data('zone') || null;
 
-                        if ( $el.hasClass('within-dropzone') && _fn.test.match( val, zone ) ) {
+                        if ($el.hasClass('within-dropzone') && _fn.test.match(val, zone)) {
                             $el.removeClass('hover')
                                 .draggable('disable');
 
                             _fn.test.completed++;
-                            _fn.feedback.popup( _fn.feedback.get(val, true), true );
+                            _fn.feedback.popup(_fn.feedback.get(val, true), true);
 
-                            if ( _fn.items.allSubmitted() ) {
+                            if (_fn.items.allSubmitted()) {
                                 _fn.finish();
                             }
                         } else {
                             // Return to original position
-                            _fn.clickHandlers.drag.reset( $el );
-                            _fn.feedback.popup( _fn.feedback.get(val, false), false );
+                            _fn.clickHandlers.drag.reset($el);
+                            _fn.feedback.popup(_fn.feedback.get(val, false), false);
                         }
                     },
 
-                    reset: function( $el ) {
+                    reset: function($el) {
                         $el.removeClass('within-dropzone fade hover')
                             .css({
                                 top: '',
@@ -192,16 +138,16 @@ function DragAndDropBlock(runtime, element) {
                 },
                 drop: {
                     hover: {
-                        in: function( event, ui ) {
+                        in: function(event, ui) {
                             var zone = $(event.currentTarget).data('zone');
 
                             ui.draggable.addClass('hover').data('zone', zone);
                         },
-                        out: function( event, ui ) {
+                        out: function(event, ui) {
                             ui.draggable.removeClass('hover');
                         }
                     },
-                    success: function( event, ui ) {
+                    success: function(event, ui) {
                         ui.draggable.addClass('within-dropzone');
                     }
                 }
@@ -215,8 +161,8 @@ function DragAndDropBlock(runtime, element) {
                         len = items.length,
                         total = 0;
 
-                    for ( i=0; i<len; i++ ) {
-                        if ( items[i].zone !== 'none' ) {
+                    for (i=0; i<len; i++) {
+                        if (items[i].zone !== 'none') {
                             total++;
                         }
                     }
@@ -234,14 +180,14 @@ function DragAndDropBlock(runtime, element) {
 
                     _.each(items, function(item) {
                         if (item.backgroundImage.length > 0) {
-                            list.push( _.template( img_tpl, item ) );
+                            list.push(_.template(img_tpl, item));
                         } else {
-                            list.push( _.template( tpl, item ) );
+                            list.push(_.template(tpl, item));
                         }
                     });
 
                     // Update DOM
-                    _fn.$ul.html( list.join('') );
+                    _fn.$ul.html(list.join(''));
 
                     // Set variable
                     _fn.$items = $('.xblock--drag-and-drop .items .option');
@@ -256,12 +202,12 @@ function DragAndDropBlock(runtime, element) {
                         i,
                         len = zones.length;
 
-                    for ( i=0; i<len; i++ ) {
-                        html.push( _.template( tpl, zones[i] ) );
+                    for (i=0; i<len; i++) {
+                        html.push(_.template(tpl, zones[i]));
                     }
 
                     // Update DOM
-                    _fn.$target.html( html.join('') );
+                    _fn.$target.html(html.join(''));
 
                     // Set variable
                     _fn.$zones = _fn.$target.find('.zone');
@@ -270,8 +216,8 @@ function DragAndDropBlock(runtime, element) {
 
             test: {
                 completed: 0,
-                match: function( id, zone ) {
-                    var item = _.findWhere( _fn.data.items, { id: id } );
+                match: function(id, zone) {
+                    var item = _.findWhere(_fn.data.items, { id: id });
 
                     return item.zone === zone;
                 }
@@ -279,17 +225,17 @@ function DragAndDropBlock(runtime, element) {
 
             feedback: {
                 // Returns string based on user's answer
-                get: function( id, boo ) {
+                get: function(id, boo) {
                     var item,
                         type = boo ? 'correct' : 'incorrect';
 
                     // Null loses its string-ness
-                    if ( id === null ) {
+                    if (id === null) {
                         id = 'null';
                     }
 
                     // Get object from data.items that matches val
-                    item = _.findWhere( _fn.data.items, { id: id });
+                    item = _.findWhere(_fn.data.items, { id: id });
 
                     return item.feedback[type];
                 },
@@ -309,29 +255,22 @@ function DragAndDropBlock(runtime, element) {
                                        modal: true,
                                        buttons: {
                                          Ok: function() {
-                                           $( this ).dialog( "close" );
+                                           $(this).dialog("close");
                                          }
                                        }
                                      });
                 }
             },
 
-            data: {
-                feedback: {},
-                items: [],
-                zones: [],
-                targetImg: 'img/triangle.png'
-            }
+            data: null
         };
 
         return {
             init: _fn.init,
-            data: _fn.data
         };
     })(jQuery);
 
     $.ajax(runtime.handlerUrl(element, 'get_data')).done(function(data){
         dragAndDrop.init(data);
     });
-
 }
