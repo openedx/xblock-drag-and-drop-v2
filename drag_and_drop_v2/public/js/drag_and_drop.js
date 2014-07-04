@@ -55,7 +55,7 @@ function DragAndDropBlock(runtime, element) {
                 _fn.items.init();
 
                 // Load welcome or final feedback
-                if (_fn.data.feedback.finish)
+                if (_fn.data.state.finished)
                     _fn.finish(_fn.data.feedback.finish);
                 else
                     _fn.feedback.set(_fn.data.feedback.start);
@@ -70,7 +70,7 @@ function DragAndDropBlock(runtime, element) {
                 _fn.$items.draggable('disable');
 
                 // Show final feedback
-                _fn.feedback.set(final_feedback);
+                if (final_feedback) _fn.feedback.set(final_feedback);
             },
 
             clickHandlers: {
@@ -109,7 +109,7 @@ function DragAndDropBlock(runtime, element) {
                             if (data.correct) {
                                 $el.draggable('disable');
 
-                                if (data.final_feedback) {
+                                if (data.finished) {
                                     _fn.finish(data.final_feedback);
                                 }
                             } else {
@@ -155,7 +155,7 @@ function DragAndDropBlock(runtime, element) {
                 init: function() {
                     _fn.$items.each(function (){
                         var $el = $(this),
-                            saved_entry = _fn.data.state[$el.data('value')];
+                            saved_entry = _fn.data.state.items[$el.data('value')];
                         if (saved_entry) {
                             _fn.clickHandlers.drag.set($el,
                                 saved_entry[0], saved_entry[1]);
