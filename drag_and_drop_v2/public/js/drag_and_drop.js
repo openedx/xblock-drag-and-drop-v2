@@ -3,11 +3,11 @@ function DragAndDropBlock(runtime, element) {
         var _fn = {
 
             // DOM Elements
-            $block: $('.xblock--drag-and-drop'),
-            $app: $('.xblock--drag-and-drop .drag-container'),
-            $ul: $('.xblock--drag-and-drop .items'),
-            $target: $('.xblock--drag-and-drop .target-img'),
-            $feedback: $('.xblock--drag-and-drop .feedback .message'),
+            $block: $('.xblock--drag-and-drop', element),
+            $app: $('.xblock--drag-and-drop .drag-container', element),
+            $ul: $('.xblock--drag-and-drop .items', element),
+            $target: $('.xblock--drag-and-drop .target-img', element),
+            $feedback: $('.xblock--drag-and-drop .feedback .message', element),
 
             // Cannot set until items added to DOM
             $items: {}, // $('.xblock--drag-and-drop .items .option'),
@@ -208,7 +208,7 @@ function DragAndDropBlock(runtime, element) {
                     _fn.$ul.html(list.join(''));
 
                     // Set variable
-                    _fn.$items = $('.xblock--drag-and-drop .items .option');
+                    _fn.$items = $('.xblock--drag-and-drop .items .option', element);
                 }
             },
 
