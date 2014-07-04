@@ -411,6 +411,7 @@ function DragAndDropEditBlock(runtime, element) {
 
                         var data = {
                             'display_name': $(element).find('.display-name').val(),
+                            'weight': $(element).find('.weight').val(),
                             'question_text': $(element).find('.question-text').val(),
                             'data': JSON.stringify(_fn.data),
                         };
