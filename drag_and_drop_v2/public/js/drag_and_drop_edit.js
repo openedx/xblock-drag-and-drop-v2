@@ -158,6 +158,12 @@ function DragAndDropEditBlock(runtime, element) {
                         dropdown: '',
                         list: [],
                         obj: [],
+                        getObjByIndex: function(num) {
+                            for (var i = 0; i < _fn.build.form.zone.obj.length; i++) {
+                                if (_fn.build.form.zone.obj[i].index == num)
+                                    return _fn.build.form.zone.obj[i];
+                            }
+                        },
                         add: function(e) {
                             var inputTemplate = _fn.tpl.zoneInput(),
                                 zoneTemplate = _fn.tpl.zoneElement(),
@@ -252,9 +258,7 @@ function DragAndDropEditBlock(runtime, element) {
                             // Listen to form changes and update zone div position
                             $form.on('keyup', '.title', function(e) {
                                     var text = $(e.currentTarget).val(),
-                                        record = _.findWhere(_fn.build.form.zone.obj, {
-                                            index: num
-                                        });
+                                        record = _fn.build.form.zone.getObjByIndex(num);
 
                                     $div.find('p').html(text);
                                     record.title = text;
@@ -264,33 +268,25 @@ function DragAndDropEditBlock(runtime, element) {
                                     }
                                 }).on('keyup', '.width', function(e) {
                                     var width = $(e.currentTarget).val(),
-                                        record = _.findWhere(_fn.build.form.zone.obj, {
-                                            index: num
-                                        });
+                                        record = _fn.build.form.zone.getObjByIndex(num);
 
                                     $div.css('width', width + 'px');
                                     record.width = width;
                                 }).on('keyup', '.height', function(e) {
                                     var height = $(e.currentTarget).val(),
-                                        record = _.findWhere(_fn.build.form.zone.obj, {
-                                            index: num
-                                        });
+                                        record = _fn.build.form.zone.getObjByIndex(num);
 
                                     $div.css('height', height + 'px');
                                     record.height = height;
                                 }).on('keyup', '.x', function(e) {
                                     var x = $(e.currentTarget).val(),
-                                        record = _.findWhere(_fn.build.form.zone.obj, {
-                                            index: num
-                                        });
+                                        record = _fn.build.form.zone.getObjByIndex(num);
 
                                     $div.css('left', x + 'px');
                                     record.x = x;
                                 }).on('keyup', '.y', function(e) {
                                     var y = $(e.currentTarget).val(),
-                                        record = _.findWhere(_fn.build.form.zone.obj, {
-                                            index: num
-                                        });
+                                        record = _fn.build.form.zone.getObjByIndex(num);
 
                                     $div.css('top', y + 'px');
                                     record.y = y;

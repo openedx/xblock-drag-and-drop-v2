@@ -3,8 +3,6 @@ function DragAndDropBlock(runtime, element) {
         var _fn = {
 
             // DOM Elements
-            $block: $('.xblock--drag-and-drop', element),
-            $app: $('.xblock--drag-and-drop .drag-container', element),
             $ul: $('.xblock--drag-and-drop .items', element),
             $target: $('.xblock--drag-and-drop .target-img', element),
             $feedback: $('.xblock--drag-and-drop .feedback .message', element),
@@ -196,7 +194,7 @@ function DragAndDropBlock(runtime, element) {
                         tpl = _fn.tpl.item(),
                         img_tpl = _fn.tpl.image_item();
 
-                    _.each(items, function(item) {
+                    items.forEach(function(item) {
                         if (item.backgroundImage.length > 0) {
                             list.push(_.template(img_tpl, item));
                         } else {
@@ -232,10 +230,6 @@ function DragAndDropBlock(runtime, element) {
                 }
             },
 
-            test: {
-                completed: 0
-            },
-
             feedback: {
                 // Update DOM with feedback
                 set: function(str) {
@@ -246,16 +240,16 @@ function DragAndDropBlock(runtime, element) {
                 popup: function(str, boo) {
                     if (str === undefined || str === '') return;
                     return $("<div>").attr('title', boo ? 'Correct' : 'Incorrect')
-                                     .text(str)
-                                     .dialog({
-                                       dialogClass: "no-close",
-                                       modal: true,
-                                       buttons: {
-                                         Ok: function() {
-                                           $(this).dialog("close");
-                                         }
-                                       }
-                                     });
+                        .text(str)
+                        .dialog({
+                            dialogClass: "no-close",
+                            modal: true,
+                            buttons: {
+                                Ok: function() {
+                                    $(this).dialog("close");
+                                }
+                            }
+                    });
                 }
             },
 
