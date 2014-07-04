@@ -99,8 +99,6 @@ function DragAndDropBlock(runtime, element) {
                     $drag.on('dragstop', clk.drag.stop);
 
                     $dropzone.on('drop', clk.drop.success);
-                    $dropzone.on('dropover', clk.drop.hover.in);
-                    $dropzone.on('dropout', clk.drop.hover.out);
                 },
                 drag: {
                     start: function(event, ui) {
@@ -126,8 +124,7 @@ function DragAndDropBlock(runtime, element) {
                                 left: $el.css('left')
                         })).done(function(data){
                             if (data.correct) {
-                                $el.removeClass('hover')
-                                    .draggable('disable');
+                                $el.draggable('disable');
 
                                 if (data.final_feedback) {
                                     _fn.finish(data.final_feedback);
@@ -153,7 +150,7 @@ function DragAndDropBlock(runtime, element) {
                     },
 
                     reset: function($el) {
-                        $el.removeClass('within-dropzone fade hover')
+                        $el.removeClass('within-dropzone fade')
                             .css({
                                 top: '',
                                 left: ''
@@ -161,16 +158,6 @@ function DragAndDropBlock(runtime, element) {
                     }
                 },
                 drop: {
-                    hover: {
-                        in: function(event, ui) {
-                            var zone = $(event.currentTarget).data('zone');
-
-                            ui.draggable.addClass('hover').data('zone', zone);
-                        },
-                        out: function(event, ui) {
-                            ui.draggable.removeClass('hover');
-                        }
-                    },
                     success: function(event, ui) {
                         ui.draggable.addClass('within-dropzone');
                     }

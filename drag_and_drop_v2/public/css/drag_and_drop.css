@@ -62,7 +62,6 @@
     max-width: 100%;
 }
 
-.xblock--drag-and-drop .option.hover { background: #ccc; }
 .xblock--drag-and-drop .option.fade { opacity: 0.6; }
 
 
@@ -120,25 +119,6 @@
     text-transform: uppercase;
     margin-top: auto;
     margin-bottom: auto;
-}
-
-.xblock--drag-and-drop .zone.one {
-    height: 75px;
-    width: 115px;
-    top: 130px;
-    left: 200px;
-}
-.xblock--drag-and-drop .zone.two {
-    height: 120px;
-    width: 200px;
-    top: 220px;
-    left: 157px;
-}
-.xblock--drag-and-drop .zone.three {
-    height: 120px;
-    width: 200px;
-    bottom: 30px;
-    left: 157px;
 }
 
 /*** IE9 alignment fix ***/
