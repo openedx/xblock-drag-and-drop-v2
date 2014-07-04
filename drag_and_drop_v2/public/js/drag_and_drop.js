@@ -99,6 +99,7 @@ function DragAndDropBlock(runtime, element) {
                     $drag.on('dragstop', clk.drag.stop);
 
                     $dropzone.on('drop', clk.drop.success);
+                    $dropzone.on('dropover', clk.drop.hover);
                 },
                 drag: {
                     start: function(event, ui) {
@@ -158,6 +159,10 @@ function DragAndDropBlock(runtime, element) {
                     }
                 },
                 drop: {
+                    hover: function(event, ui) {
+                        var zone = $(event.currentTarget).data('zone');
+                        ui.draggable.data('zone', zone);
+                    },
                     success: function(event, ui) {
                         ui.draggable.addClass('within-dropzone');
                     }
