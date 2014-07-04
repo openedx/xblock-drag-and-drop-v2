@@ -24,39 +24,21 @@ function DragAndDropBlock(runtime, element) {
                 }
             },
 
-            // item template
             tpl: {
-                item: function() {
-                    return [
-                        '<li class="option" data-value="<%= id %>"',
-                            'style="width: <%= size.width %>; height: <%= size.height %>">',
-                            '<%= displayName %>',
-                        '</li>'
-                    ].join('');
-                },
-                image_item: function() {
-                    return [
-                        '<li class="option" data-value="<%= id %>"',
-                            'style="width: <%= size.width %>; height: <%= size.height %>">',
-                            '<img src="<%= backgroundImage %>" />',
-                        '</li>'
-                    ].join('');
-                },
-                zoneElement: function() {
-                    return [
-                        '<div id="<%= id %>" class="zone" data-zone="<%= title %>" style="',
-                            'top:<%= y %>px;',
-                            'left:<%= x %>px;',
-                            'width:<%= width %>px;',
-                            'height:<%= height %>px;">',
-                            '<p><%= title %></p>',
-                        '</div>'
-                    ].join('');
+                init: function() {
+                    _fn.tpl = {
+                        item: Handlebars.compile($("#item-tpl", element).html()),
+                        imageItem: Handlebars.compile($("#image-item-tpl", element).html()),
+                        zoneElement: Handlebars.compile($("#zone-element-tpl", element).html())
+                    };
                 }
             },
 
             init: function(data) {
                 _fn.data = data;
+
+                // Compile templates
+                _fn.tpl.init();
 
                 // Add the items to the page
                 _fn.items.draw();
@@ -183,14 +165,14 @@ function DragAndDropBlock(runtime, element) {
                 draw: function() {
                     var list = [],
                         items = _fn.data.items,
-                        tpl = _fn.tpl.item(),
-                        img_tpl = _fn.tpl.image_item();
+                        tpl = _fn.tpl.item,
+                        img_tpl = _fn.tpl.imageItem;
 
                     items.forEach(function(item) {
                         if (item.backgroundImage.length > 0) {
-                            list.push(_.template(img_tpl, item));
+                            list.push(img_tpl(item));
                         } else {
-                            list.push(_.template(tpl, item));
+                            list.push(tpl(item));
                         }
                     });
 
@@ -206,12 +188,12 @@ function DragAndDropBlock(runtime, element) {
                 draw: function() {
                     var html = [],
                         zones = _fn.data.zones,
-                        tpl = _fn.tpl.zoneElement(),
+                        tpl = _fn.tpl.zoneElement,
                         i,
                         len = zones.length;
 
                     for (i=0; i<len; i++) {
-                        html.push(_.template(tpl, zones[i]));
+                        html.push(tpl(zones[i]));
                     }
 
                     // Update DOM

@@ -1,0 +1,80 @@
+<script id="item-tpl" type="text/html">
+    <li class="option" data-value="{{ id }}"
+        style="width: {{ size.width }}; height: {{ size.height }}">
+        {{ displayName }}
+    </li>
+</script>
+
+<script id="image-item-tpl" type="text/html">
+    <li class="option" data-value="{{ id }}"
+        style="width: {{ size.width }}; height: {{ size.height }}">
+        <img src="{{ backgroundImage }}" />
+    </li>
+</script>
+
+<script id="zone-element-tpl" type="text/html">
+    <div id="{{ id }}" class="zone" data-zone="{{ title }}" style="
+        top:{{ y }}px;
+        left:{{ x }}px;
+        width:{{ width }}px;
+        height:{{ height }}px;">
+        <p>{{ title }}</p>
+    </div>
+</script>
+
+<script id="zone-input-tpl" type="text/html">
+    <div class="zone-row {{ name }}">
+       <label>Text</label>
+       <input type="text" class="title" placeholder="{{ title }}" />
+       <a href="#" class="remove-zone hidden">
+           <div class="icon remove"></div>
+       </a>
+       <div class="layout">
+           <label>width</label>
+           <input type="text" class="size width" value="200" />
+           <label>height</label>
+           <input type="text" class="size height" value="100" />
+           <br />
+           <label>x</label>
+           <input type="text" class="coord x" value="0" />
+           <label>y</label>
+           <input type="text" class="coord y" value="0" />
+       </div>
+    </div>
+</script>
+
+<script id="zone-dropdown-tpl" type="text/html">
+    <option value="{{ value }}">{{ value }}</option>
+</script>
+
+<script id="item-input-tpl" type="text/html">
+    <div class="item">
+        <div class="row">
+            <label>Text</label>
+            <input type="text" class="item-text"></input>
+            <label>Zone</label>
+            <select class="zone-select">{{ dropdown }}</select>
+            <a href="#" class="remove-item hidden">
+                <div class="icon remove"></div>
+            </a>
+        </div>
+        <div class="row">
+            <label>Background image URL (alternative to the text)</label>
+            <textarea class="background-image"></textarea>
+        </div>
+        <div class="row">
+            <label>Success Feedback</label>
+            <textarea class="success-feedback"></textarea>
+        </div>
+        <div class="row">
+            <label>Error Feedback</label>
+            <textarea class="error-feedback"></textarea>
+        </div>
+        <div class="row">
+            <label>Width (px - 0 for auto)</label>
+            <input type="text" class="item-width" value="190"></input>
+            <label>Height (px - 0 for auto)</label>
+            <input type="text" class="item-height" value="0"></input>
+        </div>
+    </div>
+</script>

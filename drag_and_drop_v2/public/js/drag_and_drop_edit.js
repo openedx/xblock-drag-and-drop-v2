@@ -5,74 +5,14 @@ function DragAndDropEditBlock(runtime, element) {
             // DOM Elements
             $target: $('.xblock--drag-and-drop .target-img', element),
 
-            // item template
             tpl: {
-                zoneInput: function() {
-                    return [
-                        '<div class="zone-row <%= name %>">',
-                            '<label>Text</label>',
-                            '<input type="text" class="title" placeholder="<%= title %>" />',
-                            '<a href="#" class="remove-zone hidden">',
-                                '<div class="icon remove"></div>',
-                            '</a>',
-                            '<div class="layout">',
-                                '<label>width</label>',
-                                '<input type="text" class="size width" value="200" />',
-                                '<label>height</label>',
-                                '<input type="text" class="size height" value="100" />',
-                                '<br />',
-                                '<label>x</label>',
-                                '<input type="text" class="coord x" value="0" />',
-                                '<label>y</label>',
-                                '<input type="text" class="coord y" value="0" />',
-                            '</div>',
-                        '</div>'
-                    ].join('');
-                },
-                zoneElement: function() {
-                    return [
-                        '<div id="<%= id %>" class="zone" data-zone="<%= title %>" style="',
-                            'top:<%= y %>px;',
-                            'left:<%= x %>px;',
-                            'width:<%= width %>px;',
-                            'height:<%= height %>px;">',
-                            '<p><%= title %></p>',
-                        '</div>'
-                    ].join('');
-                },
-                zoneDropdown: '<option value="<%= value %>"><%= value %></option>',
-                itemInput: function() {
-                    return [
-                        '<div class="item">',
-                            '<div class="row">',
-                                '<label>Text</label>',
-                                '<input type="text" class="item-text"></input>',
-                                '<label>Zone</label>',
-                                '<select class="zone-select"><%= dropdown %></select>',
-                                '<a href="#" class="remove-item hidden">',
-                                    '<div class="icon remove"></div>',
-                                '</a>',
-                            '</div>',
-                            '<div class="row">',
-                                '<label>Background image URL (alternative to the text)</label>',
-                                '<textarea class="background-image"></textarea>',
-                            '</div>',
-                            '<div class="row">',
-                                '<label>Success Feedback</label>',
-                                '<textarea class="success-feedback"></textarea>',
-                            '</div>',
-                            '<div class="row">',
-                                '<label>Error Feedback</label>',
-                                '<textarea class="error-feedback"></textarea>',
-                            '</div>',
-                            '<div class="row">',
-                                '<label>Width (px - 0 for auto)</label>',
-                                '<input type="text" class="item-width" value="190"></input>',
-                                '<label>Height (px - 0 for auto)</label>',
-                                '<input type="text" class="item-height" value="0"></input>',
-                            '</div>',
-                        '</div>'
-                    ].join('');
+                init: function() {
+                    _fn.tpl = {
+                        zoneInput: Handlebars.compile($("#zone-input-tpl", element).html()),
+                        zoneElement: Handlebars.compile($("#zone-element-tpl", element).html()),
+                        zoneDropdown: Handlebars.compile($("#zone-dropdown-tpl", element).html()),
+                        itemInput: Handlebars.compile($("#item-input-tpl", element).html()),
+                    };
                 }
             },
 
@@ -94,6 +34,9 @@ function DragAndDropEditBlock(runtime, element) {
                 },
                 init: function(data) {
                     _fn.data = data;
+
+                    // Compile templates
+                    _fn.tpl.init();
 
                     _fn.build.clickHandlers();
                     _fn.build.form.zone.add();
@@ -165,8 +108,8 @@ function DragAndDropEditBlock(runtime, element) {
                             }
                         },
                         add: function(e) {
-                            var inputTemplate = _fn.tpl.zoneInput(),
-                                zoneTemplate = _fn.tpl.zoneElement(),
+                            var inputTemplate = _fn.tpl.zoneInput,
+                                zoneTemplate = _fn.tpl.zoneElement,
                                 name = 'zone-',
                                 $elements = _fn.build.$el,
                                 num,
@@ -196,14 +139,14 @@ function DragAndDropEditBlock(runtime, element) {
                             _fn.build.form.zone.obj.push(zoneObj);
 
                             // Add fields to zone position form
-                            $elements.zones.form.append(_.template(inputTemplate, {
+                            $elements.zones.form.append(inputTemplate({
                                 title: 'Zone ' + num,
                                 name: name
                             }));
                             _fn.build.form.zone.enableDelete();
 
                             // Add zone div to target
-                            $elements.target.append(_.template(zoneTemplate, zoneObj));
+                            $elements.target.append(zoneTemplate(zoneObj));
 
                             // Listen to changes in form to update zone div
                             _fn.build.form.zone.clickHandler(num);
@@ -314,14 +257,14 @@ function DragAndDropEditBlock(runtime, element) {
                             html;
 
                         for (i=0; i<len; i++) {
-                            dropdown.push(_.template(tpl, { value: arr[i] }));
+                            dropdown.push(tpl({ value: arr[i] }));
                         }
 
                         // Add option to include dummy answers
-                        dropdown.push(_.template(tpl, { value: 'none' }));
+                        dropdown.push(tpl({ value: 'none' }));
 
                         html = dropdown.join('');
-                        _fn.build.form.zone.dropdown = html;
+                        _fn.build.form.zone.dropdown = new Handlebars.SafeString(html);
                         _fn.build.$el.items.form.find('.zone-select').html(html);
                     },
                     feedback: function($form) {
@@ -334,14 +277,14 @@ function DragAndDropEditBlock(runtime, element) {
                         count: 0,
                         add: function(e) {
                             var $form = _fn.build.$el.items.form,
-                                tpl = _fn.tpl.itemInput();
+                                tpl = _fn.tpl.itemInput;
 
                             if (e) {
                                 e.preventDefault();
                             }
 
                             _fn.build.form.item.count++;
-                            $form.append(_.template(tpl, { dropdown: _fn.build.form.zone.dropdown }));
+                            $form.append(tpl({ dropdown: _fn.build.form.zone.dropdown }));
                             _fn.build.form.item.enableDelete();
 
                             // Placeholder shim for IE9

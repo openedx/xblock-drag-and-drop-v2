@@ -12,7 +12,7 @@ from xblock.core import XBlock
 from xblock.fields import Scope, String, Dict, Float
 from xblock.fragment import Fragment
 
-from .utils import render_template
+from .utils import render_template, load_resource
 
 
 # Globals ###########################################################
@@ -77,8 +77,10 @@ class DragAndDropBlock(XBlock):
 
         max_score_string = '({0} Point{1} Possible)'.format(int(self.weight),
             's' if self.weight > 1 else '') if self.weight else ''
+        js_templates = load_resource('/templates/html/js_templates.html')
 
         context = {
+            'js_templates': js_templates,
             'title': self.display_name,
             'question_text': self.question_text,
             'max_score_string': max_score_string
@@ -93,7 +95,7 @@ class DragAndDropBlock(XBlock):
         fragment.add_javascript_url(self.runtime.local_resource_url(self,
             'public/js/vendor/jquery.html5-placeholder-shim.js'))
         fragment.add_javascript_url(self.runtime.local_resource_url(self,
-            'public/js/vendor/underscore1.6.0.js'))
+            'public/js/vendor/handlebars-v1.1.2.js'))
         fragment.add_javascript_url(self.runtime.local_resource_url(self,
             'public/js/drag_and_drop.js'))
 
@@ -106,7 +108,10 @@ class DragAndDropBlock(XBlock):
         Editing view in Studio
         """
 
-        context = {}
+        js_templates = load_resource('/templates/html/js_templates.html')
+        context = {
+            'js_templates': js_templates,
+        }
 
         fragment = Fragment()
         fragment.add_content(render_template('/templates/html/drag_and_drop_edit.html', context))
@@ -117,7 +122,7 @@ class DragAndDropBlock(XBlock):
         fragment.add_javascript_url(self.runtime.local_resource_url(self,
             'public/js/vendor/jquery.html5-placeholder-shim.js'))
         fragment.add_javascript_url(self.runtime.local_resource_url(self,
-            'public/js/vendor/underscore1.6.0.js'))
+            'public/js/vendor/handlebars-v1.1.2.js'))
         fragment.add_javascript_url(self.runtime.local_resource_url(self,
             'public/js/drag_and_drop_edit.js'))
 
