@@ -52,7 +52,8 @@
     position: relative;
     float: left;
     display: inline;
-    z-index: 100;
+    /* Some versions of the drag and drop library try to fiddle with this */
+    z-index: 10 !important;
     margin-bottom: 5px;
     padding: 10px;
 }

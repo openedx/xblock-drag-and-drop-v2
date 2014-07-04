@@ -64,9 +64,6 @@ function DragAndDropBlock(runtime, element) {
                 _fn.items.draw();
                 _fn.zones.draw();
 
-                // Load welcome feedback
-                _fn.feedback.set(_fn.data.feedback.start);
-
                 // Init drag and drop plugin
                 _fn.$items.draggable(_fn.options.drag);
                 _fn.$zones.droppable(_fn.options.drop);
@@ -74,20 +71,26 @@ function DragAndDropBlock(runtime, element) {
                 // Init click handlers
                 _fn.clickHandlers.init(_fn.$items, _fn.$zones);
 
-                // Get count of all active items
+                // Position the already correct items
                 _fn.items.init();
+
+                // Load welcome or final feedback
+                if (_fn.data.feedback.finish)
+                    _fn.finish(_fn.data.feedback.finish);
+                else
+                    _fn.feedback.set(_fn.data.feedback.start);
 
                 // Set the target image
                 if (_fn.data.targetImg)
                     _fn.$target.css('background', 'url(' + _fn.data.targetImg + ') no-repeat');
             },
 
-            finish: function() {
+            finish: function(final_feedback) {
                 // Disable any decoy items
                 _fn.$items.draggable('disable');
 
                 // Show final feedback
-                _fn.feedback.set(_fn.data.feedback.finish);
+                _fn.feedback.set(final_feedback);
             },
 
             clickHandlers: {
@@ -111,21 +114,44 @@ function DragAndDropBlock(runtime, element) {
                             val = $el.data('value'),
                             zone = $el.data('zone') || null;
 
-                        if ($el.hasClass('within-dropzone') && _fn.test.match(val, zone)) {
-                            $el.removeClass('hover')
-                                .draggable('disable');
-
-                            _fn.test.completed++;
-                            _fn.feedback.popup(_fn.feedback.get(val, true), true);
-
-                            if (_fn.items.allSubmitted()) {
-                                _fn.finish();
-                            }
-                        } else {
+                        if (!$el.hasClass('within-dropzone')) {
                             // Return to original position
                             _fn.clickHandlers.drag.reset($el);
-                            _fn.feedback.popup(_fn.feedback.get(val, false), false);
+                            return;
                         }
+
+                        $.post(runtime.handlerUrl(element, 'do_attempt'),
+                            JSON.stringify({
+                                val: val,
+                                zone: zone,
+                                top: $el.css('top'),
+                                left: $el.css('left')
+                        })).done(function(data){
+                            if (data.correct) {
+                                $el.removeClass('hover')
+                                    .draggable('disable');
+
+                                if (data.final_feedback) {
+                                    _fn.finish(data.final_feedback);
+                                }
+                            } else {
+                                // Return to original position
+                                _fn.clickHandlers.drag.reset($el);
+                            }
+
+                            if (data.feedback) {
+                                _fn.feedback.popup(data.feedback, data.correct);
+                            }
+                        });
+                    },
+
+                    set: function($el, top, left) {
+                        $el.addClass('within-dropzone fade')
+                            .css({
+                                top: top,
+                                left: left
+                            })
+                            .draggable('disable');
                     },
 
                     reset: function($el) {
@@ -154,23 +180,15 @@ function DragAndDropBlock(runtime, element) {
             },
 
             items: {
-                count: 0,
                 init: function() {
-                    var items = _fn.data.items,
-                        i,
-                        len = items.length,
-                        total = 0;
-
-                    for (i=0; i<len; i++) {
-                        if (items[i].zone !== 'none') {
-                            total++;
+                    _fn.$items.each(function (){
+                        var $el = $(this),
+                            saved_entry = _fn.data.state[$el.data('value')];
+                        if (saved_entry) {
+                            _fn.clickHandlers.drag.set($el,
+                                saved_entry[0], saved_entry[1]);
                         }
-                    }
-
-                    _fn.items.count = total;
-                },
-                allSubmitted: function() {
-                    return _fn.test.completed === _fn.items.count;
+                    });
                 },
                 draw: function() {
                     var list = [],
@@ -215,31 +233,10 @@ function DragAndDropBlock(runtime, element) {
             },
 
             test: {
-                completed: 0,
-                match: function(id, zone) {
-                    var item = _.findWhere(_fn.data.items, { id: id });
-
-                    return item.zone === zone;
-                }
+                completed: 0
             },
 
             feedback: {
-                // Returns string based on user's answer
-                get: function(id, boo) {
-                    var item,
-                        type = boo ? 'correct' : 'incorrect';
-
-                    // Null loses its string-ness
-                    if (id === null) {
-                        id = 'null';
-                    }
-
-                    // Get object from data.items that matches val
-                    item = _.findWhere(_fn.data.items, { id: id });
-
-                    return item.feedback[type];
-                },
-
                 // Update DOM with feedback
                 set: function(str) {
                     return _fn.$feedback.html(str);
