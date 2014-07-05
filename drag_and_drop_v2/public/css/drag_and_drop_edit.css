@@ -6,6 +6,12 @@
     background: #fff;
 }
 
+.modal-window .editor-with-buttons.xblock--drag-and-drop  {
+    /* Fix Studio edito height */
+    margin-bottom: 0;
+    height: 380px;
+}
+
 /** Draggable Items **/
 .xblock--drag-and-drop .items {
     width: 210px;
@@ -92,8 +98,7 @@
 }
 
 .xblock--drag-and-drop .drag-builder {
-    /* TODO avoid buttons scrolling without this hack */
-    height: 375px;
+    height: 100%;
     overflow: scroll;
 }
 
