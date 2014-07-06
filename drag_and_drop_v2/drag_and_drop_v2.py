@@ -135,14 +135,7 @@ class DragAndDropBlock(XBlock):
         self.display_name = submissions['display_name']
         self.question_text = submissions['question_text']
         self.weight = float(submissions['weight'])
-
-        try:
-            self.data = json.loads(submissions['data'])
-        except ValueError as e:
-            return {
-                'result': 'error',
-                'message': e.message
-            }
+        self.data = submissions['data']
 
         return {
             'result': 'success',

@@ -356,7 +356,7 @@ function DragAndDropEditBlock(runtime, element) {
                             'display_name': $(element).find('.display-name').val(),
                             'weight': $(element).find('.weight').val(),
                             'question_text': $(element).find('.question-text').val(),
-                            'data': JSON.stringify(_fn.data),
+                            'data': _fn.data,
                         };
 
                         $('.xblock-editor-error-message', element).html();
