@@ -170,10 +170,8 @@ class DragAndDropBlock(XBlock):
             self.item_state[item['id']] = (attempt['top'], attempt['left'])
 
             if len(self.item_state) == tot_items:
-                finished = True
                 final_feedback = self.data['feedback']['finish']
             else:
-                finished = False
                 final_feedback = None
 
             try:
@@ -188,14 +186,14 @@ class DragAndDropBlock(XBlock):
 
             return {
                 'correct': True,
-                'finished': finished,
+                'finished': len(self.item_state) == tot_items,
                 'final_feedback': final_feedback,
                 'feedback': item['feedback']['correct']
             }
         else:
             return {
                 'correct': False,
-                'finished': finished,
+                'finished': len(self.item_state) == tot_items,
                 'final_feedback': None,
                 'feedback': item['feedback']['incorrect']
             }
