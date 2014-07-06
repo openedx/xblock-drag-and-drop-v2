@@ -1,0 +1,6 @@
+mock
+nose
+coverage
+rednose
+
+-e .

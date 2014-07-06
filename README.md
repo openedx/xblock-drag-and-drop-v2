@@ -25,3 +25,33 @@ $ pip install -e .
 ```
 
 from the XBlock folder and add `drag-and-drop-v2` to your Advanced Module List.
+
+## Testing
+
+1. In a virtualenv, run
+
+```bash
+$ (cd .../xblock-sdk/; pip install -r requirements.txt)
+$ (cd .../xblock-drag-and-drop-v2/; pip install -r tests/requirements.txt)
+```
+
+2. In the xblock-sdk repository, create the following configuration file in `workbench/settings_drag_and_drop_v2.py`
+
+```python
+from settings import *
+
+INSTALLED_APPS += ('drag_and_drop_v2',)
+DATABASES['default']['NAME'] = 'workbench.db'
+```
+
+3. Run this to sync the database before starting the workbench (answering no to the superuser question is ok):
+
+```bash
+$ .../xblock-sdk/manage.py syncdb --settings=workbench.settings_drag_and_drop_v2
+```
+
+4. To run the tests, from the xblock-drag-and-drop-v2 repository root:
+
+```bash
+$ DJANGO_SETTINGS_MODULE="workbench.settings_drag_and_drop_v2" nosetests --rednose --verbose --with-cover --cover-package=drag_and_drop_v2
+```
