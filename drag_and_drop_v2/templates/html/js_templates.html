@@ -1,0 +1,80 @@
+<script id="item-tpl" type="text/html">
+    <li class="option" data-value="{{ id }}"
+        style="width: {{ size.width }}; height: {{ size.height }}">
+        {{ displayName }}
+    </li>
+</script>
+
+<script id="image-item-tpl" type="text/html">
+    <li class="option" data-value="{{ id }}"
+        style="width: {{ size.width }}; height: {{ size.height }}">
+        <img src="{{ backgroundImage }}" />
+    </li>
+</script>
+
+<script id="zone-element-tpl" type="text/html">
+    <div id="{{ id }}" class="zone" data-zone="{{ title }}" style="
+        top:{{ y }}px;
+        left:{{ x }}px;
+        width:{{ width }}px;
+        height:{{ height }}px;">
+        <p>{{ title }}</p>
+    </div>
+</script>
+
+<script id="zone-input-tpl" type="text/html">
+    <div class="zone-row {{ id }}">
+       <label>Text</label>
+       <input type="text" class="title" value="{{ title }}" />
+       <a href="#" class="remove-zone hidden">
+           <div class="icon remove"></div>
+       </a>
+       <div class="layout">
+           <label>width</label>
+           <input type="text" class="size width" value="{{ width }}" />
+           <label>height</label>
+           <input type="text" class="size height" value="{{ height }}" />
+           <br />
+           <label>x</label>
+           <input type="text" class="coord x" value="{{ x }}" />
+           <label>y</label>
+           <input type="text" class="coord y" value="{{ y }}" />
+       </div>
+    </div>
+</script>
+
+<script id="zone-dropdown-tpl" type="text/html">
+    <option value="{{ value }}" {{ selected }}>{{ value }}</option>
+</script>
+
+<script id="item-input-tpl" type="text/html">
+    <div class="item">
+        <div class="row">
+            <label>Text</label>
+            <input type="text" class="item-text" value="{{ displayName }}"/>
+            <label>Zone</label>
+            <select class="zone-select">{{ dropdown }}</select>
+            <a href="#" class="remove-item hidden">
+                <div class="icon remove"></div>
+            </a>
+        </div>
+        <div class="row">
+            <label>Background image URL (alternative to the text)</label>
+            <textarea class="background-image">{{ backgroundImage }}</textarea>
+        </div>
+        <div class="row">
+            <label>Success Feedback</label>
+            <textarea class="success-feedback">{{ feedback.correct }}</textarea>
+        </div>
+        <div class="row">
+            <label>Error Feedback</label>
+            <textarea class="error-feedback">{{ feedback.incorrect }}</textarea>
+        </div>
+        <div class="row">
+            <label>Width (px - 0 for auto)</label>
+            <input type="text" class="item-width" value="{{ width }}"></input>
+            <label>Height (px - 0 for auto)</label>
+            <input type="text" class="item-height" value="{{ height }}"></input>
+        </div>
+    </div>
+</script>

@@ -1,29 +1,36 @@
 {% load i18n %}
 
 <div class="xblock--drag-and-drop editor-with-buttons">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    {{ js_templates|safe }}
+
+    <script type="text/javascript">
+        var DragAndDropV2BlockPreviousData = JSON.parse(decodeURIComponent('{{ data|safe }}'));
+    </script>
 
     <section class="drag-builder">
-
         <div class="tab feedback-tab">
+            <p class="tab-content">
+                Note: don't edit the question if students already answered it! Delete it and create a new one.
+            </p>
+
             <section class="tab-content">
                 <form class="feedback-form">
                     <h3>Question title</h3>
-                    <input class="display-name" />
+                    <input class="display-name" value="{{ self.display_name }}" />
+
+                    <h3>Maximum score</h3>
+                    <input class="weight" value="1" value="{{ self.weight }}"/>
 
                     <h3>Question text</h3>
-                    <textarea class="question-text"></textarea>
+                    <textarea class="question-text">{{ self.question_text }}</textarea>
 
                     <h3>Introduction Feedback</h3>
-                    <textarea class="intro-feedback"></textarea>
+                    <textarea class="intro-feedback">{{ self.data.feedback.start }}</textarea>
 
                     <h3>Final Feedback</h3>
-                    <textarea class="final-feedback"></textarea>
+                    <textarea class="final-feedback">{{ self.data.feedback.finish }}</textarea>
                 </form>
             </section>
-            <!-- <footer class="tab-footer">
-                <button class="btn continue goto-zones">Continue</button>
-            </footer> -->
         </div>
 
         <div class="tab zones-tab hidden">
@@ -31,6 +38,11 @@
                 <h3>Zone Positions</h3>
             </header>
             <section class="tab-content">
+                <section class="tab-content target-image-form">
+                    <label>New background URL:</label>
+                    <input type="text">
+                    <button class="btn">Change background</button>
+                </section>
                 <div class="items">
                     <form class="zones-form"></form>
                     <a href="#" class="add-zone add-element"><div class="icon add"></div>Add a zone</a>
@@ -39,9 +51,6 @@
                     <div class="target-img"></div>
                 </div>
             </section>
-            <!-- <footer class="tab-footer">
-                <button class="btn continue goto-items">Continue</button>
-            </footer> -->
         </div>
 
         <div class="tab items-tab hidden">
@@ -53,7 +62,6 @@
             </section>
             <footer class="tab-footer">
                 <a href="#" class="add-item add-element"><div class="icon add"></div>Add an item</a>
-                <!-- <button class="btn continue goto-exercise">Finish</button> -->
             </footer>
         </div>
 

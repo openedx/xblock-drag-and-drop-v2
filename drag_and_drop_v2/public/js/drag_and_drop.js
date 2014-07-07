@@ -3,11 +3,9 @@ function DragAndDropBlock(runtime, element) {
         var _fn = {
 
             // DOM Elements
-            $block: $('.xblock--drag-and-drop'),
-            $app: $('.xblock--drag-and-drop .drag-container'),
-            $ul: $('.xblock--drag-and-drop .items'),
-            $target: $('.xblock--drag-and-drop .target-img'),
-            $feedback: $('.xblock--drag-and-drop .feedback .message'),
+            $ul: $('.xblock--drag-and-drop .items', element),
+            $target: $('.xblock--drag-and-drop .target-img', element),
+            $feedback: $('.xblock--drag-and-drop .feedback .message', element),
 
             // Cannot set until items added to DOM
             $items: {}, // $('.xblock--drag-and-drop .items .option'),
@@ -26,164 +24,116 @@ function DragAndDropBlock(runtime, element) {
                 }
             },
 
-            // item template
             tpl: {
-                item: function() {
-                    return [
-                        '<li class="option" data-value="<%= id %>"',
-                            'style="width: <%= size.width %>; height: <%= size.height %>">',
-                            '<%= displayName %>',
-                        '</li>'
-                    ].join('');
-                },
-                image_item: function() {
-                    return [
-                        '<li class="option" data-value="<%= id %>"',
-                            'style="width: <%= size.width %>; height: <%= size.height %>">',
-                            '<img src="<%= backgroundImage %>" />',
-                        '</li>'
-                    ].join('');
-                },
-                zoneInput: function() {
-                    return [
-                        '<div class="zone-row <%= name %>">',
-                            '<label>Text</label>',
-                            '<input type="text" class="title" placeholder="<%= title %>" />',
-                            '<a href="#" class="remove-zone hidden">',
-                                '<div class="icon remove"></div>',
-                            '</a>',
-                            '<div class="layout">',
-                                '<label>width</label>',
-                                '<input type="text" class="size width" value="200" />',
-                                '<label>height</label>',
-                                '<input type="text" class="size height" value="100" />',
-                                '<label>x</label>',
-                                '<input type="text" class="coord x" value="0" />',
-                                '<label>y</label>',
-                                '<input type="text" class="coord y" value="0" />',
-                            '</div>',
-                        '</div>'
-                    ].join('');
-                },
-                zoneElement: function() {
-                    return [
-                        '<div id="<%= id %>" class="zone" data-zone="<%= title %>" style="',
-                            'top:<%= y %>px;',
-                            'left:<%= x %>px;',
-                            'width:<%= width %>px;',
-                            'height:<%= height %>px;">',
-                            '<p><%= title %></p>',
-                        '</div>'
-                    ].join('');
-                },
-                zoneDropdown: '<option value="<%= value %>"><%= value %></option>',
-                itemInput: function() {
-                    return [
-                        '<div class="item">',
-                            '<div class="row">',
-                                '<label>Text</label>',
-                                '<input type="text" class="item-text"></input>',
-                                '<label>Zone</label>',
-                                '<select class="zone-select"><%= dropdown %></select>',
-                                '<a href="#" class="remove-item hidden">',
-                                    '<div class="icon remove"></div>',
-                                '</a>',
-                            '</div>',
-                            '<div class="row">',
-                                '<label>Background image URL (alternative to the text)</label>',
-                                '<textarea class="background-image"></textarea>',
-                            '</div>',
-                            '<div class="row">',
-                                '<label>Success Feedback</label>',
-                                '<textarea class="success-feedback"></textarea>',
-                            '</div>',
-                            '<div class="row">',
-                                '<label>Error Feedback</label>',
-                                '<textarea class="error-feedback"></textarea>',
-                            '</div>',
-                            '<div class="row">',
-                                '<label>Width (px - 0 for auto)</label>',
-                                '<input type="text" class="item-width" value="190"></input>',
-                                '<label>Height (px - 0 for auto)</label>',
-                                '<input type="text" class="item-height" value="0"></input>',
-                            '</div>',
-                        '</div>'
-                    ].join('');
+                init: function() {
+                    _fn.tpl = {
+                        item: Handlebars.compile($("#item-tpl", element).html()),
+                        imageItem: Handlebars.compile($("#image-item-tpl", element).html()),
+                        zoneElement: Handlebars.compile($("#zone-element-tpl", element).html())
+                    };
                 }
             },
 
             init: function(data) {
                 _fn.data = data;
 
+                // Compile templates
+                _fn.tpl.init();
+
                 // Add the items to the page
                 _fn.items.draw();
                 _fn.zones.draw();
 
-                // Load welcome feedback
-                _fn.feedback.set( _fn.data.feedback.start );
-
                 // Init drag and drop plugin
-                _fn.$items.draggable( _fn.options.drag );
-                _fn.$zones.droppable( _fn.options.drop );
+                _fn.$items.draggable(_fn.options.drag);
+                _fn.$zones.droppable(_fn.options.drop);
 
                 // Init click handlers
-                _fn.clickHandlers.init( _fn.$items, _fn.$zones );
+                _fn.clickHandlers.init(_fn.$items, _fn.$zones);
 
-                // Get count of all active items
+                // Position the already correct items
                 _fn.items.init();
 
+                // Load welcome or final feedback
+                if (_fn.data.state.finished)
+                    _fn.finish(_fn.data.feedback.finish);
+                else
+                    _fn.feedback.set(_fn.data.feedback.start);
+
                 // Set the target image
-                _fn.$target.css('background', 'url(' + _fn.data.targetImg + ') no-repeat');
+                if (_fn.data.targetImg)
+                    _fn.$target.css('background', 'url(' + _fn.data.targetImg + ') no-repeat');
             },
 
-            finish: function() {
+            finish: function(final_feedback) {
                 // Disable any decoy items
                 _fn.$items.draggable('disable');
 
                 // Show final feedback
-                _fn.feedback.set( _fn.data.feedback.finish );
+                if (final_feedback) _fn.feedback.set(final_feedback);
             },
 
             clickHandlers: {
-                init: function( $drag, $dropzone ) {
+                init: function($drag, $dropzone) {
                     var clk = _fn.clickHandlers;
 
-                    $drag.on( 'dragstart', clk.drag.start );
-                    $drag.on( 'dragstop', clk.drag.stop );
+                    $drag.on('dragstart', clk.drag.start);
+                    $drag.on('dragstop', clk.drag.stop);
 
-                    $dropzone.on( 'drop', clk.drop.success );
-                    $dropzone.on( 'dropover', clk.drop.hover.in );
-                    $dropzone.on( 'dropout', clk.drop.hover.out );
+                    $dropzone.on('drop', clk.drop.success);
+                    $dropzone.on('dropover', clk.drop.hover);
                 },
                 drag: {
-                    start: function( event, ui ) {
+                    start: function(event, ui) {
                         $(event.currentTarget).removeClass('within-dropzone fade');
                     },
 
-                    stop: function( event, ui ) {
+                    stop: function(event, ui) {
                         var $el = $(event.currentTarget),
                             val = $el.data('value'),
                             zone = $el.data('zone') || null;
 
-                        if ( $el.hasClass('within-dropzone') && _fn.test.match( val, zone ) ) {
-                            $el.removeClass('hover')
-                                .draggable('disable');
-
-                            _fn.test.completed++;
-                            _fn.feedback.popup( _fn.feedback.get(val, true), true );
-
-                            if ( _fn.items.allSubmitted() ) {
-                                _fn.finish();
-                            }
-                        } else {
+                        if (!$el.hasClass('within-dropzone')) {
                             // Return to original position
-                            _fn.clickHandlers.drag.reset( $el );
-                            _fn.feedback.popup( _fn.feedback.get(val, false), false );
+                            _fn.clickHandlers.drag.reset($el);
+                            return;
                         }
+
+                        $.post(runtime.handlerUrl(element, 'do_attempt'),
+                            JSON.stringify({
+                                val: val,
+                                zone: zone,
+                                top: $el.css('top'),
+                                left: $el.css('left')
+                        })).done(function(data){
+                            if (data.correct) {
+                                $el.draggable('disable');
+
+                                if (data.finished) {
+                                    _fn.finish(data.final_feedback);
+                                }
+                            } else {
+                                // Return to original position
+                                _fn.clickHandlers.drag.reset($el);
+                            }
+
+                            if (data.feedback) {
+                                _fn.feedback.popup(data.feedback, data.correct);
+                            }
+                        });
                     },
 
-                    reset: function( $el ) {
-                        $el.removeClass('within-dropzone fade hover')
+                    set: function($el, top, left) {
+                        $el.addClass('within-dropzone fade')
+                            .css({
+                                top: top,
+                                left: left
+                            })
+                            .draggable('disable');
+                    },
+
+                    reset: function($el) {
+                        $el.removeClass('within-dropzone fade')
                             .css({
                                 top: '',
                                 left: ''
@@ -191,60 +141,46 @@ function DragAndDropBlock(runtime, element) {
                     }
                 },
                 drop: {
-                    hover: {
-                        in: function( event, ui ) {
-                            var zone = $(event.currentTarget).data('zone');
-
-                            ui.draggable.addClass('hover').data('zone', zone);
-                        },
-                        out: function( event, ui ) {
-                            ui.draggable.removeClass('hover');
-                        }
+                    hover: function(event, ui) {
+                        var zone = $(event.currentTarget).data('zone');
+                        ui.draggable.data('zone', zone);
                     },
-                    success: function( event, ui ) {
+                    success: function(event, ui) {
                         ui.draggable.addClass('within-dropzone');
                     }
                 }
             },
 
             items: {
-                count: 0,
                 init: function() {
-                    var items = _fn.data.items,
-                        i,
-                        len = items.length,
-                        total = 0;
-
-                    for ( i=0; i<len; i++ ) {
-                        if ( items[i].zone !== 'none' ) {
-                            total++;
+                    _fn.$items.each(function (){
+                        var $el = $(this),
+                            saved_entry = _fn.data.state.items[$el.data('value')];
+                        if (saved_entry) {
+                            _fn.clickHandlers.drag.set($el,
+                                saved_entry[0], saved_entry[1]);
                         }
-                    }
-
-                    _fn.items.count = total;
-                },
-                allSubmitted: function() {
-                    return _fn.test.completed === _fn.items.count;
+                    });
                 },
                 draw: function() {
                     var list = [],
                         items = _fn.data.items,
-                        tpl = _fn.tpl.item(),
-                        img_tpl = _fn.tpl.image_item();
+                        tpl = _fn.tpl.item,
+                        img_tpl = _fn.tpl.imageItem;
 
-                    _.each(items, function(item) {
+                    items.forEach(function(item) {
                         if (item.backgroundImage.length > 0) {
-                            list.push( _.template( img_tpl, item ) );
+                            list.push(img_tpl(item));
                         } else {
-                            list.push( _.template( tpl, item ) );
+                            list.push(tpl(item));
                         }
                     });
 
                     // Update DOM
-                    _fn.$ul.html( list.join('') );
+                    _fn.$ul.html(list.join(''));
 
                     // Set variable
-                    _fn.$items = $('.xblock--drag-and-drop .items .option');
+                    _fn.$items = $('.xblock--drag-and-drop .items .option', element);
                 }
             },
 
@@ -252,48 +188,23 @@ function DragAndDropBlock(runtime, element) {
                 draw: function() {
                     var html = [],
                         zones = _fn.data.zones,
-                        tpl = _fn.tpl.zoneElement(),
+                        tpl = _fn.tpl.zoneElement,
                         i,
                         len = zones.length;
 
-                    for ( i=0; i<len; i++ ) {
-                        html.push( _.template( tpl, zones[i] ) );
+                    for (i=0; i<len; i++) {
+                        html.push(tpl(zones[i]));
                     }
 
                     // Update DOM
-                    _fn.$target.html( html.join('') );
+                    _fn.$target.html(html.join(''));
 
                     // Set variable
                     _fn.$zones = _fn.$target.find('.zone');
                 }
             },
 
-            test: {
-                completed: 0,
-                match: function( id, zone ) {
-                    var item = _.findWhere( _fn.data.items, { id: id } );
-
-                    return item.zone === zone;
-                }
-            },
-
             feedback: {
-                // Returns string based on user's answer
-                get: function( id, boo ) {
-                    var item,
-                        type = boo ? 'correct' : 'incorrect';
-
-                    // Null loses its string-ness
-                    if ( id === null ) {
-                        id = 'null';
-                    }
-
-                    // Get object from data.items that matches val
-                    item = _.findWhere( _fn.data.items, { id: id });
-
-                    return item.feedback[type];
-                },
-
                 // Update DOM with feedback
                 set: function(str) {
                     return _fn.$feedback.html(str);
@@ -303,35 +214,28 @@ function DragAndDropBlock(runtime, element) {
                 popup: function(str, boo) {
                     if (str === undefined || str === '') return;
                     return $("<div>").attr('title', boo ? 'Correct' : 'Incorrect')
-                                     .text(str)
-                                     .dialog({
-                                       dialogClass: "no-close",
-                                       modal: true,
-                                       buttons: {
-                                         Ok: function() {
-                                           $( this ).dialog( "close" );
-                                         }
-                                       }
-                                     });
+                        .text(str)
+                        .dialog({
+                            dialogClass: "no-close",
+                            modal: true,
+                            buttons: {
+                                Ok: function() {
+                                    $(this).dialog("close");
+                                }
+                            }
+                    });
                 }
             },
 
-            data: {
-                feedback: {},
-                items: [],
-                zones: [],
-                targetImg: 'img/triangle.png'
-            }
+            data: null
         };
 
         return {
             init: _fn.init,
-            data: _fn.data
         };
     })(jQuery);
 
     $.ajax(runtime.handlerUrl(element, 'get_data')).done(function(data){
         dragAndDrop.init(data);
     });
-
 }

@@ -1,11 +1,11 @@
 <section class="xblock--drag-and-drop">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    {{ js_templates|safe }}
 
     <h2 class="problem-header">
       {{ title }}
     </h2>
 
-    <div class="problem-progress">(1 point possible)</div>
+    <div class="problem-progress">{{ max_score_string }}</div>
 
     <section class="problem" role="application">
         <p>
