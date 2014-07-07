@@ -94,6 +94,8 @@ class DragAndDropBlock(XBlock):
         fragment.add_css_url(self.runtime.local_resource_url(self,
             'public/css/drag_and_drop.css'))
         fragment.add_javascript_url(self.runtime.local_resource_url(self,
+            'public/js/vendor/jquery-ui-1.10.4.custom.min.js'))
+        fragment.add_javascript_url(self.runtime.local_resource_url(self,
             'public/js/vendor/jquery.html5-placeholder-shim.js'))
         fragment.add_javascript_url(self.runtime.local_resource_url(self,
             'public/js/vendor/handlebars-v1.1.2.js'))
@@ -122,6 +124,8 @@ class DragAndDropBlock(XBlock):
             'public/css/vendor/jquery-ui-1.10.4.custom.min.css'))
         fragment.add_css_url(self.runtime.local_resource_url(self,
             'public/css/drag_and_drop_edit.css'))
+        fragment.add_javascript_url(self.runtime.local_resource_url(self,
+            'public/js/vendor/jquery-ui-1.10.4.custom.min.js'))
         fragment.add_javascript_url(self.runtime.local_resource_url(self,
             'public/js/vendor/jquery.html5-placeholder-shim.js'))
         fragment.add_javascript_url(self.runtime.local_resource_url(self,
