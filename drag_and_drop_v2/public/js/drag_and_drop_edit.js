@@ -39,7 +39,6 @@ function DragAndDropEditBlock(runtime, element) {
                     _fn.tpl.init();
 
                     _fn.build.clickHandlers();
-                    _fn.build.form.zone.add();
                 },
                 clickHandlers: function() {
                     var $fbkTab = _fn.build.$el.feedback.tab,
@@ -47,8 +46,20 @@ function DragAndDropEditBlock(runtime, element) {
                         $itemTab = _fn.build.$el.items.tab;
 
                     $(element).one('click', '.continue-button', function(e) {
+                        // $fbkTab -> $zoneTab
+
                         e.preventDefault();
                         _fn.build.form.feedback(_fn.build.$el.feedback.form);
+                        for (var i = 0; i < _fn.data.zones.length; i++) {
+                            _fn.build.form.zone.add(_fn.data.zones[i]);
+                        }
+                        if (_fn.data.zones.length === 0) {
+                            _fn.build.form.zone.add();
+                        }
+
+                        if (_fn.data.targetImg) {
+                            _fn.$target.css('background', 'url(' + _fn.data.targetImg + ') no-repeat');
+                        }
 
                         $fbkTab.addClass('hidden');
                         $zoneTab.removeClass('hidden');
@@ -57,9 +68,16 @@ function DragAndDropEditBlock(runtime, element) {
                         $.placeholder.shim();
 
                         $(this).one('click', function(e) {
+                            // $zoneTab -> $itemTab
+
                             e.preventDefault();
                             _fn.build.form.zone.setAll();
-                            _fn.build.form.item.add();
+                            for (var i = 0; i < _fn.data.items.length; i++) {
+                                _fn.build.form.item.add(_fn.data.items[i]);
+                            }
+                            if (_fn.data.items.length === 0) {
+                                _fn.build.form.item.add();
+                            }
 
                             $zoneTab.addClass('hidden');
                             $itemTab.removeClass('hidden');
@@ -71,6 +89,8 @@ function DragAndDropEditBlock(runtime, element) {
                             $('.save-button', element).parent()
                                 .removeClass('hidden')
                                 .one('click', function(e) {
+                                    // $itemTab -> submit
+
                                     e.preventDefault();
                                     _fn.build.form.submit();
                                 });
@@ -78,7 +98,9 @@ function DragAndDropEditBlock(runtime, element) {
                     });
 
                     $zoneTab
-                        .on('click', '.add-zone', _fn.build.form.zone.add)
+                        .on('click', '.add-zone', function(e) {
+                            _fn.build.form.zone.add();
+                        })
                         .on('click', '.remove-zone', _fn.build.form.zone.remove)
                         .on('click', '.target-image-form button', function(e) {
                             e.preventDefault();
@@ -91,14 +113,15 @@ function DragAndDropEditBlock(runtime, element) {
                         });
 
                     $itemTab
-                        .on('click', '.add-item', _fn.build.form.item.add)
+                        .on('click', '.add-item', function(e) {
+                            _fn.build.form.item.add();
+                        })
                         .on('click', '.remove-item', _fn.build.form.item.remove);
                 },
                 form: {
                     zone: {
                         count: 0,
                         formCount: 0,
-                        dropdown: '',
                         list: [],
                         obj: [],
                         getObjByIndex: function(num) {
@@ -107,7 +130,7 @@ function DragAndDropEditBlock(runtime, element) {
                                     return _fn.build.form.zone.obj[i];
                             }
                         },
-                        add: function(e) {
+                        add: function(oldZone) {
                             var inputTemplate = _fn.tpl.zoneInput,
                                 zoneTemplate = _fn.tpl.zoneElement,
                                 name = 'zone-',
@@ -115,9 +138,7 @@ function DragAndDropEditBlock(runtime, element) {
                                 num,
                                 obj;
 
-                            if (e) {
-                                e.preventDefault();
-                            }
+                            if (!oldZone) oldZone = {};
 
                             _fn.build.form.zone.count++;
                             _fn.build.form.zone.formCount++;
@@ -126,23 +147,19 @@ function DragAndDropEditBlock(runtime, element) {
 
                             // Update zone obj
                             zoneObj = {
-                                title: 'Zone ' + num,
+                                title: oldZone.title || 'Zone ' + num,
                                 id: name,
-                                active: false,
                                 index: num,
-                                width: 200,
-                                height: 100,
-                                x: 0,
-                                y: 0
+                                width: oldZone.width || 200,
+                                height: oldZone.height || 100,
+                                x: oldZone.x || 0,
+                                y: oldZone.y || 0
                             };
 
                             _fn.build.form.zone.obj.push(zoneObj);
 
                             // Add fields to zone position form
-                            $elements.zones.form.append(inputTemplate({
-                                title: 'Zone ' + num,
-                                name: name
-                            }));
+                            $elements.zones.form.append(inputTemplate(zoneObj));
                             _fn.build.form.zone.enableDelete();
 
                             // Add zone div to target
@@ -192,7 +209,6 @@ function DragAndDropEditBlock(runtime, element) {
                             });
 
                             _fn.build.form.zone.list = zones;
-                            _fn.build.form.createDropdown(zones);
                         },
                         clickHandler: function(num) {
                             var $div = $('#zone-' + num, element),
@@ -205,10 +221,6 @@ function DragAndDropEditBlock(runtime, element) {
 
                                     $div.find('p').html(text);
                                     record.title = text;
-
-                                    if (!record.active) {
-                                        record.active = true;
-                                    }
                                 }).on('keyup', '.width', function(e) {
                                     var width = $(e.currentTarget).val(),
                                         record = _fn.build.form.zone.getObjByIndex(num);
@@ -241,31 +253,31 @@ function DragAndDropEditBlock(runtime, element) {
                                 len = arr.length;
 
                             for (i=0; i<len; i++) {
-                                if (arr[i].active) {
-                                    clean.push(arr[i]);
-                                }
+                                clean.push(arr[i]);
                             }
 
                             return clean;
                         }
                     },
-                    createDropdown: function(arr) {
+                    createDropdown: function(selected) {
                         var tpl = _fn.tpl.zoneDropdown,
                             i,
-                            len = arr.length,
+                            is_sel,
+                            arr = _fn.build.form.zone.list,
                             dropdown = [],
                             html;
 
-                        for (i=0; i<len; i++) {
-                            dropdown.push(tpl({ value: arr[i] }));
+                        for (i=0; i<arr.length; i++) {
+                            if (arr[i] == selected) is_sel = 'selected';
+                            else is_sel = '';
+                            dropdown.push(tpl({ value: arr[i], selected: is_sel }));
                         }
 
                         // Add option to include dummy answers
                         dropdown.push(tpl({ value: 'none' }));
 
                         html = dropdown.join('');
-                        _fn.build.form.zone.dropdown = new Handlebars.SafeString(html);
-                        _fn.build.$el.items.form.find('.zone-select').html(html);
+                        return new Handlebars.SafeString(html);
                     },
                     feedback: function($form) {
                         _fn.data.feedback = {
@@ -275,16 +287,27 @@ function DragAndDropEditBlock(runtime, element) {
                     },
                     item: {
                         count: 0,
-                        add: function(e) {
+                        add: function(oldItem) {
                             var $form = _fn.build.$el.items.form,
-                                tpl = _fn.tpl.itemInput;
+                                tpl = _fn.tpl.itemInput,
+                                ctx = {};
 
-                            if (e) {
-                                e.preventDefault();
-                            }
+                            if (oldItem) ctx = oldItem;
+
+                            ctx.dropdown = _fn.build.form.createDropdown(ctx.zone);
+
+                            if (!oldItem) ctx.width = '190';
+                            else ctx.width = oldItem.size.width.substr(0,
+                                oldItem.size.width.length - 2);
+                            if (ctx.width == 'au') ctx.width = '0';
+
+                            if (!oldItem) ctx.height = '0';
+                            else ctx.height = oldItem.size.height.substr(0,
+                                oldItem.size.height.length - 2);
+                            if (ctx.height == 'au') ctx.height = '0';
 
                             _fn.build.form.item.count++;
-                            $form.append(tpl({ dropdown: _fn.build.form.zone.dropdown }));
+                            $form.append(tpl(ctx));
                             _fn.build.form.item.enableDelete();
 
                             // Placeholder shim for IE9
@@ -386,7 +409,5 @@ function DragAndDropEditBlock(runtime, element) {
         runtime.notify('cancel', {});
     });
 
-    $.ajax(runtime.handlerUrl(element, 'get_data')).done(function(data){
-        dragAndDrop.builder(data);
-    });
+    dragAndDrop.builder(window.DragAndDropV2BlockPreviousData);
 }

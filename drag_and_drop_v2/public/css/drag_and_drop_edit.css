@@ -174,8 +174,6 @@
 }
 
 .xblock--drag-and-drop .drag-builder .zone {
-    width: 200px;
-    height: 100px;
     border: 1px dotted #666;
 }
 

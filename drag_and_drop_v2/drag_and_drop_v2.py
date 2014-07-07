@@ -7,6 +7,7 @@ import logging
 import json
 import webob
 import copy
+import urllib
 
 from xblock.core import XBlock
 from xblock.fields import Scope, String, Dict, Float
@@ -111,6 +112,8 @@ class DragAndDropBlock(XBlock):
         js_templates = load_resource('/templates/html/js_templates.html')
         context = {
             'js_templates': js_templates,
+            'self': self,
+            'data': urllib.quote(json.dumps(self.data)),
         }
 
         fragment = Fragment()

@@ -6,7 +6,6 @@
       "id": "zone-1",
       "height": 100,
       "y": "200",
-      "active": true,
       "x": "100",
       "width": 200
     },
@@ -16,7 +15,6 @@
       "id": "zone-2",
       "height": 100,
       "y": 0,
-      "active": true,
       "x": 0,
       "width": 200
     }

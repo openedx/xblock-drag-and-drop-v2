@@ -45,8 +45,7 @@ def test_templates_contents():
     student_fragment = block.render('student_view', Mock())
     assert_in('<section class="xblock--drag-and-drop">',
         student_fragment.content)
-    assert_in('<option value="{{ value }}">{{ value }}</option>',
-        student_fragment.content)
+    assert_in('{{ value }}', student_fragment.content)
     assert_in("Test Drag &amp; Drop", student_fragment.content)
     assert_in("Question Drag &amp; Drop", student_fragment.content)
     assert_in("(5 Points Possible)", student_fragment.content)
@@ -54,8 +53,7 @@ def test_templates_contents():
     studio_fragment = block.render('studio_view', Mock())
     assert_in('<div class="xblock--drag-and-drop editor-with-buttons">',
         studio_fragment.content)
-    assert_in('<option value="{{ value }}">{{ value }}</option>',
-        studio_fragment.content)
+    assert_in('{{ value }}', studio_fragment.content)
 
 def test_studio_submit():
     block = make_block()
