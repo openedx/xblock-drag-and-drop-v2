@@ -105,7 +105,7 @@ function DragAndDropBlock(runtime, element) {
                                 zone: zone,
                                 top: $el.css('top'),
                                 left: $el.css('left')
-                        })).done(function(data){
+                        }), 'json').done(function(data){
                             if (data.correct) {
                                 $el.draggable('disable');
 
@@ -235,7 +235,9 @@ function DragAndDropBlock(runtime, element) {
         };
     })(jQuery);
 
-    $.ajax(runtime.handlerUrl(element, 'get_data')).done(function(data){
+    $.ajax(runtime.handlerUrl(element, 'get_data'), {
+        dataType: 'json'
+    }).done(function(data){
         dragAndDrop.init(data);
     });
 }
