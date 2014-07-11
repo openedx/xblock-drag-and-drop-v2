@@ -207,6 +207,8 @@ function DragAndDropBlock(runtime, element) {
             feedback: {
                 // Update DOM with feedback
                 set: function(str) {
+                    if ($.trim(str) === '') _fn.$feedback.parent().hide();
+                    else _fn.$feedback.parent().show();
                     return _fn.$feedback.html(str);
                 },
 

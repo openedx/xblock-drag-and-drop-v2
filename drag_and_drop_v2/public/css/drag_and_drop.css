@@ -32,6 +32,14 @@
     clear: both;
 }
 
+.xblock--drag-and-drop .title1 {
+    color: rgb(85, 85, 85);
+    text-transform: uppercase;
+    font-weight: bold;
+    font-style: normal;
+    margin: 10px 0;
+}
+
 
 /** Draggable Items **/
 .xblock--drag-and-drop .drag-container .items {
@@ -133,10 +141,10 @@
 }
 
 /*** FEEDBACK ***/
-.xblock--drag-and-drop .feedback p {
-    line-height: 1.5em;
-    font-weight: bold;
-    margin-bottom: 1.41575em;
+.xblock--drag-and-drop .feedback {
+    margin-top: 20px;
+    border-top: solid 1px rgb(189, 189, 189);
+    padding-top: 20px;
 }
 
 .no-close .ui-dialog-titlebar-close {

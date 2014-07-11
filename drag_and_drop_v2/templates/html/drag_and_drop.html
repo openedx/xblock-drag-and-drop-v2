@@ -8,13 +8,8 @@
     <div class="problem-progress">{{ max_score_string }}</div>
 
     <section class="problem" role="application">
-        <p>
-            {{ question_text }}
-        </p>
-    </section>
-
-    <section class="feedback">
-        <p class="message"></p>
+        <div class="title1">Question</div>
+        <p>{{ question_text }}</p>
     </section>
 
     <section class="drag-container">
@@ -25,5 +20,10 @@
         </div>
 
         <div class="clear"></div>
+    </section>
+
+    <section class="feedback">
+        <div class="title1">Feedback</div>
+        <p class="message"></p>
     </section>
 </section>
