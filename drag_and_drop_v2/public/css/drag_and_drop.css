@@ -32,6 +32,14 @@
     clear: both;
 }
 
+.xblock--drag-and-drop .title1 {
+    color: rgb(85, 85, 85);
+    text-transform: uppercase;
+    font-weight: bold;
+    font-style: normal;
+    margin: 10px 0;
+}
+
 
 /** Draggable Items **/
 .xblock--drag-and-drop .drag-container .items {
@@ -133,12 +141,39 @@
 }
 
 /*** FEEDBACK ***/
-.xblock--drag-and-drop .feedback p {
-    line-height: 1.5em;
-    font-weight: bold;
-    margin-bottom: 1.41575em;
+.xblock--drag-and-drop .feedback {
+    margin-top: 20px;
+    border-top: solid 1px rgb(189, 189, 189);
+    padding-top: 20px;
 }
 
-.no-close .ui-dialog-titlebar-close {
+.xblock--drag-and-drop .popup {
     display: none;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none repeat scroll 0 0 #66A5B5;
+    opacity: 0.9;
+    padding: 10px;
+    width: 300px;
+    z-index: 100;
+}
+
+.xblock--drag-and-drop .popup .popup-content {
+    color: #fff;
+    font-family: arial;
+    font-size: 14px;
+}
+
+.xblock--drag-and-drop .popup .close {
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 3px;
+    width: 18px;
+    height: 21px;
+    font-family: FontAwesome;
+    font-style: normal;
+    text-align: center;
+    color: #fff;
 }

@@ -6,6 +6,7 @@ function DragAndDropBlock(runtime, element) {
             $ul: $('.xblock--drag-and-drop .items', element),
             $target: $('.xblock--drag-and-drop .target-img', element),
             $feedback: $('.xblock--drag-and-drop .feedback .message', element),
+            $popup: $('.xblock--drag-and-drop .popup', element),
 
             // Cannot set until items added to DOM
             $items: {}, // $('.xblock--drag-and-drop .items .option'),
@@ -82,6 +83,10 @@ function DragAndDropBlock(runtime, element) {
 
                     $dropzone.on('drop', clk.drop.success);
                     $dropzone.on('dropover', clk.drop.hover);
+
+                    $(".close", _fn.$popup).on('click', function() {
+                        _fn.$popup.hide();
+                    });
                 },
                 drag: {
                     start: function(event, ui) {
@@ -207,23 +212,16 @@ function DragAndDropBlock(runtime, element) {
             feedback: {
                 // Update DOM with feedback
                 set: function(str) {
+                    if ($.trim(str) === '') _fn.$feedback.parent().hide();
+                    else _fn.$feedback.parent().show();
                     return _fn.$feedback.html(str);
                 },
 
                 // Show a feedback popup
                 popup: function(str, boo) {
                     if (str === undefined || str === '') return;
-                    return $("<div>").attr('title', boo ? 'Correct' : 'Incorrect')
-                        .text(str)
-                        .dialog({
-                            dialogClass: "no-close",
-                            modal: true,
-                            buttons: {
-                                Ok: function() {
-                                    $(this).dialog("close");
-                                }
-                            }
-                    });
+                    _fn.$popup.find(".popup-content").text(str);
+                    return _fn.$popup.show();
                 }
             },
 
