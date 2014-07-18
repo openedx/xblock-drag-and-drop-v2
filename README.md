@@ -1,6 +1,8 @@
-# Drag and Drop XBlock v2
+Drag and Drop XBlock v2
+=======================
 
-This XBlock implements a friendly drag-and-drop style question, where the student has to drag items on zones on a target image.
+This XBlock implements a friendly drag-and-drop style question, where
+the student has to drag items on zones on a target image.
 
 The editor is fully guided. Features include:
 
@@ -12,21 +14,84 @@ The editor is fully guided. Features include:
 * feedback popups for both correct and incorrect attempts
 * introductory and final feedback
 
-It supports progressive grading and keeps progress across refreshes.
+It supports progressive grading and keeps progress across
+refreshes. All checking and record keeping is done on the server side.
 
-All checking and record keeping is done at server side.
+The screenshot shows the Drag and Drop XBlock rendered inside the edX
+LMS before starting before the user starts solving the problem:
 
-## Installing
+![Student view start](https://raw.githubusercontent.com/mtyaka/xblock-drag-and-drop-v2/readme-doc/doc/img/student-view-start.png)
 
-Just run
+This screenshot shows the XBlock after the student successfully
+completed the drag and drop problem:
 
-```
+![Student view finish](https://raw.githubusercontent.com/mtyaka/xblock-drag-and-drop-v2/readme-doc/doc/img/student-view-finish.png)
+
+Installation
+------------
+
+Install the requirements into the python virtual environment of your
+`edx-platform` installation by running the following command from the
+root folder:
+
+```bash
 $ pip install -e .
 ```
 
-from the XBlock folder and add `drag-and-drop-v2` to your Advanced Module List.
+Enabling in Studio
+------------------
 
-## Testing
+You can enable the Drag and Drop XBlock in studio through the advanced
+settings.
+
+1. From the main page of a specific course, navigate to `Settings ->
+   Advanced Settings` from the top menu.
+2. Check for the `advanced_modules` policy key, and add
+   `"drag-and-drop-v2"` to the policy value list.
+3. Click the "Save changes" button.
+
+Usage
+-----
+
+The Drag and Drop XBlock features an interactive editor. Add the Drag
+and Drop component to a lesson, then click the 'Edit' button.
+
+![Edit view](https://raw.githubusercontent.com/mtyaka/xblock-drag-and-drop-v2/readme-doc/doc/img/edit-view.png)
+
+In the first step, you can set some basic properties of the component,
+such as the title, question text that rendered above the background
+image, the introduction feedback (shown initially) and the final
+feedback (shown after the student successfully completes the drag and
+drop problem).
+
+![Drop zone edit](https://raw.githubusercontent.com/mtyaka/xblock-drag-and-drop-v2/readme-doc/doc/img/edit-view-zones.png)
+
+In the next step, you set the background image URL and define the
+properties of the drop zones. The properties include the title/text
+rendered in the drop zone, the zone's dimensions and position
+coordinates. You can define an arbitrary number of drop zones as long
+as their titles are unique.
+
+![Drag item edit](https://raw.githubusercontent.com/mtyaka/xblock-drag-and-drop-v2/readme-doc/doc/img/edit-view-items.png)
+
+In the final step, you define the drag items. A drag item can contain
+either text or an image. You can define the success and error feedback
+texts. The feedback text is displayed in a popup after the student
+drops the item into a zone - the success feedback is shown if the item
+is dropped into the correct zone, while the error feedback is shown
+when dropping the item into a wrong drop zone.
+
+![Zone dropdown](https://raw.githubusercontent.com/mtyaka/xblock-drag-and-drop-v2/readme-doc/doc/img/edit-view-zone-dropdown.png)
+
+The zone that the item belongs is selected from a dropdown that
+includes all drop zones defined in the previous step and a `none`
+option that can be used for "decoy" items - items that don't belong to
+any zone.
+
+You can define an arbitrary number of drag items.
+
+Testing
+-------
 
 1. In a virtualenv, run
 
@@ -35,7 +100,8 @@ $ (cd .../xblock-sdk/; pip install -r requirements.txt)
 $ (cd .../xblock-drag-and-drop-v2/; pip install -r tests/requirements.txt)
 ```
 
-2. In the xblock-sdk repository, create the following configuration file in `workbench/settings_drag_and_drop_v2.py`
+2. In the xblock-sdk repository, create the following configuration
+file in `workbench/settings_drag_and_drop_v2.py`
 
 ```python
 from settings import *
@@ -44,7 +110,8 @@ INSTALLED_APPS += ('drag_and_drop_v2',)
 DATABASES['default']['NAME'] = 'workbench.db'
 ```
 
-3. Run this to sync the database before starting the workbench (answering no to the superuser question is ok):
+3. Run this to sync the database before starting the workbench
+(answering no to the superuser question is ok):
 
 ```bash
 $ .../xblock-sdk/manage.py syncdb --settings=workbench.settings_drag_and_drop_v2
