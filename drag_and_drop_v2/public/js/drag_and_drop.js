@@ -90,7 +90,19 @@ function DragAndDropBlock(runtime, element) {
                 },
                 drag: {
                     start: function(event, ui) {
-                        $(event.currentTarget).removeClass('within-dropzone fade');
+                        target = $(event.currentTarget);
+                        target.removeClass('within-dropzone fade');
+
+                        function publish_event(data) {
+                          $.ajax({
+                              type: "POST",
+                              url: runtime.handlerUrl(element, 'publish_event'),
+                              data: JSON.stringify(data)
+                          });
+                        }
+
+                        var item_id = target.data("value");
+                        publish_event({event_type:'drag-and-drop-v2.item.picked-up', item_id:item_id});
                     },
 
                     stop: function(event, ui) {
