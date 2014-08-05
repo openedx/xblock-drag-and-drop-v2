@@ -170,13 +170,16 @@ class DragAndDropBlock(XBlock):
         item = next(i for i in self.data['items'] if i['id'] == attempt['val'])
         tot_items = sum(1 for i in self.data['items'] if i['zone'] != 'none')
 
+        final_feedback = None
+        is_correct = False
+
         if item['zone'] == attempt['zone']:
             self.item_state[item['id']] = (attempt['top'], attempt['left'])
 
+            is_correct = True
+
             if len(self.item_state) == tot_items:
                 final_feedback = self.data['feedback']['finish']
-            else:
-                final_feedback = None
 
             try:
                 self.runtime.publish(self, 'grade', {
@@ -188,19 +191,21 @@ class DragAndDropBlock(XBlock):
                 # so we have to figure that we're running in Studio for now
                 pass
 
-            return {
-                'correct': True,
-                'finished': len(self.item_state) == tot_items,
-                'final_feedback': final_feedback,
-                'feedback': item['feedback']['correct']
-            }
-        else:
-            return {
-                'correct': False,
-                'finished': len(self.item_state) == tot_items,
-                'final_feedback': None,
-                'feedback': item['feedback']['incorrect']
-            }
+        self.runtime.publish(self, 'drag-and-drop-v2.item.dropped', {
+            'component_id': self.scope_ids.usage_id,
+            'user_id': self.runtime.user_id,
+            'item_id': item['id'],
+            'location': attempt['zone'],
+            'is_correct': is_correct
+        })
+
+        return {
+            'correct': is_correct,
+            'finished': len(self.item_state) == tot_items,
+            'final_feedback': final_feedback,
+            'feedback': item['feedback']['correct'] if is_correct else item['feedback']['incorrect']
+        }
+
 
     @staticmethod
     def workbench_scenarios():
