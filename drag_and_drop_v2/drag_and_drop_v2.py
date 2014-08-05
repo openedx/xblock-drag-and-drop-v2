@@ -97,6 +97,10 @@ class DragAndDropBlock(XBlock):
 
         fragment.initialize_js('DragAndDropBlock')
 
+        self.runtime.publish(self, 'drag-and-drop-v2.problem.shown',
+                {'component_id': self.scope_ids.usage_id, 'user_id': self.runtime.user_id}
+        )
+
         return fragment
 
     def studio_view(self, context):
