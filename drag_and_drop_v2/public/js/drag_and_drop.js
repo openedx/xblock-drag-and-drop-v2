@@ -1,4 +1,12 @@
 function DragAndDropBlock(runtime, element) {
+    function publish_event(data) {
+      $.ajax({
+          type: "POST",
+          url: runtime.handlerUrl(element, 'publish_event'),
+          data: JSON.stringify(data)
+      });
+    }
+
     var dragAndDrop = (function($) {
         var _fn = {
 
@@ -93,16 +101,8 @@ function DragAndDropBlock(runtime, element) {
                         target = $(event.currentTarget);
                         target.removeClass('within-dropzone fade');
 
-                        function publish_event(data) {
-                          $.ajax({
-                              type: "POST",
-                              url: runtime.handlerUrl(element, 'publish_event'),
-                              data: JSON.stringify(data)
-                          });
-                        }
-
                         var item_id = target.data("value");
-                        publish_event({event_type:'drag-and-drop-v2.item.picked-up', item_id:item_id});
+                        publish_event({event_type:'xblock.drag-and-drop-v2.item.pickedup', item_id:item_id});
                     },
 
                     stop: function(event, ui) {
@@ -249,5 +249,9 @@ function DragAndDropBlock(runtime, element) {
         dataType: 'json'
     }).done(function(data){
         dragAndDrop.init(data);
+    });
+
+    publish_event({
+        event_type:"xblock.drag-and-drop-v2.loaded"
     });
 }
