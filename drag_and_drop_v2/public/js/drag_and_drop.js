@@ -102,7 +102,7 @@ function DragAndDropBlock(runtime, element) {
                         target.removeClass('within-dropzone fade');
 
                         var item_id = target.data("value");
-                        publish_event({event_type:'xblock.drag-and-drop-v2.item.pickedup', item_id:item_id});
+                        publish_event({event_type:'xblock.drag-and-drop-v2.item.picked-up', item_id:item_id});
                     },
 
                     stop: function(event, ui) {
@@ -251,7 +251,5 @@ function DragAndDropBlock(runtime, element) {
         dragAndDrop.init(data);
     });
 
-    publish_event({
-        event_type:"xblock.drag-and-drop-v2.loaded"
-    });
+    publish_event({event_type:"xblock.drag-and-drop-v2.loaded"});
 }
