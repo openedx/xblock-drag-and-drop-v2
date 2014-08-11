@@ -96,7 +96,8 @@ function DragAndDropBlock(runtime, element) {
                         _fn.$popup.hide();
                         publish_event({
                             event_type: 'xblock.drag-and-drop-v2.feedback.closed',
-                            content: _fn.$popup.find(".popup-content").text()
+                            content: _fn.$popup.find(".popup-content").text(),
+                            manually: true
                         });
                     });
                 },
@@ -239,16 +240,15 @@ function DragAndDropBlock(runtime, element) {
 
                     if (_fn.$popup.is(":visible")) {
                         publish_event({
-                            event_type: "xblock.drag-and-drop-v2.feedback.replaced",
-                            old: _fn.$popup.find(".popup-content").text(),
-                            new: str
+                            event_type: "xblock.drag-and-drop-v2.feedback.closed",
+                            content: _fn.$popup.find(".popup-content").text(),
+                            manually: false
                         });
-                    } else {
-                        publish_event({
-                            event_type: "xblock.drag-and-drop-v2.feedback.opened",
-                            content: str
-                        });
-                    }
+                    };
+                    publish_event({
+                        event_type: "xblock.drag-and-drop-v2.feedback.opened",
+                        content: str
+                    });
 
                     _fn.$popup.find(".popup-content").text(str);
                     return _fn.$popup.show();
