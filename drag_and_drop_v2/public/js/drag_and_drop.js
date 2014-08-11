@@ -94,6 +94,10 @@ function DragAndDropBlock(runtime, element) {
 
                     $(".close", _fn.$popup).on('click', function() {
                         _fn.$popup.hide();
+                        publish_event({
+                            event_type: 'xblock.drag-and-drop-v2.feedback.closed',
+                            content: _fn.$popup.find(".popup-content").text()
+                        });
                     });
                 },
                 drag: {
@@ -232,6 +236,20 @@ function DragAndDropBlock(runtime, element) {
                 // Show a feedback popup
                 popup: function(str, boo) {
                     if (str === undefined || str === '') return;
+
+                    if (_fn.$popup.is(":visible")) {
+                        publish_event({
+                            event_type: "xblock.drag-and-drop-v2.feedback.replaced",
+                            old: _fn.$popup.find(".popup-content").text(),
+                            new: str
+                        });
+                    } else {
+                        publish_event({
+                            event_type: "xblock.drag-and-drop-v2.feedback.opened",
+                            content: str
+                        });
+                    }
+
                     _fn.$popup.find(".popup-content").text(str);
                     return _fn.$popup.show();
                 }
