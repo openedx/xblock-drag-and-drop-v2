@@ -1,4 +1,12 @@
 function DragAndDropBlock(runtime, element) {
+    function publish_event(data) {
+      $.ajax({
+          type: "POST",
+          url: runtime.handlerUrl(element, 'publish_event'),
+          data: JSON.stringify(data)
+      });
+    }
+
     var dragAndDrop = (function($) {
         var _fn = {
 
@@ -86,11 +94,20 @@ function DragAndDropBlock(runtime, element) {
 
                     $(".close", _fn.$popup).on('click', function() {
                         _fn.$popup.hide();
+                        publish_event({
+                            event_type: 'xblock.drag-and-drop-v2.feedback.closed',
+                            content: _fn.$popup.find(".popup-content").text(),
+                            manually: true
+                        });
                     });
                 },
                 drag: {
                     start: function(event, ui) {
-                        $(event.currentTarget).removeClass('within-dropzone fade');
+                        target = $(event.currentTarget);
+                        target.removeClass('within-dropzone fade');
+
+                        var item_id = target.data("value");
+                        publish_event({event_type:'xblock.drag-and-drop-v2.item.picked-up', item_id:item_id});
                     },
 
                     stop: function(event, ui) {
@@ -220,6 +237,19 @@ function DragAndDropBlock(runtime, element) {
                 // Show a feedback popup
                 popup: function(str, boo) {
                     if (str === undefined || str === '') return;
+
+                    if (_fn.$popup.is(":visible")) {
+                        publish_event({
+                            event_type: "xblock.drag-and-drop-v2.feedback.closed",
+                            content: _fn.$popup.find(".popup-content").text(),
+                            manually: false
+                        });
+                    };
+                    publish_event({
+                        event_type: "xblock.drag-and-drop-v2.feedback.opened",
+                        content: str
+                    });
+
                     _fn.$popup.find(".popup-content").text(str);
                     return _fn.$popup.show();
                 }
@@ -238,4 +268,6 @@ function DragAndDropBlock(runtime, element) {
     }).done(function(data){
         dragAndDrop.init(data);
     });
+
+    publish_event({event_type:"xblock.drag-and-drop-v2.loaded"});
 }
