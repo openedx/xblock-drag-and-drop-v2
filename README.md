@@ -20,12 +20,12 @@ refreshes. All checking and record keeping is done on the server side.
 The screenshot shows the Drag and Drop XBlock rendered inside the edX
 LMS before starting before the user starts solving the problem:
 
-![Student view start](https://raw.githubusercontent.com/mtyaka/xblock-drag-and-drop-v2/readme-doc/doc/img/student-view-start.png)
+![Student view start](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/5ff71f56ba454c66d8f2749bc1d55d5f1df3b792/doc/img/student-view-start.png)
 
 This screenshot shows the XBlock after the student successfully
 completed the drag and drop problem:
 
-![Student view finish](https://raw.githubusercontent.com/mtyaka/xblock-drag-and-drop-v2/readme-doc/doc/img/student-view-finish.png)
+![Student view finish](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/5ff71f56ba454c66d8f2749bc1d55d5f1df3b792/doc/img/student-view-finish.png)
 
 Installation
 ------------
@@ -56,7 +56,7 @@ Usage
 The Drag and Drop XBlock features an interactive editor. Add the Drag
 and Drop component to a lesson, then click the 'Edit' button.
 
-![Edit view](https://raw.githubusercontent.com/mtyaka/xblock-drag-and-drop-v2/readme-doc/doc/img/edit-view.png)
+![Edit view](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/5ff71f56ba454c66d8f2749bc1d55d5f1df3b792/doc/img/edit-view.png)
 
 In the first step, you can set some basic properties of the component,
 such as the title, question text that rendered above the background
@@ -64,7 +64,7 @@ image, the introduction feedback (shown initially) and the final
 feedback (shown after the student successfully completes the drag and
 drop problem).
 
-![Drop zone edit](https://raw.githubusercontent.com/mtyaka/xblock-drag-and-drop-v2/readme-doc/doc/img/edit-view-zones.png)
+![Drop zone edit](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/5ff71f56ba454c66d8f2749bc1d55d5f1df3b792/doc/img/edit-view-zones.png)
 
 In the next step, you set the background image URL and define the
 properties of the drop zones. The properties include the title/text
@@ -72,7 +72,7 @@ rendered in the drop zone, the zone's dimensions and position
 coordinates. You can define an arbitrary number of drop zones as long
 as their titles are unique.
 
-![Drag item edit](https://raw.githubusercontent.com/mtyaka/xblock-drag-and-drop-v2/readme-doc/doc/img/edit-view-items.png)
+![Drag item edit](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/5ff71f56ba454c66d8f2749bc1d55d5f1df3b792/doc/img/edit-view-items.png)
 
 In the final step, you define the drag items. A drag item can contain
 either text or an image. You can define the success and error feedback
@@ -81,7 +81,7 @@ drops the item into a zone - the success feedback is shown if the item
 is dropped into the correct zone, while the error feedback is shown
 when dropping the item into a wrong drop zone.
 
-![Zone dropdown](https://raw.githubusercontent.com/mtyaka/xblock-drag-and-drop-v2/readme-doc/doc/img/edit-view-zone-dropdown.png)
+![Zone dropdown](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/5ff71f56ba454c66d8f2749bc1d55d5f1df3b792/doc/img/edit-view-zone-dropdown.png)
 
 The zone that the item belongs is selected from a dropdown that
 includes all drop zones defined in the previous step and a `none`
