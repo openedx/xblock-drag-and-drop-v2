@@ -48,7 +48,6 @@ def test_templates_contents():
     assert_in('{{ value }}', student_fragment.content)
     assert_in("Test Drag &amp; Drop", student_fragment.content)
     assert_in("Question Drag &amp; Drop", student_fragment.content)
-    assert_in("(5 Points Possible)", student_fragment.content)
 
     studio_fragment = block.render('studio_view', Mock())
     assert_in('<div class="xblock--drag-and-drop editor-with-buttons">',

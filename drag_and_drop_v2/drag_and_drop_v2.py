@@ -69,15 +69,12 @@ class DragAndDropBlock(XBlock):
         Player view, displayed to the student
         """
 
-        max_score_string = '({0} Point{1} Possible)'.format(int(self.weight),
-            's' if self.weight > 1 else '') if self.weight else ''
         js_templates = load_resource('/templates/html/js_templates.html')
 
         context = {
             'js_templates': js_templates,
             'title': self.display_name,
             'question_text': self.question_text,
-            'max_score_string': max_score_string
         }
 
         fragment = Fragment()
