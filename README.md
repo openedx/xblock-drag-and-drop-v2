@@ -114,7 +114,7 @@ DATABASES['default']['NAME'] = 'workbench.db'
 (answering no to the superuser question is ok):
 
 ```bash
-$ .../xblock-sdk/manage.py syncdb --settings=workbench.settings_drag_and_drop_v2
+$ ../xblock-sdk/manage.py syncdb --settings=workbench.settings_drag_and_drop_v2
 ```
 
 4. To run the tests, from the xblock-drag-and-drop-v2 repository root:
