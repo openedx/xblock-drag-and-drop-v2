@@ -10,7 +10,7 @@ import copy
 import urllib
 
 from xblock.core import XBlock
-from xblock.fields import Scope, String, Dict, Float
+from xblock.fields import Scope, String, Dict, Float, Boolean
 from xblock.fragment import Fragment
 
 from .utils import render_template, load_resource
@@ -60,6 +60,12 @@ class DragAndDropBlock(XBlock):
         help="How the student has interacted with the problem",
         scope=Scope.user_state,
         default={}
+    )
+
+    completed = Boolean(
+        help="The student has completed the problem at least once",
+        scope=Scope.user_state,
+        default=False
     )
 
     has_score = True
@@ -173,15 +179,18 @@ class DragAndDropBlock(XBlock):
             if self._is_finished():
                 final_feedback = self.data['feedback']['finish']
 
-            try:
-                self.runtime.publish(self, 'grade', {
-                    'value': len(self.item_state) / float(tot_items) * self.weight,
-                    'max_value': self.weight,
-                })
-            except NotImplementedError:
-                # Note, this publish method is unimplemented in Studio runtimes,
-                # so we have to figure that we're running in Studio for now
-                pass
+            # only publish the grade once
+            if not self.completed:
+                self.completed = True
+                try:
+                    self.runtime.publish(self, 'grade', {
+                        'value': len(self.item_state) / float(tot_items) * self.weight,
+                        'max_value': self.weight,
+                    })
+                except NotImplementedError:
+                    # Note, this publish method is unimplemented in Studio runtimes,
+                    # so we have to figure that we're running in Studio for now
+                    pass
 
         self.runtime.publish(self, 'xblock.drag-and-drop-v2.item.dropped', {
             'item_id': item['id'],
