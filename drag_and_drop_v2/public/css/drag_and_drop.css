@@ -148,32 +148,34 @@
 }
 
 .xblock--drag-and-drop .popup {
-    display: none;
     position: absolute;
-    top: 20px;
-    right: 20px;
+    display: none;
+    top: 5%;
+    right: 5%;
     background: none repeat scroll 0 0 #66A5B5;
     opacity: 0.9;
-    padding: 10px;
-    width: 300px;
+    width: 500px;
+    max-width: 90%;
+    min-height: 50px;
+    max-height: 90%;
+    overflow-y: auto;
     z-index: 100;
 }
 
 .xblock--drag-and-drop .popup .popup-content {
-    color: #fff;
-    font-family: arial;
-    font-size: 14px;
+    color: #FFFFFF;
+    margin-left: 15px;
+    margin-top: 35px;
+    margin-bottom: 15px;
 }
 
 .xblock--drag-and-drop .popup .close {
     cursor: pointer;
-    position: absolute;
-    top: 5px;
-    right: 3px;
-    width: 18px;
-    height: 21px;
-    font-family: FontAwesome;
-    font-style: normal;
-    text-align: center;
-    color: #fff;
+    float: right;
+    margin-right: 8px;
+    margin-top: 8px;
+    margin-left: 20px;
+    color: #FFFFFF;
+    font-family: "fontawesome";
+    font-size: 18pt;
 }
