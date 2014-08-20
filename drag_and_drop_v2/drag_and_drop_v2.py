@@ -147,13 +147,12 @@ class DragAndDropBlock(XBlock):
             del item['feedback']
             del item['zone']
 
-        tot_items = sum(1 for i in self.data['items'] if i['zone'] != 'none')
-        if len(self.item_state) != tot_items:
+        if not self._is_finished():
             del data['feedback']['finish']
 
         data['state'] = {
             'items': self.item_state,
-            'finished': len(self.item_state) == tot_items
+            'finished': self._is_finished()
         }
 
         return webob.response.Response(body=json.dumps(data))
@@ -171,7 +170,7 @@ class DragAndDropBlock(XBlock):
 
             is_correct = True
 
-            if len(self.item_state) == tot_items:
+            if self._is_finished():
                 final_feedback = self.data['feedback']['finish']
 
             try:
@@ -192,10 +191,15 @@ class DragAndDropBlock(XBlock):
 
         return {
             'correct': is_correct,
-            'finished': len(self.item_state) == tot_items,
+            'finished': self._is_finished(),
             'final_feedback': final_feedback,
             'feedback': item['feedback']['correct'] if is_correct else item['feedback']['incorrect']
         }
+
+    def _is_finished(self):
+        """All items are at their correct place"""
+        tot_items = sum(1 for i in self.data['items'] if i['zone'] != 'none')
+        return len(self.item_state) == tot_items
 
     @XBlock.json_handler
     def publish_event(self, data, suffix=''):
