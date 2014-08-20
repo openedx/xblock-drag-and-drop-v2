@@ -205,9 +205,10 @@ class DragAndDropBlock(XBlock):
             'feedback': item['feedback']['correct'] if is_correct else item['feedback']['incorrect']
         }
 
-    @XBlock.handler
-    def reset(self, request, suffix=''):
+    @XBlock.json_handler
+    def reset(self, data, suffix=''):
         self.item_state = {}
+        return {'result':'success'}
 
     def _is_finished(self):
         """All items are at their correct place"""

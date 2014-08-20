@@ -169,7 +169,7 @@ def test_ajax_solve_and_reset():
     assert_true(block.completed)
     assert_equals(block.item_state, {0:("11px", "111px"), 1:("22px", "222px")})
 
-    block.handle('reset', make_request(""))
+    block.handle('reset', make_request("{}"))
 
     assert_true(block.completed)
     assert_equals(block.item_state, {})
