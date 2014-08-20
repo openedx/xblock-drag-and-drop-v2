@@ -24,6 +24,7 @@ logging.disable(logging.DEBUG)
 
 def make_request(body):
     request = Request.blank('/')
+    request.method = 'POST'
     request.body = body.encode('utf-8')
     return request
 
