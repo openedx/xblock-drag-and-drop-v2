@@ -205,6 +205,10 @@ class DragAndDropBlock(XBlock):
             'feedback': item['feedback']['correct'] if is_correct else item['feedback']['incorrect']
         }
 
+    @XBlock.handler
+    def reset(self, request, suffix=''):
+        self.item_state = {}
+
     def _is_finished(self):
         """All items are at their correct place"""
         tot_items = sum(1 for i in self.data['items'] if i['zone'] != 'none')
