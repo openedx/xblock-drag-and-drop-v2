@@ -193,9 +193,10 @@ class DragAndDropBlock(XBlock):
                     pass
 
         self.runtime.publish(self, 'xblock.drag-and-drop-v2.item.dropped', {
+            'user_id': self.runtime.user_id,
             'item_id': item['id'],
             'location': attempt['zone'],
-            'is_correct': is_correct
+            'is_correct': is_correct,
         })
 
         return {
@@ -221,6 +222,8 @@ class DragAndDropBlock(XBlock):
             event_type = data.pop('event_type')
         except KeyError as e:
             return {'result': 'error', 'message': 'Missing event_type in JSON data'}
+
+        data['user_id'] = self.runtime.user_id
 
         self.runtime.publish(self, event_type, data)
         return {'result':'success'}
