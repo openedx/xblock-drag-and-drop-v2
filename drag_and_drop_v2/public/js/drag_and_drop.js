@@ -102,7 +102,7 @@ function DragAndDropBlock(runtime, element) {
                     $dropzone.on('drop', clk.drop.success);
                     $dropzone.on('dropover', clk.drop.hover);
 
-                    $(".close", _fn.$popup).on('click', clk.popup.close);
+                    $(document).on('click', clk.popup.close);
                     _fn.$reset_button.on('click', clk.problem.reset);
                 },
                 problem: {
@@ -117,6 +117,16 @@ function DragAndDropBlock(runtime, element) {
                 },
                 popup: {
                     close: function(event, ui) {
+                        target = $(event.target);
+                        popup_box = ".xblock--drag-and-drop .popup";
+                        close_button = ".xblock--drag-and-drop .popup .close";
+                        if (target.is(popup_box)) {
+                            return;
+                        };
+                        if (target.parents(popup_box).length>0 && !target.is(close_button)) {
+                            return;
+                        };
+
                         _fn.$popup.hide();
                         publish_event({
                             event_type: 'xblock.drag-and-drop-v2.feedback.closed',
@@ -127,6 +137,8 @@ function DragAndDropBlock(runtime, element) {
                 },
                 drag: {
                     start: function(event, ui) {
+                        _fn.clickHandlers.popup.close(event, ui);
+
                         target = $(event.currentTarget);
                         target.removeClass('within-dropzone fade');
 
