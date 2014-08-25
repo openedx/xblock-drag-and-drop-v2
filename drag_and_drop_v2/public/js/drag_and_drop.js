@@ -15,6 +15,7 @@ function DragAndDropBlock(runtime, element) {
             $target: $('.xblock--drag-and-drop .target-img', element),
             $feedback: $('.xblock--drag-and-drop .feedback .message', element),
             $popup: $('.xblock--drag-and-drop .popup', element),
+            $reset_button: $('.xblock--drag-and-drop .reset-button', element),
 
             // Cannot set until items added to DOM
             $items: {}, // $('.xblock--drag-and-drop .items .option'),
@@ -82,6 +83,15 @@ function DragAndDropBlock(runtime, element) {
                 if (final_feedback) _fn.feedback.set(final_feedback);
             },
 
+            reset: function() {
+                _fn.$items.draggable('enable');
+                _fn.$items.each(function(index, element) {
+                    _fn.clickHandlers.drag.reset($(element));
+                });
+                _fn.$popup.hide();
+                _fn.feedback.set(_fn.data.feedback.start);
+            },
+
             clickHandlers: {
                 init: function($drag, $dropzone) {
                     var clk = _fn.clickHandlers;
@@ -92,14 +102,28 @@ function DragAndDropBlock(runtime, element) {
                     $dropzone.on('drop', clk.drop.success);
                     $dropzone.on('dropover', clk.drop.hover);
 
-                    $(".close", _fn.$popup).on('click', function() {
+                    $(".close", _fn.$popup).on('click', clk.popup.close);
+                    _fn.$reset_button.on('click', clk.problem.reset);
+                },
+                problem: {
+                    reset: function(event, ui) {
+                        $.ajax({
+                            type: "POST",
+                            url: runtime.handlerUrl(element, "reset"),
+                            data: "{}",
+                            success: _fn.reset
+                        });
+                    }
+                },
+                popup: {
+                    close: function(event, ui) {
                         _fn.$popup.hide();
                         publish_event({
                             event_type: 'xblock.drag-and-drop-v2.feedback.closed',
                             content: _fn.$popup.find(".popup-content").text(),
                             manually: true
                         });
-                    });
+                    }
                 },
                 drag: {
                     start: function(event, ui) {

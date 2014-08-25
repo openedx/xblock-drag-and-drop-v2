@@ -11,8 +11,8 @@ from workbench.runtime import WorkbenchRuntime
 from xblock.runtime import KvsFieldData, DictKeyValueStore
 
 from nose.tools import (
-    assert_equals, assert_true, assert_in,
-    assert_regexp_matches
+    assert_equals, assert_true, assert_false,
+    assert_in, assert_regexp_matches
 )
 
 import drag_and_drop_v2
@@ -155,3 +155,21 @@ def test_ajax():
         get_data = json.loads(block.handle('get_data', Mock()).body)
         assert_equals(expected, get_data)
 
+def test_ajax_solve_and_reset():
+    block = make_block()
+
+    assert_false(block.completed)
+    assert_equals(block.item_state, {})
+
+    data = json.dumps({"val":0,"zone":"Zone A","top":"11px","left":"111px"})
+    block.handle('do_attempt', make_request(data))
+    data = json.dumps({"val":1,"zone":"Zone B","top":"22px","left":"222px"})
+    block.handle('do_attempt', make_request(data))
+
+    assert_true(block.completed)
+    assert_equals(block.item_state, {0:("11px", "111px"), 1:("22px", "222px")})
+
+    block.handle('reset', make_request("{}"))
+
+    assert_true(block.completed)
+    assert_equals(block.item_state, {})

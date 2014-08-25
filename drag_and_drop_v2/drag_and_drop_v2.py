@@ -10,7 +10,7 @@ import copy
 import urllib
 
 from xblock.core import XBlock
-from xblock.fields import Scope, String, Dict, Float
+from xblock.fields import Scope, String, Dict, Float, Boolean
 from xblock.fragment import Fragment
 
 from .utils import render_template, load_resource
@@ -60,6 +60,12 @@ class DragAndDropBlock(XBlock):
         help="How the student has interacted with the problem",
         scope=Scope.user_state,
         default={}
+    )
+
+    completed = Boolean(
+        help="The student has completed the problem at least once",
+        scope=Scope.user_state,
+        default=False
     )
 
     has_score = True
@@ -147,13 +153,12 @@ class DragAndDropBlock(XBlock):
             del item['feedback']
             del item['zone']
 
-        tot_items = sum(1 for i in self.data['items'] if i['zone'] != 'none')
-        if len(self.item_state) != tot_items:
+        if not self._is_finished():
             del data['feedback']['finish']
 
         data['state'] = {
             'items': self.item_state,
-            'finished': len(self.item_state) == tot_items
+            'finished': self._is_finished()
         }
 
         return webob.response.Response(body=json.dumps(data))
@@ -171,18 +176,21 @@ class DragAndDropBlock(XBlock):
 
             is_correct = True
 
-            if len(self.item_state) == tot_items:
+            if self._is_finished():
                 final_feedback = self.data['feedback']['finish']
 
-            try:
-                self.runtime.publish(self, 'grade', {
-                    'value': len(self.item_state) / float(tot_items) * self.weight,
-                    'max_value': self.weight,
-                })
-            except NotImplementedError:
-                # Note, this publish method is unimplemented in Studio runtimes,
-                # so we have to figure that we're running in Studio for now
-                pass
+            # only publish the grade once
+            if not self.completed:
+                self.completed = True
+                try:
+                    self.runtime.publish(self, 'grade', {
+                        'value': len(self.item_state) / float(tot_items) * self.weight,
+                        'max_value': self.weight,
+                    })
+                except NotImplementedError:
+                    # Note, this publish method is unimplemented in Studio runtimes,
+                    # so we have to figure that we're running in Studio for now
+                    pass
 
         self.runtime.publish(self, 'xblock.drag-and-drop-v2.item.dropped', {
             'item_id': item['id'],
@@ -192,10 +200,20 @@ class DragAndDropBlock(XBlock):
 
         return {
             'correct': is_correct,
-            'finished': len(self.item_state) == tot_items,
+            'finished': self._is_finished(),
             'final_feedback': final_feedback,
             'feedback': item['feedback']['correct'] if is_correct else item['feedback']['incorrect']
         }
+
+    @XBlock.json_handler
+    def reset(self, data, suffix=''):
+        self.item_state = {}
+        return {'result':'success'}
+
+    def _is_finished(self):
+        """All items are at their correct place"""
+        tot_items = sum(1 for i in self.data['items'] if i['zone'] != 'none')
+        return len(self.item_state) == tot_items
 
     @XBlock.json_handler
     def publish_event(self, data, suffix=''):
