@@ -78,6 +78,7 @@ function DragAndDropBlock(runtime, element) {
             finish: function(final_feedback) {
                 // Disable any decoy items
                 _fn.$items.draggable('disable');
+                _fn.$reset_button.show();
 
                 // Show final feedback
                 if (final_feedback) _fn.feedback.set(final_feedback);
@@ -89,6 +90,7 @@ function DragAndDropBlock(runtime, element) {
                     _fn.clickHandlers.drag.reset($(element));
                 });
                 _fn.$popup.hide();
+                _fn.$reset_button.hide();
                 _fn.feedback.set(_fn.data.feedback.start);
             },
 

@@ -179,9 +179,10 @@ class DragAndDropBlock(XBlock):
             if self._is_finished():
                 final_feedback = self.data['feedback']['finish']
 
-            # only publish the grade once
+            # don't publish the grade if the student has already completed the exercise
             if not self.completed:
-                self.completed = True
+                if self._is_finished():
+                    self.completed = True
                 try:
                     self.runtime.publish(self, 'grade', {
                         'value': len(self.item_state) / float(tot_items) * self.weight,
