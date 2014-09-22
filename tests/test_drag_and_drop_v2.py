@@ -1,18 +1,14 @@
 import logging
 import json
-import re
-import datetime
-import time
-import json
 from webob import Request
-from mock import Mock, patch
+from mock import Mock
 
 from workbench.runtime import WorkbenchRuntime
 from xblock.runtime import KvsFieldData, DictKeyValueStore
 
 from nose.tools import (
     assert_equals, assert_true, assert_false,
-    assert_in, assert_regexp_matches
+    assert_in
 )
 
 import drag_and_drop_v2
@@ -22,10 +18,11 @@ import drag_and_drop_v2
 logging.disable(logging.DEBUG)
 
 
-def make_request(body):
+def make_request(body, method='POST'):
     request = Request.blank('/')
     request.method = 'POST'
     request.body = body.encode('utf-8')
+    request.method = method
     return request
 
 
