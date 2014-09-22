@@ -83,7 +83,6 @@
     float: left;
     margin: 10px 0 15px 5px;
     background: #fff;
-    z-index: 1;
 }
 
 .xblock--drag-and-drop .target-img {
