@@ -61,6 +61,10 @@ function DragAndDropEditBlock(runtime, element) {
                             _fn.$target.css('background', 'url(' + _fn.data.targetImg + ') no-repeat');
                         }
 
+                        if (_fn.data.displayLabels) {
+                            _fn.data.displayLabels = $('.display-labels-form input', element).prop('checked', true);
+                        }
+
                         $fbkTab.addClass('hidden');
                         $zoneTab.removeClass('hidden');
 
@@ -110,6 +114,9 @@ function DragAndDropEditBlock(runtime, element) {
 
                             // Placeholder shim for IE9
                             $.placeholder.shim();
+                        })
+                        .on('click', '.display-labels-form input', function(e) {
+                            _fn.data.displayLabels = $('.display-labels-form input', element).is(':checked');
                         });
 
                     $itemTab

@@ -73,6 +73,11 @@ function DragAndDropBlock(runtime, element) {
                 // Set the target image
                 if (_fn.data.targetImg)
                     _fn.$target.css('background', 'url(' + _fn.data.targetImg + ') no-repeat');
+
+                // Display the zone names if required
+                if (_fn.data.displayLabels) {
+                    $('p', _fn.$zones).css('visibility', 'visible');
+                }
             },
 
             finish: function(final_feedback) {
