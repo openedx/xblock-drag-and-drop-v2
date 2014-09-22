@@ -236,7 +236,7 @@ class DragAndDropBlock(XBlock):
             unique_id = self.location.name
         except AttributeError:
             # workaround for xblock workbench
-            unique_id = self.parent.replace('.',  '-')
+            unique_id = self.parent and self.parent.replace('.',  '-')
         return unique_id
 
     @staticmethod

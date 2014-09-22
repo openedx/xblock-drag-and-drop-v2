@@ -83,7 +83,6 @@
     float: left;
     margin: 10px 0 15px 5px;
     background: #fff;
-    z-index: 1;
 }
 
 .xblock--drag-and-drop .target-img {
@@ -120,6 +119,7 @@
 }
 
 .xblock--drag-and-drop .zone p {
+    visibility: hidden;
     width: 100%;
     font-family: Arial;
     font-size: 16px;
@@ -153,7 +153,6 @@
     top: 5%;
     right: 5%;
     background: none repeat scroll 0 0 #66A5B5;
-    opacity: 0.9;
     width: 500px;
     max-width: 90%;
     min-height: 50px;
