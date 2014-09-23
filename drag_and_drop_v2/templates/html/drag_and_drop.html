@@ -2,12 +2,12 @@
     {{ js_templates|safe }}
 
     <h2 class="problem-header">
-      {{ title }}
+      {{ title|safe }}
     </h2>
 
     <section class="problem" role="application">
         <div class="title1">Question</div>
-        <p>{{ question_text }}</p>
+        <p>{{ question_text|safe }}</p>
     </section>
 
     <section class="drag-container">
