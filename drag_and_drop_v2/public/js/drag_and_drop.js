@@ -293,7 +293,7 @@ function DragAndDropBlock(runtime, element) {
                         content: str
                     });
 
-                    _fn.$popup.find(".popup-content").text(str);
+                    _fn.$popup.find(".popup-content").html(str);
                     return _fn.$popup.show();
                 }
             },

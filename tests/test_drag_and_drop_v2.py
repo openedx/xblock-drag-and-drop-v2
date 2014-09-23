@@ -44,8 +44,8 @@ def test_templates_contents():
     assert_in('<section class="xblock--drag-and-drop">',
         student_fragment.content)
     assert_in('{{ value }}', student_fragment.content)
-    assert_in("Test Drag &amp; Drop", student_fragment.content)
-    assert_in("Question Drag &amp; Drop", student_fragment.content)
+    assert_in("Test Drag & Drop", student_fragment.content)
+    assert_in("Question Drag & Drop", student_fragment.content)
 
     studio_fragment = block.render('studio_view', Mock())
     assert_in('<div class="xblock--drag-and-drop editor-with-buttons">',
@@ -72,54 +72,61 @@ def test_studio_submit():
     assert_equals(block.weight, 5)
     assert_equals(block.data, {'foo': 1})
 
-def test_ajax():
+
+def do_ajax(orig_file, get_file):
     assert_equals.__self__.maxDiff = None
 
     block = make_block()
 
-    with open('tests/test_data.json') as f:
+    with open(orig_file) as f:
         block.data = json.load(f)
 
-    with open('tests/test_get_data.json') as f:
+    initial_data = block.data
+    zoneA = initial_data["items"][0]["zone"]
+    zoneB = initial_data["items"][1]["zone"]
+    feedback_finish = initial_data["feedback"]["finish"]
+    get_item_feedback = lambda item, type: initial_data["items"][item]["feedback"][type]
+
+    with open(get_file) as f:
         get_data = json.loads(block.handle('get_data', Mock()).body)
         assert_equals(json.load(f), get_data)
 
     # Wrong with feedback
-    data = json.dumps({"val":0,"zone":"Zone B","top":"31px","left":"216px"})
+    data = json.dumps({"val":0,"zone":zoneB,"top":"31px","left":"216px"})
     res = json.loads(block.handle('do_attempt', make_request(data)).body)
     assert_equals(res, {
         "final_feedback": None,
         "finished": False,
         "correct": False,
-        "feedback": "No A"
+        "feedback": get_item_feedback(0, "incorrect")
     })
-    with open('tests/test_get_data.json') as f:
+    with open(get_file) as f:
         get_data = json.loads(block.handle('get_data', Mock()).body)
         assert_equals(json.load(f), get_data)
 
     # Wrong without feedback
-    data = json.dumps({"val":2,"zone":"Zone B","top":"42px","left":"100px"})
+    data = json.dumps({"val":2,"zone":zoneB,"top":"42px","left":"100px"})
     res = json.loads(block.handle('do_attempt', make_request(data)).body)
     assert_equals(res, {
         "final_feedback": None,
         "finished": False,
         "correct": False,
-        "feedback": ""
+        "feedback": get_item_feedback(2, "incorrect")
     })
-    with open('tests/test_get_data.json') as f:
+    with open(get_file) as f:
         get_data = json.loads(block.handle('get_data', Mock()).body)
         assert_equals(json.load(f), get_data)
 
     # Correct
-    data = json.dumps({"val":0,"zone":"Zone A","top":"11px","left":"111px"})
+    data = json.dumps({"val":0,"zone":zoneA,"top":"11px","left":"111px"})
     res = json.loads(block.handle('do_attempt', make_request(data)).body)
     assert_equals(res, {
         "final_feedback": None,
         "finished": False,
         "correct": True,
-        "feedback": "Yes A"
+        "feedback": get_item_feedback(0, "correct")
     })
-    with open('tests/test_get_data.json') as f:
+    with open(get_file) as f:
         expected = json.load(f)
         expected["state"] = {
             "items": {
@@ -131,15 +138,15 @@ def test_ajax():
         assert_equals(expected, get_data)
 
     # Final
-    data = json.dumps({"val":1,"zone":"Zone B","top":"22px","left":"222px"})
+    data = json.dumps({"val":1,"zone":zoneB,"top":"22px","left":"222px"})
     res = json.loads(block.handle('do_attempt', make_request(data)).body)
     assert_equals(res, {
-        "final_feedback": "Final Feed",
+        "final_feedback": feedback_finish,
         "finished": True,
         "correct": True,
-        "feedback": "Yes B"
+        "feedback": get_item_feedback(1, "correct")
     })
-    with open('tests/test_get_data.json') as f:
+    with open(get_file) as f:
         expected = json.load(f)
         expected["state"] = {
             "items": {
@@ -148,9 +155,16 @@ def test_ajax():
             },
             "finished": True
         }
-        expected["feedback"]["finish"] = "Final Feed"
+        expected["feedback"]["finish"] = feedback_finish
         get_data = json.loads(block.handle('get_data', Mock()).body)
         assert_equals(expected, get_data)
+
+def test_ajax():
+    do_ajax('tests/test_data.json', 'tests/test_get_data.json')
+
+
+def test_html_ajax():
+    do_ajax('tests/test_html_data.json', 'tests/test_get_html_data.json')
 
 def test_ajax_solve_and_reset():
     block = make_block()
