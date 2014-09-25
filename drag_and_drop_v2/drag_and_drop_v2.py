@@ -85,18 +85,21 @@ class DragAndDropBlock(XBlock):
 
         fragment = Fragment()
         fragment.add_content(render_template('/templates/html/drag_and_drop.html', context))
-        fragment.add_css_url(self.runtime.local_resource_url(self,
-            'public/css/vendor/jquery-ui-1.10.4.custom.min.css'))
-        fragment.add_css_url(self.runtime.local_resource_url(self,
-            'public/css/drag_and_drop.css'))
-        fragment.add_javascript_url(self.runtime.local_resource_url(self,
-            'public/js/vendor/jquery-ui-1.10.4.custom.min.js'))
-        fragment.add_javascript_url(self.runtime.local_resource_url(self,
-            'public/js/vendor/jquery.html5-placeholder-shim.js'))
-        fragment.add_javascript_url(self.runtime.local_resource_url(self,
-            'public/js/vendor/handlebars-v1.1.2.js'))
-        fragment.add_javascript_url(self.runtime.local_resource_url(self,
-            'public/js/drag_and_drop.js'))
+        CSS_URLS = (
+            'public/css/vendor/jquery-ui-1.10.4.custom.min.css',
+            'public/css/drag_and_drop.css'
+        )
+        JS_URLS = (
+            'public/js/vendor/jquery-ui-1.10.4.custom.min.js',
+            'public/js/vendor/jquery-ui-touch-punch-0.2.3.min.js',  # Makes it work on touch devices
+            'public/js/vendor/jquery.html5-placeholder-shim.js',
+            'public/js/vendor/handlebars-v1.1.2.js',
+            'public/js/drag_and_drop.js',
+        )
+        for css_url in CSS_URLS:
+            fragment.add_css_url(self.runtime.local_resource_url(self, css_url))
+        for js_url in JS_URLS:
+            fragment.add_javascript_url(self.runtime.local_resource_url(self, js_url))
 
         fragment.initialize_js('DragAndDropBlock')
 
