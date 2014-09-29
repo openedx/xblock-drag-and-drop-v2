@@ -9,8 +9,8 @@ class TestBlockParameters(BaseIntegrationTest):
     @parameterized.expand([
         ("plain1", 'title1', 'question1'),
         ("plain2", 'title2', 'question2'),
-        ("html1", 'title with <b>HTML</b>', '<span style="color:red">Span title</span>'),
-        ("html2", 'Q: <b>HTML</b>?', '<span style="color:red">Span question</span>'),
+        ("html1", 'title with <i>HTML</i>', 'Question with <i>HTML</i>'),
+        ("html2", '<span style="color:red">Title: HTML?</span>', '<span style="color:red">Span question</span>'),
     ])
     def test_block_parameters(self, _, display_name, question_text):
         const_page_name = "Test block parameters"
@@ -31,4 +31,9 @@ class TestBlockParameters(BaseIntegrationTest):
 
         question = page.find_element_by_css_selector("section.problem > p")
         self.assertEqual(self.get_element_html(question), question_text)
+
+    def _get_scenarios_for_test(self):
+        return []
+
+
 

@@ -14,10 +14,9 @@ class BaseIntegrationTest(SeleniumTest):
         super(BaseIntegrationTest, self).setUp()
 
         # Use test scenarios
-        self.browser.get(self.live_server_url) # Needed to load tests once
+        self.browser.get(self.live_server_url)  # Needed to load tests once
         scenarios.SCENARIOS.clear()
-        scenarios_list = load_scenarios_from_path('integration/data')
-        for identifier, title, xml in scenarios_list:
+        for identifier, title, xml in self._get_scenarios_for_test():
             scenarios.add_xml_scenario(identifier, title, xml)
             self.addCleanup(scenarios.remove_scenario, identifier)
 
@@ -27,6 +26,9 @@ class BaseIntegrationTest(SeleniumTest):
         # She knows it's the site by the header
         header1 = self.browser.find_element_by_css_selector('h1')
         self.assertEqual(header1.text, 'XBlock scenarios')
+
+    def _get_scenarios_for_test(self):
+        return load_scenarios_from_path('integration/data')
 
     def go_to_page(self, page_name, css_selector='section.xblock--drag-and-drop'):
         """

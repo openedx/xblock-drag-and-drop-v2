@@ -38,17 +38,22 @@ def get_scenarios_from_path(scenarios_path, include_identifier=False):
         for template in os.listdir(scenarios_fullpath):
             if not template.endswith('.json'):
                 continue
-            identifier = template[:-5]
-            block_title, question_text = map(format_name, identifier.split('-'))
-            title = identifier.replace('_', ' ').replace('-', ' ').title()
-            template_path = os.path.join(scenarios_path, template)
-            scenario = make_scenario_from_data(load_resource(template_path), block_title, question_text, False)
+            identifier, title, scenario = get_scenario_from_file(template, scenarios_path)
             if not include_identifier:
                 scenarios.append((title, scenario))
             else:
                 scenarios.append((identifier, title, scenario))
 
     return scenarios
+
+
+def get_scenario_from_file(filename, scenarios_path):
+    identifier = filename[:-5]
+    block_title, question_text = map(format_name, identifier.split('-'))
+    title = identifier.replace('_', ' ').replace('-', ' ').title()
+    scenario_file = os.path.join(scenarios_path, filename)
+    scenario = make_scenario_from_data(scenario_file, block_title, question_text, False)
+    return identifier, title, scenario
 
 
 def load_scenarios_from_path(scenarios_path):
