@@ -1,5 +1,6 @@
 from xml.sax.saxutils import escape
 from nose_parameterized import parameterized
+from tests.utils import make_scenario_from_data
 from workbench import scenarios
 
 from tests.integration.test_base import BaseIntegrationTest
@@ -15,14 +16,8 @@ class TestBlockParameters(BaseIntegrationTest):
     def test_block_parameters(self, _, display_name, question_text):
         const_page_name = "Test block parameters"
         const_page_id = 'test_block_title'
-        scenarios.add_xml_scenario(
-            const_page_id, const_page_name,
-            """
-                <vertical_demo><drag-and-drop-v2
-                    display_name='{display_name}' question_text='{question_text}'
-                /></vertical_demo>
-            """.format(display_name=escape(display_name), question_text=escape(question_text))
-        )
+        scenario_xml = make_scenario_from_data(None, display_name, question_text, False)
+        scenarios.add_xml_scenario(const_page_id, const_page_name, scenario_xml)
         self.addCleanup(scenarios.remove_scenario, const_page_id)
 
         page = self.go_to_page(const_page_name)

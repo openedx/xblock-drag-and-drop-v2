@@ -1,6 +1,9 @@
 import os
+import json
+
 import pkg_resources
 from xml.sax.saxutils import escape
+
 
 def load_resource(resource_path):
     """
@@ -11,15 +14,17 @@ def load_resource(resource_path):
 
 
 def make_scenario_from_data(data, display_name, question_text, completed):
-    return """
-<vertical_demo>
-    <drag-and-drop-v2
-        display_name='{display_name}' question_text='{question_text}'
-        weight='1' completed='{completed}'
-        data='{data}'
-    />
-</vertical_demo>
-""".format(data=escape(data), display_name=display_name, question_text=question_text, completed=completed)
+    parameters = {
+        'data': data,
+        'display_name': display_name,
+        'question_text': question_text,
+        'completed': completed,
+        'weight': '1'
+    }
+    attributes = ["{0}='{1}'".format(key, escape(value)) for key, value in parameters.items() if value]
+    attributes_str = " ".join(attributes)
+    return """<vertical_demo><drag-and-drop-v2 {attrs}/></vertical_demo>""".format(attrs=attributes_str)
+
 
 def format_name(raw_name):
     return raw_name.replace('_', ' ').title()
@@ -38,7 +43,7 @@ def get_scenarios_from_path(scenarios_path, include_identifier=False):
         for template in os.listdir(scenarios_fullpath):
             if not template.endswith('.json'):
                 continue
-            identifier, title, scenario = get_scenario_from_file(template, scenarios_path)
+            identifier, title, scenario = get_scenario_from_file(scenarios_path, template)
             if not include_identifier:
                 scenarios.append((title, scenario))
             else:
@@ -47,12 +52,13 @@ def get_scenarios_from_path(scenarios_path, include_identifier=False):
     return scenarios
 
 
-def get_scenario_from_file(filename, scenarios_path):
+def get_scenario_from_file(scenarios_path, filename):
     identifier = filename[:-5]
     block_title, question_text = map(format_name, identifier.split('-'))
     title = identifier.replace('_', ' ').replace('-', ' ').title()
     scenario_file = os.path.join(scenarios_path, filename)
-    scenario = make_scenario_from_data(scenario_file, block_title, question_text, False)
+    scenario_data = json.loads(load_resource(scenario_file))
+    scenario = make_scenario_from_data(scenario_data, block_title, question_text, False)
     return identifier, title, scenario
 
 
@@ -61,3 +67,9 @@ def load_scenarios_from_path(scenarios_path):
     Load all xml files contained in a specified directory, as workbench scenarios
     """
     return get_scenarios_from_path(scenarios_path, include_identifier=True)
+
+
+def load_scenario_from_file(filename):
+    scenario_path, template = os.path.split(filename)
+    return get_scenario_from_file(scenario_path, template)
+

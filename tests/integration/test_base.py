@@ -13,17 +13,14 @@ class BaseIntegrationTest(SeleniumTest):
     def setUp(self):
         super(BaseIntegrationTest, self).setUp()
 
-        # Use test scenarios
-        self.browser.get(self.live_server_url)  # Needed to load tests once
+        self.browser.get(self.live_server_url)  # Needed to load scenarios once
         scenarios.SCENARIOS.clear()
         for identifier, title, xml in self._get_scenarios_for_test():
             scenarios.add_xml_scenario(identifier, title, xml)
             self.addCleanup(scenarios.remove_scenario, identifier)
 
-        # Suzy opens the browser to visit the workbench
         self.browser.get(self.live_server_url)
 
-        # She knows it's the site by the header
         header1 = self.browser.find_element_by_css_selector('h1')
         self.assertEqual(header1.text, 'XBlock scenarios')
 
@@ -41,3 +38,13 @@ class BaseIntegrationTest(SeleniumTest):
 
     def get_element_html(self, element):
         return element.get_attribute('innerHTML').strip()
+
+
+class SingleScenarioIntegrationTest(BaseIntegrationTest):
+    def setUp(self):
+        super(SingleScenarioIntegrationTest, self).setUp()
+
+    def _get_scenarios_for_test(self):
+        identifier, title, scenario = self._get_scenario_for_test()
+        self._page_title = title
+        return [(identifier, title, scenario)]
