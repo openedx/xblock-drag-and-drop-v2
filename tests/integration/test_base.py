@@ -1,12 +1,11 @@
 # Imports ###########################################################
+from xml.sax.saxutils import escape
 
 from workbench import scenarios
 from workbench.test.selenium_test import SeleniumTest
 
-from tests.utils import load_scenarios_from_path
-
-
 # Classes ###########################################################
+
 
 class BaseIntegrationTest(SeleniumTest):
 
@@ -15,17 +14,18 @@ class BaseIntegrationTest(SeleniumTest):
 
         self.browser.get(self.live_server_url)  # Needed to load scenarios once
         scenarios.SCENARIOS.clear()
-        for identifier, title, xml in self._get_scenarios_for_test():
-            scenarios.add_xml_scenario(identifier, title, xml)
-            self.addCleanup(scenarios.remove_scenario, identifier)
 
         self.browser.get(self.live_server_url)
 
         header1 = self.browser.find_element_by_css_selector('h1')
         self.assertEqual(header1.text, 'XBlock scenarios')
 
-    def _get_scenarios_for_test(self):
-        return load_scenarios_from_path('integration/data')
+    def _make_scenario_xml(self, display_name, question_text, completed):
+        return """
+<vertical_demo>
+    <drag-and-drop-v2 display_name='{display_name}' question_text='{question_text}' weight='1' completed='{completed}'/>
+</vertical_demo>
+    """.format(display_name=escape(display_name), question_text=escape(question_text), completed=completed)
 
     def go_to_page(self, page_name, css_selector='section.xblock--drag-and-drop'):
         """

@@ -1,6 +1,5 @@
 from xml.sax.saxutils import escape
 from nose_parameterized import parameterized
-from tests.utils import make_scenario_from_data
 from workbench import scenarios
 
 from tests.integration.test_base import BaseIntegrationTest
@@ -16,7 +15,7 @@ class TestBlockParameters(BaseIntegrationTest):
     def test_block_parameters(self, _, display_name, question_text):
         const_page_name = "Test block parameters"
         const_page_id = 'test_block_title'
-        scenario_xml = make_scenario_from_data(None, display_name, question_text, False)
+        scenario_xml = self._make_scenario_xml(display_name, question_text, False)
         scenarios.add_xml_scenario(const_page_id, const_page_name, scenario_xml)
         self.addCleanup(scenarios.remove_scenario, const_page_id)
 
@@ -27,8 +26,8 @@ class TestBlockParameters(BaseIntegrationTest):
         question = page.find_element_by_css_selector("section.problem > p")
         self.assertEqual(self.get_element_html(question), question_text)
 
-    def _get_scenarios_for_test(self):
-        return []
+    def _get_scenario_for_test(self):
+        return None, None, None
 
 
 
