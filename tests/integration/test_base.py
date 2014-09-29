@@ -12,11 +12,14 @@ class BaseIntegrationTest(SeleniumTest):
     def setUp(self):
         super(BaseIntegrationTest, self).setUp()
 
-        self.browser.get(self.live_server_url)  # Needed to load scenarios once
+        # Use test scenarios
+        self.browser.get(self.live_server_url)  # Needed to load tests once
         scenarios.SCENARIOS.clear()
 
+        # Suzy opens the browser to visit the workbench
         self.browser.get(self.live_server_url)
 
+        # She knows it's the site by the header
         header1 = self.browser.find_element_by_css_selector('h1')
         self.assertEqual(header1.text, 'XBlock scenarios')
 
@@ -26,6 +29,10 @@ class BaseIntegrationTest(SeleniumTest):
     <drag-and-drop-v2 display_name='{display_name}' question_text='{question_text}' weight='1' completed='{completed}'/>
 </vertical_demo>
     """.format(display_name=escape(display_name), question_text=escape(question_text), completed=completed)
+
+    def _add_scenario(self, identifier, title, xml):
+        scenarios.add_xml_scenario(identifier, title, xml)
+        self.addCleanup(scenarios.remove_scenario, identifier)
 
     def go_to_page(self, page_name, css_selector='section.xblock--drag-and-drop'):
         """
@@ -39,12 +46,5 @@ class BaseIntegrationTest(SeleniumTest):
     def get_element_html(self, element):
         return element.get_attribute('innerHTML').strip()
 
-
-class SingleScenarioIntegrationTest(BaseIntegrationTest):
-    def setUp(self):
-        super(SingleScenarioIntegrationTest, self).setUp()
-
-    def _get_scenarios_for_test(self):
-        identifier, title, scenario = self._get_scenario_for_test()
-        self._page_title = title
-        return [(identifier, title, scenario)]
+    def get_element_classes(self, element):
+        return element.get_attribute('class').split()
