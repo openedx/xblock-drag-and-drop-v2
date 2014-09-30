@@ -17,15 +17,6 @@ class TestDragAndDropRender(BaseIntegrationTest):
         self.browser.get(self.live_server_url)
         self._page = self.go_to_page(self.PAGE_TITLE)
 
-    def _get_items(self):
-        items_container = self._page.find_element_by_css_selector('ul.items')
-        return items_container.find_elements_by_css_selector('li.option')
-
-    def _get_zones(self):
-        return self._page.find_elements_by_css_selector(".drag-container .zone")
-
-
-
     def test_items(self):
         items = self._get_items()
 

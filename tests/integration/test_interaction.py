@@ -3,19 +3,51 @@ from selenium.webdriver import ActionChains
 from selenium.webdriver.firefox import webdriver
 
 from tests.integration.test_base import BaseIntegrationTest
+from tests.utils import load_resource
 
 
-class TestInteraction(BaseIntegrationTest):
+class ItemDefinition(object):
+    def __init__(self, item_id, zone_id, feedback_positive, feedback_negative):
+        self.feedback_negative = feedback_negative
+        self.feedback_positive = feedback_positive
+        self.zone_id = zone_id
+        self.item_id = item_id
+
+
+class InteractionTestFixture(BaseIntegrationTest):
     """
     Verifying Drag and Drop XBlock rendering against default data - if default data changes this would probably broke
     """
     PAGE_TITLE = 'Drag and Drop v2'
     PAGE_ID = 'drag_and_drop_v2'
 
-    def setUp(self):
-        super(TestInteraction, self).setUp()
+    items_map = {
+        0: ItemDefinition(0, 'Zone A', "Yes, it's an A", "No, A does not belong here"),
+        1: ItemDefinition(1, 'Zone B', "Yes, it's a B", "No, B does not belong here"),
+        2: ItemDefinition(2, None, "", "You silly, there are no zones for X")
+    }
 
-        scenario_xml = "<vertical_demo><drag-and-drop-v2/></vertical_demo>"
+    all_zones = ['Zone A', 'Zone B']
+
+    feedback = {
+        "intro": "Intro Feed",
+        "final": "Final Feed"
+    }
+
+    def _get_scenario_xml(self):
+        return "<vertical_demo><drag-and-drop-v2/></vertical_demo>"
+
+    @classmethod
+    def _get_correct_item_to_zone(cls):
+        return {
+            item_key: definition for item_key, definition in cls.items_map.items()
+            if definition.zone_id is not None
+        }
+
+    def setUp(self):
+        super(InteractionTestFixture, self).setUp()
+
+        scenario_xml = self._get_scenario_xml()
         self._add_scenario(self.PAGE_ID, self.PAGE_TITLE, scenario_xml)
 
         self.browser.get(self.live_server_url)
@@ -37,44 +69,81 @@ class TestInteraction(BaseIntegrationTest):
 
         action_chains.drag_and_drop(element, target).perform()
 
-    @parameterized.expand([
-        ("Item A", 0, 'Zone A', "Yes, it's an A"),
-        ("Item B", 1, 'Zone B', "Yes, it's a B"),
-    ])
-    def test_correct_item_positive_feedback(self, _, item_value, zone_id, expected_feedback):
-        self.drag_item_to_zone(item_value, zone_id)
+    def test_correct_item_positive_feedback(self):
+        feedback_popup = self._page.find_element_by_css_selector(".popup-content")
+        for definition in self._get_correct_item_to_zone().values():
+            self.drag_item_to_zone(definition.item_id, definition.zone_id)
+            self.assertEqual(self.get_element_html(feedback_popup), definition.feedback_positive)
 
-        self.assertEqual(self._page.find_element_by_css_selector(".popup-content").text, expected_feedback)
+    def test_incorrect_item_negative_feedback(self):
+        feedback_popup = self._page.find_element_by_css_selector(".popup-content")
 
-    @parameterized.expand([
-        ("Item A", 0, 'Zone B', "No, A does not belong here"),
-        ("Item B", 1, 'Zone A', "No, B does not belong here"),
-        ("Item X", 2, 'Zone A', "You silly, there are no zones for X"),
-        ("Item X", 2, 'Zone B', "You silly, there are no zones for X"),
-    ])
-    def test_incorrect_item_negative_feedback(self, _, item_value, zone_id, expected_feedback):
-        self.drag_item_to_zone(item_value, zone_id)
-
-        self.assertEqual(self._page.find_element_by_css_selector(".popup-content").text, expected_feedback)
+        for definition in self.items_map.values():
+            for zone in self.all_zones:
+                if zone == definition.zone_id:
+                    continue
+                self.drag_item_to_zone(definition.item_id, zone)
+                self.assertEqual(self.get_element_html(feedback_popup), definition.feedback_negative)
 
     def test_final_feedback_and_reset(self):
         feedback_message = self._get_feedback_message()
-        self.assertEqual(feedback_message.text, "Intro Feed")  # precondition check
+        self.assertEqual(self.get_element_html(feedback_message), self.feedback['intro'])  # precondition check
 
-        item0_initial_position = self._get_item_by_value(0).location
-        item1_initial_position = self._get_item_by_value(1).location
+        items = self._get_correct_item_to_zone()
+        get_locations = lambda: {item_id: self._get_item_by_value(item_id).location for item_id in items.keys()}
 
-        self.drag_item_to_zone(0, 'Zone A')
-        self.drag_item_to_zone(1, 'Zone B')
+        initial_locations = get_locations()
 
-        self.assertEqual(feedback_message.text, "Final Feed")
+        for item_key, definition in items.items():
+            self.drag_item_to_zone(item_key, definition.zone_id)
 
+        self.assertEqual(self.get_element_html(feedback_message), self.feedback['final'])
+
+        # scrolling to have `reset` visible, otherwise it does not receive a click
+        # this is due to xblock workbench header that consumes top 40px - selenium scrolls so page so that target
+        # element is a the very top.
+        self.scroll_by(100)
         reset = self._page.find_element_by_css_selector(".reset-button")
         reset.click()
 
-        self.assertEqual(feedback_message.text, "Intro Feed")
+        self.assertEqual(self.get_element_html(feedback_message), self.feedback['intro'])
 
-        self.assertDictEqual(self._get_item_by_value(0).location, item0_initial_position)
-        self.assertDictEqual(self._get_item_by_value(1).location, item1_initial_position)
+        locations_after_reset = get_locations()
+        for item_key in items.keys():
+            self.assertDictEqual(locations_after_reset[item_key], initial_locations[item_key])
 
 
+class CustomDataInteractionTest(InteractionTestFixture):
+    items_map = {
+        0: ItemDefinition(0, 'Zone A', "Yes A", "No A"),
+        1: ItemDefinition(1, 'Zone B', "Yes B", "No B"),
+        2: ItemDefinition(2, None, "", "No Zone for this")
+    }
+
+    all_zones = ['Zone A', 'Zone B']
+
+    feedback = {
+        "intro": "Other Intro Feed",
+        "final": "Other Final Feed"
+    }
+
+    def _get_scenario_xml(self):
+        return self._get_custom_scenario_xml("integration/data/test_data.json")
+
+
+class CustomHtmlDataInteractionTest(InteractionTestFixture):
+    items_map = {
+        0: ItemDefinition(0, 'Zone <i>A</i>', "Yes <b>A</b>", "No <b>A</b>"),
+        1: ItemDefinition(1, 'Zone <b>B</b>', "Yes <i>B</i>", "No <i>B</i>"),
+        2: ItemDefinition(2, None, "", "No Zone for <i>X</i>")
+    }
+
+    all_zones = ['Zone <i>A</i>', 'Zone <b>B</b>']
+
+    feedback = {
+        "intro": "Intro <i>Feed</i>",
+        "final": "Final <b>Feed</b>"
+    }
+
+    def _get_scenario_xml(self):
+        return self._get_custom_scenario_xml("integration/data/test_html_data.json")

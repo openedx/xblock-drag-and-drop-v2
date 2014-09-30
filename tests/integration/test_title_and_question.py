@@ -1,4 +1,3 @@
-from xml.sax.saxutils import escape
 from nose_parameterized import parameterized
 from tests.integration.test_base import BaseIntegrationTest
 from workbench import scenarios
