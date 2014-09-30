@@ -1,8 +1,4 @@
-import os
-import json
-
 import pkg_resources
-from xml.sax.saxutils import escape
 
 
 def load_resource(resource_path):

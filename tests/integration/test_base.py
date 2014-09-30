@@ -1,6 +1,5 @@
 # Imports ###########################################################
 from xml.sax.saxutils import escape
-from selenium.webdriver.support.wait import WebDriverWait
 from tests.utils import load_resource
 
 from workbench import scenarios
@@ -15,7 +14,6 @@ class BaseIntegrationTest(SeleniumTest):
         '"': "&quot;",
         "'": "&apos;"
     }
-
 
     def setUp(self):
         super(BaseIntegrationTest, self).setUp()

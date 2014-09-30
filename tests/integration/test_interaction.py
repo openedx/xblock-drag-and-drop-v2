@@ -1,9 +1,6 @@
-from nose_parameterized import parameterized
 from selenium.webdriver import ActionChains
-from selenium.webdriver.firefox import webdriver
 
 from tests.integration.test_base import BaseIntegrationTest
-from tests.utils import load_resource
 
 
 class ItemDefinition(object):
