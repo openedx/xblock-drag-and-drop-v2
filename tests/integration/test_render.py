@@ -24,8 +24,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
     def _get_zones(self):
         return self._page.find_elements_by_css_selector(".drag-container .zone")
 
-    def _get_feedback_message(self):
-        return self._page.find_element_by_css_selector(".feedback .message")
+
 
     def test_items(self):
         items = self._get_items()

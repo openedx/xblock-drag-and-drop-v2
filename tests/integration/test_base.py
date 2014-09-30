@@ -34,6 +34,9 @@ class BaseIntegrationTest(SeleniumTest):
         scenarios.add_xml_scenario(identifier, title, xml)
         self.addCleanup(scenarios.remove_scenario, identifier)
 
+    def _get_feedback_message(self):
+        return self._page.find_element_by_css_selector(".feedback .message")
+
     def go_to_page(self, page_name, css_selector='section.xblock--drag-and-drop'):
         """
         Navigate to the page `page_name`, as listed on the workbench home
