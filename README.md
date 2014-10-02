@@ -120,5 +120,5 @@ $ ../xblock-sdk/manage.py syncdb --settings=workbench.settings_drag_and_drop_v2
 4. To run the tests, from the xblock-drag-and-drop-v2 repository root:
 
 ```bash
-$ DJANGO_SETTINGS_MODULE="workbench.settings_drag_and_drop_v2" nosetests --rednose --verbose --with-cover --cover-package=drag_and_drop_v2
+$ DJANGO_SETTINGS_MODULE="workbench.settings_drag_and_drop_v2" nosetests --rednose --verbose --with-cover --cover-package=drag_and_drop_v2 --with-django
 ```
