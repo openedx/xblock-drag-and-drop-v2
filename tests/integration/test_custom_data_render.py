@@ -11,7 +11,6 @@ class TestCustomDataDragAndDropRendering(BaseIntegrationTest):
         scenario_xml = self._get_custom_scenario_xml("integration/data/test_html_data.json")
         self._add_scenario(self.PAGE_ID, self.PAGE_TITLE, scenario_xml)
 
-        self.browser.get(self.live_server_url)
         self._page = self.go_to_page(self.PAGE_TITLE)
 
         header1 = self.browser.find_element_by_css_selector('h1')

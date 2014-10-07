@@ -17,6 +17,12 @@ class TestDragAndDropRender(BaseIntegrationTest):
         self.browser.get(self.live_server_url)
         self._page = self.go_to_page(self.PAGE_TITLE)
 
+    def _test_style(self, item, style_settings):
+        style = item.get_attribute('style')
+        for style_prop, expected_value in style_settings.items():
+            expected = u"{0}: {1}".format(style_prop, expected_value)
+            self.assertIn(expected, style)
+
     def test_items(self):
         items = self._get_items()
 
@@ -24,18 +30,18 @@ class TestDragAndDropRender(BaseIntegrationTest):
 
         self.assertEqual(items[0].get_attribute('data-value'), '0')
         self.assertEqual(items[0].text, 'A')
-        self.assertEqual(items[0].get_attribute('style'), u"width: 190px; height: auto;")
         self.assertIn('ui-draggable', self.get_element_classes(items[0]))
+        self._test_style(items[0], {'width': '190px', 'height': 'auto'})
 
         self.assertEqual(items[1].get_attribute('data-value'), '1')
         self.assertEqual(items[1].text, 'B')
-        self.assertEqual(items[1].get_attribute('style'), u"width: 190px; height: auto;")
         self.assertIn('ui-draggable', self.get_element_classes(items[1]))
+        self._test_style(items[1], {'width': '190px', 'height': 'auto'})
 
         self.assertEqual(items[2].get_attribute('data-value'), '2')
         self.assertEqual(items[2].text, 'X')
-        self.assertEqual(items[2].get_attribute('style'), u"width: 100px; height: 100px;")
         self.assertIn('ui-draggable', self.get_element_classes(items[2]))
+        self._test_style(items[2], {'width': '100px', 'height': '100px'})
 
     def test_zones(self):
         zones = self._get_zones()
@@ -43,12 +49,12 @@ class TestDragAndDropRender(BaseIntegrationTest):
         self.assertEqual(len(zones), 2)
 
         self.assertEqual(zones[0].get_attribute('data-zone'), 'Zone A')
-        self.assertEqual(zones[0].get_attribute('style'), u"top: 200px; left: 120px; width: 200px; height: 100px;")
         self.assertIn('ui-droppable', self.get_element_classes(zones[0]))
+        self._test_style(zones[0], {'top': '200px', 'left': '120px', 'width': '200px', 'height': '100px'})
 
         self.assertEqual(zones[1].get_attribute('data-zone'), 'Zone B')
-        self.assertEqual(zones[1].get_attribute('style'), u"top: 360px; left: 120px; width: 200px; height: 100px;")
         self.assertIn('ui-droppable', self.get_element_classes(zones[1]))
+        self._test_style(zones[1], {'top': '360px', 'left': '120px', 'width': '200px', 'height': '100px'})
 
     def test_feedback(self):
         feedback_message = self._get_feedback_message()

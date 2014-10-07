@@ -35,7 +35,7 @@ class InteractionTestFixture(BaseIntegrationTest):
         return "<vertical_demo><drag-and-drop-v2/></vertical_demo>"
 
     @classmethod
-    def _get_correct_item_to_zone(cls):
+    def _get_correct_item_for_zone(cls):
         return {
             item_key: definition for item_key, definition in cls.items_map.items()
             if definition.zone_id is not None
@@ -68,7 +68,7 @@ class InteractionTestFixture(BaseIntegrationTest):
 
     def test_correct_item_positive_feedback(self):
         feedback_popup = self._page.find_element_by_css_selector(".popup-content")
-        for definition in self._get_correct_item_to_zone().values():
+        for definition in self._get_correct_item_for_zone().values():
             self.drag_item_to_zone(definition.item_id, definition.zone_id)
             self.assertEqual(self.get_element_html(feedback_popup), definition.feedback_positive)
 
@@ -86,7 +86,7 @@ class InteractionTestFixture(BaseIntegrationTest):
         feedback_message = self._get_feedback_message()
         self.assertEqual(self.get_element_html(feedback_message), self.feedback['intro'])  # precondition check
 
-        items = self._get_correct_item_to_zone()
+        items = self._get_correct_item_for_zone()
         get_locations = lambda: {item_id: self._get_item_by_value(item_id).location for item_id in items.keys()}
 
         initial_locations = get_locations()
@@ -99,7 +99,7 @@ class InteractionTestFixture(BaseIntegrationTest):
         # scrolling to have `reset` visible, otherwise it does not receive a click
         # this is due to xblock workbench header that consumes top 40px - selenium scrolls so page so that target
         # element is a the very top.
-        self.scroll_by(100)
+        self.scroll_to(100)
         reset = self._page.find_element_by_css_selector(".reset-button")
         reset.click()
 

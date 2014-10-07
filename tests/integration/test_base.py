@@ -71,5 +71,5 @@ class BaseIntegrationTest(SeleniumTest):
     def get_element_classes(self, element):
         return element.get_attribute('class').split()
 
-    def scroll_by(self, y):
+    def scroll_to(self, y):
         self.browser.execute_script('window.scrollTo(0, {0})'.format(y))

@@ -70,6 +70,5 @@
   "feedback": {
     "start": "Intro <i>Feed</i>",
     "finish": "Final <b>Feed</b>"
-  },
-  "targetImg": "http://i0.kym-cdn.com/photos/images/newsfeed/000/030/404/1260585284155.png"
+  }
 }
