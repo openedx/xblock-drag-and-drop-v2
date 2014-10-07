@@ -1,0 +1,74 @@
+{
+  "zones": [
+    {
+      "index": 1,
+      "width": 200,
+      "title": "Zone <i>A</i>",
+      "height": 100,
+      "y": "200",
+      "x": "100",
+      "id": "zone-1"
+    },
+    {
+      "index": 2,
+      "width": 200,
+      "title": "Zone <b>B</b>",
+      "height": 100,
+      "y": 0,
+      "x": 0,
+      "id": "zone-2"
+    }
+  ],
+  "items": [
+    {
+      "displayName": "<b>A</b>",
+      "feedback": {
+        "incorrect": "No <b>A</b>",
+        "correct": "Yes <b>A</b>"
+      },
+      "zone": "Zone <i>A</i>",
+      "backgroundImage": "",
+      "id": 0,
+      "size": {
+        "width": "190px",
+        "height": "auto"
+      }
+    },
+    {
+      "displayName": "<i>B</i>",
+      "feedback": {
+        "incorrect": "No <i>B</i>",
+        "correct": "Yes <i>B</i>"
+      },
+      "zone": "Zone <b>B</b>",
+      "backgroundImage": "",
+      "id": 1,
+      "size": {
+        "width": "190px",
+        "height": "auto"
+      }
+    },
+    {
+      "displayName": "<span style='color:red'>X</span>",
+      "feedback": {
+        "incorrect": "No Zone for <i>X</i>",
+        "correct": ""
+      },
+      "zone": "none",
+      "backgroundImage": "",
+      "id": 2,
+      "size": {
+        "width": "100px",
+        "height": "100px"
+      }
+    }
+  ],
+  "state": {
+    "items": {},
+    "finished": true
+  },
+  "feedback": {
+    "start": "Intro <i>Feed</i>",
+    "finish": "Final <b>Feed</b>"
+  }
+}

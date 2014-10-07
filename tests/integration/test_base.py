@@ -1,5 +1,6 @@
 # Imports ###########################################################
 from xml.sax.saxutils import escape
+from tests.utils import load_resource
 
 from workbench import scenarios
 from workbench.test.selenium_test import SeleniumTest
@@ -8,6 +9,11 @@ from workbench.test.selenium_test import SeleniumTest
 
 
 class BaseIntegrationTest(SeleniumTest):
+
+    _additional_escapes = {
+        '"': "&quot;",
+        "'": "&apos;"
+    }
 
     def setUp(self):
         super(BaseIntegrationTest, self).setUp()
@@ -30,9 +36,22 @@ class BaseIntegrationTest(SeleniumTest):
 </vertical_demo>
     """.format(display_name=escape(display_name), question_text=escape(question_text), completed=completed)
 
+    def _get_custom_scenario_xml(self, filename):
+        data = load_resource(filename)
+        return "<vertical_demo><drag-and-drop-v2 data='{data}'/></vertical_demo>".format(
+            data=escape(data, self._additional_escapes)
+        )
+
     def _add_scenario(self, identifier, title, xml):
         scenarios.add_xml_scenario(identifier, title, xml)
         self.addCleanup(scenarios.remove_scenario, identifier)
+
+    def _get_items(self):
+        items_container = self._page.find_element_by_css_selector('ul.items')
+        return items_container.find_elements_by_css_selector('li.option')
+
+    def _get_zones(self):
+        return self._page.find_elements_by_css_selector(".drag-container .zone")
 
     def _get_feedback_message(self):
         return self._page.find_element_by_css_selector(".feedback .message")
@@ -51,3 +70,6 @@ class BaseIntegrationTest(SeleniumTest):
 
     def get_element_classes(self, element):
         return element.get_attribute('class').split()
+
+    def scroll_to(self, y):
+        self.browser.execute_script('window.scrollTo(0, {0})'.format(y))
