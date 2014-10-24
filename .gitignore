@@ -36,6 +36,7 @@ htmlcov/
 .tox/
 .coverage
 .cache
+.noseids
 nosetests.xml
 coverage.xml
 
@@ -53,3 +54,7 @@ docs/_build/
 target/
 
 workbench.db
+
+# IDEs
+.idea
+.idea/*
