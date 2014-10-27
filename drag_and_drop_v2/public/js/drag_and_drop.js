@@ -74,6 +74,9 @@ function DragAndDropBlock(runtime, element) {
                 if (_fn.data.targetImg)
                     _fn.$target.css('background', 'url(' + _fn.data.targetImg + ') no-repeat');
 
+                // Display target image
+                _fn.$target.show();
+
                 // Display the zone names if required
                 if (_fn.data.displayLabels) {
                     $('p', _fn.$zones).css('visibility', 'visible');
@@ -287,7 +290,7 @@ function DragAndDropBlock(runtime, element) {
                             content: _fn.$popup.find(".popup-content").text(),
                             manually: false
                         });
-                    };
+                    }
                     publish_event({
                         event_type: "xblock.drag-and-drop-v2.feedback.opened",
                         content: str
