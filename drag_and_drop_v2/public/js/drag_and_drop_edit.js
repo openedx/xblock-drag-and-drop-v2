@@ -38,6 +38,9 @@ function DragAndDropEditBlock(runtime, element) {
                     // Compile templates
                     _fn.tpl.init();
 
+                    // Display target image
+                    _fn.$target.show();
+
                     _fn.build.clickHandlers();
                 },
                 clickHandlers: function() {
@@ -62,7 +65,7 @@ function DragAndDropEditBlock(runtime, element) {
                         }
 
                         if (_fn.data.displayLabels) {
-                            _fn.data.displayLabels = $('.display-labels-form input', element).prop('checked', true);
+                            $('.display-labels-form input', element).prop('checked', true);
                         }
 
                         $fbkTab.addClass('hidden');
@@ -73,7 +76,6 @@ function DragAndDropEditBlock(runtime, element) {
 
                         $(this).one('click', function(e) {
                             // $zoneTab -> $itemTab
-
                             e.preventDefault();
                             _fn.build.form.zone.setAll();
                             for (var i = 0; i < _fn.data.items.length; i++) {
@@ -272,16 +274,13 @@ function DragAndDropEditBlock(runtime, element) {
                             is_sel,
                             arr = _fn.build.form.zone.list,
                             dropdown = [],
-                            html;
+                            html,
+                            dropdown_items = arr.concat('none');
 
-                        for (i=0; i<arr.length; i++) {
-                            if (arr[i] == selected) is_sel = 'selected';
-                            else is_sel = '';
-                            dropdown.push(tpl({ value: arr[i], selected: is_sel }));
+                        for (i=0; i<dropdown_items.length; i++) {
+                            is_sel = (dropdown_items[i] == selected) ? 'selected' : '';
+                            dropdown.push(tpl({ value: dropdown_items[i], selected: is_sel }));
                         }
-
-                        // Add option to include dummy answers
-                        dropdown.push(tpl({ value: 'none' }));
 
                         html = dropdown.join('');
                         return new Handlebars.SafeString(html);
