@@ -2,6 +2,12 @@
     <li class="option" data-value="{{ id }}"
         style="width: {{ size.width }}; height: {{ size.height }}">
         {{{ displayName }}}
+        {{#if inputOptions}}
+          <div class="numerical-input">
+            <input class="input" type="text" />
+            <button class="submit-input">ok</button>
+          </div>
+        {{/if}}
     </li>
 </script>
 
@@ -9,6 +15,10 @@
     <li class="option" data-value="{{ id }}"
         style="width: {{ size.width }}; height: {{ size.height }}">
         <img src="{{ backgroundImage }}" />
+        {{#if inputOptions}}
+          <input class="input" type="text" />
+          <button class="submit-input">ok</button>
+        {{/if}}
     </li>
 </script>
 
@@ -75,6 +85,12 @@
             <input type="text" class="item-width" value="{{ width }}"></input>
             <label>Height (px - 0 for auto)</label>
             <input type="text" class="item-height" value="{{ height }}"></input>
+        </div>
+        <div class="row">
+          <label>Optional numerical value</label>
+          <input type="text" class="item-numerical-value" value="{{ numericalValue }}"></input>
+          <label>Margin ±</label>
+          <input type="text" class="item-numerical-margin" value="{{ numericalMargin }}"></input>
         </div>
     </div>
 </script>

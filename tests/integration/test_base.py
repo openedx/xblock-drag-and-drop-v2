@@ -1,5 +1,6 @@
 # Imports ###########################################################
 from xml.sax.saxutils import escape
+from selenium.webdriver.support.ui import WebDriverWait
 from tests.utils import load_resource
 
 from workbench import scenarios
@@ -73,3 +74,14 @@ class BaseIntegrationTest(SeleniumTest):
 
     def scroll_to(self, y):
         self.browser.execute_script('window.scrollTo(0, {0})'.format(y))
+
+    def wait_until_contains_html(self, html, elem):
+        wait = WebDriverWait(elem, 2)
+        wait.until(lambda e: html in e.get_attribute('innerHTML'),
+                   u"{} should be in {}".format(html, elem.get_attribute('innerHTML')))
+
+    def wait_until_has_class(self, class_name, elem):
+        wait = WebDriverWait(elem, 2)
+        wait.until(lambda e: class_name in e.get_attribute('class').split(),
+                   u"Class name {} not in {}".format(class_name, elem.get_attribute('class')))
+

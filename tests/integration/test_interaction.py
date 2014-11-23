@@ -4,11 +4,12 @@ from tests.integration.test_base import BaseIntegrationTest
 
 
 class ItemDefinition(object):
-    def __init__(self, item_id, zone_id, feedback_positive, feedback_negative):
+    def __init__(self, item_id, zone_id, feedback_positive, feedback_negative, input=None):
         self.feedback_negative = feedback_negative
         self.feedback_positive = feedback_positive
         self.zone_id = zone_id
         self.item_id = item_id
+        self.input = input
 
 
 class InteractionTestFixture(BaseIntegrationTest):
@@ -58,21 +59,40 @@ class InteractionTestFixture(BaseIntegrationTest):
         zones_container = self._page.find_element_by_css_selector('div.target')
         return zones_container.find_elements_by_xpath("//div[@data-zone='{zone_id}']".format(zone_id=zone_id))[0]
 
+    def _get_input_div_by_value(self, item_value):
+        element = self._get_item_by_value(item_value)
+        return element.find_element_by_class_name('numerical-input')
+
+    def _send_input(self, item_value, value):
+        element = self._get_item_by_value(item_value)
+        element.find_element_by_class_name('input').send_keys(value)
+        element.find_element_by_class_name('submit-input').click()
+
+
     def drag_item_to_zone(self, item_value, zone_id):
         element = self._get_item_by_value(item_value)
         target = self._get_zone_by_id(zone_id)
-
         action_chains = ActionChains(self.browser)
-
         action_chains.drag_and_drop(element, target).perform()
 
-    def test_correct_item_positive_feedback(self):
+    def test_item_positive_feedback_on_good_move(self):
         feedback_popup = self._page.find_element_by_css_selector(".popup-content")
         for definition in self._get_correct_item_for_zone().values():
-            self.drag_item_to_zone(definition.item_id, definition.zone_id)
-            self.assertEqual(self.get_element_html(feedback_popup), definition.feedback_positive)
+            if not definition.input:
+                self.drag_item_to_zone(definition.item_id, definition.zone_id)
+                self.wait_until_contains_html(definition.feedback_positive, feedback_popup)
 
-    def test_incorrect_item_negative_feedback(self):
+    def test_item_positive_feedback_on_good_input(self):
+        feedback_popup = self._page.find_element_by_css_selector(".popup-content")
+        for definition in self._get_correct_item_for_zone().values():
+            if definition.input:
+                self.drag_item_to_zone(definition.item_id, definition.zone_id)
+                self._send_input(definition.item_id, definition.input)
+                input_div = self._get_input_div_by_value(definition.item_id)
+                self.wait_until_has_class('correct', input_div)
+                self.wait_until_contains_html(definition.feedback_positive, feedback_popup)
+
+    def test_item_negative_feedback_on_bad_move(self):
         feedback_popup = self._page.find_element_by_css_selector(".popup-content")
 
         for definition in self.items_map.values():
@@ -80,7 +100,17 @@ class InteractionTestFixture(BaseIntegrationTest):
                 if zone == definition.zone_id:
                     continue
                 self.drag_item_to_zone(definition.item_id, zone)
-                self.assertEqual(self.get_element_html(feedback_popup), definition.feedback_negative)
+                self.wait_until_contains_html(definition.feedback_negative, feedback_popup)
+
+    def test_item_positive_feedback_on_bad_input(self):
+        feedback_popup = self._page.find_element_by_css_selector(".popup-content")
+        for definition in self._get_correct_item_for_zone().values():
+            if definition.input:
+                self.drag_item_to_zone(definition.item_id, definition.zone_id)
+                self._send_input(definition.item_id, '1999999')
+                input_div = self._get_input_div_by_value(definition.item_id)
+                self.wait_until_has_class('incorrect', input_div)
+                self.wait_until_contains_html(definition.feedback_negative, feedback_popup)
 
     def test_final_feedback_and_reset(self):
         feedback_message = self._get_feedback_message()
@@ -93,8 +123,12 @@ class InteractionTestFixture(BaseIntegrationTest):
 
         for item_key, definition in items.items():
             self.drag_item_to_zone(item_key, definition.zone_id)
+            if definition.input:
+                self._send_input(item_key, definition.input)
+                input_div = self._get_input_div_by_value(item_key)
+                self.wait_until_has_class('correct', input_div)
 
-        self.assertEqual(self.get_element_html(feedback_message), self.feedback['final'])
+        self.wait_until_contains_html(self.feedback['final'], feedback_message)
 
         # scrolling to have `reset` visible, otherwise it does not receive a click
         # this is due to xblock workbench header that consumes top 40px - selenium scrolls so page so that target
@@ -103,7 +137,7 @@ class InteractionTestFixture(BaseIntegrationTest):
         reset = self._page.find_element_by_css_selector(".reset-button")
         reset.click()
 
-        self.assertEqual(self.get_element_html(feedback_message), self.feedback['intro'])
+        self.wait_until_contains_html(self.feedback['intro'], feedback_message)
 
         locations_after_reset = get_locations()
         for item_key in items.keys():
@@ -113,7 +147,7 @@ class InteractionTestFixture(BaseIntegrationTest):
 class CustomDataInteractionTest(InteractionTestFixture):
     items_map = {
         0: ItemDefinition(0, 'Zone A', "Yes A", "No A"),
-        1: ItemDefinition(1, 'Zone B', "Yes B", "No B"),
+        1: ItemDefinition(1, 'Zone B', "Yes B", "No B", "102"),
         2: ItemDefinition(2, None, "", "No Zone for this")
     }
 
@@ -131,7 +165,7 @@ class CustomDataInteractionTest(InteractionTestFixture):
 class CustomHtmlDataInteractionTest(InteractionTestFixture):
     items_map = {
         0: ItemDefinition(0, 'Zone <i>A</i>', "Yes <b>A</b>", "No <b>A</b>"),
-        1: ItemDefinition(1, 'Zone <b>B</b>', "Yes <i>B</i>", "No <i>B</i>"),
+        1: ItemDefinition(1, 'Zone <b>B</b>', "Yes <i>B</i>", "No <i>B</i>", "95"),
         2: ItemDefinition(2, None, "", "No Zone for <i>X</i>")
     }
 

@@ -155,12 +155,18 @@ class DragAndDropBlock(XBlock):
             # Strip answers
             del item['feedback']
             del item['zone']
+            item['inputOptions'] = item.has_key('inputOptions')
 
         if not self._is_finished():
             del data['feedback']['finish']
 
+        item_state = self._get_item_state()
+        for item_id, item in item_state.iteritems():
+            definition = next(i for i in self.data['items'] if str(i['id']) == item_id)
+            item['correct_input'] = self._is_correct_input(definition, item.get('input'))
+
         data['state'] = {
-            'items': self.item_state,
+            'items': item_state,
             'finished': self._is_finished()
         }
 
@@ -171,44 +177,71 @@ class DragAndDropBlock(XBlock):
         item = next(i for i in self.data['items'] if i['id'] == attempt['val'])
         tot_items = sum(1 for i in self.data['items'] if i['zone'] != 'none')
 
+        state = None
+        feedback = item['feedback']['incorrect']
         final_feedback = None
         is_correct = False
+        is_correct_location = False
 
-        if item['zone'] == attempt['zone']:
-            self.item_state[item['id']] = (attempt['top'], attempt['left'])
+        if 'input' in attempt:
+            state = self._get_item_state().get(str(item['id']))
+            if state:
+                state['input'] = attempt['input']
+                is_correct_location = True
+                if self._is_correct_input(item, attempt['input']):
+                    is_correct = True
+                    feedback = item['feedback']['correct']
+                else:
+                    is_correct = False
+        elif item['zone'] == attempt['zone']:
+            is_correct_location = True
+            if item.has_key('inputOptions'):
+                # Input value will have to be provided for the item.
+                # It is not (yet) correct and no feedback should be shown yet.
+                is_correct = False
+                feedback = None
+            else:
+                # If this item has no input value set, we are done with it.
+                is_correct = True
+                feedback = item['feedback']['correct']
+            state = {'top': attempt['top'], 'left': attempt['left']}
 
-            is_correct = True
+        if state:
+            self.item_state[str(item['id'])] = state
 
+        if self._is_finished():
+            final_feedback = self.data['feedback']['finish']
+
+        # don't publish the grade if the student has already completed the exercise
+        if not self.completed:
             if self._is_finished():
-                final_feedback = self.data['feedback']['finish']
-
-            # don't publish the grade if the student has already completed the exercise
-            if not self.completed:
-                if self._is_finished():
-                    self.completed = True
-                try:
-                    self.runtime.publish(self, 'grade', {
-                        'value': len(self.item_state) / float(tot_items) * self.weight,
-                        'max_value': self.weight,
-                    })
-                except NotImplementedError:
-                    # Note, this publish method is unimplemented in Studio runtimes,
-                    # so we have to figure that we're running in Studio for now
-                    pass
+                self.completed = True
+            try:
+                self.runtime.publish(self, 'grade', {
+                    'value': self._get_grade(),
+                    'max_value': self.weight,
+                })
+            except NotImplementedError:
+                # Note, this publish method is unimplemented in Studio runtimes,
+                # so we have to figure that we're running in Studio for now
+                pass
 
         self.runtime.publish(self, 'xblock.drag-and-drop-v2.item.dropped', {
             'user_id': self.scope_ids.user_id,
             'component_id': self._get_unique_id(),
             'item_id': item['id'],
-            'location': attempt['zone'],
+            'location': attempt.get('zone'),
+            'input': attempt.get('input'),
+            'is_correct_location': is_correct_location,
             'is_correct': is_correct,
         })
 
         return {
             'correct': is_correct,
+            'correct_location': is_correct_location,
             'finished': self._is_finished(),
             'final_feedback': final_feedback,
-            'feedback': item['feedback']['correct'] if is_correct else item['feedback']['incorrect']
+            'feedback': feedback
         }
 
     @XBlock.json_handler
@@ -216,10 +249,77 @@ class DragAndDropBlock(XBlock):
         self.item_state = {}
         return {'result':'success'}
 
+    def _get_item_state(self):
+        """
+        Returns the user item state.
+        Converts to a dict if data is stored in legacy tuple form.
+        """
+        state = {}
+
+        for item_id, item in self.item_state.iteritems():
+            if isinstance(item, dict):
+                state[item_id] = item
+            else:
+                state[item_id] = {'top': item[0], 'left': item[1]}
+
+        return state
+
+    def _is_correct_input(self, item, val):
+        """
+        Is submitted numerical value within the tolerated margin for this item.
+        """
+        input_options = item.get('inputOptions')
+
+        if input_options:
+            try:
+                submitted_value = float(val)
+            except:
+                return False
+            else:
+                expected_value = input_options['value']
+                margin = input_options['margin']
+                return abs(submitted_value - expected_value) <= margin
+        else:
+            return True
+
+    def _get_grade(self):
+        """
+        Returns the student's grade for this block.
+        """
+        correct_count = 0
+        total_count = 0
+        item_state = self._get_item_state()
+
+        for item in self.data['items']:
+            if item['zone'] != 'none':
+                total_count += 1
+                item_id = str(item['id'])
+                if item_id in item_state:
+                    if self._is_correct_input(item, item_state[item_id].get('input')):
+                        correct_count += 1
+
+        return correct_count / float(total_count) * self.weight
+
     def _is_finished(self):
-        """All items are at their correct place"""
-        tot_items = sum(1 for i in self.data['items'] if i['zone'] != 'none')
-        return len(self.item_state) == tot_items
+        """
+        All items are at their correct place and a value has been
+        submitted for each item that expects a value.
+        """
+        completed_count = 0
+        total_count = 0
+        item_state = self._get_item_state()
+        for item in self.data['items']:
+            if item['zone'] != 'none':
+                total_count += 1
+                item_id = str(item['id'])
+                if item_id in item_state:
+                    if item.has_key('inputOptions'):
+                        if item_state[item_id].has_key('input'):
+                            completed_count += 1
+                    else:
+                        completed_count += 1
+
+        return completed_count == total_count
 
     @XBlock.json_handler
     def publish_event(self, data, suffix=''):
@@ -244,5 +344,7 @@ class DragAndDropBlock(XBlock):
 
     @staticmethod
     def workbench_scenarios():
-        """A canned scenario for display in the workbench."""
+        """
+        A canned scenario for display in the workbench.
+        """
         return [("Drag-and-drop-v2 scenario", "<vertical_demo><drag-and-drop-v2/></vertical_demo>")]

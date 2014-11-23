@@ -9,6 +9,7 @@ function DragAndDropBlock(runtime, element) {
 
     var dragAndDrop = (function($) {
         var _fn = {
+            pupup_ts: Date.now(),
 
             // DOM Elements
             $ul: $('.xblock--drag-and-drop .items', element),
@@ -59,7 +60,7 @@ function DragAndDropBlock(runtime, element) {
                 _fn.$zones.droppable(_fn.options.drop);
 
                 // Init click handlers
-                _fn.clickHandlers.init(_fn.$items, _fn.$zones);
+                _fn.eventHandlers.init(_fn.$items, _fn.$zones);
 
                 // Position the already correct items
                 _fn.items.init();
@@ -94,26 +95,38 @@ function DragAndDropBlock(runtime, element) {
 
             reset: function() {
                 _fn.$items.draggable('enable');
+                _fn.$items.find('.numerical-input').removeClass('correct incorrect');
+                _fn.$items.find('.numerical-input .input').prop('disabled', false).val('');
+                _fn.$items.find('.numerical-input .submit-input').prop('disabled', false);
                 _fn.$items.each(function(index, element) {
-                    _fn.clickHandlers.drag.reset($(element));
+                    _fn.eventHandlers.drag.reset($(element));
                 });
                 _fn.$popup.hide();
                 _fn.$reset_button.hide();
                 _fn.feedback.set(_fn.data.feedback.start);
             },
 
-            clickHandlers: {
+            eventHandlers: {
                 init: function($drag, $dropzone) {
-                    var clk = _fn.clickHandlers;
+                    var handlers = _fn.eventHandlers;
 
-                    $drag.on('dragstart', clk.drag.start);
-                    $drag.on('dragstop', clk.drag.stop);
+                    $drag.on('dragstart', handlers.drag.start);
+                    $drag.on('dragstop', handlers.drag.stop);
 
-                    $dropzone.on('drop', clk.drop.success);
-                    $dropzone.on('dropover', clk.drop.hover);
+                    $dropzone.on('drop', handlers.drop.success);
+                    $dropzone.on('dropover', handlers.drop.hover);
 
-                    $(document).on('click', clk.popup.close);
-                    _fn.$reset_button.on('click', clk.problem.reset);
+                    $(element).on('click', '.submit-input', handlers.drag.submitInput);
+
+                    $(document).on('click', function(evt) {
+                        // Click should only close the popup if the popup has been
+                        // visible for at least one second.
+                        var popup_timeout = 1000;
+                        if (Date.now() - _fn.popup_ts > popup_timeout) {
+                            handlers.popup.close(evt);
+                        }
+                    });
+                    _fn.$reset_button.on('click', handlers.problem.reset);
                 },
                 problem: {
                     reset: function(event, ui) {
@@ -147,7 +160,7 @@ function DragAndDropBlock(runtime, element) {
                 },
                 drag: {
                     start: function(event, ui) {
-                        _fn.clickHandlers.popup.close(event, ui);
+                        _fn.eventHandlers.popup.close(event, ui);
 
                         target = $(event.currentTarget);
                         target.removeClass('within-dropzone fade');
@@ -157,15 +170,19 @@ function DragAndDropBlock(runtime, element) {
                     },
 
                     stop: function(event, ui) {
-                        var $el = $(event.currentTarget),
-                            val = $el.data('value'),
-                            zone = $el.data('zone') || null;
+                        var $el = $(event.currentTarget);
 
                         if (!$el.hasClass('within-dropzone')) {
                             // Return to original position
-                            _fn.clickHandlers.drag.reset($el);
-                            return;
+                            _fn.eventHandlers.drag.reset($el);
+                        } else {
+                            _fn.eventHandlers.drag.submitLocation($el);
                         }
+                    },
+
+                    submitLocation: function($el) {
+                        var val = $el.data('value'),
+                            zone = $el.data('zone') || null;
 
                         $.post(runtime.handlerUrl(element, 'do_attempt'),
                             JSON.stringify({
@@ -174,7 +191,7 @@ function DragAndDropBlock(runtime, element) {
                                 top: $el.css('top'),
                                 left: $el.css('left')
                         }), 'json').done(function(data){
-                            if (data.correct) {
+                            if (data.correct_location) {
                                 $el.draggable('disable');
 
                                 if (data.finished) {
@@ -182,7 +199,42 @@ function DragAndDropBlock(runtime, element) {
                                 }
                             } else {
                                 // Return to original position
-                                _fn.clickHandlers.drag.reset($el);
+                                _fn.eventHandlers.drag.reset($el);
+                            }
+
+                            if (data.feedback) {
+                                _fn.feedback.popup(data.feedback, data.correct);
+                            }
+                        });
+                    },
+
+                    submitInput: function(evt) {
+                        var $el = $(this).closest('li.option');
+                        var $input_div = $el.find('.numerical-input');
+                        var $input = $input_div.find('.input');
+                        var val = $el.data('value');
+
+                        if (!$input.val()) {
+                            // Don't submit if the user didn't enter anything yet.
+                            return;
+                        }
+
+                        $input.prop('disabled', true);
+                        $input_div.find('.submit-input').prop('disabled', true);
+
+                        $.post(runtime.handlerUrl(element, 'do_attempt'),
+                            JSON.stringify({
+                                val: val,
+                                input: $input.val()
+                        }), 'json').done(function(data){
+                            if (data.correct) {
+                                $input_div.removeClass('incorrect').addClass('correct');
+                            } else {
+                                $input_div.removeClass('correct').addClass('incorrect');
+                            }
+
+                            if (data.finished) {
+                                _fn.finish(data.final_feedback);
                             }
 
                             if (data.feedback) {
@@ -192,7 +244,7 @@ function DragAndDropBlock(runtime, element) {
                     },
 
                     set: function($el, top, left) {
-                        $el.addClass('within-dropzone fade')
+                        $el.addClass('within-dropzone')
                             .css({
                                 top: top,
                                 left: left
@@ -215,6 +267,10 @@ function DragAndDropBlock(runtime, element) {
                     },
                     success: function(event, ui) {
                         ui.draggable.addClass('within-dropzone');
+                        var item = _fn.data.items[ui.draggable.data('value')];
+                        if (item.inputOptions) {
+                            ui.draggable.find('.input').focus();
+                        }
                     }
                 }
             },
@@ -225,8 +281,19 @@ function DragAndDropBlock(runtime, element) {
                         var $el = $(this),
                             saved_entry = _fn.data.state.items[$el.data('value')];
                         if (saved_entry) {
-                            _fn.clickHandlers.drag.set($el,
-                                saved_entry[0], saved_entry[1]);
+                            var $input_div = $el.find('.numerical-input')
+                            var $input = $input_div.find('.input');
+                            $input.val(saved_entry.input);
+                          console.log('wuwuwu', saved_entry)
+                            if ('input' in saved_entry) {
+                                $input_div.addClass(saved_entry.correct_input ? 'correct' : 'incorrect');
+                                $input.prop('disabled', true);
+                                $input_div.find('.submit-input').prop('disabled', true);
+                            }
+                            if ('input' in saved_entry || saved_entry.correct_input) {
+                                $el.addClass('fade');
+                            }
+                            _fn.eventHandlers.drag.set($el, saved_entry.top, saved_entry.left);
                         }
                     });
                 },
@@ -297,7 +364,9 @@ function DragAndDropBlock(runtime, element) {
                     });
 
                     _fn.$popup.find(".popup-content").html(str);
-                    return _fn.$popup.show();
+                    _fn.$popup.show();
+
+                    _fn.popup_ts = Date.now();
                 }
             },
 
