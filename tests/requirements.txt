@@ -1,7 +1,27 @@
-mock
-nose
-coverage
-rednose
-nose-parameterized
+bok_choy==0.3.2
+cookiecutter==0.7.1
+coverage==3.7.1
+diff-cover==0.7.2
+Django==1.4.16
+django_nose==1.2
+fs==0.5.0
+lazy==1.2
+lxml==3.4.1
+mock==1.0.1
+nose==1.3.4
+nose-parameterized==0.3.5
+pep8==1.5.7
+pylint==0.28
+pypng==0.0.17
+rednose==0.4.1
+requests==2.4.3
+selenium==2.44.0
+simplejson==3.6.5
+webob==1.4
+
+-e git+https://github.com/open-craft/XBlock.git@3ece535ee8e095f21de2f8b28cc720145749f0d6#egg=XBlock
+-e git+https://github.com/edx/acid-block.git@459aff7b63db8f2c5decd1755706c1a64fb4ebb1#egg=acid-xblock
+-e git+https://github.com/pmitros/django-pyfs.git@514607d78535fd80bfd23184cd292ee5799b500d#egg=djpyfs
+-e git+https://github.com/open-craft/xblock-sdk.git@39b00c58931664ce29bb4b38df827fe237a69613#egg=xblock-sdk
 
 -e .

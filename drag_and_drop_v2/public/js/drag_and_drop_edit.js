@@ -312,6 +312,11 @@ function DragAndDropEditBlock(runtime, element) {
                                 oldItem.size.height.length - 2);
                             if (ctx.height == 'au') ctx.height = '0';
 
+                            if (oldItem && oldItem.inputOptions) {
+                                ctx.numericalValue = oldItem.inputOptions.value;
+                                ctx.numericalMargin = oldItem.inputOptions.margin;
+                            }
+
                             _fn.build.form.item.count++;
                             $form.append(tpl(ctx));
                             _fn.build.form.item.enableDelete();
@@ -361,7 +366,7 @@ function DragAndDropEditBlock(runtime, element) {
                                 if (width === '0') width = 'auto';
                                 else width = width + 'px';
 
-                                items.push({
+                                var data = {
                                     displayName: name,
                                     zone: $el.find('.zone-select').val(),
                                     id: i,
@@ -374,7 +379,18 @@ function DragAndDropEditBlock(runtime, element) {
                                         height: height
                                     },
                                     backgroundImage: backgroundImage
-                                });
+                                };
+
+                                var numValue = parseFloat($el.find('.item-numerical-value').val());
+                                var numMargin = parseFloat($el.find('.item-numerical-margin').val());
+                                if (isFinite(numValue)) {
+                                    data.inputOptions = {
+                                        value: numValue,
+                                        margin: isFinite(numMargin) ? numMargin : 0
+                                    }
+                                }
+
+                                items.push(data);
                             }
                         });
 

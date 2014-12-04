@@ -20,6 +20,7 @@ class TestCustomDataDragAndDropRendering(BaseIntegrationTest):
         items = self._get_items()
 
         self.assertEqual(len(items), 3)
-        self.assertEqual(self.get_element_html(items[0]), "<b>A</b>")
-        self.assertEqual(self.get_element_html(items[1]), "<i>B</i>")
-        self.assertEqual(self.get_element_html(items[2]), '<span style="color:red">X</span>')
+        self.assertIn('<b>A</b>', self.get_element_html(items[0]))
+        self.assertIn('<i>B</i>',  self.get_element_html(items[1]))
+        self.assertIn('<input class="input" type="text">',  self.get_element_html(items[1]))
+        self.assertIn('<span style="color:red">X</span>', self.get_element_html(items[2]))
