@@ -1,27 +1,3 @@
-<script id="item-tpl" type="text/html">
-    <li class="option" data-value="{{ id }}"
-        style="width: {{ size.width }}; height: {{ size.height }}">
-        {{{ displayName }}}
-        {{#if inputOptions}}
-          <div class="numerical-input">
-            <input class="input" type="text" />
-            <button class="submit-input">ok</button>
-          </div>
-        {{/if}}
-    </li>
-</script>
-
-<script id="image-item-tpl" type="text/html">
-    <li class="option" data-value="{{ id }}"
-        style="width: {{ size.width }}; height: {{ size.height }}">
-        <img src="{{ backgroundImage }}" />
-        {{#if inputOptions}}
-          <input class="input" type="text" />
-          <button class="submit-input">ok</button>
-        {{/if}}
-    </li>
-</script>
-
 <script id="zone-element-tpl" type="text/html">
     <div id="{{ id }}" class="zone" data-zone="{{ title }}" style="
         top:{{ y }}px;

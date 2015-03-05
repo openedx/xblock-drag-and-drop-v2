@@ -1,4 +1,4 @@
-default_data = {
+DEFAULT_DATA = {
   "zones": [
     {
       "index": 1,

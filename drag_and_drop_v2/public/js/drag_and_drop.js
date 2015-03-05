@@ -1,388 +1,261 @@
 function DragAndDropBlock(runtime, element) {
-    function publish_event(data) {
-      $.ajax({
-          type: "POST",
-          url: runtime.handlerUrl(element, 'publish_event'),
-          data: JSON.stringify(data)
-      });
-    }
+    var root = $(element).find('.xblock--drag-and-drop')[0];
 
-    var dragAndDrop = (function($) {
-        var _fn = {
-            pupup_ts: Date.now(),
+    var __state;
+    var __vdom = virtualDom.h();  // blank virtual DOM
 
-            // DOM Elements
-            $ul: $('.xblock--drag-and-drop .items', element),
-            $target: $('.xblock--drag-and-drop .target-img', element),
-            $feedback: $('.xblock--drag-and-drop .feedback .message', element),
-            $popup: $('.xblock--drag-and-drop .popup', element),
-            $reset_button: $('.xblock--drag-and-drop .reset-button', element),
+    var init = function() {
+        $.ajax(runtime.handlerUrl(element, 'get_data'), {
+            dataType: 'json'
+        }).done(function(data){
+            setState(data);
+            initDroppable();
+        });
 
-            // Cannot set until items added to DOM
-            $items: {}, // $('.xblock--drag-and-drop .items .option'),
-            $zones: {}, // $('.xblock--drag-and-drop .target .zone'),
+        $(document).on('mousedown touchstart', closePopup);
+        $(element).on('click', '.reset-button', resetExercise);
+        $(element).on('click', '.submit-input', submitInput);
 
-            // jQuery UI Draggable options
-            options: {
-                drag: {
+        publishEvent({event_type: 'xblock.drag-and-drop-v2.loaded'});
+    };
+
+    var getState = function() {
+        return __state;
+    };
+
+    var setState = function(new_state) {
+        if (new_state.state.feedback) {
+            if (new_state.state.feedback !== __state.state.feedback) {
+                publishEvent({
+                    event_type: 'xblock.drag-and-drop-v2.feedback.closed',
+                    content: __state.state.feedback,
+                    manually: false
+                });
+            }
+            publishEvent({
+                event_type: 'xblock.drag-and-drop-v2.feedback.opened',
+                content: new_state.state.feedback
+            });
+        }
+        __state = new_state;
+
+        updateDOM(new_state);
+        destroyDraggable();
+        if (!new_state.state.finished) {
+            initDraggable();
+        }
+    };
+
+    var updateDOM = function(state) {
+        var new_vdom = render(state);
+        var patches = virtualDom.diff(__vdom, new_vdom);
+        root = virtualDom.patch(root, patches);
+        __vdom = new_vdom;
+    };
+
+    var publishEvent = function(data) {
+        $.ajax({
+            type: 'POST',
+            url: runtime.handlerUrl(element, 'publish_event'),
+            data: JSON.stringify(data)
+        });
+    };
+
+    var initDroppable = function() {
+        $(root).find('.zone').droppable({
+            accept: '.xblock--drag-and-drop .items .option',
+            tolerance: 'pointer',
+            drop: function(evt, ui) {
+                var item_id = ui.draggable.data('value');
+                var zone = $(this).data('zone');
+                var position = ui.draggable.position();
+                var top = position.top + 'px';
+                var left = position.left + 'px';
+                var state = getState();
+                state.state.items[item_id] = {
+                    top: top,
+                    left: left,
+                    absolute: true,
+                    submitting_location: true
+                };
+                // Wrap in setTimeout to let the droppable event finish.
+                setTimeout(function() {
+                    setState(state);
+                    submitLocation(item_id, zone, top, left);
+                }, 0);
+            }
+        });
+    };
+
+    var initDraggable = function() {
+        $(root).find('.items .option').not('[data-drag-disabled=true]').each(function() {
+            try {
+                $(this).draggable({
                     containment: '.xblock--drag-and-drop .drag-container',
                     cursor: 'move',
-                    stack: '.xblock--drag-and-drop .items .option'
-                },
-                drop: {
-                    accept: '.xblock--drag-and-drop .items .option',
-                    tolerance: 'pointer'
-                }
-            },
-
-            tpl: {
-                init: function() {
-                    _fn.tpl = {
-                        item: Handlebars.compile($("#item-tpl", element).html()),
-                        imageItem: Handlebars.compile($("#image-item-tpl", element).html()),
-                        zoneElement: Handlebars.compile($("#zone-element-tpl", element).html())
-                    };
-                }
-            },
-
-            init: function(data) {
-                _fn.data = data;
-
-                // Compile templates
-                _fn.tpl.init();
-
-                // Add the items to the page
-                _fn.items.draw();
-                _fn.zones.draw();
-
-                // Init drag and drop plugin
-                _fn.$items.draggable(_fn.options.drag);
-                _fn.$zones.droppable(_fn.options.drop);
-
-                // Init click handlers
-                _fn.eventHandlers.init(_fn.$items, _fn.$zones);
-
-                // Position the already correct items
-                _fn.items.init();
-
-                // Load welcome or final feedback
-                if (_fn.data.state.finished)
-                    _fn.finish(_fn.data.feedback.finish);
-                else
-                    _fn.feedback.set(_fn.data.feedback.start);
-
-                // Set the target image
-                if (_fn.data.targetImg)
-                    _fn.$target.css('background', 'url(' + _fn.data.targetImg + ') no-repeat');
-
-                // Display target image
-                _fn.$target.show();
-
-                // Display the zone names if required
-                if (_fn.data.displayLabels) {
-                    $('p', _fn.$zones).css('visibility', 'visible');
-                }
-            },
-
-            finish: function(final_feedback) {
-                // Disable any decoy items
-                _fn.$items.draggable('disable');
-                _fn.$reset_button.show();
-
-                // Show final feedback
-                if (final_feedback) _fn.feedback.set(final_feedback);
-            },
-
-            reset: function() {
-                _fn.$items.draggable('enable');
-                _fn.$items.find('.numerical-input').removeClass('correct incorrect');
-                _fn.$items.find('.numerical-input .input').prop('disabled', false).val('');
-                _fn.$items.find('.numerical-input .submit-input').prop('disabled', false);
-                _fn.$items.each(function(index, element) {
-                    _fn.eventHandlers.drag.reset($(element));
+                    stack: '.xblock--drag-and-drop .items .option',
+                    revert: 'invalid',
+                    revertDuration: 150,
+                    start: function(evt, ui) {
+                        var item_id = $(this).data('value');
+                        publishEvent({
+                            event_type: 'xblock.drag-and-drop-v2.item.picked-up',
+                            item_id: item_id
+                        });
+                    }
                 });
-                _fn.$popup.hide();
-                _fn.$reset_button.hide();
-                _fn.feedback.set(_fn.data.feedback.start);
-            },
+            } catch (e) {
+                // Initializing the draggable will fail if draggable was already
+                // initialized. That's expected, ignore the exception.
+            }
+        });
+    };
 
-            eventHandlers: {
-                init: function($drag, $dropzone) {
-                    var handlers = _fn.eventHandlers;
+    var destroyDraggable = function() {
+        $(root).find('.items .option[data-drag-disabled=true]').each(function() {
+            try {
+                $(this).draggable('destroy');
+            } catch (e) {
+                // Destroying the draggable will fail if draggable was
+                // not initialized in the first place. Ignore the exception.
+            }
+        });
+    };
 
-                    $drag.on('dragstart', handlers.drag.start);
-                    $drag.on('dragstop', handlers.drag.stop);
+    var submitLocation = function(item_id, zone, top, left) {
+        if (!zone) {
+            return;
+        }
+        var url = runtime.handlerUrl(element, 'do_attempt');
+        var data = {val: item_id, zone: zone, top: top, left: left};
+        $.post(url, JSON.stringify(data), 'json').done(function(data){
+            var state = getState();
+            if (data.correct_location) {
+                state.state.items[item_id].correct_input = Boolean(data.correct);
+                state.state.items[item_id].submitting_location = false;
+            } else {
+                delete state.state.items[item_id];
+            }
+            state.state.feedback = data.feedback;
+            if (data.finished) {
+                state.state.finished = true;
+                state.feedback.finish = data.final_feedback;
+            }
+            setState(state);
+        });
+    };
 
-                    $dropzone.on('drop', handlers.drop.success);
-                    $dropzone.on('dropover', handlers.drop.hover);
+    var submitInput = function(evt) {
+        var item = $(evt.target).closest('.option');
+        var input_div = item.find('.numerical-input');
+        var input = input_div.find('.input');
+        var input_value = input.val();
+        var item_id = item.data('value');
 
-                    $(element).on('click', '.submit-input', handlers.drag.submitInput);
+        if (!input_value) {
+            // Don't submit if the user didn't enter anything yet.
+            return;
+        }
 
-                    $(document).on('click', function(evt) {
-                        // Click should only close the popup if the popup has been
-                        // visible for at least one second.
-                        var popup_timeout = 1000;
-                        if (Date.now() - _fn.popup_ts > popup_timeout) {
-                            handlers.popup.close(evt);
-                        }
-                    });
-                    _fn.$reset_button.on('click', handlers.problem.reset);
-                },
-                problem: {
-                    reset: function(event, ui) {
-                        $.ajax({
-                            type: "POST",
-                            url: runtime.handlerUrl(element, "reset"),
-                            data: "{}",
-                            success: _fn.reset
-                        });
-                    }
-                },
-                popup: {
-                    close: function(event, ui) {
-                        target = $(event.target);
-                        popup_box = ".xblock--drag-and-drop .popup";
-                        close_button = ".xblock--drag-and-drop .popup .close";
-                        if (target.is(popup_box)) {
-                            return;
-                        };
-                        if (target.parents(popup_box).length>0 && !target.is(close_button)) {
-                            return;
-                        };
+        var state = getState();
+        state.state.items[item_id].input = input_value;
+        state.state.items[item_id].submitting_input = true;
+        setState(state);
 
-                        _fn.$popup.hide();
-                        publish_event({
-                            event_type: 'xblock.drag-and-drop-v2.feedback.closed',
-                            content: _fn.$popup.find(".popup-content").text(),
-                            manually: true
-                        });
-                    }
-                },
-                drag: {
-                    start: function(event, ui) {
-                        _fn.eventHandlers.popup.close(event, ui);
+        var url = runtime.handlerUrl(element, 'do_attempt');
+        var data = {val: item_id, input: input_value};
+        $.post(url, JSON.stringify(data), 'json').done(function(data) {
+            state.state.items[item_id].submitting_input = false;
+            state.state.items[item_id].correct_input = data.correct;
+            state.state.feedback = data.feedback;
+            if (data.finished) {
+                state.state.finished = true;
+                state.feedback.finish = data.final_feedback;
+            }
+            setState(state);
+        });
+    };
 
-                        target = $(event.currentTarget);
-                        target.removeClass('within-dropzone fade');
+    var closePopup = function(evt) {
+        var target = $(evt.target);
+        var popup_box = '.xblock--drag-and-drop .popup';
+        var close_button = '.xblock--drag-and-drop .popup .close';
+        var submit_input_button = '.xblock--drag-and-drop .submit-input';
+        var state = getState();
 
-                        var item_id = target.data("value");
-                        publish_event({event_type:'xblock.drag-and-drop-v2.item.picked-up', item_id:item_id});
-                    },
+        if (!state.state.feedback) {
+            return;
+        }
+        if (target.is(popup_box) || target.is(submit_input_button)) {
+            return;
+        }
+        if (target.parents(popup_box).length && !target.is(close_button)) {
+            return;
+        }
 
-                    stop: function(event, ui) {
-                        var $el = $(event.currentTarget);
+        publishEvent({
+            event_type: 'xblock.drag-and-drop-v2.feedback.closed',
+            content: state.state.feedback,
+            manually: true
+        });
 
-                        if (!$el.hasClass('within-dropzone')) {
-                            // Return to original position
-                            _fn.eventHandlers.drag.reset($el);
-                        } else {
-                            _fn.eventHandlers.drag.submitLocation($el);
-                        }
-                    },
+        delete state.state.feedback;
+        setState(state);
+    };
 
-                    submitLocation: function($el) {
-                        var val = $el.data('value'),
-                            zone = $el.data('zone') || null;
+    var resetExercise = function() {
+        $.ajax({
+            type: 'POST',
+            url: runtime.handlerUrl(element, 'reset'),
+            data: '{}',
+            success: setState
+        });
+    };
 
-                        $.post(runtime.handlerUrl(element, 'do_attempt'),
-                            JSON.stringify({
-                                val: val,
-                                zone: zone,
-                                top: $el.css('top'),
-                                left: $el.css('left')
-                        }), 'json').done(function(data){
-                            if (data.correct_location) {
-                                $el.draggable('disable');
-
-                                if (data.finished) {
-                                    _fn.finish(data.final_feedback);
-                                }
-                            } else {
-                                // Return to original position
-                                _fn.eventHandlers.drag.reset($el);
-                            }
-
-                            if (data.feedback) {
-                                _fn.feedback.popup(data.feedback, data.correct);
-                            }
-                        });
-                    },
-
-                    submitInput: function(evt) {
-                        var $el = $(this).closest('li.option');
-                        var $input_div = $el.find('.numerical-input');
-                        var $input = $input_div.find('.input');
-                        var val = $el.data('value');
-
-                        if (!$input.val()) {
-                            // Don't submit if the user didn't enter anything yet.
-                            return;
-                        }
-
-                        $input.prop('disabled', true);
-                        $input_div.find('.submit-input').prop('disabled', true);
-
-                        $.post(runtime.handlerUrl(element, 'do_attempt'),
-                            JSON.stringify({
-                                val: val,
-                                input: $input.val()
-                        }), 'json').done(function(data){
-                            if (data.correct) {
-                                $input_div.removeClass('incorrect').addClass('correct');
-                            } else {
-                                $input_div.removeClass('correct').addClass('incorrect');
-                            }
-
-                            if (data.finished) {
-                                _fn.finish(data.final_feedback);
-                            }
-
-                            if (data.feedback) {
-                                _fn.feedback.popup(data.feedback, data.correct);
-                            }
-                        });
-                    },
-
-                    set: function($el, top, left) {
-                        $el.addClass('within-dropzone')
-                            .css({
-                                top: top,
-                                left: left
-                            })
-                            .draggable('disable');
-                    },
-
-                    reset: function($el) {
-                        $el.removeClass('within-dropzone fade')
-                            .css({
-                                top: '',
-                                left: ''
-                            });
-                    }
-                },
-                drop: {
-                    hover: function(event, ui) {
-                        var zone = $(event.currentTarget).data('zone');
-                        ui.draggable.data('zone', zone);
-                    },
-                    success: function(event, ui) {
-                        ui.draggable.addClass('within-dropzone');
-                        var item = _fn.data.items[ui.draggable.data('value')];
-                        if (item.inputOptions) {
-                            ui.draggable.find('.input').focus();
-                        }
-                    }
+    var render = function(state) {
+        var items = state.items.map(function(item) {
+            var item_state = state.state.items[item.id];
+            var position = item_state || {};
+            var input = null;
+            if (item.inputOptions) {
+                input = {
+                    is_visible: item_state && !item_state.submitting_location,
+                    has_value: Boolean(item_state && 'input' in item_state),
+                    value : (item_state && item_state.input) || '',
+                    class_name: undefined,
+                };
+                if (input.has_value && !item_state.submitting_input) {
+                    input.class_name = item_state.correct_input ? 'correct' : 'incorrect';
                 }
-            },
+            }
+            return {
+                value: item.id,
+                drag_disabled: Boolean(item_state || state.state.finished),
+                width: item.size.width,
+                height: item.size.height,
+                top: position.top,
+                left: position.left,
+                position: position.absolute ? 'absolute' : 'relative',
+                class_name: item_state && ('input' in item_state || item_state.correct_input) ? 'fade': undefined,
+                input: input,
+                content_html: item.backgroundImage ? '<img src="' + item.backgroundImage + '"/>' : item.displayName
+            };
+        });
 
-            items: {
-                init: function() {
-                    _fn.$items.each(function (){
-                        var $el = $(this),
-                            saved_entry = _fn.data.state.items[$el.data('value')];
-                        if (saved_entry) {
-                            var $input_div = $el.find('.numerical-input')
-                            var $input = $input_div.find('.input');
-                            $input.val(saved_entry.input);
-                          console.log('wuwuwu', saved_entry)
-                            if ('input' in saved_entry) {
-                                $input_div.addClass(saved_entry.correct_input ? 'correct' : 'incorrect');
-                                $input.prop('disabled', true);
-                                $input_div.find('.submit-input').prop('disabled', true);
-                            }
-                            if ('input' in saved_entry || saved_entry.correct_input) {
-                                $el.addClass('fade');
-                            }
-                            _fn.eventHandlers.drag.set($el, saved_entry.top, saved_entry.left);
-                        }
-                    });
-                },
-                draw: function() {
-                    var list = [],
-                        items = _fn.data.items,
-                        tpl = _fn.tpl.item,
-                        img_tpl = _fn.tpl.imageItem;
-
-                    items.forEach(function(item) {
-                        if (item.backgroundImage.length > 0) {
-                            list.push(img_tpl(item));
-                        } else {
-                            list.push(tpl(item));
-                        }
-                    });
-
-                    // Update DOM
-                    _fn.$ul.html(list.join(''));
-
-                    // Set variable
-                    _fn.$items = $('.xblock--drag-and-drop .items .option', element);
-                }
-            },
-
-            zones: {
-                draw: function() {
-                    var html = [],
-                        zones = _fn.data.zones,
-                        tpl = _fn.tpl.zoneElement,
-                        i,
-                        len = zones.length;
-
-                    for (i=0; i<len; i++) {
-                        html.push(tpl(zones[i]));
-                    }
-
-                    // Update DOM
-                    _fn.$target.html(html.join(''));
-
-                    // Set variable
-                    _fn.$zones = _fn.$target.find('.zone');
-                }
-            },
-
-            feedback: {
-                // Update DOM with feedback
-                set: function(str) {
-                    if ($.trim(str) === '') _fn.$feedback.parent().hide();
-                    else _fn.$feedback.parent().show();
-                    return _fn.$feedback.html(str);
-                },
-
-                // Show a feedback popup
-                popup: function(str, boo) {
-                    if (str === undefined || str === '') return;
-
-                    if (_fn.$popup.is(":visible")) {
-                        publish_event({
-                            event_type: "xblock.drag-and-drop-v2.feedback.closed",
-                            content: _fn.$popup.find(".popup-content").text(),
-                            manually: false
-                        });
-                    }
-                    publish_event({
-                        event_type: "xblock.drag-and-drop-v2.feedback.opened",
-                        content: str
-                    });
-
-                    _fn.$popup.find(".popup-content").html(str);
-                    _fn.$popup.show();
-
-                    _fn.popup_ts = Date.now();
-                }
-            },
-
-            data: null
+        var context = {
+            header_html: state.title,
+            question_html: state.question_text,
+            popup_html: state.state.feedback || '',
+            feedback_html: $.trim(state.state.finished ? state.feedback.finish : state.feedback.start),
+            target_img_src: state.targetImg,
+            display_zone_labels: state.displayLabels,
+            display_reset_button: state.state.finished,
+            zones: state.zones,
+            items: items
         };
 
-        return {
-            init: _fn.init,
-        };
-    })(jQuery);
+        return DragAndDropBlock.renderView(context);
+    };
 
-    $.ajax(runtime.handlerUrl(element, 'get_data'), {
-        dataType: 'json'
-    }).done(function(data){
-        dragAndDrop.init(data);
-    });
-
-    publish_event({event_type:"xblock.drag-and-drop-v2.loaded"});
+    init();
 }
