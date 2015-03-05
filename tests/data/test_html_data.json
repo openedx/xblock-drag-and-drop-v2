@@ -89,5 +89,7 @@
     "start": "Intro Feed",
     "finish": "Final <b>Feed</b>"
   },
-  "targetImg": "http://i0.kym-cdn.com/photos/images/newsfeed/000/030/404/1260585284155.png"
+  "targetImg": "http://i0.kym-cdn.com/photos/images/newsfeed/000/030/404/1260585284155.png",
+  "title": "Drag and Drop",
+  "question_text": ""
 }

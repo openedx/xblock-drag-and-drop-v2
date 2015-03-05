@@ -1,15 +1,17 @@
-from nose_parameterized import parameterized
+from ddt import ddt, unpack, data
 from tests.integration.test_base import BaseIntegrationTest
 from workbench import scenarios
 
 
+@ddt
 class TestDragAndDropTitleAndQuestion(BaseIntegrationTest):
-    @parameterized.expand([
+    @unpack
+    @data(
         ('plain1', 'title1', 'question1'),
         ('plain2', 'title2', 'question2'),
         ('html1', 'title with <i>HTML</i>', 'Question with <i>HTML</i>'),
         ('html2', '<span style="color:red">Title: HTML?</span>', '<span style="color:red">Span question</span>'),
-    ])
+    )
     def test_title_and_question_parameters(self, _, display_name, question_text):
         const_page_name = 'Test block parameters'
         const_page_id = 'test_block_title'

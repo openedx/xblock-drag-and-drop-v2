@@ -1,0 +1,14 @@
+language: python
+python:
+    - "2.7"
+before_install:
+    - "export DISPLAY=:99"
+    - "sh -e /etc/init.d/xvfb start"
+install:
+    - "sh install_test_deps.sh"
+    - "pip uninstall -y xblock-drag-and-drop-v2"
+    - "python setup.py sdist"
+    - "pip install dist/xblock-drag-and-drop-v2-0.1.tar.gz"
+script: pep8 drag_and_drop_v2 --max-line-length=120 && python run_tests.py
+notifications:
+  email: false

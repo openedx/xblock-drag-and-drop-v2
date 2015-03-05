@@ -4,31 +4,20 @@ from selenium.webdriver.support.ui import WebDriverWait
 from tests.utils import load_resource
 
 from workbench import scenarios
-from workbench.test.selenium_test import SeleniumTest
+
+from xblockutils.base_test import SeleniumBaseTest
 
 # Classes ###########################################################
 
 
-class BaseIntegrationTest(SeleniumTest):
+class BaseIntegrationTest(SeleniumBaseTest):
+    default_css_selector = 'section.xblock--drag-and-drop'
+    module_name = __name__
 
     _additional_escapes = {
         '"': "&quot;",
         "'": "&apos;"
     }
-
-    def setUp(self):
-        super(BaseIntegrationTest, self).setUp()
-
-        # Use test scenarios
-        self.browser.get(self.live_server_url)  # Needed to load tests once
-        scenarios.SCENARIOS.clear()
-
-        # Suzy opens the browser to visit the workbench
-        self.browser.get(self.live_server_url)
-
-        # She knows it's the site by the header
-        header1 = self.browser.find_element_by_css_selector('h1')
-        self.assertEqual(header1.text, 'XBlock scenarios')
 
     def _make_scenario_xml(self, display_name, question_text, completed):
         return """
@@ -48,8 +37,8 @@ class BaseIntegrationTest(SeleniumTest):
         self.addCleanup(scenarios.remove_scenario, identifier)
 
     def _get_items(self):
-        items_container = self._page.find_element_by_css_selector('ul.items')
-        return items_container.find_elements_by_css_selector('li.option')
+        items_container = self._page.find_element_by_css_selector('.items')
+        return items_container.find_elements_by_css_selector('.option')
 
     def _get_zones(self):
         return self._page.find_elements_by_css_selector(".drag-container .zone")
@@ -57,25 +46,13 @@ class BaseIntegrationTest(SeleniumTest):
     def _get_feedback_message(self):
         return self._page.find_element_by_css_selector(".feedback .message")
 
-    def go_to_page(self, page_name, css_selector='section.xblock--drag-and-drop'):
-        """
-        Navigate to the page `page_name`, as listed on the workbench home
-        Returns the DOM element on the visited page located by the `css_selector`
-        """
-        self.browser.get(self.live_server_url)
-        self.browser.find_element_by_link_text(page_name).click()
-        return self.browser.find_element_by_css_selector(css_selector)
-
     def get_element_html(self, element):
         return element.get_attribute('innerHTML').strip()
 
     def get_element_classes(self, element):
         return element.get_attribute('class').split()
 
-    def scroll_to(self, y):
-        self.browser.execute_script('window.scrollTo(0, {0})'.format(y))
-
-    def wait_until_contains_html(self, html, elem):
+    def wait_until_html_in(self, html, elem):
         wait = WebDriverWait(elem, 2)
         wait.until(lambda e: html in e.get_attribute('innerHTML'),
                    u"{} should be in {}".format(html, elem.get_attribute('innerHTML')))
@@ -84,4 +61,3 @@ class BaseIntegrationTest(SeleniumTest):
         wait = WebDriverWait(elem, 2)
         wait.until(lambda e: class_name in e.get_attribute('class').split(),
                    u"Class name {} not in {}".format(class_name, elem.get_attribute('class')))
-

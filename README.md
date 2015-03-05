@@ -93,22 +93,15 @@ You can define an arbitrary number of drag items.
 Testing
 -------
 
-In a virtualenv, run
+Inside a fresh virtualenv, run
 
 ```bash
 $ cd .../xblock-drag-and-drop-v2/
-$ pip install -r tests/requirements.txt
+$ sh install_test_deps.sh
 ```
 
 To run the tests, from the xblock-drag-and-drop-v2 repository root:
 
 ```bash
-$ tests/manage.py test --rednose
-```
-
-To include coverage report (although selenium tends to crash with
-segmentation faults when collection test coverage):
-
-```bash
-$ tests/manage.py test --rednose --with-cover --cover-package=drag_and_drop_v2
+$ python run_tests.py
 ```
