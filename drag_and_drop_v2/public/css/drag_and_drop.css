@@ -47,15 +47,15 @@
     width: 210px;
     margin: 10px;
     padding: 0 !important; /* LMS tries to override this */
-    font-size: 14px;
     position: relative;
     display: inline;
     float: left;
     list-style-type: none;
 }
 
-.xblock--drag-and-drop .drag-container .items .option {
+.xblock--drag-and-drop .drag-container .option {
     width: 190px;
+    font-size: 14px;
     background: #2e83cd;
     color: #fff;
     position: relative;
@@ -68,28 +68,23 @@
     opacity: 1;
 }
 
-.xblock--drag-and-drop .drag-container .items .option img {
+.xblock--drag-and-drop .drag-container .option img {
     max-width: 100%;
 }
 
-.xblock--drag-and-drop .drag-container .items .option .numerical-input {
-    display: none;
+.xblock--drag-and-drop .drag-container .option .numerical-input {
     height: 32px;
     position: absolute;
     left: calc(100% + 5px);
     top: calc(50% - 16px);
 }
 
-.xblock--drag-and-drop .drag-container .items .option.within-dropzone .numerical-input {
-    display: block;
-}
-
-.xblock--drag-and-drop .drag-container .items .option.within-dropzone .numerical-input .input {
+.xblock--drag-and-drop .drag-container .option .numerical-input .input {
     display: inline-block;
     width: 144px;
 }
 
-.xblock--drag-and-drop .drag-container .items .option.within-dropzone .numerical-input .submit-input {
+.xblock--drag-and-drop .drag-container .option .numerical-input .submit-input {
     box-sizing: border-box;
     position: absolute;
     left: 150px;
@@ -97,22 +92,22 @@
     height: 24px;
 }
 
-.xblock--drag-and-drop .drag-container .items .option.within-dropzone .numerical-input.correct .input-submit,
-.xblock--drag-and-drop .drag-container .items .option.within-dropzone .numerical-input.incorrect .input-submit {
+.xblock--drag-and-drop .drag-container .option .numerical-input.correct .input-submit,
+.xblock--drag-and-drop .drag-container .option .numerical-input.incorrect .input-submit {
     display: none;
 }
 
-.xblock--drag-and-drop .drag-container .items .option.within-dropzone .numerical-input.correct .input {
+.xblock--drag-and-drop .drag-container .option .numerical-input.correct .input {
     background: #ceffce;
     color: #0dad0d;
 }
 
-.xblock--drag-and-drop .drag-container .items .option.within-dropzone .numerical-input.incorrect .input {
+.xblock--drag-and-drop .drag-container .option .numerical-input.incorrect .input {
     background: #ffcece;
     color: #ad0d0d;
 }
 
-.xblock--drag-and-drop .drag-container .items .option.fade {
+.xblock--drag-and-drop .drag-container .option.fade {
     opacity: 0.5;
 }
 
@@ -129,7 +124,6 @@
 }
 
 .xblock--drag-and-drop .target-img {
-    display: none;
     background: url('../img/triangle.png') no-repeat;
     width: 100%;
     height: 100%;
@@ -229,5 +223,4 @@
     float: right;
     color: #3384CA;
     margin-top: 3px;
-    display: none;
 }

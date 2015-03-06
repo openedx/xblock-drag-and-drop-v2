@@ -48,15 +48,17 @@ class InteractionTestFixture(BaseIntegrationTest):
         scenario_xml = self._get_scenario_xml()
         self._add_scenario(self.PAGE_ID, self.PAGE_TITLE, scenario_xml)
 
-        self.browser.get(self.live_server_url)
         self._page = self.go_to_page(self.PAGE_TITLE)
+        # Resize window so that the entire drag container is visible.
+        # Selenium has issues when dragging to an area that is off screen.
+        self.browser.set_window_size(1024, 800)
 
     def _get_item_by_value(self, item_value):
-        items_container = self._page.find_element_by_css_selector('ul.items')
-        return items_container.find_elements_by_xpath("//li[@data-value='{item_id}']".format(item_id=item_value))[0]
+        items_container = self._page.find_element_by_css_selector('.items')
+        return items_container.find_elements_by_xpath("//div[@data-value='{item_id}']".format(item_id=item_value))[0]
 
     def _get_zone_by_id(self, zone_id):
-        zones_container = self._page.find_element_by_css_selector('div.target')
+        zones_container = self._page.find_element_by_css_selector('.target')
         return zones_container.find_elements_by_xpath("//div[@data-zone='{zone_id}']".format(zone_id=zone_id))[0]
 
     def _get_input_div_by_value(self, item_value):
@@ -68,7 +70,6 @@ class InteractionTestFixture(BaseIntegrationTest):
         element.find_element_by_class_name('input').send_keys(value)
         element.find_element_by_class_name('submit-input').click()
 
-
     def drag_item_to_zone(self, item_value, zone_id):
         element = self._get_item_by_value(item_value)
         target = self._get_zone_by_id(zone_id)
@@ -76,11 +77,11 @@ class InteractionTestFixture(BaseIntegrationTest):
         action_chains.drag_and_drop(element, target).perform()
 
     def test_item_positive_feedback_on_good_move(self):
-        feedback_popup = self._page.find_element_by_css_selector(".popup-content")
         for definition in self._get_correct_item_for_zone().values():
             if not definition.input:
                 self.drag_item_to_zone(definition.item_id, definition.zone_id)
-                self.wait_until_contains_html(definition.feedback_positive, feedback_popup)
+                feedback_popup = self._page.find_element_by_css_selector(".popup-content")
+                self.wait_until_html_in(definition.feedback_positive, feedback_popup)
 
     def test_item_positive_feedback_on_good_input(self):
         feedback_popup = self._page.find_element_by_css_selector(".popup-content")
@@ -90,7 +91,7 @@ class InteractionTestFixture(BaseIntegrationTest):
                 self._send_input(definition.item_id, definition.input)
                 input_div = self._get_input_div_by_value(definition.item_id)
                 self.wait_until_has_class('correct', input_div)
-                self.wait_until_contains_html(definition.feedback_positive, feedback_popup)
+                self.wait_until_html_in(definition.feedback_positive, feedback_popup)
 
     def test_item_negative_feedback_on_bad_move(self):
         feedback_popup = self._page.find_element_by_css_selector(".popup-content")
@@ -100,7 +101,7 @@ class InteractionTestFixture(BaseIntegrationTest):
                 if zone == definition.zone_id:
                     continue
                 self.drag_item_to_zone(definition.item_id, zone)
-                self.wait_until_contains_html(definition.feedback_negative, feedback_popup)
+                self.wait_until_html_in(definition.feedback_negative, feedback_popup)
 
     def test_item_positive_feedback_on_bad_input(self):
         feedback_popup = self._page.find_element_by_css_selector(".popup-content")
@@ -110,7 +111,7 @@ class InteractionTestFixture(BaseIntegrationTest):
                 self._send_input(definition.item_id, '1999999')
                 input_div = self._get_input_div_by_value(definition.item_id)
                 self.wait_until_has_class('incorrect', input_div)
-                self.wait_until_contains_html(definition.feedback_negative, feedback_popup)
+                self.wait_until_html_in(definition.feedback_negative, feedback_popup)
 
     def test_final_feedback_and_reset(self):
         feedback_message = self._get_feedback_message()
@@ -128,16 +129,13 @@ class InteractionTestFixture(BaseIntegrationTest):
                 input_div = self._get_input_div_by_value(item_key)
                 self.wait_until_has_class('correct', input_div)
 
-        self.wait_until_contains_html(self.feedback['final'], feedback_message)
+        self.wait_until_exists('.reset-button')
+        self.wait_until_html_in(self.feedback['final'], self._get_feedback_message())
 
-        # scrolling to have `reset` visible, otherwise it does not receive a click
-        # this is due to xblock workbench header that consumes top 40px - selenium scrolls so page so that target
-        # element is a the very top.
-        self.scroll_to(100)
-        reset = self._page.find_element_by_css_selector(".reset-button")
+        reset = self._page.find_element_by_css_selector('.reset-button')
         reset.click()
 
-        self.wait_until_contains_html(self.feedback['intro'], feedback_message)
+        self.wait_until_html_in(self.feedback['intro'], self._get_feedback_message())
 
         locations_after_reset = get_locations()
         for item_key in items.keys():

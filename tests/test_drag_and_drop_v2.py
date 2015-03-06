@@ -7,6 +7,7 @@ from webob import Request
 from mock import Mock
 
 from workbench.runtime import WorkbenchRuntime
+from xblock.fields import ScopeIds
 from xblock.runtime import KvsFieldData, DictKeyValueStore
 
 from nose.tools import (
@@ -33,10 +34,14 @@ def make_request(body, method='POST'):
 
 
 def make_block():
-    runtime = WorkbenchRuntime()
+    block_type = 'drag_and_drop_v2'
     key_store = DictKeyValueStore()
-    db_model = KvsFieldData(key_store)
-    return drag_and_drop_v2.DragAndDropBlock(runtime, db_model, Mock())
+    field_data = KvsFieldData(key_store)
+    runtime = WorkbenchRuntime()
+    def_id = runtime.id_generator.create_definition(block_type)
+    usage_id = runtime.id_generator.create_usage(def_id)
+    scope_ids = ScopeIds('user', block_type, def_id, usage_id)
+    return drag_and_drop_v2.DragAndDropBlock(runtime, field_data, scope_ids=scope_ids)
 
 
 def test_templates_contents():
@@ -46,17 +51,9 @@ def test_templates_contents():
     block.question_text = "Question Drag & Drop"
     block.weight = 5
 
-    student_fragment = block.render('student_view', Mock())
+    student_fragment = block.runtime.render(block, 'student_view', ['ingore'])# block.render('student_view', Mock())
     assert_in('<section class="xblock--drag-and-drop">',
         student_fragment.content)
-    assert_in('{{ value }}', student_fragment.content)
-    assert_in("Test Drag & Drop", student_fragment.content)
-    assert_in("Question Drag & Drop", student_fragment.content)
-
-    studio_fragment = block.render('studio_view', Mock())
-    assert_in('<div class="xblock--drag-and-drop editor-with-buttons">',
-        studio_fragment.content)
-    assert_in('{{ value }}', studio_fragment.content)
 
 def test_studio_submit():
     block = make_block()
@@ -176,7 +173,7 @@ class BaseDragAndDropAjaxFixture(object):
         expected = self.get_data_response()
         expected["state"] = {
             "items": {
-                "1": {"top": "22px", "left": "222px", "correct_input": False}
+                "1": {"top": "22px", "left": "222px", "absolute": True, "correct_input": False}
             },
             "finished": False
         }
@@ -196,7 +193,8 @@ class BaseDragAndDropAjaxFixture(object):
         expected = self.get_data_response()
         expected["state"] = {
             "items": {
-                "1": {"top": "22px", "left": "222px", "input": "250", "correct_input": False}
+                "1": {"top": "22px", "left": "222px", "absolute": True,
+                      "input": "250", "correct_input": False}
             },
             "finished": False
         }
@@ -216,7 +214,8 @@ class BaseDragAndDropAjaxFixture(object):
         expected = self.get_data_response()
         expected["state"] = {
             "items": {
-                "1": {"top": "22px", "left": "222px", "input": "103", "correct_input": True}
+                "1": {"top": "22px", "left": "222px", "absolute": True,
+                      "input": "103", "correct_input": True}
             },
             "finished": False
         }
@@ -255,7 +254,8 @@ class BaseDragAndDropAjaxFixture(object):
         expected = self.get_data_response()
         expected["state"] = {
             "items": {
-                "0": {"top": "11px", "left": "111px", "correct_input": True}
+                "0": {"top": "11px", "left": "111px", "absolute": True,
+                      "correct_input": True}
             },
             "finished": False
         }
@@ -277,8 +277,9 @@ class BaseDragAndDropAjaxFixture(object):
         expected = self.get_data_response()
         expected["state"] = {
             "items": {
-                "0": {"top": "11px", "left": "111px", "correct_input": True},
-                "1": {"top": "22px", "left": "222px", "input": "99", "correct_input": True}
+                "0": {"top": "11px", "left": "111px", "absolute": True, "correct_input": True},
+                "1": {"top": "22px", "left": "222px", "absolute": True, "input": "99",
+                      "correct_input": True}
             },
             "finished": True
         }
@@ -336,8 +337,8 @@ def test_ajax_solve_and_reset():
     block.handle('do_attempt', make_request(data))
 
     assert_true(block.completed)
-    assert_equals(block.item_state, {'0': {"top": "11px", "left": "111px"},
-                                     '1': {"top": "22px", "left": "222px"}})
+    assert_equals(block.item_state, {'0': {"top": "11px", "left": "111px", "absolute": True},
+                                     '1': {"top": "22px", "left": "222px", "absolute": True}})
 
     block.handle('reset', make_request("{}"))
 
