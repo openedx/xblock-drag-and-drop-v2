@@ -7,7 +7,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
     """
     PAGE_TITLE = 'Drag and Drop v2'
     PAGE_ID = 'drag_and_drop_v2'
-    
+
     def setUp(self):
         super(TestDragAndDropRender, self).setUp()
 
@@ -60,3 +60,8 @@ class TestDragAndDropRender(BaseIntegrationTest):
         feedback_message = self._get_feedback_message()
 
         self.assertEqual(feedback_message.text, "Intro Feed")
+
+    def test_background_image(self):
+        bg_image = self.browser.execute_script('return jQuery(".target-img").css("background-image")')
+        image_path = '/resource/drag-and-drop-v2/public/img/triangle.png'
+        self.assertEqual(bg_image, 'url("{0}{1}")'.format(self.live_server_url, image_path))
