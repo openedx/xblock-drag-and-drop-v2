@@ -88,7 +88,9 @@
                             h('div.close.icon-remove-sign.fa-times-circle'),
                             h('p.popup-content', {innerHTML: ctx.popup_html})
                         ]),
-                        h('div.target-img', {style: {backgroundImage: 'url(' + ctx.target_img_src + ')'}},
+                        h('div.target-img', {style: {backgroundImage: ctx.target_img_src ?
+                                                                          'url(' + ctx.target_img_src + ')' :
+                                                                          undefined}},
                           renderCollection(zoneTemplate, ctx.zones, ctx))
                     ]),
                     h('div.clear')

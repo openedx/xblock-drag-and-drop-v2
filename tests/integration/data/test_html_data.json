@@ -74,5 +74,6 @@
   "feedback": {
     "start": "Intro <i>Feed</i>",
     "finish": "Final <b>Feed</b>"
-  }
+  },
+  "targetImg": "https://www.edx.org/sites/default/files/theme/edx-logo-header.png"
 }
