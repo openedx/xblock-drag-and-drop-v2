@@ -145,7 +145,7 @@ function DragAndDropEditBlock(runtime, element) {
                                 name = 'zone-',
                                 $elements = _fn.build.$el,
                                 num,
-                                obj;
+                                zoneObj;
 
                             if (!oldZone) oldZone = {};
 
@@ -168,7 +168,9 @@ function DragAndDropEditBlock(runtime, element) {
                             _fn.build.form.zone.obj.push(zoneObj);
 
                             // Add fields to zone position form
-                            $elements.zones.form.append(inputTemplate(zoneObj));
+                            $zoneNode = $(inputTemplate(zoneObj));
+                            $zoneNode.data('index', num);
+                            $elements.zones.form.append($zoneNode);
                             _fn.build.form.zone.enableDelete();
 
                             // Add zone div to target
@@ -183,11 +185,20 @@ function DragAndDropEditBlock(runtime, element) {
                         remove: function(e) {
                             var $el = $(e.currentTarget).closest('.zone-row'),
                                 classes = $el.attr('class'),
-                                id = classes.slice(classes.indexOf('zone-row') + 9);
+                                id = classes.slice(classes.indexOf('zone-row') + 9),
+                                index = $el.data('index'),
+                                array_index;
 
                             e.preventDefault();
                             $el.detach();
                             $('#' + id, element).detach();
+
+                            // Find the index of the zone in the array and remove it.
+                            for (array_index = 0; array_index < _fn.build.form.zone.obj.length;
+                                 array_index++) {
+                                if (_fn.build.form.zone.obj[array_index].index == index) break;
+                            }
+                            _fn.build.form.zone.obj.splice(array_index, 1);
 
                             _fn.build.form.zone.formCount--;
                             _fn.build.form.zone.disableDelete();
