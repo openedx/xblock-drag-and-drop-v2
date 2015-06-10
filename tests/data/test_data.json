@@ -3,7 +3,7 @@
     {
       "index": 1,
       "width": 200,
-      "title": "Zone A",
+      "title": "Zone 1",
       "height": 100,
       "y": "200",
       "x": "100",
@@ -12,7 +12,7 @@
     {
       "index": 2,
       "width": 200,
-      "title": "Zone B",
+      "title": "Zone 2",
       "height": 100,
       "y": 0,
       "x": 0,
@@ -21,12 +21,12 @@
   ],
   "items": [
     {
-      "displayName": "A",
+      "displayName": "1",
       "feedback": {
-        "incorrect": "No A",
-        "correct": "Yes A"
+        "incorrect": "No 1",
+        "correct": "Yes 1"
       },
-      "zone": "Zone A",
+      "zone": "Zone 1",
       "backgroundImage": "",
       "id": 0,
       "size": {
@@ -35,12 +35,12 @@
       }
     },
     {
-      "displayName": "B",
+      "displayName": "2",
       "feedback": {
-        "incorrect": "No B",
-        "correct": "Yes B"
+        "incorrect": "No 2",
+        "correct": "Yes 2"
       },
-      "zone": "Zone B",
+      "zone": "Zone 2",
       "backgroundImage": "",
       "id": 1,
       "size": {

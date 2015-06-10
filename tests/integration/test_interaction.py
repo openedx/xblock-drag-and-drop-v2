@@ -20,12 +20,12 @@ class InteractionTestFixture(BaseIntegrationTest):
     PAGE_ID = 'drag_and_drop_v2'
 
     items_map = {
-        0: ItemDefinition(0, 'Zone A', "Yes, it's an A", "No, A does not belong here"),
-        1: ItemDefinition(1, 'Zone B', "Yes, it's a B", "No, B does not belong here"),
+        0: ItemDefinition(0, 'Zone 1', "Yes, it's a 1", "No, 1 does not belong here"),
+        1: ItemDefinition(1, 'Zone 2', "Yes, it's a 2", "No, 2 does not belong here"),
         2: ItemDefinition(2, None, "", "You silly, there are no zones for X")
     }
 
-    all_zones = ['Zone A', 'Zone B']
+    all_zones = ['Zone 1', 'Zone 2']
 
     feedback = {
         "intro": "Intro Feed",
@@ -144,12 +144,12 @@ class InteractionTestFixture(BaseIntegrationTest):
 
 class CustomDataInteractionTest(InteractionTestFixture):
     items_map = {
-        0: ItemDefinition(0, 'Zone A', "Yes A", "No A"),
-        1: ItemDefinition(1, 'Zone B', "Yes B", "No B", "102"),
+        0: ItemDefinition(0, 'Zone 1', "Yes 1", "No 1"),
+        1: ItemDefinition(1, 'Zone 2', "Yes 2", "No 2", "102"),
         2: ItemDefinition(2, None, "", "No Zone for this")
     }
 
-    all_zones = ['Zone A', 'Zone B']
+    all_zones = ['Zone 1', 'Zone 2']
 
     feedback = {
         "intro": "Other Intro Feed",
@@ -162,12 +162,12 @@ class CustomDataInteractionTest(InteractionTestFixture):
 
 class CustomHtmlDataInteractionTest(InteractionTestFixture):
     items_map = {
-        0: ItemDefinition(0, 'Zone <i>A</i>', "Yes <b>A</b>", "No <b>A</b>"),
-        1: ItemDefinition(1, 'Zone <b>B</b>', "Yes <i>B</i>", "No <i>B</i>", "95"),
+        0: ItemDefinition(0, 'Zone <i>1</i>', "Yes <b>1</b>", "No <b>1</b>"),
+        1: ItemDefinition(1, 'Zone <b>2</b>', "Yes <i>2</i>", "No <i>2</i>", "95"),
         2: ItemDefinition(2, None, "", "No Zone for <i>X</i>")
     }
 
-    all_zones = ['Zone <i>A</i>', 'Zone <b>B</b>']
+    all_zones = ['Zone <i>1</i>', 'Zone <b>2</b>']
 
     feedback = {
         "intro": "Intro <i>Feed</i>",

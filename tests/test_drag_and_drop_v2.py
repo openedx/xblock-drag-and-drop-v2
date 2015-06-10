@@ -1,4 +1,3 @@
-import os
 import logging
 import json
 import unittest
@@ -79,8 +78,8 @@ def test_studio_submit():
 class BaseDragAndDropAjaxFixture(object):
     _oldMaxDiff = None
 
-    ZONE_A = None
-    ZONE_B = None
+    ZONE_1 = None
+    ZONE_2 = None
 
     FEEDBACK = {
         0: {"correct": None, "incorrect": None},
@@ -113,10 +112,10 @@ class BaseDragAndDropAjaxFixture(object):
         self._block = None
 
     def initial_data(self):
-        raise NotImplemented
+        raise NotImplementedError
 
     def get_data_response(self):
-        raise NotImplemented
+        raise NotImplementedError
 
     def test_get_data_returns_expected_data(self):
         expected_response = self.get_data_response()
@@ -124,7 +123,7 @@ class BaseDragAndDropAjaxFixture(object):
         assert_equals(expected_response, get_data_response)
 
     def test_do_attempt_wrong_with_feedback(self):
-        item_id, zone_id = 0, self.ZONE_B
+        item_id, zone_id = 0, self.ZONE_2
         data = json.dumps({"val": item_id, "zone": zone_id, "top": "31px", "left": "216px"})
         res = json.loads(self._block.handle('do_attempt', make_request(data)).body)
         assert_equals(res, {
@@ -136,7 +135,7 @@ class BaseDragAndDropAjaxFixture(object):
         })
 
     def test_do_attempt_wrong_without_feedback(self):
-        item_id, zone_id = 2, self.ZONE_A
+        item_id, zone_id = 2, self.ZONE_1
         data = json.dumps({"val": item_id, "zone": zone_id, "top": "42px", "left": "100px"})
         res = json.loads(self._block.handle('do_attempt', make_request(data)).body)
         assert_equals(res, {
@@ -148,7 +147,7 @@ class BaseDragAndDropAjaxFixture(object):
         })
 
     def test_do_attempt_correct(self):
-        item_id, zone_id = 0, self.ZONE_A
+        item_id, zone_id = 0, self.ZONE_1
         data = json.dumps({"val": item_id, "zone": zone_id, "top": "11px", "left": "111px"})
         res = json.loads(self._block.handle('do_attempt', make_request(data)).body)
         assert_equals(res, {
@@ -160,7 +159,7 @@ class BaseDragAndDropAjaxFixture(object):
         })
 
     def test_do_attempt_with_input(self):
-        data = json.dumps({"val": 1, "zone": self.ZONE_B, "top": "22px", "left": "222px"})
+        data = json.dumps({"val": 1, "zone": self.ZONE_2, "top": "22px", "left": "222px"})
         res = json.loads(self._block.handle('do_attempt', make_request(data)).body)
         assert_equals(res, {
             "finished": False,
@@ -226,16 +225,16 @@ class BaseDragAndDropAjaxFixture(object):
         published_grades = []
         def mock_publish(self, event, params):
             if event == 'grade':
-              published_grades.append(params)
+                published_grades.append(params)
         self._block.runtime.publish = mock_publish
 
-        data = json.dumps({"val": 0, "zone": self.ZONE_A, "top": "11px", "left": "111px"})
+        data = json.dumps({"val": 0, "zone": self.ZONE_1, "top": "11px", "left": "111px"})
         self._block.handle('do_attempt', make_request(data))
 
         assert_equals(1, len(published_grades))
         assert_equals({'value': 0.5, 'max_value': 1}, published_grades[-1])
 
-        data = json.dumps({"val": 1, "zone": self.ZONE_B, "top": "22px", "left": "222px"})
+        data = json.dumps({"val": 1, "zone": self.ZONE_2, "top": "22px", "left": "222px"})
         json.loads(self._block.handle('do_attempt', make_request(data)).body)
 
         assert_equals(2, len(published_grades))
@@ -248,7 +247,7 @@ class BaseDragAndDropAjaxFixture(object):
         assert_equals({'value': 1, 'max_value': 1}, published_grades[-1])
 
     def test_do_attempt_final(self):
-        data = json.dumps({"val": 0, "zone": self.ZONE_A, "top": "11px", "left": "111px"})
+        data = json.dumps({"val": 0, "zone": self.ZONE_1, "top": "11px", "left": "111px"})
         self._block.handle('do_attempt', make_request(data))
 
         expected = self.get_data_response()
@@ -262,7 +261,7 @@ class BaseDragAndDropAjaxFixture(object):
         get_data = json.loads(self._block.handle('get_data', Mock()).body)
         assert_equals(expected, get_data)
 
-        data = json.dumps({"val": 1, "zone": self.ZONE_B, "top": "22px", "left": "222px"})
+        data = json.dumps({"val": 1, "zone": self.ZONE_2, "top": "22px", "left": "222px"})
         res = json.loads(self._block.handle('do_attempt', make_request(data)).body)
         data = json.dumps({"val": 1, "input": "99"})
         res = json.loads(self._block.handle('do_attempt', make_request(data)).body)
@@ -289,12 +288,12 @@ class BaseDragAndDropAjaxFixture(object):
 
 
 class TestDragAndDropHtmlData(BaseDragAndDropAjaxFixture, unittest.TestCase):
-    ZONE_A = "Zone <i>A</i>"
-    ZONE_B = "Zone <b>B</b>"
+    ZONE_1 = "Zone <i>1</i>"
+    ZONE_2 = "Zone <b>2</b>"
 
     FEEDBACK = {
-        0: {"correct": "Yes <b>A</b>", "incorrect": "No <b>A</b>"},
-        1: {"correct": "Yes <i>B</i>", "incorrect": "No <i>B</i>"},
+        0: {"correct": "Yes <b>1</b>", "incorrect": "No <b>1</b>"},
+        1: {"correct": "Yes <i>2</i>", "incorrect": "No <i>2</i>"},
         2: {"correct": "", "incorrect": ""}
     }
 
@@ -308,12 +307,12 @@ class TestDragAndDropHtmlData(BaseDragAndDropAjaxFixture, unittest.TestCase):
 
 
 class TestDragAndDropPlainData(BaseDragAndDropAjaxFixture, unittest.TestCase):
-    ZONE_A = "Zone A"
-    ZONE_B = "Zone B"
+    ZONE_1 = "Zone 1"
+    ZONE_2 = "Zone 2"
 
     FEEDBACK = {
-        0: {"correct": "Yes A", "incorrect": "No A"},
-        1: {"correct": "Yes B", "incorrect": "No B"},
+        0: {"correct": "Yes 1", "incorrect": "No 1"},
+        1: {"correct": "Yes 2", "incorrect": "No 2"},
         2: {"correct": "", "incorrect": ""}
     }
 
@@ -331,9 +330,9 @@ def test_ajax_solve_and_reset():
     assert_false(block.completed)
     assert_equals(block.item_state, {})
 
-    data = json.dumps({"val":0,"zone":"Zone A","top":"11px","left":"111px"})
+    data = json.dumps({"val":0,"zone":"Zone 1","top":"11px","left":"111px"})
     block.handle('do_attempt', make_request(data))
-    data = json.dumps({"val":1,"zone":"Zone B","top":"22px","left":"222px"})
+    data = json.dumps({"val":1,"zone":"Zone 2","top":"22px","left":"222px"})
     block.handle('do_attempt', make_request(data))
 
     assert_true(block.completed)

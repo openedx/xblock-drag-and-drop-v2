@@ -2,7 +2,7 @@
   "zones": [
     {
       "index": 1,
-      "title": "Zone A",
+      "title": "Zone 1",
       "id": "zone-1",
       "height": 100,
       "y": "200",
@@ -11,7 +11,7 @@
     },
     {
       "index": 2,
-      "title": "Zone B",
+      "title": "Zone 2",
       "id": "zone-2",
       "height": 100,
       "y": 0,
@@ -21,7 +21,7 @@
   ],
   "items": [
     {
-      "displayName": "A",
+      "displayName": "1",
       "backgroundImage": "",
       "id": 0,
       "size": {
@@ -31,7 +31,7 @@
       "inputOptions": false
     },
     {
-      "displayName": "B",
+      "displayName": "2",
       "backgroundImage": "",
       "id": 1,
       "size": {

@@ -3,7 +3,7 @@ DEFAULT_DATA = {
     {
       "index": 1,
       "width": 200,
-      "title": "Zone A",
+      "title": "Zone 1",
       "height": 100,
       "x": "120",
       "y": "200",
@@ -12,7 +12,7 @@ DEFAULT_DATA = {
     {
       "index": 2,
       "width": 200,
-      "title": "Zone B",
+      "title": "Zone 2",
       "height": 100,
       "x": "120",
       "y": "360",
@@ -21,12 +21,12 @@ DEFAULT_DATA = {
   ],
   "items": [
     {
-      "displayName": "A",
+      "displayName": "1",
       "feedback": {
-        "incorrect": "No, A does not belong here",
-        "correct": "Yes, it's an A"
+        "incorrect": "No, 1 does not belong here",
+        "correct": "Yes, it's a 1"
       },
-      "zone": "Zone A",
+      "zone": "Zone 1",
       "backgroundImage": "",
       "id": 0,
       "size": {
@@ -35,12 +35,12 @@ DEFAULT_DATA = {
       }
     },
     {
-      "displayName": "B",
+      "displayName": "2",
       "feedback": {
-        "incorrect": "No, B does not belong here",
-        "correct": "Yes, it's a B"
+        "incorrect": "No, 2 does not belong here",
+        "correct": "Yes, it's a 2"
       },
-      "zone": "Zone B",
+      "zone": "Zone 2",
       "backgroundImage": "",
       "id": 1,
       "size": {
