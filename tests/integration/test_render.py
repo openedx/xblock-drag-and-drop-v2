@@ -29,12 +29,12 @@ class TestDragAndDropRender(BaseIntegrationTest):
         self.assertEqual(len(items), 3)
 
         self.assertEqual(items[0].get_attribute('data-value'), '0')
-        self.assertEqual(items[0].text, 'A')
+        self.assertEqual(items[0].text, '1')
         self.assertIn('ui-draggable', self.get_element_classes(items[0]))
         self._test_style(items[0], {'width': '190px', 'height': 'auto'})
 
         self.assertEqual(items[1].get_attribute('data-value'), '1')
-        self.assertEqual(items[1].text, 'B')
+        self.assertEqual(items[1].text, '2')
         self.assertIn('ui-draggable', self.get_element_classes(items[1]))
         self._test_style(items[1], {'width': '190px', 'height': 'auto'})
 
@@ -48,11 +48,11 @@ class TestDragAndDropRender(BaseIntegrationTest):
 
         self.assertEqual(len(zones), 2)
 
-        self.assertEqual(zones[0].get_attribute('data-zone'), 'Zone A')
+        self.assertEqual(zones[0].get_attribute('data-zone'), 'Zone 1')
         self.assertIn('ui-droppable', self.get_element_classes(zones[0]))
         self._test_style(zones[0], {'top': '200px', 'left': '120px', 'width': '200px', 'height': '100px'})
 
-        self.assertEqual(zones[1].get_attribute('data-zone'), 'Zone B')
+        self.assertEqual(zones[1].get_attribute('data-zone'), 'Zone 2')
         self.assertIn('ui-droppable', self.get_element_classes(zones[1]))
         self._test_style(zones[1], {'top': '360px', 'left': '120px', 'width': '200px', 'height': '100px'})
 

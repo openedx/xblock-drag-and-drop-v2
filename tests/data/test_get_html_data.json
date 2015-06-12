@@ -3,7 +3,7 @@
     {
       "index": 1,
       "width": 200,
-      "title": "Zone <i>A</i>",
+      "title": "Zone <i>1</i>",
       "height": 100,
       "y": "200",
       "x": "100",
@@ -12,7 +12,7 @@
     {
       "index": 2,
       "width": 200,
-      "title": "Zone <b>B</b>",
+      "title": "Zone <b>2</b>",
       "height": 100,
       "y": 0,
       "x": 0,
@@ -21,7 +21,7 @@
   ],
   "items": [
     {
-      "displayName": "<b>A</b>",
+      "displayName": "<b>1</b>",
       "backgroundImage": "",
       "id": 0,
       "size": {
@@ -31,7 +31,7 @@
       "inputOptions": false
     },
     {
-      "displayName": "<i>B</i>",
+      "displayName": "<i>2</i>",
       "backgroundImage": "",
       "id": 1,
       "size": {

@@ -12,3 +12,5 @@ install:
 script: pep8 drag_and_drop_v2 --max-line-length=120 && python run_tests.py
 notifications:
   email: false
+addons:
+  firefox: "36.0"
