@@ -74,9 +74,13 @@
     };
 
     var mainTemplate = function(ctx) {
+        var problemHeader = '';
+        if (ctx.show_title) {
+            problemHeader = h('h2.problem-header', {innerHTML: ctx.header_html});
+        }
         return (
             h('section.xblock--drag-and-drop', [
-                h('h2.problem-header', {innerHTML: ctx.header_html}),
+                problemHeader,
                 h('section.problem', {role: 'application'}, [
                     h('div.title1', 'Question'),
                     h('p', {innerHTML: ctx.question_html})

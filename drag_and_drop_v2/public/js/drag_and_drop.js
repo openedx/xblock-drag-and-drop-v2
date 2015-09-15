@@ -244,6 +244,7 @@ function DragAndDropBlock(runtime, element) {
 
         var context = {
             header_html: state.title,
+            show_title: state.show_title,
             question_html: state.question_text,
             popup_html: state.state.feedback || '',
             feedback_html: $.trim(state.state.finished ? state.feedback.finish : state.feedback.start),
