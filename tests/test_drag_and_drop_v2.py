@@ -59,6 +59,7 @@ def test_studio_submit():
 
     body = json.dumps({
         'display_name': "Test Drag & Drop",
+        'show_title': True,
         'question_text': "Question Drag & Drop",
         'weight': '5',
         'data': {

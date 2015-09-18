@@ -17,6 +17,8 @@
                 <form class="feedback-form">
                     <h3>Question title</h3>
                     <input class="display-name" value="{{ self.display_name }}" />
+                    <input class="show-title" type="checkbox" value="{{ self.show_title }}"
+                           {% if self.show_title %}checked="checked"{% endif %}> Show title
 
                     <h3>Maximum score</h3>
                     <input class="weight" value="1" value="{{ self.weight }}"/>

@@ -70,5 +70,6 @@
   },
   "targetImg": "http://i0.kym-cdn.com/photos/images/newsfeed/000/030/404/1260585284155.png",
   "title": "Drag and Drop",
+  "show_title": true,
   "question_text": ""
 }

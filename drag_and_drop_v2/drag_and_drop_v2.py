@@ -29,6 +29,13 @@ class DragAndDropBlock(XBlock):
         default="Drag and Drop"
     )
 
+    show_title = Boolean(
+        display_name="Show title",
+        help="Display the title to the user?",
+        scope=Scope.settings,
+        default=True
+    )
+
     question_text = String(
         display_name="Question text",
         help="The question text that is displayed to the user",
@@ -128,6 +135,7 @@ class DragAndDropBlock(XBlock):
     @XBlock.json_handler
     def studio_submit(self, submissions, suffix=''):
         self.display_name = submissions['display_name']
+        self.show_title = submissions['show_title']
         self.question_text = submissions['question_text']
         self.weight = float(submissions['weight'])
         self.data = submissions['data']
@@ -244,6 +252,7 @@ class DragAndDropBlock(XBlock):
         }
 
         data['title'] = self.display_name
+        data['show_title'] = self.show_title
         data['question_text'] = self.question_text
 
         return data
