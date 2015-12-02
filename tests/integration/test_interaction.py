@@ -129,8 +129,10 @@ class InteractionTestFixture(BaseIntegrationTest):
                 input_div = self._get_input_div_by_value(item_key)
                 self.wait_until_has_class('correct', input_div)
 
-        self.wait_until_exists('.reset-button')
         self.wait_until_html_in(self.feedback['final'], self._get_feedback_message())
+
+        # Scroll "Reset exercise" button into view to make sure Selenium can successfully click it
+        self.scroll_down()
 
         reset = self._page.find_element_by_css_selector('.reset-button')
         reset.click()

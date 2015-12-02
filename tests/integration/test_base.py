@@ -50,6 +50,9 @@ class BaseIntegrationTest(SeleniumBaseTest):
     def _get_feedback_message(self):
         return self._page.find_element_by_css_selector(".feedback .message")
 
+    def scroll_down(self, pixels=50):
+        self.browser.execute_script("$(window).scrollTop({})".format(pixels))
+
     def get_element_html(self, element):
         return element.get_attribute('innerHTML').strip()
 
