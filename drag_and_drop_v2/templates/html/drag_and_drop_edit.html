@@ -64,6 +64,18 @@
                 <h3>Items</h3>
             </header>
             <section class="tab-content">
+                <section class="tab-content item-background-color-form">
+                    <label>
+                        Background color for items:
+                        <input class="item-background-color" type="text" value="{{ self.item_background_color}}">
+                    </label>
+                </section>
+                <section class="tab-content item-text-color-form">
+                    <label>
+                        Text color for items:
+                        <input class="item-text-color" type="text" value="{{ self.item_text_color}}">
+                    </label>
+                </section>
                 <form class="items-form"></form>
             </section>
             <footer class="tab-footer">

@@ -40,11 +40,23 @@
     };
 
     var itemTemplate = function(item) {
+        var style = {
+            width: item.width,
+            height: item.height,
+            top: item.top,
+            left: item.left,
+            position: item.position
+        };
+        if (item.background_color) {
+            style['background-color'] = item.background_color;
+        }
+        if (item.color) {
+            style.color = item.color;
+        }
         return (
             h('div.option', {className: item.class_name,
                              attributes: {'data-value': item.value, 'data-drag-disabled': item.drag_disabled},
-                             style: {width: item.width, height: item.height,
-                                     top: item.top, left: item.left, position: item.position}}, [
+                             style: style}, [
                 h('div', {innerHTML: item.content_html}),
                 itemInputTemplate(item.input)
             ])
