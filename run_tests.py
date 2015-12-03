@@ -21,6 +21,12 @@ if __name__ == "__main__":
     # Configure a range of ports in case the default port of 8081 is in use
     os.environ.setdefault("DJANGO_LIVE_TEST_SERVER_ADDRESS", "localhost:8081-8099")
 
+    try:
+        os.mkdir('var')
+    except OSError:
+        # May already exist.
+        pass
+
     from django.core.management import execute_from_command_line
     args = sys.argv[1:]
     paths = [arg for arg in args if arg[0] != '-']
