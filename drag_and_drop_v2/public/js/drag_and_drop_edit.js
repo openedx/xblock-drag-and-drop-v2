@@ -413,6 +413,8 @@ function DragAndDropEditBlock(runtime, element) {
                             'show_title': $(element).find('.show-title').is(':checked'),
                             'weight': $(element).find('.weight').val(),
                             'question_text': $(element).find('.question-text').val(),
+                            'item_background_color': $(element).find('.item-background-color').val(),
+                            'item_text_color': $(element).find('.item-text-color').val(),
                             'data': _fn.data,
                         };
 

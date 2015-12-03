@@ -61,6 +61,8 @@ def test_studio_submit():
         'display_name': "Test Drag & Drop",
         'show_title': True,
         'question_text': "Question Drag & Drop",
+        'item_background_color': 'cornflowerblue',
+        'item_text_color': 'coral',
         'weight': '5',
         'data': {
             'foo': 1
@@ -72,6 +74,8 @@ def test_studio_submit():
 
     assert_equals(block.display_name, "Test Drag & Drop")
     assert_equals(block.question_text, "Question Drag & Drop")
+    assert_equals(block.item_background_color, "cornflowerblue")
+    assert_equals(block.item_text_color, "coral")
     assert_equals(block.weight, 5)
     assert_equals(block.data, {'foo': 1})
 

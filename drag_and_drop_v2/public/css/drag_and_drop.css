@@ -54,18 +54,24 @@
 }
 
 .xblock--drag-and-drop .drag-container .option {
-    width: 190px;
-    font-size: 14px;
-    background: #2e83cd;
-    color: #fff;
     position: relative;
-    float: left;
-    display: inline;
+    display: inline-block;
+    width: auto;
+    border-radius: 3px;
+    margin: 1%;
+    padding: 10px;
+    background: #2e83cd;
+    font-size: 14px;
+    color: #fff;
+    opacity: 1;
     /* Some versions of the drag and drop library try to fiddle with this */
     z-index: 10 !important;
-    margin-bottom: 5px;
-    padding: 10px;
-    opacity: 1;
+}
+
+.xblock--drag-and-drop .drag-container .ui-draggable-dragging {
+    box-shadow: 0 16px 32px 0 rgba(0,0,0,.3);
+    border: 1px solid #ccc;
+    opacity: .65;
 }
 
 .xblock--drag-and-drop .drag-container .option img {

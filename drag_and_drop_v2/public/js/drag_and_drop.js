@@ -222,13 +222,13 @@ function DragAndDropBlock(runtime, element) {
                     is_visible: item_state && !item_state.submitting_location,
                     has_value: Boolean(item_state && 'input' in item_state),
                     value : (item_state && item_state.input) || '',
-                    class_name: undefined,
+                    class_name: undefined
                 };
                 if (input.has_value && !item_state.submitting_input) {
                     input.class_name = item_state.correct_input ? 'correct' : 'incorrect';
                 }
             }
-            return {
+            var itemProperties = {
                 value: item.id,
                 drag_disabled: Boolean(item_state || state.state.finished),
                 width: item.size.width,
@@ -240,6 +240,13 @@ function DragAndDropBlock(runtime, element) {
                 input: input,
                 content_html: item.backgroundImage ? '<img src="' + item.backgroundImage + '"/>' : item.displayName
             };
+            if (state.item_background_color) {
+                itemProperties.background_color = state.item_background_color;
+            }
+            if (state.item_text_color) {
+                itemProperties.color = state.item_text_color;
+            }
+            return itemProperties;
         });
 
         var context = {
