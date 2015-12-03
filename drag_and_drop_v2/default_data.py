@@ -1,9 +1,11 @@
+from .utils import _
+
 DEFAULT_DATA = {
   "zones": [
     {
       "index": 1,
       "width": 200,
-      "title": "Zone 1",
+      "title": _("Zone 1"),
       "height": 100,
       "x": "120",
       "y": "200",
@@ -12,7 +14,7 @@ DEFAULT_DATA = {
     {
       "index": 2,
       "width": 200,
-      "title": "Zone 2",
+      "title": _("Zone 2"),
       "height": 100,
       "x": "120",
       "y": "360",
@@ -23,8 +25,8 @@ DEFAULT_DATA = {
     {
       "displayName": "1",
       "feedback": {
-        "incorrect": "No, 1 does not belong here",
-        "correct": "Yes, it's a 1"
+        "incorrect": _("No, 1 does not belong here"),
+        "correct": _("Yes, it's a 1")
       },
       "zone": "Zone 1",
       "backgroundImage": "",
@@ -37,8 +39,8 @@ DEFAULT_DATA = {
     {
       "displayName": "2",
       "feedback": {
-        "incorrect": "No, 2 does not belong here",
-        "correct": "Yes, it's a 2"
+        "incorrect": _("No, 2 does not belong here"),
+        "correct": _("Yes, it's a 2")
       },
       "zone": "Zone 2",
       "backgroundImage": "",
@@ -51,7 +53,7 @@ DEFAULT_DATA = {
     {
       "displayName": "X",
       "feedback": {
-        "incorrect": "You silly, there are no zones for X",
+        "incorrect": _("You silly, there are no zones for X"),
         "correct": ""
       },
       "zone": "none",
@@ -68,7 +70,7 @@ DEFAULT_DATA = {
     "finished": True
   },
   "feedback": {
-    "start": "Intro Feed",
-    "finish": "Final Feed"
+    "start": _("Intro Feed"),
+    "finish": _("Final Feed")
   },
 }
