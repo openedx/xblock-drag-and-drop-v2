@@ -183,6 +183,12 @@
     margin-bottom: 30px;
 }
 
+.xblock--drag-and-drop .item-styles-form .item-styles-form-help {
+    margin-top: 5px;
+    font-size: small;
+}
+
+.xblock--drag-and-drop .item-styles-form,
 .xblock--drag-and-drop .items-form {
     margin-bottom: 30px;
 }

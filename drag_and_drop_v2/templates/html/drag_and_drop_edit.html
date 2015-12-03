@@ -64,18 +64,32 @@
                 <h3>Items</h3>
             </header>
             <section class="tab-content">
-                <section class="tab-content item-background-color-form">
-                    <label>
-                        Background color for items:
-                        <input class="item-background-color" type="text" value="{{ self.item_background_color}}">
-                    </label>
-                </section>
-                <section class="tab-content item-text-color-form">
-                    <label>
-                        Text color for items:
-                        <input class="item-text-color" type="text" value="{{ self.item_text_color}}">
-                    </label>
-                </section>
+                <form class="item-styles-form">
+                    <h3 id="item-background-color-label">
+                        {% trans "Background color" %}
+                    </h3>
+                    <input class="item-background-color"
+                           placeholder="e.g. red or #ff0000"
+                           value="{{ self.item_background_color}}"
+                           aria-labelledby="item-background-color-label"
+                           aria-describedby="item-background-color-description">
+                    <div id="item-background-color-description" class="item-styles-form-help">
+                      {{ self.fields.item_background_color.help }}
+                    </div>
+                    <h3 id="item-text-color-label">
+                        {% trans "Text color" %}
+                    </h3>
+                    <input class="item-text-color"
+                           placeholder="e.g. red or #ff0000"
+                           value="{{ self.item_text_color}}"
+                           aria-labelledby="item-text-color-label"
+                           aria-describedby="item-text-color-description">
+                    <div id="item-text-color-description" class="item-styles-form-help">
+                      {{ self.fields.item_text_color.help }}
+                    </div>
+                </form>
+            </section>
+            <section class="tab-content">
                 <form class="items-form"></form>
             </section>
             <footer class="tab-footer">
