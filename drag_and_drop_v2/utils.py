@@ -10,6 +10,12 @@ from django.template import Context, Template
 
 # Functions #########################################################
 
+
+# Make '_' a no-op so we can scrape strings
+def _(text):
+    return text
+
+
 def load_resource(resource_path):
     """
     Gets the content of a resource

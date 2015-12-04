@@ -10,26 +10,26 @@
     <section class="drag-builder">
         <div class="tab feedback-tab">
             <p class="tab-content">
-                Note: don't edit the question if students already answered it! Delete it and create a new one.
+                {% trans "Note: don't edit the question if students already answered it! Delete it and create a new one." %}
             </p>
 
             <section class="tab-content">
                 <form class="feedback-form">
-                    <h3>Question title</h3>
+                    <h3>{% trans "Question title" %}</h3>
                     <input class="display-name" value="{{ self.display_name }}" />
                     <input class="show-title" type="checkbox" value="{{ self.show_title }}"
-                           {% if self.show_title %}checked="checked"{% endif %}> Show title
+                           {% if self.show_title %}checked="checked"{% endif %}> {% trans "Show title" %}
 
-                    <h3>Maximum score</h3>
+                    <h3>{% trans "Maximum score" %}</h3>
                     <input class="weight" value="1" value="{{ self.weight }}"/>
 
-                    <h3>Question text</h3>
+                    <h3>{% trans "Question text" %}</h3>
                     <textarea class="question-text">{{ self.question_text }}</textarea>
 
-                    <h3>Introduction Feedback</h3>
+                    <h3>{% trans "Introduction Feedback" %}</h3>
                     <textarea class="intro-feedback">{{ self.data.feedback.start }}</textarea>
 
-                    <h3>Final Feedback</h3>
+                    <h3>{% trans "Final Feedback" %}</h3>
                     <textarea class="final-feedback">{{ self.data.feedback.finish }}</textarea>
                 </form>
             </section>
@@ -37,21 +37,21 @@
 
         <div class="tab zones-tab hidden">
             <header class="tab-header">
-                <h3>Zone Positions</h3>
+                <h3>{% trans "Zone Positions" %}</h3>
             </header>
             <section class="tab-content">
                 <section class="tab-content target-image-form">
-                    <label>New background URL:</label>
+                    <label>{% trans "New background URL" %}:</label>
                     <input type="text">
-                    <button class="btn">Change background</button>
+                    <button class="btn">{% trans "Change background" %}</button>
                 </section>
                 <section class="tab-content display-labels-form">
-                    <label for="display-labels">Display label names on the image:</label>
+                    <label for="display-labels">{% trans "Display label names on the image" %}:</label>
                     <input name="display-labels" id="display-labels" type="checkbox" />
                 </section>
                 <div class="items">
                     <form class="zones-form"></form>
-                    <a href="#" class="add-zone add-element"><div class="icon add"></div>Add a zone</a>
+                    <a href="#" class="add-zone add-element"><div class="icon add"></div>{% trans "Add a zone" %}</a>
                 </div>
                 <div class="target">
                     <div class="target-img"></div>
@@ -61,7 +61,7 @@
 
         <div class="tab items-tab hidden">
             <header class="tab-header">
-                <h3>Items</h3>
+                <h3>{% trans "Items" %}</h3>
             </header>
             <section class="tab-content">
                 <form class="item-styles-form">
@@ -74,7 +74,7 @@
                            aria-labelledby="item-background-color-label"
                            aria-describedby="item-background-color-description">
                     <div id="item-background-color-description" class="item-styles-form-help">
-                      {{ self.fields.item_background_color.help }}
+                      {{ help_texts.item_background_color }}
                     </div>
                     <h3 id="item-text-color-label">
                         {% trans "Text color" %}
@@ -85,7 +85,7 @@
                            aria-labelledby="item-text-color-label"
                            aria-describedby="item-text-color-description">
                     <div id="item-text-color-description" class="item-styles-form-help">
-                      {{ self.fields.item_text_color.help }}
+                      {{ help_texts.item_text_color }}
                     </div>
                 </form>
             </section>
@@ -93,7 +93,7 @@
                 <form class="items-form"></form>
             </section>
             <footer class="tab-footer">
-                <a href="#" class="add-item add-element"><div class="icon add"></div>Add an item</a>
+                <a href="#" class="add-item add-element"><div class="icon add"></div>{% trans "Add an item" %}</a>
             </footer>
         </div>
 

@@ -34,7 +34,7 @@
                                       style: {display: input.is_visible ? 'block' : 'none'}}, [
                 h('input.input', {type: 'text', value: input.value, disabled: input.has_value,
                                   focusHook: focus_hook}),
-                h('button.submit-input', {disabled: input.has_value}, 'ok')
+                h('button.submit-input', {disabled: input.has_value}, gettext('ok'))
             ])
         );
     };
@@ -77,8 +77,8 @@
         var reset_button_display = ctx.display_reset_button ? 'block' : 'none';
         return (
             h('section.feedback', [
-                h('div.reset-button', {style: {display: reset_button_display}}, 'Reset exercise'),
-                h('div.title1', {style: {display: feedback_display}}, 'Feedback'),
+                h('div.reset-button', {style: {display: reset_button_display}}, gettext('Reset exercise')),
+                h('div.title1', {style: {display: feedback_display}}, gettext('Feedback')),
                 h('p.message', {style: {display: feedback_display},
                                 innerHTML: ctx.feedback_html})
             ])
@@ -94,7 +94,7 @@
             h('section.xblock--drag-and-drop', [
                 problemHeader,
                 h('section.problem', {role: 'application'}, [
-                    h('div.title1', 'Question'),
+                    h('div.title1', gettext('Question')),
                     h('p', {innerHTML: ctx.question_html})
                 ]),
                 h('section.drag-container', [

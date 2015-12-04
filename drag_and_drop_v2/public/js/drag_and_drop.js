@@ -1,4 +1,10 @@
 function DragAndDropBlock(runtime, element) {
+
+    // Set up gettext in case it isn't available in the client runtime:
+    if (typeof gettext == "undefined") {
+        window.gettext = function gettext_stub(string) { return string; };
+    }
+
     var root = $(element).find('.xblock--drag-and-drop')[0];
 
     var __state;

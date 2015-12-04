@@ -10,15 +10,15 @@
 
 <script id="zone-input-tpl" type="text/html">
     <div class="zone-row {{ id }}">
-       <label>Text</label>
+       <label>{{i18n "Text"}}</label>
        <input type="text" class="title" value="{{ title }}" />
        <a href="#" class="remove-zone hidden">
            <div class="icon remove"></div>
        </a>
        <div class="layout">
-           <label>width</label>
+           <label>{{i18n "width"}}</label>
            <input type="text" class="size width" value="{{ width }}" />
-           <label>height</label>
+           <label>{{i18n "height"}}</label>
            <input type="text" class="size height" value="{{ height }}" />
            <br />
            <label>x</label>
@@ -36,36 +36,36 @@
 <script id="item-input-tpl" type="text/html">
     <div class="item">
         <div class="row">
-            <label>Text</label>
+            <label>{{i18n "Text"}}</label>
             <input type="text" class="item-text" value="{{ displayName }}"/>
-            <label>Zone</label>
+            <label>{{i18n "Zone"}}</label>
             <select class="zone-select">{{ dropdown }}</select>
             <a href="#" class="remove-item hidden">
                 <div class="icon remove"></div>
             </a>
         </div>
         <div class="row">
-            <label>Background image URL (alternative to the text)</label>
+            <label>{{i18n "Background image URL (alternative to the text)"}}</label>
             <textarea class="background-image">{{ backgroundImage }}</textarea>
         </div>
         <div class="row">
-            <label>Success Feedback</label>
+            <label>{{i18n "Success Feedback"}}</label>
             <textarea class="success-feedback">{{ feedback.correct }}</textarea>
         </div>
         <div class="row">
-            <label>Error Feedback</label>
+            <label>{{i18n "Error Feedback"}}</label>
             <textarea class="error-feedback">{{ feedback.incorrect }}</textarea>
         </div>
         <div class="row">
-            <label>Width (px - 0 for auto)</label>
+            <label>{{i18n "Width in pixels (0 for auto)"}}</label>
             <input type="text" class="item-width" value="{{ width }}"></input>
-            <label>Height (px - 0 for auto)</label>
+            <label>{{i18n "Height in pixels (0 for auto)"}}</label>
             <input type="text" class="item-height" value="{{ height }}"></input>
         </div>
         <div class="row">
-          <label>Optional numerical value</label>
+          <label>{{i18n "Optional numerical value"}}</label>
           <input type="text" class="item-numerical-value" value="{{ numericalValue }}"></input>
-          <label>Margin ±</label>
+          <label>{{i18n "Margin ±"}}</label>
           <input type="text" class="item-numerical-margin" value="{{ numericalMargin }}"></input>
         </div>
     </div>
