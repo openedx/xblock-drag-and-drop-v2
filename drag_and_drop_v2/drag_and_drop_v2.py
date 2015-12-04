@@ -26,7 +26,7 @@ class DragAndDropBlock(XBlock):
         display_name=_("Title"),
         help=_("The title of the Drag and Drop that is displayed to the user"),
         scope=Scope.settings,
-        default="Drag and Drop",
+        default=_("Drag and Drop"),
     )
 
     show_title = Boolean(
@@ -91,6 +91,10 @@ class DragAndDropBlock(XBlock):
 
     has_score = True
 
+    def _(self, text):
+        """ Translate text """
+        return self.runtime.service(self, "i18n").ugettext(text)
+
     def student_view(self, context):
         """
         Player view, displayed to the student
@@ -124,8 +128,13 @@ class DragAndDropBlock(XBlock):
         """
 
         js_templates = load_resource('/templates/html/js_templates.html')
+        help_texts = {
+            'item_background_color': self._(self.fields['item_background_color'].help),
+            'item_text_color': self._(self.fields['item_text_color'].help)
+        }
         context = {
             'js_templates': js_templates,
+            'help_texts': help_texts,
             'self': self,
             'data': urllib.quote(json.dumps(self.data)),
         }
