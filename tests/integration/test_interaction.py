@@ -96,6 +96,9 @@ class InteractionTestFixture(BaseIntegrationTest):
     def test_item_negative_feedback_on_bad_move(self):
         feedback_popup = self._page.find_element_by_css_selector(".popup-content")
 
+        # Scroll drop zones into view to make sure Selenium can successfully drop items
+        self.scroll_down(pixels=100)
+
         for definition in self.items_map.values():
             for zone in self.all_zones:
                 if zone == definition.zone_id:
@@ -132,7 +135,7 @@ class InteractionTestFixture(BaseIntegrationTest):
         self.wait_until_html_in(self.feedback['final'], self._get_feedback_message())
 
         # Scroll "Reset exercise" button into view to make sure Selenium can successfully click it
-        self.scroll_down()
+        self.scroll_down(pixels=150)
 
         reset = self._page.find_element_by_css_selector('.reset-button')
         reset.click()

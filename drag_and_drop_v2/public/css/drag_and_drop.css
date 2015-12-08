@@ -23,7 +23,8 @@
 }
 
 .xblock--drag-and-drop .drag-container {
-    width: 760px;
+    width: 515px;
+    padding: 1%;
     background: #ebf0f2;
     position: relative;
 }
@@ -44,12 +45,9 @@
 
 /** Draggable Items **/
 .xblock--drag-and-drop .drag-container .items {
-    width: 210px;
-    margin: 10px;
+    display: block;
     padding: 0 !important; /* LMS tries to override this */
     position: relative;
-    display: inline;
-    float: left;
     list-style-type: none;
 }
 
@@ -120,12 +118,11 @@
 
 /*** Drop Target ***/
 .xblock--drag-and-drop .target {
+    display: block;
     width: 515px;
     height: 510px;
     position: relative;
-    display: inline;
-    float: left;
-    margin: 10px 0 15px 5px;
+    margin-top: 1%;
     background: #fff;
 }
 
