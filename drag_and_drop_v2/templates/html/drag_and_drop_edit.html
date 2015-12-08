@@ -17,14 +17,22 @@
                 <form class="feedback-form">
                     <h3>{% trans "Question title" %}</h3>
                     <input class="display-name" value="{{ self.display_name }}" />
-                    <input class="show-title" type="checkbox" value="{{ self.show_title }}"
-                           {% if self.show_title %}checked="checked"{% endif %}> {% trans "Show title" %}
+                    <label title="{{ help_texts.show_title }}">
+                      <input class="show-title" type="checkbox"
+                        {% if self.show_title %}checked="checked"{% endif %}>
+                      {% trans "Show title" %}
+                    </label>
 
                     <h3>{% trans "Maximum score" %}</h3>
                     <input class="weight" value="1" value="{{ self.weight }}"/>
 
                     <h3>{% trans "Question text" %}</h3>
                     <textarea class="question-text">{{ self.question_text }}</textarea>
+                    <label title="{{ help_texts.show_question_header }}">
+                      <input class="show-question-header" type="checkbox"
+                        {% if self.show_question_header %}checked="checked"{% endif %}>
+                      {% trans "Show \"Question\" heading" %}
+                    </label>
 
                     <h3>{% trans "Introduction Feedback" %}</h3>
                     <textarea class="intro-feedback">{{ self.data.feedback.start }}</textarea>

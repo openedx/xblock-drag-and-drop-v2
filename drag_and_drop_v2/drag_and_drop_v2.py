@@ -38,9 +38,16 @@ class DragAndDropBlock(XBlock):
 
     question_text = String(
         display_name=_("Question text"),
-        help=_("The question text that is displayed to the user"),
+        help=_("The question text (and/or instructions) shown to the user"),
         scope=Scope.settings,
         default="",
+    )
+
+    show_question_header = Boolean(
+        display_name=_("Show \"Question\" heading"),
+        help=_("Display the \"Question\" heading above the question/instructions?"),
+        scope=Scope.settings,
+        default=True,
     )
 
     weight = Float(
@@ -129,8 +136,8 @@ class DragAndDropBlock(XBlock):
 
         js_templates = load_resource('/templates/html/js_templates.html')
         help_texts = {
-            'item_background_color': self._(self.fields['item_background_color'].help),
-            'item_text_color': self._(self.fields['item_text_color'].help)
+            field_name: self._(field.help)
+            for field_name, field in self.fields.viewitems() if hasattr(field, "help")
         }
         context = {
             'js_templates': js_templates,
@@ -166,6 +173,7 @@ class DragAndDropBlock(XBlock):
         self.display_name = submissions['display_name']
         self.show_title = submissions['show_title']
         self.question_text = submissions['question_text']
+        self.show_question_header = submissions['show_question_header']
         self.weight = float(submissions['weight'])
         self.item_background_color = submissions['item_background_color']
         self.item_text_color = submissions['item_text_color']
@@ -178,7 +186,7 @@ class DragAndDropBlock(XBlock):
     @XBlock.handler
     def get_data(self, request, suffix=''):
         data = self._get_data()
-        return webob.response.Response(body=json.dumps(data))
+        return webob.Response(body=json.dumps(data), content_type='application/json')
 
     @XBlock.json_handler
     def do_attempt(self, attempt, suffix=''):
@@ -285,6 +293,7 @@ class DragAndDropBlock(XBlock):
         data['title'] = self.display_name
         data['show_title'] = self.show_title
         data['question_text'] = self.question_text
+        data['show_question_header'] = self.show_question_header
 
         if self.item_background_color:
             data['item_background_color'] = self.item_background_color

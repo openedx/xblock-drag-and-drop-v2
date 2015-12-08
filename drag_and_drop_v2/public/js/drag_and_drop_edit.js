@@ -8,6 +8,8 @@ function DragAndDropEditBlock(runtime, element) {
     // Make gettext available in Handlebars templates
     Handlebars.registerHelper('i18n', function(str) { return gettext(str); });
 
+    var $element = $(element);
+
     var dragAndDrop = (function($) {
         var _fn = {
 
@@ -57,7 +59,7 @@ function DragAndDropEditBlock(runtime, element) {
                         $zoneTab = _fn.build.$el.zones.tab,
                         $itemTab = _fn.build.$el.items.tab;
 
-                    $(element).one('click', '.continue-button', function(e) {
+                    $element.one('click', '.continue-button', function(e) {
                         // $fbkTab -> $zoneTab
 
                         e.preventDefault();
@@ -418,12 +420,13 @@ function DragAndDropEditBlock(runtime, element) {
                         _fn.data.zones = _fn.build.form.zone.cleanObject(_fn.build.form.zone.obj);
 
                         var data = {
-                            'display_name': $(element).find('.display-name').val(),
-                            'show_title': $(element).find('.show-title').is(':checked'),
-                            'weight': $(element).find('.weight').val(),
-                            'question_text': $(element).find('.question-text').val(),
-                            'item_background_color': $(element).find('.item-background-color').val(),
-                            'item_text_color': $(element).find('.item-text-color').val(),
+                            'display_name': $element.find('.display-name').val(),
+                            'show_title': $element.find('.show-title').is(':checked'),
+                            'weight': $element.find('.weight').val(),
+                            'question_text': $element.find('.question-text').val(),
+                            'show_question_header': $element.find('.show-question-header').is(':checked'),
+                            'item_background_color': $element.find('.item-background-color').val(),
+                            'item_text_color': $element.find('.item-text-color').val(),
                             'data': _fn.data,
                         };
 
@@ -451,7 +454,7 @@ function DragAndDropEditBlock(runtime, element) {
         };
     })(jQuery);
 
-    $(element).find('.cancel-button').bind('click', function() {
+    $element.find('.cancel-button').bind('click', function() {
         runtime.notify('cancel', {});
     });
 

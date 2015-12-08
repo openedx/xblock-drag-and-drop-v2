@@ -19,15 +19,24 @@ class BaseIntegrationTest(SeleniumBaseTest):
         "'": "&apos;"
     }
 
-    def _make_scenario_xml(self, display_name, show_title, question_text, completed):
+    def _make_scenario_xml(self, display_name, show_title, question_text, completed=False, show_question_header=True):
         return """
 <vertical_demo>
-    <drag-and-drop-v2 display_name='{display_name}' show_title='{show_title}' question_text='{question_text}'
-                      weight='1' completed='{completed}'/>
+    <drag-and-drop-v2
+        display_name='{display_name}'
+        show_title='{show_title}'
+        question_text='{question_text}'
+        show_question_header='{show_question_header}'
+        weight='1'
+        completed='{completed}'
+    />
 </vertical_demo>
     """.format(
-        display_name=escape(display_name), show_title=show_title, question_text=escape(question_text),
-        completed=completed
+        display_name=escape(display_name),
+        show_title=show_title,
+        question_text=escape(question_text),
+        show_question_header=show_question_header,
+        completed=completed,
     )
 
     def _get_custom_scenario_xml(self, filename):

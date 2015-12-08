@@ -78,7 +78,7 @@
         return (
             h('section.feedback', [
                 h('div.reset-button', {style: {display: reset_button_display}}, gettext('Reset exercise')),
-                h('div.title1', {style: {display: feedback_display}}, gettext('Feedback')),
+                h('h3.title1', {style: {display: feedback_display}}, gettext('Feedback')),
                 h('p.message', {style: {display: feedback_display},
                                 innerHTML: ctx.feedback_html})
             ])
@@ -86,15 +86,13 @@
     };
 
     var mainTemplate = function(ctx) {
-        var problemHeader = '';
-        if (ctx.show_title) {
-            problemHeader = h('h2.problem-header', {innerHTML: ctx.header_html});
-        }
+        var problemHeader = ctx.show_title ? h('h2.problem-header', {innerHTML: ctx.header_html}) : null;
+        var questionHeader = ctx.show_question_header ? h('h3.title1', gettext('Question')) : null;
         return (
             h('section.xblock--drag-and-drop', [
                 problemHeader,
                 h('section.problem', {role: 'application'}, [
-                    h('div.title1', gettext('Question')),
+                    questionHeader,
                     h('p', {innerHTML: ctx.question_html})
                 ]),
                 h('section.drag-container', [
