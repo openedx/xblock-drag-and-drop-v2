@@ -118,7 +118,7 @@
 }
 
 .xblock--drag-and-drop .drag-builder .tab h3 {
-    margin: 10px 0;
+    margin: 20px 0 8px 0;
 }
 
 .xblock--drag-and-drop .drag-builder .tab-header,
@@ -180,7 +180,6 @@
 .xblock--drag-and-drop .feedback-form textarea {
     width: 99%;
     height: 128px;
-    margin-bottom: 30px;
 }
 
 .xblock--drag-and-drop .item-styles-form .item-styles-form-help {

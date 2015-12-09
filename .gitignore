@@ -44,16 +44,16 @@ coverage.xml
 *.mo
 *.pot
 
-# Django stuff:
-*.log
+# Integration test output:
+/*.log
+/tests.*.png
+var/*
 
 # Sphinx documentation
 docs/_build/
 
 # PyBuilder
 target/
-
-workbench.db
 
 # IDEs
 .idea

@@ -259,6 +259,7 @@ function DragAndDropBlock(runtime, element) {
             header_html: state.title,
             show_title: state.show_title,
             question_html: state.question_text,
+            show_question_header: state.show_question_header,
             popup_html: state.state.feedback || '',
             feedback_html: $.trim(state.state.finished ? state.feedback.finish : state.feedback.start),
             target_img_src: state.targetImg,
