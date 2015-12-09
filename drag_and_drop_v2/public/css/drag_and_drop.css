@@ -48,7 +48,6 @@
     display: block;
     padding: 0 !important; /* LMS tries to override this */
     position: relative;
-    list-style-type: none;
 }
 
 .xblock--drag-and-drop .drag-container .option {
