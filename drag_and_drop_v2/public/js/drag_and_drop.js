@@ -10,13 +10,12 @@ function DragAndDropBlock(runtime, element) {
     var __state;
     var __vdom = virtualDom.h();  // blank virtual DOM
 
-    var itemsWrapperHeight;
-
     var init = function() {
         $.ajax(runtime.handlerUrl(element, 'get_data'), {
             dataType: 'json'
         }).done(function(data){
             setState(data);
+            setItemsHeight();
             initDroppable();
         });
 
@@ -27,14 +26,15 @@ function DragAndDropBlock(runtime, element) {
         publishEvent({event_type: 'xblock.drag-and-drop-v2.loaded'});
     };
 
+    var setItemsHeight = function() {
+        $('.items', element).height($('.items', element).height());
+    };
+
     var getState = function() {
         return __state;
     };
 
     var setState = function(new_state) {
-        // Keep track of height of container that holds draggable items
-        itemsWrapperHeight = $('.items', element).height();
-
         if (new_state.state.feedback) {
             if (new_state.state.feedback !== __state.state.feedback) {
                 publishEvent({
@@ -92,7 +92,7 @@ function DragAndDropBlock(runtime, element) {
                 // Wrap in setTimeout to let the droppable event finish.
                 setTimeout(function() {
                     setState(state);
-                    submitLocation(state, item_id, zone, top, left);
+                    submitLocation(item_id, zone, top, left);
                 }, 0);
             }
         });
@@ -133,28 +133,7 @@ function DragAndDropBlock(runtime, element) {
         });
     };
 
-    var submitLocation = function(state, item_id, zone, top, left) {
-        // If height of items wrapper has changed, adjust vertical location of item
-        var newItemsWrapperHeight = $('.items', element).height();
-
-        if (newItemsWrapperHeight < itemsWrapperHeight) {
-            var heightDelta = itemsWrapperHeight - newItemsWrapperHeight,
-                item = state.state.items[item_id],
-                newTop = parseFloat(item.top) - heightDelta,
-                itemElement = $('.option[data-value="' + item_id + '"]', element);
-
-            // Update top
-            top = newTop + 'px';
-            // Update state
-            item.top = top;
-            state.state.items[item_id] = item;
-            // Update position
-            itemElement.css('top', top);
-
-            // Update wrapper height
-            itemsWrapperHeight = newItemsWrapperHeight;
-        }
-
+    var submitLocation = function(item_id, zone, top, left) {
         if (!zone) {
             return;
         }
@@ -236,11 +215,15 @@ function DragAndDropBlock(runtime, element) {
     };
 
     var resetExercise = function() {
+        $('.items').height('auto');
         $.ajax({
             type: 'POST',
             url: runtime.handlerUrl(element, 'reset'),
             data: '{}',
-            success: setState
+            success: function(new_state) {
+                setState(new_state);
+                setItemsHeight();
+            }
         });
     };
 

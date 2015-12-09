@@ -77,6 +77,9 @@ class InteractionTestFixture(BaseIntegrationTest):
         action_chains.drag_and_drop(element, target).perform()
 
     def test_item_positive_feedback_on_good_move(self):
+        # Scroll drop zones into view to make sure Selenium can successfully drop items
+        self.scroll_down(pixels=100)
+
         for definition in self._get_correct_item_for_zone().values():
             if not definition.input:
                 self.drag_item_to_zone(definition.item_id, definition.zone_id)
@@ -108,6 +111,10 @@ class InteractionTestFixture(BaseIntegrationTest):
 
     def test_item_positive_feedback_on_bad_input(self):
         feedback_popup = self._page.find_element_by_css_selector(".popup-content")
+
+        # Scroll drop zones into view to make sure Selenium can successfully drop items
+        self.scroll_down(pixels=100)
+
         for definition in self._get_correct_item_for_zone().values():
             if definition.input:
                 self.drag_item_to_zone(definition.item_id, definition.zone_id)
@@ -125,6 +132,9 @@ class InteractionTestFixture(BaseIntegrationTest):
 
         initial_locations = get_locations()
 
+        # Scroll drop zones into view to make sure Selenium can successfully drop items
+        self.scroll_down(pixels=100)
+
         for item_key, definition in items.items():
             self.drag_item_to_zone(item_key, definition.zone_id)
             if definition.input:
@@ -135,7 +145,7 @@ class InteractionTestFixture(BaseIntegrationTest):
         self.wait_until_html_in(self.feedback['final'], self._get_feedback_message())
 
         # Scroll "Reset exercise" button into view to make sure Selenium can successfully click it
-        self.scroll_down(pixels=150)
+        self.scroll_down(pixels=250)
 
         reset = self._page.find_element_by_css_selector('.reset-button')
         reset.click()
