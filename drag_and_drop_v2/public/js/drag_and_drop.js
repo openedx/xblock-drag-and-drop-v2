@@ -27,7 +27,10 @@ function DragAndDropBlock(runtime, element) {
     };
 
     var setItemsHeight = function() {
-        $('.items', element).height($('.items', element).height());
+        var itemsHeight = $('.items', element).height();
+        // Need to update the DOM here, otherwise .items will resize when first item is moved to target
+        $('.items', element).height(itemsHeight);
+        __state.itemsHeight = itemsHeight;
     };
 
     var getState = function() {
@@ -35,6 +38,14 @@ function DragAndDropBlock(runtime, element) {
     };
 
     var setState = function(new_state) {
+        var itemsHeight;
+        if (__state === undefined) {
+            itemsHeight = 'auto';
+        } else {
+            itemsHeight = __state.itemsHeight;
+        }
+        new_state.itemsHeight = itemsHeight;
+
         if (new_state.state.feedback) {
             if (new_state.state.feedback !== __state.state.feedback) {
                 publishEvent({
@@ -215,14 +226,12 @@ function DragAndDropBlock(runtime, element) {
     };
 
     var resetExercise = function() {
-        $('.items').height('auto');
         $.ajax({
             type: 'POST',
             url: runtime.handlerUrl(element, 'reset'),
             data: '{}',
             success: function(new_state) {
                 setState(new_state);
-                setItemsHeight();
             }
         });
     };

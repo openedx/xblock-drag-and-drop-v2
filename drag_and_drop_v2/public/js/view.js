@@ -96,7 +96,7 @@
                     h('p', {innerHTML: ctx.question_html})
                 ]),
                 h('section.drag-container', [
-                    h('div.items', renderCollection(itemTemplate, ctx.items, ctx)),
+                    h('div.items', {height: ctx.itemsHeight}, renderCollection(itemTemplate, ctx.items, ctx)),
                     h('div.target', [
                         h('div.popup', {style: {display: ctx.popup_html ? 'block' : 'none'}}, [
                             h('div.close.icon-remove-sign.fa-times-circle'),
