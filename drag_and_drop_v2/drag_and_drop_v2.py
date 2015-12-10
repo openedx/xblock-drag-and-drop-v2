@@ -220,9 +220,8 @@ class DragAndDropBlock(XBlock):
                 is_correct = True
                 feedback = item['feedback']['correct']
             state = {
-                'top': attempt['top'],
-                'left': attempt['left'],
-                'absolute': True  # flag for backwards compatibility (values used to be relative)
+                'x_percent': attempt['x_percent'],
+                'y_percent': attempt['y_percent'],
             }
 
         if state:
@@ -299,6 +298,9 @@ class DragAndDropBlock(XBlock):
             data['item_background_color'] = self.item_background_color
         if self.item_text_color:
             data['item_text_color'] = self.item_text_color
+
+        if not data.get("targetImg"):
+            data["targetImg"] = self.runtime.local_resource_url(self, "public/img/triangle.png")
 
         return data
 

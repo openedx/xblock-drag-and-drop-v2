@@ -5,7 +5,10 @@ function DragAndDropBlock(runtime, element) {
         window.gettext = function gettext_stub(string) { return string; };
     }
 
-    var root = $(element).find('.xblock--drag-and-drop')[0];
+    var $element = $(element);
+    // root: root node managed by the virtual DOM
+    var root = $element.find('.xblock--drag-and-drop')[0];
+    var $root = $(root);
 
     var __state;
     var __vdom = virtualDom.h();  // blank virtual DOM
@@ -15,22 +18,14 @@ function DragAndDropBlock(runtime, element) {
             dataType: 'json'
         }).done(function(data){
             setState(data);
-            setItemsHeight();
             initDroppable();
         });
 
         $(document).on('mousedown touchstart', closePopup);
-        $(element).on('click', '.reset-button', resetExercise);
-        $(element).on('click', '.submit-input', submitInput);
+        $element.on('click', '.reset-button', resetExercise);
+        $element.on('click', '.submit-input', submitInput);
 
         publishEvent({event_type: 'xblock.drag-and-drop-v2.loaded'});
-    };
-
-    var setItemsHeight = function() {
-        var itemsHeight = $('.items', element).height();
-        // Need to update the DOM here, otherwise .items will resize when first item is moved to target
-        $('.items', element).height(itemsHeight);
-        __state.itemsHeight = itemsHeight;
     };
 
     var getState = function() {
@@ -38,14 +33,6 @@ function DragAndDropBlock(runtime, element) {
     };
 
     var setState = function(new_state) {
-        var itemsHeight;
-        if (__state === undefined) {
-            itemsHeight = 'auto';
-        } else {
-            itemsHeight = __state.itemsHeight;
-        }
-        new_state.itemsHeight = itemsHeight;
-
         if (new_state.state.feedback) {
             if (new_state.state.feedback !== __state.state.feedback) {
                 publishEvent({
@@ -72,6 +59,7 @@ function DragAndDropBlock(runtime, element) {
         var new_vdom = render(state);
         var patches = virtualDom.diff(__vdom, new_vdom);
         root = virtualDom.patch(root, patches);
+        $root = $(root);
         __vdom = new_vdom;
     };
 
@@ -84,38 +72,43 @@ function DragAndDropBlock(runtime, element) {
     };
 
     var initDroppable = function() {
-        $(root).find('.zone').droppable({
-            accept: '.xblock--drag-and-drop .items .option',
+        $root.find('.zone').droppable({
+            accept: '.xblock--drag-and-drop .item-bank .option',
             tolerance: 'pointer',
             drop: function(evt, ui) {
                 var item_id = ui.draggable.data('value');
                 var zone = $(this).data('zone');
-                var position = ui.draggable.position();
-                var top = position.top + 'px';
-                var left = position.left + 'px';
+                var $target_img = $root.find('.target-img');
+
+                // Calculate the position of the center of the dropped element relative to
+                // the image.
+                var x_pos = (ui.helper.offset().left + (ui.helper.outerWidth()/2) - $target_img.offset().left);
+                var x_pos_percent = x_pos / $target_img.width() * 100;
+                var y_pos = (ui.helper.offset().top + (ui.helper.outerHeight()/2) - $target_img.offset().top);
+                var y_pos_percent = y_pos / $target_img.height() * 100;
+
                 var state = getState();
                 state.state.items[item_id] = {
-                    top: top,
-                    left: left,
-                    absolute: true,
-                    submitting_location: true
+                    x_percent: x_pos_percent,
+                    y_percent: y_pos_percent,
+                    submitting_location: true,
                 };
                 // Wrap in setTimeout to let the droppable event finish.
                 setTimeout(function() {
                     setState(state);
-                    submitLocation(item_id, zone, top, left);
+                    submitLocation(item_id, zone, x_pos_percent, y_pos_percent);
                 }, 0);
             }
         });
     };
 
     var initDraggable = function() {
-        $(root).find('.items .option').not('[data-drag-disabled=true]').each(function() {
+        $root.find('.item-bank .option').not('[data-drag-disabled=true]').each(function() {
             try {
                 $(this).draggable({
                     containment: '.xblock--drag-and-drop .drag-container',
                     cursor: 'move',
-                    stack: '.xblock--drag-and-drop .items .option',
+                    stack: '.xblock--drag-and-drop .item-bank .option',
                     revert: 'invalid',
                     revertDuration: 150,
                     start: function(evt, ui) {
@@ -134,7 +127,7 @@ function DragAndDropBlock(runtime, element) {
     };
 
     var destroyDraggable = function() {
-        $(root).find('.items .option[data-drag-disabled=true]').each(function() {
+        $root.find('.item-bank .option[data-drag-disabled=true]').each(function() {
             try {
                 $(this).draggable('destroy');
             } catch (e) {
@@ -144,12 +137,17 @@ function DragAndDropBlock(runtime, element) {
         });
     };
 
-    var submitLocation = function(item_id, zone, top, left) {
+    var submitLocation = function(item_id, zone, x_percent, y_percent) {
         if (!zone) {
             return;
         }
         var url = runtime.handlerUrl(element, 'do_attempt');
-        var data = {val: item_id, zone: zone, top: top, left: left};
+        var data = {
+            val: item_id,
+            zone: zone,
+            x_percent: x_percent,
+            y_percent: y_percent,
+        };
         $.post(url, JSON.stringify(data), 'json').done(function(data){
             var state = getState();
             if (data.correct_location) {
@@ -238,32 +236,33 @@ function DragAndDropBlock(runtime, element) {
 
     var render = function(state) {
         var items = state.items.map(function(item) {
-            var item_state = state.state.items[item.id];
-            var position = item_state || {};
             var input = null;
+            var item_user_state = state.state.items[item.id];
             if (item.inputOptions) {
                 input = {
-                    is_visible: item_state && !item_state.submitting_location,
-                    has_value: Boolean(item_state && 'input' in item_state),
-                    value : (item_state && item_state.input) || '',
-                    class_name: undefined
+                    is_visible: item_user_state && !item_user_state.submitting_location,
+                    has_value: Boolean(item_user_state && 'input' in item_user_state),
+                    value : (item_user_state && item_user_state.input) || '',
+                    class_name: undefined,
                 };
-                if (input.has_value && !item_state.submitting_input) {
-                    input.class_name = item_state.correct_input ? 'correct' : 'incorrect';
+                if (input.has_value && !item_user_state.submitting_input) {
+                    input.class_name = item_user_state.correct_input ? 'correct' : 'incorrect';
                 }
             }
             var itemProperties = {
                 value: item.id,
-                drag_disabled: Boolean(item_state || state.state.finished),
+                drag_disabled: Boolean(item_user_state || state.state.finished),
                 width: item.size.width,
                 height: item.size.height,
-                top: position.top,
-                left: position.left,
-                position: position.absolute ? 'absolute' : 'relative',
-                class_name: item_state && ('input' in item_state || item_state.correct_input) ? 'fade': undefined,
+                class_name: item_user_state && ('input' in item_user_state || item_user_state.correct_input) ? 'fade': undefined,
                 input: input,
                 content_html: item.backgroundImage ? '<img src="' + item.backgroundImage + '"/>' : item.displayName
             };
+            if (item_user_state) {
+                itemProperties.is_placed = true;
+                itemProperties.x_percent = item_user_state.x_percent;
+                itemProperties.y_percent = item_user_state.y_percent;
+            }
             if (state.item_background_color) {
                 itemProperties.background_color = state.item_background_color;
             }
@@ -282,7 +281,7 @@ function DragAndDropBlock(runtime, element) {
             feedback_html: $.trim(state.state.finished ? state.feedback.finish : state.feedback.start),
             target_img_src: state.targetImg,
             display_zone_labels: state.displayLabels,
-            display_reset_button: state.state.finished,
+            display_reset_button: Object.keys(state.state.items).length > 0,
             zones: state.zones,
             items: items
         };

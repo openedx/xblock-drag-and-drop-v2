@@ -1,5 +1,5 @@
 (function(h) {
-
+    "use strict";
     var FocusHook = function() {
         if (!(this instanceof FocusHook)) {
             return new FocusHook();
@@ -40,26 +40,29 @@
     };
 
     var itemTemplate = function(item) {
-        var style = {
-            width: item.width,
-            height: item.height,
-            top: item.top,
-            left: item.left,
-            position: item.position
-        };
+        var style = {};
         if (item.background_color) {
             style['background-color'] = item.background_color;
         }
         if (item.color) {
             style.color = item.color;
         }
+        if (item.is_placed) {
+            style.left = item.x_percent + "%";
+            style.top = item.y_percent + "%";
+        }
         return (
-            h('div.option', {className: item.class_name,
-                             attributes: {'data-value': item.value, 'data-drag-disabled': item.drag_disabled},
-                             style: style}, [
-                h('div', {innerHTML: item.content_html}),
-                itemInputTemplate(item.input)
-            ])
+            h('div.option',
+                {
+                    key: item.value,
+                    className: item.class_name,
+                    attributes: {'data-value': item.value, 'data-drag-disabled': item.drag_disabled},
+                    style: style
+                }, [
+                    h('div', {innerHTML: item.content_html}),
+                    itemInputTemplate(item.input)
+                ]
+            )
         );
     };
 
@@ -88,28 +91,30 @@
     var mainTemplate = function(ctx) {
         var problemHeader = ctx.show_title ? h('h2.problem-header', {innerHTML: ctx.header_html}) : null;
         var questionHeader = ctx.show_question_header ? h('h3.title1', gettext('Question')) : null;
+        var is_item_placed = function(i) { return i.is_placed; };
+        var items_placed = $.grep(ctx.items, is_item_placed);
+        var items_in_bank = $.grep(ctx.items, is_item_placed, true);
         return (
             h('section.xblock--drag-and-drop', [
                 problemHeader,
                 h('section.problem', {role: 'application'}, [
                     questionHeader,
-                    h('p', {innerHTML: ctx.question_html})
+                    h('p', {innerHTML: ctx.question_html}),
                 ]),
                 h('section.drag-container', [
-                    h('div.items', {height: ctx.itemsHeight}, renderCollection(itemTemplate, ctx.items, ctx)),
+                    h('div.item-bank', renderCollection(itemTemplate, items_in_bank, ctx)),
                     h('div.target', [
                         h('div.popup', {style: {display: ctx.popup_html ? 'block' : 'none'}}, [
                             h('div.close.icon-remove-sign.fa-times-circle'),
-                            h('p.popup-content', {innerHTML: ctx.popup_html})
+                            h('p.popup-content', {innerHTML: ctx.popup_html}),
                         ]),
-                        h('div.target-img', {style: {backgroundImage: ctx.target_img_src ?
-                                                                          'url(' + ctx.target_img_src + ')' :
-                                                                          undefined}},
-                          renderCollection(zoneTemplate, ctx.zones, ctx))
+                        h('img.target-img', {src: ctx.target_img_src, alt: "Image Description here"}),
+                        renderCollection(zoneTemplate, ctx.zones, ctx),
+                        renderCollection(itemTemplate, items_placed, ctx),
                     ]),
-                    h('div.clear')
+                    //h('div.clear'),
                 ]),
-                feedbackTemplate(ctx)
+                feedbackTemplate(ctx),
             ])
         );
     };
