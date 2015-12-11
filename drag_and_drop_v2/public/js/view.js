@@ -114,7 +114,6 @@
                         renderCollection(zoneTemplate, ctx.zones, ctx),
                         renderCollection(itemTemplate, items_placed, ctx),
                     ]),
-                    //h('div.clear'),
                 ]),
                 feedbackTemplate(ctx),
             ])

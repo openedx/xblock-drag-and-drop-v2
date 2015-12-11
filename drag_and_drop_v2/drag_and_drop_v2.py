@@ -164,7 +164,10 @@ class DragAndDropBlock(XBlock):
         for js_url in js_urls:
             fragment.add_javascript_url(self.runtime.local_resource_url(self, js_url))
 
-        fragment.initialize_js('DragAndDropEditBlock')
+        fragment.initialize_js('DragAndDropEditBlock', {
+            'data': self.data,
+            'target_img_expanded_url': self.target_img_expanded_url,
+        })
 
         return fragment
 
@@ -267,6 +270,37 @@ class DragAndDropBlock(XBlock):
         self.item_state = {}
         return self._get_data()
 
+    def _expand_static_url(self, url):
+        """
+        This is required to make URLs like '/static/dnd-test-image.png' work (note: that is the
+        only portable URL format for static files that works across export/import and reruns).
+        This method is unfortunately a bit hackish since XBlock does not provide a low-level API
+        for this.
+        """
+        if hasattr(self.runtime, 'replace_urls'):
+            url = self.runtime.replace_urls('"{}"'.format(url))[1:-1]
+        elif hasattr(self.runtime, 'course_id'):
+            # edX Studio uses a different runtime for 'studio_view' than 'student_view',
+            # and the 'studio_view' runtime doesn't provide the replace_urls API.
+            try:
+                from static_replace import replace_static_urls
+                url = replace_static_urls('"{}"'.format(url), None, course_id=self.runtime.course_id)[1:-1]
+            except ImportError:
+                pass
+        return url
+
+    @XBlock.json_handler
+    def expand_static_url(self, url, suffix=''):
+        """ AJAX-accessible handler for expanding URLs to static [image] files """
+        return {'url': self._expand_static_url(url)}
+
+    @property
+    def target_img_expanded_url(self):
+        """ Get the expanded URL to the target image (the image items are dragged onto). """
+        if self.data.get("targetImg"):
+            return self._expand_static_url(self.data["targetImg"])
+        return self.runtime.local_resource_url(self, "public/img/triangle.png")
+
     def _get_data(self):
         data = copy.deepcopy(self.data)
 
@@ -299,8 +333,7 @@ class DragAndDropBlock(XBlock):
         if self.item_text_color:
             data['item_text_color'] = self.item_text_color
 
-        if not data.get("targetImg"):
-            data["targetImg"] = self.runtime.local_resource_url(self, "public/img/triangle.png")
+        data["targetImg"] = self.target_img_expanded_url
 
         return data
 

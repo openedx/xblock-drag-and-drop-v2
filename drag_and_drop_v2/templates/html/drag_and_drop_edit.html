@@ -1,11 +1,7 @@
 {% load i18n %}
 
-<div class="xblock--drag-and-drop editor-with-buttons">
+<div class="xblock--drag-and-drop--editor editor-with-buttons">
     {{ js_templates|safe }}
-
-    <script type="text/javascript">
-        var DragAndDropV2BlockPreviousData = JSON.parse(decodeURIComponent('{{ data|safe }}'));
-    </script>
 
     <section class="drag-builder">
         <div class="tab feedback-tab">
@@ -57,12 +53,14 @@
                     <label for="display-labels">{% trans "Display label names on the image" %}:</label>
                     <input name="display-labels" id="display-labels" type="checkbox" />
                 </section>
-                <div class="items">
-                    <form class="zones-form"></form>
-                    <a href="#" class="add-zone add-element"><div class="icon add"></div>{% trans "Add a zone" %}</a>
-                </div>
-                <div class="target">
-                    <div class="target-img"></div>
+                <div class="zone-editor">
+                    <div class="items">
+                        <form class="zones-form"></form>
+                        <a href="#" class="add-zone add-element"><div class="icon add"></div>{% trans "Add a zone" %}</a>
+                    </div>
+                    <div class="target">
+                        <img class="target-img">
+                    </div>
                 </div>
             </section>
         </div>

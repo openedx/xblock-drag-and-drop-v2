@@ -1,4 +1,4 @@
-function DragAndDropEditBlock(runtime, element) {
+function DragAndDropEditBlock(runtime, element, params) {
 
     // Set up gettext in case it isn't available in the client runtime:
     if (typeof gettext == "undefined") {
@@ -14,7 +14,7 @@ function DragAndDropEditBlock(runtime, element) {
         var _fn = {
 
             // DOM Elements
-            $target: $('.xblock--drag-and-drop .target-img', element),
+            $target: $('.target-img', element),
 
             tpl: {
                 init: function() {
@@ -30,21 +30,21 @@ function DragAndDropEditBlock(runtime, element) {
             build: {
                 $el: {
                     feedback: {
-                        form: $('.xblock--drag-and-drop .drag-builder .feedback-form', element),
-                        tab: $('.xblock--drag-and-drop .drag-builder .feedback-tab', element)
+                        form: $('.drag-builder .feedback-form', element),
+                        tab: $('.drag-builder .feedback-tab', element)
                     },
                     zones: {
-                        form: $('.xblock--drag-and-drop .drag-builder .zones-form', element),
-                        tab: $('.xblock--drag-and-drop .drag-builder .zones-tab', element)
+                        form: $('.drag-builder .zones-form', element),
+                        tab: $('.drag-builder .zones-tab', element)
                     },
                     items: {
-                        form: $('.xblock--drag-and-drop .drag-builder .items-form', element),
-                        tab: $('.xblock--drag-and-drop .drag-builder .items-tab', element)
+                        form: $('.drag-builder .items-form', element),
+                        tab: $('.drag-builder .items-tab', element)
                     },
-                    target: $('.xblock--drag-and-drop .drag-builder .target-img', element)
+                    target: $('.drag-builder .target', element)
                 },
-                init: function(data) {
-                    _fn.data = data;
+                init: function() {
+                    _fn.data = params.data;
 
                     // Compile templates
                     _fn.tpl.init();
@@ -71,9 +71,9 @@ function DragAndDropEditBlock(runtime, element) {
                             _fn.build.form.zone.add();
                         }
 
-                        if (_fn.data.targetImg) {
-                            _fn.$target.css('background', 'url(' + _fn.data.targetImg + ') no-repeat');
-                        }
+                        // Set the target image:
+                        $('.target-image-form input', element).val(_fn.data.targetImg);
+                        $('.target-img', element).attr('src', params.target_img_expanded_url);
 
                         if (_fn.data.displayLabels) {
                             $('.display-labels-form input', element).prop('checked', true);
@@ -122,8 +122,14 @@ function DragAndDropEditBlock(runtime, element) {
                         .on('click', '.target-image-form button', function(e) {
                             e.preventDefault();
 
-                            _fn.data.targetImg = $('.target-image-form input', element).val();
-                            _fn.$target.css('background', 'url(' + _fn.data.targetImg + ') no-repeat');
+                            var new_img_url = $('.target-image-form input', element).val();
+                            _fn.data.targetImg = new_img_url;
+                            // We may need to 'expand' the URL before it will be valid.
+                            // e.g. '/static/blah.png' becomes '/asset-v1:course+id/blah.png'
+                            var handlerUrl = runtime.handlerUrl(element, 'expand_static_url');
+                            $.post(handlerUrl, JSON.stringify(new_img_url), function(result) {
+                                _fn.$target.attr('src', result.url);
+                            }).error(function(a, b, c) { console.log(a, b, c); });
 
                             // Placeholder shim for IE9
                             $.placeholder.shim();
@@ -450,7 +456,7 @@ function DragAndDropEditBlock(runtime, element) {
         };
 
         return {
-            builder: _fn.build.init
+            init: _fn.build.init
         };
     })(jQuery);
 
@@ -458,5 +464,5 @@ function DragAndDropEditBlock(runtime, element) {
         runtime.notify('cancel', {});
     });
 
-    dragAndDrop.builder(window.DragAndDropV2BlockPreviousData);
+    dragAndDrop.init();
 }
