@@ -108,7 +108,9 @@
                             h('div.close.icon-remove-sign.fa-times-circle'),
                             h('p.popup-content', {innerHTML: ctx.popup_html}),
                         ]),
-                        h('img.target-img', {src: ctx.target_img_src, alt: "Image Description here"}),
+                        h('div.target-img-wrapper', [
+                            h('img.target-img', {src: ctx.target_img_src, alt: "Image Description here"}),
+                        ]),
                         renderCollection(zoneTemplate, ctx.zones, ctx),
                         renderCollection(itemTemplate, items_placed, ctx),
                     ]),

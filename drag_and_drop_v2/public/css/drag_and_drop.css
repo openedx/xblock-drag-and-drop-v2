@@ -129,8 +129,7 @@
 /*** Drop Target ***/
 .xblock--drag-and-drop .target {
     display: table;
-    width: 0;
-    /* 'display: table' & 'width: 0' make this have the smallest size that fits the .target-img
+    /* 'display: table' makes this have the smallest size that fits the .target-img
        while still allowing the image to use 'max-width: 100%' and scale proportionally.
        The end result is that this element has the same widdth and height as the image, so we
        can use it as a 'position: relative' anchor for the placed elements. */
@@ -140,11 +139,16 @@
     background: #fff;
 }
 
+.xblock--drag-and-drop .target-img-wrapper {
+    /* This element is required for Firefox due to https://bugzilla.mozilla.org/show_bug.cgi?id=975632 */
+    display: table-row;
+}
+
 .xblock--drag-and-drop .target-img {
-    width: auto;
+    display: table-cell;
+    width: 100%;
     max-width: 100%;
     height: auto;
-    max-height: 80vh; /* On mobile, don't ever fill the whole screen with the image */
 }
 
 .xblock--drag-and-drop .zone {
