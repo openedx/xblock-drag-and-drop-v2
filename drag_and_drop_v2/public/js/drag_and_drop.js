@@ -13,7 +13,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     var root = $element.find('.xblock--drag-and-drop')[0];
     var $root = $(root);
 
-    var __state;
+    var state = undefined;
     var __vdom = virtualDom.h();  // blank virtual DOM
 
     var init = function() {
@@ -30,13 +30,15 @@ function DragAndDropBlock(runtime, element, configuration) {
             configuration.zones.forEach(function (zone) {
                 computeZoneDimension(zone, bgImg.width, bgImg.height);
             });
-            setState(stateResult[0]); // stateResult is an array of [data, statusText, jqXHR]
+            state = stateResult[0]; // stateResult is an array of [data, statusText, jqXHR]
+            applyState();
             initDroppable();
-            publishEvent({event_type: 'xblock.drag-and-drop-v2.loaded'});
 
             $(document).on('mousedown touchstart', closePopup);
             $element.on('click', '.reset-button', resetExercise);
             $element.on('click', '.submit-input', submitInput);
+
+            publishEvent({event_type: 'xblock.drag-and-drop-v2.loaded'});
         }).fail(function() {
             $root.text(gettext("An error occurred. Unable to load drag and drop exercise."));
         });
@@ -74,30 +76,39 @@ function DragAndDropBlock(runtime, element, configuration) {
         }
     };
 
-    var getState = function() {
-        return __state;
-    };
 
-    var setState = function(new_state) {
+    var previousFeedback = undefined;
+    /**
+     * Update the DOM to reflect 'state'.
+     */
+    var applyState = function() {
         // Is there a change to the feedback popup?
-        if (new_state.feedback) {
-            if (new_state.feedback !== __state.feedback) {
+        if (state.feedback !== previousFeedback) {
+            if (state.feedback) {
+                if (previousFeedback) {
+                    publishEvent({
+                        event_type: 'xblock.drag-and-drop-v2.feedback.closed',
+                        content: previousFeedback,
+                        manually: false,
+                    });
+                }
+                publishEvent({
+                    event_type: 'xblock.drag-and-drop-v2.feedback.opened',
+                    content: state.feedback,
+                });
+            } else {
                 publishEvent({
                     event_type: 'xblock.drag-and-drop-v2.feedback.closed',
-                    content: __state.feedback,
-                    manually: false
+                    content: state.feedback,
+                    manually: true,
                 });
             }
-            publishEvent({
-                event_type: 'xblock.drag-and-drop-v2.feedback.opened',
-                content: new_state.feedback
-            });
+            previousFeedback = state.feedback;
         }
-        __state = new_state;
 
-        updateDOM(new_state);
+        updateDOM();
         destroyDraggable();
-        if (!new_state.finished) {
+        if (!state.finished) {
             initDraggable();
         }
     };
@@ -134,7 +145,6 @@ function DragAndDropBlock(runtime, element, configuration) {
                 var y_pos = (ui.helper.offset().top + (ui.helper.outerHeight()/2) - $target_img.offset().top);
                 var y_pos_percent = y_pos / $target_img.height() * 100;
 
-                var state = getState();
                 state.items[item_id] = {
                     x_percent: x_pos_percent,
                     y_percent: y_pos_percent,
@@ -142,7 +152,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 };
                 // Wrap in setTimeout to let the droppable event finish.
                 setTimeout(function() {
-                    setState(state);
+                    applyState();
                     submitLocation(item_id, zone, x_pos_percent, y_pos_percent);
                 }, 0);
             }
@@ -196,7 +206,6 @@ function DragAndDropBlock(runtime, element, configuration) {
             y_percent: y_percent,
         };
         $.post(url, JSON.stringify(data), 'json').done(function(data){
-            var state = getState();
             if (data.correct_location) {
                 state.items[item_id].correct_input = Boolean(data.correct);
                 state.items[item_id].submitting_location = false;
@@ -208,7 +217,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 state.finished = true;
                 state.overall_feedback = data.overall_feedback;
             }
-            setState(state);
+            applyState();
         });
     };
 
@@ -224,10 +233,9 @@ function DragAndDropBlock(runtime, element, configuration) {
             return;
         }
 
-        var state = getState();
         state.items[item_id].input = input_value;
         state.items[item_id].submitting_input = true;
-        setState(state);
+        applyState();
 
         var url = runtime.handlerUrl(element, 'do_attempt');
         var data = {val: item_id, input: input_value};
@@ -239,20 +247,20 @@ function DragAndDropBlock(runtime, element, configuration) {
                 state.finished = true;
                 state.overall_feedback = data.overall_feedback;
             }
-            setState(state);
+            applyState();
         });
     };
 
     var closePopup = function(evt) {
+        if (!state.feedback) {
+            return;
+        }
+
         var target = $(evt.target);
         var popup_box = '.xblock--drag-and-drop .popup';
         var close_button = '.xblock--drag-and-drop .popup .close';
         var submit_input_button = '.xblock--drag-and-drop .submit-input';
-        var state = getState();
 
-        if (!state.feedback) {
-            return;
-        }
         if (target.is(popup_box) || target.is(submit_input_button)) {
             return;
         }
@@ -260,14 +268,8 @@ function DragAndDropBlock(runtime, element, configuration) {
             return;
         }
 
-        publishEvent({
-            event_type: 'xblock.drag-and-drop-v2.feedback.closed',
-            content: state.feedback,
-            manually: true
-        });
-
         delete state.feedback;
-        setState(state);
+        applyState();
     };
 
     var resetExercise = function() {
@@ -275,13 +277,16 @@ function DragAndDropBlock(runtime, element, configuration) {
             type: 'POST',
             url: runtime.handlerUrl(element, 'reset'),
             data: '{}',
-            success: function(new_state) {
-                setState(new_state);
-            }
         });
+        state = {
+            'items': [],
+            'finished': false,
+            'overall_feedback': configuration.initial_feedback,
+        };
+        applyState();
     };
 
-    var render = function(state) {
+    var render = function() {
         var items = configuration.items.map(function(item) {
             var input = null;
             var item_user_state = state.items[item.id];

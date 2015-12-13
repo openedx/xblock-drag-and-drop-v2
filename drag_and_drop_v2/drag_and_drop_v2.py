@@ -155,6 +155,8 @@ class DragAndDropBlock(XBlock):
             "targetImg": self.target_img_expanded_url,
             "item_background_color": self.item_background_color or None,
             "item_text_color": self.item_text_color or None,
+            "initial_feedback": self.data['feedback']['start'],
+            # final feedback (data.feedback.finish) is not included - it may give away answers.
         }
 
     def studio_view(self, context):
