@@ -65,10 +65,6 @@ DEFAULT_DATA = {
       }
     },
   ],
-  "state": {
-    "items": {},
-    "finished": True
-  },
   "feedback": {
     "start": _("Intro Feed"),
     "finish": _("Final Feed")

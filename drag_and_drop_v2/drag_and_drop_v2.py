@@ -125,9 +125,37 @@ class DragAndDropBlock(XBlock):
         for js_url in js_urls:
             fragment.add_javascript_url(self.runtime.local_resource_url(self, js_url))
 
-        fragment.initialize_js('DragAndDropBlock')
+        fragment.initialize_js('DragAndDropBlock', self.get_configuration())
 
         return fragment
+
+    def get_configuration(self):
+        """
+        Get the configuration data for the student_view.
+        The configuration is all the settings defined by the author, except for correct answers
+        and feedback.
+        """
+
+        def items_without_answers():
+            items = copy.deepcopy(self.data.get('items', ''))
+            for item in items:
+                del item['feedback']
+                del item['zone']
+                item['inputOptions'] = 'inputOptions' in item
+            return items
+
+        return {
+            "zones": self.data.get('zones', []),
+            "display_zone_labels": self.data.get('displayLabels', False),
+            "items": items_without_answers(),
+            "title": self.display_name,
+            "show_title": self.show_title,
+            "question_text": self.question_text,
+            "show_question_header": self.show_question_header,
+            "targetImg": self.target_img_expanded_url,
+            "item_background_color": self.item_background_color or None,
+            "item_text_color": self.item_text_color or None,
+        }
 
     def studio_view(self, context):
         """
@@ -186,18 +214,13 @@ class DragAndDropBlock(XBlock):
             'result': 'success',
         }
 
-    @XBlock.handler
-    def get_data(self, request, suffix=''):
-        data = self._get_data()
-        return webob.Response(body=json.dumps(data), content_type='application/json')
-
     @XBlock.json_handler
     def do_attempt(self, attempt, suffix=''):
         item = next(i for i in self.data['items'] if i['id'] == attempt['val'])
 
         state = None
         feedback = item['feedback']['incorrect']
-        final_feedback = None
+        overall_feedback = None
         is_correct = False
         is_correct_location = False
 
@@ -231,7 +254,7 @@ class DragAndDropBlock(XBlock):
             self.item_state[str(item['id'])] = state
 
         if self._is_finished():
-            final_feedback = self.data['feedback']['finish']
+            overall_feedback = self.data['feedback']['finish']
 
         # don't publish the grade if the student has already completed the exercise
         if not self.completed:
@@ -261,14 +284,14 @@ class DragAndDropBlock(XBlock):
             'correct': is_correct,
             'correct_location': is_correct_location,
             'finished': self._is_finished(),
-            'final_feedback': final_feedback,
+            'overall_feedback': overall_feedback,
             'feedback': feedback
         }
 
     @XBlock.json_handler
     def reset(self, data, suffix=''):
         self.item_state = {}
-        return self._get_data()
+        return self._get_user_state()
 
     def _expand_static_url(self, url):
         """
@@ -301,41 +324,26 @@ class DragAndDropBlock(XBlock):
             return self._expand_static_url(self.data["targetImg"])
         return self.runtime.local_resource_url(self, "public/img/triangle.png")
 
-    def _get_data(self):
-        data = copy.deepcopy(self.data)
 
-        for item in data['items']:
-            # Strip answers
-            del item['feedback']
-            del item['zone']
-            item['inputOptions'] = 'inputOptions' in item
+    @XBlock.handler
+    def get_user_state(self, request, suffix=''):
+        """ GET all user-specific data, and any applicable feedback """
+        data = self._get_user_state()
+        return webob.Response(body=json.dumps(data), content_type='application/json')
 
-        if not self._is_finished():
-            del data['feedback']['finish']
-
+    def _get_user_state(self):
+        """ Get all user-specific data, and any applicable feedback """
         item_state = self._get_item_state()
         for item_id, item in item_state.iteritems():
             definition = next(i for i in self.data['items'] if str(i['id']) == item_id)
             item['correct_input'] = self._is_correct_input(definition, item.get('input'))
 
-        data['state'] = {
+        is_finished = self._is_finished()
+        return {
             'items': item_state,
-            'finished': self._is_finished()
+            'finished': is_finished,
+            'overall_feedback': self.data['feedback']['finished' if is_finished else 'start'],
         }
-
-        data['title'] = self.display_name
-        data['show_title'] = self.show_title
-        data['question_text'] = self.question_text
-        data['show_question_header'] = self.show_question_header
-
-        if self.item_background_color:
-            data['item_background_color'] = self.item_background_color
-        if self.item_text_color:
-            data['item_text_color'] = self.item_text_color
-
-        data["targetImg"] = self.target_img_expanded_url
-
-        return data
 
     def _get_item_state(self):
         """

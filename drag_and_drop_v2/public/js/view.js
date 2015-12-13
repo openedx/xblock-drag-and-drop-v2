@@ -14,10 +14,6 @@
         }, 0);
     };
 
-    var px = function(n) {
-        return n + 'px';
-    };
-
     var renderCollection = function(template, collection, ctx) {
         return collection.map(function(item) {
             return template(item, ctx);
@@ -68,10 +64,18 @@
 
     var zoneTemplate = function(zone, ctx) {
         return (
-            h('div.zone', {id: zone.id, attributes: {'data-zone': zone.title},
-                           style: {top: px(zone.y), left: px(zone.x),
-                                   width: px(zone.width), height: px(zone.height)}},
-              h('p', {style: {visibility: ctx.display_zone_labels ? 'visible': 'hidden'}}, zone.title))
+            h(
+                'div.zone',
+                {
+                    id: zone.id,
+                    attributes: {'data-zone': zone.title},
+                    style: {
+                        top: zone.y_percent + '%', left: zone.x_percent + "%",
+                        width: zone.width_percent + '%', height: zone.height_percent + "%",
+                    }
+                },
+                ctx.display_zone_labels ? h('p', zone.title) : null
+            )
         );
     };
 

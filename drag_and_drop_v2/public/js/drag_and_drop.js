@@ -1,7 +1,10 @@
-function DragAndDropBlock(runtime, element) {
-
+function DragAndDropBlock(runtime, element, configuration) {
+    "use strict";
+    // Ensure "undefined" has not been redefined (though this unlikely and often impossible).
+    // Now we can check for 'undefined' using just '=== undefined' throughout this file.
+    if (undefined !== void 0) { console.log("WARNING: 'undefined' redefined"); var undefined = void 0; }
     // Set up gettext in case it isn't available in the client runtime:
-    if (typeof gettext == "undefined") {
+    if (gettext === undefined) {
         window.gettext = function gettext_stub(string) { return string; };
     }
 
@@ -14,18 +17,61 @@ function DragAndDropBlock(runtime, element) {
     var __vdom = virtualDom.h();  // blank virtual DOM
 
     var init = function() {
-        $.ajax(runtime.handlerUrl(element, 'get_data'), {
-            dataType: 'json'
-        }).done(function(data){
-            setState(data);
+        // Load the current user state, and load the image, then render the block.
+        // We load the user state via AJAX rather than passing it in statically (like we do with
+        // configuration) due to how the LMS handles unit tabs. If you click on a unit with this
+        // block, make changes, click on the tab for another unit, then click back, this block
+        // would re-initialize with the old state. To avoid that, we always fetch the state
+        // using AJAX during initialization.
+        $.when(
+            $.ajax(runtime.handlerUrl(element, 'get_user_state'), {dataType: 'json'}),
+            loadBackgroundImage()
+        ).done(function(stateResult, bgImg){
+            configuration.zones.forEach(function (zone) {
+                computeZoneDimension(zone, bgImg.width, bgImg.height);
+            });
+            setState(stateResult[0]); // stateResult is an array of [data, statusText, jqXHR]
             initDroppable();
+            publishEvent({event_type: 'xblock.drag-and-drop-v2.loaded'});
+
+            $(document).on('mousedown touchstart', closePopup);
+            $element.on('click', '.reset-button', resetExercise);
+            $element.on('click', '.submit-input', submitInput);
+        }).fail(function() {
+            $root.text(gettext("An error occurred. Unable to load drag and drop exercise."));
         });
+    };
 
-        $(document).on('mousedown touchstart', closePopup);
-        $element.on('click', '.reset-button', resetExercise);
-        $element.on('click', '.submit-input', submitInput);
+    /** Asynchronously load the main background image used for this block. */
+    var loadBackgroundImage = function() {
+        var promise = $.Deferred();
+        var img = new Image();
+        img.addEventListener("load", function() {
+            if (img.width > 0 && img.height > 0) {
+                promise.resolve(img);
+            } else {
+                promise.reject();
+            }
+        }, false);
+        img.addEventListener("error", function() { promise.reject() });
+        img.src = configuration.targetImg;
+        return promise;
+    }
 
-        publishEvent({event_type: 'xblock.drag-and-drop-v2.loaded'});
+    /** Zones are specified in the configuration via pixel values - convert to percentages */
+    var computeZoneDimension = function(zone, bg_image_width, bg_image_height) {
+        if (zone.x_percent === undefined) {
+            // We can assume that if 'x_percent' is not set, 'y_percent', 'width_percent', and
+            // 'height_percent' will also not be set.
+            zone.x_percent = (+zone.x) / bg_image_width * 100;
+            delete zone.x;
+            zone.y_percent = (+zone.y) / bg_image_height * 100;
+            delete zone.y;
+            zone.width_percent = (+zone.width) / bg_image_width * 100;
+            delete zone.width;
+            zone.height_percent = (+zone.height) / bg_image_height * 100;
+            delete zone.height;
+        }
     };
 
     var getState = function() {
@@ -33,24 +79,25 @@ function DragAndDropBlock(runtime, element) {
     };
 
     var setState = function(new_state) {
-        if (new_state.state.feedback) {
-            if (new_state.state.feedback !== __state.state.feedback) {
+        // Is there a change to the feedback popup?
+        if (new_state.feedback) {
+            if (new_state.feedback !== __state.feedback) {
                 publishEvent({
                     event_type: 'xblock.drag-and-drop-v2.feedback.closed',
-                    content: __state.state.feedback,
+                    content: __state.feedback,
                     manually: false
                 });
             }
             publishEvent({
                 event_type: 'xblock.drag-and-drop-v2.feedback.opened',
-                content: new_state.state.feedback
+                content: new_state.feedback
             });
         }
         __state = new_state;
 
         updateDOM(new_state);
         destroyDraggable();
-        if (!new_state.state.finished) {
+        if (!new_state.finished) {
             initDraggable();
         }
     };
@@ -88,7 +135,7 @@ function DragAndDropBlock(runtime, element) {
                 var y_pos_percent = y_pos / $target_img.height() * 100;
 
                 var state = getState();
-                state.state.items[item_id] = {
+                state.items[item_id] = {
                     x_percent: x_pos_percent,
                     y_percent: y_pos_percent,
                     submitting_location: true,
@@ -151,15 +198,15 @@ function DragAndDropBlock(runtime, element) {
         $.post(url, JSON.stringify(data), 'json').done(function(data){
             var state = getState();
             if (data.correct_location) {
-                state.state.items[item_id].correct_input = Boolean(data.correct);
-                state.state.items[item_id].submitting_location = false;
+                state.items[item_id].correct_input = Boolean(data.correct);
+                state.items[item_id].submitting_location = false;
             } else {
-                delete state.state.items[item_id];
+                delete state.items[item_id];
             }
-            state.state.feedback = data.feedback;
+            state.feedback = data.feedback;
             if (data.finished) {
-                state.state.finished = true;
-                state.feedback.finish = data.final_feedback;
+                state.finished = true;
+                state.overall_feedback = data.overall_feedback;
             }
             setState(state);
         });
@@ -178,19 +225,19 @@ function DragAndDropBlock(runtime, element) {
         }
 
         var state = getState();
-        state.state.items[item_id].input = input_value;
-        state.state.items[item_id].submitting_input = true;
+        state.items[item_id].input = input_value;
+        state.items[item_id].submitting_input = true;
         setState(state);
 
         var url = runtime.handlerUrl(element, 'do_attempt');
         var data = {val: item_id, input: input_value};
         $.post(url, JSON.stringify(data), 'json').done(function(data) {
-            state.state.items[item_id].submitting_input = false;
-            state.state.items[item_id].correct_input = data.correct;
-            state.state.feedback = data.feedback;
+            state.items[item_id].submitting_input = false;
+            state.items[item_id].correct_input = data.correct;
+            state.feedback = data.feedback;
             if (data.finished) {
-                state.state.finished = true;
-                state.feedback.finish = data.final_feedback;
+                state.finished = true;
+                state.overall_feedback = data.overall_feedback;
             }
             setState(state);
         });
@@ -203,7 +250,7 @@ function DragAndDropBlock(runtime, element) {
         var submit_input_button = '.xblock--drag-and-drop .submit-input';
         var state = getState();
 
-        if (!state.state.feedback) {
+        if (!state.feedback) {
             return;
         }
         if (target.is(popup_box) || target.is(submit_input_button)) {
@@ -215,11 +262,11 @@ function DragAndDropBlock(runtime, element) {
 
         publishEvent({
             event_type: 'xblock.drag-and-drop-v2.feedback.closed',
-            content: state.state.feedback,
+            content: state.feedback,
             manually: true
         });
 
-        delete state.state.feedback;
+        delete state.feedback;
         setState(state);
     };
 
@@ -235,9 +282,9 @@ function DragAndDropBlock(runtime, element) {
     };
 
     var render = function(state) {
-        var items = state.items.map(function(item) {
+        var items = configuration.items.map(function(item) {
             var input = null;
-            var item_user_state = state.state.items[item.id];
+            var item_user_state = state.items[item.id];
             if (item.inputOptions) {
                 input = {
                     is_visible: item_user_state && !item_user_state.submitting_location,
@@ -251,7 +298,7 @@ function DragAndDropBlock(runtime, element) {
             }
             var itemProperties = {
                 value: item.id,
-                drag_disabled: Boolean(item_user_state || state.state.finished),
+                drag_disabled: Boolean(item_user_state || state.finished),
                 width: item.size.width,
                 height: item.size.height,
                 class_name: item_user_state && ('input' in item_user_state || item_user_state.correct_input) ? 'fade': undefined,
@@ -263,27 +310,29 @@ function DragAndDropBlock(runtime, element) {
                 itemProperties.x_percent = item_user_state.x_percent;
                 itemProperties.y_percent = item_user_state.y_percent;
             }
-            if (state.item_background_color) {
-                itemProperties.background_color = state.item_background_color;
+            if (configuration.item_background_color) {
+                itemProperties.background_color = configuration.item_background_color;
             }
-            if (state.item_text_color) {
-                itemProperties.color = state.item_text_color;
+            if (configuration.item_text_color) {
+                itemProperties.color = configuration.item_text_color;
             }
             return itemProperties;
         });
 
         var context = {
-            header_html: state.title,
-            show_title: state.show_title,
-            question_html: state.question_text,
-            show_question_header: state.show_question_header,
-            popup_html: state.state.feedback || '',
-            feedback_html: $.trim(state.state.finished ? state.feedback.finish : state.feedback.start),
-            target_img_src: state.targetImg,
-            display_zone_labels: state.displayLabels,
-            display_reset_button: Object.keys(state.state.items).length > 0,
-            zones: state.zones,
-            items: items
+            // configuration - parts that never change:
+            header_html: configuration.title,
+            show_title: configuration.show_title,
+            question_html: configuration.question_text,
+            show_question_header: configuration.show_question_header,
+            target_img_src: configuration.targetImg,
+            display_zone_labels: configuration.display_zone_labels,
+            zones: configuration.zones,
+            items: items,
+            // state - parts that can change:
+            popup_html: state.feedback || '',
+            feedback_html: $.trim(state.overall_feedback),
+            display_reset_button: Object.keys(state.items).length > 0,
         };
 
         return DragAndDropBlock.renderView(context);
