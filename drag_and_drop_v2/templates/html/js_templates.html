@@ -1,15 +1,15 @@
 <script id="zone-element-tpl" type="text/html">
     <div id="{{ id }}" class="zone" data-zone="{{ title }}" style="
-        top:{{ y }}px;
-        left:{{ x }}px;
-        width:{{ width }}px;
-        height:{{ height }}px;">
+        top:{{ y_percent }}%;
+        left:{{ x_percent }}%;
+        width:{{ width_percent }}%;
+        height:{{ height_percent }}%;">
         <p>{{{ title }}}</p>
     </div>
 </script>
 
 <script id="zone-input-tpl" type="text/html">
-    <div class="zone-row {{ id }}">
+    <div class="zone-row {{ id }}" data-index="{{index}}">
        <label>{{i18n "Text"}}</label>
        <input type="text" class="title" value="{{ title }}" />
        <a href="#" class="remove-zone hidden">
