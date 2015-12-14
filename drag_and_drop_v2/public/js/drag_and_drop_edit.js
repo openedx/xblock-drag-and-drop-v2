@@ -330,7 +330,8 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                             ctx.dropdown = _fn.build.form.createDropdown(ctx.zone);
 
-                            if (!oldItem) ctx.width = '190';
+                            // Item width/height are ignored, but preserve the data:
+                            if (!oldItem) ctx.width = '0';
                             else ctx.width = oldItem.size.width.substr(0,
                                 oldItem.size.width.length - 2);
                             if (ctx.width == 'au') ctx.width = '0';
@@ -385,6 +386,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                                 backgroundImage = $el.find('.background-image').val();
 
                             if (name.length > 0 || backgroundImage.length > 0) {
+                                // Item width/height are ignored, but preserve the data:
                                 var width = $el.find('.item-width').val(),
                                     height = $el.find('.item-height').val();
 
