@@ -49,6 +49,7 @@
     position: relative;
     border: 1px solid rgba(0,0,0, 0.1);
     border-radius: 3px;
+    padding: 5px;
 }
 
 .xblock--drag-and-drop .drag-container .option {
@@ -58,7 +59,7 @@
     max-width: calc(100% / 3 - 1% - 1% - 20px);
     border: 1px solid transparent;
     border-radius: 3px;
-    margin: 1%;
+    margin: 5px;
     padding: 10px;
     background-color: #2e83cd;
     font-size: 14px;
@@ -83,6 +84,7 @@
 }
 
 .xblock--drag-and-drop .drag-container .option img {
+    display: block;
     max-width: 100%;
 }
 
