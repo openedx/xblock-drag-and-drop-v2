@@ -122,14 +122,19 @@ function DragAndDropEditBlock(runtime, element, params) {
                         .on('click', '.target-image-form button', function(e) {
                             e.preventDefault();
 
-                            var new_img_url = $('.target-image-form input', element).val();
+                            var new_img_url = $.trim($('.target-image-form input', element).val());
+                            if (new_img_url) {
+                                // We may need to 'expand' the URL before it will be valid.
+                                // e.g. '/static/blah.png' becomes '/asset-v1:course+id/blah.png'
+                                var handlerUrl = runtime.handlerUrl(element, 'expand_static_url');
+                                $.post(handlerUrl, JSON.stringify(new_img_url), function(result) {
+                                    _fn.build.$el.targetImage.attr('src', result.url);
+                                });
+                            } else {
+                                new_img_url = params.default_background_image_url;
+                                _fn.build.$el.targetImage.attr('src', new_img_url);
+                            }
                             _fn.data.targetImg = new_img_url;
-                            // We may need to 'expand' the URL before it will be valid.
-                            // e.g. '/static/blah.png' becomes '/asset-v1:course+id/blah.png'
-                            var handlerUrl = runtime.handlerUrl(element, 'expand_static_url');
-                            $.post(handlerUrl, JSON.stringify(new_img_url), function(result) {
-                                _fn.build.$el.targetImage.attr('src', result.url);
-                            }).error(function(a, b, c) { console.log(a, b, c); });
 
                             // Placeholder shim for IE9
                             $.placeholder.shim();
@@ -233,6 +238,10 @@ function DragAndDropEditBlock(runtime, element, params) {
                             _fn.build.$el.zonesPreview.html('');
                             var imgWidth = _fn.build.$el.targetImage[0].naturalWidth;
                             var imgHeight = _fn.build.$el.targetImage[0].naturalHeight;
+                            if (imgWidth == 0 || imgHeight == 0) {
+                                // Set a non-zero value to avoid divide-by-zero:
+                                imgWidth = imgHeight = 400;
+                            }
                             this.zoneObjects.forEach(function(zoneObj) {
                                 _fn.build.$el.zonesPreview.append(
                                     _fn.tpl.zoneElement({

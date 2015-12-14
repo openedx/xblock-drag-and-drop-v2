@@ -152,7 +152,7 @@ class DragAndDropBlock(XBlock):
             "show_title": self.show_title,
             "question_text": self.question_text,
             "show_question_header": self.show_question_header,
-            "targetImg": self.target_img_expanded_url,
+            "target_img_expanded_url": self.target_img_expanded_url,
             "item_background_color": self.item_background_color or None,
             "item_text_color": self.item_text_color or None,
             "initial_feedback": self.data['feedback']['start'],
@@ -197,6 +197,7 @@ class DragAndDropBlock(XBlock):
         fragment.initialize_js('DragAndDropEditBlock', {
             'data': self.data,
             'target_img_expanded_url': self.target_img_expanded_url,
+            'default_background_image_url': self.default_background_image_url,
         })
 
         return fragment
@@ -324,8 +325,13 @@ class DragAndDropBlock(XBlock):
         """ Get the expanded URL to the target image (the image items are dragged onto). """
         if self.data.get("targetImg"):
             return self._expand_static_url(self.data["targetImg"])
-        return self.runtime.local_resource_url(self, "public/img/triangle.png")
+        else:
+            return self.default_background_image_url
 
+    @property
+    def default_background_image_url(self):
+        """ The URL to the default background image, shown when no custom background is used """
+        return self.runtime.local_resource_url(self, "public/img/triangle.png")
 
     @XBlock.handler
     def get_user_state(self, request, suffix=''):

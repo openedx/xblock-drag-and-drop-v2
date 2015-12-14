@@ -1,17 +1,14 @@
 function DragAndDropBlock(runtime, element, configuration) {
     "use strict";
-    // Ensure "undefined" has not been redefined (though this unlikely and often impossible).
-    // Now we can check for 'undefined' using just '=== undefined' throughout this file.
-    if (undefined !== void 0) { console.log("WARNING: 'undefined' redefined"); var undefined = void 0; }
-    // Set up gettext in case it isn't available in the client runtime:
-    if (gettext === undefined) {
-        window.gettext = function gettext_stub(string) { return string; };
+    // Set up a mock for gettext if it isn't available in the client runtime:
+    if (!window.gettext) {
+        var gettext = function gettext_stub(string) { return string; };
     }
 
     var $element = $(element);
     // root: root node managed by the virtual DOM
-    var root = $element.find('.xblock--drag-and-drop')[0];
-    var $root = $(root);
+    var $root = $element.find('.xblock--drag-and-drop');
+    var root = $root[0];
 
     var state = undefined;
     var __vdom = virtualDom.h();  // blank virtual DOM
@@ -56,7 +53,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             }
         }, false);
         img.addEventListener("error", function() { promise.reject() });
-        img.src = configuration.targetImg;
+        img.src = configuration.target_img_expanded_url;
         return promise;
     }
 
@@ -330,7 +327,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             show_title: configuration.show_title,
             question_html: configuration.question_text,
             show_question_header: configuration.show_question_header,
-            target_img_src: configuration.targetImg,
+            target_img_src: configuration.target_img_expanded_url,
             display_zone_labels: configuration.display_zone_labels,
             zones: configuration.zones,
             items: items,
