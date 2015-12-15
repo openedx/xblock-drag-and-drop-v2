@@ -28,6 +28,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 computeZoneDimension(zone, bgImg.width, bgImg.height);
             });
             state = stateResult[0]; // stateResult is an array of [data, statusText, jqXHR]
+            migrateState(bgImg.width, bgImg.height);
             applyState();
             initDroppable();
 
@@ -338,6 +339,40 @@ function DragAndDropBlock(runtime, element, configuration) {
         };
 
         return DragAndDropBlock.renderView(context);
+    };
+
+    /**
+     * migrateState: Apply any changes necessary to support the 'state' format used by older
+     * versions of this XBlock.
+     * We have to do this in JS, not python, since some migrations depend on the image size,
+     * which is not known in Python-land.
+     */
+    var migrateState = function(bg_image_width, bg_image_height) {
+        Object.keys(state.items).forEach(function(item_id) {
+            var item = state.items[item_id];
+            if (item.x_percent === undefined) {
+                // Find the matching item in the configuration
+                var width = 190;
+                var height = 44;
+                for (var i in configuration.items) {
+                    if (configuration.items[i].id === +item_id) {
+                        var size = configuration.items[i].size;
+                        // size is an object like '{width: "50px", height: "auto"}'
+                        if (parseInt(size.width ) > 0) {  width = parseInt(size.width); }
+                        if (parseInt(size.height) > 0) { height = parseInt(size.height); }
+                        break;
+                    }
+                }
+                // Update the user's item state to use centered relative coordinates
+                var left_px = parseFloat(item.left) - 220; // 220 px for the items container that used to be on the left
+                var top_px = parseFloat(item.top);
+                item.x_percent = (left_px + width/2) / bg_image_width * 100;
+                item.y_percent = (top_px + height/2) / bg_image_height * 100;
+                delete item.left;
+                delete item.top;
+                delete item.absolute;
+            }
+        });
     };
 
     init();
