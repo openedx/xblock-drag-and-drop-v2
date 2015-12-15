@@ -4,21 +4,21 @@ DEFAULT_DATA = {
   "zones": [
     {
       "index": 1,
-      "width": 200,
+      "id": "zone-1",
       "title": _("Zone 1"),
-      "height": 100,
-      "x": "120",
-      "y": "200",
-      "id": "zone-1"
+      "x": 160,
+      "y": 30,
+      "width": 196,
+      "height": 178,
     },
     {
       "index": 2,
-      "width": 200,
+      "id": "zone-2",
       "title": _("Zone 2"),
-      "height": 100,
-      "x": "120",
-      "y": "360",
-      "id": "zone-2"
+      "x": 86,
+      "y": 210,
+      "width": 340,
+      "height": 140,
     }
   ],
   "items": [
@@ -31,10 +31,6 @@ DEFAULT_DATA = {
       "zone": "Zone 1",
       "backgroundImage": "",
       "id": 0,
-      "size": {
-        "width": "190px",
-        "height": "auto"
-      }
     },
     {
       "displayName": "2",
@@ -45,10 +41,6 @@ DEFAULT_DATA = {
       "zone": "Zone 2",
       "backgroundImage": "",
       "id": 1,
-      "size": {
-        "width": "190px",
-        "height": "auto"
-      }
     },
     {
       "displayName": "X",
@@ -59,14 +51,10 @@ DEFAULT_DATA = {
       "zone": "none",
       "backgroundImage": "",
       "id": 2,
-      "size": {
-        "width": "100px",
-        "height": "100px"
-      }
     },
   ],
   "feedback": {
-    "start": _("Intro Feed"),
-    "finish": _("Final Feed")
+    "start": _("Drag the items onto the image above."),
+    "finish": _("Good work! You have completed this drag and drop exercise.")
   },
 }

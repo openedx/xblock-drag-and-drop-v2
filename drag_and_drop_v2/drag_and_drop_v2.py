@@ -350,7 +350,7 @@ class DragAndDropBlock(XBlock):
         return {
             'items': item_state,
             'finished': is_finished,
-            'overall_feedback': self.data['feedback']['finished' if is_finished else 'start'],
+            'overall_feedback': self.data['feedback']['finish' if is_finished else 'start'],
         }
 
     def _get_item_state(self):

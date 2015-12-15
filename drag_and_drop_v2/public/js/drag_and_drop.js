@@ -302,8 +302,6 @@ function DragAndDropBlock(runtime, element, configuration) {
             var itemProperties = {
                 value: item.id,
                 drag_disabled: Boolean(item_user_state || state.finished),
-                width: item.size.width,
-                height: item.size.height,
                 class_name: item_user_state && ('input' in item_user_state || item_user_state.correct_input) ? 'fade': undefined,
                 input: input,
                 content_html: item.backgroundImage ? '<img src="' + item.backgroundImage + '"/>' : item.displayName
