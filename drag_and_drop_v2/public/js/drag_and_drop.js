@@ -1,9 +1,5 @@
 function DragAndDropBlock(runtime, element, configuration) {
     "use strict";
-    // Set up a mock for gettext if it isn't available in the client runtime:
-    if (!window.gettext) {
-        var gettext = function gettext_stub(string) { return string; };
-    }
 
     var $element = $(element);
     // root: root node managed by the virtual DOM

@@ -28,11 +28,7 @@
       },
       "zone": "Zone 1",
       "backgroundImage": "",
-      "id": 0,
-      "size": {
-        "width": "190px",
-        "height": "auto"
-      }
+      "id": 0
     },
     {
       "displayName": "2 here",
@@ -43,10 +39,6 @@
       "zone": "Zone 2",
       "backgroundImage": "",
       "id": 1,
-      "size": {
-        "width": "190px",
-        "height": "auto"
-      },
       "inputOptions": {
         "value": 100,
         "margin": 5
@@ -60,17 +52,9 @@
       },
       "zone": "none",
       "backgroundImage": "",
-      "id": 2,
-      "size": {
-        "width": "100px",
-        "height": "100px"
-      }
+      "id": 2
     }
   ],
-  "state": {
-    "items": {},
-    "finished": true
-  },
   "feedback": {
     "start": "Other Intro Feed",
     "finish": "Other Final Feed"

@@ -26,6 +26,9 @@ class TestCustomDataDragAndDropRendering(BaseIntegrationTest):
         self.assertIn('<span style="color:red">X</span>', self.get_element_html(items[2]))
 
     def test_background_image(self):
-        bg_image = self.browser.execute_script('return jQuery(".target-img").css("background-image")')
-        custom_image_url = 'https://www.edx.org/sites/default/files/theme/edx-logo-header.png'
-        self.assertEqual(bg_image, 'url("{}")'.format(custom_image_url))
+        bg_image = self.browser.find_element_by_css_selector(".xblock--drag-and-drop .target-img")
+        custom_image_url = (
+            "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciI"
+            "HdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIiBzdHlsZT0iYmFja2dyb3VuZDogI2VlZjsiPjwvc3ZnPg=="
+        )
+        self.assertEqual(bg_image.get_attribute("src"), custom_image_url)
