@@ -41,11 +41,18 @@
 
 /** Draggable Items **/
 .xblock--drag-and-drop .item-bank {
+    display: -ms-flexbox;
     display: flex;
+
+    -ms-flex-flow: row wrap;
     flex-flow: row wrap;
-    /* TODO: prefix the above and test in IE 10 */
+
+    -ms-justify-content: flex-start;
     justify-content: flex-start;
+
+    -ms-flex-align: center;
     align-items: center;
+
     position: relative;
     border: 1px solid rgba(0,0,0, 0.1);
     border-radius: 3px;
