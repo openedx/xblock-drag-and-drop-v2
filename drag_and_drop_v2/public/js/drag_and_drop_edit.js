@@ -321,16 +321,18 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                             ctx.dropdown = _fn.build.form.createDropdown(ctx.zone);
 
-                            // Item width/height are ignored, but preserve the data:
-                            if (!oldItem) ctx.width = '0';
-                            else ctx.width = oldItem.size.width.substr(0,
-                                oldItem.size.width.length - 2);
-                            if (ctx.width == 'au') ctx.width = '0';
-
-                            if (!oldItem) ctx.height = '0';
-                            else ctx.height = oldItem.size.height.substr(0,
-                                oldItem.size.height.length - 2);
-                            if (ctx.height == 'au') ctx.height = '0';
+                            // Item width/height are ignored in new versions of the block, but
+                            // preserve the data in case we change back to using those values.
+                            if (oldItem && oldItem.size && oldItem.size.width != 'auto') {
+                                ctx.width = oldItem.size.width.substr(0, oldItem.size.width.length - 2); // Remove 'px'
+                            } else {
+                                ctx.width = '0';
+                            }
+                            if (oldItem && oldItem.size && oldItem.size.height != 'auto') {
+                                ctx.height = oldItem.size.height.substr(0, oldItem.size.height.length - 2); // Remove 'px'
+                            } else {
+                                ctx.height = '0';
+                            }
 
                             if (oldItem && oldItem.inputOptions) {
                                 ctx.numericalValue = oldItem.inputOptions.value;
