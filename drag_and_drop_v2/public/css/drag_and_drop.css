@@ -111,6 +111,7 @@
     position: absolute;
     left: 150px;
     top: 4px;
+    white-space: nowrap;  /* Fix cross-browser issue: Without this declaration, button text wraps in Chrome/Chromium */
 }
 
 .xblock--drag-and-drop .drag-container .option .numerical-input.correct .input-submit,
