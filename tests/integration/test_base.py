@@ -1,7 +1,7 @@
 # Imports ###########################################################
 from xml.sax.saxutils import escape
 from selenium.webdriver.support.ui import WebDriverWait
-from tests.utils import load_resource
+from ..utils import load_resource
 
 from workbench import scenarios
 
@@ -19,25 +19,26 @@ class BaseIntegrationTest(SeleniumBaseTest):
         "'": "&apos;"
     }
 
-    def _make_scenario_xml(self, display_name, show_title, question_text, completed=False, show_question_header=True):
+    @staticmethod
+    def _make_scenario_xml(display_name, show_title, question_text, completed=False, show_question_header=True):
         return """
-<vertical_demo>
-    <drag-and-drop-v2
-        display_name='{display_name}'
-        show_title='{show_title}'
-        question_text='{question_text}'
-        show_question_header='{show_question_header}'
-        weight='1'
-        completed='{completed}'
-    />
-</vertical_demo>
-    """.format(
-        display_name=escape(display_name),
-        show_title=show_title,
-        question_text=escape(question_text),
-        show_question_header=show_question_header,
-        completed=completed,
-    )
+            <vertical_demo>
+                <drag-and-drop-v2
+                    display_name='{display_name}'
+                    show_title='{show_title}'
+                    question_text='{question_text}'
+                    show_question_header='{show_question_header}'
+                    weight='1'
+                    completed='{completed}'
+                />
+            </vertical_demo>
+        """.format(
+            display_name=escape(display_name),
+            show_title=show_title,
+            question_text=escape(question_text),
+            show_question_header=show_question_header,
+            completed=completed,
+        )
 
     def _get_custom_scenario_xml(self, filename):
         data = load_resource(filename)
@@ -50,7 +51,7 @@ class BaseIntegrationTest(SeleniumBaseTest):
         self.addCleanup(scenarios.remove_scenario, identifier)
 
     def _get_items(self):
-        items_container = self._page.find_element_by_css_selector('.items')
+        items_container = self._page.find_element_by_css_selector('.item-bank')
         return items_container.find_elements_by_css_selector('.option')
 
     def _get_zones(self):
@@ -62,10 +63,12 @@ class BaseIntegrationTest(SeleniumBaseTest):
     def scroll_down(self, pixels=50):
         self.browser.execute_script("$(window).scrollTop({})".format(pixels))
 
-    def get_element_html(self, element):
+    @staticmethod
+    def get_element_html(element):
         return element.get_attribute('innerHTML').strip()
 
-    def get_element_classes(self, element):
+    @staticmethod
+    def get_element_classes(element):
         return element.get_attribute('class').split()
 
     def wait_until_html_in(self, html, elem):
@@ -73,7 +76,8 @@ class BaseIntegrationTest(SeleniumBaseTest):
         wait.until(lambda e: html in e.get_attribute('innerHTML'),
                    u"{} should be in {}".format(html, elem.get_attribute('innerHTML')))
 
-    def wait_until_has_class(self, class_name, elem):
+    @staticmethod
+    def wait_until_has_class(class_name, elem):
         wait = WebDriverWait(elem, 2)
         wait.until(lambda e: class_name in e.get_attribute('class').split(),
                    u"Class name {} not in {}".format(class_name, elem.get_attribute('class')))

@@ -1,18 +1,18 @@
 from selenium.webdriver import ActionChains
 
-from tests.integration.test_base import BaseIntegrationTest
+from .test_base import BaseIntegrationTest
 
 
 class ItemDefinition(object):
-    def __init__(self, item_id, zone_id, feedback_positive, feedback_negative, input=None):
+    def __init__(self, item_id, zone_id, feedback_positive, feedback_negative, input_value=None):
         self.feedback_negative = feedback_negative
         self.feedback_positive = feedback_positive
         self.zone_id = zone_id
         self.item_id = item_id
-        self.input = input
+        self.input = input_value
 
 
-class InteractionTestFixture(BaseIntegrationTest):
+class InteractionTestFixture(object):
     """
     Verifying Drag and Drop XBlock rendering against default data - if default data changes this would probably broke
     """
@@ -28,11 +28,11 @@ class InteractionTestFixture(BaseIntegrationTest):
     all_zones = ['Zone 1', 'Zone 2']
 
     feedback = {
-        "intro": "Intro Feed",
-        "final": "Final Feed"
+        "intro": "Drag the items onto the image above.",
+        "final": "Good work! You have completed this drag and drop exercise."
     }
 
-    def _get_scenario_xml(self):
+    def _get_scenario_xml(self):  # pylint: disable=no-self-use
         return "<vertical_demo><drag-and-drop-v2/></vertical_demo>"
 
     @classmethod
@@ -54,7 +54,7 @@ class InteractionTestFixture(BaseIntegrationTest):
         self.browser.set_window_size(1024, 800)
 
     def _get_item_by_value(self, item_value):
-        items_container = self._page.find_element_by_css_selector('.items')
+        items_container = self._page.find_element_by_css_selector('.item-bank')
         return items_container.find_elements_by_xpath("//div[@data-value='{item_id}']".format(item_id=item_value))[0]
 
     def _get_zone_by_id(self, zone_id):
@@ -77,6 +77,9 @@ class InteractionTestFixture(BaseIntegrationTest):
         action_chains.drag_and_drop(element, target).perform()
 
     def test_item_positive_feedback_on_good_move(self):
+        # Scroll drop zones into view to make sure Selenium can successfully drop items
+        self.scroll_down(pixels=100)
+
         for definition in self._get_correct_item_for_zone().values():
             if not definition.input:
                 self.drag_item_to_zone(definition.item_id, definition.zone_id)
@@ -96,6 +99,9 @@ class InteractionTestFixture(BaseIntegrationTest):
     def test_item_negative_feedback_on_bad_move(self):
         feedback_popup = self._page.find_element_by_css_selector(".popup-content")
 
+        # Scroll drop zones into view to make sure Selenium can successfully drop items
+        self.scroll_down(pixels=100)
+
         for definition in self.items_map.values():
             for zone in self.all_zones:
                 if zone == definition.zone_id:
@@ -105,6 +111,10 @@ class InteractionTestFixture(BaseIntegrationTest):
 
     def test_item_positive_feedback_on_bad_input(self):
         feedback_popup = self._page.find_element_by_css_selector(".popup-content")
+
+        # Scroll drop zones into view to make sure Selenium can successfully drop items
+        self.scroll_down(pixels=100)
+
         for definition in self._get_correct_item_for_zone().values():
             if definition.input:
                 self.drag_item_to_zone(definition.item_id, definition.zone_id)
@@ -118,9 +128,14 @@ class InteractionTestFixture(BaseIntegrationTest):
         self.assertEqual(self.get_element_html(feedback_message), self.feedback['intro'])  # precondition check
 
         items = self._get_correct_item_for_zone()
-        get_locations = lambda: {item_id: self._get_item_by_value(item_id).location for item_id in items.keys()}
+
+        def get_locations():
+            return {item_id: self._get_item_by_value(item_id).location for item_id in items.keys()}
 
         initial_locations = get_locations()
+
+        # Scroll drop zones into view to make sure Selenium can successfully drop items
+        self.scroll_down(pixels=100)
 
         for item_key, definition in items.items():
             self.drag_item_to_zone(item_key, definition.zone_id)
@@ -132,7 +147,7 @@ class InteractionTestFixture(BaseIntegrationTest):
         self.wait_until_html_in(self.feedback['final'], self._get_feedback_message())
 
         # Scroll "Reset exercise" button into view to make sure Selenium can successfully click it
-        self.scroll_down()
+        self.scroll_down(pixels=250)
 
         reset = self._page.find_element_by_css_selector('.reset-button')
         reset.click()
@@ -144,7 +159,7 @@ class InteractionTestFixture(BaseIntegrationTest):
             self.assertDictEqual(locations_after_reset[item_key], initial_locations[item_key])
 
 
-class CustomDataInteractionTest(InteractionTestFixture):
+class CustomDataInteractionTest(InteractionTestFixture, BaseIntegrationTest):
     items_map = {
         0: ItemDefinition(0, 'Zone 1', "Yes 1", "No 1"),
         1: ItemDefinition(1, 'Zone 2', "Yes 2", "No 2", "102"),
@@ -162,7 +177,7 @@ class CustomDataInteractionTest(InteractionTestFixture):
         return self._get_custom_scenario_xml("integration/data/test_data.json")
 
 
-class CustomHtmlDataInteractionTest(InteractionTestFixture):
+class CustomHtmlDataInteractionTest(InteractionTestFixture, BaseIntegrationTest):
     items_map = {
         0: ItemDefinition(0, 'Zone <i>1</i>', "Yes <b>1</b>", "No <b>1</b>"),
         1: ItemDefinition(1, 'Zone <b>2</b>', "Yes <i>2</i>", "No <i>2</i>", "95"),

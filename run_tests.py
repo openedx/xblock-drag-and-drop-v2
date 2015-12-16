@@ -6,6 +6,7 @@ This script is required to run our selenium tests inside the xblock-sdk workbenc
 because the workbench SDK's settings file is not inside any python module.
 """
 
+import logging
 import os
 import sys
 import workbench
@@ -20,6 +21,9 @@ if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
     # Configure a range of ports in case the default port of 8081 is in use
     os.environ.setdefault("DJANGO_LIVE_TEST_SERVER_ADDRESS", "localhost:8081-8099")
+
+    # Silence too verbose Django logging
+    logging.disable(logging.DEBUG)
 
     try:
         os.mkdir('var')

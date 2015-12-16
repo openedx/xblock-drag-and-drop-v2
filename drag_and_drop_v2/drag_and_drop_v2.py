@@ -12,7 +12,7 @@ from xblock.core import XBlock
 from xblock.fields import Scope, String, Dict, Float, Boolean
 from xblock.fragment import Fragment
 
-from .utils import _, render_template, load_resource
+from .utils import _, render_template, load_resource  # pylint: disable=unused-import
 from .default_data import DEFAULT_DATA
 
 
@@ -125,9 +125,39 @@ class DragAndDropBlock(XBlock):
         for js_url in js_urls:
             fragment.add_javascript_url(self.runtime.local_resource_url(self, js_url))
 
-        fragment.initialize_js('DragAndDropBlock')
+        fragment.initialize_js('DragAndDropBlock', self.get_configuration())
 
         return fragment
+
+    def get_configuration(self):
+        """
+        Get the configuration data for the student_view.
+        The configuration is all the settings defined by the author, except for correct answers
+        and feedback.
+        """
+
+        def items_without_answers():
+            items = copy.deepcopy(self.data.get('items', ''))
+            for item in items:
+                del item['feedback']
+                del item['zone']
+                item['inputOptions'] = 'inputOptions' in item
+            return items
+
+        return {
+            "zones": self.data.get('zones', []),
+            "display_zone_labels": self.data.get('displayLabels', False),
+            "items": items_without_answers(),
+            "title": self.display_name,
+            "show_title": self.show_title,
+            "question_text": self.question_text,
+            "show_question_header": self.show_question_header,
+            "target_img_expanded_url": self.target_img_expanded_url,
+            "item_background_color": self.item_background_color or None,
+            "item_text_color": self.item_text_color or None,
+            "initial_feedback": self.data['feedback']['start'],
+            # final feedback (data.feedback.finish) is not included - it may give away answers.
+        }
 
     def studio_view(self, context):
         """
@@ -164,7 +194,11 @@ class DragAndDropBlock(XBlock):
         for js_url in js_urls:
             fragment.add_javascript_url(self.runtime.local_resource_url(self, js_url))
 
-        fragment.initialize_js('DragAndDropEditBlock')
+        fragment.initialize_js('DragAndDropEditBlock', {
+            'data': self.data,
+            'target_img_expanded_url': self.target_img_expanded_url,
+            'default_background_image_url': self.default_background_image_url,
+        })
 
         return fragment
 
@@ -183,18 +217,13 @@ class DragAndDropBlock(XBlock):
             'result': 'success',
         }
 
-    @XBlock.handler
-    def get_data(self, request, suffix=''):
-        data = self._get_data()
-        return webob.Response(body=json.dumps(data), content_type='application/json')
-
     @XBlock.json_handler
     def do_attempt(self, attempt, suffix=''):
         item = next(i for i in self.data['items'] if i['id'] == attempt['val'])
 
         state = None
         feedback = item['feedback']['incorrect']
-        final_feedback = None
+        overall_feedback = None
         is_correct = False
         is_correct_location = False
 
@@ -220,16 +249,15 @@ class DragAndDropBlock(XBlock):
                 is_correct = True
                 feedback = item['feedback']['correct']
             state = {
-                'top': attempt['top'],
-                'left': attempt['left'],
-                'absolute': True  # flag for backwards compatibility (values used to be relative)
+                'x_percent': attempt['x_percent'],
+                'y_percent': attempt['y_percent'],
             }
 
         if state:
             self.item_state[str(item['id'])] = state
 
         if self._is_finished():
-            final_feedback = self.data['feedback']['finish']
+            overall_feedback = self.data['feedback']['finish']
 
         # don't publish the grade if the student has already completed the exercise
         if not self.completed:
@@ -259,48 +287,71 @@ class DragAndDropBlock(XBlock):
             'correct': is_correct,
             'correct_location': is_correct_location,
             'finished': self._is_finished(),
-            'final_feedback': final_feedback,
+            'overall_feedback': overall_feedback,
             'feedback': feedback
         }
 
     @XBlock.json_handler
     def reset(self, data, suffix=''):
         self.item_state = {}
-        return self._get_data()
+        return self._get_user_state()
 
-    def _get_data(self):
-        data = copy.deepcopy(self.data)
+    def _expand_static_url(self, url):
+        """
+        This is required to make URLs like '/static/dnd-test-image.png' work (note: that is the
+        only portable URL format for static files that works across export/import and reruns).
+        This method is unfortunately a bit hackish since XBlock does not provide a low-level API
+        for this.
+        """
+        if hasattr(self.runtime, 'replace_urls'):
+            url = self.runtime.replace_urls('"{}"'.format(url))[1:-1]
+        elif hasattr(self.runtime, 'course_id'):
+            # edX Studio uses a different runtime for 'studio_view' than 'student_view',
+            # and the 'studio_view' runtime doesn't provide the replace_urls API.
+            try:
+                from static_replace import replace_static_urls  # pylint: disable=import-error
+                url = replace_static_urls('"{}"'.format(url), None, course_id=self.runtime.course_id)[1:-1]
+            except ImportError:
+                pass
+        return url
 
-        for item in data['items']:
-            # Strip answers
-            del item['feedback']
-            del item['zone']
-            item['inputOptions'] = 'inputOptions' in item
+    @XBlock.json_handler
+    def expand_static_url(self, url, suffix=''):
+        """ AJAX-accessible handler for expanding URLs to static [image] files """
+        return {'url': self._expand_static_url(url)}
 
-        if not self._is_finished():
-            del data['feedback']['finish']
+    @property
+    def target_img_expanded_url(self):
+        """ Get the expanded URL to the target image (the image items are dragged onto). """
+        if self.data.get("targetImg"):
+            return self._expand_static_url(self.data["targetImg"])
+        else:
+            return self.default_background_image_url
 
+    @property
+    def default_background_image_url(self):
+        """ The URL to the default background image, shown when no custom background is used """
+        return self.runtime.local_resource_url(self, "public/img/triangle.png")
+
+    @XBlock.handler
+    def get_user_state(self, request, suffix=''):
+        """ GET all user-specific data, and any applicable feedback """
+        data = self._get_user_state()
+        return webob.Response(body=json.dumps(data), content_type='application/json')
+
+    def _get_user_state(self):
+        """ Get all user-specific data, and any applicable feedback """
         item_state = self._get_item_state()
         for item_id, item in item_state.iteritems():
             definition = next(i for i in self.data['items'] if str(i['id']) == item_id)
             item['correct_input'] = self._is_correct_input(definition, item.get('input'))
 
-        data['state'] = {
+        is_finished = self._is_finished()
+        return {
             'items': item_state,
-            'finished': self._is_finished()
+            'finished': is_finished,
+            'overall_feedback': self.data['feedback']['finish' if is_finished else 'start'],
         }
-
-        data['title'] = self.display_name
-        data['show_title'] = self.show_title
-        data['question_text'] = self.question_text
-        data['show_question_header'] = self.show_question_header
-
-        if self.item_background_color:
-            data['item_background_color'] = self.item_background_color
-        if self.item_text_color:
-            data['item_text_color'] = self.item_text_color
-
-        return data
 
     def _get_item_state(self):
         """

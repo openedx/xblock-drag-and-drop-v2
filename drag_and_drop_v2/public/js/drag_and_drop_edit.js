@@ -1,4 +1,4 @@
-function DragAndDropEditBlock(runtime, element) {
+function DragAndDropEditBlock(runtime, element, params) {
 
     // Set up gettext in case it isn't available in the client runtime:
     if (typeof gettext == "undefined") {
@@ -12,10 +12,7 @@ function DragAndDropEditBlock(runtime, element) {
 
     var dragAndDrop = (function($) {
         var _fn = {
-
-            // DOM Elements
-            $target: $('.xblock--drag-and-drop .target-img', element),
-
+            // Templates
             tpl: {
                 init: function() {
                     _fn.tpl = {
@@ -30,27 +27,28 @@ function DragAndDropEditBlock(runtime, element) {
             build: {
                 $el: {
                     feedback: {
-                        form: $('.xblock--drag-and-drop .drag-builder .feedback-form', element),
-                        tab: $('.xblock--drag-and-drop .drag-builder .feedback-tab', element)
+                        form: $('.drag-builder .feedback-form', element),
+                        tab: $('.drag-builder .feedback-tab', element)
                     },
                     zones: {
-                        form: $('.xblock--drag-and-drop .drag-builder .zones-form', element),
-                        tab: $('.xblock--drag-and-drop .drag-builder .zones-tab', element)
+                        form: $('.drag-builder .zones-form', element),
+                        tab: $('.drag-builder .zones-tab', element)
                     },
                     items: {
-                        form: $('.xblock--drag-and-drop .drag-builder .items-form', element),
-                        tab: $('.xblock--drag-and-drop .drag-builder .items-tab', element)
+                        form: $('.drag-builder .items-form', element),
+                        tab: $('.drag-builder .items-tab', element)
                     },
-                    target: $('.xblock--drag-and-drop .drag-builder .target-img', element)
+                    targetImage: $('.drag-builder .target .target-img', element),
+                    zonesPreview: $('.drag-builder .target .zones-preview', element),
                 },
-                init: function(data) {
-                    _fn.data = data;
+                init: function() {
+                    _fn.data = params.data;
 
                     // Compile templates
                     _fn.tpl.init();
 
                     // Display target image
-                    _fn.$target.show();
+                    _fn.build.$el.targetImage.show();
 
                     _fn.build.clickHandlers();
                 },
@@ -71,9 +69,10 @@ function DragAndDropEditBlock(runtime, element) {
                             _fn.build.form.zone.add();
                         }
 
-                        if (_fn.data.targetImg) {
-                            _fn.$target.css('background', 'url(' + _fn.data.targetImg + ') no-repeat');
-                        }
+                        // Set the target image and bind its event handler:
+                        $('.target-image-form input', element).val(_fn.data.targetImg);
+                        _fn.build.$el.targetImage.load(_fn.build.form.zone.imageLoaded);
+                        _fn.build.$el.targetImage.attr('src', params.target_img_expanded_url);
 
                         if (_fn.data.displayLabels) {
                             $('.display-labels-form input', element).prop('checked', true);
@@ -88,7 +87,7 @@ function DragAndDropEditBlock(runtime, element) {
                         $(this).one('click', function(e) {
                             // $zoneTab -> $itemTab
                             e.preventDefault();
-                            _fn.build.form.zone.setAll();
+
                             for (var i = 0; i < _fn.data.items.length; i++) {
                                 _fn.build.form.item.add(_fn.data.items[i]);
                             }
@@ -119,11 +118,23 @@ function DragAndDropEditBlock(runtime, element) {
                             _fn.build.form.zone.add();
                         })
                         .on('click', '.remove-zone', _fn.build.form.zone.remove)
+                        .on('input', '.zone-row input', _fn.build.form.zone.changedInputHandler)
                         .on('click', '.target-image-form button', function(e) {
                             e.preventDefault();
 
-                            _fn.data.targetImg = $('.target-image-form input', element).val();
-                            _fn.$target.css('background', 'url(' + _fn.data.targetImg + ') no-repeat');
+                            var new_img_url = $.trim($('.target-image-form input', element).val());
+                            if (new_img_url) {
+                                // We may need to 'expand' the URL before it will be valid.
+                                // e.g. '/static/blah.png' becomes '/asset-v1:course+id/blah.png'
+                                var handlerUrl = runtime.handlerUrl(element, 'expand_static_url');
+                                $.post(handlerUrl, JSON.stringify(new_img_url), function(result) {
+                                    _fn.build.$el.targetImage.attr('src', result.url);
+                                });
+                            } else {
+                                new_img_url = params.default_background_image_url;
+                                _fn.build.$el.targetImage.attr('src', new_img_url);
+                            }
+                            _fn.data.targetImg = new_img_url;
 
                             // Placeholder shim for IE9
                             $.placeholder.shim();
@@ -142,21 +153,18 @@ function DragAndDropEditBlock(runtime, element) {
                     zone: {
                         count: 0,
                         formCount: 0,
-                        list: [],
-                        obj: [],
+                        zoneObjects: [],
                         getObjByIndex: function(num) {
-                            for (var i = 0; i < _fn.build.form.zone.obj.length; i++) {
-                                if (_fn.build.form.zone.obj[i].index == num)
-                                    return _fn.build.form.zone.obj[i];
+                            for (var i = 0; i < _fn.build.form.zone.zoneObjects.length; i++) {
+                                if (_fn.build.form.zone.zoneObjects[i].index == num)
+                                    return _fn.build.form.zone.zoneObjects[i];
                             }
                         },
                         add: function(oldZone) {
                             var inputTemplate = _fn.tpl.zoneInput,
-                                zoneTemplate = _fn.tpl.zoneElement,
                                 name = 'zone-',
                                 $elements = _fn.build.$el,
-                                num,
-                                zoneObj;
+                                num;
 
                             if (!oldZone) oldZone = {};
 
@@ -166,17 +174,17 @@ function DragAndDropEditBlock(runtime, element) {
                             name += num;
 
                             // Update zone obj
-                            zoneObj = {
+                            var zoneObj = {
                                 title: oldZone.title || 'Zone ' + num,
                                 id: name,
                                 index: num,
                                 width: oldZone.width || 200,
                                 height: oldZone.height || 100,
                                 x: oldZone.x || 0,
-                                y: oldZone.y || 0
+                                y: oldZone.y || 0,
                             };
 
-                            _fn.build.form.zone.obj.push(zoneObj);
+                            _fn.build.form.zone.zoneObjects.push(zoneObj);
 
                             // Add fields to zone position form
                             $zoneNode = $(inputTemplate(zoneObj));
@@ -185,10 +193,7 @@ function DragAndDropEditBlock(runtime, element) {
                             _fn.build.form.zone.enableDelete();
 
                             // Add zone div to target
-                            $elements.target.append(zoneTemplate(zoneObj));
-
-                            // Listen to changes in form to update zone div
-                            _fn.build.form.zone.clickHandler(num);
+                            _fn.build.form.zone.renderZonesPreview();
 
                             // Placeholder shim for IE9
                             $.placeholder.shim();
@@ -202,14 +207,14 @@ function DragAndDropEditBlock(runtime, element) {
 
                             e.preventDefault();
                             $el.detach();
-                            $('#' + id, element).detach();
 
                             // Find the index of the zone in the array and remove it.
-                            for (array_index = 0; array_index < _fn.build.form.zone.obj.length;
+                            for (array_index = 0; array_index < _fn.build.form.zone.zoneObjects.length;
                                  array_index++) {
-                                if (_fn.build.form.zone.obj[array_index].index == index) break;
+                                if (_fn.build.form.zone.zoneObjects[array_index].index == index) break;
                             }
-                            _fn.build.form.zone.obj.splice(array_index, 1);
+                            _fn.build.form.zone.zoneObjects.splice(array_index, 1);
+                            _fn.build.form.zone.renderZonesPreview();
 
                             _fn.build.form.zone.formCount--;
                             _fn.build.form.zone.disableDelete();
@@ -227,80 +232,72 @@ function DragAndDropEditBlock(runtime, element) {
                                 _fn.build.$el.zones.form.find('.remove-zone').addClass('hidden');
                             }
                         },
-                        setAll: function() {
-                            var zones = [],
-                                $form = _fn.build.$el.zones.form.find('.title');
+                        renderZonesPreview: function() {
+                            // Refresh the div which shows a preview of the zones over top of
+                            // the background image.
+                            _fn.build.$el.zonesPreview.html('');
+                            var imgWidth = _fn.build.$el.targetImage[0].naturalWidth;
+                            var imgHeight = _fn.build.$el.targetImage[0].naturalHeight;
+                            if (imgWidth == 0 || imgHeight == 0) {
+                                // Set a non-zero value to avoid divide-by-zero:
+                                imgWidth = imgHeight = 400;
+                            }
+                            this.zoneObjects.forEach(function(zoneObj) {
+                                _fn.build.$el.zonesPreview.append(
+                                    _fn.tpl.zoneElement({
+                                        id: zoneObj.id,
+                                        title: zoneObj.title,
+                                        x_percent: (+zoneObj.x) / imgWidth * 100,
+                                        y_percent: (+zoneObj.y) / imgHeight * 100,
+                                        width_percent: (+zoneObj.width) / imgWidth * 100,
+                                        height_percent: (+zoneObj.height) / imgHeight * 100,
+                                    })
+                                );
+                            });
+                        },
+                        getZoneNames: function() {
+                            var zoneNames = [];
+                            var $form = _fn.build.$el.zones.form.find('.title');
 
                             $form.each(function(i, el) {
                                 var val = $(el).val();
-
                                 if (val.length > 0) {
-                                    zones.push(val);
+                                    zoneNames.push(val);
                                 }
                             });
-
-                            _fn.build.form.zone.list = zones;
+                            return zoneNames;
                         },
-                        clickHandler: function(num) {
-                            var $div = $('#zone-' + num, element),
-                                $form = _fn.build.$el.zones.form.find('.zone-row.zone-' + num);
-
-                            // Listen to form changes and update zone div position
-                            $form.on('keyup', '.title', function(e) {
-                                    var text = $(e.currentTarget).val(),
-                                        record = _fn.build.form.zone.getObjByIndex(num);
-
-                                    $div.find('p').html(text);
-                                    record.title = text;
-                                }).on('keyup', '.width', function(e) {
-                                    var width = $(e.currentTarget).val(),
-                                        record = _fn.build.form.zone.getObjByIndex(num);
-
-                                    $div.css('width', width + 'px');
-                                    record.width = width;
-                                }).on('keyup', '.height', function(e) {
-                                    var height = $(e.currentTarget).val(),
-                                        record = _fn.build.form.zone.getObjByIndex(num);
-
-                                    $div.css('height', height + 'px');
-                                    record.height = height;
-                                }).on('keyup', '.x', function(e) {
-                                    var x = $(e.currentTarget).val(),
-                                        record = _fn.build.form.zone.getObjByIndex(num);
-
-                                    $div.css('left', x + 'px');
-                                    record.x = x;
-                                }).on('keyup', '.y', function(e) {
-                                    var y = $(e.currentTarget).val(),
-                                        record = _fn.build.form.zone.getObjByIndex(num);
-
-                                    $div.css('top', y + 'px');
-                                    record.y = y;
-                                });
-                        },
-                        cleanObject: function(arr) {
-                            var clean = [],
-                                i,
-                                len = arr.length;
-
-                            for (i=0; i<len; i++) {
-                                clean.push(arr[i]);
+                        changedInputHandler: function(ev) {
+                            // Called when any of the inputs have changed.
+                            var $changedInput = $(ev.currentTarget);
+                            var $row = $changedInput.closest('.zone-row');
+                            var record = _fn.build.form.zone.getObjByIndex($row.data('index'));
+                            if ($changedInput.hasClass('title')) {
+                                record.title = $changedInput.val();
+                            } else if ($changedInput.hasClass('width')) {
+                                record.width = $changedInput.val();
+                            } else if ($changedInput.hasClass('height')) {
+                                record.height = $changedInput.val();
+                            } else if ($changedInput.hasClass('x')) {
+                                record.x = $changedInput.val();
+                            } else if ($changedInput.hasClass('y')) {
+                                record.y = $changedInput.val();
                             }
-
-                            return clean;
-                        }
+                            _fn.build.form.zone.renderZonesPreview();
+                        },
+                        imageLoaded: function() {
+                            // The target background image has loaded (or reloaded, if changed).
+                            _fn.build.form.zone.renderZonesPreview();
+                        },
                     },
                     createDropdown: function(selected) {
                         var tpl = _fn.tpl.zoneDropdown,
-                            i,
-                            is_sel,
-                            arr = _fn.build.form.zone.list,
                             dropdown = [],
                             html,
-                            dropdown_items = arr.concat('none');
+                            dropdown_items = _fn.build.form.zone.getZoneNames().concat('none');
 
-                        for (i=0; i<dropdown_items.length; i++) {
-                            is_sel = (dropdown_items[i] == selected) ? 'selected' : '';
+                        for (var i=0; i<dropdown_items.length; i++) {
+                            var is_sel = (dropdown_items[i] == selected) ? 'selected' : '';
                             dropdown.push(tpl({ value: dropdown_items[i], selected: is_sel }));
                         }
 
@@ -324,15 +321,18 @@ function DragAndDropEditBlock(runtime, element) {
 
                             ctx.dropdown = _fn.build.form.createDropdown(ctx.zone);
 
-                            if (!oldItem) ctx.width = '190';
-                            else ctx.width = oldItem.size.width.substr(0,
-                                oldItem.size.width.length - 2);
-                            if (ctx.width == 'au') ctx.width = '0';
-
-                            if (!oldItem) ctx.height = '0';
-                            else ctx.height = oldItem.size.height.substr(0,
-                                oldItem.size.height.length - 2);
-                            if (ctx.height == 'au') ctx.height = '0';
+                            // Item width/height are ignored in new versions of the block, but
+                            // preserve the data in case we change back to using those values.
+                            if (oldItem && oldItem.size && oldItem.size.width != 'auto') {
+                                ctx.width = oldItem.size.width.substr(0, oldItem.size.width.length - 2); // Remove 'px'
+                            } else {
+                                ctx.width = '0';
+                            }
+                            if (oldItem && oldItem.size && oldItem.size.height != 'auto') {
+                                ctx.height = oldItem.size.height.substr(0, oldItem.size.height.length - 2); // Remove 'px'
+                            } else {
+                                ctx.height = '0';
+                            }
 
                             if (oldItem && oldItem.inputOptions) {
                                 ctx.numericalValue = oldItem.inputOptions.value;
@@ -379,6 +379,7 @@ function DragAndDropEditBlock(runtime, element) {
                                 backgroundImage = $el.find('.background-image').val();
 
                             if (name.length > 0 || backgroundImage.length > 0) {
+                                // Item width/height are ignored, but preserve the data:
                                 var width = $el.find('.item-width').val(),
                                     height = $el.find('.item-height').val();
 
@@ -417,7 +418,7 @@ function DragAndDropEditBlock(runtime, element) {
                         });
 
                         _fn.data.items = items;
-                        _fn.data.zones = _fn.build.form.zone.cleanObject(_fn.build.form.zone.obj);
+                        _fn.data.zones = _fn.build.form.zone.zoneObjects;
 
                         var data = {
                             'display_name': $element.find('.display-name').val(),
@@ -450,7 +451,7 @@ function DragAndDropEditBlock(runtime, element) {
         };
 
         return {
-            builder: _fn.build.init
+            init: _fn.build.init
         };
     })(jQuery);
 
@@ -458,5 +459,5 @@ function DragAndDropEditBlock(runtime, element) {
         runtime.notify('cancel', {});
     });
 
-    dragAndDrop.builder(window.DragAndDropV2BlockPreviousData);
+    dragAndDrop.init();
 }
