@@ -12,7 +12,7 @@ from xblock.core import XBlock
 from xblock.fields import Scope, String, Dict, Float, Boolean
 from xblock.fragment import Fragment
 
-from .utils import _, render_template, load_resource
+from .utils import _, render_template, load_resource  # pylint: disable=unused-import
 from .default_data import DEFAULT_DATA
 
 
@@ -309,7 +309,7 @@ class DragAndDropBlock(XBlock):
             # edX Studio uses a different runtime for 'studio_view' than 'student_view',
             # and the 'studio_view' runtime doesn't provide the replace_urls API.
             try:
-                from static_replace import replace_static_urls
+                from static_replace import replace_static_urls  # pylint: disable=import-error
                 url = replace_static_urls('"{}"'.format(url), None, course_id=self.runtime.course_id)[1:-1]
             except ImportError:
                 pass

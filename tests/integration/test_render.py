@@ -1,6 +1,6 @@
 from ddt import ddt, unpack, data
 
-from tests.integration.test_base import BaseIntegrationTest
+from .test_base import BaseIntegrationTest
 
 
 class Colors(object):

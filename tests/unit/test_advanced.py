@@ -1,7 +1,7 @@
 import json
 import unittest
 
-from .utils import (
+from ..utils import (
     make_block,
     load_resource,
     TestCaseMixin,
@@ -32,15 +32,15 @@ class BaseDragAndDropAjaxFixture(TestCaseMixin):
 
     @classmethod
     def initial_data(cls):
-        return json.loads(load_resource('data/{}/data.json'.format(cls.FOLDER)))
+        return json.loads(load_resource('unit/data/{}/data.json'.format(cls.FOLDER)))
 
     @classmethod
     def initial_settings(cls):
-        return json.loads(load_resource('data/{}/settings.json'.format(cls.FOLDER)))
+        return json.loads(load_resource('unit/data/{}/settings.json'.format(cls.FOLDER)))
 
     @classmethod
     def expected_configuration(cls):
-        return json.loads(load_resource('data/{}/config_out.json'.format(cls.FOLDER)))
+        return json.loads(load_resource('unit/data/{}/config_out.json'.format(cls.FOLDER)))
 
     @classmethod
     def initial_feedback(cls):

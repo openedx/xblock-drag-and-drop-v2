@@ -1,9 +1,8 @@
 import unittest
 
-from .utils import (
+from ..utils import (
     DEFAULT_START_FEEDBACK,
     DEFAULT_FINISH_FEEDBACK,
-    make_request,
     make_block,
     TestCaseMixin,
 )

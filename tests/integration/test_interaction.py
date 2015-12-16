@@ -1,15 +1,15 @@
 from selenium.webdriver import ActionChains
 
-from tests.integration.test_base import BaseIntegrationTest
+from .test_base import BaseIntegrationTest
 
 
 class ItemDefinition(object):
-    def __init__(self, item_id, zone_id, feedback_positive, feedback_negative, input=None):
+    def __init__(self, item_id, zone_id, feedback_positive, feedback_negative, input_value=None):
         self.feedback_negative = feedback_negative
         self.feedback_positive = feedback_positive
         self.zone_id = zone_id
         self.item_id = item_id
-        self.input = input
+        self.input = input_value
 
 
 class InteractionTestFixture(object):
@@ -32,7 +32,7 @@ class InteractionTestFixture(object):
         "final": "Good work! You have completed this drag and drop exercise."
     }
 
-    def _get_scenario_xml(self):
+    def _get_scenario_xml(self):  # pylint: disable=no-self-use
         return "<vertical_demo><drag-and-drop-v2/></vertical_demo>"
 
     @classmethod
