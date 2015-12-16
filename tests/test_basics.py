@@ -16,7 +16,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         self.block = make_block()
         self.patch_workbench()
 
-    def test_templates_contents(self):
+    def test_template_contents(self):
         context = {}
         student_fragment = self.block.runtime.render(self.block, 'student_view', context)
         self.assertIn('<section class="xblock--drag-and-drop">', student_fragment.content)

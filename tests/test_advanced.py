@@ -1,10 +1,6 @@
 import json
 import unittest
 
-from mock import Mock
-
-from nose.tools import assert_true, assert_false, assert_in
-
 from .utils import (
     make_block,
     load_resource,

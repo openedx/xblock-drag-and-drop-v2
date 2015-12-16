@@ -108,11 +108,9 @@
 }
 
 .xblock--drag-and-drop .drag-container .option .numerical-input .submit-input {
-    box-sizing: border-box;
     position: absolute;
     left: 150px;
     top: 4px;
-    height: 24px;
 }
 
 .xblock--drag-and-drop .drag-container .option .numerical-input.correct .input-submit,

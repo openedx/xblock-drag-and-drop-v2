@@ -2,9 +2,7 @@
     "use strict";
 
     // Set up a mock for gettext if it isn't available in the client runtime:
-    if (!window.gettext) {
-        window.gettext = function gettext_stub(string) { return string; };
-    }
+    if (!window.gettext) { window.gettext = function gettext_stub(string) { return string; }; }
 
     var FocusHook = function() {
         if (!(this instanceof FocusHook)) {
