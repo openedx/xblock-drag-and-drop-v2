@@ -2,26 +2,28 @@
   "zones": [
     {
       "index": 1,
-      "width": 200,
       "title": "Zone 1",
-      "height": 100,
-      "y": "200",
-      "x": "100",
+      "y": 123,
+      "x": 234,
+      "width": 345,
+      "height": 456,
       "id": "zone-1"
     },
     {
       "index": 2,
-      "width": 200,
       "title": "Zone 2",
-      "height": 100,
-      "y": 0,
-      "x": 0,
+      "y": 20,
+      "x": 10,
+      "width": 30,
+      "height": 40,
       "id": "zone-2"
     }
   ],
+
+
   "items": [
     {
-      "displayName": "1 here",
+      "displayName": "1",
       "feedback": {
         "incorrect": "No 1",
         "correct": "Yes 1"
@@ -31,7 +33,7 @@
       "id": 0
     },
     {
-      "displayName": "2 here",
+      "displayName": "2",
       "feedback": {
         "incorrect": "No 2",
         "correct": "Yes 2"
@@ -47,16 +49,32 @@
     {
       "displayName": "X",
       "feedback": {
-        "incorrect": "No Zone for this",
+        "incorrect": "",
         "correct": ""
       },
       "zone": "none",
       "backgroundImage": "",
       "id": 2
+    },
+    {
+      "displayName": "",
+      "feedback": {
+        "incorrect": "",
+        "correct": ""
+      },
+      "zone": "none",
+      "backgroundImage": "http://placehold.it/200x100",
+      "id": 3
     }
   ],
+
+
   "feedback": {
-    "start": "Other Intro Feed",
-    "finish": "Other Final Feed"
-  }
+    "start": "This is the initial feedback.",
+    "finish": "This is the final feedback."
+  },
+
+
+  "targetImg": "http://placehold.it/800x600",
+  "displayLabels": false
 }

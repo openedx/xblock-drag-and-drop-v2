@@ -1,0 +1,59 @@
+{
+    "title": "DnDv2 XBlock with plain text instructions",
+    "show_title": true,
+    "question_text": "Can you solve this drag-and-drop problem?",
+    "show_question_header": true,
+    "target_img_expanded_url": "http://placehold.it/800x600",
+    "item_background_color": null,
+    "item_text_color": null,
+    "initial_feedback": "This is the initial feedback.",
+    "display_zone_labels": false,
+
+    "zones": [
+        {
+          "index": 1,
+          "title": "Zone 1",
+          "y": 123,
+          "x": 234,
+          "width": 345,
+          "height": 456,
+          "id": "zone-1"
+        },
+        {
+          "index": 2,
+          "title": "Zone 2",
+          "y": 20,
+          "x": 10,
+          "width": 30,
+          "height": 40,
+          "id": "zone-2"
+        }
+    ],
+
+    "items": [
+        {
+          "displayName": "1",
+          "backgroundImage": "",
+          "id": 0,
+          "inputOptions": false
+        },
+        {
+          "displayName": "2",
+          "backgroundImage": "",
+          "id": 1,
+          "inputOptions": true
+        },
+        {
+          "displayName": "X",
+          "backgroundImage": "",
+          "id": 2,
+          "inputOptions": false
+        },
+        {
+          "displayName": "",
+          "backgroundImage": "http://placehold.it/200x100",
+          "id": 3,
+          "inputOptions": false
+        }
+    ]
+}

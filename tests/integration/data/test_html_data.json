@@ -5,8 +5,8 @@
       "width": 200,
       "title": "Zone <i>1</i>",
       "height": 100,
-      "y": "200",
-      "x": "100",
+      "y": 200,
+      "x": 100,
       "id": "zone-1"
     },
     {
@@ -28,11 +28,7 @@
       },
       "zone": "Zone <i>1</i>",
       "backgroundImage": "",
-      "id": 0,
-      "size": {
-        "width": "190px",
-        "height": "auto"
-      }
+      "id": 0
     },
     {
       "displayName": "<i>2</i>",
@@ -43,10 +39,6 @@
       "zone": "Zone <b>2</b>",
       "backgroundImage": "",
       "id": 1,
-      "size": {
-        "width": "190px",
-        "height": "auto"
-      },
       "inputOptions": {
         "value": 100,
         "margin": 5
@@ -60,20 +52,12 @@
       },
       "zone": "none",
       "backgroundImage": "",
-      "id": 2,
-      "size": {
-        "width": "100px",
-        "height": "100px"
-      }
+      "id": 2
     }
   ],
-  "state": {
-    "items": {},
-    "finished": true
-  },
   "feedback": {
     "start": "Intro <i>Feed</i>",
     "finish": "Final <b>Feed</b>"
   },
-  "targetImg": "https://www.edx.org/sites/default/files/theme/edx-logo-header.png"
+  "targetImg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIiBzdHlsZT0iYmFja2dyb3VuZDogI2VlZjsiPjwvc3ZnPg=="
 }

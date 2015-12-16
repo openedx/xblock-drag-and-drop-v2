@@ -1,49 +1,16 @@
-/*** xBlock styles ***/
-.xblock--drag-and-drop {
+.xblock--drag-and-drop--editor {
+  width: 100%;
+  height: 100%;
+}
+.modal-window .drag-builder  {
     width: 100%;
-    margin: 0;
-    padding: 0;
-    background: #fff;
+    height: calc(100% - 60px);
+    position: absolute;
+    overflow-y: scroll;
 }
-
-.modal-window .editor-with-buttons.xblock--drag-and-drop  {
-    /* Fix Studio edito height */
-    margin-bottom: 0;
-    height: 380px;
-}
-
-/** Draggable Items **/
-.xblock--drag-and-drop .items {
-    width: 210px;
-    margin: 10px;
-    padding: 0;
-    font-size: 14px;
-    position: relative;
-    display: inline;
-    float: left;
-    list-style-type: none;
-}
-
 
 /*** Drop Target ***/
-.xblock--drag-and-drop .target {
-    width: 515px;
-    height: 510px;
-    position: relative;
-    display: inline;
-    float: left;
-    margin: 10px 0 15px 5px;
-    background: #fff;
-    z-index: 1;
-}
-
-.xblock--drag-and-drop .target-img {
-    background: url('../img/triangle.png') no-repeat;
-    width: 100%;
-    height: 100%;
-}
-
-.xblock--drag-and-drop .zone {
+.xblock--drag-and-drop--editor .zone {
     position: absolute;
 
     display: -webkit-box;
@@ -68,9 +35,11 @@
     box-pack:center;
     box-align:center;
 
+    border: 1px dotted #666;
+    box-sizing: border-box;
 }
 
-.xblock--drag-and-drop .zone p {
+.xblock--drag-and-drop--editor .zone p {
     width: 100%;
     font-family: Arial;
     font-size: 16px;
@@ -82,153 +51,164 @@
 }
 
 /*** IE9 alignment fix ***/
-.lt-ie10 .xblock--drag-and-drop .zone {
+.lt-ie10 .xblock--drag-and-drop--editor .zone {
     display: table;
 }
 
-.lt-ie10 .xblock--drag-and-drop .zone p {
+.lt-ie10 .xblock--drag-and-drop--editor .zone p {
     display: table-cell;
     vertical-align: middle;
     text-align: center;
 }
 
 /** Builder **/
-.xblock--drag-and-drop .hidden {
+.xblock--drag-and-drop--editor .hidden {
     display: none !important;
 }
 
-.xblock--drag-and-drop .drag-builder {
-    height: 100%;
-    overflow: scroll;
-}
-
-.xblock--drag-and-drop .drag-builder .tab {
+.xblock--drag-and-drop--editor .tab {
     width: 100%;
     background: #eee;
     padding: 3px 0;
     position: relative;
 }
 
-.xblock--drag-and-drop .drag-builder .tab:after,
-.xblock--drag-and-drop .drag-builder .tab-footer:after,
-.xblock--drag-and-drop .drag-builder .target:after {
+.xblock--drag-and-drop--editor .tab::after,
+.xblock--drag-and-drop--editor .tab-footer::after {
   content: "";
   display: table;
   clear: both;
 }
 
-.xblock--drag-and-drop .drag-builder .tab h3 {
+.xblock--drag-and-drop--editor .tab h3 {
     margin: 20px 0 8px 0;
 }
 
-.xblock--drag-and-drop .drag-builder .tab-header,
-.xblock--drag-and-drop .drag-builder .tab-content,
-.xblock--drag-and-drop .drag-builder .tab-footer {
+.xblock--drag-and-drop--editor .tab-header,
+.xblock--drag-and-drop--editor .tab-content,
+.xblock--drag-and-drop--editor .tab-footer {
     width: 96%;
     margin: 2%;
 }
 
-.xblock--drag-and-drop .drag-builder .tab-footer {
+.xblock--drag-and-drop--editor .tab-footer {
     height: 25px;
     position: relative;
     display: block;
     float: left;
 }
 
-.xblock--drag-and-drop .drag-builder .items {
+.xblock--drag-and-drop--editor .items {
     width: calc(100% - 515px);
     margin: 10px 0 0 0;
 }
 
-.xblock--drag-and-drop .drag-builder .target {
-    margin-left: 0;
-}
-
-.xblock--drag-and-drop .drag-builder .target-image-form input {
+.xblock--drag-and-drop--editor .target-image-form input {
     width: 50%;
 }
 
-.xblock--drag-and-drop .zones-form .zone-row label {
+/* Zones Tab */
+.xblock--drag-and-drop--editor .zones-tab .zone-editor {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.xblock--drag-and-drop--editor .zones-tab .tab-content .controls {
+  width: 40%;
+  max-width: 50%;
+  min-width: 330px;
+  margin-right: 15px;
+}
+
+.xblock--drag-and-drop--editor .zones-tab .tab-content .target {
+  position: relative;
+  border: 1px solid #ccc;
+  overflow: hidden;
+}
+.xblock--drag-and-drop--editor .zones-tab .tab-content .target-img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+}
+
+.xblock--drag-and-drop--editor .zones-form .zone-row label {
     display: inline-block;
     width: 18%;
 }
 
-.xblock--drag-and-drop .zones-form .zone-row .title {
+.xblock--drag-and-drop--editor .zones-form .zone-row .title {
     width: 60%;
     margin: 0 0 5px;
 }
 
-.xblock--drag-and-drop .zones-form .zone-row .layout {
+.xblock--drag-and-drop--editor .zones-form .zone-row .layout {
     margin-bottom: 15px;
 }
 
 
-.xblock--drag-and-drop .zones-form .zone-row .layout .size,
-.xblock--drag-and-drop .zones-form .zone-row .layout .coord {
+.xblock--drag-and-drop--editor .zones-form .zone-row .layout .size,
+.xblock--drag-and-drop--editor .zones-form .zone-row .layout .coord {
     width: 15%;
     margin: 0 19px 5px 0;
 }
 
-.xblock--drag-and-drop .drag-builder .target {
-    margin-bottom: 40px;
-}
-
-.xblock--drag-and-drop .drag-builder .zone {
-    border: 1px dotted #666;
-}
-
-.xblock--drag-and-drop .feedback-form textarea {
+.xblock--drag-and-drop--editor .feedback-form textarea {
     width: 99%;
     height: 128px;
 }
 
-.xblock--drag-and-drop .item-styles-form .item-styles-form-help {
+.xblock--drag-and-drop--editor .item-styles-form .item-styles-form-help {
     margin-top: 5px;
     font-size: small;
 }
 
-.xblock--drag-and-drop .item-styles-form,
-.xblock--drag-and-drop .items-form {
+.xblock--drag-and-drop--editor .item-styles-form,
+.xblock--drag-and-drop--editor .items-form {
     margin-bottom: 30px;
 }
 
-.xblock--drag-and-drop .items-form .item {
+.xblock--drag-and-drop--editor .items-form .item {
     background: #73bde7;
     padding: 10px 0 1px;
     margin: 15px 0;
 }
 
-.xblock--drag-and-drop .items-form label {
+.xblock--drag-and-drop--editor .items-form label {
     margin: 0 1%;
 }
 
-.xblock--drag-and-drop .items-form input,
-.xblock--drag-and-drop .items-form select {
+.xblock--drag-and-drop--editor .items-form input,
+.xblock--drag-and-drop--editor .items-form select {
     width: 35%;
 }
 
-.xblock--drag-and-drop .items-form .item-width,
-.xblock--drag-and-drop .items-form .item-height {
+.xblock--drag-and-drop--editor .items-form .item-width,
+.xblock--drag-and-drop--editor .items-form .item-height {
     width: 40px;
 }
 
-.xblock--drag-and-drop .items-form .item-numerical-value,
-.xblock--drag-and-drop .items-form .item-numerical-margin {
+.xblock--drag-and-drop--editor .items-form .item-numerical-value,
+.xblock--drag-and-drop--editor .items-form .item-numerical-margin {
     width: 60px;
 }
 
-.xblock--drag-and-drop .items-form textarea {
+.xblock--drag-and-drop--editor .items-form textarea {
     width: 97%;
     margin: 0 1%;
 }
 
-.xblock--drag-and-drop .items-form .row {
+.xblock--drag-and-drop--editor .items-form .row {
     margin-bottom: 20px;
 }
 
 
 /** Buttons **/
-.xblock--drag-and-drop .btn {
+.xblock--drag-and-drop--editor .btn {
     background: #2e83cd;
     color: #fff;
     border: 1px solid #156ab4;
@@ -236,33 +216,33 @@
     padding: 5px 10px;
 }
 
-.xblock--drag-and-drop .btn:hover {
+.xblock--drag-and-drop--editor .btn:hover {
     opacity: 0.8;
     cursor: pointer;
 }
 
-.xblock--drag-and-drop .btn:focus {
+.xblock--drag-and-drop--editor .btn:focus {
     outline: none;
     opacity: 0.5;
 }
 
-.xblock--drag-and-drop .add-element {
+.xblock--drag-and-drop--editor .add-element {
     text-decoration: none;
     color: #2e83cd;
 }
 
-.xblock--drag-and-drop .remove-zone {
+.xblock--drag-and-drop--editor .remove-zone {
     float: right;
     margin-top: 2px;
     margin-right: 16px;
 }
 
-.xblock--drag-and-drop .remove-item {
+.xblock--drag-and-drop--editor .remove-item {
     display: inline-block;
     margin-left: 95px;
 }
 
-.xblock--drag-and-drop .icon {
+.xblock--drag-and-drop--editor .icon {
     width: 14px;
     height: 14px;
     border-radius: 7px;
@@ -272,14 +252,14 @@
     margin: 0 5px 0 0;
 }
 
-.xblock--drag-and-drop .add-zone:hover,
-.xblock--drag-and-drop .add-zone:hover .icon,
-.xblock--drag-and-drop .remove-zone:hover,
-.xblock--drag-and-drop .remove-zone:hover .icon {
+.xblock--drag-and-drop--editor .add-zone:hover,
+.xblock--drag-and-drop--editor .add-zone:hover .icon,
+.xblock--drag-and-drop--editor .remove-zone:hover,
+.xblock--drag-and-drop--editor .remove-zone:hover .icon {
     opacity: 0.7;
 }
 
-.xblock--drag-and-drop .icon.add:before {
+.xblock--drag-and-drop--editor .icon.add:before {
     content: '';
     height: 10px;
     width: 2px;
@@ -291,7 +271,7 @@
     left: 6px;
 }
 
-.xblock--drag-and-drop .icon.add:after {
+.xblock--drag-and-drop--editor .icon.add:after {
     content: '';
     height: 2px;
     width: 10px;
@@ -303,7 +283,7 @@
     left: 0;
 }
 
-.xblock--drag-and-drop .icon.remove:before {
+.xblock--drag-and-drop--editor .icon.remove:before {
     content: '';
     height: 10px;
     width: 2px;
@@ -318,7 +298,7 @@
     transform: rotate(45deg);
 }
 
-.xblock--drag-and-drop .icon.remove:after {
+.xblock--drag-and-drop--editor .icon.remove:after {
     content: '';
     height: 2px;
     width: 10px;
@@ -333,10 +313,10 @@
     transform: rotate(45deg);
 }
 
-.xblock--drag-and-drop .remove-item .icon.remove {
+.xblock--drag-and-drop--editor .remove-item .icon.remove {
     background: #fff;
 }
-.xblock--drag-and-drop .remove-item .icon.remove:before,
-.xblock--drag-and-drop .remove-item .icon.remove:after {
+.xblock--drag-and-drop--editor .remove-item .icon.remove:before,
+.xblock--drag-and-drop--editor .remove-item .icon.remove:after {
     background: #2e83cd;
 }

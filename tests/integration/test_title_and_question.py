@@ -1,6 +1,6 @@
 from ddt import ddt, unpack, data
 from selenium.common.exceptions import NoSuchElementException
-from tests.integration.test_base import BaseIntegrationTest
+from .test_base import BaseIntegrationTest
 from workbench import scenarios
 
 

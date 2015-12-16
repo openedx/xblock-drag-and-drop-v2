@@ -1,37 +1,22 @@
 .xblock--drag-and-drop {
-    width: 770px;
+    width: auto;
+    max-width: 770px;
     margin: 0;
     padding: 0;
-    background: #fff;
 }
+
+/* Header, instruction text, etc. */
 
 .xblock--drag-and-drop .problem-header {
     display: inline-block;
     margin: 0 0 15px 0;
 }
 
-.xblock--drag-and-drop .problem-progress {
-    display: inline-block;
-    padding-left: 5px;
-    color: #666;
-    font-weight: 100;
-    font-size: 1em;
-}
-
 .xblock--drag-and-drop .problem p {
     margin-bottom: 1.41575em;
 }
 
-.xblock--drag-and-drop .drag-container {
-    width: 515px;
-    padding: 1%;
-    background: #ebf0f2;
-    position: relative;
-}
-
-.xblock--drag-and-drop .clear {
-    clear: both;
-}
+/* Shared styles used in header and footer */
 
 .xblock--drag-and-drop .title1 {
     color: rgb(85, 85, 85);
@@ -42,22 +27,48 @@
     margin-top: 20px;
 }
 
+/* drag-container holds the .items and the .target image */
+
+.xblock--drag-and-drop .drag-container {
+    width: auto;
+    padding: 5px;
+    background: #ebf0f2;
+}
+
+/*.xblock--drag-and-drop .clear {
+    clear: both;
+}*/
 
 /** Draggable Items **/
-.xblock--drag-and-drop .drag-container .items {
-    display: block;
-    padding: 0 !important; /* LMS tries to override this */
+.xblock--drag-and-drop .item-bank {
+    display: -ms-flexbox;
+    display: flex;
+
+    -ms-flex-flow: row wrap;
+    flex-flow: row wrap;
+
+    -ms-justify-content: flex-start;
+    justify-content: flex-start;
+
+    -ms-flex-align: center;
+    align-items: center;
+
     position: relative;
+    border: 1px solid rgba(0,0,0, 0.1);
+    border-radius: 3px;
+    padding: 5px;
 }
 
 .xblock--drag-and-drop .drag-container .option {
-    position: relative;
     display: inline-block;
     width: auto;
+    min-width: 4em;
+    max-width: calc(100% / 3 - 1% - 1% - 20px);
+    border: 1px solid transparent;
     border-radius: 3px;
-    margin: 1%;
+    margin: 5px;
     padding: 10px;
-    background: #2e83cd;
+    background-color: #2e83cd;
     font-size: 14px;
     color: #fff;
     opacity: 1;
@@ -65,13 +76,22 @@
     z-index: 10 !important;
 }
 
+/* Placed option */
+.xblock--drag-and-drop .drag-container .target .option {
+    position: absolute;
+    margin: 0;
+    transform: translate(-50%, -50%); /* These blocks are to be centered on their absolute x,y position */
+}
+
 .xblock--drag-and-drop .drag-container .ui-draggable-dragging {
     box-shadow: 0 16px 32px 0 rgba(0,0,0,.3);
     border: 1px solid #ccc;
     opacity: .65;
+    z-index: 20 !important;
 }
 
 .xblock--drag-and-drop .drag-container .option img {
+    display: block;
     max-width: 100%;
 }
 
@@ -88,11 +108,10 @@
 }
 
 .xblock--drag-and-drop .drag-container .option .numerical-input .submit-input {
-    box-sizing: border-box;
     position: absolute;
     left: 150px;
     top: 4px;
-    height: 24px;
+    white-space: nowrap;  /* Fix cross-browser issue: Without this declaration, button text wraps in Chrome/Chromium */
 }
 
 .xblock--drag-and-drop .drag-container .option .numerical-input.correct .input-submit,
@@ -117,18 +136,27 @@
 
 /*** Drop Target ***/
 .xblock--drag-and-drop .target {
-    display: block;
-    width: 515px;
-    height: 510px;
+    display: table;
+    /* 'display: table' makes this have the smallest size that fits the .target-img
+       while still allowing the image to use 'max-width: 100%' and scale proportionally.
+       The end result is that this element has the same width and height as the image, so we
+       can use it as a 'position: relative' anchor for the placed elements. */
+    height: auto;
     position: relative;
     margin-top: 1%;
     background: #fff;
 }
 
+.xblock--drag-and-drop .target-img-wrapper {
+    /* This element is required for Firefox due to https://bugzilla.mozilla.org/show_bug.cgi?id=975632 */
+    display: table-row;
+}
+
 .xblock--drag-and-drop .target-img {
-    background: url('../img/triangle.png') no-repeat;
+    display: table-cell;
     width: 100%;
-    height: 100%;
+    max-width: 100%;
+    height: auto;
 }
 
 .xblock--drag-and-drop .zone {
