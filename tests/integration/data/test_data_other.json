@@ -56,7 +56,7 @@
     }
   ],
   "feedback": {
-    "start": "Some Intro Feed",
-    "finish": "Some Final Feed"
+    "start": "Other Intro Feed",
+    "finish": "Other Final Feed"
   }
 }

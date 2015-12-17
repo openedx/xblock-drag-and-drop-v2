@@ -147,7 +147,7 @@ class InteractionTestBase(object):
 
 class InteractionTestFixture(InteractionTestBase):
     """
-    Verifying Drag and Drop XBlock rendering against default data - if default data changes this would probably broke
+    Verifying Drag and Drop XBlock rendering against default data - if default data changes this will probably break.
     """
     PAGE_TITLE = 'Drag and Drop v2'
     PAGE_ID = 'drag_and_drop_v2'
@@ -194,8 +194,8 @@ class CustomDataInteractionTest(InteractionTestFixture, BaseIntegrationTest):
     all_zones = ['Zone 1', 'Zone 2']
 
     feedback = {
-        "intro": "Other Intro Feed",
-        "final": "Other Final Feed"
+        "intro": "Some Intro Feed",
+        "final": "Some Final Feed"
     }
 
     def _get_scenario_xml(self):
@@ -246,8 +246,8 @@ class MultipleBlocksDataInteraction(InteractionTestBase, BaseIntegrationTest):
     }
 
     feedback = {
-        'block1': {"intro": "Other Intro Feed", "final": "Other Final Feed"},
-        'block2': {"intro": "Some Intro Feed", "final": "Some Final Feed"},
+        'block1': {"intro": "Some Intro Feed", "final": "Some Final Feed"},
+        'block2': {"intro": "Other Intro Feed", "final": "Other Final Feed"},
     }
 
     def _get_scenario_xml(self):
