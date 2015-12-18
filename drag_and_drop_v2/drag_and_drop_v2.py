@@ -421,12 +421,12 @@ class DragAndDropBlock(XBlock):
         return {'result': 'success'}
 
     def _get_unique_id(self):
+        usage_id = self.scope_ids.usage_id
         try:
-            unique_id = self.location.name  # pylint: disable=no-member
+            return usage_id.name
         except AttributeError:
             # workaround for xblock workbench
-            unique_id = self.parent and self.parent.replace('.',  '-')
-        return unique_id
+            return usage_id
 
     @staticmethod
     def _is_correct_input(item, val):

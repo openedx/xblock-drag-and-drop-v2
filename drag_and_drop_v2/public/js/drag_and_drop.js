@@ -160,9 +160,9 @@ function DragAndDropBlock(runtime, element, configuration) {
         $root.find('.item-bank .option').not('[data-drag-disabled=true]').each(function() {
             try {
                 $(this).draggable({
-                    containment: '.xblock--drag-and-drop .drag-container',
+                    containment: $root.find('.xblock--drag-and-drop .drag-container'),
                     cursor: 'move',
-                    stack: '.xblock--drag-and-drop .item-bank .option',
+                    stack: $root.find('.xblock--drag-and-drop .item-bank .option'),
                     revert: 'invalid',
                     revertDuration: 150,
                     start: function(evt, ui) {
