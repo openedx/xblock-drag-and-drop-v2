@@ -141,9 +141,12 @@
     width: 18%;
 }
 
-.xblock--drag-and-drop--editor .zones-form .zone-row .title {
+.xblock--drag-and-drop--editor .zones-form .zone-row .title,
+.xblock--drag-and-drop--editor .zones-form .zone-row .description {
     width: 60%;
     margin: 0 0 5px;
+    line-height: 2.664rem;  /* .title gets line-height from a Studio rule that does not apply to .description;
+                               here we make sure that both input fields get the same value for line-height */
 }
 
 .xblock--drag-and-drop--editor .zones-form .zone-row .layout {
@@ -162,6 +165,7 @@
     height: 128px;
 }
 
+.xblock--drag-and-drop--editor .target-image-form .target-image-form-help,
 .xblock--drag-and-drop--editor .item-styles-form .item-styles-form-help {
     margin-top: 5px;
     font-size: small;
@@ -173,7 +177,7 @@
 }
 
 .xblock--drag-and-drop--editor .items-form .item {
-    background: #73bde7;
+    background: #8fcaec;
     padding: 10px 0 1px;
     margin: 15px 0;
 }
@@ -209,11 +213,12 @@
 
 /** Buttons **/
 .xblock--drag-and-drop--editor .btn {
-    background: #2e83cd;
+    background: #2872b2;
     color: #fff;
     border: 1px solid #156ab4;
     border-radius: 6px;
     padding: 5px 10px;
+    margin-top: 15px;
 }
 
 .xblock--drag-and-drop--editor .btn:hover {
@@ -228,7 +233,7 @@
 
 .xblock--drag-and-drop--editor .add-element {
     text-decoration: none;
-    color: #2e83cd;
+    color: #236299;
 }
 
 .xblock--drag-and-drop--editor .remove-zone {
@@ -246,7 +251,7 @@
     width: 14px;
     height: 14px;
     border-radius: 7px;
-    background: #2e83cd;
+    background: #236299;
     position: relative;
     float: left;
     margin: 0 5px 0 0;
@@ -315,8 +320,9 @@
 
 .xblock--drag-and-drop--editor .remove-item .icon.remove {
     background: #fff;
+    color: #0072a7;
 }
 .xblock--drag-and-drop--editor .remove-item .icon.remove:before,
 .xblock--drag-and-drop--editor .remove-item .icon.remove:after {
-    background: #2e83cd;
+    background: #236299;
 }

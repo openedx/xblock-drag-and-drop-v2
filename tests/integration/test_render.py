@@ -1,11 +1,13 @@
 from ddt import ddt, unpack, data
+from selenium.common.exceptions import NoSuchElementException
 
+from ..utils import load_resource
 from .test_base import BaseIntegrationTest
 
 
 class Colors(object):
     WHITE = 'rgb(255, 255, 255)'
-    BLUE = 'rgb(46, 131, 205)'
+    BLUE = 'rgb(40, 114, 178)'
     GREY = 'rgb(237, 237, 237)'
     CORAL = '#ff7f50'
     CORNFLOWERBLUE = 'cornflowerblue'
@@ -32,10 +34,16 @@ class TestDragAndDropRender(BaseIntegrationTest):
 
     def load_scenario(self, item_background_color="", item_text_color=""):
         scenario_xml = """
-<vertical_demo>
-    <drag-and-drop-v2 item_background_color='{item_background_color}' item_text_color='{item_text_color}' />
-</vertical_demo>
-        """.format(item_background_color=item_background_color, item_text_color=item_text_color)
+            <vertical_demo>
+                <drag-and-drop-v2 item_background_color='{item_background_color}'
+                                  item_text_color='{item_text_color}'
+                                  data='{data}' />
+            </vertical_demo>
+        """.format(
+            item_background_color=item_background_color,
+            item_text_color=item_text_color,
+            data=load_resource("integration/data/test_data_a11y.json")
+        )
         self._add_scenario(self.PAGE_ID, self.PAGE_TITLE, scenario_xml)
 
         self.browser.get(self.live_server_url)
@@ -83,18 +91,9 @@ class TestDragAndDropRender(BaseIntegrationTest):
         color = self._get_style('.item-bank .option[data-value='+item_val+']', 'color')
         self.assertEquals(color, expected_color)
 
-    def test_items(self):
+    def test_items_default_colors(self):
         self.load_scenario()
-
-        items = self._get_items()
-
-        self.assertEqual(len(items), 3)
-
-        for index, item in enumerate(items):
-            self.assertEqual(item.get_attribute('data-value'), str(index))
-            self.assertEqual(item.text, self.ITEM_PROPERTIES[index]['text'])
-            self.assertIn('ui-draggable', self.get_element_classes(item))
-            self._test_item_style(item, {})
+        self._test_items()
 
     @unpack
     @data(
@@ -105,21 +104,36 @@ class TestDragAndDropRender(BaseIntegrationTest):
     def test_items_custom_colors(self, item_background_color, item_text_color):
         self.load_scenario(item_background_color, item_text_color)
 
-        items = self._get_items()
-
-        self.assertEqual(len(items), 3)
-
         color_settings = {}
         if item_background_color:
             color_settings['background-color'] = item_background_color
         if item_text_color:
             color_settings['color'] = item_text_color
 
+        self._test_items(color_settings=color_settings)
+
+    def _test_items(self, color_settings={}):  # pylint: disable=dangerous-default-value
+        items = self._get_items()
+
+        self.assertEqual(len(items), 3)
+
         for index, item in enumerate(items):
+            item_number = index + 1
+            self.assertEqual(item.get_attribute('tabindex'), '0')
+            self.assertEqual(item.get_attribute('draggable'), 'true')
+            self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
             self.assertEqual(item.get_attribute('data-value'), str(index))
-            self.assertEqual(item.text, self.ITEM_PROPERTIES[index]['text'])
             self.assertIn('ui-draggable', self.get_element_classes(item))
             self._test_item_style(item, color_settings)
+            try:
+                background_image = item.find_element_by_css_selector('img')
+            except NoSuchElementException:
+                self.assertEqual(item.text, self.ITEM_PROPERTIES[index]['text'])
+            else:
+                self.assertEqual(
+                    background_image.get_attribute('alt'),
+                    'This describes the background image of item {}'.format(item_number)
+                )
 
     def test_zones(self):
         self.load_scenario()
@@ -128,19 +142,39 @@ class TestDragAndDropRender(BaseIntegrationTest):
 
         self.assertEqual(len(zones), 2)
 
-        self.assertEqual(zones[0].get_attribute('data-zone'), 'Zone 1')
-        self.assertIn('ui-droppable', self.get_element_classes(zones[0]))
-        self._assert_box_percentages('#zone-1', left=31.1284, top=6.17284, width=38.1323, height=36.6255)
+        box_percentages = [
+            {"left": 31.1284, "top": 6.17284, "width": 38.1323, "height": 36.6255},
+            {"left": 16.7315, "top": 43.2099, "width": 66.1479, "height": 28.8066}
+        ]
 
-        self.assertEqual(zones[1].get_attribute('data-zone'), 'Zone 2')
-        self.assertIn('ui-droppable', self.get_element_classes(zones[1]))
-        self._assert_box_percentages('#zone-2', left=16.7315, top=43.2099, width=66.1479, height=28.8066)
+        for index, zone in enumerate(zones):
+            zone_number = index + 1
+            self.assertEqual(zone.get_attribute('tabindex'), '0')
+            self.assertEqual(zone.get_attribute('dropzone'), 'move')
+            self.assertEqual(zone.get_attribute('aria-dropeffect'), 'move')
+            self.assertEqual(zone.get_attribute('data-zone'), 'Zone {}'.format(zone_number))
+            self.assertIn('ui-droppable', self.get_element_classes(zone))
+            zone_box_percentages = box_percentages[index]
+            self._assert_box_percentages(
+                '#zone-{}'.format(zone_number),
+                left=zone_box_percentages['left'],
+                top=zone_box_percentages['top'],
+                width=zone_box_percentages['width'],
+                height=zone_box_percentages['height']
+            )
+            zone_name = zone.find_element_by_css_selector('p.zone-name')
+            self.assertEqual(zone_name.text, 'ZONE {}'.format(zone_number))
+            zone_description = zone.find_element_by_css_selector('p.zone-description')
+            self.assertEqual(zone_description.text, 'THIS DESCRIBES ZONE {}'.format(zone_number))
+            # Zone description should only be visible to screen readers:
+            self.assertEqual(zone_description.get_attribute('class'), 'zone-description sr')
 
     def test_feedback(self):
         self.load_scenario()
 
+        feedback = self._get_feedback()
         feedback_message = self._get_feedback_message()
-
+        self.assertEqual(feedback.get_attribute('aria-live'), 'polite')
         self.assertEqual(feedback_message.text, "Drag the items onto the image above.")
 
     def test_background_image(self):
@@ -149,3 +183,4 @@ class TestDragAndDropRender(BaseIntegrationTest):
         bg_image = self.browser.find_element_by_css_selector(".xblock--drag-and-drop .target-img")
         image_path = '/resource/drag-and-drop-v2/public/img/triangle.png'
         self.assertTrue(bg_image.get_attribute("src").endswith(image_path))
+        self.assertEqual(bg_image.get_attribute("alt"), 'This describes the target image')

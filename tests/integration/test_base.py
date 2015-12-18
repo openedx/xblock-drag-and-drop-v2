@@ -57,6 +57,9 @@ class BaseIntegrationTest(SeleniumBaseTest):
     def _get_zones(self):
         return self._page.find_elements_by_css_selector(".drag-container .zone")
 
+    def _get_feedback(self):
+        return self._page.find_element_by_css_selector(".feedback")
+
     def _get_feedback_message(self):
         return self._page.find_element_by_css_selector(".feedback .message")
 

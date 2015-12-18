@@ -89,5 +89,6 @@
     "start": "Intro Feed",
     "finish": "Final Feed"
   },
-  "targetImg": "http://i0.kym-cdn.com/photos/images/newsfeed/000/030/404/1260585284155.png"
+  "targetImg": "http://i0.kym-cdn.com/photos/images/newsfeed/000/030/404/1260585284155.png",
+  "targetImgDescription": "This describes the target image"
 }

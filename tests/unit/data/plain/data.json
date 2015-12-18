@@ -76,5 +76,6 @@
 
 
   "targetImg": "http://placehold.it/800x600",
+  "targetImgDescription": "This describes the target image",
   "displayLabels": false
 }

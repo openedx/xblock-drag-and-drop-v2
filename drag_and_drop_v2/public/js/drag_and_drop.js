@@ -52,10 +52,11 @@ function DragAndDropBlock(runtime, element, configuration) {
                 promise.reject();
             }
         }, false);
-        img.addEventListener("error", function() { promise.reject() });
+        img.addEventListener("error", function() { promise.reject(); });
         img.src = configuration.target_img_expanded_url;
+        img.alt = configuration.target_img_description;
         return promise;
-    }
+    };
 
     /** Zones are specified in the configuration via pixel values - convert to percentages */
     var computeZoneDimension = function(zone, bg_image_width, bg_image_height) {
@@ -310,13 +311,17 @@ function DragAndDropBlock(runtime, element, configuration) {
                     input.class_name = item_user_state.correct_input ? 'correct' : 'incorrect';
                 }
             }
+            var content_html = item.displayName;
+            if (item.backgroundImage) {
+                content_html = '<img src="' + item.backgroundImage + '" alt="' + item.backgroundDescription + '" />';
+            }
             var itemProperties = {
                 value: item.id,
                 drag_disabled: Boolean(item_user_state || state.finished),
                 class_name: item_user_state && ('input' in item_user_state || item_user_state.correct_input) ? 'fade': undefined,
                 xhr_active: (item_user_state && item_user_state.submitting_location),
                 input: input,
-                content_html: item.backgroundImage ? '<img src="' + item.backgroundImage + '"/>' : item.displayName,
+                content_html: content_html,
                 has_image: !!item.backgroundImage
             };
             if (item_user_state) {
@@ -340,6 +345,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             question_html: configuration.question_text,
             show_question_header: configuration.show_question_header,
             target_img_src: configuration.target_img_expanded_url,
+            target_img_description: configuration.target_img_description,
             display_zone_labels: configuration.display_zone_labels,
             zones: configuration.zones,
             items: items,

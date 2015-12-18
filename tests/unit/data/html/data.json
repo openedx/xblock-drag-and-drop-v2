@@ -69,5 +69,6 @@
   "feedback": {
     "start": "HTML <strong>Intro</strong> Feed",
     "finish": "Final <strong>feedback</strong>!"
-  }
+  },
+  "targetImgDescription": "This describes the target image"
 }

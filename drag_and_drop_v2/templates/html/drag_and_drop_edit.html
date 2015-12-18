@@ -41,18 +41,39 @@
 
         <div class="tab zones-tab hidden">
             <header class="tab-header">
-                <h3>{% trans "Zone Positions" %}</h3>
+                <h3>{% trans "Zones" %}</h3>
             </header>
             <section class="tab-content">
-                <section class="tab-content target-image-form">
-                    <label>{% trans "New background URL" %}:</label>
-                    <input type="text">
+                <form class="target-image-form">
+                    <h3 id="background-url-label">
+                        {% trans "Background URL" %}
+                    </h3>
+                    <input type="text" class="url-input" aria-labelledby="background-url-label">
+                    <h3 id="background-description-label">
+                        {% trans "Background description" %}
+                    </h3>
+                    <input type="text"
+                           class="description-input"
+                           aria-labelledby="background-description-label"
+                           aria-describedby="background-description-description">
+                    <div id="background-description-description" class="target-image-form-help">
+                        {% blocktrans %}
+                            Please provide a description of the image for non-visual users.
+                            The description should provide sufficient information that would allow anyone
+                            to solve the problem if the image did not load.
+                        {% endblocktrans %}
+                    </div>
                     <button class="btn">{% trans "Change background" %}</button>
-                </section>
-                <section class="tab-content display-labels-form">
+                </form>
+            </section>
+            <section class="tab-content">
+                <form class="display-labels-form">
+                    <h3>{% trans "Zone labels" %}</h3>
                     <label for="display-labels">{% trans "Display label names on the image" %}:</label>
                     <input name="display-labels" id="display-labels" type="checkbox" />
-                </section>
+                </form>
+            </section>
+            <section class="tab-content">
                 <div class="zone-editor">
                     <div class="controls">
                         <form class="zones-form"></form>

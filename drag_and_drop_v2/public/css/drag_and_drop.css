@@ -23,7 +23,7 @@
 /* Shared styles used in header and footer */
 
 .xblock--drag-and-drop .title1 {
-    color: rgb(85, 85, 85);
+    color: #555555;
     text-transform: uppercase;
     font-weight: bold;
     font-style: normal;
@@ -58,7 +58,7 @@
     align-items: center;
 
     position: relative;
-    border: 1px solid rgba(0,0,0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 3px;
     padding: 5px;
 }
@@ -72,7 +72,7 @@
     border-radius: 3px;
     margin: 5px;
     padding: 10px;
-    background-color: #2e83cd;
+    background-color: #2872b2;
     font-size: 14px;
     color: #fff;
     opacity: 1;
@@ -112,8 +112,14 @@
     transform: translate(-50%, -50%); /* These blocks are to be centered on their absolute x,y position */
 }
 
+/* Focused option */
+.xblock--drag-and-drop .drag-container .item-bank .option:focus,
+.xblock--drag-and-drop .drag-container .item-bank .option:hover {
+    transform: scale(1.1);
+}
+
 .xblock--drag-and-drop .drag-container .ui-draggable-dragging {
-    box-shadow: 0 16px 32px 0 rgba(0,0,0,.3);
+    box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.3);
     border: 1px solid #ccc;
     opacity: .65;
     z-index: 20 !important;
@@ -159,7 +165,7 @@
 
 .xblock--drag-and-drop .drag-container .option .numerical-input.correct .input {
     background: #ceffce;
-    color: #0dad0d;
+    color: #087108;
 }
 
 .xblock--drag-and-drop .drag-container .option .numerical-input.incorrect .input {
@@ -224,8 +230,12 @@
 
 }
 
+/* Focused zone */
+.xblock--drag-and-drop .zone:focus {
+    border: 2px solid #a5a5a5;
+}
+
 .xblock--drag-and-drop .zone p {
-    visibility: hidden;
     width: 100%;
     font-family: Arial;
     font-size: 16px;
@@ -250,7 +260,7 @@
 /*** FEEDBACK ***/
 .xblock--drag-and-drop .feedback {
     margin-top: 20px;
-    border-top: solid 1px rgb(189, 189, 189);
+    border-top: solid 1px #bdbdbd;
 }
 
 .xblock--drag-and-drop .popup {
@@ -258,8 +268,8 @@
     display: none;
     top: 5%;
     right: 5%;
-    border: 1px solid white;
-    background: none repeat scroll 0 0 rgba(0,0,0,.8);
+    border: 1px solid #fff;
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.8);
     width: 500px;
     max-width: 90%;
     min-height: 50px;
@@ -269,7 +279,7 @@
 }
 
 .xblock--drag-and-drop .popup .popup-content {
-    color: #FFFFFF;
+    color: #ffffff;
     margin-left: 15px;
     margin-top: 35px;
     margin-bottom: 15px;
@@ -282,7 +292,7 @@
     margin-right: 8px;
     margin-top: 8px;
     margin-left: 20px;
-    color: #FFFFFF;
+    color: #ffffff;
     font-family: "fontawesome";
     font-size: 18pt;
 }
@@ -290,6 +300,20 @@
 .xblock--drag-and-drop .reset-button {
     cursor: pointer;
     float: right;
-    color: #3384CA;
+    color: #2d74b3;
     margin-top: 3px;
+}
+
+/* Make sure screen-reader content is hidden in the workbench: */
+.xblock--drag-and-drop .sr {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    background: #ffffff;
+    color: #000000;
 }

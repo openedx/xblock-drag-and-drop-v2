@@ -70,9 +70,11 @@ function DragAndDropEditBlock(runtime, element, params) {
                         }
 
                         // Set the target image and bind its event handler:
-                        $('.target-image-form input', element).val(_fn.data.targetImg);
+                        $('.target-image-form input.url-input', element).val(_fn.data.targetImg);
+                        $('.target-image-form input.description-input', element).val(_fn.data.targetImgDescription);
                         _fn.build.$el.targetImage.load(_fn.build.form.zone.imageLoaded);
                         _fn.build.$el.targetImage.attr('src', params.target_img_expanded_url);
+                        _fn.build.$el.targetImage.attr('alt', params.target_img_description);
 
                         if (_fn.data.displayLabels) {
                             $('.display-labels-form input', element).prop('checked', true);
@@ -122,7 +124,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                         .on('click', '.target-image-form button', function(e) {
                             e.preventDefault();
 
-                            var new_img_url = $.trim($('.target-image-form input', element).val());
+                            var new_img_url = $.trim($('.target-image-form input.url-input', element).val());
                             if (new_img_url) {
                                 // We may need to 'expand' the URL before it will be valid.
                                 // e.g. '/static/blah.png' becomes '/asset-v1:course+id/blah.png'
@@ -135,6 +137,12 @@ function DragAndDropEditBlock(runtime, element, params) {
                                 _fn.build.$el.targetImage.attr('src', new_img_url);
                             }
                             _fn.data.targetImg = new_img_url;
+
+                            var new_description = $.trim(
+                                $('.target-image-form input.description-input', element).val()
+                            );
+                            _fn.build.$el.targetImage.attr('alt', new_description);
+                            _fn.data.targetImgDescription = new_description;
 
                             // Placeholder shim for IE9
                             $.placeholder.shim();
@@ -176,6 +184,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                             // Update zone obj
                             var zoneObj = {
                                 title: oldZone.title || 'Zone ' + num,
+                                description: oldZone.description,
                                 id: name,
                                 index: num,
                                 width: oldZone.width || 200,
@@ -247,6 +256,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                                     _fn.tpl.zoneElement({
                                         id: zoneObj.id,
                                         title: zoneObj.title,
+                                        description: zoneObj.description,
                                         x_percent: (+zoneObj.x) / imgWidth * 100,
                                         y_percent: (+zoneObj.y) / imgHeight * 100,
                                         width_percent: (+zoneObj.width) / imgWidth * 100,
@@ -276,6 +286,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                                 record.title = $changedInput.val();
                             } else if ($changedInput.hasClass('width')) {
                                 record.width = $changedInput.val();
+                            } else if ($changedInput.hasClass('description')) {
+                                record.description = $changedInput.val();
                             } else if ($changedInput.hasClass('height')) {
                                 record.height = $changedInput.val();
                             } else if ($changedInput.hasClass('x')) {
@@ -376,7 +388,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                         $form.each(function(i, el) {
                             var $el = $(el),
                                 name = $el.find('.item-text').val(),
-                                backgroundImage = $el.find('.background-image').val();
+                                backgroundImage = $el.find('.background-image-url').val(),
+                                backgroundDescription = $el.find('.background-image-description').val();
 
                             if (name.length > 0 || backgroundImage.length > 0) {
                                 // Item width/height are ignored, but preserve the data:
@@ -401,7 +414,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                                         width: width,
                                         height: height
                                     },
-                                    backgroundImage: backgroundImage
+                                    backgroundImage: backgroundImage,
+                                    backgroundDescription: backgroundDescription
                                 };
 
                                 var numValue = parseFloat($el.find('.item-numerical-value').val());
@@ -410,7 +424,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                                     data.inputOptions = {
                                         value: numValue,
                                         margin: isFinite(numMargin) ? numMargin : 0
-                                    }
+                                    };
                                 }
 
                                 items.push(data);

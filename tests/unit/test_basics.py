@@ -36,6 +36,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             "question_text": "",
             "show_question_header": True,
             "target_img_expanded_url": '/expanded/url/to/drag_and_drop_v2/public/img/triangle.png',
+            "target_img_description": "",
             "item_background_color": None,
             "item_text_color": None,
             "initial_feedback": DEFAULT_START_FEEDBACK,
