@@ -18,6 +18,15 @@
         }, 0);
     };
 
+    var itemSpinnerTemplate = function() {
+        return (h(
+            "div.spinner-wrapper",
+            [
+                h("i.fa.fa-spin.fa-spinner")
+            ]
+        ));
+    };
+
     var renderCollection = function(template, collection, ctx) {
         return collection.map(function(item) {
             return template(item, ctx);
@@ -59,7 +68,8 @@
                     attributes: {'data-value': item.value, 'data-drag-disabled': item.drag_disabled},
                     style: style
                 }, [
-                    h('div', {innerHTML: item.content_html}),
+                    itemSpinnerTemplate(),
+                    h('div', {innerHTML: item.content_html, className: "item-content"}),
                     itemInputTemplate(item.input)
                 ]
             )

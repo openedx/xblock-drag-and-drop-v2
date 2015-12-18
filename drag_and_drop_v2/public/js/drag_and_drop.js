@@ -202,20 +202,26 @@ function DragAndDropBlock(runtime, element, configuration) {
             x_percent: x_percent,
             y_percent: y_percent,
         };
-        $.post(url, JSON.stringify(data), 'json').done(function(data){
-            if (data.correct_location) {
-                state.items[item_id].correct_input = Boolean(data.correct);
-                state.items[item_id].submitting_location = false;
-            } else {
-                delete state.items[item_id];
-            }
-            state.feedback = data.feedback;
-            if (data.finished) {
-                state.finished = true;
-                state.overall_feedback = data.overall_feedback;
-            }
-            applyState();
-        });
+        var $item = $root.find(".option[data-value='"+item_id+"']");
+        $item.find('.spinner-wrapper').show();
+
+        $.post(url, JSON.stringify(data), 'json')
+            .done(function(data){
+                if (data.correct_location) {
+                    state.items[item_id].correct_input = Boolean(data.correct);
+                    state.items[item_id].submitting_location = false;
+                } else {
+                    delete state.items[item_id];
+                }
+                state.feedback = data.feedback;
+                if (data.finished) {
+                    state.finished = true;
+                    state.overall_feedback = data.overall_feedback;
+                }
+                $item.find('.spinner-wrapper').hide();
+                applyState();
+            })
+            .fail(function (data) { $item.find('.spinner-wrapper').hide(); });
     };
 
     var submitInput = function(evt) {

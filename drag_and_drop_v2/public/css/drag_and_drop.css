@@ -76,6 +76,16 @@
     z-index: 10 !important;
 }
 
+.xblock--drag-and-drop .drag-container .option .spinner-wrapper {
+    margin-right: 3px;
+    float: left;
+    display: none;
+}
+
+.xblock--drag-and-drop .drag-container .option .item-content {
+    display: inline-block;
+}
+
 /* Placed option */
 .xblock--drag-and-drop .drag-container .target .option {
     position: absolute;
