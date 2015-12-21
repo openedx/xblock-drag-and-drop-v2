@@ -29,7 +29,7 @@ DEFAULT_DATA = {
         "correct": _("Yes, it's a 1")
       },
       "zone": "Zone 1",
-      "backgroundImage": "",
+      "imageURL": "",
       "id": 0,
     },
     {
@@ -39,7 +39,7 @@ DEFAULT_DATA = {
         "correct": _("Yes, it's a 2")
       },
       "zone": "Zone 2",
-      "backgroundImage": "",
+      "imageURL": "",
       "id": 1,
     },
     {
@@ -49,7 +49,7 @@ DEFAULT_DATA = {
         "correct": ""
       },
       "zone": "none",
-      "backgroundImage": "",
+      "imageURL": "",
       "id": 2,
     },
   ],

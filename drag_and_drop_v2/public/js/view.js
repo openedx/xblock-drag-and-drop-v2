@@ -71,6 +71,10 @@
         if (item.has_image) {
             className += " " + "option-with-image";
         }
+        var content_html = item.displayName;
+        if (item.imageURL) {
+            content_html = '<img src="' + item.imageURL + '" alt="' + item.imageDescription + '" />';
+        }
         return (
             h('div.option',
                 {
@@ -86,7 +90,7 @@
                     style: style
                 }, [
                     itemSpinnerTemplate(item.xhr_active),
-                    h('div', {innerHTML: item.content_html, className: "item-content"}),
+                    h('div', {innerHTML: content_html, className: "item-content"}),
                     itemInputTemplate(item.input)
                 ]
             )

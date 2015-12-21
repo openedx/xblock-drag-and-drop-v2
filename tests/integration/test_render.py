@@ -112,7 +112,9 @@ class TestDragAndDropRender(BaseIntegrationTest):
 
         self._test_items(color_settings=color_settings)
 
-    def _test_items(self, color_settings={}):  # pylint: disable=dangerous-default-value
+    def _test_items(self, color_settings=None):
+        color_settings = color_settings or {}
+
         items = self._get_items()
 
         self.assertEqual(len(items), 3)
@@ -155,12 +157,8 @@ class TestDragAndDropRender(BaseIntegrationTest):
             self.assertEqual(zone.get_attribute('data-zone'), 'Zone {}'.format(zone_number))
             self.assertIn('ui-droppable', self.get_element_classes(zone))
             zone_box_percentages = box_percentages[index]
-            self._assert_box_percentages(
-                '#zone-{}'.format(zone_number),
-                left=zone_box_percentages['left'],
-                top=zone_box_percentages['top'],
-                width=zone_box_percentages['width'],
-                height=zone_box_percentages['height']
+            self._assert_box_percentages(  # pylint: disable=star-args
+                '#zone-{}'.format(zone_number), **zone_box_percentages
             )
             zone_name = zone.find_element_by_css_selector('p.zone-name')
             self.assertEqual(zone_name.text, 'ZONE {}'.format(zone_number))

@@ -167,11 +167,16 @@ function DragAndDropBlock(runtime, element, configuration) {
                     revert: 'invalid',
                     revertDuration: 150,
                     start: function(evt, ui) {
-                        var item_id = $(this).data('value');
+                        var $item = $(this);
+                        $item.attr('aria-grabbed', true);
+                        var item_id = $item.data('value');
                         publishEvent({
                             event_type: 'xblock.drag-and-drop-v2.item.picked-up',
                             item_id: item_id
                         });
+                    },
+                    stop: function(evt, ui) {
+                        $(this).attr('aria-grabbed', false);
                     }
                 });
             } catch (e) {
@@ -311,18 +316,17 @@ function DragAndDropBlock(runtime, element, configuration) {
                     input.class_name = item_user_state.correct_input ? 'correct' : 'incorrect';
                 }
             }
-            var content_html = item.displayName;
-            if (item.backgroundImage) {
-                content_html = '<img src="' + item.backgroundImage + '" alt="' + item.backgroundDescription + '" />';
-            }
+            var imageURL = item.imageURL || item.backgroundImage;  // Fall back on "backgroundImage" to be backward-compatible
             var itemProperties = {
                 value: item.id,
                 drag_disabled: Boolean(item_user_state || state.finished),
                 class_name: item_user_state && ('input' in item_user_state || item_user_state.correct_input) ? 'fade': undefined,
                 xhr_active: (item_user_state && item_user_state.submitting_location),
                 input: input,
-                content_html: content_html,
-                has_image: !!item.backgroundImage
+                displayName: item.displayName,
+                imageURL: imageURL,
+                imageDescription: item.imageDescription,
+                has_image: !!imageURL,
             };
             if (item_user_state) {
                 itemProperties.is_placed = true;

@@ -34,28 +34,28 @@
     "items": [
         {
           "displayName": "1",
-          "backgroundImage": "",
+          "imageURL": "",
           "id": 0,
           "inputOptions": false,
           "size": {"height": "auto", "width": "190px"}
         },
         {
           "displayName": "2",
-          "backgroundImage": "",
+          "imageURL": "",
           "id": 1,
           "inputOptions": true,
           "size": {"height": "auto", "width": "190px"}
         },
         {
           "displayName": "X",
-          "backgroundImage": "",
+          "imageURL": "",
           "id": 2,
           "inputOptions": false,
           "size": {"height": "100px", "width": "100px"}
         },
         {
           "displayName": "",
-          "backgroundImage": "http://i1.kym-cdn.com/entries/icons/square/000/006/151/tumblr_lltzgnHi5F1qzib3wo1_400.jpg",
+          "imageURL": "http://i1.kym-cdn.com/entries/icons/square/000/006/151/tumblr_lltzgnHi5F1qzib3wo1_400.jpg",
           "id": 3,
           "inputOptions": false,
           "size": {"height": "auto", "width": "190px"}

@@ -198,7 +198,6 @@ class DragAndDropBlock(XBlock):
         fragment.initialize_js('DragAndDropEditBlock', {
             'data': self.data,
             'target_img_expanded_url': self.target_img_expanded_url,
-            'target_img_description': self.target_img_description,
             'default_background_image_url': self.default_background_image_url,
         })
 

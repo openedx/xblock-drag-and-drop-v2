@@ -11,26 +11,42 @@
 
 <script id="zone-input-tpl" type="text/html">
     <div class="zone-row {{ id }}" data-index="{{index}}">
-        <label>{{i18n "Text"}}</label>
-        <input type="text" class="title" value="{{ title }}" />
+        <label for="zone-{{index}}-title">{{i18n "Text"}}</label>
+        <input type="text"
+               id="zone-{{index}}-title"
+               class="title"
+               value="{{ title }}" />
         <a href="#" class="remove-zone hidden">
             <div class="icon remove"></div>
         </a>
-        <label>{{i18n "Description"}}</label>
+        <label for="zone-{{index}}-description">{{i18n "Description"}}</label>
         <input type="text"
+               id="zone-{{index}}-description"
                class="description"
                value="{{ description }}"
                placeholder="{{i18n 'Describe this zone to non-visual users'}}" />
         <div class="layout">
-            <label>{{i18n "width"}}</label>
-            <input type="text" class="size width" value="{{ width }}" />
-            <label>{{i18n "height"}}</label>
-            <input type="text" class="size height" value="{{ height }}" />
+            <label for="zone-{{index}}-width">{{i18n "width"}}</label>
+            <input type="text"
+                   id="zone-{{index}}-width"
+                   class="size width"
+                   value="{{ width }}" />
+            <label for="zone-{{index}}-height">{{i18n "height"}}</label>
+            <input type="text"
+                   id="zone-{{index}}-height"
+                   class="size height"
+                   value="{{ height }}" />
             <br />
-            <label>x</label>
-            <input type="text" class="coord x" value="{{ x }}" />
-            <label>y</label>
-            <input type="text" class="coord y" value="{{ y }}" />
+            <label for="zone-{{index}}-x">x</label>
+            <input type="text"
+                   id="zone-{{index}}-x"
+                   class="coord x"
+                   value="{{ x }}" />
+            <label for="zone-{{index}}-y">y</label>
+            <input type="text"
+                   id="zone-{{index}}-y"
+                   class="coord y"
+                   value="{{ y }}" />
         </div>
     </div>
 </script>
@@ -42,29 +58,39 @@
 <script id="item-input-tpl" type="text/html">
     <div class="item">
         <div class="row">
-            <label>{{i18n "Text"}}</label>
-            <input type="text" class="item-text" value="{{ displayName }}"/>
-            <label>{{i18n "Zone"}}</label>
-            <select class="zone-select">{{ dropdown }}</select>
+            <label for="item-{{id}}-text">{{i18n "Text"}}</label>
+            <input type="text"
+                   id="item-{{id}}-text"
+                   class="item-text"
+                   value="{{ displayName }}" />
+            <label for="item-{{id}}-zone">{{i18n "Zone"}}</label>
+            <select id="item-{{id}}-zone"
+                    class="zone-select">{{ dropdown }}</select>
             <a href="#" class="remove-item hidden">
                 <div class="icon remove"></div>
             </a>
         </div>
         <div class="row">
-            <label>{{i18n "Background image URL (alternative to the text)"}}</label>
-            <textarea class="background-image-url">{{ backgroundImage }}</textarea>
+            <label for="item-{{id}}-image-url">{{i18n "Image URL (alternative to the text)"}}</label>
+            <input type="text"
+                   id="item-{{id}}-image-url"
+                   class="item-image-url"
+                   value="{{ imageURL }}" />
         </div>
         <div class="row">
-            <label>{{i18n "Background image description (should provide sufficient information to place the item even  if the image did not load)"}}</label>
-            <textarea class="background-image-description">{{ backgroundDescription }}</textarea>
+            <label for="item-{{id}}-image-description">{{i18n "Image description (should provide sufficient information to place the item even if the image did not load)"}}</label>
+            <textarea id="item-{{id}}-image-description"
+                      class="item-image-description">{{ imageDescription }}</textarea>
         </div>
         <div class="row">
-            <label>{{i18n "Success Feedback"}}</label>
-            <textarea class="success-feedback">{{ feedback.correct }}</textarea>
+            <label for="item-{{id}}-success-feedback">{{i18n "Success Feedback"}}</label>
+            <textarea id="item-{{id}}-success-feedback"
+                      class="success-feedback">{{ feedback.correct }}</textarea>
         </div>
         <div class="row">
-            <label>{{i18n "Error Feedback"}}</label>
-            <textarea class="error-feedback">{{ feedback.incorrect }}</textarea>
+            <label for="item-{{id}}-error-feedback">{{i18n "Error Feedback"}}</label>
+            <textarea id="item-{{id}}-error-feedback"
+                      class="error-feedback">{{ feedback.incorrect }}</textarea>
         </div>
         <div class="row" style="display: none;">
             <!--
@@ -75,16 +101,26 @@
             If we do add them back in, we should only allow setting "width". Height will be
             detected automatically based on font/image size requirements.
             -->
-            <label>{{i18n "Width in pixels (0 for auto)"}}</label>
-            <input type="text" class="item-width" value="{{ width }}"></input>
-            <label>{{i18n "Height in pixels (0 for auto)"}}</label>
-            <input type="text" class="item-height" value="{{ height }}"></input>
+            <label for="item-{{id}}-width">{{i18n "Width in pixels (0 for auto)"}}</label>
+            <input type="text"
+                   id="item-{{id}}-width"
+                   class="item-width"
+                   value="{{ width }}" />
+            <label for="item-{{id}}-height">{{i18n "Height in pixels (0 for auto)"}}</label>
+            <input type="text"
+                   id="item-{{id}}-height"
+                   class="item-height"
+                   value="{{ height }}" />
         </div>
         <div class="row">
-          <label>{{i18n "Optional numerical value"}}</label>
-          <input type="text" class="item-numerical-value" value="{{ numericalValue }}"></input>
-          <label>{{i18n "Margin ±"}}</label>
-          <input type="text" class="item-numerical-margin" value="{{ numericalMargin }}"></input>
+          <label for="item-{{id}}-numerical-value">{{i18n "Optional numerical value"}}</label>
+          <input type="text"
+                 id="item-{{id}}-numerical-value"
+                 class="item-numerical-value" value="{{ numericalValue }}" />
+          <label for="item-{{id}}-numerical-margin">{{i18n "Margin ±"}}</label>
+          <input type="text"
+                 id="item-{{id}}-numerical-margin"
+                 class="item-numerical-margin" value="{{ numericalMargin }}" />
         </div>
     </div>
 </script>

@@ -70,11 +70,11 @@ function DragAndDropEditBlock(runtime, element, params) {
                         }
 
                         // Set the target image and bind its event handler:
-                        $('.target-image-form input.url-input', element).val(_fn.data.targetImg);
-                        $('.target-image-form input.description-input', element).val(_fn.data.targetImgDescription);
+                        $('.target-image-form .url-input', element).val(_fn.data.targetImg);
+                        $('.target-image-form .description-input', element).val(_fn.data.targetImgDescription);
                         _fn.build.$el.targetImage.load(_fn.build.form.zone.imageLoaded);
                         _fn.build.$el.targetImage.attr('src', params.target_img_expanded_url);
-                        _fn.build.$el.targetImage.attr('alt', params.target_img_description);
+                        _fn.build.$el.targetImage.attr('alt', _fn.data.targetImgDescription);
 
                         if (_fn.data.displayLabels) {
                             $('.display-labels-form input', element).prop('checked', true);
@@ -124,7 +124,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                         .on('click', '.target-image-form button', function(e) {
                             e.preventDefault();
 
-                            var new_img_url = $.trim($('.target-image-form input.url-input', element).val());
+                            var new_img_url = $.trim($('.target-image-form .url-input', element).val());
                             if (new_img_url) {
                                 // We may need to 'expand' the URL before it will be valid.
                                 // e.g. '/static/blah.png' becomes '/asset-v1:course+id/blah.png'
@@ -139,7 +139,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                             _fn.data.targetImg = new_img_url;
 
                             var new_description = $.trim(
-                                $('.target-image-form input.description-input', element).val()
+                                $('.target-image-form .description-input', element).val()
                             );
                             _fn.build.$el.targetImage.attr('alt', new_description);
                             _fn.data.targetImgDescription = new_description;
@@ -388,10 +388,10 @@ function DragAndDropEditBlock(runtime, element, params) {
                         $form.each(function(i, el) {
                             var $el = $(el),
                                 name = $el.find('.item-text').val(),
-                                backgroundImage = $el.find('.background-image-url').val(),
-                                backgroundDescription = $el.find('.background-image-description').val();
+                                imageURL = $el.find('.item-image-url').val(),
+                                imageDescription = $el.find('.item-image-description').val();
 
-                            if (name.length > 0 || backgroundImage.length > 0) {
+                            if (name.length > 0 || imageURL.length > 0) {
                                 // Item width/height are ignored, but preserve the data:
                                 var width = $el.find('.item-width').val(),
                                     height = $el.find('.item-height').val();
@@ -414,8 +414,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                                         width: width,
                                         height: height
                                     },
-                                    backgroundImage: backgroundImage,
-                                    backgroundDescription: backgroundDescription
+                                    imageURL: imageURL,
+                                    imageDescription: imageDescription,
                                 };
 
                                 var numValue = parseFloat($el.find('.item-numerical-value').val());

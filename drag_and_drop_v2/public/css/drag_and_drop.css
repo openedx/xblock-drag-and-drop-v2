@@ -115,7 +115,8 @@
 /* Focused option */
 .xblock--drag-and-drop .drag-container .item-bank .option:focus,
 .xblock--drag-and-drop .drag-container .item-bank .option:hover {
-    transform: scale(1.1);
+    outline: 2px solid #fff;
+    outline-offset: -4px;
 }
 
 .xblock--drag-and-drop .drag-container .ui-draggable-dragging {

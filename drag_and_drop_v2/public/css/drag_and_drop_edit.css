@@ -103,7 +103,8 @@
     margin: 10px 0 0 0;
 }
 
-.xblock--drag-and-drop--editor .target-image-form input {
+.xblock--drag-and-drop--editor .target-image-form input,
+.xblock--drag-and-drop--editor .target-image-form textarea {
     width: 50%;
 }
 
@@ -141,8 +142,7 @@
     width: 18%;
 }
 
-.xblock--drag-and-drop--editor .zones-form .zone-row .title,
-.xblock--drag-and-drop--editor .zones-form .zone-row .description {
+.xblock--drag-and-drop--editor .zones-form .zone-row > input {
     width: 60%;
     margin: 0 0 5px;
     line-height: 2.664rem;  /* .title gets line-height from a Studio rule that does not apply to .description;
@@ -189,6 +189,11 @@
 .xblock--drag-and-drop--editor .items-form input,
 .xblock--drag-and-drop--editor .items-form select {
     width: 35%;
+}
+
+.xblock--drag-and-drop--editor .items-form .item-image-url {
+    width: 81%;
+    margin-right: 1%;
 }
 
 .xblock--drag-and-drop--editor .items-form .item-width,

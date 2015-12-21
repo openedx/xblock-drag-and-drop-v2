@@ -34,25 +34,25 @@
     "items": [
         {
           "displayName": "<b>1</b>",
-          "backgroundImage": "",
+          "imageURL": "",
           "id": 0,
           "inputOptions": false
         },
         {
           "displayName": "<i>2</i>",
-          "backgroundImage": "",
+          "imageURL": "",
           "id": 1,
           "inputOptions": true
         },
         {
           "displayName": "X",
-          "backgroundImage": "",
+          "imageURL": "",
           "id": 2,
           "inputOptions": false
         },
         {
           "displayName": "",
-          "backgroundImage": "http://placehold.it/100x300",
+          "imageURL": "http://placehold.it/100x300",
           "id": 3,
           "inputOptions": false
         }

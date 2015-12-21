@@ -63,9 +63,9 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         ])
         # Items should contain no answer data:
         self.assertEqual(items, [
-            {"id": 0, "displayName": "1", "backgroundImage": "", "inputOptions": False},
-            {"id": 1, "displayName": "2", "backgroundImage": "", "inputOptions": False},
-            {"id": 2, "displayName": "X", "backgroundImage": "", "inputOptions": False},
+            {"id": 0, "displayName": "1", "imageURL": "", "inputOptions": False},
+            {"id": 1, "displayName": "2", "imageURL": "", "inputOptions": False},
+            {"id": 2, "displayName": "X", "imageURL": "", "inputOptions": False},
         ])
 
     def test_ajax_solve_and_reset(self):

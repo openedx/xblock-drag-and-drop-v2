@@ -52,15 +52,14 @@
                     <h3 id="background-description-label">
                         {% trans "Background description" %}
                     </h3>
-                    <input type="text"
-                           class="description-input"
-                           aria-labelledby="background-description-label"
-                           aria-describedby="background-description-description">
+                    <textarea class="description-input"
+                              aria-labelledby="background-description-label"
+                              aria-describedby="background-description-description"></textarea>
                     <div id="background-description-description" class="target-image-form-help">
                         {% blocktrans %}
                             Please provide a description of the image for non-visual users.
                             The description should provide sufficient information that would allow anyone
-                            to solve the problem if the image did not load.
+                            to solve the problem even without seeing the image.
                         {% endblocktrans %}
                     </div>
                     <button class="btn">{% trans "Change background" %}</button>
