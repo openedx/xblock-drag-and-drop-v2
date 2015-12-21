@@ -191,6 +191,14 @@ function DragAndDropBlock(runtime, element, configuration) {
         });
     };
 
+    var showSpinner = function($item) {
+        $item.find('.spinner-wrapper').show();
+    };
+
+    var hideSpinner = function($item) {
+        $item.find('.spinner-wrapper').hide();
+    };
+
     var submitLocation = function(item_id, zone, x_percent, y_percent) {
         if (!zone) {
             return;
@@ -203,7 +211,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             y_percent: y_percent,
         };
         var $item = $root.find(".option[data-value='"+item_id+"']");
-        $item.find('.spinner-wrapper').show();
+        showSpinner($item);
 
         $.post(url, JSON.stringify(data), 'json')
             .done(function(data){
@@ -218,10 +226,10 @@ function DragAndDropBlock(runtime, element, configuration) {
                     state.finished = true;
                     state.overall_feedback = data.overall_feedback;
                 }
-                $item.find('.spinner-wrapper').hide();
+                hideSpinner($item);
                 applyState();
             })
-            .fail(function (data) { $item.find('.spinner-wrapper').hide(); });
+            .fail(function (data) { hideSpinner($item); });
     };
 
     var submitInput = function(evt) {
@@ -236,22 +244,26 @@ function DragAndDropBlock(runtime, element, configuration) {
             return;
         }
 
+        showSpinner(input_div);
         state.items[item_id].input = input_value;
         state.items[item_id].submitting_input = true;
         applyState();
 
         var url = runtime.handlerUrl(element, 'do_attempt');
         var data = {val: item_id, input: input_value};
-        $.post(url, JSON.stringify(data), 'json').done(function(data) {
-            state.items[item_id].submitting_input = false;
-            state.items[item_id].correct_input = data.correct;
-            state.feedback = data.feedback;
-            if (data.finished) {
-                state.finished = true;
-                state.overall_feedback = data.overall_feedback;
-            }
-            applyState();
-        });
+        $.post(url, JSON.stringify(data), 'json')
+            .done(function(data) {
+                state.items[item_id].submitting_input = false;
+                state.items[item_id].correct_input = data.correct;
+                state.feedback = data.feedback;
+                if (data.finished) {
+                    state.finished = true;
+                    state.overall_feedback = data.overall_feedback;
+                }
+                hideSpinner(input_div);
+                applyState();
+            })
+            .fail(function(data) { hideSpinner(input_div); });
     };
 
     var closePopup = function(evt) {

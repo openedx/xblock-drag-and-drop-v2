@@ -43,6 +43,7 @@
                                       style: {display: input.is_visible ? 'block' : 'none'}}, [
                 h('input.input', {type: 'text', value: input.value, disabled: input.has_value,
                                   focusHook: focus_hook}),
+                itemSpinnerTemplate(),
                 h('button.submit-input', {disabled: input.has_value}, gettext('ok'))
             ])
         );

@@ -112,6 +112,19 @@
     top: calc(50% - 16px);
 }
 
+.xblock--drag-and-drop .drag-container .option .numerical-input .spinner-wrapper {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-right: 5px;
+    padding-top: 6px;
+    display: none;
+}
+
+.xblock--drag-and-drop .drag-container .option .numerical-input .spinner-wrapper {
+    color: #333;
+}
+
 .xblock--drag-and-drop .drag-container .option .numerical-input .input {
     display: inline-block;
     width: 144px;
