@@ -54,6 +54,7 @@
 
     var itemTemplate = function(item) {
         var style = {};
+        var className = (item.class_name) ? item.class_name : "";
         if (item.background_color) {
             style['background-color'] = item.background_color;
         }
@@ -64,11 +65,14 @@
             style.left = item.x_percent + "%";
             style.top = item.y_percent + "%";
         }
+        if (item.has_image) {
+            className += " " + "option-with-image";
+        }
         return (
             h('div.option',
                 {
                     key: item.value,
-                    className: item.class_name,
+                    className: className,
                     attributes: {'data-value': item.value, 'data-drag-disabled': item.drag_disabled},
                     style: style
                 }, [

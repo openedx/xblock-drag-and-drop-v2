@@ -316,7 +316,8 @@ function DragAndDropBlock(runtime, element, configuration) {
                 class_name: item_user_state && ('input' in item_user_state || item_user_state.correct_input) ? 'fade': undefined,
                 xhr_active: (item_user_state && item_user_state.submitting_location),
                 input: input,
-                content_html: item.backgroundImage ? '<img src="' + item.backgroundImage + '"/>' : item.displayName
+                content_html: item.backgroundImage ? '<img src="' + item.backgroundImage + '"/>' : item.displayName,
+                has_image: !!item.backgroundImage
             };
             if (item_user_state) {
                 itemProperties.is_placed = true;

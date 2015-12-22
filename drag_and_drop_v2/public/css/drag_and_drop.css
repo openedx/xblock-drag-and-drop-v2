@@ -85,6 +85,22 @@
     float: left;
 }
 
+.xblock--drag-and-drop .drag-container .option.option-with-image .spinner-wrapper {
+    position: absolute;
+    float: none;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: #000;
+    opacity: 0.6;
+    color: #fff;
+    margin: 0;
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
+}
+
 .xblock--drag-and-drop .drag-container .option .item-content {
     display: inline-block;
 }
