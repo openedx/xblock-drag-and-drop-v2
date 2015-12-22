@@ -191,14 +191,6 @@ function DragAndDropBlock(runtime, element, configuration) {
         });
     };
 
-    var showSpinner = function($item) {
-        $item.find('.spinner-wrapper').show();
-    };
-
-    var hideSpinner = function($item) {
-        $item.find('.spinner-wrapper').hide();
-    };
-
     var submitLocation = function(item_id, zone, x_percent, y_percent) {
         if (!zone) {
             return;
@@ -210,8 +202,6 @@ function DragAndDropBlock(runtime, element, configuration) {
             x_percent: x_percent,
             y_percent: y_percent,
         };
-        var $item = $root.find(".option[data-value='"+item_id+"']");
-        showSpinner($item);
 
         $.post(url, JSON.stringify(data), 'json')
             .done(function(data){
@@ -226,10 +216,12 @@ function DragAndDropBlock(runtime, element, configuration) {
                     state.finished = true;
                     state.overall_feedback = data.overall_feedback;
                 }
-                hideSpinner($item);
                 applyState();
             })
-            .fail(function (data) { hideSpinner($item); });
+            .fail(function (data) {
+                delete state.items[item_id];
+                applyState();
+            });
     };
 
     var submitInput = function(evt) {
@@ -244,7 +236,6 @@ function DragAndDropBlock(runtime, element, configuration) {
             return;
         }
 
-        showSpinner(input_div);
         state.items[item_id].input = input_value;
         state.items[item_id].submitting_input = true;
         applyState();
@@ -260,10 +251,12 @@ function DragAndDropBlock(runtime, element, configuration) {
                     state.finished = true;
                     state.overall_feedback = data.overall_feedback;
                 }
-                hideSpinner(input_div);
                 applyState();
             })
-            .fail(function(data) { hideSpinner(input_div); });
+            .fail(function(data) {
+                state.items[item_id].submitting_input = false;
+                applyState();
+            });
     };
 
     var closePopup = function(evt) {
@@ -311,6 +304,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                     has_value: Boolean(item_user_state && 'input' in item_user_state),
                     value : (item_user_state && item_user_state.input) || '',
                     class_name: undefined,
+                    xhr_active: (item_user_state && item_user_state.submitting_input)
                 };
                 if (input.has_value && !item_user_state.submitting_input) {
                     input.class_name = item_user_state.correct_input ? 'correct' : 'incorrect';
@@ -320,6 +314,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 value: item.id,
                 drag_disabled: Boolean(item_user_state || state.finished),
                 class_name: item_user_state && ('input' in item_user_state || item_user_state.correct_input) ? 'fade': undefined,
+                xhr_active: (item_user_state && item_user_state.submitting_location),
                 input: input,
                 content_html: item.backgroundImage ? '<img src="' + item.backgroundImage + '"/>' : item.displayName
             };

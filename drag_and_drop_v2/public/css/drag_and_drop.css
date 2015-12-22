@@ -83,7 +83,6 @@
 .xblock--drag-and-drop .drag-container .option .spinner-wrapper {
     margin-right: 3px;
     float: left;
-    display: none;
 }
 
 .xblock--drag-and-drop .drag-container .option .item-content {
@@ -122,7 +121,6 @@
     top: 0;
     margin-right: 5px;
     padding-top: 6px;
-    display: none;
     color: #333;
 }
 

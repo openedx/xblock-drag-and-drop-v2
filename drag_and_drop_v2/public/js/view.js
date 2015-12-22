@@ -18,7 +18,10 @@
         }, 0);
     };
 
-    var itemSpinnerTemplate = function() {
+    var itemSpinnerTemplate = function(xhr_active) {
+        if (!xhr_active) {
+            return null;
+        }
         return (h(
             "div.spinner-wrapper",
             [
@@ -43,7 +46,7 @@
                                       style: {display: input.is_visible ? 'block' : 'none'}}, [
                 h('input.input', {type: 'text', value: input.value, disabled: input.has_value,
                                   focusHook: focus_hook}),
-                itemSpinnerTemplate(),
+                itemSpinnerTemplate(input.xhr_active),
                 h('button.submit-input', {disabled: input.has_value}, gettext('ok'))
             ])
         );
@@ -69,7 +72,7 @@
                     attributes: {'data-value': item.value, 'data-drag-disabled': item.drag_disabled},
                     style: style
                 }, [
-                    itemSpinnerTemplate(),
+                    itemSpinnerTemplate(item.xhr_active),
                     h('div', {innerHTML: item.content_html, className: "item-content"}),
                     itemInputTemplate(item.input)
                 ]
