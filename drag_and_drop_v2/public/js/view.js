@@ -61,6 +61,9 @@
         }
         if (item.color) {
             style.color = item.color;
+            // Ensure contrast between outline-color and background color
+            // matches contrast between text color and background color:
+            style['outline-color'] = item.color;
         }
         if (item.is_placed) {
             style.left = item.x_percent + "%";
@@ -82,8 +85,8 @@
                     className: className,
                     attributes: {
                         'tabindex': tabindex,
-                        'draggable': true,
-                        'aria-grabbed': false,
+                        'draggable': !item.drag_disabled,
+                        'aria-grabbed': item.grabbed,
                         'data-value': item.value,
                         'data-drag-disabled': item.drag_disabled
                     },

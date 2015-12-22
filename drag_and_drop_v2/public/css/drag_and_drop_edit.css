@@ -218,7 +218,7 @@
 
 /** Buttons **/
 .xblock--drag-and-drop--editor .btn {
-    background: #2872b2;
+    background: #1d5280;
     color: #fff;
     border: 1px solid #156ab4;
     border-radius: 6px;
@@ -238,7 +238,7 @@
 
 .xblock--drag-and-drop--editor .add-element {
     text-decoration: none;
-    color: #236299;
+    color: #1d5280;
 }
 
 .xblock--drag-and-drop--editor .remove-zone {
@@ -256,7 +256,7 @@
     width: 14px;
     height: 14px;
     border-radius: 7px;
-    background: #236299;
+    background: #1d5280;
     position: relative;
     float: left;
     margin: 0 5px 0 0;
@@ -325,9 +325,9 @@
 
 .xblock--drag-and-drop--editor .remove-item .icon.remove {
     background: #fff;
-    color: #0072a7;
+    color: #0072a7;  /* Override default color from Studio to ensure contrast is large enough */
 }
 .xblock--drag-and-drop--editor .remove-item .icon.remove:before,
 .xblock--drag-and-drop--editor .remove-item .icon.remove:after {
-    background: #236299;
+    background: #1d5280;
 }

@@ -7,7 +7,7 @@ from .test_base import BaseIntegrationTest
 
 class Colors(object):
     WHITE = 'rgb(255, 255, 255)'
-    BLUE = 'rgb(40, 114, 178)'
+    BLUE = 'rgb(29, 82, 128)'
     GREY = 'rgb(237, 237, 237)'
     CORAL = '#ff7f50'
     CORNFLOWERBLUE = 'cornflowerblue'
@@ -69,6 +69,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
 
     def _test_item_style(self, item_element, style_settings):
         item_val = item_element.get_attribute('data-value')
+        item_selector = '.item-bank .option[data-value=' + item_val + ']'
         style = item_element.get_attribute('style')
         # Check background color
         background_color_property = 'background-color'
@@ -77,7 +78,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
             expected_background_color = Colors.BLUE
         else:
             expected_background_color = Colors.rgb(style_settings['background-color'])
-        background_color = self._get_style('.item-bank .option[data-value='+item_val+']', 'backgroundColor')
+        background_color = self._get_style(item_selector, 'backgroundColor')
         self.assertEquals(background_color, expected_background_color)
 
         # Check text color
@@ -88,8 +89,17 @@ class TestDragAndDropRender(BaseIntegrationTest):
             expected_color = Colors.WHITE
         else:
             expected_color = Colors.rgb(style_settings['color'])
-        color = self._get_style('.item-bank .option[data-value='+item_val+']', 'color')
+        color = self._get_style(item_selector, 'color')
         self.assertEquals(color, expected_color)
+
+        # Check outline color
+        outline_color_property = 'outline-color'
+        if outline_color_property not in style_settings:
+            self.assertNotIn(outline_color_property, style)
+        # Outline color should match text color to ensure it does not meld into background color:
+        expected_outline_color = expected_color
+        outline_color = self._get_style(item_selector, 'outlineColor')
+        self.assertEquals(outline_color, expected_outline_color)
 
     def test_items_default_colors(self):
         self.load_scenario()
@@ -109,6 +119,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
             color_settings['background-color'] = item_background_color
         if item_text_color:
             color_settings['color'] = item_text_color
+            color_settings['outline-color'] = item_text_color
 
         self._test_items(color_settings=color_settings)
 

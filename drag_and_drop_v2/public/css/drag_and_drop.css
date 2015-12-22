@@ -72,10 +72,12 @@
     border-radius: 3px;
     margin: 5px;
     padding: 10px;
-    background-color: #2872b2;
+    background-color: #1d5280;
     font-size: 14px;
     color: #fff;
     opacity: 1;
+    outline-color: #fff;
+    outline-style: none;
     /* Some versions of the drag and drop library try to fiddle with this */
     z-index: 10 !important;
 }
@@ -115,7 +117,8 @@
 /* Focused option */
 .xblock--drag-and-drop .drag-container .item-bank .option:focus,
 .xblock--drag-and-drop .drag-container .item-bank .option:hover {
-    outline: 2px solid #fff;
+    outline-width: 2px;
+    outline-style: solid;
     outline-offset: -4px;
 }
 

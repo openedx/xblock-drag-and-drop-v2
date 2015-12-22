@@ -167,16 +167,18 @@ function DragAndDropBlock(runtime, element, configuration) {
                     revert: 'invalid',
                     revertDuration: 150,
                     start: function(evt, ui) {
-                        var $item = $(this);
-                        $item.attr('aria-grabbed', true);
-                        var item_id = $item.data('value');
+                        var item_id = $(this).data('value');
+                        setGrabbedState(item_id, true);
+                        updateDOM();
                         publishEvent({
                             event_type: 'xblock.drag-and-drop-v2.item.picked-up',
                             item_id: item_id
                         });
                     },
                     stop: function(evt, ui) {
-                        $(this).attr('aria-grabbed', false);
+                        var item_id = $(this).data('value');
+                        setGrabbedState(item_id, false);
+                        updateDOM();
                     }
                 });
             } catch (e) {
@@ -184,6 +186,14 @@ function DragAndDropBlock(runtime, element, configuration) {
                 // initialized. That's expected, ignore the exception.
             }
         });
+    };
+
+    var setGrabbedState = function(item_id, grabbed) {
+        for (var i = 0; i < configuration.items.length; i++) {
+            if (configuration.items[i].id === item_id) {
+                configuration.items[i].grabbed = grabbed;
+            }
+        }
     };
 
     var destroyDraggable = function() {
@@ -317,6 +327,10 @@ function DragAndDropBlock(runtime, element, configuration) {
                 }
             }
             var imageURL = item.imageURL || item.backgroundImage;  // Fall back on "backgroundImage" to be backward-compatible
+            var grabbed = false;
+            if (item.grabbed !== undefined) {
+                grabbed = item.grabbed;
+            }
             var itemProperties = {
                 value: item.id,
                 drag_disabled: Boolean(item_user_state || state.finished),
@@ -327,6 +341,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 imageURL: imageURL,
                 imageDescription: item.imageDescription,
                 has_image: !!imageURL,
+                grabbed: grabbed,
             };
             if (item_user_state) {
                 itemProperties.is_placed = true;
