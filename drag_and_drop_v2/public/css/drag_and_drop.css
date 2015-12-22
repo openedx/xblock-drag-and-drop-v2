@@ -5,6 +5,10 @@
     padding: 0;
 }
 
+.xblock--drag-and-drop .initial-load-spinner {
+    margin-right: 3px;
+}
+
 /* Header, instruction text, etc. */
 
 .xblock--drag-and-drop .problem-header {
@@ -119,9 +123,6 @@
     margin-right: 5px;
     padding-top: 6px;
     display: none;
-}
-
-.xblock--drag-and-drop .drag-container .option .numerical-input .spinner-wrapper {
     color: #333;
 }
 
