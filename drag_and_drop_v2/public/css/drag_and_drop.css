@@ -5,6 +5,10 @@
     padding: 0;
 }
 
+.xblock--drag-and-drop .initial-load-spinner {
+    margin-right: 3px;
+}
+
 /* Header, instruction text, etc. */
 
 .xblock--drag-and-drop .problem-header {
@@ -76,6 +80,31 @@
     z-index: 10 !important;
 }
 
+.xblock--drag-and-drop .drag-container .option .spinner-wrapper {
+    margin-right: 3px;
+    float: left;
+}
+
+.xblock--drag-and-drop .drag-container .option.option-with-image .spinner-wrapper {
+    position: absolute;
+    float: none;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: #000;
+    opacity: 0.6;
+    color: #fff;
+    margin: 0;
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
+}
+
+.xblock--drag-and-drop .drag-container .option .item-content {
+    display: inline-block;
+}
+
 /* Placed option */
 .xblock--drag-and-drop .drag-container .target .option {
     position: absolute;
@@ -100,6 +129,15 @@
     position: absolute;
     left: calc(100% + 5px);
     top: calc(50% - 16px);
+}
+
+.xblock--drag-and-drop .drag-container .option .numerical-input .spinner-wrapper {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-right: 5px;
+    padding-top: 6px;
+    color: #333;
 }
 
 .xblock--drag-and-drop .drag-container .option .numerical-input .input {

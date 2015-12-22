@@ -202,20 +202,26 @@ function DragAndDropBlock(runtime, element, configuration) {
             x_percent: x_percent,
             y_percent: y_percent,
         };
-        $.post(url, JSON.stringify(data), 'json').done(function(data){
-            if (data.correct_location) {
-                state.items[item_id].correct_input = Boolean(data.correct);
-                state.items[item_id].submitting_location = false;
-            } else {
+
+        $.post(url, JSON.stringify(data), 'json')
+            .done(function(data){
+                if (data.correct_location) {
+                    state.items[item_id].correct_input = Boolean(data.correct);
+                    state.items[item_id].submitting_location = false;
+                } else {
+                    delete state.items[item_id];
+                }
+                state.feedback = data.feedback;
+                if (data.finished) {
+                    state.finished = true;
+                    state.overall_feedback = data.overall_feedback;
+                }
+                applyState();
+            })
+            .fail(function (data) {
                 delete state.items[item_id];
-            }
-            state.feedback = data.feedback;
-            if (data.finished) {
-                state.finished = true;
-                state.overall_feedback = data.overall_feedback;
-            }
-            applyState();
-        });
+                applyState();
+            });
     };
 
     var submitInput = function(evt) {
@@ -236,16 +242,21 @@ function DragAndDropBlock(runtime, element, configuration) {
 
         var url = runtime.handlerUrl(element, 'do_attempt');
         var data = {val: item_id, input: input_value};
-        $.post(url, JSON.stringify(data), 'json').done(function(data) {
-            state.items[item_id].submitting_input = false;
-            state.items[item_id].correct_input = data.correct;
-            state.feedback = data.feedback;
-            if (data.finished) {
-                state.finished = true;
-                state.overall_feedback = data.overall_feedback;
-            }
-            applyState();
-        });
+        $.post(url, JSON.stringify(data), 'json')
+            .done(function(data) {
+                state.items[item_id].submitting_input = false;
+                state.items[item_id].correct_input = data.correct;
+                state.feedback = data.feedback;
+                if (data.finished) {
+                    state.finished = true;
+                    state.overall_feedback = data.overall_feedback;
+                }
+                applyState();
+            })
+            .fail(function(data) {
+                state.items[item_id].submitting_input = false;
+                applyState();
+            });
     };
 
     var closePopup = function(evt) {
@@ -293,6 +304,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                     has_value: Boolean(item_user_state && 'input' in item_user_state),
                     value : (item_user_state && item_user_state.input) || '',
                     class_name: undefined,
+                    xhr_active: (item_user_state && item_user_state.submitting_input)
                 };
                 if (input.has_value && !item_user_state.submitting_input) {
                     input.class_name = item_user_state.correct_input ? 'correct' : 'incorrect';
@@ -302,8 +314,10 @@ function DragAndDropBlock(runtime, element, configuration) {
                 value: item.id,
                 drag_disabled: Boolean(item_user_state || state.finished),
                 class_name: item_user_state && ('input' in item_user_state || item_user_state.correct_input) ? 'fade': undefined,
+                xhr_active: (item_user_state && item_user_state.submitting_location),
                 input: input,
-                content_html: item.backgroundImage ? '<img src="' + item.backgroundImage + '"/>' : item.displayName
+                content_html: item.backgroundImage ? '<img src="' + item.backgroundImage + '"/>' : item.displayName,
+                has_image: !!item.backgroundImage
             };
             if (item_user_state) {
                 itemProperties.is_placed = true;
