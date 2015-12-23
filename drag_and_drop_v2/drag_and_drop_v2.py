@@ -144,11 +144,20 @@ class DragAndDropBlock(XBlock):
                 item['inputOptions'] = 'inputOptions' in item
             return items
 
+        def title_with_points():
+            """
+            Build title using `display_name` and `weight` of this Drag and Drop exercise.
+            """
+            if self.weight == 1:
+                return "{title} (1 point possible)".format(title=self.display_name)
+            else:
+                return "{title} ({max_grade} points possible)".format(title=self.display_name, max_grade=self.weight)
+
         return {
             "zones": self.data.get('zones', []),
             "display_zone_labels": self.data.get('displayLabels', False),
             "items": items_without_answers(),
-            "title": self.display_name,
+            "title": title_with_points(),
             "show_title": self.show_title,
             "question_text": self.question_text,
             "show_question_header": self.show_question_header,

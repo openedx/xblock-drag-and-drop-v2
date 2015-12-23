@@ -8,29 +8,30 @@ The editor is fully guided. Features include:
 
 * custom target image
 * free target zone positioning and sizing
-* custom size items
+* custom zone labels
+* custom text and background colors for items
 * image items
 * decoy items that don't have a zone
 * feedback popups for both correct and incorrect attempts
 * introductory and final feedback
 
-It supports progressive grading and keeps progress across
+The XBlock supports progressive grading and keeps progress across
 refreshes. All checking and record keeping is done on the server side.
 
-The screenshot shows the Drag and Drop XBlock rendered inside the edX
-LMS before starting before the user starts solving the problem:
+The following screenshot shows the Drag and Drop XBlock rendered
+inside the edX LMS before the user starts solving the problem:
 
 ![Student view start](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/5ff71f56ba454c66d8f2749bc1d55d5f1df3b792/doc/img/student-view-start.png)
 
 This screenshot shows the XBlock after the student successfully
-completed the drag and drop problem:
+completed the Drag and Drop problem:
 
 ![Student view finish](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/5ff71f56ba454c66d8f2749bc1d55d5f1df3b792/doc/img/student-view-finish.png)
 
 Installation
 ------------
 
-Install the requirements into the python virtual environment of your
+Install the requirements into the Python virtual environment of your
 `edx-platform` installation by running the following command from the
 root folder:
 
@@ -41,12 +42,12 @@ $ pip install -e .
 Enabling in Studio
 ------------------
 
-You can enable the Drag and Drop XBlock in studio through the advanced
-settings.
+You can enable the Drag and Drop XBlock in Studio through the Advanced
+Settings.
 
 1. From the main page of a specific course, navigate to `Settings ->
    Advanced Settings` from the top menu.
-2. Check for the `advanced_modules` policy key, and add
+2. Check for the `Advanced Module List` policy key, and add
    `"drag-and-drop-v2"` to the policy value list.
 3. Click the "Save changes" button.
 
@@ -54,13 +55,13 @@ Usage
 -----
 
 The Drag and Drop XBlock features an interactive editor. Add the Drag
-and Drop component to a lesson, then click the 'Edit' button.
+and Drop component to a lesson, then click the `EDIT` button.
 
 ![Edit view](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/5ff71f56ba454c66d8f2749bc1d55d5f1df3b792/doc/img/edit-view.png)
 
 In the first step, you can set some basic properties of the component,
-such as the title, question text that rendered above the background
-image, the introduction feedback (shown initially) and the final
+such as the title, the question text to render above the background
+image, the introductory feedback (shown initially) and the final
 feedback (shown after the student successfully completes the drag and
 drop problem).
 
@@ -69,21 +70,31 @@ drop problem).
 In the next step, you set the background image URL and define the
 properties of the drop zones. The properties include the title/text
 rendered in the drop zone, the zone's dimensions and position
-coordinates. You can define an arbitrary number of drop zones as long
-as their titles are unique.
+coordinates. In this step you can also specify whether you would like
+zone labels to be shown to students or not. It is possible to define
+an arbitrary number of drop zones as long as their titles are unique.
 
 ![Drag item edit](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/5ff71f56ba454c66d8f2749bc1d55d5f1df3b792/doc/img/edit-view-items.png)
 
 In the final step, you define the drag items. A drag item can contain
-either text or an image. You can define the success and error feedback
-texts. The feedback text is displayed in a popup after the student
-drops the item into a zone - the success feedback is shown if the item
-is dropped into the correct zone, while the error feedback is shown
-when dropping the item into a wrong drop zone.
+either text or an image. You can define custom success and error feedback
+for each item. The feedback text is displayed in a popup after the student
+drops the item on a zone - the success feedback is shown if the item
+is dropped on the correct zone, while the error feedback is shown
+when dropping the item on an incorrect drop zone.
+
+Additionally, items can have a numerical value (and an optional error
+margin) associated with them. When a student drops an item that has a
+numerical value on the correct zone, an input field for entering a
+value is shown next to the item. The value that the student submits is
+checked against the expected value for the item. If you also specify a
+margin, the value entered by the student will be considered correct if
+it does not differ from the expected value by more than that margin
+(and incorrect otherwise).
 
 ![Zone dropdown](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/5ff71f56ba454c66d8f2749bc1d55d5f1df3b792/doc/img/edit-view-zone-dropdown.png)
 
-The zone that the item belongs is selected from a dropdown that
+The zone that an item belongs to is selected from a dropdown that
 includes all drop zones defined in the previous step and a `none`
 option that can be used for "decoy" items - items that don't belong to
 any zone.

@@ -31,7 +31,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         items = config.pop("items")
         self.assertEqual(config, {
             "display_zone_labels": False,
-            "title": "Drag and Drop",
+            "title": "Drag and Drop (1 point possible)",
             "show_title": True,
             "question_text": "",
             "show_question_header": True,
@@ -44,8 +44,8 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         self.assertEqual(zones, [
             {
                 "index": 1,
-                "title": "Zone 1",
                 "id": "zone-1",
+                "title": "The Top Zone",
                 "x": 160,
                 "y": 30,
                 "width": 196,
@@ -53,19 +53,29 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             },
             {
                 "index": 2,
-                "title": "Zone 2",
                 "id": "zone-2",
+                "title": "The Middle Zone",
                 "x": 86,
                 "y": 210,
                 "width": 340,
-                "height": 140,
+                "height": 138,
+            },
+            {
+                "index": 3,
+                "id": "zone-3",
+                "title": "The Bottom Zone",
+                "x": 15,
+                "y": 350,
+                "width": 485,
+                "height": 135,
             }
         ])
         # Items should contain no answer data:
         self.assertEqual(items, [
-            {"id": 0, "displayName": "1", "imageURL": "", "inputOptions": False},
-            {"id": 1, "displayName": "2", "imageURL": "", "inputOptions": False},
-            {"id": 2, "displayName": "X", "imageURL": "", "inputOptions": False},
+            {"id": 0, "displayName": "Goes to the top", "imageURL": "", "inputOptions": False},
+            {"id": 1, "displayName": "Goes to the middle", "imageURL": "", "inputOptions": False},
+            {"id": 2, "displayName": "Goes to the bottom", "imageURL": "", "inputOptions": False},
+            {"id": 3, "displayName": "I don't belong anywhere", "imageURL": "", "inputOptions": False},
         ])
 
     def test_ajax_solve_and_reset(self):
@@ -81,10 +91,12 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             })
         assert_user_state_empty()
 
-        # Drag both items into the correct spot:
-        data = {"val": 0, "zone": "Zone 1", "x_percent": "33%", "y_percent": "11%"}
+        # Drag three items into the correct spot:
+        data = {"val": 0, "zone": "The Top Zone", "x_percent": "33%", "y_percent": "11%"}
         self.call_handler('do_attempt', data)
-        data = {"val": 1, "zone": "Zone 2", "x_percent": "67%", "y_percent": "80%"}
+        data = {"val": 1, "zone": "The Middle Zone", "x_percent": "67%", "y_percent": "80%"}
+        self.call_handler('do_attempt', data)
+        data = {"val": 2, "zone": "The Bottom Zone", "x_percent": "99%", "y_percent": "95%"}
         self.call_handler('do_attempt', data)
 
         # Check the result:
@@ -92,11 +104,13 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         self.assertEqual(self.block.item_state, {
             '0': {'x_percent': '33%', 'y_percent': '11%'},
             '1': {'x_percent': '67%', 'y_percent': '80%'},
+            '2': {'x_percent': '99%', 'y_percent': '95%'},
         })
         self.assertEqual(self.call_handler('get_user_state'), {
             'items': {
                 '0': {'x_percent': '33%', 'y_percent': '11%', 'correct_input': True},
                 '1': {'x_percent': '67%', 'y_percent': '80%', 'correct_input': True},
+                '2': {'x_percent': '99%', 'y_percent': '95%', 'correct_input': True},
             },
             'finished': True,
             'overall_feedback': DEFAULT_FINISH_FEEDBACK,

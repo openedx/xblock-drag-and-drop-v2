@@ -20,7 +20,7 @@
                     </label>
 
                     <h3>{% trans "Maximum score" %}</h3>
-                    <input class="weight" value="1" value="{{ self.weight }}"/>
+                    <input class="weight" value="1" value="{{ self.weight }}" />
 
                     <h3>{% trans "Question text" %}</h3>
                     <textarea class="question-text">{{ self.question_text }}</textarea>
@@ -30,7 +30,7 @@
                       {% trans "Show \"Question\" heading" %}
                     </label>
 
-                    <h3>{% trans "Introduction Feedback" %}</h3>
+                    <h3>{% trans "Introductory Feedback" %}</h3>
                     <textarea class="intro-feedback">{{ self.data.feedback.start }}</textarea>
 
                     <h3>{% trans "Final Feedback" %}</h3>
@@ -48,7 +48,10 @@
                     <h3 id="background-url-label">
                         {% trans "Background URL" %}
                     </h3>
-                    <input type="text" class="url-input" aria-labelledby="background-url-label">
+                    <input type="text"
+                           class="url-input"
+                           aria-labelledby="background-url-label"
+                           placeholder="e.g. http://example.com/background.png or /static/background.png">
                     <h3 id="background-description-label">
                         {% trans "Background description" %}
                     </h3>
