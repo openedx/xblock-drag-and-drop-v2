@@ -1,11 +1,9 @@
 import unittest
 
-from ..utils import (
-    DEFAULT_START_FEEDBACK,
-    DEFAULT_FINISH_FEEDBACK,
-    make_block,
-    TestCaseMixin,
+from drag_and_drop_v2.default_data import (
+    TARGET_IMG_DESCRIPTION, START_FEEDBACK, FINISH_FEEDBACK, DEFAULT_DATA
 )
+from ..utils import make_block, TestCaseMixin
 
 
 class BasicTests(TestCaseMixin, unittest.TestCase):
@@ -31,45 +29,17 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         items = config.pop("items")
         self.assertEqual(config, {
             "display_zone_labels": False,
-            "title": "Drag and Drop (1 point possible)",
+            "title": "Drag and Drop",
             "show_title": True,
             "question_text": "",
             "show_question_header": True,
             "target_img_expanded_url": '/expanded/url/to/drag_and_drop_v2/public/img/triangle.png',
-            "target_img_description": "",
+            "target_img_description": TARGET_IMG_DESCRIPTION,
             "item_background_color": None,
             "item_text_color": None,
-            "initial_feedback": DEFAULT_START_FEEDBACK,
+            "initial_feedback": START_FEEDBACK,
         })
-        self.assertEqual(zones, [
-            {
-                "index": 1,
-                "id": "zone-1",
-                "title": "The Top Zone",
-                "x": 160,
-                "y": 30,
-                "width": 196,
-                "height": 178,
-            },
-            {
-                "index": 2,
-                "id": "zone-2",
-                "title": "The Middle Zone",
-                "x": 86,
-                "y": 210,
-                "width": 340,
-                "height": 138,
-            },
-            {
-                "index": 3,
-                "id": "zone-3",
-                "title": "The Bottom Zone",
-                "x": 15,
-                "y": 350,
-                "width": 485,
-                "height": 135,
-            }
-        ])
+        self.assertEqual(zones, DEFAULT_DATA["zones"])
         # Items should contain no answer data:
         self.assertEqual(items, [
             {"id": 0, "displayName": "Goes to the top", "imageURL": "", "inputOptions": False},
@@ -87,7 +57,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             self.assertEqual(self.call_handler("get_user_state"), {
                 'items': {},
                 'finished': False,
-                'overall_feedback': DEFAULT_START_FEEDBACK,
+                'overall_feedback': START_FEEDBACK,
             })
         assert_user_state_empty()
 
@@ -113,7 +83,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
                 '2': {'x_percent': '99%', 'y_percent': '95%', 'correct_input': True},
             },
             'finished': True,
-            'overall_feedback': DEFAULT_FINISH_FEEDBACK,
+            'overall_feedback': FINISH_FEEDBACK,
         })
 
         # Reset to initial conditions

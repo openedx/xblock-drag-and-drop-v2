@@ -203,15 +203,8 @@
 
 .xblock--drag-and-drop--editor .items-form .item-numerical-value,
 .xblock--drag-and-drop--editor .items-form .item-numerical-margin {
-    margin-right: 1%;
-}
-
-.xblock--drag-and-drop--editor .items-form .item-numerical-value {
-    width: 620px;
-}
-
-.xblock--drag-and-drop--editor .items-form .item-numerical-margin {
-    width: 578px;
+    margin: 0 1%;
+    width: 50%;
 }
 
 .xblock--drag-and-drop--editor .items-form textarea {

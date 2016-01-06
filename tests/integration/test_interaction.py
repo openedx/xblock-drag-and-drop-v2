@@ -1,5 +1,6 @@
 from selenium.webdriver import ActionChains
 
+from drag_and_drop_v2.default_data import START_FEEDBACK, FINISH_FEEDBACK
 from .test_base import BaseIntegrationTest
 from ..utils import load_resource
 
@@ -161,8 +162,8 @@ class BasicInteractionTest(InteractionTestBase):
     all_zones = ['Zone 1', 'Zone 2']
 
     feedback = {
-        "intro": "Drag the items onto the image above.",
-        "final": "Good work! You have completed this drag and drop exercise."
+        "intro": START_FEEDBACK,
+        "final": FINISH_FEEDBACK,
     }
 
     def _get_scenario_xml(self):  # pylint: disable=no-self-use

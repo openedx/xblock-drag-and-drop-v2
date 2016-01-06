@@ -20,7 +20,7 @@
                     </label>
 
                     <h3>{% trans "Maximum score" %}</h3>
-                    <input class="weight" value="1" value="{{ self.weight }}" />
+                    <input type="number" step="0.1" class="weight" value="1" value="{{ self.weight }}" />
 
                     <h3>{% trans "Question text" %}</h3>
                     <textarea class="question-text">{{ self.question_text }}</textarea>
@@ -51,7 +51,7 @@
                     <input type="text"
                            class="url-input"
                            aria-labelledby="background-url-label"
-                           placeholder="e.g. http://example.com/background.png or /static/background.png">
+                           placeholder="{% trans 'e.g. http://example.com/background.png or /static/background.png' %}">
                     <h3 id="background-description-label">
                         {% trans "Background description" %}
                     </h3>

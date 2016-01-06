@@ -1,5 +1,5 @@
 {
-    "title": "DnDv2 XBlock with plain text instructions (1 point possible)",
+    "title": "DnDv2 XBlock with plain text instructions",
     "show_title": true,
     "question_text": "Can you solve this drag-and-drop problem?",
     "show_question_header": true,
