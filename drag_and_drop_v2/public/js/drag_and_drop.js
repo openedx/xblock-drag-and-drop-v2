@@ -19,10 +19,12 @@ function DragAndDropBlock(runtime, element, configuration) {
     var SPC = 32;
     var TAB = 9;
     var M = 77;
+    var QUESTION_MARK = 63;
 
     var ctrlDown = false;
     var placementMode = false;
     var $selectedItem;
+    var $focusedElement;
 
     var init = function() {
         // Load the current user state, and load the image, then render the block.
@@ -35,22 +37,89 @@ function DragAndDropBlock(runtime, element, configuration) {
             $.ajax(runtime.handlerUrl(element, 'get_user_state'), {dataType: 'json'}),
             loadBackgroundImage()
         ).done(function(stateResult, bgImg){
+            // Render exercise
             configuration.zones.forEach(function (zone) {
                 computeZoneDimension(zone, bgImg.width, bgImg.height);
             });
             state = stateResult[0]; // stateResult is an array of [data, statusText, jqXHR]
             migrateState(bgImg.width, bgImg.height);
             applyState();
+
+            // Set up event handlers
             initDroppable();
 
             $(document).on('keydown mousedown touchstart', closePopup);
+            $(document).on('keypress', function(evt) {
+                if (evt.which === QUESTION_MARK) {
+                    showKeyboardHelp(evt);
+                }
+            });
+            $element.on('click', '.keyboard-help-button', showKeyboardHelp);
+            $element.on('keydown', '.keyboard-help-button', function(evt) {
+                if (evt.which === RET) {
+                    showKeyboardHelp(evt);
+                }
+            });
             $element.on('click', '.reset-button', resetExercise);
             $element.on('click', '.submit-input', submitInput);
 
+            // Indicate that exercise is done loading
             publishEvent({event_type: 'xblock.drag-and-drop-v2.loaded'});
         }).fail(function() {
             $root.text(gettext("An error occurred. Unable to load drag and drop exercise."));
         });
+    };
+
+    var keyboardEventDispatcher = function(evt) {
+        if (evt.which === TAB) {
+            trapFocus(evt);
+        } else if (evt.which === ESC) {
+            hideKeyboardHelp(evt);
+        }
+    };
+
+    var trapFocus = function(evt) {
+        if (evt.which === TAB) {
+            evt.preventDefault();
+            focusModalButton();
+        }
+    };
+
+    var focusModalButton = function() {
+        $root.find('.keyboard-help-dialog .dismiss-modal-button ').focus();
+    };
+
+    var showKeyboardHelp = function(evt) {
+        evt.preventDefault();
+
+        // Show dialog
+        var $keyboardHelpDialog = $root.find('.keyboard-help-dialog');
+        $keyboardHelpDialog.find('.modal-window-overlay').show();
+        $keyboardHelpDialog.find('.modal-window').show();
+
+        // Handle focus
+        $focusedElement = $(':focus');
+        focusModalButton();
+
+        // Set up event handlers
+        $(document).on('keydown', keyboardEventDispatcher);
+        $keyboardHelpDialog.find('.dismiss-modal-button').on('click', hideKeyboardHelp);
+    };
+
+    var hideKeyboardHelp = function(evt) {
+        evt.preventDefault();
+
+        // Hide dialog
+        var $keyboardHelpDialog = $root.find('.keyboard-help-dialog');
+        $keyboardHelpDialog.find('.modal-window-overlay').hide();
+        $keyboardHelpDialog.find('.modal-window').hide();
+
+        // Handle focus
+        $focusedElement.focus();
+
+        // Remove event handlers
+        $(document).off('keydown', keyboardEventDispatcher);
+        $keyboardHelpDialog.find('.dismiss-modal-button').off();
     };
 
     /** Asynchronously load the main background image used for this block. */
