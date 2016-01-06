@@ -53,8 +53,12 @@
     };
 
     var itemTemplate = function(item) {
-        var style = {};
+        // Define properties
         var className = (item.class_name) ? item.class_name : "";
+        if (item.has_image) {
+            className += " " + "option-with-image";
+        }
+        var style = {};
         var tabindex = 0;
         if (item.background_color) {
             style['background-color'] = item.background_color;
@@ -71,13 +75,28 @@
             tabindex = -1;  // If an item has been placed it can no longer be interacted with,
                             // so remove the ability to move focus to it using the keyboard
         }
-        if (item.has_image) {
-            className += " " + "option-with-image";
-        }
-        var content_html = item.displayName;
+        // Define children
+        var children = [
+            itemSpinnerTemplate(item.xhr_active),
+            itemInputTemplate(item.input)
+        ];
+        var item_content_html = item.displayName;
         if (item.imageURL) {
-            content_html = '<img src="' + item.imageURL + '" alt="' + item.imageDescription + '" />';
+            item_content_html = '<img src="' + item.imageURL + '" alt="' + item.imageDescription + '" />';
         }
+        var item_content = h('div', { innerHTML: item_content_html, className: "item-content" });
+        if (item.is_placed) {
+            // Insert information about zone in which this item has been placed
+            var item_description_id = 'item-' + item.value + '-description';
+            item_content.properties.attributes = { 'aria-describedby': item_description_id };
+            var item_description = h(
+                'div',
+                { id: item_description_id, className: 'sr' },
+                gettext('Correctly placed in: ') + item.zone
+            );
+            children.splice(1, 0, item_description);
+        }
+        children.splice(1, 0, item_content);
         return (
             h('div.option',
                 {
@@ -91,11 +110,7 @@
                         'data-drag-disabled': item.drag_disabled
                     },
                     style: style
-                }, [
-                    itemSpinnerTemplate(item.xhr_active),
-                    h('div', {innerHTML: content_html, className: "item-content"}),
-                    itemInputTemplate(item.input)
-                ]
+                }, children
             )
         );
     };
@@ -156,10 +171,17 @@
                 h('section.drag-container', [
                     h('div.item-bank', renderCollection(itemTemplate, items_in_bank, ctx)),
                     h('div.target', [
-                        h('div.popup', {style: {display: ctx.popup_html ? 'block' : 'none'}}, [
-                            h('div.close.icon-remove-sign.fa-times-circle'),
-                            h('p.popup-content', {innerHTML: ctx.popup_html}),
-                        ]),
+                        h(
+                            'div.popup',
+                            {
+                                style: {display: ctx.popup_html ? 'block' : 'none'},
+                                attributes: {'aria-live': 'polite'}
+                            },
+                            [
+                                h('div.close.icon-remove-sign.fa-times-circle'),
+                                h('p.popup-content', {innerHTML: ctx.popup_html}),
+                            ]
+                        ),
                         h('div.target-img-wrapper', [
                             h('img.target-img', {src: ctx.target_img_src, alt: ctx.target_img_description}),
                         ]),

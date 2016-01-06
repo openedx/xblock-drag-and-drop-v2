@@ -220,7 +220,7 @@ class DragAndDropBlock(XBlock):
 
     @XBlock.json_handler
     def do_attempt(self, attempt, suffix=''):
-        item = next(i for i in self.data['items'] if i['id'] == attempt['val'])
+        item = self._get_item_definition(attempt['val'])
 
         state = None
         feedback = item['feedback']['incorrect']
@@ -250,6 +250,7 @@ class DragAndDropBlock(XBlock):
                 is_correct = True
                 feedback = item['feedback']['correct']
             state = {
+                'zone': attempt['zone'],
                 'x_percent': attempt['x_percent'],
                 'y_percent': attempt['y_percent'],
             }
@@ -349,8 +350,13 @@ class DragAndDropBlock(XBlock):
         """ Get all user-specific data, and any applicable feedback """
         item_state = self._get_item_state()
         for item_id, item in item_state.iteritems():
-            definition = next(i for i in self.data['items'] if str(i['id']) == item_id)
+            definition = self._get_item_definition(int(item_id))
             item['correct_input'] = self._is_correct_input(definition, item.get('input'))
+            # If information about zone is missing
+            # (because exercise was completed before a11y enhancements were implemented),
+            # deduce zone in which item is placed from definition:
+            if item.get('zone') is None:
+                item['zone'] = definition.get('zone', 'unknown')
 
         is_finished = self._is_finished()
         return {
@@ -373,6 +379,12 @@ class DragAndDropBlock(XBlock):
                 state[item_id] = {'top': item[0], 'left': item[1]}
 
         return state
+
+    def _get_item_definition(self, item_id):
+        """
+        Returns definition (settings) for item identified by `item_id`.
+        """
+        return next(i for i in self.data['items'] if i['id'] == item_id)
 
     def _get_grade(self):
         """

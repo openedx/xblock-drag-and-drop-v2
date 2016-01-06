@@ -12,6 +12,18 @@ function DragAndDropBlock(runtime, element, configuration) {
     var state = undefined;
     var __vdom = virtualDom.h();  // blank virtual DOM
 
+    // Keyboard accessibility
+    var CTRL = 17;
+    var ESC = 27;
+    var RET = 13;
+    var SPC = 32;
+    var TAB = 9;
+    var M = 77;
+
+    var ctrlDown = false;
+    var placementMode = false;
+    var $selectedItem;
+
     var init = function() {
         // Load the current user state, and load the image, then render the block.
         // We load the user state via AJAX rather than passing it in statically (like we do with
@@ -31,7 +43,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             applyState();
             initDroppable();
 
-            $(document).on('mousedown touchstart', closePopup);
+            $(document).on('keydown mousedown touchstart', closePopup);
             $element.on('click', '.reset-button', resetExercise);
             $element.on('click', '.submit-input', submitInput);
 
@@ -127,40 +139,142 @@ function DragAndDropBlock(runtime, element, configuration) {
         });
     };
 
+    var isCycleKey = function(key) {
+        return !ctrlDown && key === TAB;
+    };
+
+    var isCancelKey = function(key) {
+        return !ctrlDown && key === ESC;
+    };
+
+    var isActionKey = function(key) {
+        if (ctrlDown) {
+            return key === M;
+        }
+        return key === RET || key === SPC;
+    };
+
+    var focusNextZone = function(evt, $currentZone) {
+        if (evt.shiftKey) {  // Going backward
+            var isFirstZone = $currentZone.prev('.zone').length === 0;
+            if (isFirstZone) {
+                evt.preventDefault();
+                $root.find('.target .zone').last().focus();
+            }
+        } else {  // Going forward
+            var isLastZone = $currentZone.next('.zone').length === 0;
+            if (isLastZone) {
+                evt.preventDefault();
+                $root.find('.target .zone').first().focus();
+            }
+        }
+    };
+
+    var placeItem = function($zone, $item) {
+        var item_id;
+        var $anchor;
+        if ($item !== undefined) {
+            item_id = $item.data('value');
+            // Element was placed using the mouse,
+            // so use relevant properties of *item* when calculating new position below.
+            $anchor = $item;
+        } else {
+            item_id = $selectedItem.data('value');
+            // Element was placed using the keyboard,
+            // so use relevant properties of *zone* when calculating new position below.
+            $anchor = $zone;
+        }
+        var zone = $zone.data('zone');
+        var $target_img = $root.find('.target-img');
+
+        // Calculate the position of the item to place relative to the image.
+        var x_pos = $anchor.offset().left + ($anchor.outerWidth()/2) - $target_img.offset().left;
+        var y_pos = $anchor.offset().top + ($anchor.outerHeight()/2) - $target_img.offset().top;
+        var x_pos_percent = x_pos / $target_img.width() * 100;
+        var y_pos_percent = y_pos / $target_img.height() * 100;
+
+        state.items[item_id] = {
+            zone: zone,
+            x_percent: x_pos_percent,
+            y_percent: y_pos_percent,
+            submitting_location: true,
+        };
+        // Wrap in setTimeout to let the droppable event finish.
+        setTimeout(function() {
+            applyState();
+            submitLocation(item_id, zone, x_pos_percent, y_pos_percent);
+        }, 0);
+    };
+
     var initDroppable = function() {
+        // Set up zones for keyboard interaction
+        $root.find('.zone').each(function() {
+            var $zone = $(this);
+            $zone.on('keydown', function(evt) {
+                if (placementMode) {
+                    var key = evt.which;
+                    if (key === CTRL) {
+                        ctrlDown = true;
+                        return;
+                    }
+                    if (isCycleKey(key)) {
+                        focusNextZone(evt, $zone);
+                    } else if (isCancelKey(key)) {
+                        evt.preventDefault();
+                        placementMode = false;
+                    } else if (isActionKey(key)) {
+                        evt.preventDefault();
+                        placementMode = false;
+                        placeItem($zone);
+                    }
+                }
+            });
+            $zone.on('keyup', function(evt) {
+                if (evt.which === CTRL) {
+                    ctrlDown = false;
+                }
+            });
+        });
+
+        // Make zone accept items that are dropped using the mouse
         $root.find('.zone').droppable({
             accept: '.xblock--drag-and-drop .item-bank .option',
             tolerance: 'pointer',
             drop: function(evt, ui) {
-                var item_id = ui.draggable.data('value');
-                var zone = $(this).data('zone');
-                var $target_img = $root.find('.target-img');
-
-                // Calculate the position of the center of the dropped element relative to
-                // the image.
-                var x_pos = (ui.helper.offset().left + (ui.helper.outerWidth()/2) - $target_img.offset().left);
-                var x_pos_percent = x_pos / $target_img.width() * 100;
-                var y_pos = (ui.helper.offset().top + (ui.helper.outerHeight()/2) - $target_img.offset().top);
-                var y_pos_percent = y_pos / $target_img.height() * 100;
-
-                state.items[item_id] = {
-                    x_percent: x_pos_percent,
-                    y_percent: y_pos_percent,
-                    submitting_location: true,
-                };
-                // Wrap in setTimeout to let the droppable event finish.
-                setTimeout(function() {
-                    applyState();
-                    submitLocation(item_id, zone, x_pos_percent, y_pos_percent);
-                }, 0);
+                var $zone = $(this);
+                var $item = ui.helper;
+                placeItem($zone, $item);
             }
         });
     };
 
     var initDraggable = function() {
         $root.find('.item-bank .option').not('[data-drag-disabled=true]').each(function() {
+            var $item = $(this);
+
+            // Allow item to be "picked up" using the keyboard
+            $item.on('keydown', function(evt) {
+                var key = evt.which;
+                if (key === CTRL) {
+                    ctrlDown = true;
+                    return;
+                }
+                if (isActionKey(key)) {
+                    evt.preventDefault();
+                    placementMode = true;
+                    $selectedItem = $item;
+                    $root.find('.target .zone').first().focus();
+                }
+            });
+            $item.on('keyup', function(evt) {
+                if (evt.which === CTRL) {
+                    ctrlDown = false;
+                }
+            });
+
+            // Make item draggable using the mouse
             try {
-                $(this).draggable({
+                $item.draggable({
                     containment: $root.find('.xblock--drag-and-drop .drag-container'),
                     cursor: 'move',
                     stack: $root.find('.xblock--drag-and-drop .item-bank .option'),
@@ -198,8 +312,12 @@ function DragAndDropBlock(runtime, element, configuration) {
 
     var destroyDraggable = function() {
         $root.find('.item-bank .option[data-drag-disabled=true]').each(function() {
+            var $item = $(this);
+
+            $item.off();
+
             try {
-                $(this).draggable('destroy');
+                $item.draggable('destroy');
             } catch (e) {
                 // Destroying the draggable will fail if draggable was
                 // not initialized in the first place. Ignore the exception.
@@ -345,6 +463,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             };
             if (item_user_state) {
                 itemProperties.is_placed = true;
+                itemProperties.zone = item_user_state.zone;
                 itemProperties.x_percent = item_user_state.x_percent;
                 itemProperties.y_percent = item_user_state.y_percent;
             }
