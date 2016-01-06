@@ -52,10 +52,11 @@ function DragAndDropBlock(runtime, element, configuration) {
                 promise.reject();
             }
         }, false);
-        img.addEventListener("error", function() { promise.reject() });
+        img.addEventListener("error", function() { promise.reject(); });
         img.src = configuration.target_img_expanded_url;
+        img.alt = configuration.target_img_description;
         return promise;
-    }
+    };
 
     /** Zones are specified in the configuration via pixel values - convert to percentages */
     var computeZoneDimension = function(zone, bg_image_width, bg_image_height) {
@@ -167,10 +168,17 @@ function DragAndDropBlock(runtime, element, configuration) {
                     revertDuration: 150,
                     start: function(evt, ui) {
                         var item_id = $(this).data('value');
+                        setGrabbedState(item_id, true);
+                        updateDOM();
                         publishEvent({
                             event_type: 'xblock.drag-and-drop-v2.item.picked-up',
                             item_id: item_id
                         });
+                    },
+                    stop: function(evt, ui) {
+                        var item_id = $(this).data('value');
+                        setGrabbedState(item_id, false);
+                        updateDOM();
                     }
                 });
             } catch (e) {
@@ -178,6 +186,14 @@ function DragAndDropBlock(runtime, element, configuration) {
                 // initialized. That's expected, ignore the exception.
             }
         });
+    };
+
+    var setGrabbedState = function(item_id, grabbed) {
+        for (var i = 0; i < configuration.items.length; i++) {
+            if (configuration.items[i].id === item_id) {
+                configuration.items[i].grabbed = grabbed;
+            }
+        }
     };
 
     var destroyDraggable = function() {
@@ -310,14 +326,22 @@ function DragAndDropBlock(runtime, element, configuration) {
                     input.class_name = item_user_state.correct_input ? 'correct' : 'incorrect';
                 }
             }
+            var imageURL = item.imageURL || item.backgroundImage;  // Fall back on "backgroundImage" to be backward-compatible
+            var grabbed = false;
+            if (item.grabbed !== undefined) {
+                grabbed = item.grabbed;
+            }
             var itemProperties = {
                 value: item.id,
                 drag_disabled: Boolean(item_user_state || state.finished),
                 class_name: item_user_state && ('input' in item_user_state || item_user_state.correct_input) ? 'fade': undefined,
                 xhr_active: (item_user_state && item_user_state.submitting_location),
                 input: input,
-                content_html: item.backgroundImage ? '<img src="' + item.backgroundImage + '"/>' : item.displayName,
-                has_image: !!item.backgroundImage
+                displayName: item.displayName,
+                imageURL: imageURL,
+                imageDescription: item.imageDescription,
+                has_image: !!imageURL,
+                grabbed: grabbed,
             };
             if (item_user_state) {
                 itemProperties.is_placed = true;
@@ -340,6 +364,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             question_html: configuration.question_text,
             show_question_header: configuration.show_question_header,
             target_img_src: configuration.target_img_expanded_url,
+            target_img_description: configuration.target_img_description,
             display_zone_labels: configuration.display_zone_labels,
             zones: configuration.zones,
             items: items,

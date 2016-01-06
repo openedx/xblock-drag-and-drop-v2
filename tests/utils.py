@@ -10,9 +10,6 @@ from xblock.runtime import KvsFieldData, DictKeyValueStore
 
 import drag_and_drop_v2
 
-DEFAULT_START_FEEDBACK = "Drag the items onto the image above."
-DEFAULT_FINISH_FEEDBACK = "Good work! You have completed this drag and drop exercise."
-
 
 def make_request(data, method='POST'):
     """ Make a webob JSON Request """

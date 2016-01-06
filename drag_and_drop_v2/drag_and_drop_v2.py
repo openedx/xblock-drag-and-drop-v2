@@ -153,6 +153,7 @@ class DragAndDropBlock(XBlock):
             "question_text": self.question_text,
             "show_question_header": self.show_question_header,
             "target_img_expanded_url": self.target_img_expanded_url,
+            "target_img_description": self.target_img_description,
             "item_background_color": self.item_background_color or None,
             "item_text_color": self.item_text_color or None,
             "initial_feedback": self.data['feedback']['start'],
@@ -327,6 +328,11 @@ class DragAndDropBlock(XBlock):
             return self._expand_static_url(self.data["targetImg"])
         else:
             return self.default_background_image_url
+
+    @property
+    def target_img_description(self):
+        """ Get the description for the target image (the image items are dragged onto). """
+        return self.data.get("targetImgDescription", "")
 
     @property
     def default_background_image_url(self):

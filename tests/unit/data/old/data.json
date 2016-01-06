@@ -27,7 +27,7 @@
         "correct": "Yes 1"
       },
       "zone": "Zone 1",
-      "backgroundImage": "",
+      "imageURL": "",
       "id": 0,
       "size": {
         "width": "190px",
@@ -41,7 +41,7 @@
         "correct": "Yes 2"
       },
       "zone": "Zone 2",
-      "backgroundImage": "",
+      "imageURL": "",
       "id": 1,
       "size": {
         "width": "190px",
@@ -59,7 +59,7 @@
         "correct": ""
       },
       "zone": "none",
-      "backgroundImage": "",
+      "imageURL": "",
       "id": 2,
       "size": {
         "width": "100px",
@@ -73,7 +73,7 @@
         "correct": ""
       },
       "zone": "none",
-      "backgroundImage": "http://i1.kym-cdn.com/entries/icons/square/000/006/151/tumblr_lltzgnHi5F1qzib3wo1_400.jpg",
+      "imageURL": "http://i1.kym-cdn.com/entries/icons/square/000/006/151/tumblr_lltzgnHi5F1qzib3wo1_400.jpg",
       "id": 3,
       "size": {
         "width": "190px",
@@ -89,5 +89,6 @@
     "start": "Intro Feed",
     "finish": "Final Feed"
   },
-  "targetImg": "http://i0.kym-cdn.com/photos/images/newsfeed/000/030/404/1260585284155.png"
+  "targetImg": "http://i0.kym-cdn.com/photos/images/newsfeed/000/030/404/1260585284155.png",
+  "targetImgDescription": "This describes the target image"
 }

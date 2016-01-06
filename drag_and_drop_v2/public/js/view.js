@@ -55,29 +55,45 @@
     var itemTemplate = function(item) {
         var style = {};
         var className = (item.class_name) ? item.class_name : "";
+        var tabindex = 0;
         if (item.background_color) {
             style['background-color'] = item.background_color;
         }
         if (item.color) {
             style.color = item.color;
+            // Ensure contrast between outline-color and background color
+            // matches contrast between text color and background color:
+            style['outline-color'] = item.color;
         }
         if (item.is_placed) {
             style.left = item.x_percent + "%";
             style.top = item.y_percent + "%";
+            tabindex = -1;  // If an item has been placed it can no longer be interacted with,
+                            // so remove the ability to move focus to it using the keyboard
         }
         if (item.has_image) {
             className += " " + "option-with-image";
+        }
+        var content_html = item.displayName;
+        if (item.imageURL) {
+            content_html = '<img src="' + item.imageURL + '" alt="' + item.imageDescription + '" />';
         }
         return (
             h('div.option',
                 {
                     key: item.value,
                     className: className,
-                    attributes: {'data-value': item.value, 'data-drag-disabled': item.drag_disabled},
+                    attributes: {
+                        'tabindex': tabindex,
+                        'draggable': !item.drag_disabled,
+                        'aria-grabbed': item.grabbed,
+                        'data-value': item.value,
+                        'data-drag-disabled': item.drag_disabled
+                    },
                     style: style
                 }, [
                     itemSpinnerTemplate(item.xhr_active),
-                    h('div', {innerHTML: item.content_html, className: "item-content"}),
+                    h('div', {innerHTML: content_html, className: "item-content"}),
                     itemInputTemplate(item.input)
                 ]
             )
@@ -85,18 +101,27 @@
     };
 
     var zoneTemplate = function(zone, ctx) {
+        var className = ctx.display_zone_labels ? 'zone-name' : 'zone-name sr';
         return (
             h(
                 'div.zone',
                 {
                     id: zone.id,
-                    attributes: {'data-zone': zone.title},
+                    attributes: {
+                        'tabindex': 0,
+                        'dropzone': 'move',
+                        'aria-dropeffect': 'move',
+                        'data-zone': zone.title
+                    },
                     style: {
                         top: zone.y_percent + '%', left: zone.x_percent + "%",
                         width: zone.width_percent + '%', height: zone.height_percent + "%",
                     }
                 },
-                ctx.display_zone_labels ? h('p', zone.title) : null
+                [
+                    h('p', { className: className }, zone.title),
+                    h('p', { className: 'zone-description sr' }, zone.description)
+                ]
             )
         );
     };
@@ -104,8 +129,9 @@
     var feedbackTemplate = function(ctx) {
         var feedback_display = ctx.feedback_html ? 'block' : 'none';
         var reset_button_display = ctx.display_reset_button ? 'block' : 'none';
+        var properties = { attributes: { 'aria-live': 'polite' } };
         return (
-            h('section.feedback', [
+            h('section.feedback', properties, [
                 h('div.reset-button', {style: {display: reset_button_display}}, gettext('Reset exercise')),
                 h('h3.title1', {style: {display: feedback_display}}, gettext('Feedback')),
                 h('p.message', {style: {display: feedback_display},
@@ -135,7 +161,7 @@
                             h('p.popup-content', {innerHTML: ctx.popup_html}),
                         ]),
                         h('div.target-img-wrapper', [
-                            h('img.target-img', {src: ctx.target_img_src, alt: "Image Description here"}),
+                            h('img.target-img', {src: ctx.target_img_src, alt: ctx.target_img_description}),
                         ]),
                         renderCollection(zoneTemplate, ctx.zones, ctx),
                         renderCollection(itemTemplate, items_placed, ctx),

@@ -1,5 +1,6 @@
 from selenium.webdriver import ActionChains
 
+from drag_and_drop_v2.default_data import START_FEEDBACK, FINISH_FEEDBACK
 from .test_base import BaseIntegrationTest
 from ..utils import load_resource
 
@@ -145,7 +146,7 @@ class InteractionTestBase(object):
             self.assertDictEqual(locations_after_reset[item_key], initial_locations[item_key])
 
 
-class InteractionTestFixture(InteractionTestBase):
+class BasicInteractionTest(InteractionTestBase):
     """
     Verifying Drag and Drop XBlock rendering against default data - if default data changes this will probably break.
     """
@@ -161,8 +162,8 @@ class InteractionTestFixture(InteractionTestBase):
     all_zones = ['Zone 1', 'Zone 2']
 
     feedback = {
-        "intro": "Drag the items onto the image above.",
-        "final": "Good work! You have completed this drag and drop exercise."
+        "intro": START_FEEDBACK,
+        "final": FINISH_FEEDBACK,
     }
 
     def _get_scenario_xml(self):  # pylint: disable=no-self-use
@@ -184,7 +185,7 @@ class InteractionTestFixture(InteractionTestBase):
         self.parameterized_final_feedback_and_reset(self.items_map, self.feedback)
 
 
-class CustomDataInteractionTest(InteractionTestFixture, BaseIntegrationTest):
+class CustomDataInteractionTest(BasicInteractionTest, BaseIntegrationTest):
     items_map = {
         0: ItemDefinition(0, 'Zone 1', "Yes 1", "No 1"),
         1: ItemDefinition(1, 'Zone 2', "Yes 2", "No 2", "102"),
@@ -202,7 +203,7 @@ class CustomDataInteractionTest(InteractionTestFixture, BaseIntegrationTest):
         return self._get_custom_scenario_xml("integration/data/test_data.json")
 
 
-class CustomHtmlDataInteractionTest(InteractionTestFixture, BaseIntegrationTest):
+class CustomHtmlDataInteractionTest(BasicInteractionTest, BaseIntegrationTest):
     items_map = {
         0: ItemDefinition(0, 'Zone <i>1</i>', "Yes <b>1</b>", "No <b>1</b>"),
         1: ItemDefinition(1, 'Zone <b>2</b>', "Yes <i>2</i>", "No <i>2</i>", "95"),

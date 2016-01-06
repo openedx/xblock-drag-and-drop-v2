@@ -29,7 +29,7 @@
         "correct": "Yes 1"
       },
       "zone": "Zone 1",
-      "backgroundImage": "",
+      "imageURL": "",
       "id": 0
     },
     {
@@ -39,7 +39,7 @@
         "correct": "Yes 2"
       },
       "zone": "Zone 2",
-      "backgroundImage": "",
+      "imageURL": "",
       "id": 1,
       "inputOptions": {
         "value": 100,
@@ -53,7 +53,7 @@
         "correct": ""
       },
       "zone": "none",
-      "backgroundImage": "",
+      "imageURL": "",
       "id": 2
     },
     {
@@ -63,7 +63,7 @@
         "correct": ""
       },
       "zone": "none",
-      "backgroundImage": "http://placehold.it/200x100",
+      "imageURL": "http://placehold.it/200x100",
       "id": 3
     }
   ],
@@ -76,5 +76,6 @@
 
 
   "targetImg": "http://placehold.it/800x600",
+  "targetImgDescription": "This describes the target image",
   "displayLabels": false
 }

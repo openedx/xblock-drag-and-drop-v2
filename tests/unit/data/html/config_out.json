@@ -4,6 +4,7 @@
     "question_text": "Solve this <strong>drag-and-drop</strong> problem.",
     "show_question_header": false,
     "target_img_expanded_url": "/expanded/url/to/drag_and_drop_v2/public/img/triangle.png",
+    "target_img_description": "This describes the target image",
     "item_background_color": "white",
     "item_text_color": "#000080",
     "initial_feedback": "HTML <strong>Intro</strong> Feed",
@@ -33,25 +34,25 @@
     "items": [
         {
           "displayName": "<b>1</b>",
-          "backgroundImage": "",
+          "imageURL": "",
           "id": 0,
           "inputOptions": false
         },
         {
           "displayName": "<i>2</i>",
-          "backgroundImage": "",
+          "imageURL": "",
           "id": 1,
           "inputOptions": true
         },
         {
           "displayName": "X",
-          "backgroundImage": "",
+          "imageURL": "",
           "id": 2,
           "inputOptions": false
         },
         {
           "displayName": "",
-          "backgroundImage": "http://placehold.it/100x300",
+          "imageURL": "http://placehold.it/100x300",
           "id": 3,
           "inputOptions": false
         }

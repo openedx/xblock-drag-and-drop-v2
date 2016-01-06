@@ -1,11 +1,9 @@
 import unittest
 
-from ..utils import (
-    DEFAULT_START_FEEDBACK,
-    DEFAULT_FINISH_FEEDBACK,
-    make_block,
-    TestCaseMixin,
+from drag_and_drop_v2.default_data import (
+    TARGET_IMG_DESCRIPTION, START_FEEDBACK, FINISH_FEEDBACK, DEFAULT_DATA
 )
+from ..utils import make_block, TestCaseMixin
 
 
 class BasicTests(TestCaseMixin, unittest.TestCase):
@@ -36,35 +34,18 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             "question_text": "",
             "show_question_header": True,
             "target_img_expanded_url": '/expanded/url/to/drag_and_drop_v2/public/img/triangle.png',
+            "target_img_description": TARGET_IMG_DESCRIPTION,
             "item_background_color": None,
             "item_text_color": None,
-            "initial_feedback": DEFAULT_START_FEEDBACK,
+            "initial_feedback": START_FEEDBACK,
         })
-        self.assertEqual(zones, [
-            {
-                "index": 1,
-                "title": "Zone 1",
-                "id": "zone-1",
-                "x": 160,
-                "y": 30,
-                "width": 196,
-                "height": 178,
-            },
-            {
-                "index": 2,
-                "title": "Zone 2",
-                "id": "zone-2",
-                "x": 86,
-                "y": 210,
-                "width": 340,
-                "height": 140,
-            }
-        ])
+        self.assertEqual(zones, DEFAULT_DATA["zones"])
         # Items should contain no answer data:
         self.assertEqual(items, [
-            {"id": 0, "displayName": "1", "backgroundImage": "", "inputOptions": False},
-            {"id": 1, "displayName": "2", "backgroundImage": "", "inputOptions": False},
-            {"id": 2, "displayName": "X", "backgroundImage": "", "inputOptions": False},
+            {"id": 0, "displayName": "Goes to the top", "imageURL": "", "inputOptions": False},
+            {"id": 1, "displayName": "Goes to the middle", "imageURL": "", "inputOptions": False},
+            {"id": 2, "displayName": "Goes to the bottom", "imageURL": "", "inputOptions": False},
+            {"id": 3, "displayName": "I don't belong anywhere", "imageURL": "", "inputOptions": False},
         ])
 
     def test_ajax_solve_and_reset(self):
@@ -76,14 +57,16 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             self.assertEqual(self.call_handler("get_user_state"), {
                 'items': {},
                 'finished': False,
-                'overall_feedback': DEFAULT_START_FEEDBACK,
+                'overall_feedback': START_FEEDBACK,
             })
         assert_user_state_empty()
 
-        # Drag both items into the correct spot:
-        data = {"val": 0, "zone": "Zone 1", "x_percent": "33%", "y_percent": "11%"}
+        # Drag three items into the correct spot:
+        data = {"val": 0, "zone": "The Top Zone", "x_percent": "33%", "y_percent": "11%"}
         self.call_handler('do_attempt', data)
-        data = {"val": 1, "zone": "Zone 2", "x_percent": "67%", "y_percent": "80%"}
+        data = {"val": 1, "zone": "The Middle Zone", "x_percent": "67%", "y_percent": "80%"}
+        self.call_handler('do_attempt', data)
+        data = {"val": 2, "zone": "The Bottom Zone", "x_percent": "99%", "y_percent": "95%"}
         self.call_handler('do_attempt', data)
 
         # Check the result:
@@ -91,14 +74,16 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         self.assertEqual(self.block.item_state, {
             '0': {'x_percent': '33%', 'y_percent': '11%'},
             '1': {'x_percent': '67%', 'y_percent': '80%'},
+            '2': {'x_percent': '99%', 'y_percent': '95%'},
         })
         self.assertEqual(self.call_handler('get_user_state'), {
             'items': {
                 '0': {'x_percent': '33%', 'y_percent': '11%', 'correct_input': True},
                 '1': {'x_percent': '67%', 'y_percent': '80%', 'correct_input': True},
+                '2': {'x_percent': '99%', 'y_percent': '95%', 'correct_input': True},
             },
             'finished': True,
-            'overall_feedback': DEFAULT_FINISH_FEEDBACK,
+            'overall_feedback': FINISH_FEEDBACK,
         })
 
         # Reset to initial conditions

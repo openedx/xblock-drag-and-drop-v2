@@ -31,4 +31,6 @@ class TestCustomDataDragAndDropRendering(BaseIntegrationTest):
             "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciI"
             "HdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIiBzdHlsZT0iYmFja2dyb3VuZDogI2VlZjsiPjwvc3ZnPg=="
         )
+        custom_image_description = "This describes the target image"
         self.assertEqual(bg_image.get_attribute("src"), custom_image_url)
+        self.assertEqual(bg_image.get_attribute("alt"), custom_image_description)

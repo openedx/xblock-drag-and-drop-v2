@@ -27,7 +27,7 @@
         "correct": "Yes 1"
       },
       "zone": "Zone 1",
-      "backgroundImage": "",
+      "imageURL": "",
       "id": 0
     },
     {
@@ -37,7 +37,7 @@
         "correct": "Yes 2"
       },
       "zone": "Zone 2",
-      "backgroundImage": "",
+      "imageURL": "",
       "id": 1,
       "inputOptions": {
         "value": 100,
@@ -51,7 +51,7 @@
         "correct": ""
       },
       "zone": "none",
-      "backgroundImage": "",
+      "imageURL": "",
       "id": 2
     }
   ],
