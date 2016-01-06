@@ -113,12 +113,20 @@
                    value="{{ height }}" />
         </div>
         <div class="row">
-          <label for="item-{{id}}-numerical-value">{{i18n "Optional numerical value"}}</label>
-          <input type="text"
+          <label for="item-{{id}}-numerical-value">
+            {{i18n "Optional numerical value (if you set this, students will be prompted for this value after dropping this item)"}}
+          </label>
+          <input type="number"
+                 step="0.1"
                  id="item-{{id}}-numerical-value"
                  class="item-numerical-value" value="{{ numericalValue }}" />
-          <label for="item-{{id}}-numerical-margin">{{i18n "Margin ±"}}</label>
-          <input type="text"
+        </div>
+        <div class="row">
+          <label for="item-{{id}}-numerical-margin">
+            {{i18n "Margin ± (when a numerical value is required, values entered by students must not differ from the expected value by more than this margin; default is zero)"}}
+          </label>
+          <input type="number"
+                 step="0.1"
                  id="item-{{id}}-numerical-margin"
                  class="item-numerical-margin" value="{{ numericalMargin }}" />
         </div>

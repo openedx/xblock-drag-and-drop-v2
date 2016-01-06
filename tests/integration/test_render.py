@@ -1,6 +1,7 @@
 from ddt import ddt, unpack, data
 from selenium.common.exceptions import NoSuchElementException
 
+from drag_and_drop_v2.default_data import START_FEEDBACK
 from ..utils import load_resource
 from .test_base import BaseIntegrationTest
 
@@ -184,7 +185,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
         feedback = self._get_feedback()
         feedback_message = self._get_feedback_message()
         self.assertEqual(feedback.get_attribute('aria-live'), 'polite')
-        self.assertEqual(feedback_message.text, "Drag the items onto the image above.")
+        self.assertEqual(feedback_message.text, START_FEEDBACK)
 
     def test_background_image(self):
         self.load_scenario()
