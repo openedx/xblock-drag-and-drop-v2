@@ -58,8 +58,13 @@
         if (item.has_image) {
             className += " " + "option-with-image";
         }
+        var attributes = {
+            'draggable': !item.drag_disabled,
+            'aria-grabbed': item.grabbed,
+            'data-value': item.value,
+            'data-drag-disabled': item.drag_disabled
+        };
         var style = {};
-        var tabindex = 0;
         if (item.background_color) {
             style['background-color'] = item.background_color;
         }
@@ -72,8 +77,9 @@
         if (item.is_placed) {
             style.left = item.x_percent + "%";
             style.top = item.y_percent + "%";
-            tabindex = -1;  // If an item has been placed it can no longer be interacted with,
-                            // so remove the ability to move focus to it using the keyboard
+        } else {
+            // If an item has not been placed it must be possible to move focus to it using the keyboard:
+            attributes.tabindex = 0;
         }
         // Define children
         var children = [
@@ -98,19 +104,15 @@
         }
         children.splice(1, 0, item_content);
         return (
-            h('div.option',
+            h(
+                'div.option',
                 {
                     key: item.value,
                     className: className,
-                    attributes: {
-                        'tabindex': tabindex,
-                        'draggable': !item.drag_disabled,
-                        'aria-grabbed': item.grabbed,
-                        'data-value': item.value,
-                        'data-drag-disabled': item.drag_disabled
-                    },
+                    attributes: attributes,
                     style: style
-                }, children
+                },
+                children
             )
         );
     };
