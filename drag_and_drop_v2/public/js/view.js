@@ -147,10 +147,13 @@
         var properties = { attributes: { 'aria-live': 'polite' } };
         return (
             h('section.feedback', properties, [
-                h('div.reset-button', {style: {display: reset_button_display}}, gettext('Reset exercise')),
-                h('h3.title1', {style: {display: feedback_display}}, gettext('Feedback')),
-                h('p.message', {style: {display: feedback_display},
-                                innerHTML: ctx.feedback_html})
+                h(
+                    'a.reset-button',
+                    { style: { display: reset_button_display }, attributes: { tabindex: 0 }},
+                    gettext('Reset exercise')
+                ),
+                h('h3.title1', { style: { display: feedback_display } }, gettext('Feedback')),
+                h('p.message', { style: { display: feedback_display }, innerHTML: ctx.feedback_html })
             ])
         );
     };

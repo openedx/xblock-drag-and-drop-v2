@@ -61,6 +61,11 @@ function DragAndDropBlock(runtime, element, configuration) {
                 }
             });
             $element.on('click', '.reset-button', resetExercise);
+            $element.on('keydown', '.reset-button', function(evt) {
+                if (evt.which === RET) {
+                    resetExercise(evt);
+                }
+            });
             $element.on('click', '.submit-input', submitInput);
 
             // Indicate that exercise is done loading
@@ -483,7 +488,8 @@ function DragAndDropBlock(runtime, element, configuration) {
         applyState();
     };
 
-    var resetExercise = function() {
+    var resetExercise = function(evt) {
+        evt.preventDefault();
         $.ajax({
             type: 'POST',
             url: runtime.handlerUrl(element, 'reset'),
