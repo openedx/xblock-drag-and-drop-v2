@@ -209,6 +209,7 @@
 
 .xblock--drag-and-drop .zone {
     position: absolute;
+    border: 1px hidden #f00;
 
     display: -webkit-box;
     display: -moz-box;

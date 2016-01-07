@@ -116,6 +116,7 @@
                     style: {
                         top: zone.y_percent + '%', left: zone.x_percent + "%",
                         width: zone.width_percent + '%', height: zone.height_percent + "%",
+                        borderStyle: ctx.display_zone_borders ? 'dotted' : 'hidden'
                     }
                 },
                 [
