@@ -228,7 +228,7 @@ class DragAndDropBlock(XBlock):
         is_correct = False
         is_correct_location = False
 
-        if 'input' in attempt:
+        if 'input' in attempt:  # Student submitted numerical value for item
             state = self._get_item_state().get(str(item['id']))
             if state:
                 state['input'] = attempt['input']
@@ -238,7 +238,7 @@ class DragAndDropBlock(XBlock):
                     feedback = item['feedback']['correct']
                 else:
                     is_correct = False
-        elif item['zone'] == attempt['zone']:
+        elif item['zone'] == attempt['zone']:  # Student placed item in zone
             is_correct_location = True
             if 'inputOptions' in item:
                 # Input value will have to be provided for the item.

@@ -87,6 +87,7 @@ class BaseDragAndDropAjaxFixture(TestCaseMixin):
         })
 
     def test_do_attempt_with_input(self):
+        # Drop item that requires numerical input
         data = {"val": 1, "zone": self.ZONE_2, "x_percent": "0%", "y_percent": "85%"}
         res = self.call_handler('do_attempt', data)
         self.assertEqual(res, {
@@ -99,13 +100,16 @@ class BaseDragAndDropAjaxFixture(TestCaseMixin):
 
         expected_state = {
             'items': {
-                "1": {"x_percent": "0%", "y_percent": "85%", "correct_input": False},
+                "1": {
+                    "x_percent": "0%", "y_percent": "85%", "correct_input": False, "zone": self.ZONE_2,
+                },
             },
             'finished': False,
             'overall_feedback': self.initial_feedback(),
         }
         self.assertEqual(expected_state, self.call_handler('get_user_state', method="GET"))
 
+        # Submit incorrect value
         data = {"val": 1, "input": "250"}
         res = self.call_handler('do_attempt', data)
         self.assertEqual(res, {
@@ -118,13 +122,17 @@ class BaseDragAndDropAjaxFixture(TestCaseMixin):
 
         expected_state = {
             'items': {
-                "1": {"x_percent": "0%", "y_percent": "85%", "input": "250", "correct_input": False},
+                "1": {
+                    "x_percent": "0%", "y_percent": "85%", "correct_input": False, "zone": self.ZONE_2,
+                    "input": "250",
+                },
             },
             'finished': False,
             'overall_feedback': self.initial_feedback(),
         }
         self.assertEqual(expected_state, self.call_handler('get_user_state', method="GET"))
 
+        # Submit correct value
         data = {"val": 1, "input": "103"}
         res = self.call_handler('do_attempt', data)
         self.assertEqual(res, {
@@ -137,7 +145,10 @@ class BaseDragAndDropAjaxFixture(TestCaseMixin):
 
         expected_state = {
             'items': {
-                "1": {"x_percent": "0%", "y_percent": "85%", "input": "103", "correct_input": True},
+                "1": {
+                    "x_percent": "0%", "y_percent": "85%", "correct_input": True, "zone": self.ZONE_2,
+                    "input": "103",
+                },
             },
             'finished': False,
             'overall_feedback': self.initial_feedback(),
@@ -177,7 +188,7 @@ class BaseDragAndDropAjaxFixture(TestCaseMixin):
 
         expected_state = {
             "items": {
-                "0": {"x_percent": "33%", "y_percent": "11%", "correct_input": True}
+                "0": {"x_percent": "33%", "y_percent": "11%", "correct_input": True, "zone": self.ZONE_1}
             },
             "finished": False,
             'overall_feedback': self.initial_feedback(),
@@ -198,8 +209,13 @@ class BaseDragAndDropAjaxFixture(TestCaseMixin):
 
         expected_state = {
             "items": {
-                "0": {"x_percent": "33%", "y_percent": "11%", "correct_input": True},
-                "1": {"x_percent": "22%", "y_percent": "22%", "input": "99", "correct_input": True}
+                "0": {
+                    "x_percent": "33%", "y_percent": "11%", "correct_input": True, "zone": self.ZONE_1,
+                },
+                "1": {
+                    "x_percent": "22%", "y_percent": "22%", "correct_input": True, "zone": self.ZONE_2,
+                    "input": "99",
+                }
             },
             "finished": True,
             'overall_feedback': self.FINAL_FEEDBACK,
