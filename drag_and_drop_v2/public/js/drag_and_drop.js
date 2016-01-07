@@ -50,21 +50,15 @@ function DragAndDropBlock(runtime, element, configuration) {
 
             $(document).on('keydown mousedown touchstart', closePopup);
             $(document).on('keypress', function(evt) {
-                if (evt.which === QUESTION_MARK) {
-                    showKeyboardHelp(evt);
-                }
+                runOnKey(evt, QUESTION_MARK, showKeyboardHelp);
             });
             $element.on('click', '.keyboard-help-button', showKeyboardHelp);
             $element.on('keydown', '.keyboard-help-button', function(evt) {
-                if (evt.which === RET) {
-                    showKeyboardHelp(evt);
-                }
+                runOnKey(evt, RET, showKeyboardHelp);
             });
             $element.on('click', '.reset-button', resetExercise);
             $element.on('keydown', '.reset-button', function(evt) {
-                if (evt.which === RET) {
-                    resetExercise(evt);
-                }
+                runOnKey(evt, RET, resetExercise);
             });
             $element.on('click', '.submit-input', submitInput);
 
@@ -73,6 +67,12 @@ function DragAndDropBlock(runtime, element, configuration) {
         }).fail(function() {
             $root.text(gettext("An error occurred. Unable to load drag and drop exercise."));
         });
+    };
+
+    var runOnKey = function(evt, key, handler) {
+        if (evt.which === key) {
+            handler(evt);
+        }
     };
 
     var keyboardEventDispatcher = function(evt) {
