@@ -249,6 +249,7 @@ function DragAndDropBlock(runtime, element) {
             feedback_html: $.trim(state.state.finished ? state.feedback.finish : state.feedback.start),
             target_img_src: state.targetImg,
             display_zone_labels: state.displayLabels,
+            display_zone_borders: state.displayBorders,
             display_reset_button: state.state.finished,
             zones: state.zones,
             items: items

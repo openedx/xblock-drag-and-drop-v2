@@ -55,7 +55,8 @@
         return (
             h('div.zone', {id: zone.id, attributes: {'data-zone': zone.title},
                            style: {top: px(zone.y), left: px(zone.x),
-                                   width: px(zone.width), height: px(zone.height)}},
+                                   width: px(zone.width), height: px(zone.height),
+                                   borderStyle: ctx.display_zone_borders ? 'dotted' : 'hidden'}},
               h('p', {style: {visibility: ctx.display_zone_labels ? 'visible': 'hidden'}}, zone.title))
         );
     };
