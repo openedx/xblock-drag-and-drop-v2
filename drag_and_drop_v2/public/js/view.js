@@ -164,25 +164,27 @@
         var dialog_attributes = { role: 'dialog', 'aria-labelledby': 'modal-window-title' };
         var dialog_style = {};
         return (
-            h('div.keyboard-help-dialog', [
-                h('div.modal-window-overlay'),
-                h('div.modal-window', { attributes: dialog_attributes, style: dialog_style }, [
-                    h('div.modal-header', [
-                        h('h2.modal-window-title', gettext('Keyboard Help'))
-                    ]),
-                    h('div.modal-content', [
-                        h('p', gettext('You can complete this exercise using only your keyboard.')),
-                        h('ul', [
-                            h('li', gettext('Use "Tab" and "Shift-Tab" to navigate between items and zones.')),
-                            h('li', gettext('Press "Enter" or "Space" on an item to select it for dropping, then navigate to the zone you want to drop it on.')),
-                            h('li', gettext('Press "Enter" or "Space" to drop the item on the current zone.')),
-                            h('li', gettext('Press "Escape" if you want to cancel the drop operation (e.g. because you would like to select a different item).')),
-                            h('li', gettext('Press "?" at any time to bring up this dialog.')),
+            h('section.keyboard-help', [
+                h('a.keyboard-help-button', { attributes: { tabindex: 0 } }, gettext('Keyboard Help')),
+                h('div.keyboard-help-dialog', [
+                    h('div.modal-window-overlay'),
+                    h('div.modal-window', { attributes: dialog_attributes, style: dialog_style }, [
+                        h('div.modal-header', [
+                            h('h2.modal-window-title', gettext('Keyboard Help'))
+                        ]),
+                        h('div.modal-content', [
+                            h('p', gettext('You can complete this exercise using only your keyboard.')),
+                            h('ul', [
+                                h('li', gettext('Use "Tab" and "Shift-Tab" to navigate between items and zones.')),
+                                h('li', gettext('Press "Enter" or "Space" on an item to select it for dropping, then navigate to the zone you want to drop it on.')),
+                                h('li', gettext('Press "Enter" or "Space" to drop the item on the current zone.')),
+                                h('li', gettext('Press "Escape" if you want to cancel the drop operation (e.g. because you would like to select a different item).')),
+                                h('li', gettext('Press "?" at any time to bring up this dialog.')),
+                            ])
+                        ]),
+                        h('div.modal-actions', [
+                            h('button.modal-dismiss-button', gettext("OK"))
                         ])
-                    ]),
-                    h('div.modal-actions', [
-                        h('h3.sr', gettext('Actions')),
-                        h('button.dismiss-modal-button', gettext("OK"))
                     ])
                 ])
             ])
@@ -222,9 +224,6 @@
                         renderCollection(zoneTemplate, ctx.zones, ctx),
                         renderCollection(itemTemplate, items_placed, ctx),
                     ]),
-                ]),
-                h('section.keyboard-help', [
-                    h('a.keyboard-help-button', { attributes: { tabindex: 0 } }, gettext('Keyboard Help'))
                 ]),
                 keyboardHelpTemplate(ctx),
                 feedbackTemplate(ctx),

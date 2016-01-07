@@ -91,7 +91,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var focusModalButton = function() {
-        $root.find('.keyboard-help-dialog .dismiss-modal-button ').focus();
+        $root.find('.keyboard-help-dialog .modal-dismiss-button ').focus();
     };
 
     var showKeyboardHelp = function(evt) {
@@ -108,7 +108,7 @@ function DragAndDropBlock(runtime, element, configuration) {
 
         // Set up event handlers
         $(document).on('keydown', keyboardEventDispatcher);
-        $keyboardHelpDialog.find('.dismiss-modal-button').on('click', hideKeyboardHelp);
+        $keyboardHelpDialog.find('.modal-dismiss-button').on('click', hideKeyboardHelp);
     };
 
     var hideKeyboardHelp = function(evt) {
@@ -124,7 +124,7 @@ function DragAndDropBlock(runtime, element, configuration) {
 
         // Remove event handlers
         $(document).off('keydown', keyboardEventDispatcher);
-        $keyboardHelpDialog.find('.dismiss-modal-button').off();
+        $keyboardHelpDialog.find('.modal-dismiss-button').off();
     };
 
     /** Asynchronously load the main background image used for this block. */

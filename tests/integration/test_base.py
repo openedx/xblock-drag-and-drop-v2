@@ -57,6 +57,21 @@ class BaseIntegrationTest(SeleniumBaseTest):
     def _get_zones(self):
         return self._page.find_elements_by_css_selector(".drag-container .zone")
 
+    def _get_popup(self):
+        return self._page.find_element_by_css_selector(".popup")
+
+    def _get_popup_content(self):
+        return self._page.find_element_by_css_selector(".popup .popup-content")
+
+    def _get_keyboard_help(self):
+        return self._page.find_element_by_css_selector(".keyboard-help")
+
+    def _get_keyboard_help_button(self):
+        return self._page.find_element_by_css_selector(".keyboard-help .keyboard-help-button")
+
+    def _get_keyboard_help_dialog(self):
+        return self._page.find_element_by_css_selector(".keyboard-help .keyboard-help-dialog")
+
     def _get_feedback(self):
         return self._page.find_element_by_css_selector(".feedback")
 

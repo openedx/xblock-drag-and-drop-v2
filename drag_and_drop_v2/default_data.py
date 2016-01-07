@@ -14,8 +14,9 @@ TOP_ZONE_DESCRIPTION = _("Use this zone to associate an item with the top layer 
 MIDDLE_ZONE_DESCRIPTION = _("Use this zone to associate an item with the middle layer of the triangle.")
 BOTTOM_ZONE_DESCRIPTION = _("Use this zone to associate an item with the bottom layer of the triangle.")
 
-ITEM_INCORRECT_FEEDBACK = _("No, this item does not belong here. Try again.")
 ITEM_CORRECT_FEEDBACK = _("Correct! This one belongs to {zone}.")
+ITEM_INCORRECT_FEEDBACK = _("No, this item does not belong here. Try again.")
+ITEM_NO_ZONE_FEEDBACK = _("You silly, there are no zones for this one.")
 
 START_FEEDBACK = _("Drag the items onto the image above.")
 FINISH_FEEDBACK = _("Good work! You have completed this drag and drop exercise.")
@@ -88,7 +89,7 @@ DEFAULT_DATA = {
     {
       "displayName": _("I don't belong anywhere"),
       "feedback": {
-        "incorrect": _("You silly, there are no zones for this one."),
+        "incorrect": ITEM_NO_ZONE_FEEDBACK,
         "correct": ""
       },
       "zone": "none",
