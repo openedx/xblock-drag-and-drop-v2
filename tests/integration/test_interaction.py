@@ -31,10 +31,17 @@ class ItemDefinition(object):
 
 class InteractionTestBase(object):
     @classmethod
-    def _get_correct_item_for_zone(cls, items_map):
+    def _get_items_with_zone(cls, items_map):
         return {
             item_key: definition for item_key, definition in items_map.items()
             if definition.zone_id is not None
+        }
+
+    @classmethod
+    def _get_items_without_zone(cls, items_map):
+        return {
+            item_key: definition for item_key, definition in items_map.items()
+            if definition.zone_id is None
         }
 
     def setUp(self):
@@ -64,17 +71,19 @@ class InteractionTestBase(object):
         element = self._get_item_by_value(item_value)
         return element.find_element_by_class_name('numerical-input')
 
-    def _send_input(self, item_value, value):
-        element = self._get_item_by_value(item_value)
-        self.wait_until_visible(element)
-        element.find_element_by_class_name('input').send_keys(value)
-        element.find_element_by_class_name('submit-input').click()
+    def _get_zone_position(self, zone_id):
+        return self.browser.execute_script(
+            'return $("div[data-zone=\'{zone_id}\']").prevAll(".zone").length'.format(zone_id=zone_id)
+        )
 
-    def get_feedback_popup(self):
-        return self._page.find_element_by_css_selector(".popup-content")
+    def _focus_item(self, item_position):
+        self.browser.execute_script("$('.option:nth-child({n})').focus()".format(n=item_position+1))
 
-    def get_reset_button(self):
-        return self._page.find_element_by_css_selector('.reset-button')
+    def place_item(self, item_value, zone_id, action_key=None):
+        if action_key is None:
+            self.drag_item_to_zone(item_value, zone_id)
+        else:
+            self.move_item_to_zone(item_value, zone_id, action_key)
 
     def drag_item_to_zone(self, item_value, zone_id):
         element = self._get_item_by_value(item_value)
@@ -86,27 +95,29 @@ class InteractionTestBase(object):
         # Get item position
         item_position = item_value
         # Get zone position
-        zone_position = self.get_zone_position(zone_id)
+        zone_position = self._get_zone_position(zone_id)
 
-        self.focus_item(0)
+        self._focus_item(0)
         focused_item = self._get_item_by_value(0)
         for i in range(item_position):
             focused_item.send_keys(Keys.TAB)
             focused_item = self._get_item_by_value(i+1)
         focused_item.send_keys(action_key)  # Focus is on first *zone* now
+        self.assert_grabbed_item(focused_item)
         focused_zone = self._get_zone_by_id(ZONES_MAP[0])
         for i in range(zone_position):
             focused_zone.send_keys(Keys.TAB)
             focused_zone = self._get_zone_by_id(ZONES_MAP[i+1])
         focused_zone.send_keys(action_key)
 
-    def get_zone_position(self, zone_id):
-        return self.browser.execute_script(
-            'return $("div[data-zone=\'{zone_id}\']").prevAll(".zone").length'.format(zone_id=zone_id)
-        )
+    def send_input(self, item_value, value):
+        element = self._get_item_by_value(item_value)
+        self.wait_until_visible(element)
+        element.find_element_by_class_name('input').send_keys(value)
+        element.find_element_by_class_name('submit-input').click()
 
-    def focus_item(self, item_position):
-        self.browser.execute_script("$('.option:nth-child({n})').focus()".format(n=item_position+1))
+    def assert_grabbed_item(self, item):
+        self.assertEqual(item.get_attribute('aria-grabbed'), 'true')
 
     def assert_placed_item(self, item_value, zone_id):
         item = self._get_placed_item_by_value(item_value)
@@ -125,6 +136,7 @@ class InteractionTestBase(object):
         item = self._get_item_by_value(item_value)
         item_content = item.find_element_by_css_selector('.item-content')
 
+        self.assertEqual(item.get_attribute('class'), 'option ui-draggable')
         self.assertEqual(item.get_attribute('tabindex'), '0')
         self.assertEqual(item.get_attribute('draggable'), 'true')
         self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
@@ -138,43 +150,40 @@ class InteractionTestBase(object):
         else:
             self.fail('Reverted item should not have .sr description.')
 
-    def parameterized_item_positive_feedback_on_good_move(
-        self, items_map, scroll_down=100, use_keyboard=False, action_key=Keys.RETURN
-    ):
+    def assert_decoy_items(self, items_map):
+        decoy_items = self._get_items_without_zone(items_map)
+        for item_key in decoy_items:
+            item = self._get_item_by_value(item_key)
+
+            self.assertEqual(item.get_attribute('class'), 'option fade')
+            self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
+            self.assertEqual(item.get_attribute('data-drag-disabled'), 'true')
+
+    def parameterized_item_positive_feedback_on_good_move(self, items_map, scroll_down=100, action_key=None):
         # Scroll drop zones into view to make sure Selenium can successfully drop items
         self.scroll_down(pixels=scroll_down)
 
-        for definition in self._get_correct_item_for_zone(items_map).values():
+        for definition in self._get_items_with_zone(items_map).values():
             if not definition.input:
-                if use_keyboard:
-                    self.move_item_to_zone(definition.item_id, definition.zone_id, action_key)
-                else:
-                    self.drag_item_to_zone(definition.item_id, definition.zone_id)
-                feedback_popup = self.get_feedback_popup()
-                self.wait_until_html_in(definition.feedback_positive, feedback_popup)
+                self.place_item(definition.item_id, definition.zone_id, action_key)
+                feedback_popup_content = self._get_popup_content()
+                self.wait_until_html_in(definition.feedback_positive, feedback_popup_content)
                 self.assert_placed_item(definition.item_id, definition.zone_id)
 
-    def parameterized_item_positive_feedback_on_good_input(
-        self, items_map, scroll_down=100, use_keyboard=False, action_key=Keys.RETURN
-    ):
+    def parameterized_item_positive_feedback_on_good_input(self, items_map, scroll_down=100, action_key=None):
         self.scroll_down(pixels=scroll_down)
-        feedback_popup = self.get_feedback_popup()
-        for definition in self._get_correct_item_for_zone(items_map).values():
+        feedback_popup_content = self._get_popup_content()
+        for definition in self._get_items_with_zone(items_map).values():
             if definition.input:
-                if use_keyboard:
-                    self.move_item_to_zone(definition.item_id, definition.zone_id, action_key)
-                else:
-                    self.drag_item_to_zone(definition.item_id, definition.zone_id)
-                self._send_input(definition.item_id, definition.input)
+                self.place_item(definition.item_id, definition.zone_id, action_key)
+                self.send_input(definition.item_id, definition.input)
                 input_div = self._get_input_div_by_value(definition.item_id)
                 self.wait_until_has_class('correct', input_div)
-                self.wait_until_html_in(definition.feedback_positive, feedback_popup)
+                self.wait_until_html_in(definition.feedback_positive, feedback_popup_content)
                 self.assert_placed_item(definition.item_id, definition.zone_id)
 
-    def parameterized_item_negative_feedback_on_bad_move(
-        self, items_map, all_zones, scroll_down=100, use_keyboard=False, action_key=Keys.RETURN
-    ):
-        feedback_popup = self.get_feedback_popup()
+    def parameterized_item_negative_feedback_on_bad_move(self, items_map, all_zones, scroll_down=100, action_key=None):
+        feedback_popup_content = self._get_popup_content()
 
         # Scroll drop zones into view to make sure Selenium can successfully drop items
         self.scroll_down(pixels=scroll_down)
@@ -183,40 +192,30 @@ class InteractionTestBase(object):
             for zone in all_zones:
                 if zone == definition.zone_id:
                     continue
-                if use_keyboard:
-                    self.move_item_to_zone(definition.item_id, zone, action_key)
-                else:
-                    self.drag_item_to_zone(definition.item_id, zone)
-                self.wait_until_html_in(definition.feedback_negative, feedback_popup)
+                self.place_item(definition.item_id, zone, action_key)
+                self.wait_until_html_in(definition.feedback_negative, feedback_popup_content)
                 self.assert_reverted_item(definition.item_id)
 
-    def parameterized_item_negative_feedback_on_bad_input(
-        self, items_map, scroll_down=100, use_keyboard=False, action_key=Keys.RETURN
-    ):
-        feedback_popup = self.get_feedback_popup()
+    def parameterized_item_negative_feedback_on_bad_input(self, items_map, scroll_down=100, action_key=None):
+        feedback_popup_content = self._get_popup_content()
 
         # Scroll drop zones into view to make sure Selenium can successfully drop items
         self.scroll_down(pixels=scroll_down)
 
-        for definition in self._get_correct_item_for_zone(items_map).values():
+        for definition in self._get_items_with_zone(items_map).values():
             if definition.input:
-                if use_keyboard:
-                    self.move_item_to_zone(definition.item_id, definition.zone_id, action_key)
-                else:
-                    self.drag_item_to_zone(definition.item_id, definition.zone_id)
-                self._send_input(definition.item_id, '1999999')
+                self.place_item(definition.item_id, definition.zone_id, action_key)
+                self.send_input(definition.item_id, '1999999')
                 input_div = self._get_input_div_by_value(definition.item_id)
                 self.wait_until_has_class('incorrect', input_div)
-                self.wait_until_html_in(definition.feedback_negative, feedback_popup)
+                self.wait_until_html_in(definition.feedback_negative, feedback_popup_content)
                 self.assert_placed_item(definition.item_id, definition.zone_id)
 
-    def parameterized_final_feedback_and_reset(
-        self, items_map, feedback, scroll_down=100, use_keyboard=False, action_key=Keys.RETURN
-    ):
+    def parameterized_final_feedback_and_reset(self, items_map, feedback, scroll_down=100, action_key=None):
         feedback_message = self._get_feedback_message()
         self.assertEqual(self.get_element_html(feedback_message), feedback['intro'])  # precondition check
 
-        items = self._get_correct_item_for_zone(items_map)
+        items = self._get_items_with_zone(items_map)
 
         def get_locations():
             return {item_id: self._get_item_by_value(item_id).location for item_id in items.keys()}
@@ -227,23 +226,23 @@ class InteractionTestBase(object):
         self.scroll_down(pixels=scroll_down)
 
         for item_key, definition in items.items():
-            if use_keyboard:
-                self.move_item_to_zone(definition.item_id, definition.zone_id, action_key)
-            else:
-                self.drag_item_to_zone(definition.item_id, definition.zone_id)
+            self.place_item(definition.item_id, definition.zone_id, action_key)
             if definition.input:
-                self._send_input(item_key, definition.input)
+                self.send_input(item_key, definition.input)
                 input_div = self._get_input_div_by_value(item_key)
                 self.wait_until_has_class('correct', input_div)
             self.assert_placed_item(definition.item_id, definition.zone_id)
 
         self.wait_until_html_in(feedback['final'], self._get_feedback_message())
 
+        # Check decoy items
+        self.assert_decoy_items(items_map)
+
         # Scroll "Reset exercise" button into view to make sure Selenium can successfully click it
         self.scroll_down(pixels=scroll_down+150)
 
-        reset = self.get_reset_button()
-        if use_keyboard:
+        reset = self._get_reset_button()
+        if action_key is not None:  # Using keyboard to interact with block:
             reset.send_keys(Keys.RETURN)
         else:
             reset.click()
@@ -280,6 +279,12 @@ class InteractionTestBase(object):
 
         self.assertFalse(dialog_modal_overlay.is_displayed())
         self.assertFalse(dialog_modal.is_displayed())
+
+        if use_keyboard:  # Try again with "?" key
+            self._page.send_keys("?")
+
+            self.assertTrue(dialog_modal_overlay.is_displayed())
+            self.assertTrue(dialog_modal.is_displayed())
 
 
 class BasicInteractionTest(InteractionTestBase):
@@ -333,38 +338,28 @@ class BasicInteractionTest(InteractionTestBase):
 
 @ddt
 class KeyboardInteractionTest(BasicInteractionTest, BaseIntegrationTest):
-    @data(Keys.RETURN, Keys.SPACE)
-    def test_item_positive_feedback_on_good_move(self, action_key):
-        self.parameterized_item_positive_feedback_on_good_move(
-            self.items_map, use_keyboard=True, action_key=action_key
-        )
+    @data(Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    def test_item_positive_feedback_on_good_move_with_keyboard(self, action_key):
+        self.parameterized_item_positive_feedback_on_good_move(self.items_map, action_key=action_key)
 
-    @data(Keys.RETURN, Keys.SPACE)
-    def test_item_positive_feedback_on_good_input(self, action_key):
-        self.parameterized_item_positive_feedback_on_good_input(
-            self.items_map, use_keyboard=True, action_key=action_key
-        )
+    @data(Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    def test_item_positive_feedback_on_good_input_with_keyboard(self, action_key):
+        self.parameterized_item_positive_feedback_on_good_input(self.items_map, action_key=action_key)
 
-    @data(Keys.RETURN, Keys.SPACE)
-    def test_item_negative_feedback_on_bad_move(self, action_key):
-        self.parameterized_item_negative_feedback_on_bad_move(
-            self.items_map, self.all_zones, use_keyboard=True, action_key=action_key
-        )
+    @data(Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    def test_item_negative_feedback_on_bad_move_with_keyboard(self, action_key):
+        self.parameterized_item_negative_feedback_on_bad_move(self.items_map, self.all_zones, action_key=action_key)
 
-    @data(Keys.RETURN, Keys.SPACE)
-    def test_item_negative_feedback_on_bad_input(self, action_key):
-        self.parameterized_item_negative_feedback_on_bad_input(
-            self.items_map, use_keyboard=True, action_key=action_key
-        )
+    @data(Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    def test_item_negative_feedback_on_bad_input_with_keyboard(self, action_key):
+        self.parameterized_item_negative_feedback_on_bad_input(self.items_map, action_key=action_key)
 
-    @data(Keys.RETURN, Keys.SPACE)
-    def test_final_feedback_and_reset(self, action_key):
-        self.parameterized_final_feedback_and_reset(
-            self.items_map, self.feedback, use_keyboard=True, action_key=action_key
-        )
+    @data(Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    def test_final_feedback_and_reset_with_keyboard(self, action_key):
+        self.parameterized_final_feedback_and_reset(self.items_map, self.feedback, action_key=action_key)
 
-    def test_keyboard_help(self, use_keyboard=True):
-        self.interact_with_keyboard_help()
+    def test_keyboard_help(self):
+        self.interact_with_keyboard_help(use_keyboard=True)
 
 
 class CustomDataInteractionTest(BasicInteractionTest, BaseIntegrationTest):

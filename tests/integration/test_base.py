@@ -72,6 +72,9 @@ class BaseIntegrationTest(SeleniumBaseTest):
     def _get_keyboard_help_dialog(self):
         return self._page.find_element_by_css_selector(".keyboard-help .keyboard-help-dialog")
 
+    def _get_reset_button(self):
+        return self._page.find_element_by_css_selector('.reset-button')
+
     def _get_feedback(self):
         return self._page.find_element_by_css_selector(".feedback")
 

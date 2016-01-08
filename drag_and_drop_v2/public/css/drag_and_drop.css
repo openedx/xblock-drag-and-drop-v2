@@ -116,7 +116,8 @@
 
 /* Focused option */
 .xblock--drag-and-drop .drag-container .item-bank .option:focus,
-.xblock--drag-and-drop .drag-container .item-bank .option:hover {
+.xblock--drag-and-drop .drag-container .item-bank .option:hover,
+.xblock--drag-and-drop .drag-container .item-bank .option[aria-grabbed='true'] {
     outline-width: 2px;
     outline-style: solid;
     outline-offset: -4px;

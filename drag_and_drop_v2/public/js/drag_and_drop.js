@@ -13,7 +13,6 @@ function DragAndDropBlock(runtime, element, configuration) {
     var __vdom = virtualDom.h();  // blank virtual DOM
 
     // Keyboard accessibility
-    var CTRL = 17;
     var ESC = 27;
     var RET = 13;
     var SPC = 32;
@@ -21,7 +20,6 @@ function DragAndDropBlock(runtime, element, configuration) {
     var M = 77;
     var QUESTION_MARK = 63;
 
-    var ctrlDown = false;
     var placementMode = false;
     var $selectedItem;
     var $focusedElement;
@@ -213,16 +211,17 @@ function DragAndDropBlock(runtime, element, configuration) {
         });
     };
 
-    var isCycleKey = function(key) {
-        return !ctrlDown && key === TAB;
+    var isCycleKey = function(evt) {
+        return !evt.ctrlKey && !evt.metaKey && evt.which === TAB;
     };
 
-    var isCancelKey = function(key) {
-        return !ctrlDown && key === ESC;
+    var isCancelKey = function(evt) {
+        return !evt.ctrlKey && !evt.metaKey  && evt.which === ESC;
     };
 
-    var isActionKey = function(key) {
-        if (ctrlDown) {
+    var isActionKey = function(evt) {
+        var key = evt.which;
+        if (evt.ctrlKey || evt.metaKey) {
             return key === M;
         }
         return key === RET || key === SPC;
@@ -286,26 +285,18 @@ function DragAndDropBlock(runtime, element, configuration) {
             var $zone = $(this);
             $zone.on('keydown', function(evt) {
                 if (placementMode) {
-                    var key = evt.which;
-                    if (key === CTRL) {
-                        ctrlDown = true;
-                        return;
-                    }
-                    if (isCycleKey(key)) {
+                    if (isCycleKey(evt)) {
                         focusNextZone(evt, $zone);
-                    } else if (isCancelKey(key)) {
+                    } else if (isCancelKey(evt)) {
                         evt.preventDefault();
                         placementMode = false;
-                    } else if (isActionKey(key)) {
+                        releaseItem($selectedItem);
+                    } else if (isActionKey(evt)) {
                         evt.preventDefault();
                         placementMode = false;
                         placeItem($zone);
+                        releaseItem($selectedItem);
                     }
-                }
-            });
-            $zone.on('keyup', function(evt) {
-                if (evt.which === CTRL) {
-                    ctrlDown = false;
                 }
             });
         });
@@ -328,21 +319,12 @@ function DragAndDropBlock(runtime, element, configuration) {
 
             // Allow item to be "picked up" using the keyboard
             $item.on('keydown', function(evt) {
-                var key = evt.which;
-                if (key === CTRL) {
-                    ctrlDown = true;
-                    return;
-                }
-                if (isActionKey(key)) {
+                if (isActionKey(evt)) {
                     evt.preventDefault();
                     placementMode = true;
+                    grabItem($item);
                     $selectedItem = $item;
                     $root.find('.target .zone').first().focus();
-                }
-            });
-            $item.on('keyup', function(evt) {
-                if (evt.which === CTRL) {
-                    ctrlDown = false;
                 }
             });
 
@@ -355,18 +337,15 @@ function DragAndDropBlock(runtime, element, configuration) {
                     revert: 'invalid',
                     revertDuration: 150,
                     start: function(evt, ui) {
-                        var item_id = $(this).data('value');
-                        setGrabbedState(item_id, true);
-                        updateDOM();
+                        var $item = $(this);
+                        grabItem($item);
                         publishEvent({
                             event_type: 'xblock.drag-and-drop-v2.item.picked-up',
-                            item_id: item_id
+                            item_id: $item.data('value'),
                         });
                     },
                     stop: function(evt, ui) {
-                        var item_id = $(this).data('value');
-                        setGrabbedState(item_id, false);
-                        updateDOM();
+                        releaseItem($(this));
                     }
                 });
             } catch (e) {
@@ -374,6 +353,18 @@ function DragAndDropBlock(runtime, element, configuration) {
                 // initialized. That's expected, ignore the exception.
             }
         });
+    };
+
+    var grabItem = function($item) {
+        var item_id = $item.data('value');
+        setGrabbedState(item_id, true);
+        updateDOM();
+    };
+
+    var releaseItem = function($item) {
+        var item_id = $item.data('value');
+        setGrabbedState(item_id, false);
+        updateDOM();
     };
 
     var setGrabbedState = function(item_id, grabbed) {
@@ -524,10 +515,11 @@ function DragAndDropBlock(runtime, element, configuration) {
             if (item.grabbed !== undefined) {
                 grabbed = item.grabbed;
             }
+            var placed = item_user_state && ('input' in item_user_state || item_user_state.correct_input);
             var itemProperties = {
                 value: item.id,
                 drag_disabled: Boolean(item_user_state || state.finished),
-                class_name: item_user_state && ('input' in item_user_state || item_user_state.correct_input) ? 'fade': undefined,
+                class_name: placed || state.finished ? 'fade' : undefined,
                 xhr_active: (item_user_state && item_user_state.submitting_location),
                 input: input,
                 displayName: item.displayName,
