@@ -242,7 +242,7 @@ class InteractionTestBase(object):
         self.scroll_down(pixels=scroll_down+150)
 
         reset = self._get_reset_button()
-        if action_key is not None:  # Using keyboard to interact with block:
+        if action_key is not None:  # Using keyboard to interact with block
             reset.send_keys(Keys.RETURN)
         else:
             reset.click()

@@ -182,7 +182,6 @@
     opacity: 0.5;
 }
 
-
 /*** Drop Target ***/
 .xblock--drag-and-drop .target {
     display: table;
@@ -232,7 +231,6 @@
     /* W3C */
     box-pack:center;
     box-align:center;
-
 }
 
 /* Focused zone */
@@ -306,6 +304,15 @@
     margin-bottom: 6px;
 }
 
+.xblock--drag-and-drop .keyboard-help-dialog {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 1px;
+    height: 1px;
+    z-index: 1500;
+}
+
 .xblock--drag-and-drop .modal-window-overlay {
     display: none;
     position: fixed;
@@ -321,10 +328,12 @@
 .xblock--drag-and-drop .modal-window {
     display: none;
     position: absolute;
-    top: 45%;
-    width: 50%;
+    width: 600px;
+    max-width: 90vw;
+    height: auto;
+    transform: translate(-50%, -50%);
     box-sizing: border-box;
-    box-shadow: 0 0 7px rgba(0,0,0,0.4);
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.4);
     border-radius: 4px;
     padding: 7px;
     background-color: #e5e5e5;
@@ -332,7 +341,6 @@
     direction: ltr;
     z-index: 1500;
 }
-
 
 .xblock--drag-and-drop .modal-content {
     border-radius: 5px;
@@ -344,7 +352,6 @@
 .xblock--drag-and-drop .modal-content li {
     margin-left: 2%;
 }
-
 
 .xblock--drag-and-drop .keyboard-help-button,
 .xblock--drag-and-drop .reset-button {
