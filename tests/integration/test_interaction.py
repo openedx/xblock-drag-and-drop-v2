@@ -47,6 +47,7 @@ class InteractionTestBase(object):
 
     def _send_input(self, item_value, value):
         element = self._get_item_by_value(item_value)
+        self.wait_until_visible(element)
         element.find_element_by_class_name('input').send_keys(value)
         element.find_element_by_class_name('submit-input').click()
 
