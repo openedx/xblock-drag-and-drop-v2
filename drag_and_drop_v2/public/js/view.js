@@ -102,9 +102,10 @@
 
     var zoneTemplate = function(zone, ctx) {
         var className = ctx.display_zone_labels ? 'zone-name' : 'zone-name sr';
+        var selector = ctx.display_zone_borders ? 'div.zone.zone-with-borders' : 'div.zone';
         return (
             h(
-                'div.zone',
+                selector,
                 {
                     id: zone.id,
                     attributes: {
@@ -115,8 +116,7 @@
                     },
                     style: {
                         top: zone.y_percent + '%', left: zone.x_percent + "%",
-                        width: zone.width_percent + '%', height: zone.height_percent + "%",
-                        borderStyle: ctx.display_zone_borders ? 'dotted' : 'hidden'
+                        width: zone.width_percent + '%', height: zone.height_percent + "%"
                     }
                 },
                 [

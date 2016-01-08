@@ -209,7 +209,7 @@
 
 .xblock--drag-and-drop .zone {
     position: absolute;
-    border: 1px hidden #f00;
+    border: 1px hidden #565656;
 
     display: -webkit-box;
     display: -moz-box;
@@ -233,6 +233,10 @@
     box-pack:center;
     box-align:center;
 
+}
+
+.xblock--drag-and-drop .zone-with-borders {
+    border: 1px dotted #565656;
 }
 
 /* Focused zone */
