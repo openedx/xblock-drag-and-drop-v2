@@ -59,5 +59,7 @@
     "start": "Drag the items onto the image above.",
     "finish": "Good work! You have completed this drag and drop exercise."
   },
-  "targetImgDescription": "This describes the target image"
+  "targetImgDescription": "This describes the target image",
+  "displayLabels": {display_labels_value},
+  "displayBorders": {display_borders_value},
 }

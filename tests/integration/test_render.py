@@ -11,6 +11,7 @@ class Colors(object):
     BLUE = 'rgb(29, 82, 128)'
     GREY = 'rgb(237, 237, 237)'
     CORAL = '#ff7f50'
+    DARK_GREY = 'rgb(86, 86, 86)'  # == #565656 in CSS-land
     CORNFLOWERBLUE = 'cornflowerblue'
 
     @classmethod
@@ -32,22 +33,22 @@ class TestDragAndDropRender(BaseIntegrationTest):
     PAGE_TITLE = 'Drag and Drop v2'
     PAGE_ID = 'drag_and_drop_v2'
     ITEM_PROPERTIES = [{'text': '1'}, {'text': '2'}, {'text': 'X'}, ]
+    SIDES = ['Top', 'Bottom', 'Left', 'Right']
 
-    def load_scenario(self, item_background_color="", item_text_color="", borders=False):
-        if borders:
-            json = "integration/data/test_data_a11y_borders.json"
-        else:
-            json = "integration/data/test_data_a11y.json"
+    def load_scenario(self, item_background_color="", item_text_color="", zone_labels=False, zone_borders=False):
+        json = load_resource("integration/data/test_data_a11y.json")
+        json = json.replace('{display_labels_value}', 'true' if zone_labels else 'false')
+        json = json.replace('{display_borders_value}', 'true' if zone_borders else 'false')
         scenario_xml = """
             <vertical_demo>
                 <drag-and-drop-v2 item_background_color='{item_background_color}'
                                   item_text_color='{item_text_color}'
-                                  data='{data}' />
+                                  data='{json}' />
             </vertical_demo>
         """.format(
             item_background_color=item_background_color,
             item_text_color=item_text_color,
-            data=load_resource(json)
+            json=json
         )
         self._add_scenario(self.PAGE_ID, self.PAGE_TITLE, scenario_xml)
 
@@ -60,10 +61,6 @@ class TestDragAndDropRender(BaseIntegrationTest):
         else:
             query = 'return $("{selector}").get(0).style.{style}'
         return self.browser.execute_script(query.format(selector=selector, style=style))
-
-    def _get_border_style(self, elt, style):
-        query = 'return window.getComputedStyle(document.getElementById("{elt}"), null).getPropertyValue("{style}")'
-        return self.browser.execute_script(query.format(elt=elt, style=style))
 
     def _assert_box_percentages(self, selector, left, top, width, height):
         """ Assert that the element 'selector' has the specified position/size percentages """
@@ -203,20 +200,35 @@ class TestDragAndDropRender(BaseIntegrationTest):
         self.assertTrue(bg_image.get_attribute("src").endswith(image_path))
         self.assertEqual(bg_image.get_attribute("alt"), 'This describes the target image')
 
-    def test_borders_inactive(self):
+    def test_borders_hidden(self):
         self.load_scenario()
         zones = self._get_zones()
         for index in range(len(zones)):
-            elt = 'zone-{}'.format(index + 1)
-            # Firefox does not provide a single "border-style", so we check "border-top-style"
-            self.assertEqual(self._get_border_style(elt, 'border-top-style'), 'none')
-            self.assertEqual(self._get_border_style(elt, 'border-top-width'), '0px')
+            z = '#zone-{}'.format(index + 1)
+            for s in self.SIDES:
+                self.assertEqual(self._get_style(z, 'border{}Width'.format(s), True), '0px')
+                self.assertEqual(self._get_style(z, 'border{}Style'.format(s), True), 'none')
 
-    def test_borders_active(self):
-        self.load_scenario("", "", True)
+    def test_borders_shown(self):
+        self.load_scenario(zone_borders=True)
         zones = self._get_zones()
         for index in range(len(zones)):
-            elt = 'zone-{}'.format(index + 1)
-            self.assertEqual(self._get_border_style(elt, 'border-top-style'), 'dotted')
-            self.assertEqual(self._get_border_style(elt, 'border-top-width'), '1px')
-            self.assertEqual(self._get_border_style(elt, 'border-top-color'), 'rgb(86, 86, 86)')  # == #565656
+            z = '#zone-{}'.format(index + 1)
+            for s in self.SIDES:
+                self.assertEqual(self._get_style(z, 'border{}Width'.format(s), True), '1px')
+                self.assertEqual(self._get_style(z, 'border{}Style'.format(s), True), 'dotted')
+                self.assertEqual(self._get_style(z, 'border{}Color'.format(s), True), Colors.DARK_GREY)
+
+    def test_labels_hidden(self):
+        self.load_scenario()
+        zones = self._get_zones()
+        for zone in zones:
+            zone_name = zone.find_element_by_css_selector('p.zone-name')
+            self.assertEqual(zone_name.get_attribute('class'), 'zone-name sr')
+
+    def test_labels_shown(self):
+        self.load_scenario(zone_labels=True)
+        zones = self._get_zones()
+        for zone in zones:
+            zone_name = zone.find_element_by_css_selector('p.zone-name')
+            self.assertEqual(zone_name.get_attribute('class'), 'zone-name')
