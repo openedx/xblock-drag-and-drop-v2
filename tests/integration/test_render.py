@@ -36,19 +36,19 @@ class TestDragAndDropRender(BaseIntegrationTest):
     SIDES = ['Top', 'Bottom', 'Left', 'Right']
 
     def load_scenario(self, item_background_color="", item_text_color="", zone_labels=False, zone_borders=False):
-        json = load_resource("integration/data/test_data_a11y.json")
-        json = json.replace('{display_labels_value}', 'true' if zone_labels else 'false')
-        json = json.replace('{display_borders_value}', 'true' if zone_borders else 'false')
+        exercise_data = load_resource("integration/data/test_data_a11y.json")
+        exercise_data = exercise_data.replace('{display_labels_value}', 'true' if zone_labels else 'false')
+        exercise_data = exercise_data.replace('{display_borders_value}', 'true' if zone_borders else 'false')
         scenario_xml = """
             <vertical_demo>
                 <drag-and-drop-v2 item_background_color='{item_background_color}'
                                   item_text_color='{item_text_color}'
-                                  data='{json}' />
+                                  data='{exercise_data}' />
             </vertical_demo>
         """.format(
             item_background_color=item_background_color,
             item_text_color=item_text_color,
-            json=json
+            exercise_data=exercise_data
         )
         self._add_scenario(self.PAGE_ID, self.PAGE_TITLE, scenario_xml)
 
@@ -200,35 +200,35 @@ class TestDragAndDropRender(BaseIntegrationTest):
         self.assertTrue(bg_image.get_attribute("src").endswith(image_path))
         self.assertEqual(bg_image.get_attribute("alt"), 'This describes the target image')
 
-    def test_borders_hidden(self):
+    def test_zone_borders_hidden(self):
         self.load_scenario()
         zones = self._get_zones()
-        for index in range(len(zones)):
-            z = '#zone-{}'.format(index + 1)
-            for s in self.SIDES:
-                self.assertEqual(self._get_style(z, 'border{}Width'.format(s), True), '0px')
-                self.assertEqual(self._get_style(z, 'border{}Style'.format(s), True), 'none')
+        for index, dummy in enumerate(zones, start=1):
+            zone = '#zone-{}'.format(index)
+            for side in self.SIDES:
+                self.assertEqual(self._get_style(zone, 'border{}Width'.format(side), True), '0px')
+                self.assertEqual(self._get_style(zone, 'border{}Style'.format(side), True), 'none')
 
-    def test_borders_shown(self):
+    def test_zone_borders_shown(self):
         self.load_scenario(zone_borders=True)
         zones = self._get_zones()
-        for index in range(len(zones)):
-            z = '#zone-{}'.format(index + 1)
-            for s in self.SIDES:
-                self.assertEqual(self._get_style(z, 'border{}Width'.format(s), True), '1px')
-                self.assertEqual(self._get_style(z, 'border{}Style'.format(s), True), 'dotted')
-                self.assertEqual(self._get_style(z, 'border{}Color'.format(s), True), Colors.DARK_GREY)
+        for index, dummy in enumerate(zones, start=1):
+            zone = '#zone-{}'.format(index)
+            for side in self.SIDES:
+                self.assertEqual(self._get_style(zone, 'border{}Width'.format(side), True), '1px')
+                self.assertEqual(self._get_style(zone, 'border{}Style'.format(side), True), 'dotted')
+                self.assertEqual(self._get_style(zone, 'border{}Color'.format(side), True), Colors.DARK_GREY)
 
-    def test_labels_hidden(self):
+    def test_zone_labels_hidden(self):
         self.load_scenario()
         zones = self._get_zones()
         for zone in zones:
             zone_name = zone.find_element_by_css_selector('p.zone-name')
-            self.assertEqual(zone_name.get_attribute('class'), 'zone-name sr')
+            self.assertIn('sr', zone_name.get_attribute('class'))
 
-    def test_labels_shown(self):
+    def test_zone_labels_shown(self):
         self.load_scenario(zone_labels=True)
         zones = self._get_zones()
         for zone in zones:
             zone_name = zone.find_element_by_css_selector('p.zone-name')
-            self.assertEqual(zone_name.get_attribute('class'), 'zone-name')
+            self.assertNotIn('sr', zone_name.get_attribute('class'))
