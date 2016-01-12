@@ -33,7 +33,11 @@ class TestDragAndDropRender(BaseIntegrationTest):
     PAGE_ID = 'drag_and_drop_v2'
     ITEM_PROPERTIES = [{'text': '1'}, {'text': '2'}, {'text': 'X'}, ]
 
-    def load_scenario(self, item_background_color="", item_text_color=""):
+    def load_scenario(self, item_background_color="", item_text_color="", borders=False):
+        if borders:
+            json="integration/data/test_data_a11y_borders.json"
+        else:
+            json="integration/data/test_data_a11y.json"
         scenario_xml = """
             <vertical_demo>
                 <drag-and-drop-v2 item_background_color='{item_background_color}'
@@ -43,7 +47,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
         """.format(
             item_background_color=item_background_color,
             item_text_color=item_text_color,
-            data=load_resource("integration/data/test_data_a11y.json")
+            data=load_resource(json)
         )
         self._add_scenario(self.PAGE_ID, self.PAGE_TITLE, scenario_xml)
 
@@ -56,6 +60,10 @@ class TestDragAndDropRender(BaseIntegrationTest):
         else:
             query = 'return $("{selector}").get(0).style.{style}'
         return self.browser.execute_script(query.format(selector=selector, style=style))
+
+    def _get_border_style(self, id, style):
+        query = 'return window.getComputedStyle(document.getElementById("{id}"), null).getPropertyValue("{style}")'
+        return self.browser.execute_script(query.format(id=id, style=style))
 
     def _assert_box_percentages(self, selector, left, top, width, height):
         """ Assert that the element 'selector' has the specified position/size percentages """
@@ -194,3 +202,21 @@ class TestDragAndDropRender(BaseIntegrationTest):
         image_path = '/resource/drag-and-drop-v2/public/img/triangle.png'
         self.assertTrue(bg_image.get_attribute("src").endswith(image_path))
         self.assertEqual(bg_image.get_attribute("alt"), 'This describes the target image')
+
+    def test_borders_inactive(self):
+        self.load_scenario()
+        zones = self._get_zones()
+        for index, zone in enumerate(zones):
+            id = 'zone-{}'.format(index + 1)
+            # Firefox does not provide a single "border-style", so we check "border-top-style"
+            self.assertEqual(self._get_border_style(id, 'border-top-style'), 'none')
+            self.assertEqual(self._get_border_style(id, 'border-top-width'), '0px')
+
+    def test_borders_active(self):
+        self.load_scenario("", "", True)
+        zones = self._get_zones()
+        for index, zone in enumerate(zones):
+            id = 'zone-{}'.format(index + 1)
+            self.assertEqual(self._get_border_style(id, 'border-top-style'), 'dotted')
+            self.assertEqual(self._get_border_style(id, 'border-top-width'), '1px')
+            self.assertEqual(self._get_border_style(id, 'border-top-color'), 'rgb(86, 86, 86)') # == #565656

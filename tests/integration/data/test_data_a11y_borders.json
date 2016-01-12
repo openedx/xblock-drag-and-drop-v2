@@ -1,0 +1,65 @@
+{
+  "zones": [
+    {
+      "index": 1,
+      "title": "Zone 1",
+      "description": "This describes zone 1",
+      "height": 178,
+      "width": 196,
+      "y": "30",
+      "x": "160",
+      "id": "zone-1"
+    },
+    {
+      "index": 2,
+      "title": "Zone 2",
+      "description": "This describes zone 2",
+      "height": 140,
+      "width": 340,
+      "y": "210",
+      "x": "86",
+      "id": "zone-2"
+    }
+  ],
+  "items": [
+    {
+      "displayName": "1",
+      "imageURL": "https://placehold.it/100x100",
+      "imageDescription": "This describes the background image of item 1",
+      "feedback": {
+        "incorrect": "No, 1 does not belong here",
+        "correct": "Yes, 1 goes here"
+      },
+      "zone": "Zone 1",
+      "id": 0
+    },
+    {
+      "displayName": "2",
+      "imageURL": "https://placehold.it/100x100",
+      "imageDescription": "This describes the background image of item 2",
+      "feedback": {
+        "incorrect": "No, 2 does not belong here",
+        "correct": "Yes, 2 goes here"
+      },
+      "zone": "Zone 2",
+      "id": 1
+    },
+    {
+      "displayName": "X",
+      "imageURL": "",
+      "feedback": {
+        "incorrect": "You silly, there are no zones for X",
+        "correct": ""
+      },
+      "zone": "none",
+      "id": 2
+    }
+  ],
+  "feedback": {
+    "start": "Drag the items onto the image above.",
+    "finish": "Good work! You have completed this drag and drop exercise."
+  },
+  "targetImgDescription": "This describes the target image",
+  "displayBorders": true,
+  "displayLabels": true
+}
