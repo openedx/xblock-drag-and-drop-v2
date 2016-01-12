@@ -206,7 +206,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
     def test_borders_inactive(self):
         self.load_scenario()
         zones = self._get_zones()
-        for index, zone in enumerate(zones):
+        for index in range(len(zones)):
             elt = 'zone-{}'.format(index + 1)
             # Firefox does not provide a single "border-style", so we check "border-top-style"
             self.assertEqual(self._get_border_style(elt, 'border-top-style'), 'none')
@@ -215,7 +215,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
     def test_borders_active(self):
         self.load_scenario("", "", True)
         zones = self._get_zones()
-        for index, zone in enumerate(zones):
+        for index in range(len(zones)):
             elt = 'zone-{}'.format(index + 1)
             self.assertEqual(self._get_border_style(elt, 'border-top-style'), 'dotted')
             self.assertEqual(self._get_border_style(elt, 'border-top-width'), '1px')
