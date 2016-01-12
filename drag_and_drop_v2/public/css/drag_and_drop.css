@@ -116,7 +116,8 @@
 
 /* Focused option */
 .xblock--drag-and-drop .drag-container .item-bank .option:focus,
-.xblock--drag-and-drop .drag-container .item-bank .option:hover {
+.xblock--drag-and-drop .drag-container .item-bank .option:hover,
+.xblock--drag-and-drop .drag-container .item-bank .option[aria-grabbed='true'] {
     outline-width: 2px;
     outline-style: solid;
     outline-offset: -4px;
@@ -181,7 +182,6 @@
     opacity: 0.5;
 }
 
-
 /*** Drop Target ***/
 .xblock--drag-and-drop .target {
     display: table;
@@ -231,7 +231,6 @@
     /* W3C */
     box-pack:center;
     box-align:center;
-
 }
 
 /* Focused zone */
@@ -263,7 +262,6 @@
 
 /*** FEEDBACK ***/
 .xblock--drag-and-drop .feedback {
-    margin-top: 20px;
     border-top: solid 1px #bdbdbd;
 }
 
@@ -301,10 +299,68 @@
     font-size: 18pt;
 }
 
+.xblock--drag-and-drop .keyboard-help {
+    margin-top: 3px;
+    margin-bottom: 6px;
+}
+
+.xblock--drag-and-drop .keyboard-help-dialog {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 1px;
+    height: 1px;
+    z-index: 1500;
+}
+
+.xblock--drag-and-drop .modal-window-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0.5;
+    z-index: 1500;
+}
+
+.xblock--drag-and-drop .modal-window {
+    display: none;
+    position: absolute;
+    width: 600px;
+    max-width: 90vw;
+    height: auto;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
+    padding: 7px;
+    background-color: #e5e5e5;
+    text-align: left;
+    direction: ltr;
+    z-index: 1500;
+}
+
+.xblock--drag-and-drop .modal-content {
+    border-radius: 5px;
+    background: white;
+    margin-bottom: 5px;
+    padding: 5px;
+}
+
+.xblock--drag-and-drop .modal-content li {
+    margin-left: 2%;
+}
+
+.xblock--drag-and-drop .keyboard-help-button,
 .xblock--drag-and-drop .reset-button {
     cursor: pointer;
-    float: right;
     color: #2d74b3;
+}
+
+.xblock--drag-and-drop .reset-button {
+    float: right;
     margin-top: 3px;
 }
 

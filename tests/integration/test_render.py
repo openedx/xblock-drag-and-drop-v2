@@ -179,6 +179,30 @@ class TestDragAndDropRender(BaseIntegrationTest):
             # Zone description should only be visible to screen readers:
             self.assertEqual(zone_description.get_attribute('class'), 'zone-description sr')
 
+    def test_popup(self):
+        self.load_scenario()
+
+        popup = self._get_popup()
+        popup_content = self._get_popup_content()
+        self.assertFalse(popup.is_displayed())
+        self.assertEqual(popup.get_attribute('aria-live'), 'polite')
+        self.assertEqual(popup_content.text, "")
+
+    def test_keyboard_help(self):
+        self.load_scenario()
+
+        self._get_keyboard_help()
+        keyboard_help_button = self._get_keyboard_help_button()
+        keyboard_help_dialog = self._get_keyboard_help_dialog()
+        dialog_modal_overlay = keyboard_help_dialog.find_element_by_css_selector('.modal-window-overlay')
+        dialog_modal = keyboard_help_dialog.find_element_by_css_selector('.modal-window')
+
+        self.assertEqual(keyboard_help_button.get_attribute('tabindex'), '0')
+        self.assertFalse(dialog_modal_overlay.is_displayed())
+        self.assertFalse(dialog_modal.is_displayed())
+        self.assertEqual(dialog_modal.get_attribute('role'), 'dialog')
+        self.assertEqual(dialog_modal.get_attribute('aria-labelledby'), 'modal-window-title')
+
     def test_feedback(self):
         self.load_scenario()
 

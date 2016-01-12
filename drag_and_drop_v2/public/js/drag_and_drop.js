@@ -12,6 +12,18 @@ function DragAndDropBlock(runtime, element, configuration) {
     var state = undefined;
     var __vdom = virtualDom.h();  // blank virtual DOM
 
+    // Keyboard accessibility
+    var ESC = 27;
+    var RET = 13;
+    var SPC = 32;
+    var TAB = 9;
+    var M = 77;
+    var QUESTION_MARK = 63;
+
+    var placementMode = false;
+    var $selectedItem;
+    var $focusedElement;
+
     var init = function() {
         // Load the current user state, and load the image, then render the block.
         // We load the user state via AJAX rather than passing it in statically (like we do with
@@ -23,22 +35,94 @@ function DragAndDropBlock(runtime, element, configuration) {
             $.ajax(runtime.handlerUrl(element, 'get_user_state'), {dataType: 'json'}),
             loadBackgroundImage()
         ).done(function(stateResult, bgImg){
+            // Render exercise
             configuration.zones.forEach(function (zone) {
                 computeZoneDimension(zone, bgImg.width, bgImg.height);
             });
             state = stateResult[0]; // stateResult is an array of [data, statusText, jqXHR]
             migrateState(bgImg.width, bgImg.height);
             applyState();
+
+            // Set up event handlers
             initDroppable();
 
-            $(document).on('mousedown touchstart', closePopup);
+            $(document).on('keydown mousedown touchstart', closePopup);
+            $(document).on('keypress', function(evt) {
+                runOnKey(evt, QUESTION_MARK, showKeyboardHelp);
+            });
+            $element.on('click', '.keyboard-help-button', showKeyboardHelp);
+            $element.on('keydown', '.keyboard-help-button', function(evt) {
+                runOnKey(evt, RET, showKeyboardHelp);
+            });
             $element.on('click', '.reset-button', resetExercise);
+            $element.on('keydown', '.reset-button', function(evt) {
+                runOnKey(evt, RET, resetExercise);
+            });
             $element.on('click', '.submit-input', submitInput);
 
+            // Indicate that exercise is done loading
             publishEvent({event_type: 'xblock.drag-and-drop-v2.loaded'});
         }).fail(function() {
             $root.text(gettext("An error occurred. Unable to load drag and drop exercise."));
         });
+    };
+
+    var runOnKey = function(evt, key, handler) {
+        if (evt.which === key) {
+            handler(evt);
+        }
+    };
+
+    var keyboardEventDispatcher = function(evt) {
+        if (evt.which === TAB) {
+            trapFocus(evt);
+        } else if (evt.which === ESC) {
+            hideKeyboardHelp(evt);
+        }
+    };
+
+    var trapFocus = function(evt) {
+        if (evt.which === TAB) {
+            evt.preventDefault();
+            focusModalButton();
+        }
+    };
+
+    var focusModalButton = function() {
+        $root.find('.keyboard-help-dialog .modal-dismiss-button ').focus();
+    };
+
+    var showKeyboardHelp = function(evt) {
+        evt.preventDefault();
+
+        // Show dialog
+        var $keyboardHelpDialog = $root.find('.keyboard-help-dialog');
+        $keyboardHelpDialog.find('.modal-window-overlay').show();
+        $keyboardHelpDialog.find('.modal-window').show();
+
+        // Handle focus
+        $focusedElement = $(':focus');
+        focusModalButton();
+
+        // Set up event handlers
+        $(document).on('keydown', keyboardEventDispatcher);
+        $keyboardHelpDialog.find('.modal-dismiss-button').on('click', hideKeyboardHelp);
+    };
+
+    var hideKeyboardHelp = function(evt) {
+        evt.preventDefault();
+
+        // Hide dialog
+        var $keyboardHelpDialog = $root.find('.keyboard-help-dialog');
+        $keyboardHelpDialog.find('.modal-window-overlay').hide();
+        $keyboardHelpDialog.find('.modal-window').hide();
+
+        // Handle focus
+        $focusedElement.focus();
+
+        // Remove event handlers
+        $(document).off('keydown', keyboardEventDispatcher);
+        $keyboardHelpDialog.find('.modal-dismiss-button').off();
     };
 
     /** Asynchronously load the main background image used for this block. */
@@ -127,58 +211,141 @@ function DragAndDropBlock(runtime, element, configuration) {
         });
     };
 
+    var isCycleKey = function(evt) {
+        return !evt.ctrlKey && !evt.metaKey && evt.which === TAB;
+    };
+
+    var isCancelKey = function(evt) {
+        return !evt.ctrlKey && !evt.metaKey  && evt.which === ESC;
+    };
+
+    var isActionKey = function(evt) {
+        var key = evt.which;
+        if (evt.ctrlKey || evt.metaKey) {
+            return key === M;
+        }
+        return key === RET || key === SPC;
+    };
+
+    var focusNextZone = function(evt, $currentZone) {
+        if (evt.shiftKey) {  // Going backward
+            var isFirstZone = $currentZone.prev('.zone').length === 0;
+            if (isFirstZone) {
+                evt.preventDefault();
+                $root.find('.target .zone').last().focus();
+            }
+        } else {  // Going forward
+            var isLastZone = $currentZone.next('.zone').length === 0;
+            if (isLastZone) {
+                evt.preventDefault();
+                $root.find('.target .zone').first().focus();
+            }
+        }
+    };
+
+    var placeItem = function($zone, $item) {
+        var item_id;
+        var $anchor;
+        if ($item !== undefined) {
+            item_id = $item.data('value');
+            // Element was placed using the mouse,
+            // so use relevant properties of *item* when calculating new position below.
+            $anchor = $item;
+        } else {
+            item_id = $selectedItem.data('value');
+            // Element was placed using the keyboard,
+            // so use relevant properties of *zone* when calculating new position below.
+            $anchor = $zone;
+        }
+        var zone = $zone.data('zone');
+        var $target_img = $root.find('.target-img');
+
+        // Calculate the position of the item to place relative to the image.
+        var x_pos = $anchor.offset().left + ($anchor.outerWidth()/2) - $target_img.offset().left;
+        var y_pos = $anchor.offset().top + ($anchor.outerHeight()/2) - $target_img.offset().top;
+        var x_pos_percent = x_pos / $target_img.width() * 100;
+        var y_pos_percent = y_pos / $target_img.height() * 100;
+
+        state.items[item_id] = {
+            zone: zone,
+            x_percent: x_pos_percent,
+            y_percent: y_pos_percent,
+            submitting_location: true,
+        };
+        // Wrap in setTimeout to let the droppable event finish.
+        setTimeout(function() {
+            applyState();
+            submitLocation(item_id, zone, x_pos_percent, y_pos_percent);
+        }, 0);
+    };
+
     var initDroppable = function() {
+        // Set up zones for keyboard interaction
+        $root.find('.zone').each(function() {
+            var $zone = $(this);
+            $zone.on('keydown', function(evt) {
+                if (placementMode) {
+                    if (isCycleKey(evt)) {
+                        focusNextZone(evt, $zone);
+                    } else if (isCancelKey(evt)) {
+                        evt.preventDefault();
+                        placementMode = false;
+                        releaseItem($selectedItem);
+                    } else if (isActionKey(evt)) {
+                        evt.preventDefault();
+                        placementMode = false;
+                        placeItem($zone);
+                        releaseItem($selectedItem);
+                    }
+                }
+            });
+        });
+
+        // Make zone accept items that are dropped using the mouse
         $root.find('.zone').droppable({
             accept: '.xblock--drag-and-drop .item-bank .option',
             tolerance: 'pointer',
             drop: function(evt, ui) {
-                var item_id = ui.draggable.data('value');
-                var zone = $(this).data('zone');
-                var $target_img = $root.find('.target-img');
-
-                // Calculate the position of the center of the dropped element relative to
-                // the image.
-                var x_pos = (ui.helper.offset().left + (ui.helper.outerWidth()/2) - $target_img.offset().left);
-                var x_pos_percent = x_pos / $target_img.width() * 100;
-                var y_pos = (ui.helper.offset().top + (ui.helper.outerHeight()/2) - $target_img.offset().top);
-                var y_pos_percent = y_pos / $target_img.height() * 100;
-
-                state.items[item_id] = {
-                    x_percent: x_pos_percent,
-                    y_percent: y_pos_percent,
-                    submitting_location: true,
-                };
-                // Wrap in setTimeout to let the droppable event finish.
-                setTimeout(function() {
-                    applyState();
-                    submitLocation(item_id, zone, x_pos_percent, y_pos_percent);
-                }, 0);
+                var $zone = $(this);
+                var $item = ui.helper;
+                placeItem($zone, $item);
             }
         });
     };
 
     var initDraggable = function() {
         $root.find('.item-bank .option').not('[data-drag-disabled=true]').each(function() {
+            var $item = $(this);
+
+            // Allow item to be "picked up" using the keyboard
+            $item.on('keydown', function(evt) {
+                if (isActionKey(evt)) {
+                    evt.preventDefault();
+                    placementMode = true;
+                    grabItem($item);
+                    $selectedItem = $item;
+                    $root.find('.target .zone').first().focus();
+                }
+            });
+
+            // Make item draggable using the mouse
             try {
-                $(this).draggable({
+                $item.draggable({
                     containment: $root.find('.xblock--drag-and-drop .drag-container'),
                     cursor: 'move',
                     stack: $root.find('.xblock--drag-and-drop .item-bank .option'),
                     revert: 'invalid',
                     revertDuration: 150,
                     start: function(evt, ui) {
-                        var item_id = $(this).data('value');
-                        setGrabbedState(item_id, true);
-                        updateDOM();
+                        var $item = $(this);
+                        grabItem($item);
                         publishEvent({
                             event_type: 'xblock.drag-and-drop-v2.item.picked-up',
-                            item_id: item_id
+                            item_id: $item.data('value'),
                         });
                     },
                     stop: function(evt, ui) {
-                        var item_id = $(this).data('value');
-                        setGrabbedState(item_id, false);
-                        updateDOM();
+                        releaseItem($(this));
                     }
                 });
             } catch (e) {
@@ -186,6 +353,18 @@ function DragAndDropBlock(runtime, element, configuration) {
                 // initialized. That's expected, ignore the exception.
             }
         });
+    };
+
+    var grabItem = function($item) {
+        var item_id = $item.data('value');
+        setGrabbedState(item_id, true);
+        updateDOM();
+    };
+
+    var releaseItem = function($item) {
+        var item_id = $item.data('value');
+        setGrabbedState(item_id, false);
+        updateDOM();
     };
 
     var setGrabbedState = function(item_id, grabbed) {
@@ -198,8 +377,12 @@ function DragAndDropBlock(runtime, element, configuration) {
 
     var destroyDraggable = function() {
         $root.find('.item-bank .option[data-drag-disabled=true]').each(function() {
+            var $item = $(this);
+
+            $item.off();
+
             try {
-                $(this).draggable('destroy');
+                $item.draggable('destroy');
             } catch (e) {
                 // Destroying the draggable will fail if draggable was
                 // not initialized in the first place. Ignore the exception.
@@ -296,7 +479,8 @@ function DragAndDropBlock(runtime, element, configuration) {
         applyState();
     };
 
-    var resetExercise = function() {
+    var resetExercise = function(evt) {
+        evt.preventDefault();
         $.ajax({
             type: 'POST',
             url: runtime.handlerUrl(element, 'reset'),
@@ -331,10 +515,11 @@ function DragAndDropBlock(runtime, element, configuration) {
             if (item.grabbed !== undefined) {
                 grabbed = item.grabbed;
             }
+            var placed = item_user_state && ('input' in item_user_state || item_user_state.correct_input);
             var itemProperties = {
                 value: item.id,
                 drag_disabled: Boolean(item_user_state || state.finished),
-                class_name: item_user_state && ('input' in item_user_state || item_user_state.correct_input) ? 'fade': undefined,
+                class_name: placed || state.finished ? 'fade' : undefined,
                 xhr_active: (item_user_state && item_user_state.submitting_location),
                 input: input,
                 displayName: item.displayName,
@@ -345,6 +530,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             };
             if (item_user_state) {
                 itemProperties.is_placed = true;
+                itemProperties.zone = item_user_state.zone;
                 itemProperties.x_percent = item_user_state.x_percent;
                 itemProperties.y_percent = item_user_state.y_percent;
             }

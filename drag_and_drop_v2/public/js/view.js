@@ -53,9 +53,18 @@
     };
 
     var itemTemplate = function(item) {
-        var style = {};
+        // Define properties
         var className = (item.class_name) ? item.class_name : "";
-        var tabindex = 0;
+        if (item.has_image) {
+            className += " " + "option-with-image";
+        }
+        var attributes = {
+            'draggable': !item.drag_disabled,
+            'aria-grabbed': item.grabbed,
+            'data-value': item.value,
+            'data-drag-disabled': item.drag_disabled
+        };
+        var style = {};
         if (item.background_color) {
             style['background-color'] = item.background_color;
         }
@@ -68,34 +77,42 @@
         if (item.is_placed) {
             style.left = item.x_percent + "%";
             style.top = item.y_percent + "%";
-            tabindex = -1;  // If an item has been placed it can no longer be interacted with,
-                            // so remove the ability to move focus to it using the keyboard
+        } else {
+            // If an item has not been placed it must be possible to move focus to it using the keyboard:
+            attributes.tabindex = 0;
         }
-        if (item.has_image) {
-            className += " " + "option-with-image";
-        }
-        var content_html = item.displayName;
+        // Define children
+        var children = [
+            itemSpinnerTemplate(item.xhr_active),
+            itemInputTemplate(item.input)
+        ];
+        var item_content_html = item.displayName;
         if (item.imageURL) {
-            content_html = '<img src="' + item.imageURL + '" alt="' + item.imageDescription + '" />';
+            item_content_html = '<img src="' + item.imageURL + '" alt="' + item.imageDescription + '" />';
         }
+        var item_content = h('div', { innerHTML: item_content_html, className: "item-content" });
+        if (item.is_placed) {
+            // Insert information about zone in which this item has been placed
+            var item_description_id = 'item-' + item.value + '-description';
+            item_content.properties.attributes = { 'aria-describedby': item_description_id };
+            var item_description = h(
+                'div',
+                { id: item_description_id, className: 'sr' },
+                gettext('Correctly placed in: ') + item.zone
+            );
+            children.splice(1, 0, item_description);
+        }
+        children.splice(1, 0, item_content);
         return (
-            h('div.option',
+            h(
+                'div.option',
                 {
                     key: item.value,
                     className: className,
-                    attributes: {
-                        'tabindex': tabindex,
-                        'draggable': !item.drag_disabled,
-                        'aria-grabbed': item.grabbed,
-                        'data-value': item.value,
-                        'data-drag-disabled': item.drag_disabled
-                    },
+                    attributes: attributes,
                     style: style
-                }, [
-                    itemSpinnerTemplate(item.xhr_active),
-                    h('div', {innerHTML: content_html, className: "item-content"}),
-                    itemInputTemplate(item.input)
-                ]
+                },
+                children
             )
         );
     };
@@ -132,10 +149,44 @@
         var properties = { attributes: { 'aria-live': 'polite' } };
         return (
             h('section.feedback', properties, [
-                h('div.reset-button', {style: {display: reset_button_display}}, gettext('Reset exercise')),
-                h('h3.title1', {style: {display: feedback_display}}, gettext('Feedback')),
-                h('p.message', {style: {display: feedback_display},
-                                innerHTML: ctx.feedback_html})
+                h(
+                    'a.reset-button',
+                    { style: { display: reset_button_display }, attributes: { tabindex: 0 }},
+                    gettext('Reset exercise')
+                ),
+                h('h3.title1', { style: { display: feedback_display } }, gettext('Feedback')),
+                h('p.message', { style: { display: feedback_display }, innerHTML: ctx.feedback_html })
+            ])
+        );
+    };
+
+    var keyboardHelpTemplate = function(ctx) {
+        var dialog_attributes = { role: 'dialog', 'aria-labelledby': 'modal-window-title' };
+        var dialog_style = {};
+        return (
+            h('section.keyboard-help', [
+                h('a.keyboard-help-button', { attributes: { tabindex: 0 } }, gettext('Keyboard Help')),
+                h('div.keyboard-help-dialog', [
+                    h('div.modal-window-overlay'),
+                    h('div.modal-window', { attributes: dialog_attributes, style: dialog_style }, [
+                        h('div.modal-header', [
+                            h('h2.modal-window-title', gettext('Keyboard Help'))
+                        ]),
+                        h('div.modal-content', [
+                            h('p', gettext('You can complete this exercise using only your keyboard.')),
+                            h('ul', [
+                                h('li', gettext('Use "Tab" and "Shift-Tab" to navigate between items and zones.')),
+                                h('li', gettext('Press "Enter", "Space", "Ctrl-m", or "⌘-m" on an item to select it for dropping, then navigate to the zone you want to drop it on.')),
+                                h('li', gettext('Press "Enter", "Space", "Ctrl-m", or "⌘-m" to drop the item on the current zone.')),
+                                h('li', gettext('Press "Escape" if you want to cancel the drop operation (e.g. because you would like to select a different item).')),
+                                h('li', gettext('Press "?" at any time to bring up this dialog.')),
+                            ])
+                        ]),
+                        h('div.modal-actions', [
+                            h('button.modal-dismiss-button', gettext("OK"))
+                        ])
+                    ])
+                ])
             ])
         );
     };
@@ -156,10 +207,17 @@
                 h('section.drag-container', [
                     h('div.item-bank', renderCollection(itemTemplate, items_in_bank, ctx)),
                     h('div.target', [
-                        h('div.popup', {style: {display: ctx.popup_html ? 'block' : 'none'}}, [
-                            h('div.close.icon-remove-sign.fa-times-circle'),
-                            h('p.popup-content', {innerHTML: ctx.popup_html}),
-                        ]),
+                        h(
+                            'div.popup',
+                            {
+                                style: {display: ctx.popup_html ? 'block' : 'none'},
+                                attributes: {'aria-live': 'polite'}
+                            },
+                            [
+                                h('div.close.icon-remove-sign.fa-times-circle'),
+                                h('p.popup-content', {innerHTML: ctx.popup_html}),
+                            ]
+                        ),
                         h('div.target-img-wrapper', [
                             h('img.target-img', {src: ctx.target_img_src, alt: ctx.target_img_description}),
                         ]),
@@ -167,6 +225,7 @@
                         renderCollection(itemTemplate, items_placed, ctx),
                     ]),
                 ]),
+                keyboardHelpTemplate(ctx),
                 feedbackTemplate(ctx),
             ])
         );
