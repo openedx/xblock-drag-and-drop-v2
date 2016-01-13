@@ -233,6 +233,10 @@
     box-align:center;
 }
 
+.xblock--drag-and-drop .zone-with-borders {
+    border: 1px dotted #565656;
+}
+
 /* Focused zone */
 .xblock--drag-and-drop .zone:focus {
     border: 2px solid #a5a5a5;

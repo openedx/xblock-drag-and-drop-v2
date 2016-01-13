@@ -29,6 +29,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         zones = config.pop("zones")
         items = config.pop("items")
         self.assertEqual(config, {
+            "display_zone_borders": False,
             "display_zone_labels": False,
             "title": "Drag and Drop",
             "show_title": True,

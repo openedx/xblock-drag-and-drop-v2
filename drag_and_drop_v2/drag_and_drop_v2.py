@@ -147,6 +147,7 @@ class DragAndDropBlock(XBlock):
         return {
             "zones": self.data.get('zones', []),
             "display_zone_labels": self.data.get('displayLabels', False),
+            "display_zone_borders": self.data.get('displayBorders', False),
             "items": items_without_answers(),
             "title": self.display_name,
             "show_title": self.show_title,

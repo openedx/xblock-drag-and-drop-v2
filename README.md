@@ -71,8 +71,9 @@ In the next step, you set the background image URL and define the
 properties of the drop zones. The properties include the title/text
 rendered in the drop zone, the zone's dimensions and position
 coordinates. In this step you can also specify whether you would like
-zone labels to be shown to students or not. It is possible to define
-an arbitrary number of drop zones as long as their titles are unique.
+zone labels to be shown to students or not, as well as whether or not
+to display borders outlining the zones. It is possible to define an
+arbitrary number of drop zones as long as their titles are unique.
 
 ![Drag item edit](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/5ff71f56ba454c66d8f2749bc1d55d5f1df3b792/doc/img/edit-view-items.png)
 

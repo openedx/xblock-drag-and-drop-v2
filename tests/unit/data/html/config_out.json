@@ -8,6 +8,7 @@
     "item_background_color": "white",
     "item_text_color": "#000080",
     "initial_feedback": "HTML <strong>Intro</strong> Feed",
+    "display_zone_borders": false,
     "display_zone_labels": false,
 
     "zones": [

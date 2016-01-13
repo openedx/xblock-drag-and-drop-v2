@@ -8,6 +8,7 @@
     "item_background_color": null,
     "item_text_color": null,
     "initial_feedback": "Intro Feed",
+    "display_zone_borders": false,
     "display_zone_labels": false,
 
     "zones": [

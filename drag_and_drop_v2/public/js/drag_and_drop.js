@@ -552,6 +552,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             target_img_src: configuration.target_img_expanded_url,
             target_img_description: configuration.target_img_description,
             display_zone_labels: configuration.display_zone_labels,
+            display_zone_borders: configuration.display_zone_borders,
             zones: configuration.zones,
             items: items,
             // state - parts that can change:

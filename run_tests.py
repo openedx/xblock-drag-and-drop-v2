@@ -28,7 +28,7 @@ if __name__ == "__main__":
     try:
         os.mkdir('var')
     except OSError:
-        # May already exist.
+        # The var dir may already exist.
         pass
 
     from django.core.management import execute_from_command_line

@@ -119,9 +119,10 @@
 
     var zoneTemplate = function(zone, ctx) {
         var className = ctx.display_zone_labels ? 'zone-name' : 'zone-name sr';
+        var selector = ctx.display_zone_borders ? 'div.zone.zone-with-borders' : 'div.zone';
         return (
             h(
-                'div.zone',
+                selector,
                 {
                     id: zone.id,
                     attributes: {
