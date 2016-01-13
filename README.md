@@ -101,6 +101,200 @@ any zone.
 
 You can define an arbitrary number of drag items.
 
+Analytics Events
+----------------
+
+The following analytics events are provided by this block.
+
+## `xblock.drag-and-drop-v2.loaded`
+
+Fired when the Drag and Drop XBlock is finished loading.
+
+### Example
+
+```
+{
+    "username": "staff",
+    "event_type": "xblock.drag-and-drop-v2.loaded",
+    "ip": "10.0.2.2",
+    "agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:43.0) Gecko/20100101 Firefox/43.0",
+    "host": "precise64",
+    "referer": "http://localhost:8000/courses/course-v1:DnD+DnD+DnD/courseware/ec546c58d2f447b7a9223c57b5de7344/756071f8de7f47c3b0ae726586ebbe16/1?activate_block_id=block-v1%3ADnD%2BDnD%2BDnD%2Btype%40vertical%2Bblock%40d2fc47476ca14c55816c4a1264a27280",
+    "accept_language": "en;q=1.0, en;q=0.5",
+    "event": {
+        "component_id": "6b80ce1e8b78426898b47a834d72ffd3",
+        "user_id": 5
+    },
+    "event_source": "server",
+    "context": {
+        "course_user_tags": {},
+        "user_id": 5,
+        "org_id": "DnD",
+        "module": {
+            "usage_key": "block-v1:DnD+DnD+DnD+type@drag-and-drop-v2+block@6b80ce1e8b78426898b47a834d72ffd3",
+            "display_name": "Drag and Drop"
+        },
+        "course_id": "course-v1:DnD+DnD+DnD",
+        "path": "/courses/course-v1:DnD+DnD+DnD/xblock/block-v1:DnD+DnD+DnD+type@drag-and-drop-v2+block@6b80ce1e8b78426898b47a834d72ffd3/handler/publish_event"
+    },
+    "time": "2016-01-13T01:52:41.330049+00:00",
+    "page": "x_module"
+}
+```
+
+## `xblock.drag-and-drop-v2.item.picked-up`
+
+Fired when a student picks up a draggable item.
+
+### Example
+
+```
+{
+    "username": "staff",
+    "event_type": "xblock.drag-and-drop-v2.item.picked-up",
+    "ip": "10.0.2.2",
+    "agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:43.0) Gecko/20100101 Firefox/43.0",
+    "host": "precise64",
+    "referer": "http://localhost:8000/courses/course-v1:DnD+DnD+DnD/courseware/ec546c58d2f447b7a9223c57b5de7344/756071f8de7f47c3b0ae726586ebbe16/1?activate_block_id=block-v1%3ADnD%2BDnD%2BDnD%2Btype%40vertical%2Bblock%40d2fc47476ca14c55816c4a1264a27280",
+    "accept_language": "en;q=1.0, en;q=0.5",
+    "event": {
+        "item_id": 0,
+        "component_id": "6b80ce1e8b78426898b47a834d72ffd3",
+        "user_id": 5
+    },
+    "event_source": "server",
+    "context": {
+        "course_user_tags": {},
+        "user_id": 5,
+        "org_id": "DnD",
+        "module": {
+            "usage_key": "block-v1:DnD+DnD+DnD+type@drag-and-drop-v2+block@6b80ce1e8b78426898b47a834d72ffd3",
+            "display_name": "Drag and Drop"
+        },
+        "course_id": "course-v1:DnD+DnD+DnD",
+        "path": "/courses/course-v1:DnD+DnD+DnD/xblock/block-v1:DnD+DnD+DnD+type@drag-and-drop-v2+block@6b80ce1e8b78426898b47a834d72ffd3/handler/publish_event"
+    },
+    "time": "2016-01-13T01:58:44.395935+00:00",
+    "page": "x_module"
+}
+```
+
+## `xblock.drag-and-drop-v2.item.dropped`
+
+Fired when a student drops a draggable item.
+
+### Example
+
+```
+{
+    "username": "staff",
+    "event_type": "xblock.drag-and-drop-v2.item.dropped",
+    "ip": "10.0.2.2",
+    "agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:43.0) Gecko/20100101 Firefox/43.0",
+    "host": "precise64",
+    "referer": "http://localhost:8000/courses/course-v1:DnD+DnD+DnD/courseware/ec546c58d2f447b7a9223c57b5de7344/756071f8de7f47c3b0ae726586ebbe16/1?activate_block_id=block-v1%3ADnD%2BDnD%2BDnD%2Btype%40vertical%2Bblock%40d2fc47476ca14c55816c4a1264a27280",
+    "accept_language": "en;q=1.0, en;q=0.5",
+    "event": {
+        "component_id": "6b80ce1e8b78426898b47a834d72ffd3",
+        "user_id": 5,
+        "is_correct_location": true,
+        "is_correct": true,
+        "location": "The Top Zone",
+        "item_id": 0,
+        "input": null
+    },
+    "event_source": "server",
+    "context": {
+        "course_user_tags": {},
+        "user_id": 5,
+        "org_id": "DnD",
+        "module": {
+            "usage_key": "block-v1:DnD+DnD+DnD+type@drag-and-drop-v2+block@6b80ce1e8b78426898b47a834d72ffd3",
+            "display_name": "Drag and Drop"
+        },
+        "course_id": "course-v1:DnD+DnD+DnD",
+        "path": "/courses/course-v1:DnD+DnD+DnD/xblock/block-v1:DnD+DnD+DnD+type@drag-and-drop-v2+block@6b80ce1e8b78426898b47a834d72ffd3/handler/do_attempt"
+    },
+    "time": "2016-01-13T01:58:45.202313+00:00",
+    "page": "x_module"
+}
+```
+
+## `xblock.drag-and-drop-v2.feedback.opened`
+
+Fired when the feedback pop-up is opened.
+
+### Example
+
+```
+{
+    "username": "staff",
+    "event_type": "xblock.drag-and-drop-v2.feedback.opened",
+    "ip": "10.0.2.2",
+    "agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:43.0) Gecko/20100101 Firefox/43.0",
+    "host": "precise64",
+    "referer": "http://localhost:8000/courses/course-v1:DnD+DnD+DnD/courseware/ec546c58d2f447b7a9223c57b5de7344/756071f8de7f47c3b0ae726586ebbe16/1?activate_block_id=block-v1%3ADnD%2BDnD%2BDnD%2Btype%40vertical%2Bblock%40d2fc47476ca14c55816c4a1264a27280",
+    "accept_language": "en;q=1.0, en;q=0.5",
+    "event": {
+        "content": "Correct! This one belongs to The Top Zone.",
+        "component_id": "6b80ce1e8b78426898b47a834d72ffd3",
+        "user_id": 5
+    },
+    "event_source": "server",
+    "context": {
+        "course_user_tags": {},
+        "user_id": 5,
+        "org_id": "DnD",
+        "module": {
+            "usage_key": "block-v1:DnD+DnD+DnD+type@drag-and-drop-v2+block@6b80ce1e8b78426898b47a834d72ffd3",
+            "display_name": "Drag and Drop"
+        },
+        "course_id": "course-v1:DnD+DnD+DnD",
+        "path": "/courses/course-v1:DnD+DnD+DnD/xblock/block-v1:DnD+DnD+DnD+type@drag-and-drop-v2+block@6b80ce1e8b78426898b47a834d72ffd3/handler/publish_event"
+    },
+    "time": "2016-01-13T01:58:45.844986+00:00",
+    "page": "x_module"
+}
+```
+
+## `xblock.drag-and-drop-v2.feedback.closed`
+
+Fired when the feedback popup is closed.
+
+### Example
+
+```
+{
+    "username": "staff",
+    "event_type": "xblock.drag-and-drop-v2.feedback.closed",
+    "ip": "10.0.2.2",
+    "agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:43.0) Gecko/20100101 Firefox/43.0",
+    "host": "precise64",
+    "referer": "http://localhost:8000/courses/course-v1:DnD+DnD+DnD/courseware/ec546c58d2f447b7a9223c57b5de7344/756071f8de7f47c3b0ae726586ebbe16/1?activate_block_id=block-v1%3ADnD%2BDnD%2BDnD%2Btype%40vertical%2Bblock%40d2fc47476ca14c55816c4a1264a27280",
+    "accept_language": "en;q=1.0, en;q=0.5",
+    "event": {
+        "component_id": "13d1b859a2304c858e1810ccc23f29b2",
+        "user_id": 5,
+        "manually": true
+    },
+    "event_source": "server",
+    "context": {
+        "course_user_tags": {},
+        "user_id": 5,
+        "org_id": "DnD",
+        "module": {
+            "usage_key": "block-v1:DnD+DnD+DnD+type@drag-and-drop-v2+block@13d1b859a2304c858e1810ccc23f29b2",
+            "display_name": "Drag and Drop"
+        },
+        "course_id": "course-v1:DnD+DnD+DnD",
+        "path": "/courses/course-v1:DnD+DnD+DnD/xblock/block-v1:DnD+DnD+DnD+type@drag-and-drop-v2+block@13d1b859a2304c858e1810ccc23f29b2/handler/publish_event"
+    },
+    "time": "2016-01-13T02:07:00.988534+00:00",
+    "page": "x_module"
+}
+```
+
+
 Testing
 -------
 
