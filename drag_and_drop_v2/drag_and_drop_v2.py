@@ -11,9 +11,16 @@ import urllib
 from xblock.core import XBlock
 from xblock.fields import Scope, String, Dict, Float, Boolean
 from xblock.fragment import Fragment
+from xblockutils.resources import ResourceLoader
+from xblockutils.settings import XBlockWithSettingsMixin, ThemableXBlockMixin
 
-from .utils import _, render_template, load_resource  # pylint: disable=unused-import
+from .utils import _  # pylint: disable=unused-import
 from .default_data import DEFAULT_DATA
+
+
+# Globals ###########################################################
+
+loader = ResourceLoader(__name__)
 
 
 # Classes ###########################################################
@@ -108,7 +115,7 @@ class DragAndDropBlock(XBlock):
         """
 
         fragment = Fragment()
-        fragment.add_content(render_template('/templates/html/drag_and_drop.html'))
+        fragment.add_content(loader.render_template('/templates/html/drag_and_drop.html'))
         css_urls = (
             'public/css/vendor/jquery-ui-1.10.4.custom.min.css',
             'public/css/drag_and_drop.css'
@@ -166,7 +173,7 @@ class DragAndDropBlock(XBlock):
         Editing view in Studio
         """
 
-        js_templates = load_resource('/templates/html/js_templates.html')
+        js_templates = loader.load_unicode('/templates/html/js_templates.html')
         help_texts = {
             field_name: self._(field.help)
             for field_name, field in self.fields.viewitems() if hasattr(field, "help")
@@ -179,7 +186,7 @@ class DragAndDropBlock(XBlock):
         }
 
         fragment = Fragment()
-        fragment.add_content(render_template('/templates/html/drag_and_drop_edit.html', context))
+        fragment.add_content(loader.render_template('/templates/html/drag_and_drop_edit.html', context))
 
         css_urls = (
             'public/css/vendor/jquery-ui-1.10.4.custom.min.css',

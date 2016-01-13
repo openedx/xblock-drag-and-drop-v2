@@ -1,11 +1,18 @@
 # Imports ###########################################################
+
 from xml.sax.saxutils import escape
 from selenium.webdriver.support.ui import WebDriverWait
-from ..utils import load_resource
 
 from workbench import scenarios
+from xblockutils.resources import ResourceLoader
 
 from xblockutils.base_test import SeleniumBaseTest
+
+
+# Globals ###########################################################
+
+loader = ResourceLoader(__name__)
+
 
 # Classes ###########################################################
 
@@ -41,7 +48,7 @@ class BaseIntegrationTest(SeleniumBaseTest):
         )
 
     def _get_custom_scenario_xml(self, filename):
-        data = load_resource(filename)
+        data = loader.load_unicode(filename)
         return "<vertical_demo><drag-and-drop-v2 data='{data}'/></vertical_demo>".format(
             data=escape(data, self._additional_escapes)
         )

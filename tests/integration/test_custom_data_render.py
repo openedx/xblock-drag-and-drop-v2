@@ -8,7 +8,7 @@ class TestCustomDataDragAndDropRendering(BaseIntegrationTest):
     def setUp(self):
         super(TestCustomDataDragAndDropRendering, self).setUp()
 
-        scenario_xml = self._get_custom_scenario_xml("integration/data/test_html_data.json")
+        scenario_xml = self._get_custom_scenario_xml("data/test_html_data.json")
         self._add_scenario(self.PAGE_ID, self.PAGE_TITLE, scenario_xml)
 
         self._page = self.go_to_page(self.PAGE_TITLE)

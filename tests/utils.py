@@ -1,5 +1,4 @@
 import json
-import pkg_resources
 import re
 
 from mock import patch
@@ -30,14 +29,6 @@ def make_block():
     usage_id = runtime.id_generator.create_usage(def_id)
     scope_ids = ScopeIds('user', block_type, def_id, usage_id)
     return drag_and_drop_v2.DragAndDropBlock(runtime, field_data, scope_ids=scope_ids)
-
-
-def load_resource(resource_path):
-    """
-    Gets the content of a resource
-    """
-    resource_content = pkg_resources.resource_string(__name__, resource_path)
-    return unicode(resource_content)
 
 
 class TestCaseMixin(object):
