@@ -160,28 +160,23 @@ function DragAndDropBlock(runtime, element, configuration) {
      * Update the DOM to reflect 'state'.
      */
     var applyState = function() {
-        // Is there a change to the feedback popup?
-        if (state.feedback !== previousFeedback) {
-            if (state.feedback) {
-                if (previousFeedback) {
-                    publishEvent({
-                        event_type: 'xblock.drag-and-drop-v2.feedback.closed',
-                        content: previousFeedback,
-                        manually: false,
-                    });
-                }
-                publishEvent({
-                    event_type: 'xblock.drag-and-drop-v2.feedback.opened',
-                    content: state.feedback,
-                });
-            } else {
+        // Has the feedback popup been closed?
+        if (state.closing) {
+            if (previousFeedback) {
                 publishEvent({
                     event_type: 'xblock.drag-and-drop-v2.feedback.closed',
-                    content: state.feedback,
-                    manually: true,
+                    content: previousFeedback,
+                    manually: state.manually_closed,
                 });
+                previousFeedback = undefined;
             }
-            previousFeedback = state.feedback;
+        }
+        // Has feedback been set?
+        if (state.feedback) {
+            publishEvent({
+                event_type: 'xblock.drag-and-drop-v2.feedback.opened',
+                content: state.feedback,
+            });
         }
 
         updateDOM();
@@ -469,6 +464,14 @@ function DragAndDropBlock(runtime, element, configuration) {
         }
         if (target.parents(popup_box).length && !target.is(close_button)) {
             return;
+        }
+
+        state.closing = true;
+        if (target.is(close_button)) {
+            state.manually_closed = true;
+            previousFeedback = state.feedback;
+        } else {
+            state.manually_closed = false;
         }
 
         delete state.feedback;
