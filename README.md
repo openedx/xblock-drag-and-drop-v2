@@ -36,7 +36,7 @@ Install the requirements into the Python virtual environment of your
 root folder:
 
 ```bash
-$ pip install -e .
+$ pip install -r requirements.txt
 ```
 
 Enabling in Studio
@@ -105,15 +105,27 @@ You can define an arbitrary number of drag items.
 Testing
 -------
 
-Inside a fresh virtualenv, run
+Inside a fresh virtualenv, `cd` into the root folder of this repository
+(`xblock-drag-and-drop-v2`) and run
 
 ```bash
-$ cd .../xblock-drag-and-drop-v2/
 $ sh install_test_deps.sh
 ```
 
-To run the tests, from the xblock-drag-and-drop-v2 repository root:
+You can then run the entire test suite via
 
 ```bash
 $ python run_tests.py
+```
+
+To only run the unit test suite, do
+
+```bash
+$ python run_tests.py tests/unit/
+```
+
+Similarly, you can run the integration test suite via
+
+```bash
+$ python run_tests.py tests/integration/
 ```

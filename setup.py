@@ -31,7 +31,6 @@ setup(
         'xblock-utils',
         'ddt'
     ],
-    dependency_links = ['http://github.com/edx/xblock-utils/tarball/master#egg=xblock-utils'],
     entry_points={
         'xblock.v1': 'drag-and-drop-v2 = drag_and_drop_v2:DragAndDropBlock',
     },
