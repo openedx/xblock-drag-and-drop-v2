@@ -39,10 +39,6 @@
     background: #ebf0f2;
 }
 
-/*.xblock--drag-and-drop .clear {
-    clear: both;
-}*/
-
 /** Draggable Items **/
 .xblock--drag-and-drop .item-bank {
     display: -ms-flexbox;

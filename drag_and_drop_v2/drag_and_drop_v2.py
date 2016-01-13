@@ -25,7 +25,8 @@ loader = ResourceLoader(__name__)
 
 # Classes ###########################################################
 
-class DragAndDropBlock(XBlock):
+@XBlock.wants('settings')
+class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     """
     XBlock providing a Drag and Drop question
     """
@@ -103,6 +104,7 @@ class DragAndDropBlock(XBlock):
         default=False,
     )
 
+    block_settings_key = 'drag-and-drop-v2'
     has_score = True
 
     def _(self, text):
@@ -131,6 +133,8 @@ class DragAndDropBlock(XBlock):
             fragment.add_css_url(self.runtime.local_resource_url(self, css_url))
         for js_url in js_urls:
             fragment.add_javascript_url(self.runtime.local_resource_url(self, js_url))
+
+        self.include_theme_files(fragment)
 
         fragment.initialize_js('DragAndDropBlock', self.get_configuration())
 
