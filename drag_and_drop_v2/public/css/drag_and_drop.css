@@ -39,7 +39,8 @@
     background: #ebf0f2;
 }
 
-/** Draggable Items **/
+/*** DRAGGABLE ITEMS ***/
+
 .xblock--drag-and-drop .item-bank {
     display: -ms-flexbox;
     display: flex;
@@ -178,7 +179,8 @@
     opacity: 0.5;
 }
 
-/*** Drop Target ***/
+/*** DROP TARGET ***/
+
 .xblock--drag-and-drop .target {
     display: table;
     /* 'display: table' makes this have the smallest size that fits the .target-img
@@ -261,6 +263,7 @@
 }
 
 /*** FEEDBACK ***/
+
 .xblock--drag-and-drop .feedback {
     border-top: solid 1px #bdbdbd;
 }
@@ -298,6 +301,8 @@
     font-family: "fontawesome";
     font-size: 18pt;
 }
+
+/*** KEYBOARD HELP ***/
 
 .xblock--drag-and-drop .keyboard-help {
     margin-top: 3px;
@@ -344,7 +349,7 @@
 
 .xblock--drag-and-drop .modal-content {
     border-radius: 5px;
-    background: white;
+    background: #ffffff;
     margin-bottom: 5px;
     padding: 5px;
 }
