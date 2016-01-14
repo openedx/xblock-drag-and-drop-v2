@@ -166,14 +166,12 @@ function DragAndDropBlock(runtime, element, configuration) {
     var applyState = function() {
         // Has the feedback popup been closed?
         if (state.closing) {
-            if (previousFeedback) {
-                publishEvent({
-                    event_type: 'xblock.drag-and-drop-v2.feedback.closed',
-                    content: previousFeedback,
-                    manually: state.manually_closed,
-                });
-                previousFeedback = undefined;
-            }
+            publishEvent({
+                event_type: 'xblock.drag-and-drop-v2.feedback.closed',
+                content: previousFeedback || state.feedback,
+                manually: state.manually_closed,
+            });
+            previousFeedback = undefined;
         }
         // Has feedback been set?
         if (state.feedback) {
@@ -478,8 +476,8 @@ function DragAndDropBlock(runtime, element, configuration) {
             state.manually_closed = false;
         }
 
-        delete state.feedback;
         applyState();
+        delete state.feedback;
     };
 
     var resetExercise = function(evt) {
