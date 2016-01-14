@@ -358,10 +358,10 @@ class EventsFiredTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegration
         return "<vertical_demo><drag-and-drop-v2/></vertical_demo>"
 
     def test_loaded(self):
-        dummy, name, data = self.publish.call_args[0]
+        dummy, name, event_data = self.publish.call_args[0]
         self.assertEqual(name, 'edx.drag_and_drop_v2.loaded')
         self.assertEqual(
-                data, {
+                event_data, {
                     'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
                     'user_id': 'student_1'
                 }
@@ -369,10 +369,10 @@ class EventsFiredTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegration
 
     def test_picked_up(self):
         self.parameterized_item_positive_feedback_on_good_move(self.items_map)
-        dummy, name, data = self.publish.call_args_list[1][0]
+        dummy, name, event_data = self.publish.call_args_list[1][0]
         self.assertEqual(name, 'edx.drag_and_drop_v2.item.picked_up')
         self.assertEqual(
-                data, {
+                event_data, {
                     'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
                     'user_id': 'student_1',
                     'item_id': 0,
@@ -382,10 +382,10 @@ class EventsFiredTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegration
     def test_dropped(self):
         self.parameterized_item_positive_feedback_on_good_move(self.items_map)
         # Skipping to 3, since 2 is grade event.
-        dummy, name, data = self.publish.call_args_list[3][0]
+        dummy, name, event_data = self.publish.call_args_list[3][0]
         self.assertEqual(name, 'edx.drag_and_drop_v2.item.dropped')
         self.assertEqual(
-                data, {
+                event_data, {
                     'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
                     'input': None,
                     'is_correct': True,
@@ -398,10 +398,10 @@ class EventsFiredTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegration
 
     def test_feedback_opened(self):
         self.parameterized_item_positive_feedback_on_good_move(self.items_map)
-        dummy, name, data = self.publish.call_args_list[4][0]
+        dummy, name, event_data = self.publish.call_args_list[4][0]
         self.assertEqual(name, 'edx.drag_and_drop_v2.feedback.opened')
         self.assertEqual(
-                data, {
+                event_data, {
                     'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
                     'content': u'Correct! This one belongs to The Top Zone.',
                     'user_id': 'student_1',
@@ -411,10 +411,10 @@ class EventsFiredTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegration
 
     def test_feedback_closed(self):
         self.parameterized_item_positive_feedback_on_good_move(self.items_map)
-        dummy, name, data = self.publish.call_args_list[5][0]
+        dummy, name, event_data = self.publish.call_args_list[5][0]
         self.assertEqual(name, 'edx.drag_and_drop_v2.feedback.closed')
         self.assertEqual(
-                data, {
+                event_data, {
                     'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
                     'user_id': 'student_1',
                     'manually': False,
