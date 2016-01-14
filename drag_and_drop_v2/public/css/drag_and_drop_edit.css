@@ -68,7 +68,7 @@
 
 .xblock--drag-and-drop--editor .tab {
     width: 100%;
-    background: #eee;
+    background-color: #eee;
     padding: 3px 0;
     position: relative;
 }
@@ -177,7 +177,7 @@
 }
 
 .xblock--drag-and-drop--editor .items-form .item {
-    background: #8fcaec;
+    background-color: #8fcaec;
     padding: 10px 0 1px;
     margin: 15px 0;
 }
@@ -219,7 +219,7 @@
 
 /** Buttons **/
 .xblock--drag-and-drop--editor .btn {
-    background: #1d5280;
+    background-color: #1d5280;
     color: #fff;
     border: 1px solid #156ab4;
     border-radius: 6px;
@@ -257,7 +257,7 @@
     width: 14px;
     height: 14px;
     border-radius: 7px;
-    background: #1d5280;
+    background-color: #1d5280;
     position: relative;
     float: left;
     margin: 0 5px 0 0;
@@ -274,7 +274,7 @@
     content: '';
     height: 10px;
     width: 2px;
-    background: #fff;
+    background-color: #fff;
     position: relative;
     display: inline;
     float: left;
@@ -286,7 +286,7 @@
     content: '';
     height: 2px;
     width: 10px;
-    background: #fff;
+    background-color: #fff;
     position: relative;
     display: inline;
     float: left;
@@ -298,7 +298,7 @@
     content: '';
     height: 10px;
     width: 2px;
-    background: #fff;
+    background-color: #fff;
     position: relative;
     display: inline;
     float: left;
@@ -313,7 +313,7 @@
     content: '';
     height: 2px;
     width: 10px;
-    background: #fff;
+    background-color: #fff;
     position: relative;
     display: inline;
     float: left;
@@ -325,10 +325,10 @@
 }
 
 .xblock--drag-and-drop--editor .remove-item .icon.remove {
-    background: #fff;
+    background-color: #fff;
     color: #0072a7;  /* Override default color from Studio to ensure contrast is large enough */
 }
 .xblock--drag-and-drop--editor .remove-item .icon.remove:before,
 .xblock--drag-and-drop--editor .remove-item .icon.remove:after {
-    background: #1d5280;
+    background-color: #1d5280;
 }

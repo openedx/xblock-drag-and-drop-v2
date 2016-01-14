@@ -1,5 +1,5 @@
 .themed-xblock.xblock--drag-and-drop {
-    background: #fff;
+    background-color: #fff;
 }
 
 /* Shared styles used in header and footer */
@@ -14,7 +14,7 @@
 /* drag-container holds the .item-bank and the .target */
 
 .themed-xblock.xblock--drag-and-drop .drag-container {
-    background: #ebf0f2;
+    background-color: #ebf0f2;
 }
 
 .themed-xblock.xblock--drag-and-drop .item-bank {
@@ -32,12 +32,12 @@
 }
 
 .themed-xblock.xblock--drag-and-drop .drag-container .option .numerical-input.correct .input {
-    background: #ceffce;
+    background-color: #ceffce;
     color: #087108;
 }
 
 .themed-xblock.xblock--drag-and-drop .drag-container .option .numerical-input.incorrect .input {
-    background: #ffcece;
+    background-color: #ffcece;
     color: #ad0d0d;
 }
 
@@ -48,7 +48,7 @@
 /*** DROP TARGET ***/
 
 .themed-xblock.xblock--drag-and-drop .target {
-    background: #fff;
+    background-color: #fff;
 }
 
 .themed-xblock.xblock--drag-and-drop .zone p {
@@ -66,7 +66,7 @@
 }
 
 .themed-xblock.xblock--drag-and-drop .popup {
-    background: none repeat scroll 0 0 #66a5b5;
+    background-color: #66a5b5;
 }
 
 .themed-xblock.xblock--drag-and-drop .popup .popup-content {
