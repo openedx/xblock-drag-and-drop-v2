@@ -1,11 +1,13 @@
 # Imports ###########################################################
 
 from ddt import ddt, data
+from mock import Mock, patch
 
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 
+from workbench.runtime import WorkbenchRuntime
 from xblockutils.resources import ResourceLoader
 
 from drag_and_drop_v2.default_data import (
@@ -310,9 +312,9 @@ class InteractionTestBase(object):
             self.assertFalse(dialog_modal.is_displayed())
 
 
-class BasicInteractionTest(InteractionTestBase):
+class DefaultDataTestMixin(object):
     """
-    Testing interactions with Drag and Drop XBlock against default data. If default data changes this will break.
+    Provides a test scenario with default options.
     """
     PAGE_TITLE = 'Drag and Drop v2'
     PAGE_ID = 'drag_and_drop_v2'
@@ -340,6 +342,11 @@ class BasicInteractionTest(InteractionTestBase):
     def _get_scenario_xml(self):  # pylint: disable=no-self-use
         return "<vertical_demo><drag-and-drop-v2/></vertical_demo>"
 
+
+class BasicInteractionTest(DefaultDataTestMixin, InteractionTestBase):
+    """
+    Testing interactions with Drag and Drop XBlock against default data. If default data changes this will break.
+    """
     def test_item_positive_feedback_on_good_move(self):
         self.parameterized_item_positive_feedback_on_good_move(self.items_map)
 
@@ -357,6 +364,84 @@ class BasicInteractionTest(InteractionTestBase):
 
     def test_keyboard_help(self):
         self.interact_with_keyboard_help()
+
+
+class EventsFiredTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):
+
+    def setUp(self):
+        mock = Mock()
+        context = patch.object(WorkbenchRuntime, 'publish', mock)
+        context.start()
+        self.addCleanup(context.stop)
+        self.publish = mock
+        super(EventsFiredTest, self).setUp()
+
+    def _get_scenario_xml(self):  # pylint: disable=no-self-use
+        return "<vertical_demo><drag-and-drop-v2/></vertical_demo>"
+
+    def test_loaded(self):
+        dummy, name, data = self.publish.call_args[0]
+        self.assertEqual(name, 'xblock.drag-and-drop-v2.loaded')
+        self.assertEqual(
+                data, {
+                    'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
+                    'user_id': 'student_1'
+                }
+        )
+
+    def test_picked_up(self):
+        self.parameterized_item_positive_feedback_on_good_move(self.items_map)
+        dummy, name, data = self.publish.call_args_list[1][0]
+        self.assertEqual(name, 'xblock.drag-and-drop-v2.item.picked-up')
+        self.assertEqual(
+                data, {
+                    'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
+                    'user_id': 'student_1',
+                    'item_id': 0,
+                }
+        )
+
+    def test_dropped(self):
+        self.parameterized_item_positive_feedback_on_good_move(self.items_map)
+        # Skipping to 3, since 2 is grade event.
+        dummy, name, data = self.publish.call_args_list[3][0]
+        self.assertEqual(name, 'xblock.drag-and-drop-v2.item.dropped')
+        self.assertEqual(
+                data, {
+                    'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
+                    'input': None,
+                    'is_correct': True,
+                    'is_correct_location': True,
+                    'item_id': 0,
+                    'location': u'The Top Zone',
+                    'user_id': 'student_1',
+                }
+        )
+
+    def test_feedback_opened(self):
+        self.parameterized_item_positive_feedback_on_good_move(self.items_map)
+        dummy, name, data = self.publish.call_args_list[4][0]
+        self.assertEqual(name, 'xblock.drag-and-drop-v2.feedback.opened')
+        self.assertEqual(
+                data, {
+                    'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
+                    'content': u'Correct! This one belongs to The Top Zone.',
+                    'user_id': 'student_1',
+                }
+        )
+
+    def test_feedback_closed(self):
+        self.parameterized_item_positive_feedback_on_good_move(self.items_map)
+        dummy, name, data = self.publish.call_args_list[5][0]
+        self.assertEqual(name, 'xblock.drag-and-drop-v2.feedback.closed')
+        self.assertEqual(
+                data, {
+                    'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
+                    'user_id': 'student_1',
+                    'manually': False,
+                    'content': u'Correct! This one belongs to The Top Zone.',
+                }
+        )
 
 
 @ddt
