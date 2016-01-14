@@ -267,6 +267,7 @@
 /*** FEEDBACK ***/
 
 .xblock--drag-and-drop .feedback {
+    margin-bottom: 1%;
     border-top: solid 1px #bdbdbd;
 }
 
