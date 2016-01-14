@@ -130,6 +130,7 @@ class InteractionTestBase(object):
 
     def assert_placed_item(self, item_value, zone_id):
         item = self._get_placed_item_by_value(item_value)
+        self.wait_until_visible(item)
         item_content = item.find_element_by_css_selector('.item-content')
         item_description = item.find_element_by_css_selector('.sr')
         item_description_id = 'item-{}-description'.format(item_value)
@@ -143,6 +144,7 @@ class InteractionTestBase(object):
 
     def assert_reverted_item(self, item_value):
         item = self._get_item_by_value(item_value)
+        self.wait_until_visible(item)
         item_content = item.find_element_by_css_selector('.item-content')
 
         self.assertEqual(item.get_attribute('class'), 'option ui-draggable')
