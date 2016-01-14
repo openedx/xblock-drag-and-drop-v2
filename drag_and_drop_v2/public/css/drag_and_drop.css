@@ -102,6 +102,8 @@
 
 .xblock--drag-and-drop .drag-container .option .item-content {
     display: inline-block;
+    width: 100%; /* Make sure size of content never exceeds size of item */
+                 /* (this can happen if item displays image whose width exceeds computed max-width of item) */
 }
 
 /* Placed option */
