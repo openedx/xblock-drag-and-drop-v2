@@ -275,7 +275,7 @@ class DragAndDropBlock(XBlock):
                 # so we have to figure that we're running in Studio for now
                 pass
 
-        self.runtime.publish(self, 'xblock.drag-and-drop-v2.item.dropped', {
+        self.runtime.publish(self, 'edx.drag_and_drop_v2.item.dropped', {
             'user_id': self.scope_ids.user_id,
             'component_id': self._get_unique_id(),
             'item_id': item['id'],
