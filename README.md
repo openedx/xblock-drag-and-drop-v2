@@ -106,7 +106,7 @@ Analytics Events
 
 The following analytics events are provided by this block.
 
-## `xblock.drag-and-drop-v2.loaded`
+## `edx.drag_and_drop_v2.loaded`
 
 Fired when the Drag and Drop XBlock is finished loading.
 
@@ -115,11 +115,11 @@ Fired when the Drag and Drop XBlock is finished loading.
 ```
 {
     "username": "staff",
-    "event_type": "xblock.drag-and-drop-v2.loaded",
+    "event_type": "edx.drag_and_drop_v2.loaded",
     "ip": "10.0.2.2",
     "agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:43.0) Gecko/20100101 Firefox/43.0",
     "host": "precise64",
-    "referer": "http://localhost:8000/courses/course-v1:DnD+DnD+DnD/courseware/ec546c58d2f447b7a9223c57b5de7344/756071f8de7f47c3b0ae726586ebbe16/1?activate_block_id=block-v1%3ADnD%2BDnD%2BDnD%2Btype%40vertical%2Bblock%40d2fc47476ca14c55816c4a1264a27280",
+    "referer": "http://example.com/courses/course-v1:DnD+DnD+DnD/courseware/ec546c58d2f447b7a9223c57b5de7344/756071f8de7f47c3b0ae726586ebbe16/1?activate_block_id=block-v1%3ADnD%2BDnD%2BDnD%2Btype%40vertical%2Bblock%40d2fc47476ca14c55816c4a1264a27280",
     "accept_language": "en;q=1.0, en;q=0.5",
     "event": {
         "component_id": "6b80ce1e8b78426898b47a834d72ffd3",
@@ -142,7 +142,7 @@ Fired when the Drag and Drop XBlock is finished loading.
 }
 ```
 
-## `xblock.drag-and-drop-v2.item.picked-up`
+## `edx.drag_and_drop_v2.item.picked_up`
 
 Fired when a student picks up a draggable item.
 
@@ -151,11 +151,11 @@ Fired when a student picks up a draggable item.
 ```
 {
     "username": "staff",
-    "event_type": "xblock.drag-and-drop-v2.item.picked-up",
+    "event_type": "edx.drag_and_drop_v2.item.picked_up",
     "ip": "10.0.2.2",
     "agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:43.0) Gecko/20100101 Firefox/43.0",
     "host": "precise64",
-    "referer": "http://localhost:8000/courses/course-v1:DnD+DnD+DnD/courseware/ec546c58d2f447b7a9223c57b5de7344/756071f8de7f47c3b0ae726586ebbe16/1?activate_block_id=block-v1%3ADnD%2BDnD%2BDnD%2Btype%40vertical%2Bblock%40d2fc47476ca14c55816c4a1264a27280",
+    "referer": "http://example.com/courses/course-v1:DnD+DnD+DnD/courseware/ec546c58d2f447b7a9223c57b5de7344/756071f8de7f47c3b0ae726586ebbe16/1?activate_block_id=block-v1%3ADnD%2BDnD%2BDnD%2Btype%40vertical%2Bblock%40d2fc47476ca14c55816c4a1264a27280",
     "accept_language": "en;q=1.0, en;q=0.5",
     "event": {
         "item_id": 0,
@@ -179,7 +179,7 @@ Fired when a student picks up a draggable item.
 }
 ```
 
-## `xblock.drag-and-drop-v2.item.dropped`
+## `edx.drag_and_drop_v2.item.dropped`
 
 Fired when a student drops a draggable item.
 
@@ -188,11 +188,11 @@ Fired when a student drops a draggable item.
 ```
 {
     "username": "staff",
-    "event_type": "xblock.drag-and-drop-v2.item.dropped",
+    "event_type": "edx.drag_and_drop_v2.item.dropped",
     "ip": "10.0.2.2",
     "agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:43.0) Gecko/20100101 Firefox/43.0",
     "host": "precise64",
-    "referer": "http://localhost:8000/courses/course-v1:DnD+DnD+DnD/courseware/ec546c58d2f447b7a9223c57b5de7344/756071f8de7f47c3b0ae726586ebbe16/1?activate_block_id=block-v1%3ADnD%2BDnD%2BDnD%2Btype%40vertical%2Bblock%40d2fc47476ca14c55816c4a1264a27280",
+    "referer": "http://example.com/courses/course-v1:DnD+DnD+DnD/courseware/ec546c58d2f447b7a9223c57b5de7344/756071f8de7f47c3b0ae726586ebbe16/1?activate_block_id=block-v1%3ADnD%2BDnD%2BDnD%2Btype%40vertical%2Bblock%40d2fc47476ca14c55816c4a1264a27280",
     "accept_language": "en;q=1.0, en;q=0.5",
     "event": {
         "component_id": "6b80ce1e8b78426898b47a834d72ffd3",
@@ -220,7 +220,7 @@ Fired when a student drops a draggable item.
 }
 ```
 
-## `xblock.drag-and-drop-v2.feedback.opened`
+## `edx.drag_and_drop_v2.feedback.opened`
 
 Fired when the feedback pop-up is opened.
 
@@ -229,15 +229,16 @@ Fired when the feedback pop-up is opened.
 ```
 {
     "username": "staff",
-    "event_type": "xblock.drag-and-drop-v2.feedback.opened",
+    "event_type": "edx.drag_and_drop_v2.feedback.opened",
     "ip": "10.0.2.2",
     "agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:43.0) Gecko/20100101 Firefox/43.0",
     "host": "precise64",
-    "referer": "http://localhost:8000/courses/course-v1:DnD+DnD+DnD/courseware/ec546c58d2f447b7a9223c57b5de7344/756071f8de7f47c3b0ae726586ebbe16/1?activate_block_id=block-v1%3ADnD%2BDnD%2BDnD%2Btype%40vertical%2Bblock%40d2fc47476ca14c55816c4a1264a27280",
+    "referer": "http://example.com/courses/course-v1:DnD+DnD+DnD/courseware/ec546c58d2f447b7a9223c57b5de7344/756071f8de7f47c3b0ae726586ebbe16/1?activate_block_id=block-v1%3ADnD%2BDnD%2BDnD%2Btype%40vertical%2Bblock%40d2fc47476ca14c55816c4a1264a27280",
     "accept_language": "en;q=1.0, en;q=0.5",
     "event": {
         "content": "Correct! This one belongs to The Top Zone.",
         "component_id": "6b80ce1e8b78426898b47a834d72ffd3",
+        "truncated": false,
         "user_id": 5
     },
     "event_source": "server",
@@ -257,7 +258,7 @@ Fired when the feedback pop-up is opened.
 }
 ```
 
-## `xblock.drag-and-drop-v2.feedback.closed`
+## `edx.drag_and_drop_v2.feedback.closed`
 
 Fired when the feedback popup is closed.
 
@@ -266,16 +267,18 @@ Fired when the feedback popup is closed.
 ```
 {
     "username": "staff",
-    "event_type": "xblock.drag-and-drop-v2.feedback.closed",
+    "event_type": "edx.drag_and_drop_v2.feedback.closed",
     "ip": "10.0.2.2",
     "agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:43.0) Gecko/20100101 Firefox/43.0",
     "host": "precise64",
-    "referer": "http://localhost:8000/courses/course-v1:DnD+DnD+DnD/courseware/ec546c58d2f447b7a9223c57b5de7344/756071f8de7f47c3b0ae726586ebbe16/1?activate_block_id=block-v1%3ADnD%2BDnD%2BDnD%2Btype%40vertical%2Bblock%40d2fc47476ca14c55816c4a1264a27280",
+    "referer": "http://example.com/courses/course-v1:DnD+DnD+DnD/courseware/ec546c58d2f447b7a9223c57b5de7344/756071f8de7f47c3b0ae726586ebbe16/1?activate_block_id=block-v1%3ADnD%2BDnD%2BDnD%2Btype%40vertical%2Bblock%40d2fc47476ca14c55816c4a1264a27280",
     "accept_language": "en;q=1.0, en;q=0.5",
     "event": {
+        "content": "No, this item does not belong here. Try again."
         "component_id": "13d1b859a2304c858e1810ccc23f29b2",
         "user_id": 5,
         "manually": true
+        "truncated": false,
     },
     "event_source": "server",
     "context": {
