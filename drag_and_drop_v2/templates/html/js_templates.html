@@ -98,12 +98,6 @@
         <div class="row advanced">
             <label for="item-{{id}}-width-percent">{{i18n "Preferred width as a percentage of the background image width (or blank for automatic width):"}}</label>
             <input type="number" id="item-{{id}}-width-percent" class="item-width" value="{{ singleDecimalFloat widthPercent }}" step="0.1" min="1" max="99" />%
-            <!--
-            A fixed pixel width/height is no longer used, so they are now hidden, but we are
-            preserving the existing data:
-            -->
-            <input type="hidden" class="item-pixel-width" value="{{ pixelWidth }}" />
-            <input type="hidden" class="item-pixel-height" value="{{ pixelHeight }}" />
         </div>
         <div class="row advanced">
           <label for="item-{{id}}-numerical-value">

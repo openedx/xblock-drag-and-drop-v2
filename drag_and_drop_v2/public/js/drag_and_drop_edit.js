@@ -429,18 +429,12 @@ function DragAndDropEditBlock(runtime, element, params) {
                                         correct: $el.find('.success-feedback').val(),
                                         incorrect: $el.find('.error-feedback').val()
                                     },
-                                    size: {}, // old size data (preserved if present but ignored)
                                     imageURL: imageURL,
                                     imageDescription: imageDescription,
                                 };
                                 // Optional preferred width as a percentage of the bg image's width:
                                 var widthPercent = $el.find('.item-width').val();
                                 if (widthPercent && +widthPercent > 0) { data.widthPercent = widthPercent; }
-                                // Item width/height in pixels are now ignored, but preserve the data:
-                                var width = $el.find('.item-pixel-width').val();
-                                if (width && +width > 0) { data.size.width = (+width) + 'px'; }
-                                var height = $el.find('.item-pixel-height').val();
-                                if (height && +height > 0) { data.size.height = (+height) + 'px'; }
 
                                 var numValue = parseFloat($el.find('.item-numerical-value').val());
                                 var numMargin = parseFloat($el.find('.item-numerical-margin').val());
