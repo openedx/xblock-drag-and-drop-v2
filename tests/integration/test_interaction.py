@@ -353,18 +353,11 @@ class EventsFiredTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegration
     scenarios = (
         {
             'name': 'edx.drag_and_drop_v2.loaded',
-            'data': {
-                'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
-                'user_id': 'student_1'
-            },
+            'data': {},
         },
         {
             'name': 'edx.drag_and_drop_v2.item.picked_up',
-            'data': {
-                'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
-                'user_id': 'student_1',
-                'item_id': 0,
-            },
+            'data': {'item_id': 0},
         },
         {
             'name': 'grade',
@@ -373,29 +366,23 @@ class EventsFiredTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegration
         {
             'name': 'edx.drag_and_drop_v2.item.dropped',
             'data': {
-                'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
                 'input': None,
                 'is_correct': True,
                 'is_correct_location': True,
                 'item_id': 0,
                 'location': u'The Top Zone',
-                'user_id': 'student_1',
             },
         },
         {
             'name': 'edx.drag_and_drop_v2.feedback.opened',
             'data': {
-                'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
                 'content': u'Correct! This one belongs to The Top Zone.',
-                'user_id': 'student_1',
                 'truncated': False,
             },
         },
         {
             'name': 'edx.drag_and_drop_v2.feedback.closed',
             'data': {
-                'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
-                'user_id': 'student_1',
                 'manually': False,
                 'content': u'Correct! This one belongs to The Top Zone.',
                 'truncated': False,
