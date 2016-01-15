@@ -47,9 +47,12 @@ function DragAndDropBlock(runtime, element, configuration) {
             initDroppable();
 
             $(document).on('keydown mousedown touchstart', closePopup);
-            $(document).on('keypress', function(evt) {
-                runOnKey(evt, QUESTION_MARK, showKeyboardHelp);
-            });
+            if (isFirstExercise()) {  // Set up handler for "?" key only once,
+                                      // even if unit contains multiple DnDv2 exercises
+                $(document).on('keypress', function(evt) {
+                    runOnKey(evt, QUESTION_MARK, showKeyboardHelp);
+                });
+            }
             $element.on('click', '.keyboard-help-button', showKeyboardHelp);
             $element.on('keydown', '.keyboard-help-button', function(evt) {
                 runOnKey(evt, RET, showKeyboardHelp);
@@ -65,6 +68,26 @@ function DragAndDropBlock(runtime, element, configuration) {
         }).fail(function() {
             $root.text(gettext("An error occurred. Unable to load drag and drop exercise."));
         });
+    };
+
+    var isFirstExercise = function() {
+        var klass = $element.attr('class');
+        var $block;
+        var siblingSelector;
+
+        if (klass.startsWith('xblock ')) {  // We are in the LMS
+            $block = $element.parent();
+            siblingSelector = '.vert[data-id*="drag-and-drop-v2"]';
+        } else if (klass.startsWith('xblock-v1 ')) {  // We are in the workbench
+            $block = $element;
+            siblingSelector = '.xblock-v1[data-block-type="drag-and-drop-v2"]';
+        }
+
+        var $previousBlocks = $block.prevAll(siblingSelector);
+        if ($previousBlocks.length === 0) {
+            return true;
+        }
+        return false;
     };
 
     var runOnKey = function(evt, key, handler) {
