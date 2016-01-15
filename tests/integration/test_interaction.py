@@ -1,4 +1,4 @@
-from ddt import ddt, data
+from ddt import ddt, data, unpack
 from mock import Mock, patch
 
 from selenium.common.exceptions import NoSuchElementException
@@ -344,7 +344,64 @@ class BasicInteractionTest(DefaultDataTestMixin, InteractionTestBase):
         self.interact_with_keyboard_help()
 
 
+@ddt
 class EventsFiredTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):
+    """
+    Tests that the analytics events are fired and in the proper order.
+    """
+    # These events must be fired in this order.
+    scenarios = (
+        {
+            'name': 'edx.drag_and_drop_v2.loaded',
+            'data': {
+                'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
+                'user_id': 'student_1'
+            },
+        },
+        {
+            'name': 'edx.drag_and_drop_v2.item.picked_up',
+            'data': {
+                'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
+                'user_id': 'student_1',
+                'item_id': 0,
+            },
+        },
+        {
+            'name': 'grade',
+            'data': {'max_value': 1, 'value': (1.0 / 3)},
+        },
+        {
+            'name': 'edx.drag_and_drop_v2.item.dropped',
+            'data': {
+                'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
+                'input': None,
+                'is_correct': True,
+                'is_correct_location': True,
+                'item_id': 0,
+                'location': u'The Top Zone',
+                'user_id': 'student_1',
+            },
+        },
+        {
+            'name': 'edx.drag_and_drop_v2.feedback.opened',
+            'data': {
+                'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
+                'content': u'Correct! This one belongs to The Top Zone.',
+                'user_id': 'student_1',
+                'truncated': False,
+            },
+        },
+        {
+            'name': 'edx.drag_and_drop_v2.feedback.closed',
+            'data': {
+                'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
+                'user_id': 'student_1',
+                'manually': False,
+                'content': u'Correct! This one belongs to The Top Zone.',
+                'truncated': False,
+            },
+        },
+    )
 
     def setUp(self):
         mock = Mock()
@@ -357,70 +414,14 @@ class EventsFiredTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegration
     def _get_scenario_xml(self):  # pylint: disable=no-self-use
         return "<vertical_demo><drag-and-drop-v2/></vertical_demo>"
 
-    def test_loaded(self):
-        dummy, name, event_data = self.publish.call_args[0]
-        self.assertEqual(name, 'edx.drag_and_drop_v2.loaded')
-        self.assertEqual(
-                event_data, {
-                    'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
-                    'user_id': 'student_1'
-                }
-        )
-
-    def test_picked_up(self):
+    @data(*enumerate(scenarios))  # pylint: disable=star-args
+    @unpack
+    def test_event(self, index, event):
         self.parameterized_item_positive_feedback_on_good_move(self.items_map)
-        dummy, name, event_data = self.publish.call_args_list[1][0]
-        self.assertEqual(name, 'edx.drag_and_drop_v2.item.picked_up')
+        dummy, name, published_data = self.publish.call_args_list[index][0]
+        self.assertEqual(name, event['name'])
         self.assertEqual(
-                event_data, {
-                    'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
-                    'user_id': 'student_1',
-                    'item_id': 0,
-                }
-        )
-
-    def test_dropped(self):
-        self.parameterized_item_positive_feedback_on_good_move(self.items_map)
-        # Skipping to 3, since 2 is grade event.
-        dummy, name, event_data = self.publish.call_args_list[3][0]
-        self.assertEqual(name, 'edx.drag_and_drop_v2.item.dropped')
-        self.assertEqual(
-                event_data, {
-                    'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
-                    'input': None,
-                    'is_correct': True,
-                    'is_correct_location': True,
-                    'item_id': 0,
-                    'location': u'The Top Zone',
-                    'user_id': 'student_1',
-                }
-        )
-
-    def test_feedback_opened(self):
-        self.parameterized_item_positive_feedback_on_good_move(self.items_map)
-        dummy, name, event_data = self.publish.call_args_list[4][0]
-        self.assertEqual(name, 'edx.drag_and_drop_v2.feedback.opened')
-        self.assertEqual(
-                event_data, {
-                    'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
-                    'content': u'Correct! This one belongs to The Top Zone.',
-                    'user_id': 'student_1',
-                    'truncated': False,
-                }
-        )
-
-    def test_feedback_closed(self):
-        self.parameterized_item_positive_feedback_on_good_move(self.items_map)
-        dummy, name, event_data = self.publish.call_args_list[5][0]
-        self.assertEqual(name, 'edx.drag_and_drop_v2.feedback.closed')
-        self.assertEqual(
-                event_data, {
-                    'component_id': u'drag-and-drop-v2.drag-and-drop-v2.d0.u0',
-                    'user_id': 'student_1',
-                    'manually': False,
-                    'content': u'Correct! This one belongs to The Top Zone.',
-                    'truncated': False,
-                }
+                published_data, event['data']
         )
 
 
