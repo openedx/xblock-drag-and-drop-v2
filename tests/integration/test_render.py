@@ -1,10 +1,20 @@
+# Imports ###########################################################
+
 from ddt import ddt, unpack, data
 from selenium.common.exceptions import NoSuchElementException
 
+from xblockutils.resources import ResourceLoader
+
 from drag_and_drop_v2.default_data import START_FEEDBACK
-from ..utils import load_resource
 from .test_base import BaseIntegrationTest
 
+
+# Globals ###########################################################
+
+loader = ResourceLoader(__name__)
+
+
+# Classes ###########################################################
 
 class Colors(object):
     WHITE = 'rgb(255, 255, 255)'
@@ -36,7 +46,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
     SIDES = ['Top', 'Bottom', 'Left', 'Right']
 
     def load_scenario(self, item_background_color="", item_text_color="", zone_labels=False, zone_borders=False):
-        exercise_data = load_resource("integration/data/test_data_a11y.json")
+        exercise_data = loader.load_unicode("data/test_data_a11y.json")
         exercise_data = exercise_data.replace('{display_labels_value}', 'true' if zone_labels else 'false')
         exercise_data = exercise_data.replace('{display_borders_value}', 'true' if zone_borders else 'false')
         scenario_xml = """

@@ -36,8 +36,43 @@ Install the requirements into the Python virtual environment of your
 root folder:
 
 ```bash
-$ pip install -e .
+$ pip install -r requirements.txt
 ```
+
+Theming
+-------
+
+The Drag and Drop XBlock ships with an alternate theme called "Apros"
+that you can enable by adding the following entry to `XBLOCK_SETTINGS`
+in `lms.env.json`:
+
+```json
+        "drag-and-drop-v2": {
+            "theme": {
+                "package": "drag_and_drop_v2",
+                "locations": ["public/themes/apros.css"]
+            }
+        }
+```
+
+You can use the same approach to apply a custom theme:
+
+`"package"` can refer to any Python package in your virtualenv, which
+means you can develop and maintain your own theme in a separate
+package. There is no need to fork or modify this repository in any way
+to customize the look and feel of your Drag and Drop exercises.
+
+`"locations"` is a list of relative paths pointing to CSS files
+belonging to your theme. While the XBlock loads, files will be added
+to it in the order that they appear in this list. (This means that if
+there are rules with identical selectors spread out over different
+files, rules in files that appear later in the list will take
+precedence over those that appear earlier.)
+
+Finally, note that the default (unthemed) appearance of the Drag and
+Drop XBlock has been optimized for accessibility, so its use is
+encouraged -- especially for courses targeting large and/or
+potentially diverse audiences.
 
 Enabling in Studio
 ------------------
@@ -105,15 +140,27 @@ You can define an arbitrary number of drag items.
 Testing
 -------
 
-Inside a fresh virtualenv, run
+Inside a fresh virtualenv, `cd` into the root folder of this repository
+(`xblock-drag-and-drop-v2`) and run
 
 ```bash
-$ cd .../xblock-drag-and-drop-v2/
 $ sh install_test_deps.sh
 ```
 
-To run the tests, from the xblock-drag-and-drop-v2 repository root:
+You can then run the entire test suite via
 
 ```bash
 $ python run_tests.py
+```
+
+To only run the unit test suite, do
+
+```bash
+$ python run_tests.py tests/unit/
+```
+
+Similarly, you can run the integration test suite via
+
+```bash
+$ python run_tests.py tests/integration/
 ```

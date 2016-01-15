@@ -17,7 +17,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
     def test_template_contents(self):
         context = {}
         student_fragment = self.block.runtime.render(self.block, 'student_view', context)
-        self.assertIn('<section class="xblock--drag-and-drop">', student_fragment.content)
+        self.assertIn('<section class="themed-xblock xblock--drag-and-drop">', student_fragment.content)
         self.assertIn('Loading drag and drop exercise.', student_fragment.content)
 
     def test_get_configuration(self):

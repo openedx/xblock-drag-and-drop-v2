@@ -199,7 +199,7 @@
         var items_placed = $.grep(ctx.items, is_item_placed);
         var items_in_bank = $.grep(ctx.items, is_item_placed, true);
         return (
-            h('section.xblock--drag-and-drop', [
+            h('section.themed-xblock.xblock--drag-and-drop', [
                 problemHeader,
                 h('section.problem', {role: 'application'}, [
                     questionHeader,

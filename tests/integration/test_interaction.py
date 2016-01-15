@@ -1,8 +1,12 @@
+# Imports ###########################################################
+
 from ddt import ddt, data
 
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
+
+from xblockutils.resources import ResourceLoader
 
 from drag_and_drop_v2.default_data import (
     TOP_ZONE_TITLE, MIDDLE_ZONE_TITLE, BOTTOM_ZONE_TITLE,
@@ -10,8 +14,11 @@ from drag_and_drop_v2.default_data import (
     START_FEEDBACK, FINISH_FEEDBACK
 )
 from .test_base import BaseIntegrationTest
-from ..utils import load_resource
 
+
+# Globals ###########################################################
+
+loader = ResourceLoader(__name__)
 
 ZONES_MAP = {
     0: TOP_ZONE_TITLE,
@@ -19,6 +26,8 @@ ZONES_MAP = {
     2: BOTTOM_ZONE_TITLE,
 }
 
+
+# Classes ###########################################################
 
 class ItemDefinition(object):
     def __init__(self, item_id, zone_id, feedback_positive, feedback_negative, input_value=None):
@@ -121,6 +130,7 @@ class InteractionTestBase(object):
 
     def assert_placed_item(self, item_value, zone_id):
         item = self._get_placed_item_by_value(item_value)
+        self.wait_until_visible(item)
         item_content = item.find_element_by_css_selector('.item-content')
         item_description = item.find_element_by_css_selector('.sr')
         item_description_id = 'item-{}-description'.format(item_value)
@@ -134,6 +144,7 @@ class InteractionTestBase(object):
 
     def assert_reverted_item(self, item_value):
         item = self._get_item_by_value(item_value)
+        self.wait_until_visible(item)
         item_content = item.find_element_by_css_selector('.item-content')
 
         self.assertEqual(item.get_attribute('class'), 'option ui-draggable')
@@ -377,7 +388,7 @@ class CustomDataInteractionTest(BasicInteractionTest, BaseIntegrationTest):
     }
 
     def _get_scenario_xml(self):
-        return self._get_custom_scenario_xml("integration/data/test_data.json")
+        return self._get_custom_scenario_xml("data/test_data.json")
 
 
 class CustomHtmlDataInteractionTest(BasicInteractionTest, BaseIntegrationTest):
@@ -395,15 +406,15 @@ class CustomHtmlDataInteractionTest(BasicInteractionTest, BaseIntegrationTest):
     }
 
     def _get_scenario_xml(self):
-        return self._get_custom_scenario_xml("integration/data/test_html_data.json")
+        return self._get_custom_scenario_xml("data/test_html_data.json")
 
 
 class MultipleBlocksDataInteraction(InteractionTestBase, BaseIntegrationTest):
     PAGE_TITLE = 'Drag and Drop v2 Multiple Blocks'
     PAGE_ID = 'drag_and_drop_v2_multi'
 
-    BLOCK1_DATA_FILE = "integration/data/test_data.json"
-    BLOCK2_DATA_FILE = "integration/data/test_data_other.json"
+    BLOCK1_DATA_FILE = "data/test_data.json"
+    BLOCK2_DATA_FILE = "data/test_data_other.json"
 
     item_maps = {
         'block1': {
@@ -430,7 +441,7 @@ class MultipleBlocksDataInteraction(InteractionTestBase, BaseIntegrationTest):
 
     def _get_scenario_xml(self):
         blocks_xml = "\n".join([
-            "<drag-and-drop-v2 data='{data}'/>".format(data=load_resource(filename))
+            "<drag-and-drop-v2 data='{data}'/>".format(data=loader.load_unicode(filename))
             for filename in (self.BLOCK1_DATA_FILE, self.BLOCK2_DATA_FILE)
         ])
 

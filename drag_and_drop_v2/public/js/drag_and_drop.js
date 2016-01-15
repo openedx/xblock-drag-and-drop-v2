@@ -303,7 +303,7 @@ function DragAndDropBlock(runtime, element, configuration) {
 
         // Make zone accept items that are dropped using the mouse
         $root.find('.zone').droppable({
-            accept: '.xblock--drag-and-drop .item-bank .option',
+            accept: '.item-bank .option',
             tolerance: 'pointer',
             drop: function(evt, ui) {
                 var $zone = $(this);
@@ -331,9 +331,9 @@ function DragAndDropBlock(runtime, element, configuration) {
             // Make item draggable using the mouse
             try {
                 $item.draggable({
-                    containment: $root.find('.xblock--drag-and-drop .drag-container'),
+                    containment: $root.find('.drag-container'),
                     cursor: 'move',
-                    stack: $root.find('.xblock--drag-and-drop .item-bank .option'),
+                    stack: $root.find('.item-bank .option'),
                     revert: 'invalid',
                     revertDuration: 150,
                     start: function(evt, ui) {
