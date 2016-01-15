@@ -92,7 +92,10 @@
             <textarea id="item-{{id}}-error-feedback"
                       class="error-feedback">{{ feedback.incorrect }}</textarea>
         </div>
-        <div class="row">
+        <div class="row advanced-link">
+            <a href="#">{{i18n "Show advanced settings" }}</a>
+        </div>
+        <div class="row advanced">
             <label for="item-{{id}}-width-percent">{{i18n "Preferred width as a percentage of the background image width (or blank for automatic width):"}}</label>
             <input type="number" id="item-{{id}}-width-percent" class="item-width" value="{{ singleDecimalFloat widthPercent }}" step="0.1" min="1" max="99" />%
             <!--
@@ -102,7 +105,7 @@
             <input type="hidden" class="item-pixel-width" value="{{ pixelWidth }}" />
             <input type="hidden" class="item-pixel-height" value="{{ pixelHeight }}" />
         </div>
-        <div class="row">
+        <div class="row advanced">
           <label for="item-{{id}}-numerical-value">
             {{i18n "Optional numerical value (if you set this, students will be prompted for this value after dropping this item)"}}
           </label>
@@ -111,7 +114,7 @@
                  id="item-{{id}}-numerical-value"
                  class="item-numerical-value" value="{{ numericalValue }}" />
         </div>
-        <div class="row">
+        <div class="row advanced">
           <label for="item-{{id}}-numerical-margin">
             {{i18n "Margin +/- (when a numerical value is required, values entered by students must not differ from the expected value by more than this margin; default is zero)"}}
           </label>

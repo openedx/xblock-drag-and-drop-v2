@@ -169,7 +169,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                         .on('click', '.add-item', function(e) {
                             _fn.build.form.item.add();
                         })
-                        .on('click', '.remove-item', _fn.build.form.item.remove);
+                        .on('click', '.remove-item', _fn.build.form.item.remove)
+                        .on('click', '.advanced-link a', _fn.build.form.item.showAdvancedSettings);
                 },
                 form: {
                     zone: {
@@ -398,7 +399,13 @@ function DragAndDropEditBlock(runtime, element, params) {
                             if (_fn.build.form.item.count === 1) {
                                 _fn.build.$el.items.form.find('.remove-item').addClass('hidden');
                             }
-                        }
+                        },
+                        showAdvancedSettings: function(e) {
+                            e.preventDefault();
+                            var $el = $(e.currentTarget).closest('.item');
+                            $el.find('.row.advanced').show();
+                            $el.find('.row.advanced-link').hide();
+                        },
                     },
                     submit: function() {
                         var items = [],

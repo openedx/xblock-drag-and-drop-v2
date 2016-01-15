@@ -214,7 +214,13 @@
 .xblock--drag-and-drop--editor .items-form .row {
     margin-bottom: 20px;
 }
-
+.xblock--drag-and-drop--editor .items-form .row.advanced {
+    display: none;
+}
+.xblock--drag-and-drop--editor .items-form .row.advanced-link {
+    padding-left: 1em;
+    font-size: 80%;
+}
 
 /** Buttons **/
 .xblock--drag-and-drop--editor .btn {
