@@ -157,10 +157,7 @@ Fired when the Drag and Drop XBlock is finished loading.
     "host": "precise64",
     "referer": "http://example.com/courses/course-v1:DnD+DnD+DnD/courseware/ec546c58d2f447b7a9223c57b5de7344/756071f8de7f47c3b0ae726586ebbe16/1?activate_block_id=block-v1%3ADnD%2BDnD%2BDnD%2Btype%40vertical%2Bblock%40d2fc47476ca14c55816c4a1264a27280",
     "accept_language": "en;q=1.0, en;q=0.5",
-    "event": {
-        "component_id": "6b80ce1e8b78426898b47a834d72ffd3",
-        "user_id": 5
-    },
+    "event": {},
     "event_source": "server",
     "context": {
         "course_user_tags": {},
@@ -195,8 +192,6 @@ Fired when a student picks up a draggable item.
     "accept_language": "en;q=1.0, en;q=0.5",
     "event": {
         "item_id": 0,
-        "component_id": "6b80ce1e8b78426898b47a834d72ffd3",
-        "user_id": 5
     },
     "event_source": "server",
     "context": {
@@ -231,8 +226,6 @@ Fired when a student drops a draggable item.
     "referer": "http://example.com/courses/course-v1:DnD+DnD+DnD/courseware/ec546c58d2f447b7a9223c57b5de7344/756071f8de7f47c3b0ae726586ebbe16/1?activate_block_id=block-v1%3ADnD%2BDnD%2BDnD%2Btype%40vertical%2Bblock%40d2fc47476ca14c55816c4a1264a27280",
     "accept_language": "en;q=1.0, en;q=0.5",
     "event": {
-        "component_id": "6b80ce1e8b78426898b47a834d72ffd3",
-        "user_id": 5,
         "is_correct_location": true,
         "is_correct": true,
         "location": "The Top Zone",
@@ -273,9 +266,7 @@ Fired when the feedback pop-up is opened.
     "accept_language": "en;q=1.0, en;q=0.5",
     "event": {
         "content": "Correct! This one belongs to The Top Zone.",
-        "component_id": "6b80ce1e8b78426898b47a834d72ffd3",
         "truncated": false,
-        "user_id": 5
     },
     "event_source": "server",
     "context": {
@@ -311,8 +302,6 @@ Fired when the feedback popup is closed.
     "accept_language": "en;q=1.0, en;q=0.5",
     "event": {
         "content": "No, this item does not belong here. Try again."
-        "component_id": "13d1b859a2304c858e1810ccc23f29b2",
-        "user_id": 5,
         "manually": true
         "truncated": false,
     },

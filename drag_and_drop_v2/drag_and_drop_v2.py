@@ -288,8 +288,6 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
                 pass
 
         self.runtime.publish(self, 'edx.drag_and_drop_v2.item.dropped', {
-            'user_id': self.scope_ids.user_id,
-            'component_id': self._get_unique_id(),
             'item_id': item['id'],
             'location': attempt.get('zone'),
             'input': attempt.get('input'),
@@ -443,9 +441,6 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             event_type = data.pop('event_type')
         except KeyError:
             return {'result': 'error', 'message': 'Missing event_type in JSON data'}
-
-        data['user_id'] = self.scope_ids.user_id
-        data['component_id'] = self._get_unique_id()
 
         self.runtime.publish(self, event_type, data)
         return {'result': 'success'}
