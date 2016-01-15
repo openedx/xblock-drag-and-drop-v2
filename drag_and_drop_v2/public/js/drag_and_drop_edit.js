@@ -346,6 +346,9 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                             if (itemData) {
                                 ctx = itemData;
+                                if (itemData.backgroundImage && !ctx.imageURL) {
+                                    ctx.imageURL = itemData.backgroundImage; // This field was renamed.
+                                }
                                 if (itemData.size && parseInt(itemData.size.width) > 0) {
                                     // Convert old fixed pixel width setting values (hard to
                                     // make mobile friendly) to new percentage format.
