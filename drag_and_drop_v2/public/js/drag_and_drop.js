@@ -181,7 +181,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             };
             truncateField(data, 'content');
             publishEvent(data);
-            previousFeedback = undefined;
+            delete state.feedback;
             delete state.closing;
         }
         // Has feedback been set?
@@ -482,15 +482,14 @@ function DragAndDropBlock(runtime, element, configuration) {
         }
 
         state.closing = true;
+        previousFeedback = state.feedback;
         if (target.is(close_button)) {
             state.manually_closed = true;
-            previousFeedback = state.feedback;
         } else {
             state.manually_closed = false;
         }
 
         applyState();
-        delete state.feedback;
     };
 
     var resetExercise = function(evt) {
