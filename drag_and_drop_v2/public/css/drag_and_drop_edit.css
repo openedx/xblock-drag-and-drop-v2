@@ -196,9 +196,8 @@
     margin-right: 1%;
 }
 
-.xblock--drag-and-drop--editor .items-form .item-width,
-.xblock--drag-and-drop--editor .items-form .item-height {
-    width: 40px;
+.xblock--drag-and-drop--editor .items-form .item-width {
+    width: 50px;
 }
 
 .xblock--drag-and-drop--editor .items-form .item-numerical-value,

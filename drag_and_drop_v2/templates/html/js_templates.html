@@ -92,25 +92,15 @@
             <textarea id="item-{{id}}-error-feedback"
                       class="error-feedback">{{ feedback.incorrect }}</textarea>
         </div>
-        <div class="row" style="display: none;">
+        <div class="row">
+            <label for="item-{{id}}-width-percent">{{i18n "Preferred width as a percentage of the background image width (or blank for automatic width):"}}</label>
+            <input type="number" id="item-{{id}}-width-percent" class="item-width" value="{{ singleDecimalFloat widthPercent }}" step="0.1" min="1" max="99" />%
             <!--
-            width and height are no longer respected, so they are now hidden, but we are
-            keeping the HTML and JS code intact so that the existing data will be preserved
-            until we can be sure that removing the width/height is OK for all courses that use
-            this block.
-            If we do add them back in, we should only allow setting "width". Height will be
-            detected automatically based on font/image size requirements.
+            A fixed pixel width/height is no longer used, so they are now hidden, but we are
+            preserving the existing data:
             -->
-            <label for="item-{{id}}-width">{{i18n "Width in pixels (0 for auto)"}}</label>
-            <input type="text"
-                   id="item-{{id}}-width"
-                   class="item-width"
-                   value="{{ width }}" />
-            <label for="item-{{id}}-height">{{i18n "Height in pixels (0 for auto)"}}</label>
-            <input type="text"
-                   id="item-{{id}}-height"
-                   class="item-height"
-                   value="{{ height }}" />
+            <input type="hidden" class="item-pixel-width" value="{{ pixelWidth }}" />
+            <input type="hidden" class="item-pixel-height" value="{{ pixelHeight }}" />
         </div>
         <div class="row">
           <label for="item-{{id}}-numerical-value">

@@ -7,6 +7,13 @@ function DragAndDropEditBlock(runtime, element, params) {
 
     // Make gettext available in Handlebars templates
     Handlebars.registerHelper('i18n', function(str) { return gettext(str); });
+    // Numeric rounding in Handlebars templates
+    Handlebars.registerHelper('singleDecimalFloat', function(value) {
+        if (value === "" || isNaN(Number(value))) {
+            return "";
+        }
+        return Number(value).toFixed(Number(value) == parseInt(value) ? 0 : 1);
+    });
 
     var $element = $(element);
 
@@ -331,32 +338,37 @@ function DragAndDropEditBlock(runtime, element, params) {
                     },
                     item: {
                         count: 0,
-                        add: function(oldItem) {
+                        add: function(itemData) {
                             var $form = _fn.build.$el.items.form,
                                 tpl = _fn.tpl.itemInput,
                                 ctx = {};
 
-                            if (oldItem) ctx = oldItem;
+                            if (itemData) {
+                                ctx = itemData;
+                                if (itemData.size && parseInt(itemData.size.width) > 0) {
+                                    // Convert old fixed pixel width setting values (hard to
+                                    // make mobile friendly) to new percentage format.
+                                    // Note itemData.size.width is a string like "380px" (it can
+                                    // also be "auto" but that's excluded by the if condition above)
+                                    var bgImgWidth = _fn.build.$el.targetImage[0].naturalWidth;
+                                    if (bgImgWidth > 0 && typeof ctx.widthPercent === "undefined") {
+                                        ctx.widthPercent = parseInt(itemData.size.width) / bgImgWidth * 100;
+                                    }
+                                    // Preserve the old-style data in case we need it again:
+                                    ctx.pixelWidth = itemData.size.width.substr(0, itemData.size.width.length - 2); // Remove 'px'
+                                }
+                                if (itemData.size && parseInt(itemData.size.height) > 0) {
+                                    // Item fixed pixel height is ignored in new versions of the
+                                    // block, but preserve the data in case we need it again:
+                                    ctx.pixelHeight = itemData.size.height.substr(0, itemData.size.height.length - 2); // Remove 'px'
+                                }
+                                if (itemData.inputOptions) {
+                                    ctx.numericalValue = itemData.inputOptions.value;
+                                    ctx.numericalMargin = itemData.inputOptions.margin;
+                                }
+                            }
 
                             ctx.dropdown = _fn.build.form.createDropdown(ctx.zone);
-
-                            // Item width/height are ignored in new versions of the block, but
-                            // preserve the data in case we change back to using those values.
-                            if (oldItem && oldItem.size && oldItem.size.width != 'auto') {
-                                ctx.width = oldItem.size.width.substr(0, oldItem.size.width.length - 2); // Remove 'px'
-                            } else {
-                                ctx.width = '0';
-                            }
-                            if (oldItem && oldItem.size && oldItem.size.height != 'auto') {
-                                ctx.height = oldItem.size.height.substr(0, oldItem.size.height.length - 2); // Remove 'px'
-                            } else {
-                                ctx.height = '0';
-                            }
-
-                            if (oldItem && oldItem.inputOptions) {
-                                ctx.numericalValue = oldItem.inputOptions.value;
-                                ctx.numericalMargin = oldItem.inputOptions.margin;
-                            }
 
                             _fn.build.form.item.count++;
                             $form.append(tpl(ctx));
@@ -399,16 +411,6 @@ function DragAndDropEditBlock(runtime, element, params) {
                                 imageDescription = $el.find('.item-image-description').val();
 
                             if (name.length > 0 || imageURL.length > 0) {
-                                // Item width/height are ignored, but preserve the data:
-                                var width = $el.find('.item-width').val(),
-                                    height = $el.find('.item-height').val();
-
-                                if (height === '0') height = 'auto';
-                                else height = height + 'px';
-
-                                if (width === '0') width = 'auto';
-                                else width = width + 'px';
-
                                 var data = {
                                     displayName: name,
                                     zone: $el.find('.zone-select').val(),
@@ -417,13 +419,18 @@ function DragAndDropEditBlock(runtime, element, params) {
                                         correct: $el.find('.success-feedback').val(),
                                         incorrect: $el.find('.error-feedback').val()
                                     },
-                                    size: {
-                                        width: width,
-                                        height: height
-                                    },
+                                    size: {}, // old size data (preserved if present but ignored)
                                     imageURL: imageURL,
                                     imageDescription: imageDescription,
                                 };
+                                // Optional preferred width as a percentage of the bg image's width:
+                                var widthPercent = $el.find('.item-width').val();
+                                if (widthPercent && +widthPercent > 0) { data.widthPercent = widthPercent; }
+                                // Item width/height in pixels are now ignored, but preserve the data:
+                                var width = $el.find('.item-pixel-width').val();
+                                if (width && +width > 0) { data.size.width = (+width) + 'px'; }
+                                var height = $el.find('.item-pixel-height').val();
+                                if (height && +height > 0) { data.size.height = (+height) + 'px'; }
 
                                 var numValue = parseFloat($el.find('.item-numerical-value').val());
                                 var numMargin = parseFloat($el.find('.item-numerical-margin').val());
