@@ -10,6 +10,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     var root = $root[0];
 
     var state = undefined;
+    var bgImgNaturalWidth = undefined; // pixel width of the background image (when not scaled)
     var __vdom = virtualDom.h();  // blank virtual DOM
 
     // Keyboard accessibility
@@ -40,7 +41,9 @@ function DragAndDropBlock(runtime, element, configuration) {
                 computeZoneDimension(zone, bgImg.width, bgImg.height);
             });
             state = stateResult[0]; // stateResult is an array of [data, statusText, jqXHR]
+            migrateConfiguration(bgImg.width);
             migrateState(bgImg.width, bgImg.height);
+            bgImgNaturalWidth = bgImg.width;
             applyState();
 
             // Set up event handlers
@@ -527,6 +530,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 imageDescription: item.imageDescription,
                 has_image: !!imageURL,
                 grabbed: grabbed,
+                widthPercent: item.widthPercent, // widthPercent may be undefined (auto width)
             };
             if (item_user_state) {
                 itemProperties.is_placed = true;
@@ -545,6 +549,7 @@ function DragAndDropBlock(runtime, element, configuration) {
 
         var context = {
             // configuration - parts that never change:
+            bg_image_width: bgImgNaturalWidth, // Not stored in configuration since it's unknown on the server side
             header_html: configuration.title,
             show_title: configuration.show_title,
             question_html: configuration.question_text,
@@ -563,6 +568,21 @@ function DragAndDropBlock(runtime, element, configuration) {
 
         return DragAndDropBlock.renderView(context);
     };
+
+    /**
+     * migrateConfiguration: Apply any changes to support older versions of the configuration.
+     * We have to do this in JS, not python, since some migrations depend on the image size,
+     * which is not known in Python-land.
+     */
+    var migrateConfiguration = function(bg_image_width) {
+        for (var i in configuration.items) {
+            var item = configuration.items[i];
+            // Convert from old-style pixel widths to new-style percentage widths:
+            if (item.widthPercent === undefined && item.size && parseInt(item.size.width) > 0) {
+                item.widthPercent = parseInt(item.size.width) / bg_image_width * 100;
+            }
+        }
+    }
 
     /**
      * migrateState: Apply any changes necessary to support the 'state' format used by older

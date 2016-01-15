@@ -52,7 +52,7 @@
         );
     };
 
-    var itemTemplate = function(item) {
+    var itemTemplate = function(item, ctx) {
         // Define properties
         var className = (item.class_name) ? item.class_name : "";
         if (item.has_image) {
@@ -77,9 +77,23 @@
         if (item.is_placed) {
             style.left = item.x_percent + "%";
             style.top = item.y_percent + "%";
+            if (item.widthPercent) {
+                style.width = item.widthPercent + "%";
+                style.maxWidth = item.widthPercent + "%"; // default maxWidth is ~33%
+            }
         } else {
             // If an item has not been placed it must be possible to move focus to it using the keyboard:
             attributes.tabindex = 0;
+            if (item.widthPercent) {
+                // The item bank container is often wider than the background image, and the
+                // widthPercent is specified relative to the background image so we have to
+                // convert it to pixels. But if the browser window / mobile screen is not as
+                // wide as the image, then the background image will be scaled down and this
+                // pixel value would be too large, so we also specify it as a max-width
+                // percentage.
+                style.width = (item.widthPercent / 100 * ctx.bg_image_width) + "px";
+                style.maxWidth = item.widthPercent + "%";
+            }
         }
         // Define children
         var children = [
