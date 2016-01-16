@@ -130,7 +130,7 @@
 }
 
 .xblock--drag-and-drop .drag-container .option img {
-    display: block;
+    display: inline-block;
     max-width: 100%;
 }
 

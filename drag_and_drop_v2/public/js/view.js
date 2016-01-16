@@ -80,6 +80,9 @@
             if (item.widthPercent) {
                 style.width = item.widthPercent + "%";
                 style.maxWidth = item.widthPercent + "%"; // default maxWidth is ~33%
+            } else if (item.imgNaturalWidth) {
+                style.width = item.imgNaturalWidth + "px";
+                // ^ Hack to detect image width at runtime and make webkit consistent with Firefox
             }
         } else {
             // If an item has not been placed it must be possible to move focus to it using the keyboard:

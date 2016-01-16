@@ -44,10 +44,8 @@ function DragAndDropBlock(runtime, element, configuration) {
             migrateConfiguration(bgImg.width);
             migrateState(bgImg.width, bgImg.height);
             bgImgNaturalWidth = bgImg.width;
-            applyState();
 
-            // Set up event handlers
-            initDroppable();
+            // Set up event handlers:
 
             $(document).on('keydown mousedown touchstart', closePopup);
             $(document).on('keypress', function(evt) {
@@ -62,6 +60,13 @@ function DragAndDropBlock(runtime, element, configuration) {
                 runOnKey(evt, RET, resetExercise);
             });
             $element.on('click', '.submit-input', submitInput);
+
+            // For the next one, we need to use addEventListener with useCapture 'true' in order
+            // to watch for load events on any child element, since load events do not bubble.
+            element.addEventListener('load', webkitFix, true);
+
+            applyState();
+            initDroppable();
 
             // Indicate that exercise is done loading
             publishEvent({event_type: 'xblock.drag-and-drop-v2.loaded'});
@@ -159,6 +164,38 @@ function DragAndDropBlock(runtime, element, configuration) {
             zone.height_percent = (+zone.height) / bg_image_height * 100;
             delete zone.height;
         }
+    };
+
+    /**
+     * webkitFix:
+     * When our draggables do not have a width specified by the author, we want them sized using
+     * the following algorithm: "be as wide as possible but never wider than ~30% of the
+     * background image width and never wider than the natural size of the text or image
+     * that is this draggable's content." (this works well for both desktop and mobile)
+     *
+     * The current CSS rules to achieve this work fine for draggables in the "tray" at the top,
+     * but when they are placed (position:absolute), there seems to be no way to achieve this
+     * that works consistently in both Webkit and firefox. (Using display: table works in Webkit
+     * but not Firefox; using the current CSS works in Firefox but not Webkit. This is due to
+     * the amiguous nature of 'max-width' when refering to a parent whose width is computed from
+     * the child (<div style='width: auto;'><img style='width:auto; max-width: x%;'></div>)
+     *
+     * This workaround simply detects the image width when any image loads, then sets the width
+     * on the [grand]parent element, resolving the ambiguity.
+     */
+    var webkitFix = function(event) {
+        var $img = $(event.target);
+        var $option = $img.parent().parent();
+        if (!$option.is('.option')) {
+            return;
+        }
+        var itemId = $option.data('value');
+        configuration.items.forEach(function(item) {
+            if (item.id == itemId) {
+                item.imgNaturalWidth = event.target.naturalWidth;
+            }
+        });
+        setTimeout(applyState, 0); // Apply changes to the DOM after the event handling completes.
     };
 
 
@@ -531,6 +568,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 has_image: !!imageURL,
                 grabbed: grabbed,
                 widthPercent: item.widthPercent, // widthPercent may be undefined (auto width)
+                imgNaturalWidth: item.imgNaturalWidth,
             };
             if (item_user_state) {
                 itemProperties.is_placed = true;
