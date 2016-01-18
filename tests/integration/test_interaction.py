@@ -80,12 +80,12 @@ class InteractionTestBase(object):
         element = self._get_item_by_value(item_value)
         return element.find_element_by_class_name('numerical-input')
 
-    def _get_dialog_components(self, dialog):
+    def _get_dialog_components(self, dialog):  # pylint: disable=no-self-use
         dialog_modal_overlay = dialog.find_element_by_css_selector('.modal-window-overlay')
         dialog_modal = dialog.find_element_by_css_selector('.modal-window')
         return dialog_modal_overlay, dialog_modal
 
-    def _get_dialog_dismiss_button(self, dialog_modal):
+    def _get_dialog_dismiss_button(self, dialog_modal):  # pylint: disable=no-self-use
         return dialog_modal.find_element_by_css_selector('.modal-dismiss-button')
 
     def _get_zone_position(self, zone_id):
@@ -273,7 +273,7 @@ class InteractionTestBase(object):
             self.assertDictEqual(locations_after_reset[item_key], initial_locations[item_key])
             self.assert_reverted_item(item_key)
 
-    def interact_with_keyboard_help(self, scroll_down=250, use_keyboard=False, multiple_blocks=False):
+    def interact_with_keyboard_help(self, scroll_down=250, use_keyboard=False):
         keyboard_help_button = self._get_keyboard_help_button()
         keyboard_help_dialog = self._get_keyboard_help_dialog()
         dialog_modal_overlay, dialog_modal = self._get_dialog_components(keyboard_help_dialog)
@@ -297,18 +297,6 @@ class InteractionTestBase(object):
 
         self.assertFalse(dialog_modal_overlay.is_displayed())
         self.assertFalse(dialog_modal.is_displayed())
-
-        if use_keyboard and not multiple_blocks:  # Try again with "?" key
-                                                  # (behavior for multiple blocks has dedicated test below)
-            self._page.send_keys("?")
-
-            self.assertTrue(dialog_modal_overlay.is_displayed())
-            self.assertTrue(dialog_modal.is_displayed())
-
-            self._page.send_keys(Keys.ESCAPE)
-
-            self.assertFalse(dialog_modal_overlay.is_displayed())
-            self.assertFalse(dialog_modal.is_displayed())
 
 
 class BasicInteractionTest(InteractionTestBase):
@@ -505,27 +493,4 @@ class MultipleBlocksDataInteraction(InteractionTestBase, BaseIntegrationTest):
         self._switch_to_block(1)
         # Test mouse and keyboard interaction
         self.interact_with_keyboard_help(scroll_down=900)
-        self.interact_with_keyboard_help(scroll_down=0, use_keyboard=True, multiple_blocks=True)
-
-        # When pressing "?" on a page with multiple DnDv2 exercises,
-        # only a single "Keyboard Help" dialog should be shown:
-        first_keyboard_help_dialog, second_keyboard_help_dialog = self._get_keyboard_help_dialogs()
-        first_dialog_modal_overlay, first_dialog_modal = self._get_dialog_components(first_keyboard_help_dialog)
-        first_dialog_dismiss_button = self._get_dialog_dismiss_button(first_dialog_modal)
-        second_dialog_modal_overlay, second_dialog_modal = self._get_dialog_components(second_keyboard_help_dialog)
-
-        self._switch_to_block(0)
-        self._page.send_keys("?")
-        self.assertTrue(first_dialog_modal_overlay.is_displayed())
-        self.assertTrue(first_dialog_modal.is_displayed())
-        self.assertFalse(second_dialog_modal_overlay.is_displayed())
-        self.assertFalse(second_dialog_modal.is_displayed())
-        first_dialog_dismiss_button.click()
-
-        self._switch_to_block(1)
-        self._page.send_keys("?")
-        self.assertTrue(first_dialog_modal_overlay.is_displayed())
-        self.assertTrue(first_dialog_modal.is_displayed())
-        self.assertFalse(second_dialog_modal_overlay.is_displayed())
-        self.assertFalse(second_dialog_modal.is_displayed())
-        first_dialog_dismiss_button.click()
+        self.interact_with_keyboard_help(scroll_down=0, use_keyboard=True)
