@@ -84,7 +84,7 @@
                 style.width = item.widthPercent + "%";
                 style.maxWidth = item.widthPercent + "%"; // default maxWidth is ~33%
             } else if (item.imgNaturalWidth) {
-                style.width = item.imgNaturalWidth + "px";
+                style.width = (item.imgNaturalWidth + 22) + "px"; // 22px is for 10px padding + 1px border each side
                 // ^ Hack to detect image width at runtime and make webkit consistent with Firefox
             }
         } else {

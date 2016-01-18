@@ -25,6 +25,7 @@ Expectation = namedtuple('Expectation', [
     'zone_id',
     'width_percent',  # we expect this item to have this width relative to its container (item bank or image target)
     'fixed_width_percent',  # we expect this item to have this width (always relative to the target image)
+    'img_pixel_size_exact',  # we expect the image inside the draggable to have the exact size [w, h] in pixels
 ])
 Expectation.__new__.__defaults__ = (None,) * len(Expectation._fields)  # pylint: disable=protected-access
 ZONE_33 = "Zone 1/3"  # Title of top zone in each image used in these tests (33% width)
@@ -64,6 +65,7 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
             "img_square_url": _svg_to_data_uri('dnd-bg-square.svg'),
             "img_400x300_url": _svg_to_data_uri('400x300.svg'),
             "img_200x200_url": _svg_to_data_uri('200x200.svg'),
+            "img_60x60_url": _svg_to_data_uri('60x60.svg'),
         }
         upper_block = "<drag-and-drop-v2 data='{data}'/>".format(
             data=loader.render_django_template("data/test_sizing_template.json", params)
@@ -92,6 +94,9 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
         Expectation(item_id=7, zone_id=ZONE_50, fixed_width_percent=50),
         # A 200x200 image with a specified width of 50%
         Expectation(item_id=8, zone_id=ZONE_50, fixed_width_percent=50),
+        # A 60x60 auto-sized image should appear with pixel dimensions of 60x60 since it's
+        # too small to be shrunk be the default max-size.
+        Expectation(item_id=9, zone_id=ZONE_33, img_pixel_size_exact=[60, 60]),
     ]
 
     def test_wide_image_desktop(self):
@@ -148,6 +153,15 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
                 )
             )
 
+    def _check_img_pixel_dimensions(self, item_description, item, expect_w, expect_h):
+        img_element = item.find_element_by_css_selector("img")
+        self.assertEqual(
+            img_element.size, {"width": expect_w, "height": expect_h},
+            msg="Expected {}'s image to have exact dimensions {}x{}px; found {}x{}px instead.".format(
+                item_description, expect_w, expect_h, img_element.size["width"], img_element.size["height"]
+            )
+        )
+
     def _check_sizes(self, block_index, expectations, expected_img_width=755, is_desktop=True):
         """ Test the actual dimensions that each draggable has, in the bank and when placed """
         # Check assumptions - the container wrapping this XBlock should be 770px wide
@@ -179,6 +193,12 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
                     container_width=target_img_width,
                     expected_percent=expect.fixed_width_percent,
                 )
+            if expect.img_pixel_size_exact is not None:
+                self._check_img_pixel_dimensions(
+                    "Unplaced item {}".format(expect.item_id),
+                    self._get_unplaced_item_by_value(expect.item_id),
+                    *expect.img_pixel_size_exact
+                )
 
         # Test each element, after it it placed.
         for expect in expectations:
@@ -190,6 +210,12 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
                     item=self._get_placed_item_by_value(expect.item_id),
                     container_width=target_img_width,
                     expected_percent=expected_width_percent,
+                )
+            if expect.img_pixel_size_exact is not None:
+                self._check_img_pixel_dimensions(
+                    "Placed item {}".format(expect.item_id),
+                    self._get_placed_item_by_value(expect.item_id),
+                    *expect.img_pixel_size_exact
                 )
 
 

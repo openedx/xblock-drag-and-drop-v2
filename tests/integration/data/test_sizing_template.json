@@ -83,6 +83,13 @@
       "imageURL": "{{img_200x200_url}}",
       "id": 8,
       "widthPercent": 50
+    },
+    {
+      "displayName": "IMG 60x60",
+      "feedback": {"incorrect": "", "correct": ""},
+      "zone": "Zone 1/3",
+      "imageURL": "{{img_60x60_url}}",
+      "id": 9
     }
   ],
   "feedback": {"start": "Some Intro Feedback", "finish": "Some Final Feedback"}
