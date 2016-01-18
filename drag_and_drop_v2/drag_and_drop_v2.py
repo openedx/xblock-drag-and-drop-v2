@@ -198,7 +198,6 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         )
         js_urls = (
             'public/js/vendor/jquery-ui-1.10.4.custom.min.js',
-            'public/js/vendor/jquery.html5-placeholder-shim.js',
             'public/js/vendor/handlebars-v1.1.2.js',
             'public/js/drag_and_drop_edit.js',
         )
