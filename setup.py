@@ -29,7 +29,8 @@ setup(
     install_requires=[
         'XBlock',
         'xblock-utils',
-        'ddt'
+        'ddt',
+        'mock',
     ],
     entry_points={
         'xblock.v1': 'drag-and-drop-v2 = drag_and_drop_v2:DragAndDropBlock',
