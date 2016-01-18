@@ -20,12 +20,6 @@ from .test_base import BaseIntegrationTest
 
 loader = ResourceLoader(__name__)
 
-ZONES_MAP = {
-    0: TOP_ZONE_TITLE,
-    1: MIDDLE_ZONE_TITLE,
-    2: BOTTOM_ZONE_TITLE,
-}
-
 
 # Classes ###########################################################
 
@@ -65,16 +59,19 @@ class InteractionTestBase(object):
         self.browser.set_window_size(1024, 800)
 
     def _get_item_by_value(self, item_value):
+        return self._page.find_elements_by_xpath(".//div[@data-value='{item_id}']".format(item_id=item_value))[0]
+
+    def _get_unplaced_item_by_value(self, item_value):
         items_container = self._page.find_element_by_css_selector('.item-bank')
-        return items_container.find_elements_by_xpath("//div[@data-value='{item_id}']".format(item_id=item_value))[0]
+        return items_container.find_elements_by_xpath(".//div[@data-value='{item_id}']".format(item_id=item_value))[0]
 
     def _get_placed_item_by_value(self, item_value):
         items_container = self._page.find_element_by_css_selector('.target')
-        return items_container.find_elements_by_xpath("//div[@data-value='{item_id}']".format(item_id=item_value))[0]
+        return items_container.find_elements_by_xpath(".//div[@data-value='{item_id}']".format(item_id=item_value))[0]
 
     def _get_zone_by_id(self, zone_id):
         zones_container = self._page.find_element_by_css_selector('.target')
-        return zones_container.find_elements_by_xpath("//div[@data-zone='{zone_id}']".format(zone_id=zone_id))[0]
+        return zones_container.find_elements_by_xpath(".//div[@data-zone='{zone_id}']".format(zone_id=zone_id))[0]
 
     def _get_input_div_by_value(self, item_value):
         element = self._get_item_by_value(item_value)
@@ -85,9 +82,6 @@ class InteractionTestBase(object):
             'return $("div[data-zone=\'{zone_id}\']").prevAll(".zone").length'.format(zone_id=zone_id)
         )
 
-    def _focus_item(self, item_position):
-        self.browser.execute_script("$('.option:nth-child({n})').focus()".format(n=item_position+1))
-
     def place_item(self, item_value, zone_id, action_key=None):
         if action_key is None:
             self.drag_item_to_zone(item_value, zone_id)
@@ -95,29 +89,23 @@ class InteractionTestBase(object):
             self.move_item_to_zone(item_value, zone_id, action_key)
 
     def drag_item_to_zone(self, item_value, zone_id):
-        element = self._get_item_by_value(item_value)
+        element = self._get_unplaced_item_by_value(item_value)
         target = self._get_zone_by_id(zone_id)
         action_chains = ActionChains(self.browser)
         action_chains.drag_and_drop(element, target).perform()
 
     def move_item_to_zone(self, item_value, zone_id, action_key):
-        # Get item position
-        item_position = item_value
         # Get zone position
         zone_position = self._get_zone_position(zone_id)
-
-        self._focus_item(0)
-        focused_item = self._get_item_by_value(0)
-        for i in range(item_position):
-            focused_item.send_keys(Keys.TAB)
-            focused_item = self._get_item_by_value(i+1)
-        focused_item.send_keys(action_key)  # Focus is on first *zone* now
-        self.assert_grabbed_item(focused_item)
-        focused_zone = self._get_zone_by_id(ZONES_MAP[0])
-        for i in range(zone_position):
-            focused_zone.send_keys(Keys.TAB)
-            focused_zone = self._get_zone_by_id(ZONES_MAP[i+1])
-        focused_zone.send_keys(action_key)
+        # Focus on the item:
+        item = self._get_unplaced_item_by_value(item_value)
+        ActionChains(self.browser).move_to_element(item).perform()
+        # Press the action key:
+        item.send_keys(action_key)  # Focus is on first *zone* now
+        self.assert_grabbed_item(item)
+        for _ in range(zone_position):
+            self._page.send_keys(Keys.TAB)
+        self._get_zone_by_id(zone_id).send_keys(action_key)
 
     def send_input(self, item_value, value):
         element = self._get_item_by_value(item_value)
