@@ -180,7 +180,6 @@
                                 h('li', gettext('Press "Enter", "Space", "Ctrl-m", or "⌘-m" on an item to select it for dropping, then navigate to the zone you want to drop it on.')),
                                 h('li', gettext('Press "Enter", "Space", "Ctrl-m", or "⌘-m" to drop the item on the current zone.')),
                                 h('li', gettext('Press "Escape" if you want to cancel the drop operation (e.g. because you would like to select a different item).')),
-                                h('li', gettext('Press "?" at any time to bring up this dialog.')),
                             ])
                         ]),
                         h('div.modal-actions', [
