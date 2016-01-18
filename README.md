@@ -146,8 +146,18 @@ The following analytics events are provided by this block.
 
 Fired when the Drag and Drop XBlock is finished loading.
 
-### Example
+Example ("common" fields that are not interesting in this context have been left out):
 
+```
+{
+...
+    "event": {},
+    "event_source": "server",                              --  Common field, contains event source.
+    "event_type": "edx.drag_and_drop_v2.loaded",           --  Common field, contains event name.
+...
+```
+
+Real event example (taken from a devstack):
 ```
 {
     "username": "staff",
@@ -179,7 +189,20 @@ Fired when the Drag and Drop XBlock is finished loading.
 
 Fired when a student picks up a draggable item.
 
-### Example
+Example ("common" fields that are not interesting in this context have been left out):
+
+```
+{
+...
+    "event": {
+      "item_id": 0,                                        --  ID of the draggable item.
+    },
+    "event_source": "server",                              --  Common field, contains event source.
+    "event_type": "edx.drag_and_drop_v2.picked_up",        --  Common field, contains event name.
+...
+```
+
+Real event example (taken from a devstack):
 
 ```
 {
@@ -214,7 +237,26 @@ Fired when a student picks up a draggable item.
 
 Fired when a student drops a draggable item.
 
-### Example
+This event will be emitted when a student drops a draggable item.
+
+Example ("common" fields that are not interesting in this context have been left out):
+
+```
+{
+...
+    "event": {
+      "input": null,
+      "is_correct": true,                                  --  False if there is an input in the draggable item, and the student provided the wrong answer. Otherwise true.
+      "is_correct_location": true,                         --  Whether the draggable item has been placed in the correct location.
+      "item_id": 0,                                        --  ID of the draggable item.
+      "location": "The Top Zone",                          --  Name of the location the item was dragged to.
+    },
+    "event_source": "server",                              --  Common field, contains event source.
+    "event_type": "edx.drag_and_drop_v2.dropped",          --  Common field, contains event name.
+...
+```
+
+Real event example (taken from a devstack):
 
 ```
 {
@@ -253,7 +295,21 @@ Fired when a student drops a draggable item.
 
 Fired when the feedback pop-up is opened.
 
-### Example
+Example ("common" fields that are not interesting in this context have been left out):
+
+```
+{
+...
+    "event": {
+      "content": "Correct! This one belongs to The Top Zone.",  --  Content of the feedback popup.
+      "truncated": false,                                       --  Boolean indicating whether "content" field was truncated.
+    },
+    "event_source": "server",                                   --  Common field, contains event source.
+    "event_type": "edx.drag_and_drop_v2.feedback.opened",       --  Common field, contains event name.
+...
+```
+
+Real event example (taken from a devstack):
 
 ```
 {
@@ -289,7 +345,22 @@ Fired when the feedback pop-up is opened.
 
 Fired when the feedback popup is closed.
 
-### Example
+Example ("common" fields that are not interesting in this context have been left out):
+
+```
+{
+...
+    "event": {
+      "content": "No, this item does not belong here. Try again." --  Message of the feedback popup that was closed.
+      "manually": true,                                           --  Whether or not the user closed the feedback window manually or if it was auto-closed.
+      "truncated": false,                                         --  Boolean indicating whether "content" field was truncated.
+    },
+    "event_source": "server",                                     --  Common field, contains event source.
+    "event_type": "edx.drag_and_drop_v2.feedback.closed",         --  Common field, contains event name.
+...
+```
+
+Real event example (taken from a devstack):
 
 ```
 {
