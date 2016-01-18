@@ -57,7 +57,7 @@
     position: relative;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 3px;
-    padding: 5px;
+    padding: 0; /* padding: 5px looks better but makes some blocks to change in size when dropped onto the target; */
 }
 
 .xblock--drag-and-drop .drag-container .option {
@@ -67,6 +67,7 @@
     max-width: calc(100% / 3 - 1% - 1% - 20px);
     border: 1px solid transparent;
     border-radius: 3px;
+    box-sizing: border-box;
     margin: 5px;
     padding: 10px;
     background-color: #1d5280;
@@ -122,11 +123,12 @@
     outline-offset: -4px;
 }
 
-.xblock--drag-and-drop .drag-container .ui-draggable-dragging {
+.xblock--drag-and-drop .drag-container .ui-draggable-dragging.option {
     box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.3);
     border: 1px solid #ccc;
     opacity: .65;
     z-index: 20 !important;
+    margin: 0; /* Allow the draggable to touch the edges of the target image */
 }
 
 .xblock--drag-and-drop .drag-container .option img {
