@@ -191,3 +191,38 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
                     container_width=target_img_width,
                     expected_percent=expected_width_percent,
                 )
+
+
+class SizingBackwardsCompatibilityTests(InteractionTestBase, BaseIntegrationTest):
+    """
+    Test backwards compatibility with data generated in older versions of this block.
+
+    Older versions allowed authors to specify a fixed width and height for each draggable, in
+    pixels (new versions only have a configurable width, and it is a percent width).
+    """
+    PAGE_TITLE = 'Drag and Drop v2 Sizing Backwards Compatibility'
+    PAGE_ID = 'drag_and_drop_v2_sizing_backwards_compatibility'
+
+    @staticmethod
+    def _get_scenario_xml():
+        """
+        Set up the test scenario:
+            * One DndDv2 block using 'old_version_data.json'
+        """
+        dnd_block = "<drag-and-drop-v2 data='{data}'/>".format(
+            data=loader.load_unicode("data/old_version_data.json")
+        )
+        return "<vertical_demo>{}</vertical_demo>".format(dnd_block)
+
+    def test_draggable_sizes(self):
+        """ Test the fixed pixel widths set in old versions of the block """
+        self._expect_width_px(item_id=0, width_px=190, zone_id="Zone 1")
+        self._expect_width_px(item_id=1, width_px=190, zone_id="Zone 2")
+        self._expect_width_px(item_id=2, width_px=100, zone_id="Zone 1")
+
+    def _expect_width_px(self, item_id, width_px, zone_id):
+        item = self._get_unplaced_item_by_value(item_id)
+        self.assertEqual(item.size["width"], width_px)
+        self.place_item(item_id, zone_id)
+        item = self._get_placed_item_by_value(item_id)
+        self.assertEqual(item.size["width"], width_px)
