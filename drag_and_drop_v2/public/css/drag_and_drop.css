@@ -80,6 +80,10 @@
     z-index: 10 !important;
 }
 
+.xblock--drag-and-drop .drag-container .option.specified-width img {
+    width: 100%;  /* If the image is smaller than the specified width, make it larger */
+}
+
 .xblock--drag-and-drop .drag-container .option .spinner-wrapper {
     margin-right: 3px;
     float: left;

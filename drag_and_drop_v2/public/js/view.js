@@ -58,6 +58,9 @@
         if (item.has_image) {
             className += " " + "option-with-image";
         }
+        if (item.widthPercent) {
+            className += " specified-width";  // The author has specified a width for this item.
+        }
         var attributes = {
             'draggable': !item.drag_disabled,
             'aria-grabbed': item.grabbed,

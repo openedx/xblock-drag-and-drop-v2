@@ -40,6 +40,9 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
 
     Tip: To see how these tests work, throw in an 'import time; time.sleep(200)' at the start of
     one of the tests, so you can check it out in the selenium browser window that opens.
+
+    These tests intentionally do not use ddt in order to run faster. Instead, each test iterates
+    through data and uses verbose assertion messages to clearly indicate where failures occur.
     """
     PAGE_TITLE = 'Drag and Drop v2 Sizing'
     PAGE_ID = 'drag_and_drop_v2_sizing'
@@ -118,6 +121,17 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
                 width_percent, expected_percent, delta=1,
                 msg="{} should have width of ~{}% (+/- 1%). Actual: {:.2f}%".format(
                     item_description, expected_percent, width_percent
+                )
+            )
+
+        if item.find_elements_by_css_selector("img"):
+            # This item contains an image. The image should always fill the width of the draggable.
+            image = item.find_element_by_css_selector("img")
+            image_width_expected = item.size["width"] - 22
+            self.assertAlmostEqual(
+                image.size["width"], image_width_expected, delta=1,
+                msg="{} image does not take up the full width of the draggable (width is {}px; expected {}px)".format(
+                    item_description, image.size["width"], image_width_expected,
                 )
             )
 
