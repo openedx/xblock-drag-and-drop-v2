@@ -18,7 +18,6 @@ function DragAndDropBlock(runtime, element, configuration) {
     var SPC = 32;
     var TAB = 9;
     var M = 77;
-    var QUESTION_MARK = 63;
 
     var placementMode = false;
     var $selectedItem;
@@ -47,9 +46,6 @@ function DragAndDropBlock(runtime, element, configuration) {
             initDroppable();
 
             $(document).on('keydown mousedown touchstart', closePopup);
-            $(document).on('keypress', function(evt) {
-                runOnKey(evt, QUESTION_MARK, showKeyboardHelp);
-            });
             $element.on('click', '.keyboard-help-button', showKeyboardHelp);
             $element.on('keydown', '.keyboard-help-button', function(evt) {
                 runOnKey(evt, RET, showKeyboardHelp);
