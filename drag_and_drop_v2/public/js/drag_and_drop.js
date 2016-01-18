@@ -13,13 +13,15 @@ function DragAndDropBlock(runtime, element, configuration) {
     var bgImgNaturalWidth = undefined; // pixel width of the background image (when not scaled)
     var __vdom = virtualDom.h();  // blank virtual DOM
 
+    // Event string size limit.
+    var MAX_LENGTH = 255;
+
     // Keyboard accessibility
     var ESC = 27;
     var RET = 13;
     var SPC = 32;
     var TAB = 9;
     var M = 77;
-    var QUESTION_MARK = 63;
 
     var placementMode = false;
     var $selectedItem;
@@ -48,9 +50,6 @@ function DragAndDropBlock(runtime, element, configuration) {
             // Set up event handlers:
 
             $(document).on('keydown mousedown touchstart', closePopup);
-            $(document).on('keypress', function(evt) {
-                runOnKey(evt, QUESTION_MARK, showKeyboardHelp);
-            });
             $element.on('click', '.keyboard-help-button', showKeyboardHelp);
             $element.on('keydown', '.keyboard-help-button', function(evt) {
                 runOnKey(evt, RET, showKeyboardHelp);
@@ -69,7 +68,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             initDroppable();
 
             // Indicate that exercise is done loading
-            publishEvent({event_type: 'xblock.drag-and-drop-v2.loaded'});
+            publishEvent({event_type: 'edx.drag_and_drop_v2.loaded'});
         }).fail(function() {
             $root.text(gettext("An error occurred. Unable to load drag and drop exercise."));
         });
@@ -93,6 +92,15 @@ function DragAndDropBlock(runtime, element, configuration) {
         if (evt.which === TAB) {
             evt.preventDefault();
             focusModalButton();
+        }
+    };
+
+    var truncateField = function(data, fieldName){
+        if (data[fieldName].length > MAX_LENGTH) {
+            data[fieldName] = data[fieldName].substring(0, MAX_LENGTH);
+            data['truncated'] = true;
+        } else {
+            data['truncated'] = false;
         }
     };
 
@@ -204,28 +212,26 @@ function DragAndDropBlock(runtime, element, configuration) {
      * Update the DOM to reflect 'state'.
      */
     var applyState = function() {
-        // Is there a change to the feedback popup?
-        if (state.feedback !== previousFeedback) {
-            if (state.feedback) {
-                if (previousFeedback) {
-                    publishEvent({
-                        event_type: 'xblock.drag-and-drop-v2.feedback.closed',
-                        content: previousFeedback,
-                        manually: false,
-                    });
-                }
-                publishEvent({
-                    event_type: 'xblock.drag-and-drop-v2.feedback.opened',
-                    content: state.feedback,
-                });
-            } else {
-                publishEvent({
-                    event_type: 'xblock.drag-and-drop-v2.feedback.closed',
-                    content: state.feedback,
-                    manually: true,
-                });
-            }
-            previousFeedback = state.feedback;
+        // Has the feedback popup been closed?
+        if (state.closing) {
+            var data = {
+                event_type: 'edx.drag_and_drop_v2.feedback.closed',
+                content: previousFeedback || state.feedback,
+                manually: state.manually_closed,
+            };
+            truncateField(data, 'content');
+            publishEvent(data);
+            delete state.feedback;
+            delete state.closing;
+        }
+        // Has feedback been set?
+        if (state.feedback) {
+            var data = {
+                event_type: 'edx.drag_and_drop_v2.feedback.opened',
+                content: state.feedback,
+            };
+            truncateField(data, 'content');
+            publishEvent(data);
         }
 
         updateDOM();
@@ -380,7 +386,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                         var $item = $(this);
                         grabItem($item);
                         publishEvent({
-                            event_type: 'xblock.drag-and-drop-v2.item.picked-up',
+                            event_type: 'edx.drag_and_drop_v2.item.picked_up',
                             item_id: $item.data('value'),
                         });
                     },
@@ -515,7 +521,14 @@ function DragAndDropBlock(runtime, element, configuration) {
             return;
         }
 
-        delete state.feedback;
+        state.closing = true;
+        previousFeedback = state.feedback;
+        if (target.is(close_button)) {
+            state.manually_closed = true;
+        } else {
+            state.manually_closed = false;
+        }
+
         applyState();
     };
 

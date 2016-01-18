@@ -198,7 +198,6 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         )
         js_urls = (
             'public/js/vendor/jquery-ui-1.10.4.custom.min.js',
-            'public/js/vendor/jquery.html5-placeholder-shim.js',
             'public/js/vendor/handlebars-v1.1.2.js',
             'public/js/drag_and_drop_edit.js',
         )
@@ -287,9 +286,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
                 # so we have to figure that we're running in Studio for now
                 pass
 
-        self.runtime.publish(self, 'xblock.drag-and-drop-v2.item.dropped', {
-            'user_id': self.scope_ids.user_id,
-            'component_id': self._get_unique_id(),
+        self.runtime.publish(self, 'edx.drag_and_drop_v2.item.dropped', {
             'item_id': item['id'],
             'location': attempt.get('zone'),
             'input': attempt.get('input'),
@@ -443,9 +440,6 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             event_type = data.pop('event_type')
         except KeyError:
             return {'result': 'error', 'message': 'Missing event_type in JSON data'}
-
-        data['user_id'] = self.scope_ids.user_id
-        data['component_id'] = self._get_unique_id()
 
         self.runtime.publish(self, event_type, data)
         return {'result': 'success'}

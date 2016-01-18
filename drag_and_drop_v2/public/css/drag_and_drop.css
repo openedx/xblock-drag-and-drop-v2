@@ -244,7 +244,7 @@
     border: 2px solid #a5a5a5;
 }
 
-.xblock--drag-and-drop .zone p {
+.xblock--drag-and-drop .drag-container .target .zone p {
     width: 100%;
     font-family: Arial;
     font-size: 16px;
@@ -253,17 +253,6 @@
     text-transform: uppercase;
     margin-top: auto;
     margin-bottom: auto;
-}
-
-/*** IE9 alignment fix ***/
-.lt-ie10 .xblock--drag-and-drop .zone {
-    display: table;
-}
-
-.lt-ie10 .xblock--drag-and-drop .zone p {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
 }
 
 /*** FEEDBACK ***/

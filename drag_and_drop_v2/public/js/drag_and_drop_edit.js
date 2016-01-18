@@ -94,9 +94,6 @@ function DragAndDropEditBlock(runtime, element, params) {
                         $fbkTab.addClass('hidden');
                         $zoneTab.removeClass('hidden');
 
-                        // Placeholder shim for IE9
-                        $.placeholder.shim();
-
                         $(this).one('click', function(e) {
                             // $zoneTab -> $itemTab
                             e.preventDefault();
@@ -110,9 +107,6 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                             $zoneTab.addClass('hidden');
                             $itemTab.removeClass('hidden');
-
-                            // Placeholder shim for IE9
-                            $.placeholder.shim();
 
                             $(this).addClass('hidden');
                             $('.save-button', element).parent()
@@ -155,8 +149,6 @@ function DragAndDropEditBlock(runtime, element, params) {
                             _fn.build.$el.targetImage.attr('alt', new_description);
                             _fn.data.targetImgDescription = new_description;
 
-                            // Placeholder shim for IE9
-                            $.placeholder.shim();
                         })
                         .on('click', '.display-labels-form input', function(e) {
                             _fn.data.displayLabels = $('.display-labels-form input', element).is(':checked');
@@ -219,8 +211,6 @@ function DragAndDropEditBlock(runtime, element, params) {
                             // Add zone div to target
                             _fn.build.form.zone.renderZonesPreview();
 
-                            // Placeholder shim for IE9
-                            $.placeholder.shim();
                         },
                         remove: function(e) {
                             var $el = $(e.currentTarget).closest('.zone-row'),
@@ -243,8 +233,6 @@ function DragAndDropEditBlock(runtime, element, params) {
                             _fn.build.form.zone.formCount--;
                             _fn.build.form.zone.disableDelete();
 
-                            // Placeholder shim for IE9
-                            $.placeholder.shim();
                         },
                         enableDelete: function() {
                             if (_fn.build.form.zone.formCount > 1) {
@@ -378,8 +366,6 @@ function DragAndDropEditBlock(runtime, element, params) {
                             $form.append(tpl(ctx));
                             _fn.build.form.item.enableDelete();
 
-                            // Placeholder shim for IE9
-                            $.placeholder.shim();
                         },
                         remove: function(e) {
                             var $el = $(e.currentTarget).closest('.item');
@@ -390,8 +376,6 @@ function DragAndDropEditBlock(runtime, element, params) {
                             _fn.build.form.item.count--;
                             _fn.build.form.item.disableDelete();
 
-                            // Placeholder shim for IE9
-                            $.placeholder.shim();
                         },
                         enableDelete: function() {
                             if (_fn.build.form.item.count > 1) {

@@ -1,11 +1,13 @@
 # Imports ###########################################################
 
-from ddt import ddt, data
+from ddt import ddt, data, unpack
+from mock import Mock, patch
 
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 
+from workbench.runtime import WorkbenchRuntime
 from xblockutils.resources import ResourceLoader
 
 from drag_and_drop_v2.default_data import (
@@ -76,6 +78,14 @@ class InteractionTestBase(object):
     def _get_input_div_by_value(self, item_value):
         element = self._get_item_by_value(item_value)
         return element.find_element_by_class_name('numerical-input')
+
+    def _get_dialog_components(self, dialog):  # pylint: disable=no-self-use
+        dialog_modal_overlay = dialog.find_element_by_css_selector('.modal-window-overlay')
+        dialog_modal = dialog.find_element_by_css_selector('.modal-window')
+        return dialog_modal_overlay, dialog_modal
+
+    def _get_dialog_dismiss_button(self, dialog_modal):  # pylint: disable=no-self-use
+        return dialog_modal.find_element_by_css_selector('.modal-dismiss-button')
 
     def _get_zone_position(self, zone_id):
         return self.browser.execute_script(
@@ -256,9 +266,8 @@ class InteractionTestBase(object):
     def interact_with_keyboard_help(self, scroll_down=250, use_keyboard=False):
         keyboard_help_button = self._get_keyboard_help_button()
         keyboard_help_dialog = self._get_keyboard_help_dialog()
-        dialog_modal_overlay = keyboard_help_dialog.find_element_by_css_selector('.modal-window-overlay')
-        dialog_modal = keyboard_help_dialog.find_element_by_css_selector('.modal-window')
-        dialog_dismiss_button = dialog_modal.find_element_by_css_selector('.modal-dismiss-button')
+        dialog_modal_overlay, dialog_modal = self._get_dialog_components(keyboard_help_dialog)
+        dialog_dismiss_button = self._get_dialog_dismiss_button(dialog_modal)
 
         # Scroll "Keyboard help" button into view to make sure Selenium can successfully click it
         self.scroll_down(pixels=scroll_down)
@@ -279,11 +288,16 @@ class InteractionTestBase(object):
         self.assertFalse(dialog_modal_overlay.is_displayed())
         self.assertFalse(dialog_modal.is_displayed())
 
-        if use_keyboard:  # Try again with "?" key
-            self._page.send_keys("?")
+        if use_keyboard:  # Check if "Keyboard Help" dialog can be dismissed using "ESC"
+            keyboard_help_button.send_keys(Keys.RETURN)
 
             self.assertTrue(dialog_modal_overlay.is_displayed())
             self.assertTrue(dialog_modal.is_displayed())
+
+            self._page.send_keys(Keys.ESCAPE)
+
+            self.assertFalse(dialog_modal_overlay.is_displayed())
+            self.assertFalse(dialog_modal.is_displayed())
 
     def _switch_to_block(self, idx):
         """ Only needed if ther eare multiple blocks on the page. """
@@ -291,9 +305,9 @@ class InteractionTestBase(object):
         self.scroll_down(0)
 
 
-class BasicInteractionTest(InteractionTestBase):
+class DefaultDataTestMixin(object):
     """
-    Testing interactions with Drag and Drop XBlock against default data. If default data changes this will break.
+    Provides a test scenario with default options.
     """
     PAGE_TITLE = 'Drag and Drop v2'
     PAGE_ID = 'drag_and_drop_v2'
@@ -321,6 +335,11 @@ class BasicInteractionTest(InteractionTestBase):
     def _get_scenario_xml(self):  # pylint: disable=no-self-use
         return "<vertical_demo><drag-and-drop-v2/></vertical_demo>"
 
+
+class BasicInteractionTest(DefaultDataTestMixin, InteractionTestBase):
+    """
+    Testing interactions with Drag and Drop XBlock against default data. If default data changes this will break.
+    """
     def test_item_positive_feedback_on_good_move(self):
         self.parameterized_item_positive_feedback_on_good_move(self.items_map)
 
@@ -338,6 +357,74 @@ class BasicInteractionTest(InteractionTestBase):
 
     def test_keyboard_help(self):
         self.interact_with_keyboard_help()
+
+
+@ddt
+class EventsFiredTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):
+    """
+    Tests that the analytics events are fired and in the proper order.
+    """
+    # These events must be fired in this order.
+    scenarios = (
+        {
+            'name': 'edx.drag_and_drop_v2.loaded',
+            'data': {},
+        },
+        {
+            'name': 'edx.drag_and_drop_v2.item.picked_up',
+            'data': {'item_id': 0},
+        },
+        {
+            'name': 'grade',
+            'data': {'max_value': 1, 'value': (1.0 / 3)},
+        },
+        {
+            'name': 'edx.drag_and_drop_v2.item.dropped',
+            'data': {
+                'input': None,
+                'is_correct': True,
+                'is_correct_location': True,
+                'item_id': 0,
+                'location': u'The Top Zone',
+            },
+        },
+        {
+            'name': 'edx.drag_and_drop_v2.feedback.opened',
+            'data': {
+                'content': u'Correct! This one belongs to The Top Zone.',
+                'truncated': False,
+            },
+        },
+        {
+            'name': 'edx.drag_and_drop_v2.feedback.closed',
+            'data': {
+                'manually': False,
+                'content': u'Correct! This one belongs to The Top Zone.',
+                'truncated': False,
+            },
+        },
+    )
+
+    def setUp(self):
+        mock = Mock()
+        context = patch.object(WorkbenchRuntime, 'publish', mock)
+        context.start()
+        self.addCleanup(context.stop)
+        self.publish = mock
+        super(EventsFiredTest, self).setUp()
+
+    def _get_scenario_xml(self):  # pylint: disable=no-self-use
+        return "<vertical_demo><drag-and-drop-v2/></vertical_demo>"
+
+    @data(*enumerate(scenarios))  # pylint: disable=star-args
+    @unpack
+    def test_event(self, index, event):
+        self.parameterized_item_positive_feedback_on_good_move(self.items_map)
+        dummy, name, published_data = self.publish.call_args_list[index][0]
+        self.assertEqual(name, event['name'])
+        self.assertEqual(
+                published_data, event['data']
+        )
 
 
 @ddt
@@ -471,3 +558,14 @@ class MultipleBlocksDataInteraction(InteractionTestBase, BaseIntegrationTest):
         self.parameterized_final_feedback_and_reset(self.item_maps['block1'], self.feedback['block1'])
         self._switch_to_block(1)
         self.parameterized_final_feedback_and_reset(self.item_maps['block2'], self.feedback['block2'], scroll_down=900)
+
+    def test_keyboard_help(self):
+        self._switch_to_block(0)
+        # Test mouse and keyboard interaction
+        self.interact_with_keyboard_help()
+        self.interact_with_keyboard_help(use_keyboard=True)
+
+        self._switch_to_block(1)
+        # Test mouse and keyboard interaction
+        self.interact_with_keyboard_help(scroll_down=900)
+        self.interact_with_keyboard_help(scroll_down=0, use_keyboard=True)
