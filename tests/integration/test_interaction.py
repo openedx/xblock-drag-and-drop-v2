@@ -309,6 +309,7 @@ class InteractionTestBase(object):
             self.assertFalse(dialog_modal_overlay.is_displayed())
             self.assertFalse(dialog_modal.is_displayed())
 
+
 class BasicInteractionTest(InteractionTestBase):
     """
     Testing interactions with Drag and Drop XBlock against default data. If default data changes this will break.
