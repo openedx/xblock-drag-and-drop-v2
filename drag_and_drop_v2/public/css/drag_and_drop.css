@@ -254,17 +254,6 @@
     margin-bottom: auto !important;
 }
 
-/*** IE9 alignment fix ***/
-.lt-ie10 .xblock--drag-and-drop .zone {
-    display: table;
-}
-
-.lt-ie10 .xblock--drag-and-drop .zone p {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
-}
-
 /*** FEEDBACK ***/
 
 .xblock--drag-and-drop .feedback {

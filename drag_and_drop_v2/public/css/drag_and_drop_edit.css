@@ -50,17 +50,6 @@
     margin-bottom: auto;
 }
 
-/*** IE9 alignment fix ***/
-.lt-ie10 .xblock--drag-and-drop--editor .zone {
-    display: table;
-}
-
-.lt-ie10 .xblock--drag-and-drop--editor .zone p {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
-}
-
 /** Builder **/
 .xblock--drag-and-drop--editor .hidden {
     display: none !important;
