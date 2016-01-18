@@ -298,6 +298,16 @@ class InteractionTestBase(object):
         self.assertFalse(dialog_modal_overlay.is_displayed())
         self.assertFalse(dialog_modal.is_displayed())
 
+        if use_keyboard:  # Check if "Keyboard Help" dialog can be dismissed using "ESC"
+            keyboard_help_button.send_keys(Keys.RETURN)
+
+            self.assertTrue(dialog_modal_overlay.is_displayed())
+            self.assertTrue(dialog_modal.is_displayed())
+
+            self._page.send_keys(Keys.ESCAPE)
+
+            self.assertFalse(dialog_modal_overlay.is_displayed())
+            self.assertFalse(dialog_modal.is_displayed())
 
 class BasicInteractionTest(InteractionTestBase):
     """
