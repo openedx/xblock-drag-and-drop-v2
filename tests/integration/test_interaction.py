@@ -297,6 +297,11 @@ class InteractionTestBase(object):
             self.assertTrue(dialog_modal_overlay.is_displayed())
             self.assertTrue(dialog_modal.is_displayed())
 
+    def _switch_to_block(self, idx):
+        """ Only needed if ther eare multiple blocks on the page. """
+        self._page = self.browser.find_elements_by_css_selector(self.default_css_selector)[idx]
+        self.scroll_down(0)
+
 
 class BasicInteractionTest(InteractionTestBase):
     """
@@ -446,10 +451,6 @@ class MultipleBlocksDataInteraction(InteractionTestBase, BaseIntegrationTest):
         ])
 
         return "<vertical_demo>{dnd_blocks}</vertical_demo>".format(dnd_blocks=blocks_xml)
-
-    def _switch_to_block(self, idx):
-        self._page = self.browser.find_elements_by_css_selector(self.default_css_selector)[idx]
-        self.scroll_down(0)
 
     def test_item_positive_feedback_on_good_move(self):
         self._switch_to_block(0)
