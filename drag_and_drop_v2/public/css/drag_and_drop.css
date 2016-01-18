@@ -249,8 +249,9 @@
     font-weight: bold;
     text-align: center;
     text-transform: uppercase;
-    margin-top: auto;
-    margin-bottom: auto;
+    margin-top: auto;  /* Shield zone labels from LMS rules that change margin-bottom for <p> elements */
+                       /* to make sure they are centered vertically */
+    margin-bottom: auto !important;
 }
 
 /*** IE9 alignment fix ***/
