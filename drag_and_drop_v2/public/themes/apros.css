@@ -51,7 +51,7 @@
     background-color: #fff;
 }
 
-.themed-xblock.xblock--drag-and-drop .zone p {
+.themed-xblock.xblock--drag-and-drop .drag-container .target .zone p {
     font-family: Arial;
     font-size: 16px;
     font-weight: bold;
