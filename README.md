@@ -9,8 +9,10 @@ The editor is fully guided. Features include:
 * custom target image
 * free target zone positioning and sizing
 * custom zone labels
+* ability to show or hide zone borders
 * custom text and background colors for items
 * image items
+* items prompting for additional (numerical) input after being dropped
 * decoy items that don't have a zone
 * feedback popups for both correct and incorrect attempts
 * introductory and final feedback
@@ -95,29 +97,32 @@ and Drop component to a lesson, then click the `EDIT` button.
 ![Edit view](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/5ff71f56ba454c66d8f2749bc1d55d5f1df3b792/doc/img/edit-view.png)
 
 In the first step, you can set some basic properties of the component,
-such as the title, the question text to render above the background
-image, the introductory feedback (shown initially) and the final
-feedback (shown after the student successfully completes the drag and
-drop problem).
+such as the title, the maximum score, the question text to render
+above the background image, the introductory feedback (shown
+initially), and the final feedback (shown after the student
+successfully completes the drag and drop problem).
 
 ![Drop zone edit](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/5ff71f56ba454c66d8f2749bc1d55d5f1df3b792/doc/img/edit-view-zones.png)
 
-In the next step, you set the background image URL and define the
-properties of the drop zones. The properties include the title/text
-rendered in the drop zone, the zone's dimensions and position
-coordinates. In this step you can also specify whether you would like
-zone labels to be shown to students or not, as well as whether or not
-to display borders outlining the zones. It is possible to define an
-arbitrary number of drop zones as long as their titles are unique.
+In the next step, you set the URL and description for the background
+image and define the properties of the drop zones. For each zone you
+can specify the text that should be rendered inside it (the "zone
+label"), how wide and tall it should be, and where it should be placed
+on the background image. In this step you can also specify whether you
+would like zone labels to be shown to students or not, as well as
+whether or not to display borders outlining the zones. It is possible
+to define an arbitrary number of drop zones as long as their labels
+are unique.
 
 ![Drag item edit](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/5ff71f56ba454c66d8f2749bc1d55d5f1df3b792/doc/img/edit-view-items.png)
 
-In the final step, you define the drag items. A drag item can contain
-either text or an image. You can define custom success and error feedback
-for each item. The feedback text is displayed in a popup after the student
-drops the item on a zone - the success feedback is shown if the item
-is dropped on the correct zone, while the error feedback is shown
-when dropping the item on an incorrect drop zone.
+In the final step, you define the background and text color for drag
+items, as well as the drag items themselves. A drag item can contain
+either text or an image. You can define custom success and error
+feedback for each item. The feedback text is displayed in a popup
+after the student drops the item on a zone - the success feedback is
+shown if the item is dropped on the correct zone, while the error
+feedback is shown when dropping the item on an incorrect drop zone.
 
 Additionally, items can have a numerical value (and an optional error
 margin) associated with them. When a student drops an item that has a
