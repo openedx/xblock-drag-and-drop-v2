@@ -24,7 +24,7 @@
       "id": 0
     },
     {
-      "displayName": "Auto with long text that should wrap because draggables are give a maximum width",
+      "displayName": "Auto with long text that should wrap because draggables are given a maximum width",
       "feedback": {"incorrect": "", "correct": ""},
       "zone": "Zone 1/3",
       "imageURL": "",

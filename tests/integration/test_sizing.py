@@ -75,7 +75,7 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
 
         return "<vertical_demo>{}\n{}</vertical_demo>".format(upper_block, lower_block)
 
-    DESKTOP_EXPECTATIONS = [
+    EXPECTATIONS = [
         # The text 'Auto' with no fixed size specified should be 5-20% wide
         Expectation(item_id=0, zone_id=ZONE_33, width_percent=[5, 20]),
         # The long text with no fixed size specified should be wrapped at the maximum width
@@ -94,13 +94,26 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
         Expectation(item_id=8, zone_id=ZONE_50, fixed_width_percent=50),
     ]
 
-    def test_wide_image(self):
+    def test_wide_image_desktop(self):
         """ Test the upper, larger, wide image in a desktop-sized window """
-        self._check_sizes(0, self.DESKTOP_EXPECTATIONS)
+        self._check_sizes(0, self.EXPECTATIONS)
 
-    def test_square_image(self):
+    def test_square_image_desktop(self):
         """ Test the lower, smaller, square image in a desktop-sized window """
-        self._check_sizes(1, self.DESKTOP_EXPECTATIONS, expected_img_width=500)
+        self._check_sizes(1, self.EXPECTATIONS, expected_img_width=500)
+
+    def _size_for_mobile(self):
+        self.browser.set_window_size(375, 627)  # iPhone 6 viewport size
+
+    def test_wide_image_mobile(self):
+        """ Test the upper, larger, wide image in a mobile-sized window """
+        self._size_for_mobile()
+        self._check_sizes(0, self.EXPECTATIONS, is_desktop=False)
+
+    def test_square_image_mobile(self):
+        """ Test the lower, smaller, square image in a mobile-sized window """
+        self._size_for_mobile()
+        self._check_sizes(1, self.EXPECTATIONS, expected_img_width=375, is_desktop=False)
 
     def _check_width(self, item_description, item, container_width, expected_percent):
         """
