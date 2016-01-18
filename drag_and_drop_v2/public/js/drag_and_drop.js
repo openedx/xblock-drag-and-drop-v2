@@ -12,15 +12,15 @@ function DragAndDropBlock(runtime, element, configuration) {
     var state = undefined;
     var __vdom = virtualDom.h();  // blank virtual DOM
 
+    // Event string size limit.
+    var MAX_LENGTH = 255;
+
     // Keyboard accessibility
     var ESC = 27;
     var RET = 13;
     var SPC = 32;
     var TAB = 9;
     var M = 77;
-
-    // Event string size limit.
-    var MAX_LENGTH = 255;
 
     var placementMode = false;
     var $selectedItem;
