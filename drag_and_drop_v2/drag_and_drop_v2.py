@@ -111,6 +111,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """ Translate text """
         return self.runtime.service(self, "i18n").ugettext(text)
 
+    @XBlock.supports("multi_device")  # Enable this block for use in the mobile app via webview
     def student_view(self, context):
         """
         Player view, displayed to the student

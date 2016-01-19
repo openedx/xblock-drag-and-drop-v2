@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1600 900" width="1600px" height="900px" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:url(#SVGID_1_);}
+	.st1{fill:#999999;}
+	.st2{fill:#F2F2F2;}
+	.st3{font-family:'Helvetica-Bold';}
+	.st4{font-size:60px;}
+	.st5{letter-spacing:1;}
+	.st6{letter-spacing:-3;}
+</style>
+<g id="Layer_2">
+	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="1.127" y1="450" x2="1600" y2="450">
+		<stop  offset="0" style="stop-color:#CCE0F4"/>
+		<stop  offset="1" style="stop-color:#005B97"/>
+	</linearGradient>
+	<rect x="0" class="st0" width="1600" height="900"/>
+</g>
+<g id="Layer_1">
+	<rect y="350" class="st1" width="800" height="200"/>
+	<rect x="0" y="700" class="st1" width="1200" height="200"/>
+	<rect x="0" class="st1" width="533.33" height="200"/>
+	<text transform="matrix(1 0 0 1 145 115)" class="st2 st3 st4">&lt;- 1/3 -&gt;</text>
+	<text transform="matrix(1 0 0 1 288 462)"><tspan x="0" y="0" class="st2 st3 st4">&lt;-</tspan><tspan x="55" y="0" class="st2 st3 st4 st5"> </tspan><tspan x="72.9" y="0" class="st2 st3 st4">50% -</tspan><tspan x="229.6" y="0" class="st2 st3 st4 st6">&gt;</tspan></text>
+	<text transform="matrix(1 0 0 1 486 821)"><tspan x="0" y="0" class="st2 st3 st4">&lt;-</tspan><tspan x="55" y="0" class="st2 st3 st4 st5"> </tspan><tspan x="72.9" y="0" class="st2 st3 st4">75% -</tspan><tspan x="229.6" y="0" class="st2 st3 st4 st6">&gt;</tspan></text>
+</g>
+</svg>

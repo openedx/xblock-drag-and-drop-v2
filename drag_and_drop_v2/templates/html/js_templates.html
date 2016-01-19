@@ -92,27 +92,14 @@
             <textarea id="item-{{id}}-error-feedback"
                       class="error-feedback">{{ feedback.incorrect }}</textarea>
         </div>
-        <div class="row" style="display: none;">
-            <!--
-            width and height are no longer respected, so they are now hidden, but we are
-            keeping the HTML and JS code intact so that the existing data will be preserved
-            until we can be sure that removing the width/height is OK for all courses that use
-            this block.
-            If we do add them back in, we should only allow setting "width". Height will be
-            detected automatically based on font/image size requirements.
-            -->
-            <label for="item-{{id}}-width">{{i18n "Width in pixels (0 for auto)"}}</label>
-            <input type="text"
-                   id="item-{{id}}-width"
-                   class="item-width"
-                   value="{{ width }}" />
-            <label for="item-{{id}}-height">{{i18n "Height in pixels (0 for auto)"}}</label>
-            <input type="text"
-                   id="item-{{id}}-height"
-                   class="item-height"
-                   value="{{ height }}" />
+        <div class="row advanced-link">
+            <a href="#">{{i18n "Show advanced settings" }}</a>
         </div>
-        <div class="row">
+        <div class="row advanced">
+            <label for="item-{{id}}-width-percent">{{i18n "Preferred width as a percentage of the background image width (or blank for automatic width):"}}</label>
+            <input type="number" id="item-{{id}}-width-percent" class="item-width" value="{{ singleDecimalFloat widthPercent }}" step="0.1" min="1" max="99" />%
+        </div>
+        <div class="row advanced">
           <label for="item-{{id}}-numerical-value">
             {{i18n "Optional numerical value (if you set this, students will be prompted for this value after dropping this item)"}}
           </label>
@@ -121,7 +108,7 @@
                  id="item-{{id}}-numerical-value"
                  class="item-numerical-value" value="{{ numericalValue }}" />
         </div>
-        <div class="row">
+        <div class="row advanced">
           <label for="item-{{id}}-numerical-margin">
             {{i18n "Margin +/- (when a numerical value is required, values entered by students must not differ from the expected value by more than this margin; default is zero)"}}
           </label>
