@@ -127,7 +127,9 @@
             h(
                 'div.option',
                 {
-                    key: item.value,
+                    // Unique key for virtual dom change tracking. Key must be different for
+                    // Placed vs Unplaced, or weird bugs can occur.
+                    key: item.value + (item.is_placed ? "-p" : "-u"),
                     className: className,
                     attributes: attributes,
                     style: style
