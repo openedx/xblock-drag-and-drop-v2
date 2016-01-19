@@ -66,8 +66,8 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     )
 
     item_background_color = String(
-        display_name="Item background color",
-        help=(
+        display_name=_("Item background color"),
+        help=_(
             "Background color to use for draggable items. "
             "Defaults to color specified by current theme, or blue if no theme is set."
         ),
@@ -76,8 +76,8 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     )
 
     item_text_color = String(
-        display_name="Item text color",
-        help=(
+        display_name=_("Item text color"),
+        help=_(
             "Text color to use for draggable items. "
             "Defaults to color specified by current theme, or white if no theme is set."
         ),
