@@ -6,12 +6,12 @@
     <section class="drag-builder">
         <div class="tab feedback-tab">
             <p class="tab-content">
-                {% trans "Note: don't edit the question if students already answered it! Delete it and create a new one." %}
+                {% trans "Note: do not edit the problem if students have already completed it. Delete the problem and create a new one." %}
             </p>
 
             <section class="tab-content">
                 <form class="feedback-form">
-                    <h3>{% trans "Question title" %}</h3>
+                    <h3>{% trans "Problem title" %}</h3>
                     <input class="display-name" value="{{ self.display_name }}" />
                     <label title="{{ help_texts.show_title }}">
                       <input class="show-title" type="checkbox"
@@ -22,12 +22,12 @@
                     <h3>{% trans "Maximum score" %}</h3>
                     <input type="number" step="0.1" class="weight" value="1" value="{{ self.weight }}" />
 
-                    <h3>{% trans "Question text" %}</h3>
-                    <textarea class="question-text">{{ self.question_text }}</textarea>
+                    <h3>{% trans "Problem text" %}</h3>
+                    <textarea class="problem-text">{{ self.question_text }}</textarea>
                     <label title="{{ help_texts.show_question_header }}">
-                      <input class="show-question-header" type="checkbox"
+                      <input class="show-problem-header" type="checkbox"
                         {% if self.show_question_header %}checked="checked"{% endif %}>
-                      {% trans "Show \"Question\" heading" %}
+                      {% trans 'Show "Problem" heading' %}
                     </label>
 
                     <h3>{% trans "Introductory Feedback" %}</h3>
@@ -51,7 +51,7 @@
                     <input type="text"
                            class="url-input"
                            aria-labelledby="background-url-label"
-                           placeholder="{% trans 'e.g. http://example.com/background.png or /static/background.png' %}">
+                           placeholder="{% trans 'For example, http://example.com/background.png or /static/background.png' %}">
                     <h3 id="background-description-label">
                         {% trans "Background description" %}
                     </h3>
@@ -61,7 +61,7 @@
                     <div id="background-description-description" class="target-image-form-help">
                         {% blocktrans %}
                             Please provide a description of the image for non-visual users.
-                            The description should provide sufficient information that would allow anyone
+                            The description should provide sufficient information to allow anyone
                             to solve the problem even without seeing the image.
                         {% endblocktrans %}
                     </div>

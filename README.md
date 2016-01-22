@@ -1,8 +1,8 @@
 Drag and Drop XBlock v2
 =======================
 
-This XBlock implements a friendly drag-and-drop style question, where
-the student has to drag items on zones on a target image.
+This XBlock implements a friendly drag-and-drop style problem, where
+the learner has to drag items to zones on a target image.
 
 The editor is fully guided. Features include:
 
@@ -25,7 +25,7 @@ inside the edX LMS before the user starts solving the problem:
 
 ![Student view start](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/c955a38dc3a1aaf609c586d293ce19b282e11ffd/doc/img/student-view-start.png)
 
-This screenshot shows the XBlock after the student successfully
+This screenshot shows the XBlock after the learner successfully
 completed the Drag and Drop problem:
 
 ![Student view finish](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/c955a38dc3a1aaf609c586d293ce19b282e11ffd/doc/img/student-view-finish.png)
@@ -62,7 +62,7 @@ You can use the same approach to apply a custom theme:
 `"package"` can refer to any Python package in your virtualenv, which
 means you can develop and maintain your own theme in a separate
 package. There is no need to fork or modify this repository in any way
-to customize the look and feel of your Drag and Drop exercises.
+to customize the look and feel of your Drag and Drop problems.
 
 `"locations"` is a list of relative paths pointing to CSS files
 belonging to your theme. While the XBlock loads, files will be added
@@ -97,9 +97,9 @@ and Drop component to a lesson, then click the `EDIT` button.
 ![Edit view](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/c955a38dc3a1aaf609c586d293ce19b282e11ffd/doc/img/edit-view.png)
 
 In the first step, you can set some basic properties of the component,
-such as the title, the maximum score, the question text to render
+such as the title, the maximum score, the problem text to render
 above the background image, the introductory feedback (shown
-initially), and the final feedback (shown after the student
+initially), and the final feedback (shown after the learner
 successfully completes the drag and drop problem).
 
 ![Drop zone edit](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/c955a38dc3a1aaf609c586d293ce19b282e11ffd/doc/img/edit-view-zones.png)
@@ -109,7 +109,7 @@ image and define the properties of the drop zones. For each zone you
 can specify the text that should be rendered inside it (the "zone
 label"), how wide and tall it should be, and where it should be placed
 on the background image. In this step you can also specify whether you
-would like zone labels to be shown to students or not, as well as
+would like zone labels to be shown to learners or not, as well as
 whether or not to display borders outlining the zones. It is possible
 to define an arbitrary number of drop zones as long as their labels
 are unique.
@@ -120,16 +120,16 @@ In the final step, you define the background and text color for drag
 items, as well as the drag items themselves. A drag item can contain
 either text or an image. You can define custom success and error
 feedback for each item. The feedback text is displayed in a popup
-after the student drops the item on a zone - the success feedback is
+after the learner drops the item on a zone - the success feedback is
 shown if the item is dropped on the correct zone, while the error
 feedback is shown when dropping the item on an incorrect drop zone.
 
 Additionally, items can have a numerical value (and an optional error
-margin) associated with them. When a student drops an item that has a
+margin) associated with them. When a learner drops an item that has a
 numerical value on the correct zone, an input field for entering a
-value is shown next to the item. The value that the student submits is
+value is shown next to the item. The value that the learner submits is
 checked against the expected value for the item. If you also specify a
-margin, the value entered by the student will be considered correct if
+margin, the value entered by the learner will be considered correct if
 it does not differ from the expected value by more than that margin
 (and incorrect otherwise).
 
@@ -192,7 +192,7 @@ Real event example (taken from a devstack):
 
 ## `edx.drag_and_drop_v2.item.picked_up`
 
-Fired when a student picks up a draggable item.
+Fired when a learner picks up a draggable item.
 
 Example ("common" fields that are not interesting in this context have been left out):
 
@@ -240,9 +240,9 @@ Real event example (taken from a devstack):
 
 ## `edx.drag_and_drop_v2.item.dropped`
 
-Fired when a student drops a draggable item.
+Fired when a learner drops a draggable item.
 
-This event will be emitted when a student drops a draggable item.
+This event will be emitted when a learner drops a draggable item.
 
 Example ("common" fields that are not interesting in this context have been left out):
 
@@ -251,7 +251,7 @@ Example ("common" fields that are not interesting in this context have been left
 ...
     "event": {
       "input": null,
-      "is_correct": true,                                  --  False if there is an input in the draggable item, and the student provided the wrong answer. Otherwise true.
+      "is_correct": true,                                  --  False if there is an input in the draggable item, and the learner provided the wrong answer. Otherwise true.
       "is_correct_location": true,                         --  Whether the draggable item has been placed in the correct location.
       "item_id": 0,                                        --  ID of the draggable item.
       "location": "The Top Zone",                          --  Name of the location the item was dragged to.

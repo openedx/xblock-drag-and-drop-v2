@@ -19,7 +19,7 @@ ITEM_INCORRECT_FEEDBACK = _("No, this item does not belong here. Try again.")
 ITEM_NO_ZONE_FEEDBACK = _("You silly, there are no zones for this one.")
 
 START_FEEDBACK = _("Drag the items onto the image above.")
-FINISH_FEEDBACK = _("Good work! You have completed this drag and drop exercise.")
+FINISH_FEEDBACK = _("Good work! You have completed this drag and drop problem.")
 
 DEFAULT_DATA = {
   "targetImgDescription": TARGET_IMG_DESCRIPTION,

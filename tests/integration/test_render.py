@@ -46,19 +46,19 @@ class TestDragAndDropRender(BaseIntegrationTest):
     SIDES = ['Top', 'Bottom', 'Left', 'Right']
 
     def load_scenario(self, item_background_color="", item_text_color="", zone_labels=False, zone_borders=False):
-        exercise_data = loader.load_unicode("data/test_data_a11y.json")
-        exercise_data = exercise_data.replace('{display_labels_value}', 'true' if zone_labels else 'false')
-        exercise_data = exercise_data.replace('{display_borders_value}', 'true' if zone_borders else 'false')
+        problem_data = loader.load_unicode("data/test_data_a11y.json")
+        problem_data = problem_data.replace('{display_labels_value}', 'true' if zone_labels else 'false')
+        problem_data = problem_data.replace('{display_borders_value}', 'true' if zone_borders else 'false')
         scenario_xml = """
             <vertical_demo>
                 <drag-and-drop-v2 item_background_color='{item_background_color}'
                                   item_text_color='{item_text_color}'
-                                  data='{exercise_data}' />
+                                  data='{problem_data}' />
             </vertical_demo>
         """.format(
             item_background_color=item_background_color,
             item_text_color=item_text_color,
-            exercise_data=exercise_data
+            problem_data=problem_data
         )
         self._add_scenario(self.PAGE_ID, self.PAGE_TITLE, scenario_xml)
 

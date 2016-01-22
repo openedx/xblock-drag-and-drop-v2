@@ -175,7 +175,7 @@
                 h(
                     'a.reset-button',
                     { style: { display: reset_button_display }, attributes: { tabindex: 0 }},
-                    gettext('Reset exercise')
+                    gettext('Reset problem')
                 ),
                 h('h3.title1', { style: { display: feedback_display } }, gettext('Feedback')),
                 h('p.message', { style: { display: feedback_display }, innerHTML: ctx.feedback_html })
@@ -196,12 +196,12 @@
                             h('h2.modal-window-title', gettext('Keyboard Help'))
                         ]),
                         h('div.modal-content', [
-                            h('p', gettext('You can complete this exercise using only your keyboard.')),
+                            h('p', gettext('You can complete this problem using only your keyboard.')),
                             h('ul', [
                                 h('li', gettext('Use "Tab" and "Shift-Tab" to navigate between items and zones.')),
                                 h('li', gettext('Press "Enter", "Space", "Ctrl-m", or "⌘-m" on an item to select it for dropping, then navigate to the zone you want to drop it on.')),
                                 h('li', gettext('Press "Enter", "Space", "Ctrl-m", or "⌘-m" to drop the item on the current zone.')),
-                                h('li', gettext('Press "Escape" if you want to cancel the drop operation (e.g. because you would like to select a different item).')),
+                                h('li', gettext('Press "Esc" if you want to cancel the drop operation (for example, to select a different item).')),
                             ])
                         ]),
                         h('div.modal-actions', [
@@ -214,17 +214,17 @@
     };
 
     var mainTemplate = function(ctx) {
-        var problemHeader = ctx.show_title ? h('h2.problem-header', {innerHTML: ctx.header_html}) : null;
-        var questionHeader = ctx.show_question_header ? h('h3.title1', gettext('Question')) : null;
+        var problemTitle = ctx.show_title ? h('h2.problem-header', {innerHTML: ctx.title_html}) : null;
+        var problemHeader = ctx.show_problem_header ? h('h3.title1', gettext('Problem')) : null;
         var is_item_placed = function(i) { return i.is_placed; };
         var items_placed = $.grep(ctx.items, is_item_placed);
         var items_in_bank = $.grep(ctx.items, is_item_placed, true);
         return (
             h('section.themed-xblock.xblock--drag-and-drop', [
-                problemHeader,
+                problemTitle,
                 h('section.problem', {role: 'application'}, [
-                    questionHeader,
-                    h('p', {innerHTML: ctx.question_html}),
+                    problemHeader,
+                    h('p', {innerHTML: ctx.problem_html}),
                 ]),
                 h('section.drag-container', [
                     h('div.item-bank', renderCollection(itemTemplate, items_in_bank, ctx)),

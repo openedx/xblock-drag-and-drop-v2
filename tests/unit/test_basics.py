@@ -18,7 +18,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         context = {}
         student_fragment = self.block.runtime.render(self.block, 'student_view', context)
         self.assertIn('<section class="themed-xblock xblock--drag-and-drop">', student_fragment.content)
-        self.assertIn('Loading drag and drop exercise.', student_fragment.content)
+        self.assertIn('Loading drag and drop problem.', student_fragment.content)
 
     def test_get_configuration(self):
         """
@@ -33,8 +33,8 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             "display_zone_labels": False,
             "title": "Drag and Drop",
             "show_title": True,
-            "question_text": "",
-            "show_question_header": True,
+            "problem_text": "",
+            "show_problem_header": True,
             "target_img_expanded_url": '/expanded/url/to/drag_and_drop_v2/public/img/triangle.png',
             "target_img_description": TARGET_IMG_DESCRIPTION,
             "item_background_color": None,
@@ -97,8 +97,8 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         body = {
             'display_name': "Test Drag & Drop",
             'show_title': False,
-            'question_text': "Question Drag & Drop",
-            'show_question_header': False,
+            'problem_text': "Problem Drag & Drop",
+            'show_problem_header': False,
             'item_background_color': 'cornflowerblue',
             'item_text_color': 'coral',
             'weight': '5',
@@ -111,7 +111,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
 
         self.assertEqual(self.block.show_title, False)
         self.assertEqual(self.block.display_name, "Test Drag & Drop")
-        self.assertEqual(self.block.question_text, "Question Drag & Drop")
+        self.assertEqual(self.block.question_text, "Problem Drag & Drop")
         self.assertEqual(self.block.show_question_header, False)
         self.assertEqual(self.block.item_background_color, "cornflowerblue")
         self.assertEqual(self.block.item_text_color, "coral")

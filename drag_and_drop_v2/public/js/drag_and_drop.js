@@ -38,7 +38,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             $.ajax(runtime.handlerUrl(element, 'get_user_state'), {dataType: 'json'}),
             loadBackgroundImage()
         ).done(function(stateResult, bgImg){
-            // Render exercise
+            // Render problem
             configuration.zones.forEach(function (zone) {
                 computeZoneDimension(zone, bgImg.width, bgImg.height);
             });
@@ -54,9 +54,9 @@ function DragAndDropBlock(runtime, element, configuration) {
             $element.on('keydown', '.keyboard-help-button', function(evt) {
                 runOnKey(evt, RET, showKeyboardHelp);
             });
-            $element.on('click', '.reset-button', resetExercise);
+            $element.on('click', '.reset-button', resetProblem);
             $element.on('keydown', '.reset-button', function(evt) {
-                runOnKey(evt, RET, resetExercise);
+                runOnKey(evt, RET, resetProblem);
             });
             $element.on('click', '.submit-input', submitInput);
 
@@ -67,10 +67,10 @@ function DragAndDropBlock(runtime, element, configuration) {
             applyState();
             initDroppable();
 
-            // Indicate that exercise is done loading
+            // Indicate that problem is done loading
             publishEvent({event_type: 'edx.drag_and_drop_v2.loaded'});
         }).fail(function() {
-            $root.text(gettext("An error occurred. Unable to load drag and drop exercise."));
+            $root.text(gettext("An error occurred. Unable to load drag and drop problem."));
         });
     };
 
@@ -532,7 +532,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         applyState();
     };
 
-    var resetExercise = function(evt) {
+    var resetProblem = function(evt) {
         evt.preventDefault();
         $.ajax({
             type: 'POST',
@@ -601,10 +601,10 @@ function DragAndDropBlock(runtime, element, configuration) {
         var context = {
             // configuration - parts that never change:
             bg_image_width: bgImgNaturalWidth, // Not stored in configuration since it's unknown on the server side
-            header_html: configuration.title,
+            title_html: configuration.title,
             show_title: configuration.show_title,
-            question_html: configuration.question_text,
-            show_question_header: configuration.show_question_header,
+            problem_html: configuration.problem_text,
+            show_problem_header: configuration.show_problem_header,
             target_img_src: configuration.target_img_expanded_url,
             target_img_description: configuration.target_img_description,
             display_zone_labels: configuration.display_zone_labels,

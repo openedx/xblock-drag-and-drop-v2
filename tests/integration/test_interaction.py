@@ -247,7 +247,7 @@ class InteractionTestBase(object):
         # Check decoy items
         self.assert_decoy_items(items_map)
 
-        # Scroll "Reset exercise" button into view to make sure Selenium can successfully click it
+        # Scroll "Reset problem" button into view to make sure Selenium can successfully click it
         self.scroll_down(pixels=scroll_down+150)
 
         reset = self._get_reset_button()

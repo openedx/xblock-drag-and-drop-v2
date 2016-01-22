@@ -5,32 +5,32 @@ from workbench import scenarios
 
 
 @ddt
-class TestDragAndDropTitleAndQuestion(BaseIntegrationTest):
+class TestDragAndDropTitleAndProblem(BaseIntegrationTest):
     @unpack
     @data(
-        ('Plain text question 1, header visible.', True),
-        ('Plain text question 2, header hidden.', False),
-        ('Question/instructions with <i>HTML</i> and header.', True),
-        ('<span style="color: red;">Span question, no header</span>', False),
+        ('Plain text problem 1, header visible.', True),
+        ('Plain text problem 2, header hidden.', False),
+        ('Problem/instructions with <i>HTML</i> and header.', True),
+        ('<span style="color: red;">Span problem, no header</span>', False),
     )
-    def test_question_parameters(self, question_text, show_question_header):
-        const_page_name = 'Test title and question parameters'
-        const_page_id = 'test_block_title_and_question'
+    def test_problem_parameters(self, problem_text, show_problem_header):
+        const_page_name = 'Test title and problem parameters'
+        const_page_id = 'test_block_title_and_problem'
         scenario_xml = self._make_scenario_xml(
             display_name="Title",
             show_title=True,
-            question_text=question_text,
-            show_question_header=show_question_header,
+            problem_text=problem_text,
+            show_problem_header=show_problem_header,
         )
         scenarios.add_xml_scenario(const_page_id, const_page_name, scenario_xml)
         self.addCleanup(scenarios.remove_scenario, const_page_id)
 
         page = self.go_to_page(const_page_name)
-        is_question_header_visible = len(page.find_elements_by_css_selector('section.problem > h3')) > 0
-        self.assertEqual(is_question_header_visible, show_question_header)
+        is_problem_header_visible = len(page.find_elements_by_css_selector('section.problem > h3')) > 0
+        self.assertEqual(is_problem_header_visible, show_problem_header)
 
-        question = page.find_element_by_css_selector('section.problem > p')
-        self.assertEqual(self.get_element_html(question), question_text)
+        problem = page.find_element_by_css_selector('section.problem > p')
+        self.assertEqual(self.get_element_html(problem), problem_text)
 
     @unpack
     @data(
@@ -45,7 +45,7 @@ class TestDragAndDropTitleAndQuestion(BaseIntegrationTest):
         scenario_xml = self._make_scenario_xml(
             display_name=display_name,
             show_title=show_title,
-            question_text='Generic question',
+            problem_text='Generic problem',
         )
         scenarios.add_xml_scenario(const_page_id, const_page_name, scenario_xml)
         self.addCleanup(scenarios.remove_scenario, const_page_id)

@@ -57,7 +57,7 @@
   ],
   "feedback": {
     "start": "Drag the items onto the image above.",
-    "finish": "Good work! You have completed this drag and drop exercise."
+    "finish": "Good work! You have completed this drag and drop problem."
   },
   "targetImgDescription": "This describes the target image",
   "displayLabels": {display_labels_value},

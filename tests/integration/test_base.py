@@ -27,14 +27,14 @@ class BaseIntegrationTest(SeleniumBaseTest):
     }
 
     @staticmethod
-    def _make_scenario_xml(display_name, show_title, question_text, completed=False, show_question_header=True):
+    def _make_scenario_xml(display_name, show_title, problem_text, completed=False, show_problem_header=True):
         return """
             <vertical_demo>
                 <drag-and-drop-v2
                     display_name='{display_name}'
                     show_title='{show_title}'
-                    question_text='{question_text}'
-                    show_question_header='{show_question_header}'
+                    question_text='{problem_text}'
+                    show_question_header='{show_problem_header}'
                     weight='1'
                     completed='{completed}'
                 />
@@ -42,8 +42,8 @@ class BaseIntegrationTest(SeleniumBaseTest):
         """.format(
             display_name=escape(display_name),
             show_title=show_title,
-            question_text=escape(question_text),
-            show_question_header=show_question_header,
+            problem_text=escape(problem_text),
+            show_problem_header=show_problem_header,
             completed=completed,
         )
 
