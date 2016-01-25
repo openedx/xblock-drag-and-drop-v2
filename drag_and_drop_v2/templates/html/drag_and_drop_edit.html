@@ -17,6 +17,7 @@
                       <input class="show-title" type="checkbox"
                         {% if self.show_title %}checked="checked"{% endif %}>
                       {% trans "Show title" %}
+                      <span class="sr">{{ help_texts.show_title }}</span>
                     </label>
 
                     <label class="h3" for="weight">{% trans "Maximum score" %}</label>
@@ -28,6 +29,7 @@
                       <input class="show-problem-header" type="checkbox"
                         {% if self.show_question_header %}checked="checked"{% endif %}>
                       {% trans 'Show "Problem" heading' %}
+                      <span class="sr">{{ help_texts.show_question_header }}</span>
                     </label>
 
                     <label class="h3" for="intro-feedback">{% trans "Introductory Feedback" %}</label>
