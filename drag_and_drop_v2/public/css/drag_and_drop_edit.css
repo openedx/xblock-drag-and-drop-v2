@@ -68,8 +68,15 @@
   clear: both;
 }
 
-.xblock--drag-and-drop--editor .tab h3 {
+.xblock--drag-and-drop--editor .tab h3,
+.xblock--drag-and-drop--editor .tab .h3 {
     margin: 20px 0 8px 0;
+}
+
+.xblock--drag-and-drop--editor .tab .h3 {
+    display: block;
+    font: inherit;
+    font-size: 100%;
 }
 
 .xblock--drag-and-drop--editor .tab-header,

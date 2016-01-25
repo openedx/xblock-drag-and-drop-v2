@@ -77,8 +77,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                         }
 
                         // Set the target image and bind its event handler:
-                        $('.target-image-form .url-input', element).val(_fn.data.targetImg);
-                        $('.target-image-form .description-input', element).val(_fn.data.targetImgDescription);
+                        $('.target-image-form #background-url', element).val(_fn.data.targetImg);
+                        $('.target-image-form #background-description', element).val(_fn.data.targetImgDescription);
                         _fn.build.$el.targetImage.load(_fn.build.form.zone.imageLoaded);
                         _fn.build.$el.targetImage.attr('src', params.target_img_expanded_url);
                         _fn.build.$el.targetImage.attr('alt', _fn.data.targetImgDescription);
@@ -129,7 +129,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                         .on('click', '.target-image-form button', function(e) {
                             e.preventDefault();
 
-                            var new_img_url = $.trim($('.target-image-form .url-input', element).val());
+                            var new_img_url = $.trim($('.target-image-form #background-url', element).val());
                             if (new_img_url) {
                                 // We may need to 'expand' the URL before it will be valid.
                                 // e.g. '/static/blah.png' becomes '/asset-v1:course+id/blah.png'
@@ -144,7 +144,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                             _fn.data.targetImg = new_img_url;
 
                             var new_description = $.trim(
-                                $('.target-image-form .description-input', element).val()
+                                $('.target-image-form #background-description', element).val()
                             );
                             _fn.build.$el.targetImage.attr('alt', new_description);
                             _fn.data.targetImgDescription = new_description;
@@ -321,8 +321,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                     },
                     feedback: function($form) {
                         _fn.data.feedback = {
-                            start: $form.find('.intro-feedback').val(),
-                            finish: $form.find('.final-feedback').val()
+                            start: $form.find('#intro-feedback').val(),
+                            finish: $form.find('#final-feedback').val()
                         };
                     },
                     item: {
@@ -437,13 +437,13 @@ function DragAndDropEditBlock(runtime, element, params) {
                         _fn.data.zones = _fn.build.form.zone.zoneObjects;
 
                         var data = {
-                            'display_name': $element.find('.display-name').val(),
+                            'display_name': $element.find('#display-name').val(),
                             'show_title': $element.find('.show-title').is(':checked'),
-                            'weight': $element.find('.weight').val(),
-                            'problem_text': $element.find('.problem-text').val(),
+                            'weight': $element.find('#weight').val(),
+                            'problem_text': $element.find('#problem-text').val(),
                             'show_problem_header': $element.find('.show-problem-header').is(':checked'),
-                            'item_background_color': $element.find('.item-background-color').val(),
-                            'item_text_color': $element.find('.item-text-color').val(),
+                            'item_background_color': $element.find('#item-background-color').val(),
+                            'item_text_color': $element.find('#item-text-color').val(),
                             'data': _fn.data,
                         };
 
