@@ -62,6 +62,7 @@
             className += " specified-width";  // The author has specified a width for this item.
         }
         var attributes = {
+            'role': 'button',
             'draggable': !item.drag_disabled,
             'aria-grabbed': item.grabbed,
             'data-value': item.value,
@@ -226,12 +227,16 @@
         return (
             h('section.themed-xblock.xblock--drag-and-drop', [
                 problemTitle,
-                h('section.problem', {role: 'application'}, [
+                h('section.problem', [
                     problemHeader,
                     h('p', {innerHTML: ctx.problem_html}),
                 ]),
                 h('section.drag-container', [
-                    h('div.item-bank', renderCollection(itemTemplate, items_in_bank, ctx)),
+                    h(
+                        'div.item-bank',
+                        { attributes: { role: 'application' } },
+                        renderCollection(itemTemplate, items_in_bank, ctx)
+                    ),
                     h('div.target', [
                         h(
                             popupSelector,

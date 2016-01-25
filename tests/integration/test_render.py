@@ -148,6 +148,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
 
         for index, item in enumerate(items):
             item_number = index + 1
+            self.assertEqual(item.get_attribute('role'), 'button')
             self.assertEqual(item.get_attribute('tabindex'), '0')
             self.assertEqual(item.get_attribute('draggable'), 'true')
             self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
@@ -163,6 +164,11 @@ class TestDragAndDropRender(BaseIntegrationTest):
                     background_image.get_attribute('alt'),
                     'This describes the background image of item {}'.format(item_number)
                 )
+
+    def test_item_bank(self):
+        self.load_scenario()
+        item_bank = self._page.find_element_by_css_selector('.item-bank')
+        self.assertEqual(item_bank.get_attribute('role'), 'application')
 
     def test_zones(self):
         self.load_scenario()
