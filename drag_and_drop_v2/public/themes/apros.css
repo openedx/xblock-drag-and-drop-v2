@@ -25,6 +25,7 @@
 
 .themed-xblock.xblock--drag-and-drop .drag-container .option {
     border-radius: 0px;
+    text-align: initial;
     font-size: 14px;
     background-color: #2e83cd;
     color: #fff;

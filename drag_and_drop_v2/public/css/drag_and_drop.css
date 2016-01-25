@@ -70,6 +70,7 @@
     box-sizing: border-box;
     margin: 5px;
     padding: 10px;
+    text-align: center;
     background-color: #1d5280;
     font-size: 14px;
     color: #fff;
@@ -82,11 +83,6 @@
 
 .xblock--drag-and-drop .drag-container .option.specified-width img {
     width: 100%;  /* If the image is smaller than the specified width, make it larger */
-}
-
-.xblock--drag-and-drop .drag-container .option .spinner-wrapper {
-    margin-right: 3px;
-    float: left;
 }
 
 .xblock--drag-and-drop .drag-container .option.option-with-image .spinner-wrapper {
