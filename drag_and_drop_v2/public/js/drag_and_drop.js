@@ -450,6 +450,7 @@ function DragAndDropBlock(runtime, element, configuration) {
 
         $.post(url, JSON.stringify(data), 'json')
             .done(function(data){
+                state.last_action_correct = data.correct_location;
                 if (data.correct_location) {
                     state.items[item_id].correct_input = Boolean(data.correct);
                     state.items[item_id].submitting_location = false;
@@ -489,6 +490,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         var data = {val: item_id, input: input_value};
         $.post(url, JSON.stringify(data), 'json')
             .done(function(data) {
+                state.last_action_correct = data.correct;
                 state.items[item_id].submitting_input = false;
                 state.items[item_id].correct_input = data.correct;
                 state.feedback = data.feedback;
@@ -612,6 +614,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             zones: configuration.zones,
             items: items,
             // state - parts that can change:
+            last_action_correct: state.last_action_correct,
             popup_html: state.feedback || '',
             feedback_html: $.trim(state.overall_feedback),
             display_reset_button: Object.keys(state.items).length > 0,
@@ -633,7 +636,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 item.widthPercent = parseInt(item.size.width) / bg_image_width * 100;
             }
         }
-    }
+    };
 
     /**
      * migrateState: Apply any changes necessary to support the 'state' format used by older

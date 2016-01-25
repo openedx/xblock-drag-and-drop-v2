@@ -248,7 +248,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
                     feedback = item['feedback']['correct']
                 else:
                     is_correct = False
-        elif item['zone'] == attempt['zone']:  # Student placed item in zone
+        elif item['zone'] == attempt['zone']:  # Student placed item in correct zone
             is_correct_location = True
             if 'inputOptions' in item:
                 # Input value will have to be provided for the item.

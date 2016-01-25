@@ -277,6 +277,10 @@
     z-index: 100;
 }
 
+.xblock--drag-and-drop .popup.popup-incorrect {
+    background-color: rgba(173, 13, 13, 0.8);
+}
+
 .xblock--drag-and-drop .popup .popup-content {
     color: #ffffff;
     margin-left: 15px;

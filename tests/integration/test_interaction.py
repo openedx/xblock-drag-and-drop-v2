@@ -169,29 +169,38 @@ class InteractionTestBase(object):
             self.assertEqual(item.get_attribute('data-drag-disabled'), 'true')
 
     def parameterized_item_positive_feedback_on_good_move(self, items_map, scroll_down=100, action_key=None):
+        popup = self._get_popup()
+        feedback_popup_content = self._get_popup_content()
+
         # Scroll drop zones into view to make sure Selenium can successfully drop items
         self.scroll_down(pixels=scroll_down)
 
         for definition in self._get_items_with_zone(items_map).values():
             if not definition.input:
                 self.place_item(definition.item_id, definition.zone_id, action_key)
-                feedback_popup_content = self._get_popup_content()
                 self.wait_until_html_in(definition.feedback_positive, feedback_popup_content)
+                self.assertEqual(popup.get_attribute('class'), 'popup')
                 self.assert_placed_item(definition.item_id, definition.zone_id)
 
     def parameterized_item_positive_feedback_on_good_input(self, items_map, scroll_down=100, action_key=None):
-        self.scroll_down(pixels=scroll_down)
+        popup = self._get_popup()
         feedback_popup_content = self._get_popup_content()
+
+        # Scroll drop zones into view to make sure Selenium can successfully drop items
+        self.scroll_down(pixels=scroll_down)
+
         for definition in self._get_items_with_zone(items_map).values():
             if definition.input:
                 self.place_item(definition.item_id, definition.zone_id, action_key)
                 self.send_input(definition.item_id, definition.input)
+                self.wait_until_html_in(definition.feedback_positive, feedback_popup_content)
+                self.assertEqual(popup.get_attribute('class'), 'popup')
+                self.assert_placed_item(definition.item_id, definition.zone_id)
                 input_div = self._get_input_div_by_value(definition.item_id)
                 self.wait_until_has_class('correct', input_div)
-                self.wait_until_html_in(definition.feedback_positive, feedback_popup_content)
-                self.assert_placed_item(definition.item_id, definition.zone_id)
 
     def parameterized_item_negative_feedback_on_bad_move(self, items_map, all_zones, scroll_down=100, action_key=None):
+        popup = self._get_popup()
         feedback_popup_content = self._get_popup_content()
 
         # Scroll drop zones into view to make sure Selenium can successfully drop items
@@ -203,9 +212,11 @@ class InteractionTestBase(object):
                     continue
                 self.place_item(definition.item_id, zone, action_key)
                 self.wait_until_html_in(definition.feedback_negative, feedback_popup_content)
+                self.assertEqual(popup.get_attribute('class'), 'popup popup-incorrect')
                 self.assert_reverted_item(definition.item_id)
 
     def parameterized_item_negative_feedback_on_bad_input(self, items_map, scroll_down=100, action_key=None):
+        popup = self._get_popup()
         feedback_popup_content = self._get_popup_content()
 
         # Scroll drop zones into view to make sure Selenium can successfully drop items
@@ -215,10 +226,11 @@ class InteractionTestBase(object):
             if definition.input:
                 self.place_item(definition.item_id, definition.zone_id, action_key)
                 self.send_input(definition.item_id, '1999999')
+                self.wait_until_html_in(definition.feedback_negative, feedback_popup_content)
+                self.assertEqual(popup.get_attribute('class'), 'popup popup-incorrect')
+                self.assert_placed_item(definition.item_id, definition.zone_id)
                 input_div = self._get_input_div_by_value(definition.item_id)
                 self.wait_until_has_class('incorrect', input_div)
-                self.wait_until_html_in(definition.feedback_negative, feedback_popup_content)
-                self.assert_placed_item(definition.item_id, definition.zone_id)
 
     def parameterized_final_feedback_and_reset(self, items_map, feedback, scroll_down=100, action_key=None):
         feedback_message = self._get_feedback_message()

@@ -216,6 +216,10 @@
     var mainTemplate = function(ctx) {
         var problemTitle = ctx.show_title ? h('h2.problem-header', {innerHTML: ctx.title_html}) : null;
         var problemHeader = ctx.show_problem_header ? h('h3.title1', gettext('Problem')) : null;
+        var popupSelector = 'div.popup';
+        if (ctx.popup_html && !ctx.last_action_correct) {
+            popupSelector += '.popup-incorrect';
+        }
         var is_item_placed = function(i) { return i.is_placed; };
         var items_placed = $.grep(ctx.items, is_item_placed);
         var items_in_bank = $.grep(ctx.items, is_item_placed, true);
@@ -230,10 +234,10 @@
                     h('div.item-bank', renderCollection(itemTemplate, items_in_bank, ctx)),
                     h('div.target', [
                         h(
-                            'div.popup',
+                            popupSelector,
                             {
+                                attributes: {'aria-live': 'polite'},
                                 style: {display: ctx.popup_html ? 'block' : 'none'},
-                                attributes: {'aria-live': 'polite'}
                             },
                             [
                                 h('div.close.icon-remove-sign.fa-times-circle'),
