@@ -397,13 +397,13 @@ class EventsFiredTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegration
                 'is_correct': True,
                 'is_correct_location': True,
                 'item_id': 0,
-                'location': u'The Top Zone',
+                'location': TOP_ZONE_TITLE,
             },
         },
         {
             'name': 'edx.drag_and_drop_v2.feedback.opened',
             'data': {
-                'content': u'Correct! This one belongs to The Top Zone.',
+                'content': ITEM_CORRECT_FEEDBACK.format(zone=TOP_ZONE_TITLE),
                 'truncated': False,
             },
         },
@@ -411,7 +411,7 @@ class EventsFiredTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegration
             'name': 'edx.drag_and_drop_v2.feedback.closed',
             'data': {
                 'manually': False,
-                'content': u'Correct! This one belongs to The Top Zone.',
+                'content': ITEM_CORRECT_FEEDBACK.format(zone=TOP_ZONE_TITLE),
                 'truncated': False,
             },
         },
