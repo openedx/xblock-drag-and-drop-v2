@@ -215,7 +215,7 @@
     };
 
     var mainTemplate = function(ctx) {
-        var problemTitle = ctx.show_title ? h('h2.problem-header', {innerHTML: ctx.title_html}) : null;
+        var problemTitle = ctx.show_title ? h('h2.problem-title', {innerHTML: ctx.title_html}) : null;
         var problemHeader = ctx.show_problem_header ? h('h3.title1', gettext('Problem')) : null;
         var popupSelector = 'div.popup';
         if (ctx.popup_html && !ctx.last_action_correct) {

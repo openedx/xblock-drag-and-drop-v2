@@ -52,8 +52,8 @@ class TestDragAndDropTitleAndProblem(BaseIntegrationTest):
 
         page = self.go_to_page(const_page_name)
         if show_title:
-            problem_header = page.find_element_by_css_selector('h2.problem-header')
+            problem_header = page.find_element_by_css_selector('h2.problem-title')
             self.assertEqual(self.get_element_html(problem_header), display_name)
         else:
             with self.assertRaises(NoSuchElementException):
-                page.find_element_by_css_selector('h2.problem-header')
+                page.find_element_by_css_selector('h2.problem-title')

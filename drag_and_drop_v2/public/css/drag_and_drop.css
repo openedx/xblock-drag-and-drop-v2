@@ -11,7 +11,7 @@
 
 /* Header, instruction text, etc. */
 
-.xblock--drag-and-drop .problem-header {
+.xblock--drag-and-drop .problem-title {
     display: inline-block;
     margin: 0 0 15px 0;
 }
