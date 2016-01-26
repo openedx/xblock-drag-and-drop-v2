@@ -59,15 +59,45 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                     _fn.build.clickHandlers();
                 },
+
+                validate: function() {
+                    var fields = $element.find('.tab').not('.hidden').find('input, textarea');
+                    var success = true;
+                    fields.each(function(index, field) {
+                        field = $(field);
+                        // Right now our only check is if a field is set or not.
+                        field.removeClass('field-error');
+                        if (! field[0].checkValidity()) {
+                            field.addClass('field-error');
+                            success = false;
+                        }
+                    });
+                    if (! success) {
+                        runtime.notify('error', {
+                            'title': window.gettext("There was an error with your form."),
+                            'message': window.gettext("Please check over your submission.")
+                        });
+                    }
+                    return success
+                },
+
                 clickHandlers: function() {
                     var $fbkTab = _fn.build.$el.feedback.tab,
                         $zoneTab = _fn.build.$el.zones.tab,
                         $itemTab = _fn.build.$el.items.tab;
 
-                    $element.one('click', '.continue-button', function(e) {
+                    var self = this;
+
+                    $element.one('click', '.continue-button', function loadSecondTab(e) {
                         // $fbkTab -> $zoneTab
 
                         e.preventDefault();
+
+                        if (!self.validate()) {
+                            $(e.target).one('click', loadSecondTab);
+                            return
+                        }
+
                         _fn.build.form.feedback(_fn.build.$el.feedback.form);
                         for (var i = 0; i < _fn.data.zones.length; i++) {
                             _fn.build.form.zone.add(_fn.data.zones[i]);
@@ -94,9 +124,14 @@ function DragAndDropEditBlock(runtime, element, params) {
                         $fbkTab.addClass('hidden');
                         $zoneTab.removeClass('hidden');
 
-                        $(this).one('click', function(e) {
+                        $(this).one('click', function loadThirdTab(e) {
                             // $zoneTab -> $itemTab
                             e.preventDefault();
+
+                            if (!self.validate()) {
+                                $(e.target).one('click', loadThirdTab);
+                                return
+                            }
 
                             for (var i = 0; i < _fn.data.items.length; i++) {
                                 _fn.build.form.item.add(_fn.data.items[i]);
@@ -111,10 +146,14 @@ function DragAndDropEditBlock(runtime, element, params) {
                             $(this).addClass('hidden');
                             $('.save-button', element).parent()
                                 .removeClass('hidden')
-                                .one('click', function(e) {
+                                .one('click', function submitForm(e) {
                                     // $itemTab -> submit
 
                                     e.preventDefault();
+                                    if (!self.validate()) {
+                                        $(e.target).one('click', submitForm);
+                                        return
+                                    }
                                     _fn.build.form.submit();
                                 });
                         });

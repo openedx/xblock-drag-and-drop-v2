@@ -15,7 +15,8 @@
         <input type="text"
                id="zone-{{index}}-title"
                class="title"
-               value="{{ title }}" />
+               value="{{ title }}"
+               required />
         <a href="#" class="remove-zone hidden">
             <div class="icon remove"></div>
         </a>
@@ -24,7 +25,8 @@
                id="zone-{{index}}-description"
                class="description"
                value="{{ description }}"
-               placeholder="{{i18n 'Describe this zone to non-visual users'}}" />
+               placeholder="{{i18n 'Describe this zone to non-visual users'}}"
+               required />
         <div class="layout">
             <label for="zone-{{index}}-width">{{i18n "width"}}</label>
             <input type="text"
@@ -79,7 +81,7 @@
         </div>
         <div class="row">
             <label for="item-{{id}}-image-description">{{i18n "Image description (should provide sufficient information to place the item even if the image did not load)"}}</label>
-            <textarea id="item-{{id}}-image-description"
+            <textarea required id="item-{{id}}-image-description"
                       class="item-image-description">{{ imageDescription }}</textarea>
         </div>
         <div class="row">
