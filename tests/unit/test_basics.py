@@ -40,6 +40,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             "item_background_color": None,
             "item_text_color": None,
             "initial_feedback": START_FEEDBACK,
+            "url_name": "",
         })
         self.assertEqual(zones, DEFAULT_DATA["zones"])
         # Items should contain no answer data:

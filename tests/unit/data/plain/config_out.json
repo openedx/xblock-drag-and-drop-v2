@@ -10,6 +10,7 @@
     "initial_feedback": "This is the initial feedback.",
     "display_zone_borders": false,
     "display_zone_labels": false,
+    "url_name": "",
 
     "zones": [
         {

@@ -171,6 +171,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             delete zone.width;
             zone.height_percent = (+zone.height) / bg_image_height * 100;
             delete zone.height;
+            zone.id = configuration.url_name + '-' + zone.id;
         }
     };
 

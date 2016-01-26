@@ -191,12 +191,12 @@ class TestDragAndDropRender(BaseIntegrationTest):
             self.assertIn('ui-droppable', self.get_element_classes(zone))
             zone_box_percentages = box_percentages[index]
             self._assert_box_percentages(  # pylint: disable=star-args
-                '#zone-{}'.format(zone_number), **zone_box_percentages
+                '#-zone-{}'.format(zone_number), **zone_box_percentages
             )
             zone_name = zone.find_element_by_css_selector('p.zone-name')
-            self.assertEqual(zone_name.text, 'ZONE {}'.format(zone_number))
+            self.assertEqual(zone_name.text, 'Zone {}'.format(zone_number))
             zone_description = zone.find_element_by_css_selector('p.zone-description')
-            self.assertEqual(zone_description.text, 'THIS DESCRIBES ZONE {}'.format(zone_number))
+            self.assertEqual(zone_description.text, 'This describes zone {}'.format(zone_number))
             # Zone description should only be visible to screen readers:
             self.assertEqual(zone_description.get_attribute('class'), 'zone-description sr')
 
@@ -245,7 +245,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
         self.load_scenario()
         zones = self._get_zones()
         for index, dummy in enumerate(zones, start=1):
-            zone = '#zone-{}'.format(index)
+            zone = '#-zone-{}'.format(index)
             for side in self.SIDES:
                 self.assertEqual(self._get_style(zone, 'border{}Width'.format(side), True), '0px')
                 self.assertEqual(self._get_style(zone, 'border{}Style'.format(side), True), 'none')
@@ -254,7 +254,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
         self.load_scenario(zone_borders=True)
         zones = self._get_zones()
         for index, dummy in enumerate(zones, start=1):
-            zone = '#zone-{}'.format(index)
+            zone = '#-zone-{}'.format(index)
             for side in self.SIDES:
                 self.assertEqual(self._get_style(zone, 'border{}Width'.format(side), True), '1px')
                 self.assertEqual(self._get_style(zone, 'border{}Style'.format(side), True), 'dotted')

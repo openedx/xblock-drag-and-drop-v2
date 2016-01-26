@@ -10,6 +10,7 @@
     "initial_feedback": "Intro Feed",
     "display_zone_borders": false,
     "display_zone_labels": false,
+    "url_name": "",
 
     "zones": [
         {
