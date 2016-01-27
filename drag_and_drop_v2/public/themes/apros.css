@@ -82,8 +82,7 @@
     font-size: 18pt;
 }
 
-.themed-xblock.xblock--drag-and-drop .keyboard-help-button,
-.themed-xblock.xblock--drag-and-drop .reset-button {
+.themed-xblock.xblock--drag-and-drop .link-button {
     cursor: pointer;
     color: #3384ca;
 }

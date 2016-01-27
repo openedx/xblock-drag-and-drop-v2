@@ -174,8 +174,8 @@
         return (
             h('section.feedback', properties, [
                 h(
-                    'a.reset-button',
-                    { style: { display: reset_button_display }, attributes: { tabindex: 0 }},
+                    'button.reset-button.link-button',
+                    { style: { display: reset_button_display }, attributes: { tabindex: 0 }, 'aria-live': 'off'},
                     gettext('Reset problem')
                 ),
                 h('h3.title1', { style: { display: feedback_display } }, gettext('Feedback')),
@@ -189,7 +189,7 @@
         var dialog_style = {};
         return (
             h('section.keyboard-help', [
-                h('a.keyboard-help-button', { attributes: { tabindex: 0 } }, gettext('Keyboard Help')),
+                h('button.keyboard-help-button.link-button', { attributes: { tabindex: 0 } }, gettext('Keyboard Help')),
                 h('div.keyboard-help-dialog', [
                     h('div.modal-window-overlay'),
                     h('div.modal-window', { attributes: dialog_attributes, style: dialog_style }, [
