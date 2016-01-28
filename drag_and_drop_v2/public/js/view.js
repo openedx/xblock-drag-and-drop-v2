@@ -174,7 +174,7 @@
         return (
             h('section.feedback', properties, [
                 h(
-                    'button.reset-button.link-button',
+                    'button.reset-button.unbutton.link-button',
                     { style: { display: reset_button_display }, attributes: { tabindex: 0 }, 'aria-live': 'off'},
                     gettext('Reset problem')
                 ),
@@ -189,7 +189,7 @@
         var dialog_style = {};
         return (
             h('section.keyboard-help', [
-                h('button.keyboard-help-button.link-button', { attributes: { tabindex: 0 } }, gettext('Keyboard Help')),
+                h('button.keyboard-help-button.unbutton.link-button', { attributes: { tabindex: 0 } }, gettext('Keyboard Help')),
                 h('div.keyboard-help-dialog', [
                     h('div.modal-window-overlay'),
                     h('div.modal-window', { attributes: dialog_attributes, style: dialog_style }, [
@@ -231,21 +231,22 @@
                     problemHeader,
                     h('p', {innerHTML: ctx.problem_html}),
                 ]),
-                h('section.drag-container', [
+                h('section.drag-container', { attributes: { role: 'application' } }, [
                     h(
                         'div.item-bank',
-                        { attributes: { role: 'application' } },
                         renderCollection(itemTemplate, items_in_bank, ctx)
                     ),
                     h('div.target', [
                         h(
                             popupSelector,
                             {
-                                attributes: {'aria-live': 'polite'},
+                                attributes: {'aria-live': 'polite', 'tabindex': 0},
                                 style: {display: ctx.popup_html ? 'block' : 'none'},
                             },
                             [
-                                h('div.close.icon-remove-sign.fa-times-circle'),
+                                h('button.unbutton.close.icon-remove-sign.fa-times-circle', [
+                                    h('div', {attributes: {'class': 'sr'}}, gettext("Close"))
+                                ]),
                                 h('p.popup-content', {innerHTML: ctx.popup_html}),
                             ]
                         ),

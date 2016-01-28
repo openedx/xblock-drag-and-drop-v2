@@ -237,6 +237,7 @@ function DragAndDropBlock(runtime, element, configuration) {
 
         updateDOM();
         destroyDraggable();
+        $element.find('div.popup').focus()
         if (!state.finished) {
             initDraggable();
         }

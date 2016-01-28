@@ -165,9 +165,9 @@ class TestDragAndDropRender(BaseIntegrationTest):
                     'This describes the background image of item {}'.format(item_number)
                 )
 
-    def test_item_bank(self):
+    def test_drag_container(self):
         self.load_scenario()
-        item_bank = self._page.find_element_by_css_selector('.item-bank')
+        item_bank = self._page.find_element_by_css_selector('.drag-container')
         self.assertEqual(item_bank.get_attribute('role'), 'application')
 
     def test_zones(self):

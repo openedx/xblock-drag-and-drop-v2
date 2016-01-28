@@ -9,6 +9,34 @@
     margin-right: 3px;
 }
 
+/* Button style tricks, defined higher so they can be overridden */
+
+.xblock--drag-and-drop .unbutton {
+    background: none;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.xblock--drag-and-drop .unbutton:active {
+    background: none;
+    box-shadow: none;
+    border: none;
+}
+
+.xblock--drag-and-drop .unbutton:hover {
+    background: none;
+    box-shadow: none;
+    border: none;
+}
+
+.xblock--drag-and-drop .unbutton:focus {
+    background: none;
+    box-shadow: none;
+    border: none;
+}
+
 /* Header, instruction text, etc. */
 
 .xblock--drag-and-drop .problem-title {
@@ -180,7 +208,7 @@
 }
 
 .xblock--drag-and-drop .drag-container .option.fade {
-    opacity: 0.5;
+    opacity: 0.80;
 }
 
 /*** DROP TARGET ***/
@@ -299,6 +327,10 @@
     font-size: 18pt;
 }
 
+.xblock--drag-and-drop .popup .close:focus {
+    outline: 2px solid white;
+}
+
 /*** KEYBOARD HELP ***/
 
 .xblock--drag-and-drop .keyboard-help {
@@ -373,21 +405,7 @@
 }
 
 .xblock--drag-and-drop .link-button:focus {
-    background: none;
-    box-shadow: none;
-    border: none;
-}
-
-.xblock--drag-and-drop .link-button:active {
-    background: none;
-    box-shadow: none;
-    border: none;
-}
-
-.xblock--drag-and-drop .link-button:hover {
-    background: none;
-    box-shadow: none;
-    border: none;
+    outline: 2px solid #2d74b3;
 }
 
 /* Make sure screen-reader content is hidden in the workbench: */
