@@ -157,7 +157,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         return {
             "zones": self.data.get('zones', []),
             # SDK doesn't supply url_name.
-            "url_name": getattr(object, 'url_name', ''),
+            "url_name": getattr(self, 'url_name', ''),
             "display_zone_labels": self.data.get('displayLabels', False),
             "display_zone_borders": self.data.get('displayBorders', False),
             "items": items_without_answers(),

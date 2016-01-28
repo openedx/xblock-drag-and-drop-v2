@@ -5,5 +5,6 @@
     "show_question_header": true,
     "weight": 1,
     "item_background_color": "",
-    "item_text_color": ""
+    "item_text_color": "",
+    "url_name": "test"
 }

@@ -5,5 +5,6 @@
     "show_question_header": false,
     "weight": 1,
     "item_background_color": "white",
-    "item_text_color": "#000080"
+    "item_text_color": "#000080",
+    "url_name": "unique_name"
 }
