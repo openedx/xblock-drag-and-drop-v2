@@ -131,7 +131,7 @@ class InteractionTestBase(object):
         self.wait_until_visible(item)
         item_content = item.find_element_by_css_selector('.item-content')
         item_description = item.find_element_by_css_selector('.sr')
-        item_description_id = 'item-{}-description'.format(item_value)
+        item_description_id = '-item-{}-description'.format(item_value)
 
         self.assertIsNone(item.get_attribute('tabindex'))
         self.assertEqual(item.get_attribute('aria-grabbed'), 'false')

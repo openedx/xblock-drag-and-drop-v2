@@ -126,7 +126,6 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             'public/js/vendor/jquery-ui-touch-punch-0.2.3.min.js',  # Makes it work on touch devices
             'public/js/vendor/virtual-dom-1.3.0.min.js',
             'public/js/drag_and_drop.js',
-            'public/js/view.js',
         )
         for css_url in css_urls:
             fragment.add_css_url(self.runtime.local_resource_url(self, css_url))
