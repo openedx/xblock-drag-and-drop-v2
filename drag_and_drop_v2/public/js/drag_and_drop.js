@@ -237,24 +237,33 @@ function DragNDropTemplates(url_name) {
                         'div.item-bank',
                         renderCollection(itemTemplate, items_in_bank, ctx)
                     ),
-                    h('div.target', [
-                        h(
-                            popupSelector,
-                            {
-                                attributes: {'aria-live': 'polite'},
-                                style: {display: ctx.popup_html ? 'block' : 'none'},
+                    h('div.target',
+                        {
+                            attributes: {
+                                'aria-live': 'polite',
+                                'aria-atomic': 'true',
+                                'aria-relevant': 'additions',
                             },
-                            [
-                                h('div.close.icon-remove-sign.fa-times-circle'),
-                                h('p.popup-content', {innerHTML: ctx.popup_html}),
+                        },
+                        [
+                            h(
+                                popupSelector,
+                                {
+                                    style: {display: ctx.popup_html ? 'block' : 'none'},
+                                },
+                                [
+                                    h('div.close.icon-remove-sign.fa-times-circle'),
+                                    h('p.popup-content', {innerHTML: ctx.popup_html}),
+                                ]
+                            ),
+                            h('div.target-img-wrapper', [
+                                h('img.target-img', {src: ctx.target_img_src, alt: ctx.target_img_description}),
                             ]
                         ),
-                        h('div.target-img-wrapper', [
-                            h('img.target-img', {src: ctx.target_img_src, alt: ctx.target_img_description}),
-                        ]),
                         renderCollection(zoneTemplate, ctx.zones, ctx),
                         renderCollection(itemTemplate, items_placed, ctx),
-                    ]),
+                    ]
+                    ),
                 ]),
                 keyboardHelpTemplate(ctx),
                 feedbackTemplate(ctx),
