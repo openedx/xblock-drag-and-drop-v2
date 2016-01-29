@@ -241,13 +241,11 @@ function DragNDropTemplates(url_name) {
                         h(
                             popupSelector,
                             {
-                                attributes: {'aria-live': 'polite', 'tabindex': 0},
+                                attributes: {'aria-live': 'polite'},
                                 style: {display: ctx.popup_html ? 'block' : 'none'},
                             },
                             [
-                                h('button.unbutton.close.icon-remove-sign.fa-times-circle', [
-                                    h('div', {attributes: {'class': 'sr'}}, gettext("Close"))
-                                ]),
+                                h('div.close.icon-remove-sign.fa-times-circle'),
                                 h('p.popup-content', {innerHTML: ctx.popup_html}),
                             ]
                         ),
@@ -508,7 +506,6 @@ function DragAndDropBlock(runtime, element, configuration) {
 
         updateDOM();
         destroyDraggable();
-        $element.find('div.popup').focus()
         if (!state.finished) {
             initDraggable();
         }
