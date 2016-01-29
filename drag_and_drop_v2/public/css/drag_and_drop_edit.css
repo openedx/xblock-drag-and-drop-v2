@@ -1,0 +1,339 @@
+.xblock--drag-and-drop--editor {
+  width: 100%;
+  height: 100%;
+}
+.modal-window .drag-builder  {
+    width: 100%;
+    height: calc(100% - 60px);
+    position: absolute;
+    overflow-y: scroll;
+}
+
+/*** Drop Target ***/
+.xblock--drag-and-drop--editor .zone {
+    position: absolute;
+
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+
+    /* Internet Explorer 10 */
+    -ms-flex-pack:center;
+    -ms-flex-align:center;
+
+    /* Firefox */
+    -moz-box-pack:center;
+    -moz-box-align:center;
+
+    /* Safari, Opera, and Chrome */
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+
+    /* W3C */
+    box-pack:center;
+    box-align:center;
+
+    border: 1px dotted #565656;
+    box-sizing: border-box;
+}
+
+.xblock--drag-and-drop--editor .zone p {
+    width: 100%;
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+/** Builder **/
+.xblock--drag-and-drop--editor .hidden {
+    display: none !important;
+}
+
+.xblock--drag-and-drop--editor .tab {
+    width: 100%;
+    background-color: #eee;
+    padding: 3px 0;
+    position: relative;
+}
+
+.xblock--drag-and-drop--editor .tab::after,
+.xblock--drag-and-drop--editor .tab-footer::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.xblock--drag-and-drop--editor .tab h3,
+.xblock--drag-and-drop--editor .tab .h3 {
+    margin: 20px 0 8px 0;
+}
+
+.xblock--drag-and-drop--editor .tab .h3 {
+    display: block;
+    font: inherit;
+    font-size: 100%;
+}
+
+.xblock--drag-and-drop--editor .tab-header,
+.xblock--drag-and-drop--editor .tab-content,
+.xblock--drag-and-drop--editor .tab-footer {
+    width: 96%;
+    margin: 2%;
+}
+
+.xblock--drag-and-drop--editor .tab-footer {
+    height: 25px;
+    position: relative;
+    display: block;
+    float: left;
+}
+
+.xblock--drag-and-drop--editor .items {
+    width: calc(100% - 515px);
+    margin: 10px 0 0 0;
+}
+
+.xblock--drag-and-drop--editor .target-image-form input,
+.xblock--drag-and-drop--editor .target-image-form textarea {
+    width: 50%;
+}
+
+/* Zones Tab */
+.xblock--drag-and-drop--editor .zones-tab .zone-editor {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.xblock--drag-and-drop--editor .zones-tab .tab-content .controls {
+  width: 40%;
+  max-width: 50%;
+  min-width: 330px;
+  margin-right: 15px;
+}
+
+.xblock--drag-and-drop--editor .zones-tab .tab-content .target {
+  position: relative;
+  border: 1px solid #ccc;
+  overflow: hidden;
+}
+.xblock--drag-and-drop--editor .zones-tab .tab-content .target-img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+}
+
+.xblock--drag-and-drop--editor .zones-form .zone-row label {
+    display: inline-block;
+    width: 18%;
+}
+
+.xblock--drag-and-drop--editor .zones-form .zone-row > input {
+    width: 60%;
+    margin: 0 0 5px;
+    line-height: 2.664rem;  /* .title gets line-height from a Studio rule that does not apply to .description;
+                               here we make sure that both input fields get the same value for line-height */
+}
+
+.xblock--drag-and-drop--editor .zones-form .zone-row .layout {
+    margin-bottom: 15px;
+}
+
+
+.xblock--drag-and-drop--editor .zones-form .zone-row .layout .size,
+.xblock--drag-and-drop--editor .zones-form .zone-row .layout .coord {
+    width: 15%;
+    margin: 0 19px 5px 0;
+}
+
+.xblock--drag-and-drop--editor .feedback-form textarea {
+    width: 99%;
+    height: 128px;
+}
+
+.xblock--drag-and-drop--editor .target-image-form .target-image-form-help,
+.xblock--drag-and-drop--editor .item-styles-form .item-styles-form-help {
+    margin-top: 5px;
+    font-size: small;
+}
+
+.xblock--drag-and-drop--editor .item-styles-form,
+.xblock--drag-and-drop--editor .items-form {
+    margin-bottom: 30px;
+}
+
+.xblock--drag-and-drop--editor .items-form .item {
+    background-color: #8fcaec;
+    padding: 10px 0 1px;
+    margin: 15px 0;
+}
+
+.xblock--drag-and-drop--editor .items-form label {
+    margin: 0 1%;
+}
+
+.xblock--drag-and-drop--editor .items-form input,
+.xblock--drag-and-drop--editor .items-form select {
+    width: 35%;
+}
+
+.xblock--drag-and-drop--editor .items-form .item-image-url {
+    width: 81%;
+    margin-right: 1%;
+}
+
+.xblock--drag-and-drop--editor .items-form .item-width {
+    width: 50px;
+}
+
+.xblock--drag-and-drop--editor .items-form .item-numerical-value,
+.xblock--drag-and-drop--editor .items-form .item-numerical-margin {
+    margin: 0 1%;
+    width: 50%;
+}
+
+.xblock--drag-and-drop--editor .items-form textarea {
+    width: 97%;
+    margin: 0 1%;
+}
+
+.xblock--drag-and-drop--editor .items-form .row {
+    margin-bottom: 20px;
+}
+.xblock--drag-and-drop--editor .items-form .row.advanced {
+    display: none;
+}
+.xblock--drag-and-drop--editor .items-form .row.advanced-link {
+    padding-left: 1em;
+    font-size: 80%;
+}
+
+/** Buttons **/
+.xblock--drag-and-drop--editor .btn {
+    background-color: #1d5280;
+    color: #fff;
+    border: 1px solid #156ab4;
+    border-radius: 6px;
+    padding: 5px 10px;
+    margin-top: 15px;
+}
+
+.xblock--drag-and-drop--editor .btn:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.xblock--drag-and-drop--editor .btn:focus {
+    outline: none;
+    opacity: 0.5;
+}
+
+.xblock--drag-and-drop--editor .add-element {
+    text-decoration: none;
+    color: #1d5280;
+}
+
+.xblock--drag-and-drop--editor .remove-zone {
+    float: right;
+    margin-top: 2px;
+    margin-right: 16px;
+}
+
+.xblock--drag-and-drop--editor .remove-item {
+    display: inline-block;
+    margin-left: 95px;
+}
+
+.xblock--drag-and-drop--editor .icon {
+    width: 14px;
+    height: 14px;
+    border-radius: 7px;
+    background-color: #1d5280;
+    position: relative;
+    float: left;
+    margin: 0 5px 0 0;
+}
+
+.xblock--drag-and-drop--editor .add-zone:hover,
+.xblock--drag-and-drop--editor .add-zone:hover .icon,
+.xblock--drag-and-drop--editor .remove-zone:hover,
+.xblock--drag-and-drop--editor .remove-zone:hover .icon {
+    opacity: 0.7;
+}
+
+.xblock--drag-and-drop--editor .tab .field-error {
+    outline: none;
+    box-shadow: 0 0 10px darkred;
+}
+
+.xblock--drag-and-drop--editor .icon.add:before {
+    content: '';
+    height: 10px;
+    width: 2px;
+    background-color: #fff;
+    position: relative;
+    display: inline;
+    float: left;
+    top: 2px;
+    left: 6px;
+}
+
+.xblock--drag-and-drop--editor .icon.add:after {
+    content: '';
+    height: 2px;
+    width: 10px;
+    background-color: #fff;
+    position: relative;
+    display: inline;
+    float: left;
+    top: 6px;
+    left: 0;
+}
+
+.xblock--drag-and-drop--editor .icon.remove:before {
+    content: '';
+    height: 10px;
+    width: 2px;
+    background-color: #fff;
+    position: relative;
+    display: inline;
+    float: left;
+    top: 2px;
+    left: 6px;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.xblock--drag-and-drop--editor .icon.remove:after {
+    content: '';
+    height: 2px;
+    width: 10px;
+    background-color: #fff;
+    position: relative;
+    display: inline;
+    float: left;
+    top: 6px;
+    left: 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.xblock--drag-and-drop--editor .remove-item .icon.remove {
+    background-color: #fff;
+    color: #0072a7;  /* Override default color from Studio to ensure contrast is large enough */
+}
+.xblock--drag-and-drop--editor .remove-item .icon.remove:before,
+.xblock--drag-and-drop--editor .remove-item .icon.remove:after {
+    background-color: #1d5280;
+}

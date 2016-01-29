@@ -1,0 +1,81 @@
+{
+  "zones": [
+    {
+      "index": 1,
+      "title": "Zone 1",
+      "y": 123,
+      "x": 234,
+      "width": 345,
+      "height": 456,
+      "id": "zone-1"
+    },
+    {
+      "index": 2,
+      "title": "Zone 2",
+      "y": 20,
+      "x": 10,
+      "width": 30,
+      "height": 40,
+      "id": "zone-2"
+    }
+  ],
+
+
+  "items": [
+    {
+      "displayName": "1",
+      "feedback": {
+        "incorrect": "No 1",
+        "correct": "Yes 1"
+      },
+      "zone": "Zone 1",
+      "imageURL": "",
+      "id": 0
+    },
+    {
+      "displayName": "2",
+      "feedback": {
+        "incorrect": "No 2",
+        "correct": "Yes 2"
+      },
+      "zone": "Zone 2",
+      "imageURL": "",
+      "id": 1,
+      "inputOptions": {
+        "value": 100,
+        "margin": 5
+      }
+    },
+    {
+      "displayName": "X",
+      "feedback": {
+        "incorrect": "",
+        "correct": ""
+      },
+      "zone": "none",
+      "imageURL": "",
+      "id": 2
+    },
+    {
+      "displayName": "",
+      "feedback": {
+        "incorrect": "",
+        "correct": ""
+      },
+      "zone": "none",
+      "imageURL": "http://placehold.it/200x100",
+      "id": 3
+    }
+  ],
+
+
+  "feedback": {
+    "start": "This is the initial feedback.",
+    "finish": "This is the final feedback."
+  },
+
+
+  "targetImg": "http://placehold.it/800x600",
+  "targetImgDescription": "This describes the target image",
+  "displayLabels": false
+}

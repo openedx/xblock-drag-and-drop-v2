@@ -1,0 +1,88 @@
+.themed-xblock.xblock--drag-and-drop {
+    background-color: #fff;
+}
+
+/* Shared styles used in header and footer */
+
+.themed-xblock.xblock--drag-and-drop .title1 {
+    color: #555555;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* drag-container holds the .item-bank and the .target */
+
+.themed-xblock.xblock--drag-and-drop .drag-container {
+    background-color: #ebf0f2;
+}
+
+.themed-xblock.xblock--drag-and-drop .item-bank {
+    border-radius: 0px;
+}
+
+/*** DRAGGABLE ITEMS ***/
+
+.themed-xblock.xblock--drag-and-drop .drag-container .option {
+    border-radius: 0px;
+    text-align: initial;
+    font-size: 14px;
+    background-color: #2e83cd;
+    color: #fff;
+    opacity: 1;
+}
+
+.themed-xblock.xblock--drag-and-drop .drag-container .option .numerical-input.correct .input {
+    background-color: #ceffce;
+    color: #087108;
+}
+
+.themed-xblock.xblock--drag-and-drop .drag-container .option .numerical-input.incorrect .input {
+    background-color: #ffcece;
+    color: #ad0d0d;
+}
+
+.themed-xblock.xblock--drag-and-drop .drag-container .option.fade {
+    opacity: 0.5;
+}
+
+/*** DROP TARGET ***/
+
+.themed-xblock.xblock--drag-and-drop .target {
+    background-color: #fff;
+}
+
+.themed-xblock.xblock--drag-and-drop .drag-container .target .zone p {
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+/*** FEEDBACK ***/
+
+.themed-xblock.xblock--drag-and-drop .feedback {
+    border-top: solid 1px #bdbdbd;
+}
+
+.themed-xblock.xblock--drag-and-drop .popup {
+    background-color: #66a5b5;
+}
+
+.themed-xblock.xblock--drag-and-drop .popup .popup-content {
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.themed-xblock.xblock--drag-and-drop .popup .close {
+    cursor: pointer;
+    color: #ffffff;
+    font-family: "fontawesome";
+    font-size: 18pt;
+}
+
+.themed-xblock.xblock--drag-and-drop .link-button {
+    cursor: pointer;
+    color: #3384ca;
+}

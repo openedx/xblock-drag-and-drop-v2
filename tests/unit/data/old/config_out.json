@@ -1,0 +1,66 @@
+{
+    "title": "Drag and Drop",
+    "show_title": true,
+    "problem_text": "",
+    "show_problem_header": true,
+    "target_img_expanded_url": "http://i0.kym-cdn.com/photos/images/newsfeed/000/030/404/1260585284155.png",
+    "target_img_description": "This describes the target image",
+    "item_background_color": null,
+    "item_text_color": null,
+    "initial_feedback": "Intro Feed",
+    "display_zone_borders": false,
+    "display_zone_labels": false,
+    "url_name": "",
+
+    "zones": [
+        {
+          "index": 1,
+          "title": "Zone 1",
+          "x": "100",
+          "y": "200",
+          "width": 200,
+          "height": 100,
+          "id": "zone-1"
+        },
+        {
+          "index": 2,
+          "title": "Zone 2",
+          "x": 0,
+          "y": 0,
+          "width": 200,
+          "height": 100,
+          "id": "zone-2"
+        }
+    ],
+
+    "items": [
+        {
+          "displayName": "1",
+          "imageURL": "",
+          "id": 0,
+          "inputOptions": false,
+          "size": {"height": "auto", "width": "190px"}
+        },
+        {
+          "displayName": "2",
+          "imageURL": "",
+          "id": 1,
+          "inputOptions": true,
+          "size": {"height": "auto", "width": "190px"}
+        },
+        {
+          "displayName": "X",
+          "imageURL": "",
+          "id": 2,
+          "inputOptions": false,
+          "size": {"height": "100px", "width": "100px"}
+        },
+        {
+          "displayName": "",
+          "imageURL": "http://i1.kym-cdn.com/entries/icons/square/000/006/151/tumblr_lltzgnHi5F1qzib3wo1_400.jpg",
+          "id": 3,
+          "inputOptions": false,
+          "size": {"height": "auto", "width": "190px"}
+        }
+    ]
+}

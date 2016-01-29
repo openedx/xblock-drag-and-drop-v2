@@ -1,0 +1,518 @@
+function DragAndDropEditBlock(runtime, element, params) {
+
+    // Set up gettext in case it isn't available in the client runtime:
+    if (typeof gettext == "undefined") {
+        window.gettext = function gettext_stub(string) { return string; };
+    }
+
+    // Make gettext available in Handlebars templates
+    Handlebars.registerHelper('i18n', function(str) { return gettext(str); });
+    // Numeric rounding in Handlebars templates
+    Handlebars.registerHelper('singleDecimalFloat', function(value) {
+        if (value === "" || isNaN(Number(value))) {
+            return "";
+        }
+        return Number(value).toFixed(Number(value) == parseInt(value) ? 0 : 1);
+    });
+
+    var $element = $(element);
+
+    var dragAndDrop = (function($) {
+        var _fn = {
+            // Templates
+            tpl: {
+                init: function() {
+                    _fn.tpl = {
+                        zoneInput: Handlebars.compile($("#zone-input-tpl", element).html()),
+                        zoneElement: Handlebars.compile($("#zone-element-tpl", element).html()),
+                        zoneDropdown: Handlebars.compile($("#zone-dropdown-tpl", element).html()),
+                        itemInput: Handlebars.compile($("#item-input-tpl", element).html()),
+                    };
+                }
+            },
+
+            build: {
+                $el: {
+                    feedback: {
+                        form: $('.drag-builder .feedback-form', element),
+                        tab: $('.drag-builder .feedback-tab', element)
+                    },
+                    zones: {
+                        form: $('.drag-builder .zones-form', element),
+                        tab: $('.drag-builder .zones-tab', element)
+                    },
+                    items: {
+                        form: $('.drag-builder .items-form', element),
+                        tab: $('.drag-builder .items-tab', element)
+                    },
+                    targetImage: $('.drag-builder .target .target-img', element),
+                    zonesPreview: $('.drag-builder .target .zones-preview', element),
+                },
+                init: function() {
+                    _fn.data = params.data;
+
+                    // Compile templates
+                    _fn.tpl.init();
+
+                    // Display target image
+                    _fn.build.$el.targetImage.show();
+
+                    _fn.build.clickHandlers();
+                },
+
+                validate: function() {
+                    var fields = $element.find('.tab').not('.hidden').find('input, textarea');
+                    var success = true;
+                    fields.each(function(index, field) {
+                        field = $(field);
+                        // Right now our only check is if a field is set or not.
+                        field.removeClass('field-error');
+                        if (! field[0].checkValidity()) {
+                            field.addClass('field-error');
+                            success = false;
+                        }
+                    });
+                    if (! success) {
+                        runtime.notify('error', {
+                            'title': window.gettext("There was an error with your form."),
+                            'message': window.gettext("Please check over your submission.")
+                        });
+                    }
+                    return success
+                },
+
+                clickHandlers: function() {
+                    var $fbkTab = _fn.build.$el.feedback.tab,
+                        $zoneTab = _fn.build.$el.zones.tab,
+                        $itemTab = _fn.build.$el.items.tab;
+
+                    var self = this;
+
+                    $element.one('click', '.continue-button', function loadSecondTab(e) {
+                        // $fbkTab -> $zoneTab
+
+                        e.preventDefault();
+
+                        if (!self.validate()) {
+                            $(e.target).one('click', loadSecondTab);
+                            return
+                        }
+
+                        _fn.build.form.feedback(_fn.build.$el.feedback.form);
+                        for (var i = 0; i < _fn.data.zones.length; i++) {
+                            _fn.build.form.zone.add(_fn.data.zones[i]);
+                        }
+                        if (_fn.data.zones.length === 0) {
+                            _fn.build.form.zone.add();
+                        }
+
+                        // Set the target image and bind its event handler:
+                        $('.target-image-form #background-url', element).val(_fn.data.targetImg);
+                        $('.target-image-form #background-description', element).val(_fn.data.targetImgDescription);
+                        _fn.build.$el.targetImage.load(_fn.build.form.zone.imageLoaded);
+                        _fn.build.$el.targetImage.attr('src', params.target_img_expanded_url);
+                        _fn.build.$el.targetImage.attr('alt', _fn.data.targetImgDescription);
+
+                        if (_fn.data.displayLabels) {
+                            $('.display-labels-form input', element).prop('checked', true);
+                        }
+
+                        if (_fn.data.displayBorders) {
+                            $('.display-borders-form input', element).prop('checked', true);
+                        }
+
+                        $fbkTab.addClass('hidden');
+                        $zoneTab.removeClass('hidden');
+
+                        $(this).one('click', function loadThirdTab(e) {
+                            // $zoneTab -> $itemTab
+                            e.preventDefault();
+
+                            if (!self.validate()) {
+                                $(e.target).one('click', loadThirdTab);
+                                return
+                            }
+
+                            for (var i = 0; i < _fn.data.items.length; i++) {
+                                _fn.build.form.item.add(_fn.data.items[i]);
+                            }
+                            if (_fn.data.items.length === 0) {
+                                _fn.build.form.item.add();
+                            }
+
+                            $zoneTab.addClass('hidden');
+                            $itemTab.removeClass('hidden');
+
+                            $(this).addClass('hidden');
+                            $('.save-button', element).parent()
+                                .removeClass('hidden')
+                                .one('click', function submitForm(e) {
+                                    // $itemTab -> submit
+
+                                    e.preventDefault();
+                                    if (!self.validate()) {
+                                        $(e.target).one('click', submitForm);
+                                        return
+                                    }
+                                    _fn.build.form.submit();
+                                });
+                        });
+                    });
+
+                    $zoneTab
+                        .on('click', '.add-zone', function(e) {
+                            _fn.build.form.zone.add();
+                        })
+                        .on('click', '.remove-zone', _fn.build.form.zone.remove)
+                        .on('input', '.zone-row input', _fn.build.form.zone.changedInputHandler)
+                        .on('click', '.target-image-form button', function(e) {
+                            e.preventDefault();
+
+                            var new_img_url = $.trim($('.target-image-form #background-url', element).val());
+                            if (new_img_url) {
+                                // We may need to 'expand' the URL before it will be valid.
+                                // e.g. '/static/blah.png' becomes '/asset-v1:course+id/blah.png'
+                                var handlerUrl = runtime.handlerUrl(element, 'expand_static_url');
+                                $.post(handlerUrl, JSON.stringify(new_img_url), function(result) {
+                                    _fn.build.$el.targetImage.attr('src', result.url);
+                                });
+                            } else {
+                                new_img_url = params.default_background_image_url;
+                                _fn.build.$el.targetImage.attr('src', new_img_url);
+                            }
+                            _fn.data.targetImg = new_img_url;
+
+                            var new_description = $.trim(
+                                $('.target-image-form #background-description', element).val()
+                            );
+                            _fn.build.$el.targetImage.attr('alt', new_description);
+                            _fn.data.targetImgDescription = new_description;
+
+                        })
+                        .on('click', '.display-labels-form input', function(e) {
+                            _fn.data.displayLabels = $('.display-labels-form input', element).is(':checked');
+                        })
+                        .on('click', '.display-borders-form input', function(e) {
+                            _fn.data.displayBorders = $('.display-borders-form input', element).is(':checked');
+                        });
+
+                    $itemTab
+                        .on('click', '.add-item', function(e) {
+                            _fn.build.form.item.add();
+                        })
+                        .on('click', '.remove-item', _fn.build.form.item.remove)
+                        .on('click', '.advanced-link a', _fn.build.form.item.showAdvancedSettings);
+                },
+                form: {
+                    zone: {
+                        count: 0,
+                        formCount: 0,
+                        zoneObjects: [],
+                        getObjByIndex: function(num) {
+                            for (var i = 0; i < _fn.build.form.zone.zoneObjects.length; i++) {
+                                if (_fn.build.form.zone.zoneObjects[i].index == num)
+                                    return _fn.build.form.zone.zoneObjects[i];
+                            }
+                        },
+                        add: function(oldZone) {
+                            var inputTemplate = _fn.tpl.zoneInput,
+                                name = 'zone-',
+                                $elements = _fn.build.$el,
+                                num;
+
+                            if (!oldZone) oldZone = {};
+
+                            _fn.build.form.zone.count++;
+                            _fn.build.form.zone.formCount++;
+                            num = _fn.build.form.zone.count;
+                            name += num;
+
+                            // Update zone obj
+                            var zoneObj = {
+                                title: oldZone.title || 'Zone ' + num,
+                                description: oldZone.description,
+                                id: name,
+                                index: num,
+                                width: oldZone.width || 200,
+                                height: oldZone.height || 100,
+                                x: oldZone.x || 0,
+                                y: oldZone.y || 0,
+                            };
+
+                            _fn.build.form.zone.zoneObjects.push(zoneObj);
+
+                            // Add fields to zone position form
+                            $zoneNode = $(inputTemplate(zoneObj));
+                            $zoneNode.data('index', num);
+                            $elements.zones.form.append($zoneNode);
+                            _fn.build.form.zone.enableDelete();
+
+                            // Add zone div to target
+                            _fn.build.form.zone.renderZonesPreview();
+
+                        },
+                        remove: function(e) {
+                            var $el = $(e.currentTarget).closest('.zone-row'),
+                                classes = $el.attr('class'),
+                                id = classes.slice(classes.indexOf('zone-row') + 9),
+                                index = $el.data('index'),
+                                array_index;
+
+                            e.preventDefault();
+                            $el.detach();
+
+                            // Find the index of the zone in the array and remove it.
+                            for (array_index = 0; array_index < _fn.build.form.zone.zoneObjects.length;
+                                 array_index++) {
+                                if (_fn.build.form.zone.zoneObjects[array_index].index == index) break;
+                            }
+                            _fn.build.form.zone.zoneObjects.splice(array_index, 1);
+                            _fn.build.form.zone.renderZonesPreview();
+
+                            _fn.build.form.zone.formCount--;
+                            _fn.build.form.zone.disableDelete();
+
+                        },
+                        enableDelete: function() {
+                            if (_fn.build.form.zone.formCount > 1) {
+                                _fn.build.$el.zones.form.find('.remove-zone').removeClass('hidden');
+                            }
+                        },
+                        disableDelete: function() {
+                            if (_fn.build.form.zone.formCount === 1) {
+                                _fn.build.$el.zones.form.find('.remove-zone').addClass('hidden');
+                            }
+                        },
+                        renderZonesPreview: function() {
+                            // Refresh the div which shows a preview of the zones over top of
+                            // the background image.
+                            _fn.build.$el.zonesPreview.html('');
+                            var imgWidth = _fn.build.$el.targetImage[0].naturalWidth;
+                            var imgHeight = _fn.build.$el.targetImage[0].naturalHeight;
+                            if (imgWidth == 0 || imgHeight == 0) {
+                                // Set a non-zero value to avoid divide-by-zero:
+                                imgWidth = imgHeight = 400;
+                            }
+                            this.zoneObjects.forEach(function(zoneObj) {
+                                _fn.build.$el.zonesPreview.append(
+                                    _fn.tpl.zoneElement({
+                                        id: zoneObj.id,
+                                        title: zoneObj.title,
+                                        description: zoneObj.description,
+                                        x_percent: (+zoneObj.x) / imgWidth * 100,
+                                        y_percent: (+zoneObj.y) / imgHeight * 100,
+                                        width_percent: (+zoneObj.width) / imgWidth * 100,
+                                        height_percent: (+zoneObj.height) / imgHeight * 100,
+                                    })
+                                );
+                            });
+                        },
+                        getZoneNames: function() {
+                            var zoneNames = [];
+                            var $form = _fn.build.$el.zones.form.find('.title');
+
+                            $form.each(function(i, el) {
+                                var val = $(el).val();
+                                if (val.length > 0) {
+                                    zoneNames.push(val);
+                                }
+                            });
+                            return zoneNames;
+                        },
+                        changedInputHandler: function(ev) {
+                            // Called when any of the inputs have changed.
+                            var $changedInput = $(ev.currentTarget);
+                            var $row = $changedInput.closest('.zone-row');
+                            var record = _fn.build.form.zone.getObjByIndex($row.data('index'));
+                            if ($changedInput.hasClass('title')) {
+                                record.title = $changedInput.val();
+                            } else if ($changedInput.hasClass('width')) {
+                                record.width = $changedInput.val();
+                            } else if ($changedInput.hasClass('description')) {
+                                record.description = $changedInput.val();
+                            } else if ($changedInput.hasClass('height')) {
+                                record.height = $changedInput.val();
+                            } else if ($changedInput.hasClass('x')) {
+                                record.x = $changedInput.val();
+                            } else if ($changedInput.hasClass('y')) {
+                                record.y = $changedInput.val();
+                            }
+                            _fn.build.form.zone.renderZonesPreview();
+                        },
+                        imageLoaded: function() {
+                            // The target background image has loaded (or reloaded, if changed).
+                            _fn.build.form.zone.renderZonesPreview();
+                        },
+                    },
+                    createDropdown: function(selected) {
+                        var tpl = _fn.tpl.zoneDropdown,
+                            dropdown = [],
+                            html,
+                            dropdown_items = _fn.build.form.zone.getZoneNames().concat('none');
+
+                        for (var i=0; i<dropdown_items.length; i++) {
+                            var is_sel = (dropdown_items[i] == selected) ? 'selected' : '';
+                            dropdown.push(tpl({ value: dropdown_items[i], selected: is_sel }));
+                        }
+
+                        html = dropdown.join('');
+                        return new Handlebars.SafeString(html);
+                    },
+                    feedback: function($form) {
+                        _fn.data.feedback = {
+                            start: $form.find('#intro-feedback').val(),
+                            finish: $form.find('#final-feedback').val()
+                        };
+                    },
+                    item: {
+                        count: 0,
+                        add: function(itemData) {
+                            var $form = _fn.build.$el.items.form,
+                                tpl = _fn.tpl.itemInput,
+                                ctx = {};
+
+                            if (itemData) {
+                                ctx = itemData;
+                                if (itemData.backgroundImage && !ctx.imageURL) {
+                                    ctx.imageURL = itemData.backgroundImage; // This field was renamed.
+                                }
+                                if (itemData.size && parseInt(itemData.size.width) > 0) {
+                                    // Convert old fixed pixel width setting values (hard to
+                                    // make mobile friendly) to new percentage format.
+                                    // Note itemData.size.width is a string like "380px" (it can
+                                    // also be "auto" but that's excluded by the if condition above)
+                                    var bgImgWidth = _fn.build.$el.targetImage[0].naturalWidth;
+                                    if (bgImgWidth > 0 && typeof ctx.widthPercent === "undefined") {
+                                        ctx.widthPercent = parseInt(itemData.size.width) / bgImgWidth * 100;
+                                    }
+                                    // Preserve the old-style data in case we need it again:
+                                    ctx.pixelWidth = itemData.size.width.substr(0, itemData.size.width.length - 2); // Remove 'px'
+                                }
+                                if (itemData.size && parseInt(itemData.size.height) > 0) {
+                                    // Item fixed pixel height is ignored in new versions of the
+                                    // block, but preserve the data in case we need it again:
+                                    ctx.pixelHeight = itemData.size.height.substr(0, itemData.size.height.length - 2); // Remove 'px'
+                                }
+                                if (itemData.inputOptions) {
+                                    ctx.numericalValue = itemData.inputOptions.value;
+                                    ctx.numericalMargin = itemData.inputOptions.margin;
+                                }
+                            }
+
+                            ctx.dropdown = _fn.build.form.createDropdown(ctx.zone);
+
+                            _fn.build.form.item.count++;
+                            $form.append(tpl(ctx));
+                            _fn.build.form.item.enableDelete();
+
+                        },
+                        remove: function(e) {
+                            var $el = $(e.currentTarget).closest('.item');
+
+                            e.preventDefault();
+                            $el.detach();
+
+                            _fn.build.form.item.count--;
+                            _fn.build.form.item.disableDelete();
+
+                        },
+                        enableDelete: function() {
+                            if (_fn.build.form.item.count > 1) {
+                                _fn.build.$el.items.form.find('.remove-item').removeClass('hidden');
+                            }
+                        },
+                        disableDelete: function() {
+                            if (_fn.build.form.item.count === 1) {
+                                _fn.build.$el.items.form.find('.remove-item').addClass('hidden');
+                            }
+                        },
+                        showAdvancedSettings: function(e) {
+                            e.preventDefault();
+                            var $el = $(e.currentTarget).closest('.item');
+                            $el.find('.row.advanced').show();
+                            $el.find('.row.advanced-link').hide();
+                        },
+                    },
+                    submit: function() {
+                        var items = [],
+                            $form = _fn.build.$el.items.form.find('.item');
+
+                        $form.each(function(i, el) {
+                            var $el = $(el),
+                                name = $el.find('.item-text').val(),
+                                imageURL = $el.find('.item-image-url').val(),
+                                imageDescription = $el.find('.item-image-description').val();
+
+                            if (name.length > 0 || imageURL.length > 0) {
+                                var data = {
+                                    displayName: name,
+                                    zone: $el.find('.zone-select').val(),
+                                    id: i,
+                                    feedback: {
+                                        correct: $el.find('.success-feedback').val(),
+                                        incorrect: $el.find('.error-feedback').val()
+                                    },
+                                    imageURL: imageURL,
+                                    imageDescription: imageDescription,
+                                };
+                                // Optional preferred width as a percentage of the bg image's width:
+                                var widthPercent = $el.find('.item-width').val();
+                                if (widthPercent && +widthPercent > 0) { data.widthPercent = widthPercent; }
+
+                                var numValue = parseFloat($el.find('.item-numerical-value').val());
+                                var numMargin = parseFloat($el.find('.item-numerical-margin').val());
+                                if (isFinite(numValue)) {
+                                    data.inputOptions = {
+                                        value: numValue,
+                                        margin: isFinite(numMargin) ? numMargin : 0
+                                    };
+                                }
+
+                                items.push(data);
+                            }
+                        });
+
+                        _fn.data.items = items;
+                        _fn.data.zones = _fn.build.form.zone.zoneObjects;
+
+                        var data = {
+                            'display_name': $element.find('#display-name').val(),
+                            'show_title': $element.find('.show-title').is(':checked'),
+                            'weight': $element.find('#weight').val(),
+                            'problem_text': $element.find('#problem-text').val(),
+                            'show_problem_header': $element.find('.show-problem-header').is(':checked'),
+                            'item_background_color': $element.find('#item-background-color').val(),
+                            'item_text_color': $element.find('#item-text-color').val(),
+                            'data': _fn.data,
+                        };
+
+                        $('.xblock-editor-error-message', element).html();
+                        $('.xblock-editor-error-message', element).css('display', 'none');
+                        var handlerUrl = runtime.handlerUrl(element, 'studio_submit');
+                        $.post(handlerUrl, JSON.stringify(data), 'json').done(function(response) {
+                            if (response.result === 'success') {
+                                window.location.reload(false);
+                            } else {
+                                $('.xblock-editor-error-message', element)
+                                    .html(gettext('Error: ') + response.message);
+                                $('.xblock-editor-error-message', element).css('display', 'block');
+                            }
+                        });
+                    }
+                }
+            },
+
+            data: null
+        };
+
+        return {
+            init: _fn.build.init
+        };
+    })(jQuery);
+
+    $element.find('.cancel-button').bind('click', function() {
+        runtime.notify('cancel', {});
+    });
+
+    dragAndDrop.init();
+}

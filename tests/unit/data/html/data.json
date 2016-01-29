@@ -1,0 +1,74 @@
+{
+  "zones": [
+    {
+      "index": 1,
+      "width": 200,
+      "title": "Zone <i>1</i>",
+      "height": 100,
+      "y": 200,
+      "x": 100,
+      "id": "zone-1"
+    },
+    {
+      "index": 2,
+      "width": 200,
+      "title": "Zone <b>2</b>",
+      "height": 100,
+      "y": 0,
+      "x": 0,
+      "id": "zone-2"
+    }
+  ],
+
+  "items": [
+    {
+      "displayName": "<b>1</b>",
+      "feedback": {
+        "incorrect": "No <b>1</b>",
+        "correct": "Yes <b>1</b>"
+      },
+      "zone": "Zone <i>1</i>",
+      "imageURL": "",
+      "id": 0
+    },
+    {
+      "displayName": "<i>2</i>",
+      "feedback": {
+        "incorrect": "No <i>2</i>",
+        "correct": "Yes <i>2</i>"
+      },
+      "zone": "Zone <b>2</b>",
+      "imageURL": "",
+      "id": 1,
+      "inputOptions": {
+        "value": 100,
+        "margin": 5
+      }
+    },
+    {
+      "displayName": "X",
+      "feedback": {
+        "incorrect": "",
+        "correct": ""
+      },
+      "zone": "none",
+      "imageURL": "",
+      "id": 2
+    },
+    {
+      "displayName": "",
+      "feedback": {
+        "incorrect": "",
+        "correct": ""
+      },
+      "zone": "none",
+      "imageURL": "http://placehold.it/100x300",
+      "id": 3
+    }
+  ],
+  "feedback": {
+    "start": "HTML <strong>Intro</strong> Feed",
+    "finish": "Final <strong>feedback</strong>!"
+  },
+  "targetImgDescription": "This describes the target image"
+}
