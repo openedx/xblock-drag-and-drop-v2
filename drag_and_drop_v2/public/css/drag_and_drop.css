@@ -133,6 +133,8 @@
     display: inline-block;
     width: 100%; /* Make sure size of content never exceeds size of item */
                  /* (this can happen if item displays image whose width exceeds computed max-width of item) */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 /* Placed option */
@@ -140,6 +142,33 @@
     position: absolute;
     margin: 0;
     transform: translate(-50%, -50%); /* These blocks are to be centered on their absolute x,y position */
+}
+
+/* Placed options in an aligned zone */
+.xblock--drag-and-drop .zone .item-wrapper {
+    width: 100%;
+    position: relative;
+}
+.xblock--drag-and-drop .zone .item-align .option {
+    transform: none;
+    position: relative;
+    vertical-align: top;
+    margin-right: 2px;
+    margin-bottom: 2px;
+}
+.xblock--drag-and-drop .zone .item-align-left {
+    text-align: left;
+}
+.xblock--drag-and-drop .zone .item-align-right {
+    text-align: right;
+}
+.xblock--drag-and-drop .zone .item-align-center {
+    text-align: center;
+}
+.xblock--drag-and-drop .zone .item-align-center .option {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Focused option */

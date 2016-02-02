@@ -48,9 +48,10 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
     """
     PAGE_TITLE = 'Drag and Drop v2 Sizing'
     PAGE_ID = 'drag_and_drop_v2_sizing'
+    ALIGN_ZONES = False  # Set to True to test the feature that aligns draggable items when dropped.
 
-    @staticmethod
-    def _get_scenario_xml():
+    @classmethod
+    def _get_scenario_xml(cls):
         """
         Set up the test scenario:
             * An upper dndv2 xblock with a wide image (1600x900 SVG)
@@ -62,6 +63,7 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
         """
         params = {
             "img": "wide",
+            "align_zones": cls.ALIGN_ZONES,
             "img_wide_url": _svg_to_data_uri('dnd-bg-wide.svg'),
             "img_square_url": _svg_to_data_uri('dnd-bg-square.svg'),
             "img_400x300_url": _svg_to_data_uri('400x300.svg'),
@@ -236,6 +238,18 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
                     self._get_placed_item_by_value(expect.item_id),
                     *expect.img_pixel_size_exact
                 )
+
+
+class AlignedSizingTests(SizingTests):
+    """
+    Run the same tests as SizingTests, but with aligned zones.
+
+    The sizing of draggable items should be consistent when the "align" feature
+    of each zone is enabled. (This is the feature that aligns draggable items
+    once they're placed, rather than keeping them exactly where they were
+    dropped.)
+    """
+    ALIGN_ZONES = True
 
 
 class SizingBackwardsCompatibilityTests(InteractionTestBase, BaseIntegrationTest):
