@@ -79,8 +79,13 @@ function DragNDropTemplates(url_name) {
             style['outline-color'] = item.color;
         }
         if (item.is_placed) {
-            style.left = item.x_percent + "%";
-            style.top = item.y_percent + "%";
+            // If an item_zone is provided, and the zone is aligned, let CSS position the item.
+            // Otherwise, use absolute positioning.
+            if (!ctx.item_zone || !ctx.item_zone.align) {
+                style.left = item.x_percent + "%";
+                style.top = item.y_percent + "%";
+                style.position = "absolute";
+            }
             if (item.widthPercent) {
                 style.width = item.widthPercent + "%";
                 style.maxWidth = item.widthPercent + "%"; // default maxWidth is ~33%
@@ -143,9 +148,18 @@ function DragNDropTemplates(url_name) {
     var zoneTemplate = function(zone, ctx) {
         var className = ctx.display_zone_labels ? 'zone-name' : 'zone-name sr';
         var selector = ctx.display_zone_borders ? 'div.zone.zone-with-borders' : 'div.zone';
+
+        // Mark the zone's item alignment
+        var item_wrapper = 'div.item-wrapper';
         if (zone.align) {
-            selector += '.item-align.item-align-' + zone.align;
+            item_wrapper += '.item-align.item-align-' + zone.align;
         }
+
+        // Render the items in the zone
+        var is_item_in_zone = function(i) { return i.zone === zone.title; };
+        var items_in_zone = $.grep(ctx.items, is_item_in_zone);
+        ctx.item_zone = zone;
+
         return (
             h(
                 selector,
@@ -156,7 +170,6 @@ function DragNDropTemplates(url_name) {
                         'dropzone': 'move',
                         'aria-dropeffect': 'move',
                         'data-zone': zone.title,
-                        'data-zone_id': zone.id,
                         'role': 'button',
                     },
                     style: {
@@ -166,7 +179,8 @@ function DragNDropTemplates(url_name) {
                 },
                 [
                     h('p', { className: className }, zone.title),
-                    h('p', { className: 'zone-description sr' }, zone.description)
+                    h('p', { className: 'zone-description sr' }, zone.description),
+                    h(item_wrapper, renderCollection(itemTemplate, items_in_zone, ctx))
                 ]
             )
         );
@@ -227,7 +241,6 @@ function DragNDropTemplates(url_name) {
             popupSelector += '.popup-incorrect';
         }
         var is_item_placed = function(i) { return i.is_placed; };
-        var items_placed = $.grep(ctx.items, is_item_placed);
         var items_in_bank = $.grep(ctx.items, is_item_placed, true);
         return (
             h('section.themed-xblock.xblock--drag-and-drop', [
@@ -265,7 +278,6 @@ function DragNDropTemplates(url_name) {
                             ]
                         ),
                         renderCollection(zoneTemplate, ctx.zones, ctx),
-                        renderCollection(itemTemplate, items_placed, ctx),
                     ]
                     ),
                 ]),
@@ -588,106 +600,11 @@ function DragAndDropBlock(runtime, element, configuration) {
         }
         var item_id = $item.data('value');
         var zone = $zone.data('zone');
-        var zone_id = $zone.data('zone_id');
         var $target_img = $root.find('.target-img');
 
-        // NOTE: items are translated with CSS to allow for their own width and height.
-        var x_pos, y_pos;
-
-        // Calculate the item relative to the other items in the zone
-        if ($zone.hasClass('item-align')) {
-
-            // Zone-relative dimensions
-            var min_x = 0;
-            var max_x = min_x + $zone.outerWidth();
-            var min_y = 0;
-            var max_y = min_y + $zone.outerHeight();
-            var half_w = $item.outerWidth()/2.0;
-            var half_h = $item.outerHeight()/2.0;
-
-            // TODO : calculate zone_item_pos from the existing items
-            var zone_item_pos = state.zone_item_pos || {};
-            if (!state.zone_item_pos) {
-                state.zone_item_pos = {};
-            }
-            var item_pos;
-            var wrap_item = false;
-
-            // Sequence items from left to right
-            if ($zone.hasClass('item-align-left')) {
-                if (!state.zone_item_pos[zone_id]) {
-                    state.zone_item_pos[zone_id] = {
-                        x: min_x + half_w,
-                        y: min_y + half_h,
-                        width: 0,
-                        height: 0
-                    };
-                }
-                item_pos = state.zone_item_pos[zone_id];
-
-                x_pos = item_pos.x + item_pos.width;
-                y_pos = item_pos.y;
-                if (x_pos + half_w > max_x) {
-                    x_pos = min_x + half_w;
-                    y_pos += item_pos.height;
-                    item_pos.height = 2*half_h;
-                } else {
-                    item_pos.height = Math.max(item_pos.height, 2*half_h);
-                }
-            }
-            // Sequence items from right to left
-            else if ($zone.hasClass('item-align-right')) {
-                if (!state.zone_item_pos[zone]) {
-                    state.zone_item_pos[zone] = {
-                        x: max_x - half_w,
-                        y: min_y + half_h,
-                        width: 0,
-                        height: 0
-                    };
-                }
-                item_pos = state.zone_item_pos[zone];
-
-                x_pos = item_pos.x - item_pos.width;
-                y_pos = item_pos.y;
-                if (x_pos + half_w < min_x) {
-                    x_pos = max_x + half_w;
-                    y_pos += item_pos.height;
-                    item_pos.height = 2*half_h;
-                } else {
-                    item_pos.height = Math.max(item_pos.height, 2*half_h);
-                }
-            }
-            // Center items vertically, always wrap
-            else {
-                if (!state.zone_item_pos[zone]) {
-                    state.zone_item_pos[zone] = {
-                        x: min_x,
-                        y: min_y + half_h,
-                        width: 0,
-                        height: 0
-                    };
-                }
-                item_pos = state.zone_item_pos[zone];
-
-                x_pos = min_x + ((max_x - min_x)/2);
-                y_pos = item_pos.y + item_pos.height;
-                item_pos.height = 2*half_h;
-            }
-
-            // Bump up item_pos (height is already handled above)
-            item_pos.width = 2*half_w;
-            item_pos.x = x_pos;
-            item_pos.y = y_pos;
-
-            // Adjust x_pos and y_pos relative to the zone
-            x_pos += $zone.offset().left;
-            y_pos += $zone.offset().top;
-        }
         // Calculate the position of the item relative to the anchor element
-        else {
-            x_pos = $anchor.offset().left + ($anchor.outerWidth()/2);
-            y_pos = $anchor.offset().top + ($anchor.outerHeight()/2);
-        }
+        var x_pos = $anchor.offset().left + ($anchor.outerWidth()/2);
+        var y_pos = $anchor.offset().top + ($anchor.outerHeight()/2);
 
         // Calculate position as a percentage relative to the target image
         var x_pos_percent = (x_pos - $target_img.offset().left) / $target_img.width() * 100;
