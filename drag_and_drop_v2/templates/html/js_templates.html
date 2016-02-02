@@ -9,6 +9,10 @@
     </div>
 </script>
 
+<script id="zone-align-dropdown-tpl" type="text/html">
+    <option value="{{ value }}" {{ selected }}>{{ value }}</option>
+</script>
+
 <script id="zone-input-tpl" type="text/html">
     <div class="zone-row {{ id }}" data-index="{{index}}">
         <label for="zone-{{index}}-title">{{i18n "Text"}}</label>
@@ -49,6 +53,11 @@
                    id="zone-{{index}}-y"
                    class="coord y"
                    value="{{ y }}" />
+        </div>
+        <div class="alignment">
+            <label for="zone-{{index}}-align">align</label>
+            <select id="zone-{{index}}-align"
+                   class="align-select">{{ align_dropdown }}</select>
         </div>
     </div>
 </script>
