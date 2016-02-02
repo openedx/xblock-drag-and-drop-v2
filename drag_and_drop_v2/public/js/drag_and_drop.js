@@ -143,6 +143,9 @@ function DragNDropTemplates(url_name) {
     var zoneTemplate = function(zone, ctx) {
         var className = ctx.display_zone_labels ? 'zone-name' : 'zone-name sr';
         var selector = ctx.display_zone_borders ? 'div.zone.zone-with-borders' : 'div.zone';
+        if (zone.align) {
+            selector += '.item-align.item-align-' + zone.align;
+        }
         return (
             h(
                 selector,
@@ -153,6 +156,7 @@ function DragNDropTemplates(url_name) {
                         'dropzone': 'move',
                         'aria-dropeffect': 'move',
                         'data-zone': zone.title,
+                        'data-zone_id': zone.id,
                         'role': 'button',
                     },
                     style: {
@@ -583,13 +587,110 @@ function DragAndDropBlock(runtime, element, configuration) {
             $anchor = $zone;
         }
         var zone = $zone.data('zone');
+        var zone_id = $zone.data('zone_id');
         var $target_img = $root.find('.target-img');
 
-        // Calculate the position of the item to place relative to the image.
-        var x_pos = $anchor.offset().left + ($anchor.outerWidth()/2) - $target_img.offset().left;
-        var y_pos = $anchor.offset().top + ($anchor.outerHeight()/2) - $target_img.offset().top;
-        var x_pos_percent = x_pos / $target_img.width() * 100;
-        var y_pos_percent = y_pos / $target_img.height() * 100;
+        // NOTE: items are translated with CSS to allow for their own width and height.
+        var x_pos, y_pos;
+
+        // Calculate the item relative to the other items in the zone
+        if ($zone.hasClass('item-align')) {
+
+            // Zone-relative dimensions
+            var min_x = 0;
+            var max_x = min_x + $zone.outerWidth();
+            var min_y = 0;
+            var max_y = min_y + $zone.outerHeight();
+            var half_w = $item.outerWidth()/2.0;
+            var half_h = $item.outerHeight()/2.0;
+
+            // TODO : calculate zone_item_pos from the existing items
+            var zone_item_pos = state.zone_item_pos || {};
+            if (!state.zone_item_pos) {
+                state.zone_item_pos = {};
+            }
+            var item_pos;
+            var wrap_item = false;
+
+            // Sequence items from left to right
+            if ($zone.hasClass('item-align-left')) {
+                if (!state.zone_item_pos[zone_id]) {
+                    state.zone_item_pos[zone_id] = {
+                        x: min_x + half_w,
+                        y: min_y + half_h,
+                        width: 0,
+                        height: 0
+                    };
+                }
+                item_pos = state.zone_item_pos[zone_id];
+
+                x_pos = item_pos.x + item_pos.width;
+                y_pos = item_pos.y;
+                if (x_pos + half_w > max_x) {
+                    x_pos = min_x + half_w;
+                    y_pos += item_pos.height;
+                    item_pos.height = 2*half_h;
+                } else {
+                    item_pos.height = Math.max(item_pos.height, 2*half_h);
+                }
+            }
+            // Sequence items from right to left
+            else if ($zone.hasClass('item-align-right')) {
+                if (!state.zone_item_pos[zone]) {
+                    state.zone_item_pos[zone] = {
+                        x: max_x - half_w,
+                        y: min_y + half_h,
+                        width: 0,
+                        height: 0
+                    };
+                }
+                item_pos = state.zone_item_pos[zone];
+
+                x_pos = item_pos.x - item_pos.width;
+                y_pos = item_pos.y;
+                if (x_pos + half_w < min_x) {
+                    x_pos = max_x + half_w;
+                    y_pos += item_pos.height;
+                    item_pos.height = 2*half_h;
+                } else {
+                    item_pos.height = Math.max(item_pos.height, 2*half_h);
+                }
+            }
+            // Center items vertically, always wrap
+            else {
+                if (!state.zone_item_pos[zone]) {
+                    state.zone_item_pos[zone] = {
+                        x: min_x,
+                        y: min_y + half_h,
+                        width: 0,
+                        height: 0
+                    };
+                }
+                item_pos = state.zone_item_pos[zone];
+
+                x_pos = min_x + ((max_x - min_x)/2);
+                y_pos = item_pos.y + item_pos.height;
+                item_pos.height = 2*half_h;
+            }
+
+            // Bump up item_pos (height is already handled above)
+            item_pos.width = 2*half_w;
+            item_pos.x = x_pos;
+            item_pos.y = y_pos;
+
+            // Adjust x_pos and y_pos relative to the zone
+            x_pos += $zone.offset().left;
+            y_pos += $zone.offset().top;
+        }
+        // Calculate the position of the item relative to the anchor element
+        else {
+            x_pos = $anchor.offset().left + ($anchor.outerWidth()/2);
+            y_pos = $anchor.offset().top + ($anchor.outerHeight()/2);
+        }
+
+        // Calculate position as a percentage relative to the target image
+        var x_pos_percent = (x_pos - $target_img.offset().left) / $target_img.width() * 100;
+        var y_pos_percent = (y_pos - $target_img.offset().top) / $target_img.height() * 100;
 
         state.items[item_id] = {
             zone: zone,
