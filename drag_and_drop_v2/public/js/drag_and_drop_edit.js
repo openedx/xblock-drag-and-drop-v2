@@ -23,6 +23,7 @@ function DragAndDropEditBlock(runtime, element, params) {
             tpl: {
                 init: function() {
                     _fn.tpl = {
+                        zoneAlignDropdown: Handlebars.compile($("#zone-align-dropdown-tpl", element).html()),
                         zoneInput: Handlebars.compile($("#zone-input-tpl", element).html()),
                         zoneElement: Handlebars.compile($("#zone-element-tpl", element).html()),
                         zoneDropdown: Handlebars.compile($("#zone-dropdown-tpl", element).html()),
@@ -171,7 +172,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                             _fn.build.form.zone.add();
                         })
                         .on('click', '.remove-zone', _fn.build.form.zone.remove)
-                        .on('input', '.zone-row input', _fn.build.form.zone.changedInputHandler)
+                        .on('input', '.zone-row input, .zone-row select', _fn.build.form.zone.changedInputHandler)
                         .on('click', '.target-image-form button', function(e) {
                             e.preventDefault();
 
@@ -240,6 +241,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                                 height: oldZone.height || 100,
                                 x: oldZone.x || 0,
                                 y: oldZone.y || 0,
+                                align: oldZone.align || '',
+                                align_dropdown: _fn.build.form.createAlignDropdown(oldZone),
                             };
 
                             _fn.build.form.zone.zoneObjects.push(zoneObj);
@@ -252,9 +255,11 @@ function DragAndDropEditBlock(runtime, element, params) {
                             _fn.build.$el.zones.form.append($zoneNode);
                             _fn.build.form.zone.enableDelete();
 
+                            // Once form is built, clean out html from zoneObj
+                            delete zoneObj['align_dropdown'];
+
                             // Add zone div to target
                             _fn.build.form.zone.renderZonesPreview();
-
                         },
                         generateUID: function() {
                             // Generate a unique ID for a new zone.
@@ -316,10 +321,29 @@ function DragAndDropEditBlock(runtime, element, params) {
                                         y_percent: (+zoneObj.y) / imgHeight * 100,
                                         width_percent: (+zoneObj.width) / imgWidth * 100,
                                         height_percent: (+zoneObj.height) / imgHeight * 100,
+                                        align: zoneObj.align,
                                     })
                                 );
                             });
                         },
+
+                        getZoneNames: function() {
+                            var zoneNames = [];
+                            var $form = _fn.build.$el.zones.form.find('.title');
+
+                            $form.each(function(i, el) {
+                                var val = $(el).val();
+                                if (val.length > 0) {
+                                    zoneNames.push(val);
+                                }
+                            });
+                            return zoneNames;
+                        },
+                        getZoneAlignNames: function() {
+                            var alignNames = ["", "left", "center", "right"];
+                            return alignNames;
+                        },
+
                         changedInputHandler: function(ev) {
                             // Called when any of the inputs have changed.
                             var $changedInput = $(ev.currentTarget);
@@ -337,6 +361,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                                 record.x = $changedInput.val();
                             } else if ($changedInput.hasClass('y')) {
                                 record.y = $changedInput.val();
+                            } else if ($changedInput.hasClass('align-select')) {
+                                record.align = $changedInput.val();
                             }
                             _fn.build.form.zone.renderZonesPreview();
                         },
@@ -365,6 +391,20 @@ function DragAndDropEditBlock(runtime, element, params) {
                         }));
 
                         var html = dropdown.join('');
+                        return new Handlebars.SafeString(html);
+                    },
+                    createAlignDropdown: function(selected) {
+                        var tpl = _fn.tpl.zoneAlignDropdown,
+                            dropdown = [],
+                            html,
+                            dropdown_items = _fn.build.form.zone.getZoneAlignNames();
+
+                        for (var i=0; i<dropdown_items.length; i++) {
+                            var is_sel = (dropdown_items[i] == selected['align']) ? 'selected' : '';
+                            dropdown.push(tpl({ value: dropdown_items[i], selected: is_sel }));
+                        }
+
+                        html = dropdown.join('');
                         return new Handlebars.SafeString(html);
                     },
                     feedback: function($form) {
