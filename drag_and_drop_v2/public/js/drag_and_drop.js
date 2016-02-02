@@ -573,19 +573,20 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var placeItem = function($zone, $item) {
-        var item_id;
         var $anchor;
         if ($item !== undefined) {
-            item_id = $item.data('value');
             // Element was placed using the mouse,
             // so use relevant properties of *item* when calculating new position below.
             $anchor = $item;
         } else {
-            item_id = $selectedItem.data('value');
             // Element was placed using the keyboard,
             // so use relevant properties of *zone* when calculating new position below.
             $anchor = $zone;
+
+            // Set $item so it can be used below
+            $item = $selectedItem;
         }
+        var item_id = $item.data('value');
         var zone = $zone.data('zone');
         var zone_id = $zone.data('zone_id');
         var $target_img = $root.find('.target-img');
