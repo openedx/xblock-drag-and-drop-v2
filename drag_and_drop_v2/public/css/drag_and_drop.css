@@ -161,6 +161,10 @@
 .xblock--drag-and-drop .zone .item-align-center {
     text-align: center;
 }
+.xblock--drag-and-drop .zone .item-align-center .option {
+    display: block;
+    margin: auto;
+}
 
 /* Focused option */
 .xblock--drag-and-drop .drag-container .item-bank .option:focus,

@@ -603,6 +603,10 @@ class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
         return self._get_custom_scenario_xml("data/test_zone_align.json")
 
     def _assert_zone_align_item(self, item_id, zone_id, align, action_key=None):
+        """
+        Test items placed in a zone with the given align setting.
+        Ensure that they are children of the zone.
+        """
         # parent container has the expected alignment
         zone_selector = "div[data-zone='%s'] .item-align" % zone_id
         self.assertEquals(self._get_style(zone_selector, 'textAlign'), align)
@@ -625,9 +629,18 @@ class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
         self.assertEquals(self._get_style(zone_item, 'left'), '0px')
         self.assertEquals(self._get_style(zone_item, 'top'), '0px')
 
+        # Center-aligned items are display block
+        if align == 'center':
+            self.assertEquals(self._get_style(zone_item, 'display'), 'block');
+        # but other aligned items are just inline-block
+        else:
+            self.assertEquals(self._get_style(zone_item, 'display'), 'inline-block');
+
     def test_no_zone_align(self):
-        # Items placed in zones with no align setting are children of the
-        # target div, not the zone
+        """
+        Test items placed in a zone with no align setting.
+        Ensure that they are children of div.target, not the zone.
+        """
         zone_id = "Zone No Align"
         self.place_item(0, zone_id)
         zone_item = "div[data-zone='%s'] .item-align .option" % zone_id
@@ -644,42 +657,67 @@ class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
         self.assertRegexpMatches(self._get_style(target_item, 'top'), r'^\d+(\.\d+)?px$')
 
     def test_zone_align_invalid(self):
+        """
+        Test items placed in a zone with an invalid align setting.
+        """
         self._assert_zone_align_item(3, 'Zone Invalid Align', 'start')
         self._assert_zone_align_item(4, 'Zone Invalid Align', 'start')
         self._assert_zone_align_item(5, 'Zone Invalid Align', 'start')
 
     def test_zone_align_invalid_key(self):
+        """
+        Test items placed in a zone with an invalid align setting, via keyboard.
+        """
         self._assert_zone_align_item(3, 'Zone Invalid Align', 'start', Keys.RETURN)
         self._assert_zone_align_item(4, 'Zone Invalid Align', 'start', Keys.RETURN)
         self._assert_zone_align_item(5, 'Zone Invalid Align', 'start', Keys.RETURN)
 
     def test_zone_align_left(self):
+        """
+        Test items placed in a zone with an left align setting.
+        """
         self._assert_zone_align_item(6, 'Zone Left Align', 'left')
         self._assert_zone_align_item(7, 'Zone Left Align', 'left')
         self._assert_zone_align_item(8, 'Zone Left Align', 'left')
 
     def test_zone_align_left_key(self):
+        """
+        Test items placed in a zone with an left align setting, via keyboard.
+        """
         self._assert_zone_align_item(6, 'Zone Left Align', 'left', Keys.RETURN)
         self._assert_zone_align_item(7, 'Zone Left Align', 'left', Keys.RETURN)
         self._assert_zone_align_item(8, 'Zone Left Align', 'left', Keys.RETURN)
 
     def test_zone_align_right(self):
+        """
+        Test items placed in a zone with a right align setting.
+        """
         self._assert_zone_align_item(9, 'Zone Right Align', 'right')
         self._assert_zone_align_item(10, 'Zone Right Align', 'right')
         self._assert_zone_align_item(11, 'Zone Right Align', 'right')
 
     def test_zone_align_right_key(self):
+        """
+        Test items placed in a zone with an right align setting, via keyboard.
+        """
         self._assert_zone_align_item(9, 'Zone Right Align', 'right', Keys.RETURN)
         self._assert_zone_align_item(10, 'Zone Right Align', 'right', Keys.RETURN)
         self._assert_zone_align_item(11, 'Zone Right Align', 'right', Keys.RETURN)
     '''
     FIXME Erratic bug in place_item(action_key=None) when there's too many zones?
+    Works consistently from keyboard and manual testing.
     def test_zone_align_center(self):
+        """
+        Test items placed in a zone with an center align setting.
+        """
         self._assert_zone_align_item(12, 'Zone Center Align', 'center')
         self._assert_zone_align_item(13, 'Zone Center Align', 'center')
         self._assert_zone_align_item(14, 'Zone Center Align', 'center')
     '''
     def test_zone_align_center_key(self):
+        """
+        Test items placed in a zone with an center align setting, via keyboard.
+        """
         self._assert_zone_align_item(12, 'Zone Center Align', 'center', Keys.RETURN)
         self._assert_zone_align_item(13, 'Zone Center Align', 'center', Keys.RETURN)
         self._assert_zone_align_item(14, 'Zone Center Align', 'center', Keys.RETURN) 

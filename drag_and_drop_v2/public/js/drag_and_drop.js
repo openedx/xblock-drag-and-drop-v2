@@ -89,7 +89,13 @@ function DragNDropTemplates(url_name) {
             style['outline-color'] = item.color;
         }
         if (item.is_placed) {
-            if (!item.zone_align) {
+            // Allow for the input + button width for aligned items
+            if (item.zone_align) {
+                if (item.input) {
+                    style.marginRight = '190px';
+                }
+            }
+            else {
                 style.left = item.x_percent + "%";
                 style.top = item.y_percent + "%";
             }
