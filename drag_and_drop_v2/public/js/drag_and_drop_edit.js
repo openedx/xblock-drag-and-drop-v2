@@ -346,7 +346,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                             var alignNames = ["", "left", "center", "right"];
                             return alignNames;
                         },
-                        
+
                         changedInputHandler: function(ev) {
                             // Called when any of the inputs have changed.
                             var $changedInput = $(ev.currentTarget);
