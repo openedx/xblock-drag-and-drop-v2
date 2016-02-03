@@ -981,11 +981,12 @@ function DragAndDropBlock(runtime, element, configuration) {
     var markItemZoneAlign = function() {
         var zone_align = {};
         configuration.zones.forEach(function(zone) {
+            if (!zone.align) zone.align = '';
             zone_align[zone.title] = zone.align;
         });
         Object.keys(state.items).forEach(function(item_id) {
             var item = state.items[item_id];
-            item.zone_align = zone_align[item.zone]; 
+            item.zone_align = zone_align[item.zone] || '';
         });
     };
 
