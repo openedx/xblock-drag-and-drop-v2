@@ -283,13 +283,14 @@ class TestDragAndDropRenderZoneAlign(BaseIntegrationTest):
         self._page = self.go_to_page(self.PAGE_TITLE)
 
     def test_zone_align(self):
-        self.assertEquals(self._get_style('#-zone-none .item-wrapper', 'textAlign'), 'start')
-        self.assertEquals(self._get_style('#-zone-none .item-wrapper', 'textAlign', True), 'start')
-        self.assertEquals(self._get_style('#-zone-invalid .item-wrapper', 'textAlign'), 'start')
-        self.assertEquals(self._get_style('#-zone-invalid .item-wrapper', 'textAlign', True), 'start')
-        self.assertEquals(self._get_style('#-zone-left .item-wrapper', 'textAlign'), 'left')
-        self.assertEquals(self._get_style('#-zone-left .item-wrapper', 'textAlign', True), 'left')
-        self.assertEquals(self._get_style('#-zone-right .item-wrapper', 'textAlign'), 'right')
-        self.assertEquals(self._get_style('#-zone-right .item-wrapper', 'textAlign', True), 'right')
-        self.assertEquals(self._get_style('#-zone-center .item-wrapper', 'textAlign'), 'center')
-        self.assertEquals(self._get_style('#-zone-center .item-wrapper', 'textAlign', True), 'center')
+        expected_alignments = {
+            "#-zone-none": "start",
+            "#-zone-invalid": "start",
+            "#-zone-left": "left",
+            "#-zone-right": "right",
+            "#-zone-center": "center"
+        }
+        for zone_id, expected_alignment in expected_alignments.items():
+            selector = "{zone_id} .item-wrapper".format(zone_id=zone_id)
+            self.assertEquals(self._get_style(selector, "textAlign"), expected_alignment)
+            self.assertEquals(self._get_style(selector, "textAlign", computed=True), expected_alignment)

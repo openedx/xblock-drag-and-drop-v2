@@ -15,7 +15,7 @@ function DragAndDropEditBlock(runtime, element, params) {
         return Number(value).toFixed(Number(value) == parseInt(value) ? 0 : 1);
     });
     Handlebars.registerHelper('ifeq', function(v1, v2, options) {
-      if(v1 === v2) {
+      if (v1 === v2) {
         return options.fn(this);
       }
       return options.inverse(this);
