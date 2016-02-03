@@ -625,10 +625,10 @@ class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
 
         # Center-aligned items are display block
         if align == 'center':
-            self.assertEquals(self._get_style(zone_item, 'display'), 'block');
+            self.assertEquals(self._get_style(zone_item, 'display'), 'block')
         # but other aligned items are just inline-block
         else:
-            self.assertEquals(self._get_style(zone_item, 'display'), 'inline-block');
+            self.assertEquals(self._get_style(zone_item, 'display'), 'inline-block')
 
     def test_no_zone_align(self):
         """
@@ -714,5 +714,4 @@ class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
         """
         self._assert_zone_align_item(12, 'Zone Center Align', 'center', Keys.RETURN)
         self._assert_zone_align_item(13, 'Zone Center Align', 'center', Keys.RETURN)
-        self._assert_zone_align_item(14, 'Zone Center Align', 'center', Keys.RETURN) 
-
+        self._assert_zone_align_item(14, 'Zone Center Align', 'center', Keys.RETURN)

@@ -293,5 +293,3 @@ class TestDragAndDropRenderZoneAlign(BaseIntegrationTest):
         self.assertEquals(self._get_style('#-zone-right .item-wrapper', 'textAlign', True), 'right')
         self.assertEquals(self._get_style('#-zone-center .item-wrapper', 'textAlign'), 'center')
         self.assertEquals(self._get_style('#-zone-center .item-wrapper', 'textAlign', True), 'center')
-
-
