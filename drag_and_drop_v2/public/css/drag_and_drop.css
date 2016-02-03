@@ -142,6 +142,26 @@
     transform: translate(-50%, -50%); /* These blocks are to be centered on their absolute x,y position */
 }
 
+/* Placed options in an aligned zone */
+.xblock--drag-and-drop .zone .item-wrapper {
+    width: 100%;
+    position: relative;
+}
+.xblock--drag-and-drop .zone .item-align .option {
+    transform: none;
+    position: relative;
+    vertical-align: top;
+}
+.xblock--drag-and-drop .zone .item-align-left {
+    text-align: left;
+}
+.xblock--drag-and-drop .zone .item-align-right {
+    text-align: right;
+}
+.xblock--drag-and-drop .zone .item-align-center {
+    text-align: center;
+}
+
 /* Focused option */
 .xblock--drag-and-drop .drag-container .item-bank .option:focus,
 .xblock--drag-and-drop .drag-container .item-bank .option:hover,
@@ -270,26 +290,6 @@
 /* Focused zone */
 .xblock--drag-and-drop .zone:focus {
     border: 2px solid #a5a5a5;
-}
-
-/* Zone that aligns its items */
-.xblock--drag-and-drop .zone .item-wrapper {
-    width: 100%;
-}
-.xblock--drag-and-drop .zone .item-align .option {
-    display: inline-block;
-    vertical-align: top;
-    position: relative;
-    transform: none;
-}
-.xblock--drag-and-drop .zone .item-align-left {
-    text-align: left;
-}
-.xblock--drag-and-drop .zone .item-align-right {
-    text-align: right;
-}
-.xblock--drag-and-drop .zone .item-align-center {
-    text-align: center;
 }
 
 .xblock--drag-and-drop .drag-container .target .zone p {

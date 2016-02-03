@@ -89,12 +89,9 @@ function DragNDropTemplates(url_name) {
             style['outline-color'] = item.color;
         }
         if (item.is_placed) {
-            // If an item_zone is provided, and the zone is aligned, let CSS position the item.
-            // Otherwise, use absolute positioning.
-            if (!ctx.item_zone || !ctx.item_zone.align) {
+            if (!item.zone_align) {
                 style.left = item.x_percent + "%";
                 style.top = item.y_percent + "%";
-                style.position = "absolute";
             }
             if (item.widthPercent) {
                 style.width = item.widthPercent + "%";
@@ -159,10 +156,14 @@ function DragNDropTemplates(url_name) {
         var className = ctx.display_zone_labels ? 'zone-name' : 'zone-name sr';
         var selector = ctx.display_zone_borders ? 'div.zone.zone-with-borders' : 'div.zone';
 
-        // Mark the zone's item alignment
+        // If zone is aligned, mark its item alignment
+        // and render its placed items as children
         var item_wrapper = 'div.item-wrapper';
+        var items_in_zone = [];
         if (zone.align) {
             item_wrapper += '.item-align.item-align-' + zone.align;
+            var is_item_in_zone = function(i) { return i.is_placed && (i.zone === zone.title); };
+            items_in_zone = $.grep(ctx.items, is_item_in_zone);
         }
 
         // Render the items in the zone
@@ -181,6 +182,7 @@ function DragNDropTemplates(url_name) {
                         'aria-dropeffect': 'move',
                         'data-uid': zone.uid,
                         'data-zone_id': zone.id,
+                        'data-zone_align': zone.align,
                         'role': 'button',
                     },
                     style: {
@@ -251,8 +253,13 @@ function DragNDropTemplates(url_name) {
         if (ctx.popup_html && !ctx.last_action_correct) {
             popupSelector += '.popup-incorrect';
         }
+        // Render only items_in_bank and items_placed_unaligned here;
+        // items placed in aligned zones will be rendered by zoneTemplate.
         var is_item_placed = function(i) { return i.is_placed; };
+        var items_placed = $.grep(ctx.items, is_item_placed);
         var items_in_bank = $.grep(ctx.items, is_item_placed, true);
+        var is_item_placed_unaligned = function(i) { return i.is_placed && !i.zone_align; };
+        var items_placed_unaligned = $.grep(items_placed, is_item_placed_unaligned);
         return (
             h('section.themed-xblock.xblock--drag-and-drop', [
                 problemTitle,
@@ -289,6 +296,7 @@ function DragNDropTemplates(url_name) {
                             ]
                         ),
                         renderCollection(zoneTemplate, ctx.zones, ctx),
+                        renderCollection(itemTemplate, items_placed_unaligned, ctx)
                     ]
                     ),
                 ]),
@@ -352,6 +360,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             state = stateResult[0]; // stateResult is an array of [data, statusText, jqXHR]
             migrateConfiguration(bgImg.width);
             migrateState(bgImg.width, bgImg.height);
+            markItemZoneAlign();
             bgImgNaturalWidth = bgImg.width;
 
             // Set up event handlers:
@@ -599,34 +608,33 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var placeItem = function($zone, $item) {
+        var item_id;
         var $anchor;
         if ($item !== undefined) {
+            item_id = $item.data('value');
             // Element was placed using the mouse,
             // so use relevant properties of *item* when calculating new position below.
             $anchor = $item;
         } else {
+            item_id = $selectedItem.data('value');
             // Element was placed using the keyboard,
             // so use relevant properties of *zone* when calculating new position below.
             $anchor = $zone;
-
-            // Set $item so it can be used below
-            $item = $selectedItem;
         }
         var zone = String($zone.data('uid'));
-        var item_id = $item.data('value');
         var zone_id = $zone.data('zone_id');
+        var zone_align = $zone.data('zone_align');
         var $target_img = $root.find('.target-img');
 
-        // Calculate the position of the item relative to the anchor element
-        var x_pos = $anchor.offset().left + ($anchor.outerWidth()/2);
-        var y_pos = $anchor.offset().top + ($anchor.outerHeight()/2);
-
-        // Calculate position as a percentage relative to the target image
-        var x_pos_percent = (x_pos - $target_img.offset().left) / $target_img.width() * 100;
-        var y_pos_percent = (y_pos - $target_img.offset().top) / $target_img.height() * 100;
+        // Calculate the position of the item to place relative to the image.
+        var x_pos = $anchor.offset().left + ($anchor.outerWidth()/2) - $target_img.offset().left;
+        var y_pos = $anchor.offset().top + ($anchor.outerHeight()/2) - $target_img.offset().top;
+        var x_pos_percent = x_pos / $target_img.width() * 100;
+        var y_pos_percent = y_pos / $target_img.height() * 100;
 
         state.items[item_id] = {
             zone: zone,
+            zone_align: zone_align,
             x_percent: x_pos_percent,
             y_percent: y_pos_percent,
             submitting_location: true,
@@ -901,6 +909,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             if (item_user_state) {
                 itemProperties.is_placed = true;
                 itemProperties.zone = item_user_state.zone;
+                itemProperties.zone_align = item_user_state.zone_align;
                 itemProperties.x_percent = item_user_state.x_percent;
                 itemProperties.y_percent = item_user_state.y_percent;
             }
@@ -982,6 +991,22 @@ function DragAndDropBlock(runtime, element, configuration) {
                 delete item.top;
                 delete item.absolute;
             }
+        });
+    };
+
+    /**
+     * markItemZoneAlign: Mark the items placed in an aligned zone with the zone
+     * alignment, so they can be properly placed inside the zone.
+     * We have do this in JS, not python, since zone configurations may change.
+     */
+    var markItemZoneAlign = function() {
+        var zone_align = {};
+        configuration.zones.forEach(function(zone) {
+            zone_align[zone.title] = zone.align;
+        });
+        Object.keys(state.items).forEach(function(item_id) {
+            var item = state.items[item_id];
+            item.zone_align = zone_align[item.zone]; 
         });
     };
 
