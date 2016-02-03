@@ -160,6 +160,7 @@
     height: 128px;
 }
 
+.xblock--drag-and-drop--editor .zones-form .zones-form-help,
 .xblock--drag-and-drop--editor .target-image-form .target-image-form-help,
 .xblock--drag-and-drop--editor .item-styles-form .item-styles-form-help {
     margin-top: 5px;

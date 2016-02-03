@@ -9,10 +9,6 @@
     </div>
 </script>
 
-<script id="zone-align-dropdown-tpl" type="text/html">
-    <option value="{{ value }}" {{ selected }}>{{ value }}</option>
-</script>
-
 <script id="zone-input-tpl" type="text/html">
     <div class="zone-row {{ id }}" data-index="{{index}}">
         <label for="zone-{{index}}-title">{{i18n "Text"}}</label>
@@ -55,9 +51,32 @@
                    value="{{ y }}" />
         </div>
         <div class="alignment">
-            <label for="zone-{{index}}-align">align</label>
+            <label for="zone-{{index}}-align">
+                {{i18n "Alignment"}}
+            </label>
             <select id="zone-{{index}}-align"
-                   class="align-select">{{ align_dropdown }}</select>
+                   class="align-select"
+                   aria-describedby="zone-align-description" >
+                <option value="" 
+                    {{#ifeq align "" }}selected{{/ifeq}}>
+                    {{i18n "not aligned"}}
+                </option>
+                <option value="left" 
+                    {{#ifeq align "left" }}selected{{/ifeq}}>
+                    {{i18n "left aligned" }}
+                </option>
+                <option value="center" 
+                    {{#ifeq align "center" }}selected{{/ifeq}}>
+                    {{i18n "center aligned" }}
+                </option>
+                <option value="right"
+                    {{#ifeq align "right" }}selected{{/ifeq}}>
+                    {{i18n "right aligned" }}
+                </option>
+            </select>
+            <div id="zone-align-description" class="zones-form-help">
+                {{i18n "Align dropped items to the left, center, or right.  Default is no alignment."}}
+            </div>
         </div>
     </div>
 </script>
