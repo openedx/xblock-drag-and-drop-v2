@@ -160,7 +160,7 @@
       },
       "zone": "Zone Right Align",
       "imageURL": "",
-      "id":10 
+      "id": 10 
     },
     {
       "displayName": "DDDD",
@@ -207,6 +207,4 @@
     "start": "Intro",
     "finish": "Final"
   },
-  "targetImg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIiBzdHlsZT0iYmFja2dyb3VuZDogI2VlZjsiPjwvc3ZnPg==",
-  "targetImgDescription": "This describes the target image"
 }

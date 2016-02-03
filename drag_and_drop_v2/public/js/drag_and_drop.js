@@ -79,15 +79,14 @@ function DragNDropTemplates(url_name) {
             style['outline-color'] = item.color;
         }
         if (item.is_placed) {
-            // Allow for the input + button width for aligned items
-            if (item.zone_align) {
+            if (item.zone_align === 'none') {
+                style.left = item.x_percent + "%";
+                style.top = item.y_percent + "%";
+            } else {
+                // Allow for the input + button width for aligned items
                 if (item.input) {
                     style.marginRight = '190px';
                 }
-            }
-            else {
-                style.left = item.x_percent + "%";
-                style.top = item.y_percent + "%";
             }
             if (item.widthPercent) {
                 style.width = item.widthPercent + "%";
@@ -156,7 +155,7 @@ function DragNDropTemplates(url_name) {
         // and render its placed items as children
         var item_wrapper = 'div.item-wrapper';
         var items_in_zone = [];
-        if (zone.align) {
+        if (zone.align !== 'none') {
             item_wrapper += '.item-align.item-align-' + zone.align;
             var is_item_in_zone = function(i) { return i.is_placed && (i.zone === zone.title); };
             items_in_zone = $.grep(ctx.items, is_item_in_zone);
@@ -171,7 +170,7 @@ function DragNDropTemplates(url_name) {
                         'dropzone': 'move',
                         'aria-dropeffect': 'move',
                         'data-zone': zone.title,
-                        'data-zone_align': zone.align,
+                        'data-zonealign': zone.align,
                         'role': 'button',
                     },
                     style: {
@@ -247,7 +246,7 @@ function DragNDropTemplates(url_name) {
         var is_item_placed = function(i) { return i.is_placed; };
         var items_placed = $.grep(ctx.items, is_item_placed);
         var items_in_bank = $.grep(ctx.items, is_item_placed, true);
-        var is_item_placed_unaligned = function(i) { return i.is_placed && !i.zone_align; };
+        var is_item_placed_unaligned = function(i) { return i.zone_align === 'none'; };
         var items_placed_unaligned = $.grep(items_placed, is_item_placed_unaligned);
         return (
             h('section.themed-xblock.xblock--drag-and-drop', [
@@ -608,7 +607,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             $anchor = $zone;
         }
         var zone = $zone.data('zone');
-        var zone_align = $zone.data('zone_align');
+        var zone_align = $zone.data('zonealign');
         var $target_img = $root.find('.target-img');
 
         // Calculate the position of the item to place relative to the image.
@@ -985,14 +984,14 @@ function DragAndDropBlock(runtime, element, configuration) {
      * We have do this in JS, not python, since zone configurations may change.
      */
     var markItemZoneAlign = function() {
-        var zone_align = {};
+        var zone_alignments = {};
         configuration.zones.forEach(function(zone) {
-            if (!zone.align) zone.align = '';
-            zone_align[zone.title] = zone.align;
+            if (!zone.align) zone.align = 'none';
+            zone_alignments[zone.title] = zone.align;
         });
         Object.keys(state.items).forEach(function(item_id) {
             var item = state.items[item_id];
-            item.zone_align = zone_align[item.zone] || '';
+            item.zone_align = zone_alignments[item.zone] || 'none';
         });
     };
 

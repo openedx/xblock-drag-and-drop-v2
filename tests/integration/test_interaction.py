@@ -602,15 +602,15 @@ class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
         Ensure that they are children of the zone.
         """
         # parent container has the expected alignment
-        zone_selector = "div[data-zone='%s'] .item-align" % zone_id
-        self.assertEquals(self._get_style(zone_selector, 'textAlign'), align)
+        item_wrapper_selector = "div[data-zone='{zone_id}'] .item-wrapper".format(zone_id=zone_id)
+        self.assertEquals(self._get_style(item_wrapper_selector, 'textAlign'), align)
 
         # Items placed in zones with align setting are children of the zone
-        zone_item = '%s .option' % zone_selector
-        prev_placed_items = self._page.find_elements_by_css_selector(zone_item)
+        zone_item_selector = '%s .option' % item_wrapper_selector
+        prev_placed_items = self._page.find_elements_by_css_selector(zone_item_selector)
 
         self.place_item(item_id, zone_id, action_key)
-        placed_items = self._page.find_elements_by_css_selector(zone_item)
+        placed_items = self._page.find_elements_by_css_selector(zone_item_selector)
         self.assertEquals(len(placed_items), len(prev_placed_items) + 1)
 
         # Not children of the target
@@ -618,17 +618,17 @@ class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
         self.assertEquals(len(self._page.find_elements_by_css_selector(target_item)), 0)
 
         # Aligned items are relative positioned, with no transform or top/left
-        self.assertEquals(self._get_style(zone_item, 'position'), 'relative')
-        self.assertEquals(self._get_style(zone_item, 'transform'), 'none')
-        self.assertEquals(self._get_style(zone_item, 'left'), '0px')
-        self.assertEquals(self._get_style(zone_item, 'top'), '0px')
+        self.assertEquals(self._get_style(zone_item_selector, 'position'), 'relative')
+        self.assertEquals(self._get_style(zone_item_selector, 'transform'), 'none')
+        self.assertEquals(self._get_style(zone_item_selector, 'left'), '0px')
+        self.assertEquals(self._get_style(zone_item_selector, 'top'), '0px')
 
         # Center-aligned items are display block
         if align == 'center':
-            self.assertEquals(self._get_style(zone_item, 'display'), 'block')
+            self.assertEquals(self._get_style(zone_item_selector, 'display'), 'block')
         # but other aligned items are just inline-block
         else:
-            self.assertEquals(self._get_style(zone_item, 'display'), 'inline-block')
+            self.assertEquals(self._get_style(zone_item_selector, 'display'), 'inline-block')
 
     def test_no_zone_align(self):
         """
@@ -637,18 +637,18 @@ class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
         """
         zone_id = "Zone No Align"
         self.place_item(0, zone_id)
-        zone_item = "div[data-zone='%s'] .item-align .option" % zone_id
-        self.assertEquals(len(self._page.find_elements_by_css_selector(zone_item)), 0)
+        zone_item_selector = "div[data-zone='{zone_id}'] .item-wrapper .option".format(zone_id=zone_id)
+        self.assertEquals(len(self._page.find_elements_by_css_selector(zone_item_selector)), 0)
 
-        target_item = '.target > .option'
-        placed_item = self._page.find_elements_by_css_selector(target_item)
-        self.assertEquals(len(placed_item), 1)
-        self.assertEquals(placed_item[0].get_attribute('data-value'), '0')
+        target_item_selector = '.target > .option'
+        placed_items = self._page.find_elements_by_css_selector(target_item_selector)
+        self.assertEquals(len(placed_items), 1)
+        self.assertEquals(placed_items[0].get_attribute('data-value'), '0')
 
         # Non-aligned items are absolute positioned, with top/bottom set to px
-        self.assertEquals(self._get_style(target_item, 'position'), 'absolute')
-        self.assertRegexpMatches(self._get_style(target_item, 'left'), r'^\d+(\.\d+)?px$')
-        self.assertRegexpMatches(self._get_style(target_item, 'top'), r'^\d+(\.\d+)?px$')
+        self.assertEquals(self._get_style(target_item_selector, 'position'), 'absolute')
+        self.assertRegexpMatches(self._get_style(target_item_selector, 'left'), r'^\d+(\.\d+)?px$')
+        self.assertRegexpMatches(self._get_style(target_item_selector, 'top'), r'^\d+(\.\d+)?px$')
 
     def test_zone_align_invalid(self):
         """
@@ -697,20 +697,13 @@ class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
         self._assert_zone_align_item(9, 'Zone Right Align', 'right', Keys.RETURN)
         self._assert_zone_align_item(10, 'Zone Right Align', 'right', Keys.RETURN)
         self._assert_zone_align_item(11, 'Zone Right Align', 'right', Keys.RETURN)
-    '''
-    FIXME Erratic bug in place_item(action_key=None) when there's too many zones?
-    Works consistently from keyboard and manual testing.
-    def test_zone_align_center(self):
-        """
-        Test items placed in a zone with an center align setting.
-        """
-        self._assert_zone_align_item(12, 'Zone Center Align', 'center')
-        self._assert_zone_align_item(13, 'Zone Center Align', 'center')
-        self._assert_zone_align_item(14, 'Zone Center Align', 'center')
-    '''
+
     def test_zone_align_center_key(self):
         """
         Test items placed in a zone with an center align setting, via keyboard.
+
+        note: Erratic bug in place_item(action_key=None) when there's too many zones?
+        Works consistently from keyboard and manual testing.
         """
         self._assert_zone_align_item(12, 'Zone Center Align', 'center', Keys.RETURN)
         self._assert_zone_align_item(13, 'Zone Center Align', 'center', Keys.RETURN)
