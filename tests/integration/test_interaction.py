@@ -582,13 +582,14 @@ class MultipleBlocksDataInteraction(InteractionTestBase, BaseIntegrationTest):
         self.interact_with_keyboard_help(scroll_down=900)
         self.interact_with_keyboard_help(scroll_down=0, use_keyboard=True)
 
-
+@ddt
 class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
     """
     Verifying Drag and Drop XBlock interactions using zone alignment.
     """
     PAGE_TITLE = 'Drag and Drop v2'
     PAGE_ID = 'drag_and_drop_v2'
+    ACTION_KEYS = (None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
 
     def setUp(self):
         super(ZoneAlignInteractionTest, self).setUp()
@@ -606,7 +607,7 @@ class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
         self.assertEquals(self._get_style(item_wrapper_selector, 'textAlign'), align)
 
         # Items placed in zones with align setting are children of the zone
-        zone_item_selector = '%s .option' % item_wrapper_selector
+        zone_item_selector = '{item_wrapper_selector} .option'.format(item_wrapper_selector=item_wrapper_selector)
         prev_placed_items = self._page.find_elements_by_css_selector(zone_item_selector)
 
         self.place_item(item_id, zone_id, action_key)
@@ -650,61 +651,19 @@ class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
         self.assertRegexpMatches(self._get_style(target_item_selector, 'left'), r'^\d+(\.\d+)?px$')
         self.assertRegexpMatches(self._get_style(target_item_selector, 'top'), r'^\d+(\.\d+)?px$')
 
-    def test_zone_align_invalid(self):
-        """
-        Test items placed in a zone with an invalid align setting.
-        """
-        self._assert_zone_align_item(3, 'Zone Invalid Align', 'start')
-        self._assert_zone_align_item(4, 'Zone Invalid Align', 'start')
-        self._assert_zone_align_item(5, 'Zone Invalid Align', 'start')
-
-    def test_zone_align_invalid_key(self):
-        """
-        Test items placed in a zone with an invalid align setting, via keyboard.
-        """
-        self._assert_zone_align_item(3, 'Zone Invalid Align', 'start', Keys.RETURN)
-        self._assert_zone_align_item(4, 'Zone Invalid Align', 'start', Keys.RETURN)
-        self._assert_zone_align_item(5, 'Zone Invalid Align', 'start', Keys.RETURN)
-
-    def test_zone_align_left(self):
-        """
-        Test items placed in a zone with an left align setting.
-        """
-        self._assert_zone_align_item(6, 'Zone Left Align', 'left')
-        self._assert_zone_align_item(7, 'Zone Left Align', 'left')
-        self._assert_zone_align_item(8, 'Zone Left Align', 'left')
-
-    def test_zone_align_left_key(self):
-        """
-        Test items placed in a zone with an left align setting, via keyboard.
-        """
-        self._assert_zone_align_item(6, 'Zone Left Align', 'left', Keys.RETURN)
-        self._assert_zone_align_item(7, 'Zone Left Align', 'left', Keys.RETURN)
-        self._assert_zone_align_item(8, 'Zone Left Align', 'left', Keys.RETURN)
-
-    def test_zone_align_right(self):
-        """
-        Test items placed in a zone with a right align setting.
-        """
-        self._assert_zone_align_item(9, 'Zone Right Align', 'right')
-        self._assert_zone_align_item(10, 'Zone Right Align', 'right')
-        self._assert_zone_align_item(11, 'Zone Right Align', 'right')
-
-    def test_zone_align_right_key(self):
-        """
-        Test items placed in a zone with an right align setting, via keyboard.
-        """
-        self._assert_zone_align_item(9, 'Zone Right Align', 'right', Keys.RETURN)
-        self._assert_zone_align_item(10, 'Zone Right Align', 'right', Keys.RETURN)
-        self._assert_zone_align_item(11, 'Zone Right Align', 'right', Keys.RETURN)
-
-    def test_zone_align_center_key(self):
-        """
-        Test items placed in a zone with an center align setting, via keyboard.
-
-        note: Erratic bug in place_item(action_key=None) when there's too many zones?
-        Works consistently from keyboard and manual testing.
-        """
-        self._assert_zone_align_item(12, 'Zone Center Align', 'center', Keys.RETURN)
-        self._assert_zone_align_item(13, 'Zone Center Align', 'center', Keys.RETURN)
-        self._assert_zone_align_item(14, 'Zone Center Align', 'center', Keys.RETURN)
+    @data(
+        ([3, 4, 5], "Zone Invalid Align", "start"),
+        ([6, 7, 8], "Zone Left Align", "left"),
+        ([9, 10, 11], "Zone Right Align", "right"),
+        ([12, 13, 14], "Zone Center Align", "center"),
+    )
+    @unpack
+    def test_zone_align(self, items, zone, alignment):
+        reset = self._get_reset_button()
+        for item in items:
+            for action_key in self.ACTION_KEYS:
+                self._assert_zone_align_item(item, zone, alignment, action_key)
+                # Reset exercise
+                self.scroll_down(pixels=200)
+                reset.click()
+                self.scroll_down(pixels=0)
