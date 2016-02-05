@@ -582,6 +582,7 @@ class MultipleBlocksDataInteraction(InteractionTestBase, BaseIntegrationTest):
         self.interact_with_keyboard_help(scroll_down=900)
         self.interact_with_keyboard_help(scroll_down=0, use_keyboard=True)
 
+
 @ddt
 class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
     """
