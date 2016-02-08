@@ -109,7 +109,7 @@ In the next step, you set the URL and description for the background
 image and define the properties of the drop zones. For each zone you
 can specify the text that should be rendered inside it (the "zone
 label"), how wide and tall it should be, and where it should be placed
-on the background image.  In this step you can also specify whether you
+on the background image. In this step you can also specify whether you
 would like zone labels to be shown to learners or not, as well as
 whether or not to display borders outlining the zones. It is possible
 to define an arbitrary number of drop zones as long as their labels
