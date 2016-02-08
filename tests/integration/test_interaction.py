@@ -120,8 +120,12 @@ class InteractionTestBase(object):
     def send_input(self, item_value, value):
         element = self._get_item_by_value(item_value)
         self.wait_until_visible(element)
-        element.find_element_by_class_name('input').send_keys(value)
-        element.find_element_by_class_name('submit-input').click()
+        input_element = element.find_element_by_class_name('input')
+        self.wait_until_visible(input_element)
+        input_element.send_keys(value)
+        submit_element = element.find_element_by_class_name('submit-input')
+        self.wait_until_visible(submit_element)
+        submit_element.click()
 
     def assert_grabbed_item(self, item):
         self.assertEqual(item.get_attribute('aria-grabbed'), 'true')
