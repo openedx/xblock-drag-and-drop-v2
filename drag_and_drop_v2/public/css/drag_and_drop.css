@@ -151,6 +151,8 @@
     transform: none;
     position: relative;
     vertical-align: top;
+    margin-right: 2px;
+    margin-bottom: 2px;
 }
 .xblock--drag-and-drop .zone .item-align-left {
     text-align: left;
@@ -163,7 +165,8 @@
 }
 .xblock--drag-and-drop .zone .item-align-center .option {
     display: block;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Focused option */
