@@ -103,7 +103,7 @@ above the background image, the introductory feedback (shown
 initially), and the final feedback (shown after the learner
 successfully completes the drag and drop problem).
 
-![Drop zone edit](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/7bb3fa837764af8f58129093df85ff6845a927c0/doc/img/edit-view-zones.png)
+![Drop zone edit](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/ebd0b52d971bbf93b9c3873f310bd72d336d865b/doc/img/edit-view-zones.png)
 
 In the next step, you set the URL and description for the background
 image and define the properties of the drop zones. For each zone you
