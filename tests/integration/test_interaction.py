@@ -134,7 +134,9 @@ class InteractionTestBase(object):
         item = self._get_placed_item_by_value(item_value)
         self.wait_until_visible(item)
         item_content = item.find_element_by_css_selector('.item-content')
+        self.wait_until_visible(item_content)
         item_description = item.find_element_by_css_selector('.sr')
+        self.wait_until_visible(item_description)
         item_description_id = '-item-{}-description'.format(item_value)
 
         self.assertIsNone(item.get_attribute('tabindex'))
