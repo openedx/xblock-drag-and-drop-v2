@@ -205,34 +205,28 @@ function DragAndDropEditBlock(runtime, element, params) {
                 },
                 form: {
                     zone: {
-                        count: 0,
-                        formCount: 0,
+                        totalZonesCreated: 0, // This counter is used for HTML IDs. Never decremented.
                         zoneObjects: [],
-                        getObjByIndex: function(num) {
+                        getZoneObjByUID: function(uid) {
                             for (var i = 0; i < _fn.build.form.zone.zoneObjects.length; i++) {
-                                if (_fn.build.form.zone.zoneObjects[i].index == num)
+                                if (_fn.build.form.zone.zoneObjects[i].uid == uid) {
                                     return _fn.build.form.zone.zoneObjects[i];
+                                }
                             }
                         },
                         add: function(oldZone) {
-                            var inputTemplate = _fn.tpl.zoneInput,
-                                name = 'zone-',
-                                $elements = _fn.build.$el,
-                                num;
-
                             if (!oldZone) oldZone = {};
-
-                            _fn.build.form.zone.count++;
-                            _fn.build.form.zone.formCount++;
-                            num = _fn.build.form.zone.count;
-                            name += num;
+                            var num = _fn.build.form.zone.zoneObjects.length + 1;
 
                             // Update zone obj
                             var zoneObj = {
                                 title: oldZone.title || 'Zone ' + num,
                                 description: oldZone.description,
-                                id: name,
-                                index: num,
+                                // uid: unique ID for this zone. For backwards compatibility,
+                                // this field cannot be called "id" and must inherit the "title"
+                                // property if no 'uid' value is present, since old versions of
+                                // this block used the title as the primary identifier.
+                                uid: oldZone.uid || oldZone.title || _fn.build.form.zone.generateUID(),
                                 width: oldZone.width || 200,
                                 height: oldZone.height || 100,
                                 x: oldZone.x || 0,
@@ -241,45 +235,55 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                             _fn.build.form.zone.zoneObjects.push(zoneObj);
 
-                            // Add fields to zone position form
-                            $zoneNode = $(inputTemplate(zoneObj));
-                            $zoneNode.data('index', num);
-                            $elements.zones.form.append($zoneNode);
+                            // Add fields to zone form
+                            $zoneNode = $(_fn.tpl.zoneInput({
+                                zone: zoneObj,
+                                index: _fn.build.form.zone.totalZonesCreated++,
+                            }));
+                            _fn.build.$el.zones.form.append($zoneNode);
                             _fn.build.form.zone.enableDelete();
 
                             // Add zone div to target
                             _fn.build.form.zone.renderZonesPreview();
 
                         },
+                        generateUID: function() {
+                            // Generate a unique ID for a new zone.
+                            for (var i = 1; true; i++) {
+                                var uid = "zone-" + i;
+                                if (!_fn.build.form.zone.getZoneObjByUID(uid)) {
+                                    return uid;
+                                }
+                            }
+                        },
                         remove: function(e) {
                             var $el = $(e.currentTarget).closest('.zone-row'),
                                 classes = $el.attr('class'),
                                 id = classes.slice(classes.indexOf('zone-row') + 9),
-                                index = $el.data('index'),
+                                uid = String($el.data('uid')),  // cast to string since UID must be string but .data() converts data-uid="5" to 5
                                 array_index;
 
                             e.preventDefault();
                             $el.detach();
 
-                            // Find the index of the zone in the array and remove it.
+                            // Find the uid of the zone in the array and remove it.
                             for (array_index = 0; array_index < _fn.build.form.zone.zoneObjects.length;
                                  array_index++) {
-                                if (_fn.build.form.zone.zoneObjects[array_index].index == index) break;
+                                if (_fn.build.form.zone.zoneObjects[array_index].uid == uid) break;
                             }
                             _fn.build.form.zone.zoneObjects.splice(array_index, 1);
                             _fn.build.form.zone.renderZonesPreview();
 
-                            _fn.build.form.zone.formCount--;
                             _fn.build.form.zone.disableDelete();
 
                         },
                         enableDelete: function() {
-                            if (_fn.build.form.zone.formCount > 1) {
+                            if (_fn.build.form.zone.zoneObjects.length > 1) {
                                 _fn.build.$el.zones.form.find('.remove-zone').removeClass('hidden');
                             }
                         },
                         disableDelete: function() {
-                            if (_fn.build.form.zone.formCount === 1) {
+                            if (_fn.build.form.zone.zoneObjects.length === 1) {
                                 _fn.build.$el.zones.form.find('.remove-zone').addClass('hidden');
                             }
                         },
@@ -296,7 +300,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                             this.zoneObjects.forEach(function(zoneObj) {
                                 _fn.build.$el.zonesPreview.append(
                                     _fn.tpl.zoneElement({
-                                        id: zoneObj.id,
+                                        uid: zoneObj.uid,
                                         title: zoneObj.title,
                                         description: zoneObj.description,
                                         x_percent: (+zoneObj.x) / imgWidth * 100,
@@ -307,23 +311,11 @@ function DragAndDropEditBlock(runtime, element, params) {
                                 );
                             });
                         },
-                        getZoneNames: function() {
-                            var zoneNames = [];
-                            var $form = _fn.build.$el.zones.form.find('.title');
-
-                            $form.each(function(i, el) {
-                                var val = $(el).val();
-                                if (val.length > 0) {
-                                    zoneNames.push(val);
-                                }
-                            });
-                            return zoneNames;
-                        },
                         changedInputHandler: function(ev) {
                             // Called when any of the inputs have changed.
                             var $changedInput = $(ev.currentTarget);
                             var $row = $changedInput.closest('.zone-row');
-                            var record = _fn.build.form.zone.getObjByIndex($row.data('index'));
+                            var record = _fn.build.form.zone.getZoneObjByUID(String($row.data('uid')));
                             if ($changedInput.hasClass('title')) {
                                 record.title = $changedInput.val();
                             } else if ($changedInput.hasClass('width')) {
@@ -344,18 +336,26 @@ function DragAndDropEditBlock(runtime, element, params) {
                             _fn.build.form.zone.renderZonesPreview();
                         },
                     },
-                    createDropdown: function(selected) {
-                        var tpl = _fn.tpl.zoneDropdown,
-                            dropdown = [],
-                            html,
-                            dropdown_items = _fn.build.form.zone.getZoneNames().concat('none');
+                    createDropdown: function(selectedUID) {
+                        var template = _fn.tpl.zoneDropdown;
+                        var dropdown = [];
+                        var zoneObjects = _fn.build.form.zone.zoneObjects;
 
-                        for (var i=0; i<dropdown_items.length; i++) {
-                            var is_sel = (dropdown_items[i] == selected) ? 'selected' : '';
-                            dropdown.push(tpl({ value: dropdown_items[i], selected: is_sel }));
-                        }
+                        zoneObjects.forEach(function(zoneObj) {
+                            dropdown.push(template({
+                                uid: zoneObj.uid,
+                                title: zoneObj.title,
+                                selected: (zoneObj.uid == selectedUID) ? 'selected' : '',
+                            }));
+                        });
 
-                        html = dropdown.join('');
+                        dropdown.push(template({
+                            uid: "none",
+                            title: window.gettext("None"),
+                            selected: (selectedUID === "none") ? 'selected' : '',
+                        }));
+
+                        var html = dropdown.join('');
                         return new Handlebars.SafeString(html);
                     },
                     feedback: function($form) {
