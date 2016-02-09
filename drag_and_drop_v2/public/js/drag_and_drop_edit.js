@@ -81,6 +81,10 @@ function DragAndDropEditBlock(runtime, element, params) {
                     return success
                 },
 
+                scrollToTop: function() {
+                    $('.drag-builder', element).scrollTop(0);
+                },
+
                 clickHandlers: function() {
                     var $fbkTab = _fn.build.$el.feedback.tab,
                         $zoneTab = _fn.build.$el.zones.tab,
@@ -123,6 +127,7 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                         $fbkTab.addClass('hidden');
                         $zoneTab.removeClass('hidden');
+                        self.scrollToTop();
 
                         $(this).one('click', function loadThirdTab(e) {
                             // $zoneTab -> $itemTab
@@ -142,6 +147,7 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                             $zoneTab.addClass('hidden');
                             $itemTab.removeClass('hidden');
+                            self.scrollToTop();
 
                             $(this).addClass('hidden');
                             $('.save-button', element).parent()
@@ -161,6 +167,7 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                     $zoneTab
                         .on('click', '.add-zone', function(e) {
+                            e.preventDefault();
                             _fn.build.form.zone.add();
                         })
                         .on('click', '.remove-zone', _fn.build.form.zone.remove)
@@ -198,6 +205,7 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                     $itemTab
                         .on('click', '.add-item', function(e) {
+                            e.preventDefault();
                             _fn.build.form.item.add();
                         })
                         .on('click', '.remove-item', _fn.build.form.item.remove)
