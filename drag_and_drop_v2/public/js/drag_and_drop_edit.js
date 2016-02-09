@@ -201,7 +201,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                             _fn.build.form.item.add();
                         })
                         .on('click', '.remove-item', _fn.build.form.item.remove)
-                        .on('click', '.advanced-link a', _fn.build.form.item.showAdvancedSettings);
+                        .on('click', '.advanced-link a', _fn.build.form.item.showAdvancedSettings)
+                        .on('input', '.item-image-url', _fn.build.form.item.imageURLChanged);
                 },
                 form: {
                     zone: {
@@ -415,6 +416,12 @@ function DragAndDropEditBlock(runtime, element, params) {
                             _fn.build.form.item.count--;
                             _fn.build.form.item.disableDelete();
 
+                        },
+                        imageURLChanged: function(e) {
+                            // Mark the image description field as required if (and only if) an image is specified.
+                            var $imageUrlField = $(e.currentTarget);
+                            var $descriptionField = $imageUrlField.closest('.item').find('.item-image-description');
+                            $descriptionField.prop("required", $imageUrlField.val() != "");
                         },
                         enableDelete: function() {
                             if (_fn.build.form.item.count > 1) {
