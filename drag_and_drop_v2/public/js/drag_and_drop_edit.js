@@ -181,13 +181,13 @@ function DragAndDropEditBlock(runtime, element, params) {
                                 _fn.build.$el.targetImage.attr('src', new_img_url);
                             }
                             _fn.data.targetImg = new_img_url;
-
+                        })
+                        .on('input', '.target-image-form #background-description', function(e) {
                             var new_description = $.trim(
                                 $('.target-image-form #background-description', element).val()
                             );
                             _fn.build.$el.targetImage.attr('alt', new_description);
                             _fn.data.targetImgDescription = new_description;
-
                         })
                         .on('click', '.display-labels-form input', function(e) {
                             _fn.data.displayLabels = $('.display-labels-form input', element).is(':checked');
