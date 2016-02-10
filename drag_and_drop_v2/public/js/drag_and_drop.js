@@ -79,8 +79,15 @@ function DragNDropTemplates(url_name) {
             style['outline-color'] = item.color;
         }
         if (item.is_placed) {
-            style.left = item.x_percent + "%";
-            style.top = item.y_percent + "%";
+            if (item.zone_align === 'none') {
+                style.left = item.x_percent + "%";
+                style.top = item.y_percent + "%";
+            } else {
+                // Allow for the input + button width for aligned items
+                if (item.input) {
+                    style.marginRight = '190px';
+                }
+            }
             if (item.widthPercent) {
                 style.width = item.widthPercent + "%";
                 style.maxWidth = item.widthPercent + "%"; // default maxWidth is ~33%
@@ -143,6 +150,16 @@ function DragNDropTemplates(url_name) {
     var zoneTemplate = function(zone, ctx) {
         var className = ctx.display_zone_labels ? 'zone-name' : 'zone-name sr';
         var selector = ctx.display_zone_borders ? 'div.zone.zone-with-borders' : 'div.zone';
+
+        // If zone is aligned, mark its item alignment
+        // and render its placed items as children
+        var item_wrapper = 'div.item-wrapper';
+        var items_in_zone = [];
+        if (zone.align !== 'none') {
+            item_wrapper += '.item-align.item-align-' + zone.align;
+            var is_item_in_zone = function(i) { return i.is_placed && (i.zone === zone.title); };
+            items_in_zone = $.grep(ctx.items, is_item_in_zone);
+        }
         return (
             h(
                 selector,
@@ -153,6 +170,7 @@ function DragNDropTemplates(url_name) {
                         'dropzone': 'move',
                         'aria-dropeffect': 'move',
                         'data-zone': zone.title,
+                        'data-zonealign': zone.align,
                         'role': 'button',
                     },
                     style: {
@@ -162,7 +180,8 @@ function DragNDropTemplates(url_name) {
                 },
                 [
                     h('p', { className: className }, zone.title),
-                    h('p', { className: 'zone-description sr' }, zone.description)
+                    h('p', { className: 'zone-description sr' }, zone.description),
+                    h(item_wrapper, renderCollection(itemTemplate, items_in_zone, ctx))
                 ]
             )
         );
@@ -222,9 +241,13 @@ function DragNDropTemplates(url_name) {
         if (ctx.popup_html && !ctx.last_action_correct) {
             popupSelector += '.popup-incorrect';
         }
+        // Render only items_in_bank and items_placed_unaligned here;
+        // items placed in aligned zones will be rendered by zoneTemplate.
         var is_item_placed = function(i) { return i.is_placed; };
         var items_placed = $.grep(ctx.items, is_item_placed);
         var items_in_bank = $.grep(ctx.items, is_item_placed, true);
+        var is_item_placed_unaligned = function(i) { return i.zone_align === 'none'; };
+        var items_placed_unaligned = $.grep(items_placed, is_item_placed_unaligned);
         return (
             h('section.themed-xblock.xblock--drag-and-drop', [
                 problemTitle,
@@ -261,7 +284,7 @@ function DragNDropTemplates(url_name) {
                             ]
                         ),
                         renderCollection(zoneTemplate, ctx.zones, ctx),
-                        renderCollection(itemTemplate, items_placed, ctx),
+                        renderCollection(itemTemplate, items_placed_unaligned, ctx)
                     ]
                     ),
                 ]),
@@ -323,6 +346,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             state = stateResult[0]; // stateResult is an array of [data, statusText, jqXHR]
             migrateConfiguration(bgImg.width);
             migrateState(bgImg.width, bgImg.height);
+            markItemZoneAlign();
             bgImgNaturalWidth = bgImg.width;
 
             // Set up event handlers:
@@ -583,6 +607,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             $anchor = $zone;
         }
         var zone = $zone.data('zone');
+        var zone_align = $zone.data('zonealign');
         var $target_img = $root.find('.target-img');
 
         // Calculate the position of the item to place relative to the image.
@@ -593,6 +618,7 @@ function DragAndDropBlock(runtime, element, configuration) {
 
         state.items[item_id] = {
             zone: zone,
+            zone_align: zone_align,
             x_percent: x_pos_percent,
             y_percent: y_pos_percent,
             submitting_location: true,
@@ -867,6 +893,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             if (item_user_state) {
                 itemProperties.is_placed = true;
                 itemProperties.zone = item_user_state.zone;
+                itemProperties.zone_align = item_user_state.zone_align;
                 itemProperties.x_percent = item_user_state.x_percent;
                 itemProperties.y_percent = item_user_state.y_percent;
             }
@@ -948,6 +975,23 @@ function DragAndDropBlock(runtime, element, configuration) {
                 delete item.top;
                 delete item.absolute;
             }
+        });
+    };
+
+    /**
+     * markItemZoneAlign: Mark the items placed in an aligned zone with the zone
+     * alignment, so they can be properly placed inside the zone.
+     * We have do this in JS, not python, since zone configurations may change.
+     */
+    var markItemZoneAlign = function() {
+        var zone_alignments = {};
+        configuration.zones.forEach(function(zone) {
+            if (!zone.align) zone.align = 'none';
+            zone_alignments[zone.title] = zone.align;
+        });
+        Object.keys(state.items).forEach(function(item_id) {
+            var item = state.items[item_id];
+            item.zone_align = zone_alignments[item.zone] || 'none';
         });
     };
 
