@@ -142,33 +142,6 @@
     transform: translate(-50%, -50%); /* These blocks are to be centered on their absolute x,y position */
 }
 
-/* Placed options in an aligned zone */
-.xblock--drag-and-drop .zone .item-wrapper {
-    width: 100%;
-    position: relative;
-}
-.xblock--drag-and-drop .zone .item-align .option {
-    transform: none;
-    position: relative;
-    vertical-align: top;
-    margin-right: 2px;
-    margin-bottom: 2px;
-}
-.xblock--drag-and-drop .zone .item-align-left {
-    text-align: left;
-}
-.xblock--drag-and-drop .zone .item-align-right {
-    text-align: right;
-}
-.xblock--drag-and-drop .zone .item-align-center {
-    text-align: center;
-}
-.xblock--drag-and-drop .zone .item-align-center .option {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
 /* Focused option */
 .xblock--drag-and-drop .drag-container .item-bank .option:focus,
 .xblock--drag-and-drop .drag-container .item-bank .option:hover,

@@ -11,7 +11,6 @@ The editor is fully guided. Features include:
 * custom zone labels
 * ability to show or hide zone borders
 * custom text and background colors for items
-* optional auto-alignment for items (left, right, center)
 * image items
 * items prompting for additional (numerical) input after being dropped
 * decoy items that don't have a zone
@@ -103,7 +102,7 @@ above the background image, the introductory feedback (shown
 initially), and the final feedback (shown after the learner
 successfully completes the drag and drop problem).
 
-![Drop zone edit](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/ebd0b52d971bbf93b9c3873f310bd72d336d865b/doc/img/edit-view-zones.png)
+![Drop zone edit](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/c955a38dc3a1aaf609c586d293ce19b282e11ffd/doc/img/edit-view-zones.png)
 
 In the next step, you set the URL and description for the background
 image and define the properties of the drop zones. For each zone you
@@ -114,16 +113,6 @@ would like zone labels to be shown to learners or not, as well as
 whether or not to display borders outlining the zones. It is possible
 to define an arbitrary number of drop zones as long as their labels
 are unique.
-
-Additionally, you can specify the alignment for items once they are dropped in
-the zone.  No alignment is the default, and causes items to stay where the
-learner drops them.  Left alignment causes dropped items to be placed from left
-to right across the zone. Right alignment causes the items to be placed from
-right to left across the zone. Center alignment places items from top to bottom
-along the center of the zone. If left, right, or center alignment is chosen,
-items dropped in a zone will not overlap, but if the zone is not made large
-enough for all its items, they will overflow the bottom of the zone, and
-potentially, overlap the zones below.
 
 ![Drag item edit](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/c955a38dc3a1aaf609c586d293ce19b282e11ffd/doc/img/edit-view-items.png)
 

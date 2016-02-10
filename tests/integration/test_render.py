@@ -65,6 +65,13 @@ class TestDragAndDropRender(BaseIntegrationTest):
         self.browser.get(self.live_server_url)
         self._page = self.go_to_page(self.PAGE_TITLE)
 
+    def _get_style(self, selector, style, computed=True):
+        if computed:
+            query = 'return getComputedStyle($("{selector}").get(0)).{style}'
+        else:
+            query = 'return $("{selector}").get(0).style.{style}'
+        return self.browser.execute_script(query.format(selector=selector, style=style))
+
     def _assert_box_percentages(self, selector, left, top, width, height):
         """ Assert that the element 'selector' has the specified position/size percentages """
         values = {key: self._get_style(selector, key, False) for key in ['left', 'top', 'width', 'height']}
@@ -181,7 +188,6 @@ class TestDragAndDropRender(BaseIntegrationTest):
             self.assertEqual(zone.get_attribute('dropzone'), 'move')
             self.assertEqual(zone.get_attribute('aria-dropeffect'), 'move')
             self.assertEqual(zone.get_attribute('data-zone'), 'Zone {}'.format(zone_number))
-            self.assertEqual(zone.get_attribute('data-zonealign'), 'none')
             self.assertIn('ui-droppable', self.get_element_classes(zone))
             zone_box_percentages = box_percentages[index]
             self._assert_box_percentages(  # pylint: disable=star-args
@@ -266,31 +272,3 @@ class TestDragAndDropRender(BaseIntegrationTest):
         for zone in zones:
             zone_name = zone.find_element_by_css_selector('p.zone-name')
             self.assertNotIn('sr', zone_name.get_attribute('class'))
-
-
-@ddt
-class TestDragAndDropRenderZoneAlign(BaseIntegrationTest):
-    """
-    Verifying Drag and Drop XBlock rendering using zone alignment.
-    """
-    PAGE_TITLE = 'Drag and Drop v2'
-    PAGE_ID = 'drag_and_drop_v2'
-
-    def setUp(self):
-        super(TestDragAndDropRenderZoneAlign, self).setUp()
-        scenario_xml = self._get_custom_scenario_xml("data/test_zone_align.json")
-        self._add_scenario(self.PAGE_ID, self.PAGE_TITLE, scenario_xml)
-        self._page = self.go_to_page(self.PAGE_TITLE)
-
-    def test_zone_align(self):
-        expected_alignments = {
-            "#-zone-none": "start",
-            "#-zone-invalid": "start",
-            "#-zone-left": "left",
-            "#-zone-right": "right",
-            "#-zone-center": "center"
-        }
-        for zone_id, expected_alignment in expected_alignments.items():
-            selector = "{zone_id} .item-wrapper".format(zone_id=zone_id)
-            self.assertEquals(self._get_style(selector, "textAlign"), expected_alignment)
-            self.assertEquals(self._get_style(selector, "textAlign", computed=True), expected_alignment)
