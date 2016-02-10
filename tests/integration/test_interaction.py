@@ -616,7 +616,7 @@ class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
         Ensure that they are children of the zone.
         """
         # parent container has the expected alignment
-        item_wrapper_selector = "div[data-zone='{zone_id}'] .item-wrapper".format(zone_id=zone_id)
+        item_wrapper_selector = "div[data-uid='{zone_id}'] .item-wrapper".format(zone_id=zone_id)
         self.assertEquals(self._get_style(item_wrapper_selector, 'textAlign'), align)
 
         # Items placed in zones with align setting are children of the zone
@@ -651,7 +651,7 @@ class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
         """
         zone_id = "Zone No Align"
         self.place_item(0, zone_id)
-        zone_item_selector = "div[data-zone='{zone_id}'] .item-wrapper .option".format(zone_id=zone_id)
+        zone_item_selector = "div[data-uid='{zone_id}'] .item-wrapper .option".format(zone_id=zone_id)
         self.assertEquals(len(self._page.find_elements_by_css_selector(zone_item_selector)), 0)
 
         target_item_selector = '.target > .option'
