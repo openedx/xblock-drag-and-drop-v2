@@ -316,6 +316,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     if (!window.gettext) { window.gettext = function gettext_stub(string) { return string; }; }
 
     var $element = $(element);
+    element = $element[0]; // temporary workaround for Studio bug when first adding a new block
     // root: root node managed by the virtual DOM
     var $root = $element.find('.xblock--drag-and-drop');
     var root = $root[0];
