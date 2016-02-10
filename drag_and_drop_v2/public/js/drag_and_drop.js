@@ -52,6 +52,16 @@ function DragNDropTemplates(url_name) {
         );
     };
 
+    var getZoneTitle = function(zoneUID, ctx) {
+        // Given the context and a zone UID, return the zone's title
+        for (var i = 0; i < ctx.zones.length; i++) {
+            if (ctx.zones[i].uid === zoneUID) {
+                return ctx.zones[i].title;
+            }
+        }
+        return "Unknown Zone";  // This title should never be seen, so does not need i18n
+    }
+
     var itemTemplate = function(item, ctx) {
         // Define properties
         var className = (item.class_name) ? item.class_name : "";
@@ -126,7 +136,7 @@ function DragNDropTemplates(url_name) {
             var item_description = h(
                 'div',
                 { id: item_description_id, className: 'sr' },
-                gettext('Correctly placed in: ') + item.zone
+                gettext('Correctly placed in: ') + getZoneTitle(item.zone, ctx)
             );
             children.splice(1, 0, item_description);
         }
@@ -164,12 +174,12 @@ function DragNDropTemplates(url_name) {
             h(
                 selector,
                 {
-                    id: zone.id,
+                    id: zone.prefixed_uid,
                     attributes: {
                         'tabindex': 0,
                         'dropzone': 'move',
                         'aria-dropeffect': 'move',
-                        'data-zone': zone.title,
+                        'data-uid': zone.uid,
                         'data-zonealign': zone.align,
                         'role': 'button',
                     },
@@ -473,7 +483,8 @@ function DragAndDropBlock(runtime, element, configuration) {
             delete zone.width;
             zone.height_percent = (+zone.height) / bg_image_height * 100;
             delete zone.height;
-            zone.id = configuration.url_name + '-' + zone.id;
+            // Generate an HTML ID value that's unique within the DOM and not containing spaces etc:
+            zone.prefixed_uid = configuration.url_name + '-' + zone.uid.replace(/([^\w\-])/g, "_");
         }
     };
 
@@ -606,7 +617,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             // so use relevant properties of *zone* when calculating new position below.
             $anchor = $zone;
         }
-        var zone = $zone.data('zone');
+        var zone = String($zone.data('uid'));
         var zone_align = $zone.data('zonealign');
         var $target_img = $root.find('.target-img');
 

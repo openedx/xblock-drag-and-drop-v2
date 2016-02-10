@@ -1,24 +1,21 @@
 {
   "zones": [
     {
-      "index": 1,
       "title": "Zone 1",
       "description": "This describes zone 1",
       "height": 178,
       "width": 196,
       "y": "30",
       "x": "160",
-      "id": "zone-1"
+      "id": "the deprecated id attribute is ignored."
     },
     {
-      "index": 2,
       "title": "Zone 2",
       "description": "This describes zone 2",
       "height": 140,
       "width": 340,
       "y": "210",
       "x": "86",
-      "id": "zone-2"
     }
   ],
   "items": [

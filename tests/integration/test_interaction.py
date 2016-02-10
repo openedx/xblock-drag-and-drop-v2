@@ -11,6 +11,7 @@ from workbench.runtime import WorkbenchRuntime
 from xblockutils.resources import ResourceLoader
 
 from drag_and_drop_v2.default_data import (
+    TOP_ZONE_ID, MIDDLE_ZONE_ID, BOTTOM_ZONE_ID,
     TOP_ZONE_TITLE, MIDDLE_ZONE_TITLE, BOTTOM_ZONE_TITLE,
     ITEM_CORRECT_FEEDBACK, ITEM_INCORRECT_FEEDBACK, ITEM_NO_ZONE_FEEDBACK,
     START_FEEDBACK, FINISH_FEEDBACK
@@ -26,10 +27,11 @@ loader = ResourceLoader(__name__)
 # Classes ###########################################################
 
 class ItemDefinition(object):
-    def __init__(self, item_id, zone_id, feedback_positive, feedback_negative, input_value=None):
+    def __init__(self, item_id, zone_id, zone_title, feedback_positive, feedback_negative, input_value=None):
         self.feedback_negative = feedback_negative
         self.feedback_positive = feedback_positive
         self.zone_id = zone_id
+        self.zone_title = zone_title
         self.item_id = item_id
         self.input = input_value
 
@@ -73,7 +75,7 @@ class InteractionTestBase(object):
 
     def _get_zone_by_id(self, zone_id):
         zones_container = self._page.find_element_by_css_selector('.target')
-        return zones_container.find_elements_by_xpath(".//div[@data-zone='{zone_id}']".format(zone_id=zone_id))[0]
+        return zones_container.find_elements_by_xpath(".//div[@data-uid='{zone_id}']".format(zone_id=zone_id))[0]
 
     def _get_input_div_by_value(self, item_value):
         element = self._get_item_by_value(item_value)
@@ -89,7 +91,7 @@ class InteractionTestBase(object):
 
     def _get_zone_position(self, zone_id):
         return self.browser.execute_script(
-            'return $("div[data-zone=\'{zone_id}\']").prevAll(".zone").length'.format(zone_id=zone_id)
+            'return $("div[data-uid=\'{zone_id}\']").prevAll(".zone").length'.format(zone_id=zone_id)
         )
 
     def place_item(self, item_value, zone_id, action_key=None):
@@ -130,7 +132,7 @@ class InteractionTestBase(object):
     def assert_grabbed_item(self, item):
         self.assertEqual(item.get_attribute('aria-grabbed'), 'true')
 
-    def assert_placed_item(self, item_value, zone_id):
+    def assert_placed_item(self, item_value, zone_title):
         item = self._get_placed_item_by_value(item_value)
         self.wait_until_visible(item)
         item_content = item.find_element_by_css_selector('.item-content')
@@ -144,7 +146,7 @@ class InteractionTestBase(object):
         self.assertEqual(item.get_attribute('data-drag-disabled'), 'true')
         self.assertEqual(item_content.get_attribute('aria-describedby'), item_description_id)
         self.assertEqual(item_description.get_attribute('id'), item_description_id)
-        self.assertEqual(item_description.text, 'Correctly placed in: {}'.format(zone_id))
+        self.assertEqual(item_description.text, 'Correctly placed in: {}'.format(zone_title))
 
     def assert_reverted_item(self, item_value):
         item = self._get_item_by_value(item_value)
@@ -186,7 +188,7 @@ class InteractionTestBase(object):
                 self.place_item(definition.item_id, definition.zone_id, action_key)
                 self.wait_until_html_in(definition.feedback_positive, feedback_popup_content)
                 self.assertEqual(popup.get_attribute('class'), 'popup')
-                self.assert_placed_item(definition.item_id, definition.zone_id)
+                self.assert_placed_item(definition.item_id, definition.zone_title)
 
     def parameterized_item_positive_feedback_on_good_input(self, items_map, scroll_down=100, action_key=None):
         popup = self._get_popup()
@@ -201,7 +203,7 @@ class InteractionTestBase(object):
                 self.send_input(definition.item_id, definition.input)
                 self.wait_until_html_in(definition.feedback_positive, feedback_popup_content)
                 self.assertEqual(popup.get_attribute('class'), 'popup')
-                self.assert_placed_item(definition.item_id, definition.zone_id)
+                self.assert_placed_item(definition.item_id, definition.zone_title)
                 input_div = self._get_input_div_by_value(definition.item_id)
                 self.wait_until_has_class('correct', input_div)
 
@@ -234,7 +236,7 @@ class InteractionTestBase(object):
                 self.send_input(definition.item_id, '1999999')
                 self.wait_until_html_in(definition.feedback_negative, feedback_popup_content)
                 self.assertEqual(popup.get_attribute('class'), 'popup popup-incorrect')
-                self.assert_placed_item(definition.item_id, definition.zone_id)
+                self.assert_placed_item(definition.item_id, definition.zone_title)
                 input_div = self._get_input_div_by_value(definition.item_id)
                 self.wait_until_has_class('incorrect', input_div)
 
@@ -258,7 +260,7 @@ class InteractionTestBase(object):
                 self.send_input(item_key, definition.input)
                 input_div = self._get_input_div_by_value(item_key)
                 self.wait_until_has_class('correct', input_div)
-            self.assert_placed_item(definition.item_id, definition.zone_id)
+            self.assert_placed_item(definition.item_id, definition.zone_title)
 
         self.wait_until_html_in(feedback['final'], self._get_feedback_message())
 
@@ -332,18 +334,21 @@ class DefaultDataTestMixin(object):
 
     items_map = {
         0: ItemDefinition(
-            0, TOP_ZONE_TITLE, ITEM_CORRECT_FEEDBACK.format(zone=TOP_ZONE_TITLE), ITEM_INCORRECT_FEEDBACK
+            0, TOP_ZONE_ID, TOP_ZONE_TITLE,
+            ITEM_CORRECT_FEEDBACK.format(zone=TOP_ZONE_TITLE), ITEM_INCORRECT_FEEDBACK
         ),
         1: ItemDefinition(
-            1, MIDDLE_ZONE_TITLE, ITEM_CORRECT_FEEDBACK.format(zone=MIDDLE_ZONE_TITLE), ITEM_INCORRECT_FEEDBACK
+            1, MIDDLE_ZONE_ID, MIDDLE_ZONE_TITLE,
+            ITEM_CORRECT_FEEDBACK.format(zone=MIDDLE_ZONE_TITLE), ITEM_INCORRECT_FEEDBACK
         ),
         2: ItemDefinition(
-            2, BOTTOM_ZONE_TITLE, ITEM_CORRECT_FEEDBACK.format(zone=BOTTOM_ZONE_TITLE), ITEM_INCORRECT_FEEDBACK
+            2, BOTTOM_ZONE_ID, BOTTOM_ZONE_TITLE,
+            ITEM_CORRECT_FEEDBACK.format(zone=BOTTOM_ZONE_TITLE), ITEM_INCORRECT_FEEDBACK
         ),
-        3: ItemDefinition(3, None, "", ITEM_NO_ZONE_FEEDBACK),
+        3: ItemDefinition(3, None, None, "", ITEM_NO_ZONE_FEEDBACK),
     }
 
-    all_zones = [TOP_ZONE_TITLE, MIDDLE_ZONE_TITLE, BOTTOM_ZONE_TITLE]
+    all_zones = [TOP_ZONE_ID, MIDDLE_ZONE_ID, BOTTOM_ZONE_ID]
 
     feedback = {
         "intro": START_FEEDBACK,
@@ -404,6 +409,7 @@ class EventsFiredTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegration
                 'is_correct_location': True,
                 'item_id': 0,
                 'location': TOP_ZONE_TITLE,
+                'location_id': TOP_ZONE_ID,
             },
         },
         {
@@ -473,12 +479,12 @@ class KeyboardInteractionTest(BasicInteractionTest, BaseIntegrationTest):
 
 class CustomDataInteractionTest(BasicInteractionTest, BaseIntegrationTest):
     items_map = {
-        0: ItemDefinition(0, 'Zone 1', "Yes 1", "No 1"),
-        1: ItemDefinition(1, 'Zone 2', "Yes 2", "No 2", "102"),
-        2: ItemDefinition(2, None, "", "No Zone for this")
+        0: ItemDefinition(0, 'zone-1', "Zone 1", "Yes 1", "No 1"),
+        1: ItemDefinition(1, 'zone-2', "Zone 2", "Yes 2", "No 2", "102"),
+        2: ItemDefinition(2, None, None, "", "No Zone for this")
     }
 
-    all_zones = ['Zone 1', 'Zone 2']
+    all_zones = ['zone-1', 'zone-2']
 
     feedback = {
         "intro": "Some Intro Feed",
@@ -491,12 +497,12 @@ class CustomDataInteractionTest(BasicInteractionTest, BaseIntegrationTest):
 
 class CustomHtmlDataInteractionTest(BasicInteractionTest, BaseIntegrationTest):
     items_map = {
-        0: ItemDefinition(0, 'Zone <i>1</i>', "Yes <b>1</b>", "No <b>1</b>"),
-        1: ItemDefinition(1, 'Zone <b>2</b>', "Yes <i>2</i>", "No <i>2</i>", "95"),
-        2: ItemDefinition(2, None, "", "No Zone for <i>X</i>")
+        0: ItemDefinition(0, 'zone-1', 'Zone <i>1</i>', "Yes <b>1</b>", "No <b>1</b>"),
+        1: ItemDefinition(1, 'zone-2', 'Zone <b>2</b>', "Yes <i>2</i>", "No <i>2</i>", "95"),
+        2: ItemDefinition(2, None, None, "", "No Zone for <i>X</i>")
     }
 
-    all_zones = ['Zone <i>1</i>', 'Zone <b>2</b>']
+    all_zones = ['zone-1', 'zone-2']
 
     feedback = {
         "intro": "Intro <i>Feed</i>",
@@ -516,20 +522,20 @@ class MultipleBlocksDataInteraction(InteractionTestBase, BaseIntegrationTest):
 
     item_maps = {
         'block1': {
-            0: ItemDefinition(0, 'Zone 1', "Yes 1", "No 1"),
-            1: ItemDefinition(1, 'Zone 2', "Yes 2", "No 2", "102"),
-            2: ItemDefinition(2, None, "", "No Zone for this")
+            0: ItemDefinition(0, 'zone-1', 'Zone 1', "Yes 1", "No 1"),
+            1: ItemDefinition(1, 'zone-2', 'Zone 2', "Yes 2", "No 2", "102"),
+            2: ItemDefinition(2, None, None, "", "No Zone for this")
         },
         'block2': {
-            10: ItemDefinition(10, 'Zone 51', "Correct 1", "Incorrect 1"),
-            20: ItemDefinition(20, 'Zone 52', "Correct 2", "Incorrect 2", "102"),
-            30: ItemDefinition(30, None, "", "No Zone for this")
+            10: ItemDefinition(10, 'zone-51', 'Zone 51', "Correct 1", "Incorrect 1"),
+            20: ItemDefinition(20, 'zone-52', 'Zone 52', "Correct 2", "Incorrect 2", "102"),
+            30: ItemDefinition(30, None, None, "", "No Zone for this")
         },
     }
 
     all_zones = {
-        'block1': ['Zone 1', 'Zone 2'],
-        'block2': ['Zone 51', 'Zone 52']
+        'block1': ['zone-1', 'zone-2'],
+        'block2': ['zone-51', 'zone-52']
     }
 
     feedback = {

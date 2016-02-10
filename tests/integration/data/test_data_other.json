@@ -1,22 +1,20 @@
 {
   "zones": [
     {
-      "index": 1,
       "width": 200,
       "title": "Zone 51",
       "height": 100,
       "y": "400",
       "x": "200",
-      "id": "zone-51"
+      "uid": "zone-51"
     },
     {
-      "index": 2,
       "width": 200,
       "title": "Zone 52",
       "height": 100,
       "y": "200",
       "x": "100",
-      "id": "zone-52"
+      "uid": "zone-52"
     }
   ],
   "items": [
@@ -26,7 +24,7 @@
         "incorrect": "Incorrect 1",
         "correct": "Correct 1"
       },
-      "zone": "Zone 51",
+      "zone": "zone-51",
       "imageURL": "",
       "id": 10
     },
@@ -36,7 +34,7 @@
         "incorrect": "Incorrect 2",
         "correct": "Correct 2"
       },
-      "zone": "Zone 52",
+      "zone": "zone-52",
       "imageURL": "",
       "id": 20,
       "inputOptions": {
