@@ -110,7 +110,7 @@
         </div>
         <div class="row">
             <label for="item-{{id}}-image-description">{{i18n "Image description (should provide sufficient information to place the item even if the image did not load)"}}</label>
-            <textarea required id="item-{{id}}-image-description"
+            <textarea id="item-{{id}}-image-description" {{#if imageURL}}required{{/if}}
                       class="item-image-description">{{ imageDescription }}</textarea>
         </div>
         <div class="row">
