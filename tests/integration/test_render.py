@@ -284,11 +284,11 @@ class TestDragAndDropRenderZoneAlign(BaseIntegrationTest):
 
     def test_zone_align(self):
         expected_alignments = {
-            "#-zone-none": "start",
-            "#-zone-invalid": "start",
-            "#-zone-left": "left",
-            "#-zone-right": "right",
-            "#-zone-center": "center"
+            "#-Zone_No_Align": "start",
+            "#-Zone_Invalid_Align": "start",
+            "#-Zone_Left_Align": "left",
+            "#-Zone_Right_Align": "right",
+            "#-Zone_Center_Align": "center"
         }
         for zone_id, expected_alignment in expected_alignments.items():
             selector = "{zone_id} .item-wrapper".format(zone_id=zone_id)
