@@ -3,6 +3,7 @@ import base64
 from collections import namedtuple
 import os.path
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
 
 from xblockutils.resources import ResourceLoader
 
@@ -109,6 +110,8 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
 
     def _size_for_mobile(self):
         self.browser.set_window_size(375, 627)  # iPhone 6 viewport size
+        wait = WebDriverWait(self.browser, 2)
+        wait.until(lambda browser: browser.get_window_size()["width"] == 375)
 
     def test_wide_image_mobile(self):
         """ Test the upper, larger, wide image in a mobile-sized window """
