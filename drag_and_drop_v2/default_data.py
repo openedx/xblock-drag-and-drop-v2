@@ -6,6 +6,10 @@ TARGET_IMG_DESCRIPTION = _(
     "and the narrowest layer is located at the top."
 )
 
+TOP_ZONE_ID = "top"
+MIDDLE_ZONE_ID = "middle"
+BOTTOM_ZONE_ID = "bottom"
+
 TOP_ZONE_TITLE = _("The Top Zone")
 MIDDLE_ZONE_TITLE = _("The Middle Zone")
 BOTTOM_ZONE_TITLE = _("The Bottom Zone")
@@ -25,8 +29,7 @@ DEFAULT_DATA = {
   "targetImgDescription": TARGET_IMG_DESCRIPTION,
   "zones": [
     {
-      "index": 1,
-      "id": "zone-1",
+      "uid": TOP_ZONE_ID,
       "title": TOP_ZONE_TITLE,
       "description": TOP_ZONE_DESCRIPTION,
       "x": 160,
@@ -35,8 +38,7 @@ DEFAULT_DATA = {
       "height": 178,
     },
     {
-      "index": 2,
-      "id": "zone-2",
+      "uid": MIDDLE_ZONE_ID,
       "title": MIDDLE_ZONE_TITLE,
       "description": MIDDLE_ZONE_DESCRIPTION,
       "x": 86,
@@ -45,8 +47,7 @@ DEFAULT_DATA = {
       "height": 138,
     },
     {
-      "index": 3,
-      "id": "zone-3",
+      "uid": BOTTOM_ZONE_ID,
       "title": BOTTOM_ZONE_TITLE,
       "description": BOTTOM_ZONE_DESCRIPTION,
       "x": 15,
@@ -62,7 +63,7 @@ DEFAULT_DATA = {
         "incorrect": ITEM_INCORRECT_FEEDBACK,
         "correct": ITEM_CORRECT_FEEDBACK.format(zone=TOP_ZONE_TITLE)
       },
-      "zone": TOP_ZONE_TITLE,
+      "zone": TOP_ZONE_ID,
       "imageURL": "",
       "id": 0,
     },
@@ -72,7 +73,7 @@ DEFAULT_DATA = {
         "incorrect": ITEM_INCORRECT_FEEDBACK,
         "correct": ITEM_CORRECT_FEEDBACK.format(zone=MIDDLE_ZONE_TITLE)
       },
-      "zone": MIDDLE_ZONE_TITLE,
+      "zone": MIDDLE_ZONE_ID,
       "imageURL": "",
       "id": 1,
     },
@@ -82,7 +83,7 @@ DEFAULT_DATA = {
         "incorrect": ITEM_INCORRECT_FEEDBACK,
         "correct": ITEM_CORRECT_FEEDBACK.format(zone=BOTTOM_ZONE_TITLE)
       },
-      "zone": BOTTOM_ZONE_TITLE,
+      "zone": BOTTOM_ZONE_ID,
       "imageURL": "",
       "id": 2,
     },

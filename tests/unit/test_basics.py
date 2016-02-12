@@ -1,7 +1,7 @@
 import unittest
 
 from drag_and_drop_v2.default_data import (
-    TARGET_IMG_DESCRIPTION, TOP_ZONE_TITLE, MIDDLE_ZONE_TITLE, BOTTOM_ZONE_TITLE,
+    TARGET_IMG_DESCRIPTION, TOP_ZONE_ID, MIDDLE_ZONE_ID, BOTTOM_ZONE_ID,
     START_FEEDBACK, FINISH_FEEDBACK, DEFAULT_DATA
 )
 from ..utils import make_block, TestCaseMixin
@@ -65,25 +65,25 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         assert_user_state_empty()
 
         # Drag three items into the correct spot:
-        data = {"val": 0, "zone": TOP_ZONE_TITLE, "x_percent": "33%", "y_percent": "11%"}
+        data = {"val": 0, "zone": TOP_ZONE_ID, "x_percent": "33%", "y_percent": "11%"}
         self.call_handler('do_attempt', data)
-        data = {"val": 1, "zone": MIDDLE_ZONE_TITLE, "x_percent": "67%", "y_percent": "80%"}
+        data = {"val": 1, "zone": MIDDLE_ZONE_ID, "x_percent": "67%", "y_percent": "80%"}
         self.call_handler('do_attempt', data)
-        data = {"val": 2, "zone": BOTTOM_ZONE_TITLE, "x_percent": "99%", "y_percent": "95%"}
+        data = {"val": 2, "zone": BOTTOM_ZONE_ID, "x_percent": "99%", "y_percent": "95%"}
         self.call_handler('do_attempt', data)
 
         # Check the result:
         self.assertTrue(self.block.completed)
         self.assertEqual(self.block.item_state, {
-            '0': {'x_percent': '33%', 'y_percent': '11%', 'zone': TOP_ZONE_TITLE},
-            '1': {'x_percent': '67%', 'y_percent': '80%', 'zone': MIDDLE_ZONE_TITLE},
-            '2': {'x_percent': '99%', 'y_percent': '95%', 'zone': BOTTOM_ZONE_TITLE},
+            '0': {'x_percent': '33%', 'y_percent': '11%', 'zone': TOP_ZONE_ID},
+            '1': {'x_percent': '67%', 'y_percent': '80%', 'zone': MIDDLE_ZONE_ID},
+            '2': {'x_percent': '99%', 'y_percent': '95%', 'zone': BOTTOM_ZONE_ID},
         })
         self.assertEqual(self.call_handler('get_user_state'), {
             'items': {
-                '0': {'x_percent': '33%', 'y_percent': '11%', 'correct_input': True, 'zone': TOP_ZONE_TITLE},
-                '1': {'x_percent': '67%', 'y_percent': '80%', 'correct_input': True, 'zone': MIDDLE_ZONE_TITLE},
-                '2': {'x_percent': '99%', 'y_percent': '95%', 'correct_input': True, 'zone': BOTTOM_ZONE_TITLE},
+                '0': {'x_percent': '33%', 'y_percent': '11%', 'correct_input': True, 'zone': TOP_ZONE_ID},
+                '1': {'x_percent': '67%', 'y_percent': '80%', 'correct_input': True, 'zone': MIDDLE_ZONE_ID},
+                '2': {'x_percent': '99%', 'y_percent': '95%', 'correct_input': True, 'zone': BOTTOM_ZONE_ID},
             },
             'finished': True,
             'overall_feedback': FINISH_FEEDBACK,

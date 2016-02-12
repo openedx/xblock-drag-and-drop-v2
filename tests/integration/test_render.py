@@ -187,11 +187,11 @@ class TestDragAndDropRender(BaseIntegrationTest):
             self.assertEqual(zone.get_attribute('tabindex'), '0')
             self.assertEqual(zone.get_attribute('dropzone'), 'move')
             self.assertEqual(zone.get_attribute('aria-dropeffect'), 'move')
-            self.assertEqual(zone.get_attribute('data-zone'), 'Zone {}'.format(zone_number))
+            self.assertEqual(zone.get_attribute('data-uid'), 'Zone {}'.format(zone_number))
             self.assertIn('ui-droppable', self.get_element_classes(zone))
             zone_box_percentages = box_percentages[index]
             self._assert_box_percentages(  # pylint: disable=star-args
-                '#-zone-{}'.format(zone_number), **zone_box_percentages
+                '#-Zone_{}'.format(zone_number), **zone_box_percentages
             )
             zone_name = zone.find_element_by_css_selector('p.zone-name')
             self.assertEqual(zone_name.text, 'Zone {}'.format(zone_number))
@@ -244,7 +244,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
         self.load_scenario()
         zones = self._get_zones()
         for index, dummy in enumerate(zones, start=1):
-            zone = '#-zone-{}'.format(index)
+            zone = '#-Zone_{}'.format(index)
             for side in self.SIDES:
                 self.assertEqual(self._get_style(zone, 'border{}Width'.format(side), True), '0px')
                 self.assertEqual(self._get_style(zone, 'border{}Style'.format(side), True), 'none')
@@ -253,7 +253,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
         self.load_scenario(zone_borders=True)
         zones = self._get_zones()
         for index, dummy in enumerate(zones, start=1):
-            zone = '#-zone-{}'.format(index)
+            zone = '#-Zone_{}'.format(index)
             for side in self.SIDES:
                 self.assertEqual(self._get_style(zone, 'border{}Width'.format(side), True), '1px')
                 self.assertEqual(self._get_style(zone, 'border{}Style'.format(side), True), 'dotted')

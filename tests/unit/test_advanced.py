@@ -248,8 +248,8 @@ class TestDragAndDropHtmlData(BaseDragAndDropAjaxFixture, unittest.TestCase):
 class TestDragAndDropPlainData(BaseDragAndDropAjaxFixture, unittest.TestCase):
     FOLDER = "plain"
 
-    ZONE_1 = "Zone 1"
-    ZONE_2 = "Zone 2"
+    ZONE_1 = "zone-1"
+    ZONE_2 = "zone-2"
 
     FEEDBACK = {
         0: {"correct": "Yes 1", "incorrect": "No 1"},
@@ -266,3 +266,6 @@ class TestOldDataFormat(TestDragAndDropPlainData):
     """
     FOLDER = "old"
     FINAL_FEEDBACK = "Final Feed"
+
+    ZONE_1 = "Zone 1"
+    ZONE_2 = "Zone 2"

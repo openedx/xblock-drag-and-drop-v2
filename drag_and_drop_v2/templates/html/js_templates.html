@@ -1,5 +1,5 @@
 <script id="zone-element-tpl" type="text/html">
-    <div id="{{ id }}" class="zone" data-zone="{{ title }}" style="
+    <div class="zone" data-zone="{{ uid }}" style="
         top:{{ y_percent }}%;
         left:{{ x_percent }}%;
         width:{{ width_percent }}%;
@@ -10,12 +10,13 @@
 </script>
 
 <script id="zone-input-tpl" type="text/html">
-    <div class="zone-row {{ id }}" data-index="{{index}}">
+    <div class="zone-row" data-uid="{{zone.uid}}">
+        <!-- uid values from old versions of the block may contain spaces and other characters, so we use 'index' as an alternate unique ID here. -->
         <label for="zone-{{index}}-title">{{i18n "Text"}}</label>
         <input type="text"
                id="zone-{{index}}-title"
                class="title"
-               value="{{ title }}"
+               value="{{ zone.title }}"
                required />
         <a href="#" class="remove-zone hidden">
             <div class="icon remove"></div>
@@ -24,7 +25,7 @@
         <input type="text"
                id="zone-{{index}}-description"
                class="description"
-               value="{{ description }}"
+               value="{{ zone.description }}"
                placeholder="{{i18n 'Describe this zone to non-visual users'}}"
                required />
         <div class="layout">
@@ -32,29 +33,29 @@
             <input type="text"
                    id="zone-{{index}}-width"
                    class="size width"
-                   value="{{ width }}" />
+                   value="{{ zone.width }}" />
             <label for="zone-{{index}}-height">{{i18n "height"}}</label>
             <input type="text"
                    id="zone-{{index}}-height"
                    class="size height"
-                   value="{{ height }}" />
+                   value="{{ zone.height }}" />
             <br />
             <label for="zone-{{index}}-x">x</label>
             <input type="text"
                    id="zone-{{index}}-x"
                    class="coord x"
-                   value="{{ x }}" />
+                   value="{{ zone.x }}" />
             <label for="zone-{{index}}-y">y</label>
             <input type="text"
                    id="zone-{{index}}-y"
                    class="coord y"
-                   value="{{ y }}" />
+                   value="{{ zone.y }}" />
         </div>
     </div>
 </script>
 
 <script id="zone-dropdown-tpl" type="text/html">
-    <option value="{{ value }}" {{ selected }}>{{ value }}</option>
+    <option value="{{ uid }}" {{ selected }}>{{ title }}</option>
 </script>
 
 <script id="item-input-tpl" type="text/html">

@@ -14,22 +14,20 @@
 
     "zones": [
         {
-          "index": 1,
           "title": "Zone <i>1</i>",
           "x": 100,
           "y": 200,
           "width": 200,
           "height": 100,
-          "id": "zone-1"
+          "uid": "Zone <i>1</i>"
         },
         {
-          "index": 2,
           "title": "Zone <b>2</b>",
           "x": 0,
           "y": 0,
           "width": 200,
           "height": 100,
-          "id": "zone-2"
+          "uid": "Zone <b>2</b>"
         }
     ],
 

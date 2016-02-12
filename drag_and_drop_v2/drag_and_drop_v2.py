@@ -9,6 +9,7 @@ import copy
 import urllib
 
 from xblock.core import XBlock
+from xblock.exceptions import JsonHandlerError
 from xblock.fields import Scope, String, Dict, Float, Boolean
 from xblock.fragment import Fragment
 from xblockutils.resources import ResourceLoader
@@ -154,7 +155,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             return items
 
         return {
-            "zones": self.data.get('zones', []),
+            "zones": self._get_zones(),
             # SDK doesn't supply url_name.
             "url_name": getattr(self, 'url_name', ''),
             "display_zone_labels": self.data.get('displayLabels', False),
@@ -234,6 +235,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         item = self._get_item_definition(attempt['val'])
 
         state = None
+        zone = None
         feedback = item['feedback']['incorrect']
         overall_feedback = None
         is_correct = False
@@ -268,6 +270,11 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         if state:
             self.item_state[str(item['id'])] = state
+            zone = self._get_zone_by_uid(state['zone'])
+        else:
+            zone = self._get_zone_by_uid(attempt['zone'])
+        if not zone:
+            raise JsonHandlerError(400, "Item zone data invalid.")
 
         if self._is_finished():
             overall_feedback = self.data['feedback']['finish']
@@ -288,7 +295,8 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         self.runtime.publish(self, 'edx.drag_and_drop_v2.item.dropped', {
             'item_id': item['id'],
-            'location': attempt.get('zone'),
+            'location': zone.get("title"),
+            'location_id': zone.get("uid"),
             'input': attempt.get('input'),
             'is_correct_location': is_correct_location,
             'is_correct': is_correct,
@@ -394,6 +402,30 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         Returns definition (settings) for item identified by `item_id`.
         """
         return next(i for i in self.data['items'] if i['id'] == item_id)
+
+    def _get_zones(self):
+        """
+        Get drop zone data, defined by the author.
+        """
+        # Convert zone data from old to new format if necessary
+        zones = []
+        for zone in self.data.get('zones', []):
+            zone = zone.copy()
+            if "uid" not in zone:
+                zone["uid"] = zone.get("title")  # Older versions used title as the zone UID
+            # Remove old, now-unused zone attributes, if present:
+            zone.pop("id", None)
+            zone.pop("index", None)
+            zones.append(zone)
+        return zones
+
+    def _get_zone_by_uid(self, uid):
+        """
+        Given a zone UID, return that zone, or None.
+        """
+        for zone in self._get_zones():
+            if zone["uid"] == uid:
+                return zone
 
     def _get_grade(self):
         """
