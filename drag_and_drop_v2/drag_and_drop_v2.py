@@ -27,6 +27,7 @@ loader = ResourceLoader(__name__)
 # Classes ###########################################################
 
 @XBlock.wants('settings')
+@XBlock.needs('i18n')
 class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     """
     XBlock that implements a friendly Drag-and-Drop problem
@@ -108,15 +109,24 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
     def _(self, text):
         """ Translate text """
-        return self.runtime.service(self, "i18n").ugettext(text)
+        print "********** DRAG AND DROP V2: CALLING RUNTIME.i18n.ugettext for '{0}'".format(text)
+        # print self
+        # print self.runtime
+        runtime_service = self.runtime.service(self, "i18n")
+        runtime_ugettext = runtime_service.ugettext
+        response = runtime_ugettext(text)
+        #from nose.tools import set_trace; set_trace()
+        return response
 
     @XBlock.supports("multi_device")  # Enable this block for use in the mobile app via webview
     def student_view(self, context):
         """
         Player view, displayed to the student
         """
-
+        print "********** DRAG AND DROP V2 STUDENT VIEW **********"
         fragment = Fragment()
+        # from nose.tools import set_trace; set_trace()
+
         fragment.add_content(loader.render_template('/templates/html/drag_and_drop.html'))
         css_urls = (
             'public/css/vendor/jquery-ui-1.10.4.custom.min.css',
@@ -137,6 +147,9 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         fragment.initialize_js('DragAndDropBlock', self.get_configuration())
 
+        print "********** DRAG AND DROP V2 STUDENT VIEW FRAGMENT **********"
+        print fragment.__dict__
+        #from nose.tools import set_trace; set_trace()
         return fragment
 
     def get_configuration(self):
@@ -146,12 +159,18 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         and feedback.
         """
 
-        def items_without_answers():
+        def items_without_answers(self):
+            print "********** ITEMS WITHOUT ANSWERS **********"
             items = copy.deepcopy(self.data.get('items', ''))
             for item in items:
+                if 'displayName' in item:
+                    item['displayName'] = self._(item['displayName'])
+                if 'correct' in item:
+                    item['correct'] = self,_(item['correct'])
                 del item['feedback']
                 del item['zone']
                 item['inputOptions'] = 'inputOptions' in item
+            print items
             return items
 
         return {
@@ -160,16 +179,16 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             "url_name": getattr(self, 'url_name', ''),
             "display_zone_labels": self.data.get('displayLabels', False),
             "display_zone_borders": self.data.get('displayBorders', False),
-            "items": items_without_answers(),
-            "title": self.display_name,
+            "items": items_without_answers(self),
+            "title": self._(self.display_name),
             "show_title": self.show_title,
-            "problem_text": self.question_text,
+            "problem_text": self._(self.question_text),
             "show_problem_header": self.show_question_header,
             "target_img_expanded_url": self.target_img_expanded_url,
-            "target_img_description": self.target_img_description,
+            "target_img_description": self._(self.target_img_description),
             "item_background_color": self.item_background_color or None,
             "item_text_color": self.item_text_color or None,
-            "initial_feedback": self.data['feedback']['start'],
+            "initial_feedback": self._(self.data['feedback']['start']),
             # final feedback (data.feedback.finish) is not included - it may give away answers.
         }
 
@@ -411,6 +430,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         zones = []
         for zone in self.data.get('zones', []):
             zone = zone.copy()
+            zone['title'] = self._(zone['title'])
             if "uid" not in zone:
                 zone["uid"] = zone.get("title")  # Older versions used title as the zone UID
             # Remove old, now-unused zone attributes, if present:
