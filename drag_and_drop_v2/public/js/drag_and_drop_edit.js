@@ -81,6 +81,10 @@ function DragAndDropEditBlock(runtime, element, params) {
                     return success
                 },
 
+                scrollToTop: function() {
+                    $('.drag-builder', element).scrollTop(0);
+                },
+
                 clickHandlers: function() {
                     var $fbkTab = _fn.build.$el.feedback.tab,
                         $zoneTab = _fn.build.$el.zones.tab,
@@ -123,6 +127,7 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                         $fbkTab.addClass('hidden');
                         $zoneTab.removeClass('hidden');
+                        self.scrollToTop();
 
                         $(this).one('click', function loadThirdTab(e) {
                             // $zoneTab -> $itemTab
@@ -142,6 +147,7 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                             $zoneTab.addClass('hidden');
                             $itemTab.removeClass('hidden');
+                            self.scrollToTop();
 
                             $(this).addClass('hidden');
                             $('.save-button', element).parent()
@@ -161,6 +167,7 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                     $zoneTab
                         .on('click', '.add-zone', function(e) {
+                            e.preventDefault();
                             _fn.build.form.zone.add();
                         })
                         .on('click', '.remove-zone', _fn.build.form.zone.remove)
@@ -181,13 +188,13 @@ function DragAndDropEditBlock(runtime, element, params) {
                                 _fn.build.$el.targetImage.attr('src', new_img_url);
                             }
                             _fn.data.targetImg = new_img_url;
-
+                        })
+                        .on('input', '.target-image-form #background-description', function(e) {
                             var new_description = $.trim(
                                 $('.target-image-form #background-description', element).val()
                             );
                             _fn.build.$el.targetImage.attr('alt', new_description);
                             _fn.data.targetImgDescription = new_description;
-
                         })
                         .on('click', '.display-labels-form input', function(e) {
                             _fn.data.displayLabels = $('.display-labels-form input', element).is(':checked');
@@ -198,10 +205,12 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                     $itemTab
                         .on('click', '.add-item', function(e) {
+                            e.preventDefault();
                             _fn.build.form.item.add();
                         })
                         .on('click', '.remove-item', _fn.build.form.item.remove)
-                        .on('click', '.advanced-link a', _fn.build.form.item.showAdvancedSettings);
+                        .on('click', '.advanced-link a', _fn.build.form.item.showAdvancedSettings)
+                        .on('input', '.item-image-url', _fn.build.form.item.imageURLChanged);
                 },
                 form: {
                     zone: {
@@ -415,6 +424,12 @@ function DragAndDropEditBlock(runtime, element, params) {
                             _fn.build.form.item.count--;
                             _fn.build.form.item.disableDelete();
 
+                        },
+                        imageURLChanged: function(e) {
+                            // Mark the image description field as required if (and only if) an image is specified.
+                            var $imageUrlField = $(e.currentTarget);
+                            var $descriptionField = $imageUrlField.closest('.item').find('.item-image-description');
+                            $descriptionField.prop("required", $imageUrlField.val() != "");
                         },
                         enableDelete: function() {
                             if (_fn.build.form.item.count > 1) {

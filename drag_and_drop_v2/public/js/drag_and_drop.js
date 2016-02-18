@@ -293,6 +293,8 @@ function DragAndDropBlock(runtime, element, configuration) {
     if (!window.gettext) { window.gettext = function gettext_stub(string) { return string; }; }
 
     var $element = $(element);
+    element = $element[0]; // TODO: This line can be removed when we no longer support Dogwood.
+                           // It works around this Studio bug: https://github.com/edx/edx-platform/pull/11433
     // root: root node managed by the virtual DOM
     var $root = $element.find('.xblock--drag-and-drop');
     var root = $root[0];

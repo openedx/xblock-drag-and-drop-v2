@@ -188,7 +188,7 @@
 
 .xblock--drag-and-drop--editor .items-form .item-image-url {
     width: 81%;
-    margin-right: 1%;
+    margin: 0 1%;
 }
 
 .xblock--drag-and-drop--editor .items-form .item-width {
@@ -224,7 +224,6 @@
     border: 1px solid #156ab4;
     border-radius: 6px;
     padding: 5px 10px;
-    margin-top: 15px;
 }
 
 .xblock--drag-and-drop--editor .btn:hover {
