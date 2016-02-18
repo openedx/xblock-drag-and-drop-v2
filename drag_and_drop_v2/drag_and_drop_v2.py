@@ -14,6 +14,7 @@ from xblock.fields import Scope, String, Dict, Float, Boolean
 from xblock.fragment import Fragment
 from xblockutils.resources import ResourceLoader
 from xblockutils.settings import XBlockWithSettingsMixin, ThemableXBlockMixin
+from path import Path as path
 
 from .utils import _  # pylint: disable=unused-import
 from .default_data import DEFAULT_DATA
@@ -22,7 +23,7 @@ from .default_data import DEFAULT_DATA
 # Globals ###########################################################
 
 loader = ResourceLoader(__name__)
-
+xblock_root = path(__file__).abspath().dirname()
 
 # Classes ###########################################################
 
@@ -111,9 +112,10 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """
         Hand the translation work off to the runtime's I18N service
         """
+        extra_info = {'xblock_root': xblock_root}
         runtime_service = self.runtime.service(self, "i18n")
         runtime_ugettext = runtime_service.ugettext
-        response = runtime_ugettext(text)
+        response = runtime_ugettext(text, **extra_info)
         return response
 
     @XBlock.supports("multi_device")  # Enable this block for use in the mobile app via webview
