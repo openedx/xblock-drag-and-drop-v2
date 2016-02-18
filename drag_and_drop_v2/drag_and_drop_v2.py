@@ -112,10 +112,10 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """
         Hand the translation work off to the runtime's I18N service
         """
-        extra_info = {'xblock_root': xblock_root}
+        xblock_info = {'xblock_root': xblock_root}
         runtime_service = self.runtime.service(self, "i18n")
         runtime_ugettext = runtime_service.ugettext
-        response = runtime_ugettext(text, **extra_info)
+        response = runtime_ugettext(text, **xblock_info)
         return response
 
     @XBlock.supports("multi_device")  # Enable this block for use in the mobile app via webview
