@@ -90,7 +90,7 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
         # A 400x300 image with automatic sizing should be constrained to the maximum width
         Expectation(item_id=5, zone_id=ZONE_50, width_percent=AUTO_MAX_WIDTH),
         # A 200x200 image with automatic sizing
-        Expectation(item_id=6, zone_id=ZONE_50, width_percent=[25, 30]),
+        Expectation(item_id=6, zone_id=ZONE_50, width_percent=[25, 30.2]),
         # A 400x300 image with a specified width of 50%
         Expectation(item_id=7, zone_id=ZONE_50, fixed_width_percent=50),
         # A 200x200 image with a specified width of 50%
@@ -112,6 +112,17 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
         self.browser.set_window_size(375, 627)  # iPhone 6 viewport size
         wait = WebDriverWait(self.browser, 2)
         wait.until(lambda browser: browser.get_window_size()["width"] == 375)
+        # Fix platform inconsistencies caused by scrollbar size:
+        self.browser.execute_script('$("body").css("margin-right", "40px")')
+        scrollbar_width = self.browser.execute_script(
+            "var $outer = $('<div>').css({visibility: 'hidden', width: 100, overflow: 'scroll'}).appendTo('body');"
+            "var widthWithScroll = $('<div>').css({width: '100%'}).appendTo($outer).outerWidth();"
+            "$outer.remove();"
+            "return 100 - widthWithScroll;"
+        )
+        self.browser.execute_script('$(".wrapper-workbench").css("margin-right", "-{}px")'.format(40 + scrollbar_width))
+        # And reduce the wasted space around our XBlock in the workbench:
+        self.browser.execute_script('return $(".workbench .preview").css("margin", "0")')
 
     def test_wide_image_mobile(self):
         """ Test the upper, larger, wide image in a mobile-sized window """
@@ -121,7 +132,7 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
     def test_square_image_mobile(self):
         """ Test the lower, smaller, square image in a mobile-sized window """
         self._size_for_mobile()
-        self._check_sizes(1, self.EXPECTATIONS, expected_img_width=375, is_desktop=False)
+        self._check_sizes(1, self.EXPECTATIONS, is_desktop=False)
 
     def _check_width(self, item_description, item, container_width, expected_percent):
         """
@@ -129,19 +140,20 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
         of container_width, or if expected_percent is a pair of numbers, that it is within
         that range.
         """
-        width_percent = item.size["width"] / container_width * 100
+        width_pixels = item.size["width"]
+        width_percent = width_pixels / container_width * 100
         if isinstance(expected_percent, (list, tuple)):
             min_expected, max_expected = expected_percent
-            msg = "{} should have width of {}% - {}%. Actual: {:.2f}%".format(
-                item_description, min_expected, max_expected, width_percent
+            msg = "{} should have width of {}% - {}%. Actual: {}px ({:.2f}% of {}px)".format(
+                item_description, min_expected, max_expected, width_pixels, width_percent, container_width
             )
             self.assertGreaterEqual(width_percent, min_expected, msg)
             self.assertLessEqual(width_percent, max_expected, msg)
         else:
             self.assertAlmostEqual(
                 width_percent, expected_percent, delta=1,
-                msg="{} should have width of ~{}% (+/- 1%). Actual: {:.2f}%".format(
-                    item_description, expected_percent, width_percent
+                msg="{} should have width of ~{}% (+/- 1%). Actual: {}px ({:.2f}% of {}px)".format(
+                    item_description, expected_percent, width_pixels, width_percent, container_width
                 )
             )
 
@@ -165,7 +177,7 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
             )
         )
 
-    def _check_sizes(self, block_index, expectations, expected_img_width=755, is_desktop=True):
+    def _check_sizes(self, block_index, expectations, expected_img_width=None, is_desktop=True):
         """ Test the actual dimensions that each draggable has, in the bank and when placed """
         # Check assumptions - the container wrapping this XBlock should be 770px wide
         self._switch_to_block(block_index)
@@ -177,8 +189,12 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
         if is_desktop:
             # If using a desktop-sized window, we can know the exact dimensions of various containers:
             self.assertEqual(self._page.size["width"], 770)  # self._page is the .xblock--drag-and-drop div
-            self.assertEqual(target_img_width, expected_img_width)
+            self.assertEqual(target_img_width, expected_img_width or 755)
             self.assertEqual(item_bank_width, 755)
+        else:
+            self.assertEqual(self._page.size["width"], 335)  # self._page is the .xblock--drag-and-drop div
+            self.assertEqual(target_img_width, expected_img_width or 328)
+            self.assertEqual(item_bank_width, 328)
 
         # Test each element, before it is placed (while it is in the item bank).
         for expect in expectations:

@@ -122,7 +122,12 @@ class InteractionTestBase(object):
     def send_input(self, item_value, value):
         element = self._get_item_by_value(item_value)
         self.wait_until_visible(element)
-        element.find_element_by_class_name('input').send_keys(value)
+        # Since virtual-dom may be updating DOM elements by replacing them completely, the
+        # following method must be used to wait for the input box to appear:
+        textbox_visible_selector = '.numerical-input[style*="display: block"] input'
+        self.wait_until_exists(textbox_visible_selector)
+        textbox = self._page.find_element_by_css_selector(textbox_visible_selector)
+        textbox.send_keys(value)
         element.find_element_by_class_name('submit-input').click()
 
     def assert_grabbed_item(self, item):
