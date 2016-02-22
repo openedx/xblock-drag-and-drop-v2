@@ -1,0 +1,210 @@
+{
+  "zones": [
+    {
+      "index": 1,
+      "title": "Zone No Align",
+      "width": 200,
+      "height": 100,
+      "x": 0,
+      "y": 0,
+      "align": "",
+      "id": "zone-none"
+    },
+    {
+      "index": 1,
+      "title": "Zone Invalid Align",
+      "width": 200,
+      "height": 100,
+      "x": 0,
+      "y": 100,
+      "align": "invalid",
+      "id": "zone-invalid"
+    },
+    {
+      "index": 2,
+      "title": "Zone Left Align",
+      "width": 200,
+      "height": 100,
+      "x": 0,
+      "y": 200,
+      "align": "left",
+      "id": "zone-left"
+    },
+    {
+      "index": 3,
+      "title": "Zone Right Align",
+      "width": 200,
+      "height": 100,
+      "x": 0,
+      "y": 300,
+      "align": "right",
+      "id": "zone-right"
+    },
+    {
+      "index": 4,
+      "title": "Zone Center Align",
+      "width": 200,
+      "height": 100,
+      "x": 0,
+      "y": 400,
+      "align": "center",
+      "id": "zone-center"
+    }
+  ],
+  "items": [
+    {
+      "displayName": "AAAA",
+      "feedback": {
+        "incorrect": "No",
+        "correct": "Yes"
+      },
+      "zone": "Zone No Align",
+      "imageURL": "",
+      "id": 0
+    },
+    {
+      "displayName": "AAAA",
+      "feedback": {
+        "incorrect": "No",
+        "correct": "Yes"
+      },
+      "zone": "Zone No Align",
+      "imageURL": "",
+      "id": 1
+    },
+    {
+      "displayName": "AAAA",
+      "feedback": {
+        "incorrect": "No",
+        "correct": "Yes"
+      },
+      "zone": "Zone No Align",
+      "imageURL": "",
+      "id": 2
+    },
+    {
+      "displayName": "BBBB",
+      "feedback": {
+        "incorrect": "No",
+        "correct": "Yes"
+      },
+      "zone": "Zone Invalid Align",
+      "imageURL": "",
+      "id": 3
+    },
+    {
+      "displayName": "BBBB",
+      "feedback": {
+        "incorrect": "No",
+        "correct": "Yes"
+      },
+      "zone": "Zone Invalid Align",
+      "imageURL": "",
+      "id": 4
+    },
+    {
+      "displayName": "BBBB",
+      "feedback": {
+        "incorrect": "No",
+        "correct": "Yes"
+      },
+      "zone": "Zone Invalid Align",
+      "imageURL": "",
+      "id": 5
+    },
+    {
+      "displayName": "CCCC",
+      "feedback": {
+        "incorrect": "No",
+        "correct": "Yes"
+      },
+      "zone": "Zone Left Align",
+      "imageURL": "",
+      "id": 6
+    },
+    {
+      "displayName": "CCCC",
+      "feedback": {
+        "incorrect": "No",
+        "correct": "Yes"
+      },
+      "zone": "Zone Left Align",
+      "imageURL": "",
+      "id": 7
+    },
+    {
+      "displayName": "CCCC",
+      "feedback": {
+        "incorrect": "No",
+        "correct": "Yes"
+      },
+      "zone": "Zone Left Align",
+      "imageURL": "",
+      "id": 8
+    },
+    {
+      "displayName": "DDDD",
+      "feedback": {
+        "incorrect": "No",
+        "correct": "Yes"
+      },
+      "zone": "Zone Right Align",
+      "imageURL": "",
+      "id": 9
+    },
+    {
+      "displayName": "DDDD",
+      "feedback": {
+        "incorrect": "No",
+        "correct": "Yes"
+      },
+      "zone": "Zone Right Align",
+      "imageURL": "",
+      "id": 10 
+    },
+    {
+      "displayName": "DDDD",
+      "feedback": {
+        "incorrect": "No",
+        "correct": "Yes"
+      },
+      "zone": "Zone Right Align",
+      "imageURL": "",
+      "id": 11 
+    },
+    {
+      "displayName": "EEEE",
+      "feedback": {
+        "incorrect": "No",
+        "correct": "Yes"
+      },
+      "zone": "Zone Center Align",
+      "imageURL": "",
+      "id": 12 
+    },
+    {
+      "displayName": "EEEE",
+      "feedback": {
+        "incorrect": "No",
+        "correct": "Yes"
+      },
+      "zone": "Zone Center Align",
+      "imageURL": "",
+      "id": 13 
+    },
+    {
+      "displayName": "EEEE",
+      "feedback": {
+        "incorrect": "No",
+        "correct": "Yes"
+      },
+      "zone": "Zone Center Align",
+      "imageURL": "",
+      "id": 14 
+    },
+  ],
+  "feedback": {
+    "start": "Intro",
+    "finish": "Final"
+  },
+}

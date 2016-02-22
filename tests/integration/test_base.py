@@ -91,6 +91,13 @@ class BaseIntegrationTest(SeleniumBaseTest):
     def scroll_down(self, pixels=50):
         self.browser.execute_script("$(window).scrollTop({})".format(pixels))
 
+    def _get_style(self, selector, style, computed=True):
+        if computed:
+            query = 'return getComputedStyle($("{selector}").get(0)).{style}'
+        else:
+            query = 'return $("{selector}").get(0).style.{style}'
+        return self.browser.execute_script(query.format(selector=selector, style=style))
+
     @staticmethod
     def get_element_html(element):
         return element.get_attribute('innerHTML').strip()
