@@ -167,14 +167,9 @@ function DragNDropTemplates(url_name) {
         var items_in_zone = [];
         if (zone.align !== 'none') {
             item_wrapper += '.item-align.item-align-' + zone.align;
-            var is_item_in_zone = function(i) { return i.is_placed && (i.zone === zone.title); };
+            var is_item_in_zone = function(i) { return i.is_placed && (i.zone === zone.uid); };
             items_in_zone = $.grep(ctx.items, is_item_in_zone);
         }
-
-        // Render the items in the zone
-        var is_item_in_zone = function(i) { return i.zone === zone.uid; };
-        var items_in_zone = $.grep(ctx.items, is_item_in_zone);
-        ctx.item_zone = zone;
 
         return (
             h(
@@ -1008,7 +1003,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         var zone_alignments = {};
         configuration.zones.forEach(function(zone) {
             if (!zone.align) zone.align = 'none';
-            zone_alignments[zone.title] = zone.align;
+            zone_alignments[zone.uid] = zone.align;
         });
         Object.keys(state.items).forEach(function(item_id) {
             var item = state.items[item_id];
