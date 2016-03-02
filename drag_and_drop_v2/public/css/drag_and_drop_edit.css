@@ -271,7 +271,9 @@
 
 .xblock--drag-and-drop--editor .tab .field-error {
     outline: none;
-    box-shadow: 0 0 10px darkred;
+    box-shadow: 0 0 10px 0 darkred;
+    /* Needed because Safari won't show the box-shadow for textareas otherwise. */
+    -webkit-appearance: none;
 }
 
 .xblock--drag-and-drop--editor .icon.add:before {
