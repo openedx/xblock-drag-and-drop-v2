@@ -857,7 +857,6 @@ function DragAndDropBlock(runtime, element, configuration) {
                     input.class_name = item_user_state.correct_input ? 'correct' : 'incorrect';
                 }
             }
-            var imageURL = item.imageURL || item.backgroundImage;  // Fall back on "backgroundImage" to be backward-compatible
             var grabbed = false;
             if (item.grabbed !== undefined) {
                 grabbed = item.grabbed;
@@ -870,9 +869,9 @@ function DragAndDropBlock(runtime, element, configuration) {
                 xhr_active: (item_user_state && item_user_state.submitting_location),
                 input: input,
                 displayName: item.displayName,
-                imageURL: imageURL,
+                imageURL: item.expandedImageURL,
                 imageDescription: item.imageDescription,
-                has_image: !!imageURL,
+                has_image: !!item.expandedImageURL,
                 grabbed: grabbed,
                 widthPercent: item.widthPercent, // widthPercent may be undefined (auto width)
                 imgNaturalWidth: item.imgNaturalWidth,

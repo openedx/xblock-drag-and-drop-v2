@@ -152,6 +152,12 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
                 del item['feedback']
                 del item['zone']
                 item['inputOptions'] = 'inputOptions' in item
+                # Fall back on "backgroundImage" to be backward-compatible.
+                image_url = item.get('imageURL') or item.get('backgroundImage')
+                if image_url:
+                    item['expandedImageURL'] = self._expand_static_url(image_url)
+                else:
+                    item['expandedImageURL'] = ''
             return items
 
         return {

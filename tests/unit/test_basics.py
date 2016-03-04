@@ -45,10 +45,10 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         self.assertEqual(zones, DEFAULT_DATA["zones"])
         # Items should contain no answer data:
         self.assertEqual(items, [
-            {"id": 0, "displayName": "Goes to the top", "imageURL": "", "inputOptions": False},
-            {"id": 1, "displayName": "Goes to the middle", "imageURL": "", "inputOptions": False},
-            {"id": 2, "displayName": "Goes to the bottom", "imageURL": "", "inputOptions": False},
-            {"id": 3, "displayName": "I don't belong anywhere", "imageURL": "", "inputOptions": False},
+            {"id": i, "displayName": display_name, "imageURL": "", "expandedImageURL": "", "inputOptions": False}
+            for i, display_name in enumerate(
+                ["Goes to the top", "Goes to the middle", "Goes to the bottom", "I don't belong anywhere"]
+            )
         ])
 
     def test_ajax_solve_and_reset(self):
