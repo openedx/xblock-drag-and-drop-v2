@@ -1,4 +1,9 @@
-Version 2.0.3 (2016-02-18)
+Version 2.0.4 (2016-03-10)
+--------------------------
+
+* Add a placeholder text to the input field to set the item image. (PR #65)
+
+Version 2.0.3 (2016-03-07)
 --------------------------
 
 * Bugfix: When omitting the background image description in Studio, the red halo
