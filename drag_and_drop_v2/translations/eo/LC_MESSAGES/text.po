@@ -1,0 +1,543 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2016-03-30 16:54+0500\n"
+"PO-Revision-Date: 2016-03-30 16:54+0500\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: eo\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: default_data.py
+msgid ""
+"An isosceles triangle with three layers of similar height. It is shown "
+"upright, so the widest layer is located at the bottom, and the narrowest "
+"layer is located at the top."
+msgstr ""
+"Àn ïsösçélés trïänglé wïth thréé läýérs öf sïmïlär héïght. Ìt ïs shöwn "
+"üprïght, sö thé wïdést läýér ïs löçätéd ät thé ßöttöm, änd thé närröwést "
+"läýér ïs löçätéd ät thé töp. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя "
+"α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα"
+" αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ "
+"ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη "
+"яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα "
+"ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυ#"
+
+#: default_data.py
+msgid "The Top Zone"
+msgstr "Thé Töp Zöné Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: default_data.py
+msgid "The Middle Zone"
+msgstr "Thé Mïddlé Zöné Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: default_data.py
+msgid "The Bottom Zone"
+msgstr "Thé Böttöm Zöné Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: default_data.py
+msgid "Use this zone to associate an item with the top layer of the triangle."
+msgstr ""
+"Ûsé thïs zöné tö ässöçïäté än ïtém wïth thé töp läýér öf thé trïänglé. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: default_data.py
+msgid ""
+"Use this zone to associate an item with the middle layer of the triangle."
+msgstr ""
+"Ûsé thïs zöné tö ässöçïäté än ïtém wïth thé mïddlé läýér öf thé trïänglé. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
+
+#: default_data.py
+msgid ""
+"Use this zone to associate an item with the bottom layer of the triangle."
+msgstr ""
+"Ûsé thïs zöné tö ässöçïäté än ïtém wïth thé ßöttöm läýér öf thé trïänglé. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
+
+#: default_data.py
+#, python-brace-format
+msgid "Correct! This one belongs to {zone}."
+msgstr ""
+"Çörréçt! Thïs öné ßélöngs tö {zone}. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: default_data.py
+msgid "No, this item does not belong here. Try again."
+msgstr ""
+"Nö, thïs ïtém döés nöt ßélöng héré. Trý ägäïn. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α#"
+
+#: default_data.py
+msgid "You silly, there are no zones for this one."
+msgstr ""
+"Ýöü sïllý, théré äré nö zönés för thïs öné. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: default_data.py
+msgid "Drag the items onto the image above."
+msgstr ""
+"Dräg thé ïtéms öntö thé ïmägé äßövé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
+
+#: default_data.py
+msgid "Good work! You have completed this drag and drop problem."
+msgstr ""
+"Gööd wörk! Ýöü hävé çömplétéd thïs dräg änd dröp prößlém. Ⱡ'σяєм ιρѕυм ∂σłσя"
+" ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: default_data.py
+msgid "Goes to the top"
+msgstr "Göés tö thé töp Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: default_data.py
+msgid "Goes to the middle"
+msgstr "Göés tö thé mïddlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+
+#: default_data.py
+msgid "Goes to the bottom"
+msgstr "Göés tö thé ßöttöm Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+
+#: default_data.py
+msgid "I don't belong anywhere"
+msgstr "Ì dön't ßélöng änýwhéré Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
+
+#: drag_and_drop_v2.py
+msgid "Title"
+msgstr "Tïtlé Ⱡ'σяєм ιρѕ#"
+
+#: drag_and_drop_v2.py
+msgid ""
+"The title of the drag and drop problem. The title is displayed to learners."
+msgstr ""
+"Thé tïtlé öf thé dräg änd dröp prößlém. Thé tïtlé ïs dïspläýéd tö léärnérs. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
+
+#: drag_and_drop_v2.py
+msgid "Drag and Drop"
+msgstr "Dräg änd Dröp Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: drag_and_drop_v2.py
+msgid "Show title"
+msgstr "Shöw tïtlé Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: drag_and_drop_v2.py
+msgid "Display the title to the learner?"
+msgstr ""
+"Dïspläý thé tïtlé tö thé léärnér? Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: drag_and_drop_v2.py
+msgid "Problem text"
+msgstr "Prößlém téxt Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: drag_and_drop_v2.py
+msgid "The description of the problem or instructions shown to the learner"
+msgstr ""
+"Thé désçrïptïön öf thé prößlém ör ïnstrüçtïöns shöwn tö thé léärnér Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: drag_and_drop_v2.py
+msgid "Show \"Problem\" heading"
+msgstr "Shöw \"Prößlém\" héädïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: drag_and_drop_v2.py
+msgid "Display the heading \"Problem\" above the problem text?"
+msgstr ""
+"Dïspläý thé héädïng \"Prößlém\" äßövé thé prößlém téxt? Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: drag_and_drop_v2.py
+msgid "Weight"
+msgstr "Wéïght Ⱡ'σяєм ιρѕυ#"
+
+#: drag_and_drop_v2.py
+msgid "The maximum score the learner can receive for the problem"
+msgstr ""
+"Thé mäxïmüm sçöré thé léärnér çän réçéïvé för thé prößlém Ⱡ'σяєм ιρѕυм ∂σłσя"
+" ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: drag_and_drop_v2.py
+msgid "Item background color"
+msgstr "Ìtém ßäçkgröünd çölör Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: drag_and_drop_v2.py
+msgid "The background color of draggable items in the problem."
+msgstr ""
+"Thé ßäçkgröünd çölör öf dräggäßlé ïtéms ïn thé prößlém. Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: drag_and_drop_v2.py
+msgid "Item text color"
+msgstr "Ìtém téxt çölör Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: drag_and_drop_v2.py
+msgid "Text color to use for draggable items."
+msgstr ""
+"Téxt çölör tö üsé för dräggäßlé ïtéms. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: drag_and_drop_v2.py
+msgid "Problem data"
+msgstr "Prößlém dätä Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: drag_and_drop_v2.py
+msgid ""
+"Information about zones, items, feedback, and background image for this "
+"problem. This information is derived from the input that a course author "
+"provides via the interactive editor when configuring the problem."
+msgstr ""
+"Ìnförmätïön äßöüt zönés, ïtéms, féédßäçk, änd ßäçkgröünd ïmägé för thïs "
+"prößlém. Thïs ïnförmätïön ïs dérïvéd fröm thé ïnpüt thät ä çöürsé äüthör "
+"prövïdés vïä thé ïntéräçtïvé édïtör whén çönfïgürïng thé prößlém. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя "
+"ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ "
+"ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтє#"
+
+#: drag_and_drop_v2.py
+msgid ""
+"Information about current positions of items that a learner has dropped on "
+"the target image."
+msgstr ""
+"Ìnförmätïön äßöüt çürrént pösïtïöns öf ïtéms thät ä léärnér häs dröppéd ön "
+"thé tärgét ïmägé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
+
+#: drag_and_drop_v2.py
+msgid "Indicates whether a learner has completed the problem at least once"
+msgstr ""
+"Ìndïçätés whéthér ä léärnér häs çömplétéd thé prößlém ät léäst önçé Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: templates/html/js_templates.html
+msgid "Text"
+msgstr "Téxt Ⱡ'σяєм ι#"
+
+#: templates/html/js_templates.html
+msgid "Description"
+msgstr "Désçrïptïön Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: templates/html/js_templates.html
+msgid "Describe this zone to non-visual users"
+msgstr ""
+"Désçrïßé thïs zöné tö nön-vïsüäl üsérs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: templates/html/js_templates.html
+msgid "width"
+msgstr "wïdth Ⱡ'σяєм ιρѕ#"
+
+#: templates/html/js_templates.html
+msgid "height"
+msgstr "héïght Ⱡ'σяєм ιρѕυ#"
+
+#: templates/html/js_templates.html
+msgid "Alignment"
+msgstr "Àlïgnmént Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: templates/html/js_templates.html
+msgid "none"
+msgstr "nöné Ⱡ'σяєм ι#"
+
+#: templates/html/js_templates.html
+msgid "left"
+msgstr "léft Ⱡ'σяєм ι#"
+
+#: templates/html/js_templates.html
+msgid "center"
+msgstr "çéntér Ⱡ'σяєм ιρѕυ#"
+
+#: templates/html/js_templates.html
+msgid "right"
+msgstr "rïght Ⱡ'σяєм ιρѕ#"
+
+#: templates/html/js_templates.html
+msgid ""
+"Align dropped items to the left, center, or right.  Default is no alignment "
+"(items stay exactly where the user drops them)."
+msgstr ""
+"Àlïgn dröppéd ïtéms tö thé léft, çéntér, ör rïght.  Défäült ïs nö älïgnmént "
+"(ïtéms stäý éxäçtlý whéré thé üsér dröps thém). Ⱡ'σяєм ιρ#"
+
+#: templates/html/js_templates.html
+msgid "Zone"
+msgstr "Zöné Ⱡ'σяєм ι#"
+
+#: templates/html/js_templates.html
+msgid "Image URL (alternative to the text)"
+msgstr ""
+"Ìmägé ÛRL (ältérnätïvé tö thé téxt) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: templates/html/js_templates.html
+msgid "For example, http://example.com/image.png or /static/image.png"
+msgstr ""
+"För éxämplé, http://éxämplé.çöm/ïmägé.png ör /stätïç/ïmägé.png Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/html/js_templates.html
+msgid ""
+"Image description (should provide sufficient information to place the item "
+"even if the image did not load)"
+msgstr ""
+"Ìmägé désçrïptïön (shöüld prövïdé süffïçïént ïnförmätïön tö pläçé thé ïtém "
+"évén ïf thé ïmägé dïd nöt löäd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт #"
+
+#: templates/html/js_templates.html
+msgid "Success Feedback"
+msgstr "Süççéss Féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: templates/html/js_templates.html
+msgid "Error Feedback"
+msgstr "Érrör Féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: templates/html/js_templates.html
+msgid "Show advanced settings"
+msgstr "Shöw ädvänçéd séttïngs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: templates/html/js_templates.html
+msgid ""
+"Preferred width as a percentage of the background image width (or blank for "
+"automatic width):"
+msgstr ""
+"Préférréd wïdth äs ä pérçéntägé öf thé ßäçkgröünd ïmägé wïdth (ör ßlänk för "
+"äütömätïç wïdth): Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
+
+#: templates/html/js_templates.html
+msgid ""
+"Optional numerical value (if you set this, learners will be prompted for "
+"this value after dropping this item)"
+msgstr ""
+"Öptïönäl nümérïçäl välüé (ïf ýöü sét thïs, léärnérs wïll ßé prömptéd för "
+"thïs välüé äftér dröppïng thïs ïtém) Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: templates/html/js_templates.html
+msgid ""
+"Margin ± (when a numerical value is required, values entered by learners "
+"must not differ from the expected value by more than this margin; default is"
+" zero)"
+msgstr ""
+"Märgïn ± (whén ä nümérïçäl välüé ïs réqüïréd, välüés éntéréd ßý léärnérs "
+"müst nöt dïffér fröm thé éxpéçtéd välüé ßý möré thän thïs märgïn; défäült ïs"
+" zérö) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ "
+"єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм"
+" νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα "
+"¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт"
+" єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт "
+"¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσ#"
+
+#: templates/html/drag_and_drop.html
+msgid "Loading drag and drop problem."
+msgstr "Löädïng dräg änd dröp prößlém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid ""
+"Note: do not edit the problem if students have already completed it. Delete "
+"the problem and create a new one."
+msgstr ""
+"Nöté: dö nöt édït thé prößlém ïf stüdénts hävé älréädý çömplétéd ït. Délété "
+"thé prößlém änd çréäté ä néw öné. Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Problem title"
+msgstr "Prößlém tïtlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Show title"
+msgstr "Shöw tïtlé Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Maximum score"
+msgstr "Mäxïmüm sçöré Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Problem text"
+msgstr "Prößlém téxt Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Show \"Problem\" heading"
+msgstr "Shöw \"Prößlém\" héädïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Introductory Feedback"
+msgstr "Ìntrödüçtörý Féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Final Feedback"
+msgstr "Fïnäl Féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Zones"
+msgstr "Zönés Ⱡ'σяєм ιρѕ#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Background URL"
+msgstr "Bäçkgröünd ÛRL Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid ""
+"For example, http://example.com/background.png or /static/background.png"
+msgstr ""
+"För éxämplé, http://éxämplé.çöm/ßäçkgröünd.png ör /stätïç/ßäçkgröünd.png "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Change background"
+msgstr "Çhängé ßäçkgröünd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Background description"
+msgstr "Bäçkgröünd désçrïptïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid ""
+"\n"
+"                            Please provide a description of the image for non-visual users.\n"
+"                            The description should provide sufficient information to allow anyone\n"
+"                            to solve the problem even without seeing the image.\n"
+"                        "
+msgstr ""
+"\n"
+"                            Pléäsé prövïdé ä désçrïptïön öf thé ïmägé för nön-vïsüäl üsérs.\n"
+"                            Thé désçrïptïön shöüld prövïdé süffïçïént ïnförmätïön tö ällöw änýöné\n"
+"                            tö sölvé thé prößlém évén wïthöüt sééïng thé ïmägé.\n"
+"                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Zone labels"
+msgstr "Zöné läßéls Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Display label names on the image"
+msgstr ""
+"Dïspläý läßél nämés ön thé ïmägé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Zone borders"
+msgstr "Zöné ßördérs Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Display zone borders on the image"
+msgstr ""
+"Dïspläý zöné ßördérs ön thé ïmägé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Add a zone"
+msgstr "Àdd ä zöné Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Items"
+msgstr "Ìtéms Ⱡ'σяєм ιρѕ#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Background color"
+msgstr "Bäçkgröünd çölör Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Text color"
+msgstr "Téxt çölör Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Add an item"
+msgstr "Àdd än ïtém Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Continue"
+msgstr "Çöntïnüé Ⱡ'σяєм ιρѕυм ∂#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Save"
+msgstr "Sävé Ⱡ'σяєм ι#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Cancel"
+msgstr "Çänçél Ⱡ'σяєм ιρѕυ#"
+
+#: public/js/drag_and_drop.js
+msgid "ok"
+msgstr "ök Ⱡ'σя#"
+
+#: public/js/drag_and_drop.js
+msgid "Correctly placed in: "
+msgstr "Çörréçtlý pläçéd ïn:  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: public/js/drag_and_drop.js
+msgid "Reset problem"
+msgstr "Rését prößlém Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: public/js/drag_and_drop.js
+msgid "Feedback"
+msgstr "Féédßäçk Ⱡ'σяєм ιρѕυм ∂#"
+
+#: public/js/drag_and_drop.js
+msgid "Keyboard Help"
+msgstr "Kéýßöärd Hélp Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: public/js/drag_and_drop.js
+msgid "You can complete this problem using only your keyboard."
+msgstr ""
+"Ýöü çän çömplété thïs prößlém üsïng önlý ýöür kéýßöärd. Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: public/js/drag_and_drop.js
+msgid "Use \"Tab\" and \"Shift-Tab\" to navigate between items and zones."
+msgstr ""
+"Ûsé \"Täß\" änd \"Shïft-Täß\" tö nävïgäté ßétwéén ïtéms änd zönés. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: public/js/drag_and_drop.js
+msgid ""
+"Press \"Enter\", \"Space\", \"Ctrl-m\", or \"⌘-m\" on an item to select it "
+"for dropping, then navigate to the zone you want to drop it on."
+msgstr ""
+"Préss \"Éntér\", \"Späçé\", \"Çtrl-m\", ör \"⌘-m\" ön än ïtém tö séléçt ït "
+"för dröppïng, thén nävïgäté tö thé zöné ýöü wänt tö dröp ït ön. Ⱡ'#"
+
+#: public/js/drag_and_drop.js
+msgid ""
+"Press \"Enter\", \"Space\", \"Ctrl-m\", or \"⌘-m\" to drop the item on the "
+"current zone."
+msgstr ""
+"Préss \"Éntér\", \"Späçé\", \"Çtrl-m\", ör \"⌘-m\" tö dröp thé ïtém ön thé "
+"çürrént zöné. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: public/js/drag_and_drop.js
+msgid ""
+"Press \"Esc\" if you want to cancel the drop operation (for example, to "
+"select a different item)."
+msgstr ""
+"Préss \"Ésç\" ïf ýöü wänt tö çänçél thé dröp öpérätïön (för éxämplé, tö "
+"séléçt ä dïfférént ïtém). Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: public/js/drag_and_drop.js
+msgid "OK"
+msgstr "ÖK Ⱡ'σя#"
+
+#: public/js/drag_and_drop.js
+msgid "Problem"
+msgstr "Prößlém Ⱡ'σяєм ιρѕυм #"
+
+#: public/js/drag_and_drop.js
+msgid "An error occurred. Unable to load drag and drop problem."
+msgstr ""
+"Àn érrör öççürréd. Ûnäßlé tö löäd dräg änd dröp prößlém. Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: public/js/drag_and_drop_edit.js
+msgid "There was an error with your form."
+msgstr ""
+"Théré wäs än érrör wïth ýöür förm. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: public/js/drag_and_drop_edit.js
+msgid "Please check over your submission."
+msgstr ""
+"Pléäsé çhéçk övér ýöür süßmïssïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: public/js/drag_and_drop_edit.js
+msgid "None"
+msgstr "Nöné Ⱡ'σяєм ι#"
+
+#: public/js/drag_and_drop_edit.js
+msgid "Error: "
+msgstr "Érrör:  Ⱡ'σяєм ιρѕυм #"

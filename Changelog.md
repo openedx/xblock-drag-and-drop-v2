@@ -1,6 +1,7 @@
-Development version:
---------------------
+Version 2.0.5 (2016-03-30)
+--------------------------
 
+* Marked strings for translations (PR #66)
 * Added the ability to specify automatic alignment of dropped items. (PR #57)
 
 Version 2.0.4 (2016-03-10)
