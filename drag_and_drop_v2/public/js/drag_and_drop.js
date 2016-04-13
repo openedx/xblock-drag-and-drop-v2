@@ -170,6 +170,8 @@ function DragNDropTemplates(url_name) {
     };
 
     var zoneTemplate = function(zone, ctx) {
+        console.log(zone);
+        console.log(ctx);
         var className = ctx.display_zone_labels ? 'zone-name' : 'zone-name sr';
         var selector = ctx.display_zone_borders ? 'div.zone.zone-with-borders' : 'div.zone';
 
@@ -200,6 +202,7 @@ function DragNDropTemplates(url_name) {
                     style: {
                         top: zone.y_percent + '%', left: zone.x_percent + "%",
                         width: zone.width_percent + '%', height: zone.height_percent + "%",
+                        background: "url('" + zone.background + "')",
                     }
                 },
                 [
@@ -491,13 +494,13 @@ function DragAndDropBlock(runtime, element, configuration) {
         if (zone.x_percent === undefined) {
             // We can assume that if 'x_percent' is not set, 'y_percent', 'width_percent', and
             // 'height_percent' will also not be set.
-            zone.x_percent = (+zone.x) / bg_image_width * 100;
+            zone.x_percent = (+zone.x) * 2;
             delete zone.x;
-            zone.y_percent = (+zone.y) / bg_image_height * 100;
+            zone.y_percent = (+zone.y) * 2;
             delete zone.y;
-            zone.width_percent = (+zone.width) / bg_image_width * 100;
+            zone.width_percent = (+zone.width) * 2;
             delete zone.width;
-            zone.height_percent = (+zone.height) / bg_image_height * 100;
+            zone.height_percent = (+zone.height) * 2;
             delete zone.height;
             // Generate an HTML ID value that's unique within the DOM and not containing spaces etc:
             zone.prefixed_uid = configuration.url_name + '-' + zone.uid.replace(/([^\w\-])/g, "_");
@@ -932,7 +935,6 @@ function DragAndDropBlock(runtime, element, configuration) {
             }
             return itemProperties;
         });
-
         var context = {
             // configuration - parts that never change:
             bg_image_width: bgImgNaturalWidth, // Not stored in configuration since it's unknown on the server side

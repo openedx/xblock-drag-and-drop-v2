@@ -120,6 +120,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         fragment.add_content(loader.render_template('/templates/html/drag_and_drop.html'))
         css_urls = (
             'public/css/vendor/jquery-ui-1.10.4.custom.min.css',
+            'public/css/vendor/bootstrap.min.css',
             'public/css/drag_and_drop.css'
         )
         js_urls = (
