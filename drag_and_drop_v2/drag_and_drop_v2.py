@@ -27,6 +27,7 @@ loader = ResourceLoader(__name__)
 # Classes ###########################################################
 
 @XBlock.wants('settings')
+@XBlock.needs('i18n')
 class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     """
     XBlock that implements a friendly Drag-and-Drop problem
@@ -106,10 +107,6 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     block_settings_key = 'drag-and-drop-v2'
     has_score = True
 
-    def _(self, text):
-        """ Translate text """
-        return self.runtime.service(self, "i18n").ugettext(text)
-
     @XBlock.supports("multi_device")  # Enable this block for use in the mobile app via webview
     def student_view(self, context):
         """
@@ -186,7 +183,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         js_templates = loader.load_unicode('/templates/html/js_templates.html')
         help_texts = {
-            field_name: self._(field.help)
+            field_name: self.ugettext(field.help)
             for field_name, field in self.fields.viewitems() if hasattr(field, "help")
         }
         context = {

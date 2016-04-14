@@ -9,7 +9,7 @@ install:
     - "sh install_test_deps.sh"
     - "pip uninstall -y xblock-drag-and-drop-v2"
     - "python setup.py sdist"
-    - "pip install dist/xblock-drag-and-drop-v2-2.0.4.tar.gz"
+    - "pip install dist/xblock-drag-and-drop-v2-2.0.5.tar.gz"
 script:
     - pep8 drag_and_drop_v2 tests --max-line-length=120
     - pylint drag_and_drop_v2 tests
