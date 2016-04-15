@@ -119,16 +119,6 @@ DEFAULT_DATA = {
       "imageURL": "",
       "id": 3,
     },
-    {
-      "displayName": _("I don't belong anywhere"),
-      "feedback": {
-        "incorrect": ITEM_NO_ZONE_FEEDBACK,
-        "correct": ""
-      },
-      "zone": "none",
-      "imageURL": "",
-      "id": 4,
-    },
   ],
   "feedback": {
     "start": START_FEEDBACK,

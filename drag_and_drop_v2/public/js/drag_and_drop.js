@@ -285,10 +285,13 @@ function DragNDropTemplates(url_name) {
                 h('section.drag-container', { attributes: { role: 'application' } }, [
                     h(
                         'div.item-bank',
+                        {   
+                            className: 'col-sm-4',
+                        },
                         renderCollection(itemTemplate, items_in_bank, ctx)
                     ),
                     h('div.target',
-                        {
+                        {   className: 'col-sm-8',
                             attributes: {
                                 'aria-live': 'polite',
                                 'aria-atomic': 'true',
