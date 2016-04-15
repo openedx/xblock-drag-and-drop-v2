@@ -170,8 +170,6 @@ function DragNDropTemplates(url_name) {
     };
 
     var zoneTemplate = function(zone, ctx) {
-        console.log(zone);
-        console.log(ctx);
         var className = ctx.display_zone_labels ? 'zone-name' : 'zone-name sr';
         var selector = ctx.display_zone_borders ? 'div.zone.zone-with-borders' : 'div.zone';
 
@@ -184,6 +182,25 @@ function DragNDropTemplates(url_name) {
             var is_item_in_zone = function(i) { return i.is_placed && (i.zone === zone.uid); };
             items_in_zone = $.grep(ctx.items, is_item_in_zone);
         }
+
+        // hack for zones background
+        var zone_background = "";
+
+        switch(zone.uid){
+            case "top-left":
+                zone_background = "/xblock/resource/drag-and-drop-v2/public/img/discover_hover.png";
+                break;
+            case "top-right":
+                zone_background = "/xblock/resource/drag-and-drop-v2/public/img/design_hover.png";
+                break;
+            case "bottom-left":
+                zone_background = "/xblock/resource/drag-and-drop-v2/public/img/develop_hover.png";
+                break;
+            case "bottom-right":
+                zone_background = "/xblock/resource/drag-and-drop-v2/public/img/deploy_hover.png";
+                break;
+        }
+        // end of hack
 
         return (
             h(
@@ -201,13 +218,12 @@ function DragNDropTemplates(url_name) {
                     },
                     style: {
                         top: zone.y_percent + '%', left: zone.x_percent + "%",
-                        width: zone.width_percent + '%', height: zone.height_percent + "%",
-                        background: "url('" + zone.background + "')",
+                        width: zone.width_percent + '%', height: "178px",
+                        background: "#ECEEF8 url('" + zone_background + "') no-repeat center",
                     }
                 },
                 [
                     h('p', { className: className }, zone.title),
-                    h('p', { className: 'zone-description sr' }, zone.description),
                     h(item_wrapper, renderCollection(itemTemplate, items_in_zone, ctx))
                 ]
             )
@@ -741,12 +757,18 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var grabItem = function($item) {
+        $('.xblock--drag-and-drop .zone').css({
+            "border": "dashed 3px #3E51B5"
+        });
         var item_id = $item.data('value');
         setGrabbedState(item_id, true);
         updateDOM();
     };
 
     var releaseItem = function($item) {
+        $('.xblock--drag-and-drop .zone').css({
+            "border": "none"
+        });
         var item_id = $item.data('value');
         setGrabbedState(item_id, false);
         updateDOM();
@@ -776,6 +798,12 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var submitLocation = function(item_id, zone, x_percent, y_percent) {
+        console.log("submitLocation");
+        console.log(zone);
+        var div = $("html").find("[data-uid='" + zone + "']");
+        $($("html").find("[data-uid='" + zone + "']")).css({
+            "background-image": "none"
+        });
         if (!zone) {
             return;
         }
@@ -810,6 +838,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var submitInput = function(evt) {
+        console.log("submitInput");
         var item = $(evt.target).closest('.option');
         var input_div = item.find('.numerical-input');
         var input = input_div.find('.input');

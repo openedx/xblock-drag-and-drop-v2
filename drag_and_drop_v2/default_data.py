@@ -16,7 +16,7 @@ TOP_RIGHT_ZONE_TITLE = _("The Top Right Zone")
 BOTTOM_LEFT_ZONE_TITLE = _("The Bottom Left Zone")
 BOTTOM_RIGHT_ZONE_TITLE = _("The Bottom Right Zone")
 
-TOP_LEFT_ZONE_DESCRIPTION = _("test")
+TOP_LEFT_ZONE_DESCRIPTION = _("Use this zone to associate an item with the top left box.")
 TOP_RIGHT_ZONE_DESCRIPTION = _("Use this zone to associate an item with the top right box.")
 BOTTOM_LEFT_ZONE_DESCRIPTION = _("Use this zone to associate an item with the bottom left box.")
 BOTTOM_RIGHT_ZONE_DESCRIPTION = _("Use this zone to associate an item with the bottom right box.")
@@ -45,7 +45,6 @@ DEFAULT_DATA = {
       "width": 50,
       "height": 50,
       "background": TOP_LEFT_ZONE_BACKGROUND,
-      "test": 40,
     },
     {
       "uid": TOP_RIGHT_ZONE_ID,

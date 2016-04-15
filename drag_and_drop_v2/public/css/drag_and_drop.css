@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:700,300,400");
-@import '/edx/app/edxapp/edx-platform/node_modules/edx-pattern-library/node_modules/susy/sass/susy';
 
+/*
 h1{
     font-family: "Georgia" !important;
     font-style: italic !important;
@@ -42,6 +42,7 @@ p{
     margin: 0;
     padding: 0;
 }
+*/
 
 .xblock--drag-and-drop .initial-load-spinner {
     margin-right: 3px;
@@ -100,6 +101,7 @@ p{
     width: auto;
     background-color: #fff;
     height: 500px;
+    margin: 20px 0;
 }
 
 /*** DRAGGABLE ITEMS ***/
@@ -179,7 +181,7 @@ p{
     position: absolute;
     margin: 0;
     transform: translate(-50%, -50%); /* These blocks are to be centered on their absolute x,y position */
-    background-color: red;
+    background-color: #fff;
 }
 
 /* Placed options in an aligned zone */
@@ -277,7 +279,6 @@ p{
 }
 
 .xblock--drag-and-drop .drag-container .option.fade {
-    opacity: 0.80;
     width: 40%;
 }
 
@@ -292,7 +293,7 @@ p{
     height: auto;
     position: relative;
     float: right;
-    min-height: 500px;
+    min-height: 386px;
     padding: 0;
 }
 
@@ -346,8 +347,6 @@ p{
 .xblock--drag-and-drop .drag-container .target .zone p {
     width: 100%;
     text-align: center;
-    margin-top: auto;
-    margin-bottom: auto;
 }
 
 /*** FEEDBACK ***/
@@ -488,4 +487,13 @@ p{
     width: 1px;
     background-color: #ffffff;
     color: #000000;
+}
+
+
+
+/****************************************************************************************
+****************************************************************************************/
+/* courseware styles*/
+.course-content .bookmark-button-wrapper{
+    display: none;
 }
