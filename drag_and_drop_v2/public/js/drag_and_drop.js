@@ -188,43 +188,61 @@ function DragNDropTemplates(url_name) {
 
         switch(zone.uid){
             case "top-left":
-                zone_background = "/xblock/resource/drag-and-drop-v2/public/img/discover_hover.png";
+                zone_background = "/xblock/resource/drag-and-drop-v2/public/img/discover.png";
                 break;
             case "top-right":
-                zone_background = "/xblock/resource/drag-and-drop-v2/public/img/design_hover.png";
+                zone_background = "/xblock/resource/drag-and-drop-v2/public/img/design.png";
                 break;
             case "bottom-left":
-                zone_background = "/xblock/resource/drag-and-drop-v2/public/img/develop_hover.png";
+                zone_background = "/xblock/resource/drag-and-drop-v2/public/img/develop.png";
                 break;
             case "bottom-right":
-                zone_background = "/xblock/resource/drag-and-drop-v2/public/img/deploy_hover.png";
+                zone_background = "/xblock/resource/drag-and-drop-v2/public/img/deploy.png";
                 break;
         }
         // end of hack
 
+        var zone_title = h('h4', { className: className }, zone.title);
+
+        var zone_div = 
+        h(
+            selector,
+            {
+                id: zone.prefixed_uid,
+                attributes: {
+                    'tabindex': 0,
+                    'dropzone': 'move',
+                    'aria-dropeffect': 'move',
+                    'data-uid': zone.uid,
+                    'data-zone_id': zone.id,
+                    'data-zone_align': zone.align,
+                    'role': 'button',
+                },
+                style: {
+                    width: '100%', height: "178px",
+                    background: "#ECEEF8 url('" + zone_background + "') no-repeat center",
+                    position: 'relative',
+                }
+            },
+            [
+                h(item_wrapper, renderCollection(itemTemplate, items_in_zone, ctx))
+            ]
+        );
+
         return (
             h(
-                selector,
-                {
-                    id: zone.prefixed_uid,
-                    attributes: {
-                        'tabindex': 0,
-                        'dropzone': 'move',
-                        'aria-dropeffect': 'move',
-                        'data-uid': zone.uid,
-                        'data-zone_id': zone.id,
-                        'data-zone_align': zone.align,
-                        'role': 'button',
-                    },
+                'div', 
+                {     
+                    className: 'col-sm-6',
                     style: {
-                        top: zone.y_percent + '%', left: zone.x_percent + "%",
-                        width: zone.width_percent + '%', height: "178px",
-                        background: "#ECEEF8 url('" + zone_background + "') no-repeat center",
+                    top: zone.y_percent + '%', left: zone.x_percent + "%",
+                    position: 'absolute',
+                    padding: '0 0 0 20px',
                     }
                 },
                 [
-                    h('p', { className: className }, zone.title),
-                    h(item_wrapper, renderCollection(itemTemplate, items_in_zone, ctx))
+                    zone_title,
+                    zone_div
                 ]
             )
         );
@@ -241,7 +259,7 @@ function DragNDropTemplates(url_name) {
                     { style: { display: reset_button_display }, attributes: { tabindex: 0 }, 'aria-live': 'off'},
                     gettext('Reset problem')
                 ),
-                h('h3.title1', { style: { display: feedback_display } }, gettext('Feedback')),
+                //h('h3.title1', { style: { display: feedback_display } }, gettext('Feedback')),
                 h('p.message', { style: { display: feedback_display }, innerHTML: ctx.feedback_html })
             ])
         );
@@ -334,7 +352,7 @@ function DragNDropTemplates(url_name) {
                     ]
                     ),
                 ]),
-                keyboardHelpTemplate(ctx),
+                //keyboardHelpTemplate(ctx),
                 feedbackTemplate(ctx),
             ])
         );
