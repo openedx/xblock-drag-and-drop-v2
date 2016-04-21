@@ -21,10 +21,10 @@ TOP_RIGHT_ZONE_DESCRIPTION = _("Use this zone to associate an item with the top 
 BOTTOM_LEFT_ZONE_DESCRIPTION = _("Use this zone to associate an item with the bottom left box.")
 BOTTOM_RIGHT_ZONE_DESCRIPTION = _("Use this zone to associate an item with the bottom right box.")
 
-TOP_LEFT_ZONE_BACKGROUND = _("/xblock/resource/drag-and-drop-v2/public/img/discover_hover.png")
-TOP_RIGHT_ZONE_BACKGROUND = _("/xblock/resource/drag-and-drop-v2/public/img/design_hover.png")
-BOTTOM_LEFT_ZONE_BACKGROUND = _("/xblock/resource/drag-and-drop-v2/public/img/develop_hover.png")
-BOTTOM_RIGHT_ZONE_BACKGROUND = _("/xblock/resource/drag-and-drop-v2/public/img/deploy_hover.png")
+TOP_LEFT_ZONE_BACKGROUND = _("/xblock/resource/drag-and-drop-v2/public/img/discover.png")
+TOP_RIGHT_ZONE_BACKGROUND = _("/xblock/resource/drag-and-drop-v2/public/img/design.png")
+BOTTOM_LEFT_ZONE_BACKGROUND = _("/xblock/resource/drag-and-drop-v2/public/img/develop.png")
+BOTTOM_RIGHT_ZONE_BACKGROUND = _("/xblock/resource/drag-and-drop-v2/public/img/deploy.png")
 
 ITEM_CORRECT_FEEDBACK = _("Correct! This one belongs to {zone}.")
 ITEM_INCORRECT_FEEDBACK = _("No, this item does not belong here. Try again.")
@@ -43,7 +43,7 @@ DEFAULT_DATA = {
       "x": 0,
       "y": 0,
       "width": 50,
-      "height": 50,
+      "height": 178,
       "background": TOP_LEFT_ZONE_BACKGROUND,
     },
     {
@@ -53,7 +53,7 @@ DEFAULT_DATA = {
       "x": 50,
       "y": 0,
       "width": 50,
-      "height": 50,
+      "height": 178,
       "background": TOP_RIGHT_ZONE_BACKGROUND,
     },
     {
@@ -63,7 +63,7 @@ DEFAULT_DATA = {
       "x": 0,
       "y": 50,
       "width": 50,
-      "height": 50,
+      "height": 178,
       "background": BOTTOM_LEFT_ZONE_BACKGROUND,
     },
     {
@@ -73,7 +73,7 @@ DEFAULT_DATA = {
       "x": 50,
       "y": 50,
       "width": 50,
-      "height": 50,
+      "height": 178,
       "background": BOTTOM_RIGHT_ZONE_BACKGROUND,
     }
   ],

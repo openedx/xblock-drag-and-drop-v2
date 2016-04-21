@@ -322,6 +322,16 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         self.item_state = {}
         return self._get_user_state()
 
+    @XBlock.json_handler
+    def hint(self, data, suffix=''):
+        print "*"*70
+        print "-"*70
+        print self
+        print "-"*70
+        print "*"*70
+        
+        return "self"
+
     def _expand_static_url(self, url):
         """
         This is required to make URLs like '/static/dnd-test-image.png' work (note: that is the

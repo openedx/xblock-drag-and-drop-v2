@@ -34,8 +34,8 @@ h6{
 }
 p{
     font-family: 'Source Sans Pro', sans-serif !important;
-    font-weight: 400 !important;
-    font-size: 14px !important;
+    font-weight: 400;
+    font-size: 14px;
 }
 .xblock--drag-and-drop {
     width: auto;
@@ -101,7 +101,7 @@ p{
     width: auto;
     background-color: #fff;
     height: 500px;
-    margin: 20px 0;
+    margin: 20px 0 0 0;
 }
 
 /*** DRAGGABLE ITEMS ***/
@@ -132,6 +132,7 @@ p{
     width: auto;
     min-width: 4em;
     width: 100%;
+    max-width: 257px;
     color: #000;
     opacity: 1;
     outline-color: #fff;
@@ -307,7 +308,7 @@ p{
     display: table-cell;
     width: 100%;
     max-width: 100%;
-    height: auto;
+    max-height: 500px;
 }
 
 .xblock--drag-and-drop .zone {
@@ -359,38 +360,42 @@ p{
 .xblock--drag-and-drop .popup {
     position: absolute;
     display: none;
-    top: 5%;
-    right: 5%;
-    border: 1px solid #fff;
-    background-color: rgba(0, 0, 0, 0.8);
-    width: 500px;
+    top: -45%;
+    right: 45%;
+    background-color: rgba(130,199,37,1.0);
     max-width: 90%;
     min-height: 50px;
     max-height: 90%;
     overflow-y: auto;
     z-index: 100;
+    min-width: 350px;
 }
 
 .xblock--drag-and-drop .popup.popup-incorrect {
-    background-color: rgba(173, 13, 13, 0.8);
+    background-color: rgba(223,64,80,1.0);
 }
 
 .xblock--drag-and-drop .popup .popup-content {
     color: #ffffff;
-    margin-left: 15px;
+    font-weight: bold;
+    /*margin-left: 15px;
     margin-top: 35px;
-    margin-bottom: 15px;
+    margin-bottom: 15px;*/
+    margin-top: 15px;
+    margin-left: 15px;
 }
 
 .xblock--drag-and-drop .popup .close {
     cursor: pointer;
     float: right;
-    margin-right: 8px;
+    margin-top: 15px;
+    margin-right: 15px;
+    opacity: 1;
+    /*
     margin-top: 8px;
-    margin-left: 20px;
+    margin-left: 20px;*/
     color: #ffffff;
     font-family: "fontawesome";
-    font-size: 18pt;
 }
 
 .xblock--drag-and-drop .popup .close:focus {
@@ -465,6 +470,17 @@ p{
     box-shadow: none;
     border: none;
 }
+.xblock--drag-and-drop .hint-button {
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    color: #2d74b3;
+    font-weight: normal;
+    font-size: 12pt;
+    background: none;
+    box-shadow: none;
+    border: none;
+}
 
 .xblock--drag-and-drop .reset-button {
     float: right;
@@ -490,21 +506,27 @@ p{
 }
 
 
-
 /****************************************************************************************
 ****************************************************************************************/
 /* courseware styles*/
 .course-content .bookmark-button-wrapper{
     display: none;
 }
-
+.xmodule_display.xmodule_SequenceModule nav.sequence-bottom{
+    margin: 20px 0 0 0;
+    height: 30px;
+    width: 100%;
+}
 .xmodule_display.xmodule_SequenceModule .sequence-nav-button{
     border: none !important;
     border-radius: 0 !important;
     background: #3E51B5;
+    color: #fff;
+    height: 44px;
+}
+.xmodule_display.xmodule_SequenceModule .sequence-bottom .sequence-nav-button{
     width: 100px;
     height: 30px;
-    color: #fff;
 }
 .xmodule_display.xmodule_SequenceModule .sequence-nav-button:hover{
     background: #B2B9E1;
@@ -521,11 +543,6 @@ p {
 .course-wrapper .course-content p{
     margin-bottom: 0;
 }
-.xmodule_display.xmodule_SequenceModule .sequence-nav{
-    margin: 20px 0 20px;
-    height: 30px;
-}
-
 
 .wrapper-course-modes {
     border-bottom: 0;
@@ -591,7 +608,7 @@ p {
     top: 0;
     left: auto;
     font-size: 0.875em;
-    color: #c8c8c8;
+    color: #3E51B5;
     margin-left: 20px;
 }
 .course-index .accordion .course-navigation .chapter-content-container.is-open{
@@ -607,6 +624,7 @@ body{
 .course-wrapper .course-content{
     background: #fff;
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    padding: 2em 2.5em;
 }
 .container>div{
     background: none;
@@ -616,4 +634,6 @@ body{
 
 .course-wrapper .course-content .vert-mod .vert>.xblock-student_view{
     border-bottom: 0;
+    padding: 0;
+    margin: 0;
 }

@@ -169,21 +169,7 @@ function DragNDropTemplates(url_name) {
         );
     };
 
-    var zoneTemplate = function(zone, ctx) {
-        var className = ctx.display_zone_labels ? 'zone-name' : 'zone-name sr';
-        var selector = ctx.display_zone_borders ? 'div.zone.zone-with-borders' : 'div.zone';
-
-        // If zone is aligned, mark its item alignment
-        // and render its placed items as children
-        var item_wrapper = 'div.item-wrapper';
-        var items_in_zone = [];
-        if (zone.align !== 'none') {
-            item_wrapper += '.item-align.item-align-' + zone.align;
-            var is_item_in_zone = function(i) { return i.is_placed && (i.zone === zone.uid); };
-            items_in_zone = $.grep(ctx.items, is_item_in_zone);
-        }
-
-        // hack for zones background
+    var zoneBackgroundSet = function(zone){
         var zone_background = "";
 
         switch(zone.uid){
@@ -200,7 +186,25 @@ function DragNDropTemplates(url_name) {
                 zone_background = "/xblock/resource/drag-and-drop-v2/public/img/deploy.png";
                 break;
         }
-        // end of hack
+
+        return zone_background;
+    };
+
+    var zoneTemplate = function(zone, ctx) {
+        var className = ctx.display_zone_labels ? 'zone-name' : 'zone-name sr';
+        var selector = ctx.display_zone_borders ? 'div.zone.zone-with-borders' : 'div.zone';
+
+        // If zone is aligned, mark its item alignment
+        // and render its placed items as children
+        var item_wrapper = 'div.item-wrapper';
+        var items_in_zone = [];
+        if (zone.align !== 'none') {
+            item_wrapper += '.item-align.item-align-' + zone.align;
+            var is_item_in_zone = function(i) { return i.is_placed && (i.zone === zone.uid); };
+            items_in_zone = $.grep(ctx.items, is_item_in_zone);
+        }
+
+        var zone_background = zoneBackgroundSet(zone);
 
         var zone_title = h('h4', { className: className }, zone.title);
 
@@ -219,7 +223,7 @@ function DragNDropTemplates(url_name) {
                     'role': 'button',
                 },
                 style: {
-                    width: '100%', height: "178px",
+                    width: zone.width_percent + '%', height: zone.height_percent + "px",
                     background: "#ECEEF8 url('" + zone_background + "') no-repeat center",
                     position: 'relative',
                 }
@@ -248,18 +252,34 @@ function DragNDropTemplates(url_name) {
         );
     };
 
+    var resetProblemButton = function(ctx){
+        var reset_button_display = ctx.display_reset_button ? 'block' : 'none';
+        return(
+            h( 'button.reset-button.unbutton.link-button',
+                { style: { 
+                    display: reset_button_display 
+                }, attributes: { 
+                    tabindex: 0 
+                }, 
+                'aria-live': 'off'},
+                gettext('Reset problem')
+            )
+        );
+    };
+
+    var hintButton = function(){
+        return(
+            h('div.hint-button', {}, gettext('Use a Hint (3 remaining)'))
+        );
+    }
+
     var feedbackTemplate = function(ctx) {
         var feedback_display = ctx.feedback_html ? 'block' : 'none';
-        var reset_button_display = ctx.display_reset_button ? 'block' : 'none';
         var properties = { attributes: { 'aria-live': 'polite' } };
+
         return (
-            h('section.feedback', properties, [
-                h(
-                    'button.reset-button.unbutton.link-button',
-                    { style: { display: reset_button_display }, attributes: { tabindex: 0 }, 'aria-live': 'off'},
-                    gettext('Reset problem')
-                ),
-                //h('h3.title1', { style: { display: feedback_display } }, gettext('Feedback')),
+            h('section.feedback.clearfix', properties, [
+                //h('h3.title1', { style: { display: feedbac_kdisplay } }, gettext('Feedback')),
                 h('p.message', { style: { display: feedback_display }, innerHTML: ctx.feedback_html })
             ])
         );
@@ -322,7 +342,10 @@ function DragNDropTemplates(url_name) {
                         {   
                             className: 'col-sm-4',
                         },
-                        renderCollection(itemTemplate, items_in_bank, ctx)
+                        [
+                            feedbackTemplate(ctx),
+                            renderCollection(itemTemplate, items_in_bank, ctx)
+                        ]
                     ),
                     h('div.target',
                         {   className: 'col-sm-8',
@@ -339,7 +362,7 @@ function DragNDropTemplates(url_name) {
                                     style: {display: ctx.popup_html ? 'block' : 'none'},
                                 },
                                 [
-                                    h('div.close.icon-remove-sign.fa-times-circle'),
+                                    h('div.close.icon-remove-sign.fa-times'),
                                     h('p.popup-content', {innerHTML: ctx.popup_html}),
                                 ]
                             ),
@@ -353,7 +376,9 @@ function DragNDropTemplates(url_name) {
                     ),
                 ]),
                 //keyboardHelpTemplate(ctx),
-                feedbackTemplate(ctx),
+                //feedbackTemplate(ctx),
+                resetProblemButton(ctx),
+                hintButton(),
             ])
         );
     };
@@ -423,6 +448,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 runOnKey(evt, RET, showKeyboardHelp);
             });
             $element.on('click', '.reset-button', resetProblem);
+            $element.on('click', '.hint-button', useHint);
             $element.on('keydown', '.reset-button', function(evt) {
                 runOnKey(evt, RET, resetProblem);
             });
@@ -531,13 +557,13 @@ function DragAndDropBlock(runtime, element, configuration) {
         if (zone.x_percent === undefined) {
             // We can assume that if 'x_percent' is not set, 'y_percent', 'width_percent', and
             // 'height_percent' will also not be set.
-            zone.x_percent = (+zone.x) * 2;
+            zone.x_percent = (+zone.x);
             delete zone.x;
-            zone.y_percent = (+zone.y) * 2;
+            zone.y_percent = (+zone.y);
             delete zone.y;
             zone.width_percent = (+zone.width) * 2;
             delete zone.width;
-            zone.height_percent = (+zone.height) * 2;
+            zone.height_percent = (+zone.height);
             delete zone.height;
             // Generate an HTML ID value that's unique within the DOM and not containing spaces etc:
             zone.prefixed_uid = configuration.url_name + '-' + zone.uid.replace(/([^\w\-])/g, "_");
@@ -816,9 +842,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var submitLocation = function(item_id, zone, x_percent, y_percent) {
-        console.log("submitLocation");
-        console.log(zone);
-        var div = $("html").find("[data-uid='" + zone + "']");
+        console.log("submitLocation");    
         $($("html").find("[data-uid='" + zone + "']")).css({
             "background-image": "none"
         });
@@ -856,7 +880,6 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var submitInput = function(evt) {
-        console.log("submitInput");
         var item = $(evt.target).closest('.option');
         var input_div = item.find('.numerical-input');
         var input = input_div.find('.input');
@@ -921,6 +944,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var resetProblem = function(evt) {
+        console.log("resetProblem");
         evt.preventDefault();
         $.ajax({
             type: 'POST',
@@ -933,6 +957,19 @@ function DragAndDropBlock(runtime, element, configuration) {
             'overall_feedback': configuration.initial_feedback,
         };
         applyState();
+    };
+
+    var useHint = function(evt) {
+        console.log("useHint");
+        console.log(runtime.handlerUrl(element, 'hint'));
+        $.ajax({
+            type: 'POST',
+            url: runtime.handlerUrl(element, 'hint'),
+            data: '{}',
+            success: function(data){
+                alert(data);
+            }
+        });
     };
 
     var render = function() {
