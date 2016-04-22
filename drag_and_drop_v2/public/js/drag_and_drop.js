@@ -725,15 +725,6 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var initDroppable = function() {
-        $(".zone").droppable({
-            over: function (event, ui) { 
-               var hoveredElement = $(this); //the 'this' under over event
-               console.log(hoveredElement);
-               $(this).css({
-                    "background": " #ECEEF8 url('/xblock/resource/drag-and-drop-v2/public/img/discover_hover.png') no-repeat center"
-                });
-             } 
-        });
         // Set up zones for keyboard interaction
         $root.find('.zone').each(function() {
             var $zone = $(this);
