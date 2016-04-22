@@ -139,7 +139,7 @@ function DragNDropTemplates(url_name) {
         if (item.imageURL) {
             item_content_html = '<img src="' + item.imageURL + '" alt="' + item.imageDescription + '" />';
         }
-        var item_content = h('div', { innerHTML: item_content_html, className: "item-content" });
+        var item_content = h('div', { innerHTML: item_content_html, className: "item-content ee-p" });
         if (item.is_placed) {
             // Insert information about zone in which this item has been placed
             var item_description_id = url_name + '-item-' + item.value + '-description';
@@ -191,7 +191,7 @@ function DragNDropTemplates(url_name) {
     };
 
     var zoneTemplate = function(zone, ctx) {
-        var className = ctx.display_zone_labels ? 'zone-name' : 'zone-name sr';
+        var className = ctx.display_zone_labels ? 'zone-name ee-h4' : 'zone-name sr';
         var selector = ctx.display_zone_borders ? 'div.zone.zone-with-borders' : 'div.zone';
 
         // If zone is aligned, mark its item alignment
@@ -316,7 +316,7 @@ function DragNDropTemplates(url_name) {
     };
 
     var mainTemplate = function(ctx) {
-        var problemTitle = ctx.show_title ? h('h2.problem-title', {innerHTML: ctx.title_html}) : null;
+        var problemTitle = ctx.show_title ? h('h2.problem-title.ee-h2', {innerHTML: ctx.title_html}) : null;
         var problemHeader = ctx.show_problem_header ? h('h3.title1', gettext('Problem')) : null;
         var popupSelector = 'div.popup';
         if (ctx.popup_html && !ctx.last_action_correct) {
@@ -334,7 +334,7 @@ function DragNDropTemplates(url_name) {
                 problemTitle,
                 h('section.problem', [
                     problemHeader,
-                    h('p', {innerHTML: ctx.problem_html}),
+                    h('p.ee-p', {innerHTML: ctx.problem_html}),
                 ]),
                 h('section.drag-container', { attributes: { role: 'application' } }, [
                     h(
@@ -725,6 +725,15 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var initDroppable = function() {
+        $(".zone").droppable({
+            over: function (event, ui) { 
+               var hoveredElement = $(this); //the 'this' under over event
+               console.log(hoveredElement);
+               $(this).css({
+                    "background": " #ECEEF8 url('/xblock/resource/drag-and-drop-v2/public/img/discover_hover.png') no-repeat center"
+                });
+             } 
+        });
         // Set up zones for keyboard interaction
         $root.find('.zone').each(function() {
             var $zone = $(this);
@@ -801,6 +810,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var grabItem = function($item) {
+        console.log("grabItem");
         $('.xblock--drag-and-drop .zone').css({
             "border": "dashed 3px #3E51B5"
         });
@@ -819,6 +829,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var setGrabbedState = function(item_id, grabbed) {
+        console.log("setGrabbedState");
         for (var i = 0; i < configuration.items.length; i++) {
             if (configuration.items[i].id === item_id) {
                 configuration.items[i].grabbed = grabbed;
@@ -1113,3 +1124,7 @@ function DragAndDropBlock(runtime, element, configuration) {
 
     init();
 }
+
+/***********************************************************************
+* Script for background change on zones when hovering items over it
+************************************************************************/
