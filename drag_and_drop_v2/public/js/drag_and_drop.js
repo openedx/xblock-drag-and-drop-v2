@@ -103,9 +103,10 @@ function DragNDropTemplates(url_name) {
                     style.marginRight = '190px';
                 }
                 // Make up for the fact we're in a wrapper container by calculating percentage differences.
-                var maxWidth = (item.widthPercent || 30) / 100;
+                var maxWidth = (item.widthPercent || 45) / 100;
                 var widthPercent = zone.width_percent / 100;
                 style.maxWidth = ((1 / (widthPercent / maxWidth)) * 100) + '%';
+                style.top = 12 + "%";
                 if (item.widthPercent) {
                     style.width = style.maxWidth;
                 }
@@ -169,27 +170,6 @@ function DragNDropTemplates(url_name) {
         );
     };
 
-    var zoneBackgroundSet = function(zone){
-        var zone_background = "";
-
-        switch(zone.uid){
-            case "top-left":
-                zone_background = "/xblock/resource/drag-and-drop-v2/public/img/discover.png";
-                break;
-            case "top-right":
-                zone_background = "/xblock/resource/drag-and-drop-v2/public/img/design.png";
-                break;
-            case "bottom-left":
-                zone_background = "/xblock/resource/drag-and-drop-v2/public/img/develop.png";
-                break;
-            case "bottom-right":
-                zone_background = "/xblock/resource/drag-and-drop-v2/public/img/deploy.png";
-                break;
-        }
-
-        return zone_background;
-    };
-
     var zoneTemplate = function(zone, ctx) {
         var className = ctx.display_zone_labels ? 'zone-name ee-h4' : 'zone-name sr';
         var selector = ctx.display_zone_borders ? 'div.zone.zone-with-borders' : 'div.zone';
@@ -203,8 +183,6 @@ function DragNDropTemplates(url_name) {
             var is_item_in_zone = function(i) { return i.is_placed && (i.zone === zone.uid); };
             items_in_zone = $.grep(ctx.items, is_item_in_zone);
         }
-
-        var zone_background = zoneBackgroundSet(zone);
 
         var zone_title = h('h4', { className: className }, zone.title);
 
@@ -224,7 +202,10 @@ function DragNDropTemplates(url_name) {
                 },
                 style: {
                     width: zone.width_percent + '%', height: zone.height_percent + "px",
-                    background: "#ECEEF8 url('" + zone_background + "') no-repeat center",
+                    backgroundColor: "#ECEEF8",
+                    backgroundImage: "url('/xblock/resource/drag-and-drop-v2/public/img/" + zone.uid + ".png')",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center",
                     position: 'relative',
                 }
             },
@@ -256,9 +237,12 @@ function DragNDropTemplates(url_name) {
         var reset_button_display = ctx.display_reset_button ? 'block' : 'none';
         return(
             h( 'button.reset-button.unbutton.link-button',
-                { style: { 
-                    display: reset_button_display 
-                }, attributes: { 
+                {
+                    className: 'col-sm-2 pull-right',
+                    style: { 
+                        display: reset_button_display 
+                    }, 
+                    attributes: { 
                     tabindex: 0 
                 }, 
                 'aria-live': 'off'},
@@ -269,18 +253,24 @@ function DragNDropTemplates(url_name) {
 
     var hintButton = function(){
         return(
-            h('div.hint-button', {}, gettext('Use a Hint (3 remaining)'))
+            h('button.unbutton.hint-button', {
+                className: 'col-sm-3 pull-right',
+            }, gettext('Use a Hint (3 remaining)'))
         );
     }
 
     var feedbackTemplate = function(ctx) {
         var feedback_display = ctx.feedback_html ? 'block' : 'none';
         var properties = { attributes: { 'aria-live': 'polite' } };
-
+        console.log("feedback:");
+        console.log(ctx.feedback_html);
+        if(ctx.feedback_html != ''){
+            playSound("AllCompleted");
+        }
         return (
             h('section.feedback.clearfix', properties, [
                 //h('h3.title1', { style: { display: feedbac_kdisplay } }, gettext('Feedback')),
-                h('p.message', { style: { display: feedback_display }, innerHTML: ctx.feedback_html })
+                h('div.message', { style: { display: feedback_display }, innerHTML: ctx.feedback_html })
             ])
         );
     };
@@ -359,7 +349,7 @@ function DragNDropTemplates(url_name) {
                             h(
                                 popupSelector,
                                 {
-                                    style: {display: ctx.popup_html ? 'block' : 'none'},
+                                    
                                 },
                                 [
                                     h('div.close.icon-remove-sign.fa-times'),
@@ -375,16 +365,28 @@ function DragNDropTemplates(url_name) {
                     ]
                     ),
                 ]),
-                //keyboardHelpTemplate(ctx),
-                //feedbackTemplate(ctx),
-                resetProblemButton(ctx),
-                hintButton(),
+                h('div',
+                {   
+                    className: 'row',
+                },
+                [
+                    resetProblemButton(ctx),
+                    hintButton(),
+                ]),
+                //keyboardHelpTemplate(ctx),                     
             ])
         );
     };
 
     DragAndDropBlock.renderView = mainTemplate;
+}
 
+function playSound(name){
+        var audioElement = document.createElement('audio');
+        var url = '/xblock/resource/drag-and-drop-v2/public/sounds/' + name + '.mp3';
+        audioElement.setAttribute('src', url);
+        audioElement.setAttribute('autoplay', 'autoplay');
+        audioElement.play();
 }
 
 function DragAndDropBlock(runtime, element, configuration) {
@@ -724,7 +726,34 @@ function DragAndDropBlock(runtime, element, configuration) {
         }, 0);
     };
 
+    var replaceBackground = function(element){
+        var background = $(element).css("background-image");
+        var str = background.toString();
+        if (!(str.indexOf("-hover") >= 0)){
+            background = background.replace('.png', '-hover.png')
+        }
+        else if (str.indexOf("-hover") >= 0){
+            background = background.replace('-hover.png', '.png')
+        }
+        $(element).css({
+            "background-image": background
+        });
+    };
+
     var initDroppable = function() {
+        // Change zone background when hovering
+        $(".option").draggable();
+        $(".zone").droppable({
+            over: function (event, ui) { 
+                replaceBackground(this);
+            },
+             out: function( event, ui ) {
+                replaceBackground(this);
+             }
+        });
+        $( ".zone" ).on( "drop", function( event, ui ) {
+            replaceBackground(this);
+        });
         // Set up zones for keyboard interaction
         $root.find('.zone').each(function() {
             var $zone = $(this);
@@ -811,6 +840,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var releaseItem = function($item) {
+        console.log("Item released");
         $('.xblock--drag-and-drop .zone').css({
             "border": "none"
         });
@@ -843,11 +873,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         });
     };
 
-    var submitLocation = function(item_id, zone, x_percent, y_percent) {
-        console.log("submitLocation");    
-        $($("html").find("[data-uid='" + zone + "']")).css({
-            "background-image": "none"
-        });
+    var submitLocation = function(item_id, zone, x_percent, y_percent) { 
         if (!zone) {
             return;
         }
@@ -865,8 +891,13 @@ function DragAndDropBlock(runtime, element, configuration) {
                 if (data.correct_location) {
                     state.items[item_id].correct_input = Boolean(data.correct);
                     state.items[item_id].submitting_location = false;
+                    playSound("TileCorrect");
+                    //$($(".target").find("[data-uid='" + zone + "']")).css({
+                    //    "background-image": "none"
+                    //});
                 } else {
                     delete state.items[item_id];
+                    playSound("TileIncorrect");
                 }
                 state.feedback = data.feedback;
                 if (data.finished) {
@@ -874,6 +905,14 @@ function DragAndDropBlock(runtime, element, configuration) {
                     state.overall_feedback = data.overall_feedback;
                 }
                 applyState();
+                if ($('.popup-incorrect').length) {
+                    setTimeout(function() {
+                        $('.popup-incorrect').fadeOut(500, function(){
+                            $(this).removeClass('popup-incorrect');
+                            $(this).css('display','');
+                        });
+                    }, 3500);
+                };
             })
             .fail(function (data) {
                 delete state.items[item_id];
@@ -945,8 +984,10 @@ function DragAndDropBlock(runtime, element, configuration) {
         applyState();
     };
 
+    
+
     var resetProblem = function(evt) {
-        console.log("resetProblem");
+        //setZoneBackground();
         evt.preventDefault();
         $.ajax({
             type: 'POST',
@@ -959,17 +1000,30 @@ function DragAndDropBlock(runtime, element, configuration) {
             'overall_feedback': configuration.initial_feedback,
         };
         applyState();
+        playSound("ResetTiles");
+    };
+
+    var setZoneBackground = function() {
+        console.log("setZoneBackground");
+        var count = $('.zone').length;
+        var i;
+        for (i = 1; i <= count; i++) { 
+            $($(".target").find("[data-uid='zone-" + i + "']")).css({
+                "background-image": "url('/xblock/resource/drag-and-drop-v2/public/img/zone-" + i + ".png')"
+            });
+        }       
     };
 
     var useHint = function(evt) {
         console.log("useHint");
         console.log(runtime.handlerUrl(element, 'hint'));
+        playSound("HintMe");
         $.ajax({
             type: 'POST',
             url: runtime.handlerUrl(element, 'hint'),
             data: '{}',
             success: function(data){
-                alert(data);
+                alert("Hint not implemented yet!");
             }
         });
     };
