@@ -240,7 +240,6 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     @XBlock.json_handler
     def do_attempt(self, attempt, suffix=''):
         item = self._get_item_definition(attempt['val'])
-
         state = None
         zone = None
         feedback = item['feedback']['incorrect']
@@ -324,13 +323,9 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
     @XBlock.json_handler
     def hint(self, data, suffix=''):
-        print "*"*70
-        print "-"*70
-        print self
-        print "-"*70
-        print "*"*70
+        item = self._get_item_definition(data['val'])
+        return item['zone'] 
         
-        return "self"
 
     def _expand_static_url(self, url):
         """

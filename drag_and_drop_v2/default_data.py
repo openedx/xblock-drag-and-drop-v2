@@ -6,25 +6,25 @@ TARGET_IMG_DESCRIPTION = _(
     "and the narrowest layer is located at the top."
 )
 
-TOP_LEFT_ZONE_ID = "top-left"
-TOP_RIGHT_ZONE_ID = "top-right"
-BOTTOM_LEFT_ZONE_ID = "bottom-left"
-BOTTOM_RIGHT_ZONE_ID = "bottom-right"
+FIRST_ZONE_ID = "zone-1"
+SECOND_ZONE_ID = "zone-1"
+THIRD_ZONE_ID = "zone-3"
+FOURTH_ZONE_ID = "zone-4"
 
-TOP_LEFT_ZONE_TITLE = _("The Top Left Zone")
-TOP_RIGHT_ZONE_TITLE = _("The Top Right Zone")
-BOTTOM_LEFT_ZONE_TITLE = _("The Bottom Left Zone")
-BOTTOM_RIGHT_ZONE_TITLE = _("The Bottom Right Zone")
+FIRST_ZONE_TITLE = _("The Top Left Zone")
+SECOND_ZONE_TITLE = _("The Top Right Zone")
+THIRD_ZONE_TITLE = _("The Bottom Left Zone")
+FOURTH_ZONE_TITLE = _("The Bottom Right Zone")
 
-TOP_LEFT_ZONE_DESCRIPTION = _("Use this zone to associate an item with the top left box.")
-TOP_RIGHT_ZONE_DESCRIPTION = _("Use this zone to associate an item with the top right box.")
-BOTTOM_LEFT_ZONE_DESCRIPTION = _("Use this zone to associate an item with the bottom left box.")
-BOTTOM_RIGHT_ZONE_DESCRIPTION = _("Use this zone to associate an item with the bottom right box.")
+FIRST_ZONE_DESCRIPTION = _("Use this zone to associate an item with the top left box.")
+SECOND_ZONE_DESCRIPTION = _("Use this zone to associate an item with the top right box.")
+THIRD_ZONE_DESCRIPTION = _("Use this zone to associate an item with the bottom left box.")
+FOURTH_ZONE_DESCRIPTION = _("Use this zone to associate an item with the bottom right box.")
 
-TOP_LEFT_ZONE_BACKGROUND = _("/xblock/resource/drag-and-drop-v2/public/img/discover.png")
-TOP_RIGHT_ZONE_BACKGROUND = _("/xblock/resource/drag-and-drop-v2/public/img/design.png")
-BOTTOM_LEFT_ZONE_BACKGROUND = _("/xblock/resource/drag-and-drop-v2/public/img/develop.png")
-BOTTOM_RIGHT_ZONE_BACKGROUND = _("/xblock/resource/drag-and-drop-v2/public/img/deploy.png")
+FIRST_ZONE_BACKGROUND = _("/xblock/resource/drag-and-drop-v2/public/img/discover.png")
+SECOND_ZONE_BACKGROUND = _("/xblock/resource/drag-and-drop-v2/public/img/design.png")
+THIRD_ZONE_BACKGROUND = _("/xblock/resource/drag-and-drop-v2/public/img/develop.png")
+FOURTH_ZONE_BACKGROUND = _("/xblock/resource/drag-and-drop-v2/public/img/deploy.png")
 
 ITEM_CORRECT_FEEDBACK = _("Correct! This one belongs to {zone}.")
 ITEM_INCORRECT_FEEDBACK = _("No, this item does not belong here. Try again.")
@@ -37,44 +37,44 @@ DEFAULT_DATA = {
   "targetImgDescription": TARGET_IMG_DESCRIPTION,
   "zones": [
     {
-      "uid": TOP_LEFT_ZONE_ID,
-      "title": TOP_LEFT_ZONE_TITLE,
-      "description": TOP_LEFT_ZONE_DESCRIPTION,
+      "uid": FIRST_ZONE_ID,
+      "title": FIRST_ZONE_TITLE,
+      "description": FIRST_ZONE_DESCRIPTION,
       "x": 0,
       "y": 0,
       "width": 50,
       "height": 178,
-      "background": TOP_LEFT_ZONE_BACKGROUND,
+      "background": FIRST_ZONE_BACKGROUND,
     },
     {
-      "uid": TOP_RIGHT_ZONE_ID,
-      "title": TOP_RIGHT_ZONE_TITLE,
-      "description": TOP_RIGHT_ZONE_DESCRIPTION,
+      "uid": SECOND_ZONE_ID,
+      "title": SECOND_ZONE_TITLE,
+      "description": SECOND_ZONE_DESCRIPTION,
       "x": 50,
       "y": 0,
       "width": 50,
       "height": 178,
-      "background": TOP_RIGHT_ZONE_BACKGROUND,
+      "background": SECOND_ZONE_BACKGROUND,
     },
     {
-      "uid": BOTTOM_LEFT_ZONE_ID,
-      "title": BOTTOM_LEFT_ZONE_TITLE,
-      "description": BOTTOM_LEFT_ZONE_DESCRIPTION,
+      "uid": THIRD_ZONE_ID,
+      "title": THIRD_ZONE_TITLE,
+      "description": THIRD_ZONE_DESCRIPTION,
       "x": 0,
       "y": 50,
       "width": 50,
       "height": 178,
-      "background": BOTTOM_LEFT_ZONE_BACKGROUND,
+      "background": THIRD_ZONE_BACKGROUND,
     },
     {
-      "uid": BOTTOM_RIGHT_ZONE_ID,
-      "title": BOTTOM_RIGHT_ZONE_TITLE,
-      "description": BOTTOM_RIGHT_ZONE_DESCRIPTION,
+      "uid": FOURTH_ZONE_ID,
+      "title": FOURTH_ZONE_TITLE,
+      "description": FOURTH_ZONE_DESCRIPTION,
       "x": 50,
       "y": 50,
       "width": 50,
       "height": 178,
-      "background": BOTTOM_RIGHT_ZONE_BACKGROUND,
+      "background": FOURTH_ZONE_BACKGROUND,
     }
   ],
   "items": [
@@ -82,9 +82,9 @@ DEFAULT_DATA = {
       "displayName": _("Goes to the top left"),
       "feedback": {
         "incorrect": ITEM_INCORRECT_FEEDBACK,
-        "correct": ITEM_CORRECT_FEEDBACK.format(zone=TOP_LEFT_ZONE_TITLE)
+        "correct": ITEM_CORRECT_FEEDBACK.format(zone=FIRST_ZONE_TITLE)
       },
-      "zone": TOP_LEFT_ZONE_ID,
+      "zone": FIRST_ZONE_ID,
       "imageURL": "",
       "id": 0,
     },
@@ -92,9 +92,9 @@ DEFAULT_DATA = {
       "displayName": _("Goes to the top right"),
       "feedback": {
         "incorrect": ITEM_INCORRECT_FEEDBACK,
-        "correct": ITEM_CORRECT_FEEDBACK.format(zone=TOP_RIGHT_ZONE_TITLE)
+        "correct": ITEM_CORRECT_FEEDBACK.format(zone=SECOND_ZONE_TITLE)
       },
-      "zone": TOP_RIGHT_ZONE_ID,
+      "zone": SECOND_ZONE_ID,
       "imageURL": "",
       "id": 1,
     },
@@ -102,9 +102,9 @@ DEFAULT_DATA = {
       "displayName": _("Goes to the bottom left"),
       "feedback": {
         "incorrect": ITEM_INCORRECT_FEEDBACK,
-        "correct": ITEM_CORRECT_FEEDBACK.format(zone=BOTTOM_LEFT_ZONE_TITLE)
+        "correct": ITEM_CORRECT_FEEDBACK.format(zone=THIRD_ZONE_TITLE)
       },
-      "zone": BOTTOM_LEFT_ZONE_ID,
+      "zone": THIRD_ZONE_ID,
       "imageURL": "",
       "id": 2,
     },
@@ -112,9 +112,9 @@ DEFAULT_DATA = {
       "displayName": _("Goes to the bottom right"),
       "feedback": {
         "incorrect": ITEM_INCORRECT_FEEDBACK,
-        "correct": ITEM_CORRECT_FEEDBACK.format(zone=BOTTOM_RIGHT_ZONE_TITLE)
+        "correct": ITEM_CORRECT_FEEDBACK.format(zone=FOURTH_ZONE_TITLE)
       },
-      "zone": BOTTOM_RIGHT_ZONE_ID,
+      "zone": FOURTH_ZONE_ID,
       "imageURL": "",
       "id": 3,
     },

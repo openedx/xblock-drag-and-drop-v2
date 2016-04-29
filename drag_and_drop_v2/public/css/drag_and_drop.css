@@ -187,7 +187,6 @@
 .xblock--drag-and-drop .drag-container .ui-draggable-dragging.option {
     box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.3);
     border-bottom: 5px solid #3E51B5;
-    /*box-shadow: inset 0 -5px 0 0 #3E51B5*/
 
     z-index: 20 !important;
     margin: 0; /* Allow the draggable to touch the edges of the target image */
@@ -304,7 +303,7 @@
 
 /* Focused zone */
 .xblock--drag-and-drop .zone:focus {
-    border: 2px solid #a5a5a5;
+
 }
 
 .xblock--drag-and-drop .drag-container .target .zone p {
@@ -445,22 +444,4 @@
     width: 1px;
     background-color: #ffffff;
     color: #000000;
-}
-
-
-.course-index .accordion .course-navigation .chapter-content-container .chapter-menu .menu-item:visited{
-    background: red;
-}
-
-.zones:nth-child(0){
-    background: #ECEEF8 url('/xblock/resource/drag-and-drop-v2/public/img/discover.png') no-repeat center
-}
-.zones:nth-child(1){
-    background: #ECEEF8 url('/xblock/resource/drag-and-drop-v2/public/img/design.png') no-repeat center
-}
-.zones:nth-child(2){
-    background: #ECEEF8 url('/xblock/resource/drag-and-drop-v2/public/img/develop.png') no-repeat center
-}
-.zones:nth-child(3){
-    background: #ECEEF8 url('/xblock/resource/drag-and-drop-v2/public/img/deploy.png') no-repeat center
 }

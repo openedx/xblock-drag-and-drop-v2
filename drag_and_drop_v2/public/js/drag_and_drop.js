@@ -75,7 +75,7 @@ function DragNDropTemplates(url_name) {
             'draggable': !item.drag_disabled,
             'aria-grabbed': item.grabbed,
             'data-value': item.value,
-            'data-drag-disabled': item.drag_disabled
+            'data-drag-disabled': item.drag_disabled,
         };
         var style = {};
         if (item.background_color) {
@@ -238,7 +238,7 @@ function DragNDropTemplates(url_name) {
         return(
             h( 'button.reset-button.unbutton.link-button',
                 {
-                    className: 'col-sm-2 pull-right',
+                    className: 'col-sm-2 pull-right text-right',
                     style: { 
                         display: reset_button_display 
                     }, 
@@ -251,22 +251,23 @@ function DragNDropTemplates(url_name) {
         );
     };
 
-    var hintButton = function(){
-        return(
-            h('button.unbutton.hint-button', {
-                className: 'col-sm-3 pull-right',
-            }, gettext('Use a Hint (3 remaining)'))
+    var hintButton = function(ctx){
+        if(ctx.feedback_html != ''){
+            return;
+        }
+        else{
+            return(
+            h('button.hint-button.unbutton', {
+                className: 'col-sm-3 pull-right text-right',
+            }, gettext('Use a Hint'))
         );
+        }
+        
     }
 
     var feedbackTemplate = function(ctx) {
         var feedback_display = ctx.feedback_html ? 'block' : 'none';
         var properties = { attributes: { 'aria-live': 'polite' } };
-        console.log("feedback:");
-        console.log(ctx.feedback_html);
-        if(ctx.feedback_html != ''){
-            playSound("AllCompleted");
-        }
         return (
             h('section.feedback.clearfix', properties, [
                 //h('h3.title1', { style: { display: feedbac_kdisplay } }, gettext('Feedback')),
@@ -367,11 +368,11 @@ function DragNDropTemplates(url_name) {
                 ]),
                 h('div',
                 {   
-                    className: 'row',
+
                 },
                 [
                     resetProblemButton(ctx),
-                    hintButton(),
+                    hintButton(ctx),
                 ]),
                 //keyboardHelpTemplate(ctx),                     
             ])
@@ -450,9 +451,12 @@ function DragAndDropBlock(runtime, element, configuration) {
                 runOnKey(evt, RET, showKeyboardHelp);
             });
             $element.on('click', '.reset-button', resetProblem);
-            $element.on('click', '.hint-button', useHint);
             $element.on('keydown', '.reset-button', function(evt) {
                 runOnKey(evt, RET, resetProblem);
+            });
+            $element.on('click', '.hint-button', useHint);
+            $element.on('keydown', '.hint-button', function(evt) {
+                runOnKey(evt, RET, useHint);
             });
             $element.on('click', '.submit-input', submitInput);
 
@@ -742,17 +746,13 @@ function DragAndDropBlock(runtime, element, configuration) {
 
     var initDroppable = function() {
         // Change zone background when hovering
-        $(".option").draggable();
         $(".zone").droppable({
             over: function (event, ui) { 
                 replaceBackground(this);
             },
-             out: function( event, ui ) {
-                replaceBackground(this);
-             }
-        });
-        $( ".zone" ).on( "drop", function( event, ui ) {
+            out: function( event, ui ) {
             replaceBackground(this);
+            }
         });
         // Set up zones for keyboard interaction
         $root.find('.zone').each(function() {
@@ -778,11 +778,12 @@ function DragAndDropBlock(runtime, element, configuration) {
         // Make zone accept items that are dropped using the mouse
         $root.find('.zone').droppable({
             accept: '.item-bank .option',
-            tolerance: 'pointer',
+            tolerance: 'fit',
             drop: function(evt, ui) {
                 var $zone = $(this);
                 var $item = ui.helper;
                 placeItem($zone, $item);
+                replaceBackground(this);
             }
         });
     };
@@ -830,7 +831,11 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var grabItem = function($item) {
-        console.log("grabItem");
+        $('.ui-draggable').css({
+            "border-top": "0",
+            "border-right": "0",
+            "border-left": "0",
+        });
         $('.xblock--drag-and-drop .zone').css({
             "border": "dashed 3px #3E51B5"
         });
@@ -840,7 +845,6 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var releaseItem = function($item) {
-        console.log("Item released");
         $('.xblock--drag-and-drop .zone').css({
             "border": "none"
         });
@@ -850,7 +854,6 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var setGrabbedState = function(item_id, grabbed) {
-        console.log("setGrabbedState");
         for (var i = 0; i < configuration.items.length; i++) {
             if (configuration.items[i].id === item_id) {
                 configuration.items[i].grabbed = grabbed;
@@ -895,6 +898,13 @@ function DragAndDropBlock(runtime, element, configuration) {
                     //$($(".target").find("[data-uid='" + zone + "']")).css({
                     //    "background-image": "none"
                     //});
+                    var remaining_items = $('.ui-draggable').length;
+                    if(remaining_items==0){
+                        setTimeout(function() { //offset the "TileCorrect" sound
+                        playSound("AllCompleted");
+                    }, 1000);
+                        
+                    }
                 } else {
                     delete state.items[item_id];
                     playSound("TileIncorrect");
@@ -1004,7 +1014,6 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var setZoneBackground = function() {
-        console.log("setZoneBackground");
         var count = $('.zone').length;
         var i;
         for (i = 1; i <= count; i++) { 
@@ -1015,15 +1024,45 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var useHint = function(evt) {
-        console.log("useHint");
-        console.log(runtime.handlerUrl(element, 'hint'));
         playSound("HintMe");
+        var el = $(".option").first(); // get first item from list
+        el.css('border','0'); // reset borders
+        $('.zone').css('border','0'); // reset borders
+        var data = {
+            val: el.data('value'),
+        };
+        var spinner = "   <i class='fa fa-spin fa-spinner initial-load-spinner'></i>";
+        $('.hint-button').append(spinner);
         $.ajax({
             type: 'POST',
             url: runtime.handlerUrl(element, 'hint'),
-            data: '{}',
+            data: JSON.stringify(data),
             success: function(data){
-                alert("Hint not implemented yet!");
+                $(".fa-spin").remove();
+
+                var zone = $(".zone[data-uid='" + data +"']");
+                
+                zone.css({
+                    'border': '0 solid #3E51B5'
+                }).animate({
+                    borderWidth: 5
+                }, 100);         
+                
+                el.css({
+                    'border': '0 solid #3E51B5'
+                }).animate({
+                    borderWidth: 5
+                }, 100);
+                /*
+                setTimeout(function() {
+                    el.css('border','5px solid #3E51B5').animate({
+                        borderWidth: 0
+                    }, 100);
+                    zone.css('border','5px solid #3E51B5').animate({
+                        borderWidth: 0
+                    }, 100);
+                }, 2000);
+                */
             }
         });
     };
