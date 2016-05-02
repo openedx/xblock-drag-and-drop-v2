@@ -210,7 +210,7 @@ function DragNDropTemplates(url_name) {
                 h(item_wrapper, renderCollection(itemTemplate, items_in_zone, ctx)),
                 h('div.zone-img', {
                     style: {
-                        backgroundImage: "url('/xblock/resource/drag-and-drop-v2/public/img/" + zone.uid + "-hover.png')",
+                        backgroundImage: "url('/xblock/resource/drag-and-drop-v2/public/img/" + zone.uid + ".png')",
                         backgroundRepeat: "no-repeat",
                         backgroundPosition: "center",
                         width: 100 + "%",
