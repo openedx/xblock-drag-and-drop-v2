@@ -150,7 +150,7 @@
 
 /* Placed options in an aligned zone */
 .xblock--drag-and-drop .zone .item-wrapper {
-    width: 100%;
+    width: 0%;
     position: relative;
 }
 .xblock--drag-and-drop .zone .item-align .option {
@@ -444,4 +444,11 @@
     width: 1px;
     background-color: #ffffff;
     color: #000000;
+}
+
+.border-dashed{
+    border: dashed 3px #3E51B5;
+}
+.border-solid{
+    border: solid 5px #3E51B5;
 }

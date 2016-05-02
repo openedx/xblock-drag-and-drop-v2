@@ -103,6 +103,12 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         default=False,
     )
 
+    hint_count = Float(
+        help=_("Indicates number of hints permitted"),
+        scope=Scope.user_state,
+        default=3,
+    )
+
     block_settings_key = 'drag-and-drop-v2'
     has_score = True
 
@@ -177,6 +183,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             "item_background_color": self.item_background_color or None,
             "item_text_color": self.item_text_color or None,
             "initial_feedback": self.data['feedback']['start'],
+            "hint_count": self.hint_count,
             # final feedback (data.feedback.finish) is not included - it may give away answers.
         }
 
@@ -319,12 +326,17 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     @XBlock.json_handler
     def reset(self, data, suffix=''):
         self.item_state = {}
+        self.hint_count = 3
         return self._get_user_state()
 
     @XBlock.json_handler
     def hint(self, data, suffix=''):
-        item = self._get_item_definition(data['val'])
-        return item['zone'] 
+        if self.hint_count > 0: 
+            self.hint_count = self.hint_count - 1 
+            item = self._get_item_definition(data['val'])
+            return {'zone': item['zone'], 'hint_count': self.hint_count}
+        else:
+            return {'hint_count': self.hint_count}
         
 
     def _expand_static_url(self, url):

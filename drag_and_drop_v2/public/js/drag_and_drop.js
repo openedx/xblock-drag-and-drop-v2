@@ -203,14 +203,21 @@ function DragNDropTemplates(url_name) {
                 style: {
                     width: zone.width_percent + '%', height: zone.height_percent + "px",
                     backgroundColor: "#ECEEF8",
-                    backgroundImage: "url('/xblock/resource/drag-and-drop-v2/public/img/" + zone.uid + ".png')",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center",
                     position: 'relative',
                 }
             },
             [
-                h(item_wrapper, renderCollection(itemTemplate, items_in_zone, ctx))
+                h(item_wrapper, renderCollection(itemTemplate, items_in_zone, ctx)),
+                h('div.zone-img', {
+                    style: {
+                        backgroundImage: "url('/xblock/resource/drag-and-drop-v2/public/img/" + zone.uid + "-hover.png')",
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "center",
+                        width: 100 + "%",
+                        height: 100 + "%",
+                        opacity: 0.4
+                    }
+                })
             ]
         );
 
@@ -255,11 +262,18 @@ function DragNDropTemplates(url_name) {
         if(ctx.feedback_html != ''){
             return;
         }
+        else if(ctx.hint_count == 0){
+            return(
+            h('button.hint-button.unbutton.disabled', {
+                className: 'col-sm-3 pull-right text-right',
+            }, 'Use a Hint (' + ctx.hint_count + ' remaining)')
+        );
+        }
         else{
             return(
             h('button.hint-button.unbutton', {
                 className: 'col-sm-3 pull-right text-right',
-            }, gettext('Use a Hint'))
+            }, 'Use a Hint (' + ctx.hint_count + ' remaining)')
         );
         }
         
@@ -748,10 +762,14 @@ function DragAndDropBlock(runtime, element, configuration) {
         // Change zone background when hovering
         $(".zone").droppable({
             over: function (event, ui) { 
-                replaceBackground(this);
+                $(this).find('.zone-img').css({
+                    'opacity': 1
+                });
             },
             out: function( event, ui ) {
-            replaceBackground(this);
+                $(this).find('.zone-img').css({
+                    'opacity': 0.4
+                });
             }
         });
         // Set up zones for keyboard interaction
@@ -783,7 +801,9 @@ function DragAndDropBlock(runtime, element, configuration) {
                 var $zone = $(this);
                 var $item = ui.helper;
                 placeItem($zone, $item);
-                replaceBackground(this);
+                $(this).find('.zone-img').css({
+                    'opacity': 0.4
+                });
             }
         });
     };
@@ -831,23 +851,14 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var grabItem = function($item) {
-        $('.ui-draggable').css({
-            "border-top": "0",
-            "border-right": "0",
-            "border-left": "0",
-        });
-        $('.xblock--drag-and-drop .zone').css({
-            "border": "dashed 3px #3E51B5"
-        });
+        $('.ui-droppable').addClass("border-dashed");
         var item_id = $item.data('value');
         setGrabbedState(item_id, true);
         updateDOM();
     };
 
     var releaseItem = function($item) {
-        $('.xblock--drag-and-drop .zone').css({
-            "border": "none"
-        });
+        $('.ui-droppable').removeClass("border-dashed");
         var item_id = $item.data('value');
         setGrabbedState(item_id, false);
         updateDOM();
@@ -895,9 +906,11 @@ function DragAndDropBlock(runtime, element, configuration) {
                     state.items[item_id].correct_input = Boolean(data.correct);
                     state.items[item_id].submitting_location = false;
                     playSound("TileCorrect");
-                    //$($(".target").find("[data-uid='" + zone + "']")).css({
-                    //    "background-image": "none"
+                    //var el = $(".target").find("[data-uid='" + zone + "']").find('.zone-img').css({
+                    //    'opacity': 0
                     //});
+                    $('.ui-droppable').removeClass("border-solid");
+                    $('.ui-draggable').removeClass("border-solid");
                     var remaining_items = $('.ui-draggable').length;
                     if(remaining_items==0){
                         setTimeout(function() { //offset the "TileCorrect" sound
@@ -1010,6 +1023,8 @@ function DragAndDropBlock(runtime, element, configuration) {
             'overall_feedback': configuration.initial_feedback,
         };
         applyState();
+        $(".hint-button").removeClass('disabled');
+        $(".hint-button").text("Use a Hint (3 remaining)");
         playSound("ResetTiles");
     };
 
@@ -1024,10 +1039,9 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var useHint = function(evt) {
-        playSound("HintMe");
         var el = $(".option").first(); // get first item from list
-        el.css('border','0'); // reset borders
-        $('.zone').css('border','0'); // reset borders
+        el.removeClass("border-solid"); // reset borders
+        $('.zone').removeClass("border-solid"); // reset borders
         var data = {
             val: el.data('value'),
         };
@@ -1038,21 +1052,17 @@ function DragAndDropBlock(runtime, element, configuration) {
             url: runtime.handlerUrl(element, 'hint'),
             data: JSON.stringify(data),
             success: function(data){
+                playSound("HintMe");
                 $(".fa-spin").remove();
-
-                var zone = $(".zone[data-uid='" + data +"']");
+                $(".hint-button").text("Use a Hint (" + data.hint_count + " remaining)");
+                if(data.hint_count == 0){
+                    $(".hint-button").addClass('disabled');
+                }
+                var zone = $(".zone[data-uid='" + data.zone +"']");
                 
-                zone.css({
-                    'border': '0 solid #3E51B5'
-                }).animate({
-                    borderWidth: 5
-                }, 100);         
+                zone.addClass("border-solid");         
                 
-                el.css({
-                    'border': '0 solid #3E51B5'
-                }).animate({
-                    borderWidth: 5
-                }, 100);
+                el.addClass("border-solid");
                 /*
                 setTimeout(function() {
                     el.css('border','5px solid #3E51B5').animate({
@@ -1135,6 +1145,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             popup_html: state.feedback || '',
             feedback_html: $.trim(state.overall_feedback),
             display_reset_button: Object.keys(state.items).length > 0,
+            hint_count: configuration.hint_count,
         };
 
         return DragAndDropBlock.renderView(context);

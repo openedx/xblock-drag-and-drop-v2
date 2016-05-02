@@ -7,24 +7,19 @@ TARGET_IMG_DESCRIPTION = _(
 )
 
 FIRST_ZONE_ID = "zone-1"
-SECOND_ZONE_ID = "zone-1"
+SECOND_ZONE_ID = "zone-2"
 THIRD_ZONE_ID = "zone-3"
 FOURTH_ZONE_ID = "zone-4"
 
-FIRST_ZONE_TITLE = _("The Top Left Zone")
-SECOND_ZONE_TITLE = _("The Top Right Zone")
-THIRD_ZONE_TITLE = _("The Bottom Left Zone")
-FOURTH_ZONE_TITLE = _("The Bottom Right Zone")
+FIRST_ZONE_TITLE = _("Discover")
+SECOND_ZONE_TITLE = _("Design")
+THIRD_ZONE_TITLE = _("Develop")
+FOURTH_ZONE_TITLE = _("Deploy")
 
-FIRST_ZONE_DESCRIPTION = _("Use this zone to associate an item with the top left box.")
-SECOND_ZONE_DESCRIPTION = _("Use this zone to associate an item with the top right box.")
-THIRD_ZONE_DESCRIPTION = _("Use this zone to associate an item with the bottom left box.")
-FOURTH_ZONE_DESCRIPTION = _("Use this zone to associate an item with the bottom right box.")
-
-FIRST_ZONE_BACKGROUND = _("/xblock/resource/drag-and-drop-v2/public/img/discover.png")
-SECOND_ZONE_BACKGROUND = _("/xblock/resource/drag-and-drop-v2/public/img/design.png")
-THIRD_ZONE_BACKGROUND = _("/xblock/resource/drag-and-drop-v2/public/img/develop.png")
-FOURTH_ZONE_BACKGROUND = _("/xblock/resource/drag-and-drop-v2/public/img/deploy.png")
+FIRST_ZONE_DESCRIPTION = _("Use this zone to associate an item with Discover.")
+SECOND_ZONE_DESCRIPTION = _("Use this zone to associate an item with Design.")
+THIRD_ZONE_DESCRIPTION = _("Use this zone to associate an item with Develop.")
+FOURTH_ZONE_DESCRIPTION = _("Use this zone to associate an item with Deploy.")
 
 ITEM_CORRECT_FEEDBACK = _("Correct! This one belongs to {zone}.")
 ITEM_INCORRECT_FEEDBACK = _("No, this item does not belong here. Try again.")
@@ -44,7 +39,6 @@ DEFAULT_DATA = {
       "y": 0,
       "width": 50,
       "height": 178,
-      "background": FIRST_ZONE_BACKGROUND,
     },
     {
       "uid": SECOND_ZONE_ID,
@@ -54,7 +48,6 @@ DEFAULT_DATA = {
       "y": 0,
       "width": 50,
       "height": 178,
-      "background": SECOND_ZONE_BACKGROUND,
     },
     {
       "uid": THIRD_ZONE_ID,
@@ -64,7 +57,6 @@ DEFAULT_DATA = {
       "y": 50,
       "width": 50,
       "height": 178,
-      "background": THIRD_ZONE_BACKGROUND,
     },
     {
       "uid": FOURTH_ZONE_ID,
@@ -74,7 +66,6 @@ DEFAULT_DATA = {
       "y": 50,
       "width": 50,
       "height": 178,
-      "background": FOURTH_ZONE_BACKGROUND,
     }
   ],
   "items": [
