@@ -920,14 +920,14 @@ function DragAndDropBlock(runtime, element, configuration) {
         }
 
         var parent_div = $(".target").find("[data-uid='" + zone + "']").parent();
-        var pos_top = parseInt(parent_div[0].style.top) + 15;
-        var pos_left = parseInt(parent_div[0].style.left) + 27; 
+        var top_position = parseInt(parent_div[0].style.top) + 15;
+        var left_position = parseInt(parent_div[0].style.left) + 27; 
         var url = runtime.handlerUrl(element, 'do_attempt');
         var data = {
             val: item_id,
             zone: zone,
-            x_percent: pos_left,
-            y_percent: pos_top,
+            x_percent: left_position,
+            y_percent: top_position,
         };
 
         $.post(url, JSON.stringify(data), 'json')
@@ -942,7 +942,10 @@ function DragAndDropBlock(runtime, element, configuration) {
                     //});
                 
                     var item = $(".target").find("[data-value='" + item_id + "']");
-                    item.css({top: data.top_position + '%', left: pos_left + '%'});  
+                    item.animate({
+                        top: data.top_position + '%',
+                        left: left_position + '%',
+                    }, 400);
 
                     $('.ui-droppable').removeClass("border-solid");
                     $('.ui-draggable').removeClass("border-solid");
