@@ -243,11 +243,12 @@ function DragNDropTemplates(url_name) {
     var resetProblemButton = function(ctx){
         var reset_button_display = ctx.display_reset_button ? 'block' : 'none';
         return(
-            h( 'button.reset-button.unbutton.link-button',
+            h( 'div.reset-button.div.link-button',
                 {
-                    className: 'col-sm-2 pull-right text-right',
+                    className: 'col-md-2 col-sm-3 pull-right text-right',
                     style: { 
-                        display: reset_button_display 
+                        display: reset_button_display,
+                        margin: "11px 0 0 0"
                     }, 
                     attributes: { 
                     tabindex: 0 
@@ -262,18 +263,43 @@ function DragNDropTemplates(url_name) {
         if(ctx.feedback_html != ''){
             return;
         }
+
         else if(ctx.hint_count == 0){
             return(
             h('button.hint-button.unbutton.disabled', {
-                className: 'col-sm-3 pull-right text-right',
-            }, 'Use a Hint (' + ctx.hint_count + ' remaining)')
+                className: 'col-md-3 col-sm-5 pull-right text-right no-padding',
+            }, 
+            [                
+                h('p.text-right.hint-button-text', {
+                    style:{
+                        margin: "11px 0 0 0",
+                        float: "right"
+                    }
+                }, 'Use a Hint (' + ctx.hint_count + ' remaining)'),
+                h('img', {
+                    attributes: { 'src': '/xblock/resource/drag-and-drop-v2/public/img/hint_icon.png' },
+                    style: {float: 'right', height: 29 + 'px'}
+                }),
+            ])
         );
         }
         else{
             return(
             h('button.hint-button.unbutton', {
-                className: 'col-sm-3 pull-right text-right',
-            }, 'Use a Hint (' + ctx.hint_count + ' remaining)')
+                className: 'col-md-3 col-sm-5 pull-right text-right no-padding',
+            }, 
+            [                
+                h('p.text-right.hint-button-text', {
+                    style:{
+                        margin: "11px 0 0 0",
+                        float: "right"
+                    }
+                }, 'Use a Hint (' + ctx.hint_count + ' remaining)'),
+                h('img', {
+                    attributes: { 'src': '/xblock/resource/drag-and-drop-v2/public/img/hint_icon.png' },
+                    style: {float: 'right', height: 29 + 'px'}
+                }),
+            ])
         );
         }
         
@@ -719,6 +745,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             // so use relevant properties of *zone* when calculating new position below.
             $anchor = $zone;
         }
+        
         var zone = String($zone.data('uid'));
         var zone_id = $zone.data('zone_id');
         var zone_align = $zone.data('zone_align');
@@ -796,7 +823,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         // Make zone accept items that are dropped using the mouse
         $root.find('.zone').droppable({
             accept: '.item-bank .option',
-            tolerance: 'fit',
+            tolerance: 'pointer',
             drop: function(evt, ui) {
                 var $zone = $(this);
                 var $item = ui.helper;
@@ -891,12 +918,16 @@ function DragAndDropBlock(runtime, element, configuration) {
         if (!zone) {
             return;
         }
+
+        var parent_div = $(".target").find("[data-uid='" + zone + "']").parent();
+        var pos_top = parseInt(parent_div[0].style.top) + 15;
+        var pos_left = parseInt(parent_div[0].style.left) + 27; 
         var url = runtime.handlerUrl(element, 'do_attempt');
         var data = {
             val: item_id,
             zone: zone,
-            x_percent: x_percent,
-            y_percent: y_percent,
+            x_percent: pos_left,
+            y_percent: pos_top,
         };
 
         $.post(url, JSON.stringify(data), 'json')
@@ -909,26 +940,27 @@ function DragAndDropBlock(runtime, element, configuration) {
                     //var el = $(".target").find("[data-uid='" + zone + "']").find('.zone-img').css({
                     //    'opacity': 0
                     //});
+                
+                    var item = $(".target").find("[data-value='" + item_id + "']");
+                    item.css({top: data.top_position + '%', left: pos_left + '%'});  
+
                     $('.ui-droppable').removeClass("border-solid");
                     $('.ui-draggable').removeClass("border-solid");
-                    var remaining_items = $('.ui-draggable').length;
-                    if(remaining_items==0){
-                        setTimeout(function() { //offset the "TileCorrect" sound
-                        playSound("AllCompleted");
-                    }, 1000);
-                        
-                    }
+
                 } else {
                     delete state.items[item_id];
                     playSound("TileIncorrect");
                 }
                 state.feedback = data.feedback;
                 if (data.finished) {
+                    setTimeout(function() { //offset the "TileCorrect" sound
+                        playSound("AllCompleted");
+                    }, 1000);
                     state.finished = true;
                     state.overall_feedback = data.overall_feedback;
                 }
                 applyState();
-                if ($('.popup-incorrect').length) {
+                if (data.correct_location == false) {
                     setTimeout(function() {
                         $('.popup-incorrect').fadeOut(500, function(){
                             $(this).removeClass('popup-incorrect');
@@ -1024,7 +1056,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         };
         applyState();
         $(".hint-button").removeClass('disabled');
-        $(".hint-button").text("Use a Hint (3 remaining)");
+        $(".hint-button-text").text("Use a Hint (3 remaining)");
         playSound("ResetTiles");
     };
 
@@ -1045,8 +1077,8 @@ function DragAndDropBlock(runtime, element, configuration) {
         var data = {
             val: el.data('value'),
         };
-        var spinner = "   <i class='fa fa-spin fa-spinner initial-load-spinner'></i>";
-        $('.hint-button').append(spinner);
+        var spinner = "   <i class='fa fa-spin fa-spinner initial-load-spinner' style='float: right;margin-top: 15px;margin-left: 2px;'></i>";
+        $('.hint-button').prepend(spinner);
         $.ajax({
             type: 'POST',
             url: runtime.handlerUrl(element, 'hint'),
@@ -1054,7 +1086,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             success: function(data){
                 playSound("HintMe");
                 $(".fa-spin").remove();
-                $(".hint-button").text("Use a Hint (" + data.hint_count + " remaining)");
+                $(".hint-button-text").text("Use a Hint (" + data.hint_count + " remaining)");
                 if(data.hint_count == 0){
                     $(".hint-button").addClass('disabled');
                 }

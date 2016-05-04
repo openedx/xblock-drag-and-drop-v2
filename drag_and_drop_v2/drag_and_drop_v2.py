@@ -109,6 +109,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         default=3,
     )
 
+    zone_positions = []
     block_settings_key = 'drag-and-drop-v2'
     has_score = True
 
@@ -244,6 +245,20 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             'result': 'success',
         }
 
+    def check_position(self, zone, y_percent):
+        if not self.zone_positions:
+            self.zone_positions.append({zone: 1})
+            return y_percent
+        else:
+            for item in self.zone_positions:
+                if item.get(zone):
+                    pos = y_percent + (item[zone]*11)
+                    item[zone] += 1
+                    return pos
+                else:
+                    self.zone_positions.append({zone: 1})
+                    return y_percent
+
     @XBlock.json_handler
     def do_attempt(self, attempt, suffix=''):
         item = self._get_item_definition(attempt['val'])
@@ -253,6 +268,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         overall_feedback = None
         is_correct = False
         is_correct_location = False
+        top_position = None
 
         if 'input' in attempt:  # Student submitted numerical value for item
             state = self._get_item_state().get(str(item['id']))
@@ -265,6 +281,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
                 else:
                     is_correct = False
         elif item['zone'] == attempt['zone']:  # Student placed item in correct zone
+            top_position = self.check_position(attempt['zone'], attempt['y_percent'])
             is_correct_location = True
             if 'inputOptions' in item:
                 # Input value will have to be provided for the item.
@@ -278,7 +295,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             state = {
                 'zone': attempt['zone'],
                 'x_percent': attempt['x_percent'],
-                'y_percent': attempt['y_percent'],
+                'y_percent': top_position,
             }
 
         if state:
@@ -320,13 +337,15 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             'correct_location': is_correct_location,
             'finished': self._is_finished(),
             'overall_feedback': overall_feedback,
-            'feedback': feedback
+            'feedback': feedback,
+            'top_position': top_position
         }
 
     @XBlock.json_handler
     def reset(self, data, suffix=''):
         self.item_state = {}
         self.hint_count = 3
+        self.zone_positions[:] = []
         return self._get_user_state()
 
     @XBlock.json_handler

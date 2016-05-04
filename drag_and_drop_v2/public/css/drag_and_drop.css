@@ -331,7 +331,7 @@
 }
 
 .xblock--drag-and-drop .popup.popup-incorrect {
-    background-color: rgba(223,64,80,0.9);
+    background-color: rgba(223,64,80,0.8);
     display: block;
 }
 
@@ -416,11 +416,11 @@
     margin-left: 2%;
 }
 
-.xblock--drag-and-drop .link-button, .hint-button {
+.xblock--drag-and-drop .link-button, .hint-button, .hint-button-text {
     padding: 0;
     margin: 0;
     cursor: pointer;
-    color: #2d74b3;
+    color: #3E51B5;
     font-weight: normal;
     font-size: 12pt;
     background: none;
@@ -451,4 +451,7 @@
 }
 .border-solid{
     border: solid 5px #3E51B5;
+}
+.no-padding{
+    padding: 0;
 }
