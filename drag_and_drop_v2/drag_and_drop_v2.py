@@ -247,16 +247,27 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
     def check_position(self, zone, y_percent):
         if not self.zone_positions:
+            print "----------------"
+            print "zone_positions empty"
             self.zone_positions.append({zone: 1})
+            print "appended: "
+            print self.zone_positions
+            print "----------------"
             return y_percent
         else:
+            print "----------------"
+            print "zone_positions not empty"
             for item in self.zone_positions:
                 if item.get(zone):
                     pos = y_percent + (item[zone]*11)
                     item[zone] += 1
+                    print self.zone_positions
+                    print "----------------"
                     return pos
                 else:
                     self.zone_positions.append({zone: 1})
+                    print self.zone_positions
+                    print "----------------"
                     return y_percent
 
     @XBlock.json_handler
