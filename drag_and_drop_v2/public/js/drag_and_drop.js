@@ -923,7 +923,6 @@ function DragAndDropBlock(runtime, element, configuration) {
         console.log("Parent div top: " +  parent_div[0].style.top + ", left: " + parent_div[0].style.left);
         var top_position = parseInt(parent_div[0].style.top) + 15;
         var left_position = parseInt(parent_div[0].style.left) + 27; 
-        console.log("Item new position top: " + top_position + ", left: " + left_position);
         var url = runtime.handlerUrl(element, 'do_attempt');
         var data = {
             val: item_id,
@@ -944,6 +943,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                     //});
                 
                     var item = $(".target").find("[data-value='" + item_id + "']");
+                    console.log("Item new position top: " + data.top_position + ", left: " + left_position);
                     item.animate({
                         top: data.top_position + '%',
                         left: left_position + '%',
