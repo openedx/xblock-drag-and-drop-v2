@@ -920,8 +920,10 @@ function DragAndDropBlock(runtime, element, configuration) {
         }
 
         var parent_div = $(".target").find("[data-uid='" + zone + "']").parent();
+        console.log("Parent div top: " +  parent_div[0].style.top + ", left: " + parent_div[0].style.left);
         var top_position = parseInt(parent_div[0].style.top) + 15;
         var left_position = parseInt(parent_div[0].style.left) + 27; 
+        console.log("Item new position top: " + top_position + ", left: " + left_position);
         var url = runtime.handlerUrl(element, 'do_attempt');
         var data = {
             val: item_id,

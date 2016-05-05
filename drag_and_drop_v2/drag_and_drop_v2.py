@@ -246,12 +246,14 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         }
 
     def check_position(self, zone, y_percent):
+        print "Top position sent: %s for zone: %s" % (y_percent, zone)
         if not self.zone_positions:
             print "----------------"
             print "zone_positions empty"
             self.zone_positions.append({zone: 1})
-            print "appended: "
+            print "Appended: "
             print self.zone_positions
+            print "New top position: %s for zone: %s" % (y_percent, zone)
             print "----------------"
             return y_percent
         else:
@@ -259,13 +261,16 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             print "zone_positions not empty"
             for item in self.zone_positions:
                 if item.get(zone):
+                    print "Zone already exists"
                     pos = y_percent + (item[zone]*11)
                     item[zone] += 1
+                    print "New top position: %s for zone: %s" % (pos, zone)
                     print self.zone_positions
                     print "----------------"
                     return pos
                 else:
                     self.zone_positions.append({zone: 1})
+                    print "New top position: %s for zone: %s" % (y_percent, zone)
                     print self.zone_positions
                     print "----------------"
                     return y_percent
@@ -357,6 +362,8 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         self.item_state = {}
         self.hint_count = 3
         self.zone_positions[:] = []
+        print "Reseting zone_positions..."
+        print self.zone_positions
         return self._get_user_state()
 
     @XBlock.json_handler
