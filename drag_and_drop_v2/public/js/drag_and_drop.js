@@ -185,7 +185,6 @@ function DragNDropTemplates(url_name) {
         }
 
         var zone_title = h('h4', { className: className }, zone.title);
-
         var zone_div = 
         h(
             selector,
@@ -210,7 +209,7 @@ function DragNDropTemplates(url_name) {
                 h(item_wrapper, renderCollection(itemTemplate, items_in_zone, ctx)),
                 h('div.zone-img', {
                     style: {
-                        backgroundImage: "url('/xblock/resource/drag-and-drop-v2/public/img/" + zone.uid + ".png')",
+                        backgroundImage: "url(" + ctx.zone_icons[zone.uid] + ")",
                         backgroundRepeat: "no-repeat",
                         backgroundPosition: "center",
                         width: 100 + "%",
@@ -248,7 +247,6 @@ function DragNDropTemplates(url_name) {
                     className: 'col-md-2 col-sm-3 pull-right text-right',
                     style: { 
                         display: reset_button_display,
-                        margin: "11px 0 0 0"
                     }, 
                     attributes: { 
                     tabindex: 0 
@@ -267,38 +265,44 @@ function DragNDropTemplates(url_name) {
         else if(ctx.hint_count == 0){
             return(
             h('button.hint-button.unbutton.disabled', {
-                className: 'col-md-3 col-sm-5 pull-right text-right no-padding',
+                className: 'col-md-4 col-sm-5 no-padding pull-right',
             }, 
-            [                
+            [               
                 h('p.text-right.hint-button-text', {
                     style:{
-                        margin: "11px 0 0 0",
-                        float: "right"
+                        'float': 'right'
                     }
                 }, 'Use a Hint (' + ctx.hint_count + ' remaining)'),
-                h('img', {
-                    attributes: { 'src': '/xblock/resource/drag-and-drop-v2/public/img/hint_icon.png' },
-                    style: {float: 'right', height: 29 + 'px'}
-                }),
+                h('i.fa.fa-lightbulb-o.text-right', {
+                    attributes: { 'aria-hidden': 'true' },
+                    style:{
+                        'float': 'right',
+                        'font-size': '20pt',
+                        'margin-right': '5px',
+                    }
+                }) 
             ])
         );
         }
         else{
             return(
             h('button.hint-button.unbutton', {
-                className: 'col-md-3 col-sm-5 pull-right text-right no-padding',
+                className: 'col-md-4 col-sm-5 no-padding pull-right',
             }, 
-            [                
+            [              
                 h('p.text-right.hint-button-text', {
                     style:{
-                        margin: "11px 0 0 0",
-                        float: "right"
+                        'float': 'right'
                     }
                 }, 'Use a Hint (' + ctx.hint_count + ' remaining)'),
-                h('img', {
-                    attributes: { 'src': '/xblock/resource/drag-and-drop-v2/public/img/hint_icon.png' },
-                    style: {float: 'right', height: 29 + 'px'}
-                }),
+                h('i.fa.fa-lightbulb-o.text-right', {
+                    attributes: { 'aria-hidden': 'true' },
+                    style:{
+                        'float': 'right',
+                        'font-size': '20pt',
+                        'margin-right': '5px',
+                    }
+                })
             ])
         );
         }
@@ -771,24 +775,10 @@ function DragAndDropBlock(runtime, element, configuration) {
         }, 0);
     };
 
-    var replaceBackground = function(element){
-        var background = $(element).css("background-image");
-        var str = background.toString();
-        if (!(str.indexOf("-hover") >= 0)){
-            background = background.replace('.png', '-hover.png')
-        }
-        else if (str.indexOf("-hover") >= 0){
-            background = background.replace('-hover.png', '.png')
-        }
-        $(element).css({
-            "background-image": background
-        });
-    };
-
     var initDroppable = function() {
         // Change zone background when hovering
         $(".zone").droppable({
-            over: function (event, ui) { 
+            over: function (event, ui) {
                 $(this).find('.zone-img').css({
                     'opacity': 1
                 });
@@ -920,7 +910,6 @@ function DragAndDropBlock(runtime, element, configuration) {
         }
 
         var parent_div = $(".target").find("[data-uid='" + zone + "']").parent();
-        console.log("Parent div top: " +  parent_div[0].style.top + ", left: " + parent_div[0].style.left);
         var top_position = parseInt(parent_div[0].style.top) + 15;
         var left_position = parseInt(parent_div[0].style.left) + 27; 
         var url = runtime.handlerUrl(element, 'do_attempt');
@@ -938,12 +927,11 @@ function DragAndDropBlock(runtime, element, configuration) {
                     state.items[item_id].correct_input = Boolean(data.correct);
                     state.items[item_id].submitting_location = false;
                     playSound("TileCorrect");
-                    //var el = $(".target").find("[data-uid='" + zone + "']").find('.zone-img').css({
-                    //    'opacity': 0
-                    //});
+                    var el = $(".target").find("[data-uid='" + zone + "']").find('.zone-img').css({
+                        'background-image': ''
+                    });
                 
                     var item = $(".target").find("[data-value='" + item_id + "']");
-                    console.log("Item new position top: " + data.top_position + ", left: " + left_position);
                     item.animate({
                         top: data.top_position + '%',
                         left: left_position + '%',
@@ -1044,10 +1032,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         applyState();
     };
 
-    
-
     var resetProblem = function(evt) {
-        //setZoneBackground();
         evt.preventDefault();
         $.ajax({
             type: 'POST',
@@ -1062,6 +1047,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         applyState();
         $(".hint-button").removeClass('disabled');
         $(".hint-button-text").text("Use a Hint (3 remaining)");
+        setZoneBackground();
         playSound("ResetTiles");
     };
 
@@ -1069,8 +1055,14 @@ function DragAndDropBlock(runtime, element, configuration) {
         var count = $('.zone').length;
         var i;
         for (i = 1; i <= count; i++) { 
-            $($(".target").find("[data-uid='zone-" + i + "']")).css({
-                "background-image": "url('/xblock/resource/drag-and-drop-v2/public/img/zone-" + i + ".png')"
+            var parent = $(".target").find("[data-uid='zone-" + i + "']");
+            parent.children(".zone-img").css({
+                backgroundImage: "url('/xblock/resource/drag-and-drop-v2/public/img/zone-" + i + ".png')",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                width: 100 + "%",
+                height: 100 + "%",
+                opacity: 0.4
             });
         }       
     };
@@ -1082,7 +1074,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         var data = {
             val: el.data('value'),
         };
-        var spinner = "   <i class='fa fa-spin fa-spinner initial-load-spinner' style='float: right;margin-top: 15px;margin-left: 2px;'></i>";
+        var spinner = "<i class='fa fa-spin fa-spinner initial-load-spinner' style='float: right;margin-top: 4px;margin-left: 5px;'></i>";
         $('.hint-button').prepend(spinner);
         $.ajax({
             type: 'POST',
@@ -1183,6 +1175,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             feedback_html: $.trim(state.overall_feedback),
             display_reset_button: Object.keys(state.items).length > 0,
             hint_count: configuration.hint_count,
+            zone_icons: configuration.zone_icons,
         };
 
         return DragAndDropBlock.renderView(context);

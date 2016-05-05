@@ -337,7 +337,7 @@
 
 .xblock--drag-and-drop .popup .popup-content {
     color: #ffffff;
-    font-weight: bold;
+    font-weight: 400;
     margin-top: 15px !important;
     margin-left: 15px !important;
 }
@@ -422,7 +422,7 @@
     cursor: pointer;
     color: #3E51B5;
     font-weight: normal;
-    font-size: 12pt;
+    font-size: 13pt;
     background: none;
     box-shadow: none;
     border: none;
@@ -454,4 +454,10 @@
 }
 .no-padding{
     padding: 0;
+}
+.opacity-0.4{
+    opacity: 0.4;
+}
+.opacity-1{
+    opacity: 1;
 }

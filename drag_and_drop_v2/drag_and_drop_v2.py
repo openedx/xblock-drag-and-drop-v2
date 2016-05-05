@@ -11,7 +11,7 @@ import logging
 
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
-from xblock.fields import Scope, String, Dict, Float, Boolean, List
+from xblock.fields import Scope, String, Dict, Float, Boolean
 from xblock.fragment import Fragment
 from xblockutils.resources import ResourceLoader
 from xblockutils.settings import XBlockWithSettingsMixin, ThemableXBlockMixin
@@ -116,7 +116,17 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         default={},
     )
 
-    #zone_positions = []
+    zone_icons = Dict(
+        help=_("Dictionary of zones and their background icons."),
+        scope=Scope.user_state,
+        default={
+            'zone-1': '/xblock/resource/drag-and-drop-v2/public/img/zone-1.png',
+            'zone-2': '/xblock/resource/drag-and-drop-v2/public/img/zone-2.png',
+            'zone-3': '/xblock/resource/drag-and-drop-v2/public/img/zone-3.png',
+            'zone-4': '/xblock/resource/drag-and-drop-v2/public/img/zone-4.png',
+        },
+    )
+
     block_settings_key = 'drag-and-drop-v2'
     has_score = True
 
@@ -192,6 +202,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             "item_text_color": self.item_text_color or None,
             "initial_feedback": self.data['feedback']['start'],
             "hint_count": self.hint_count,
+            "zone_icons": self.zone_icons
             # final feedback (data.feedback.finish) is not included - it may give away answers.
         }
 
@@ -252,52 +263,18 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             'result': 'success',
         }
 
-    def check_position(self, zone, y_percent):
-        print "Top position sent: %s for zone: %s" % (y_percent, zone)
+    def _check_position(self, zone, y_percent):
         if not self.zone_positions:
-            logging.error( "----------------")
-            logging.error("zone_positions empty") 
-            #self.zone_positions.append({zone: 1})
             self.zone_positions[zone] = 1
-            logging.error("Appended: ")
-            logging.error(self.zone_positions)
-            logging.error("New top position: %s for zone: %s" % (y_percent, zone))
-            logging.error("----------------")
             return y_percent
         else:
-            logging.error("----------------")
-            logging.error("zone_positions not empty")
             if zone in self.zone_positions:
-                logging.error("Zone already exists")
-                logging.error(zone)
                 pos = y_percent + (self.zone_positions[zone]*11)
                 self.zone_positions[zone] += 1
-                logging.error("New top position: %s for zone: %s" % (pos, zone))
-                logging.error(self.zone_positions)
-                logging.error("----------------")
                 return pos
             else:
                 self.zone_positions[zone] = 1
-                print "New top position: %s for zone: %s" % (y_percent, zone)
-                print self.zone_positions
-                print "----------------"
                 return y_percent
-
-            #for item in self.zone_positions:
-            #    if item.get(zone):
-            #        print "Zone already exists"
-            #        pos = y_percent + (item[zone]*11)
-            #        item[zone] += 1
-            #        print "New top position: %s for zone: %s" % (pos, zone)
-            #        print self.zone_positions
-            #        print "----------------"
-            #        return pos
-            #    else:
-            #        self.zone_positions.append({zone: 1})
-            #        print "New top position: %s for zone: %s" % (y_percent, zone)
-            #        print self.zone_positions
-            #        print "----------------"
-            #        return y_percent
 
     @XBlock.json_handler
     def do_attempt(self, attempt, suffix=''):
@@ -321,7 +298,8 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
                 else:
                     is_correct = False
         elif item['zone'] == attempt['zone']:  # Student placed item in correct zone
-            top_position = self.check_position(attempt['zone'], attempt['y_percent'])
+            top_position = self._check_position(attempt['zone'], attempt['y_percent'])
+            self.zone_icons[attempt['zone']] = ''
             is_correct_location = True
             if 'inputOptions' in item:
                 # Input value will have to be provided for the item.
@@ -385,10 +363,14 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     def reset(self, data, suffix=''):
         self.item_state = {}
         self.hint_count = 3
-        #self.zone_positions[:] = []
         self.zone_positions.clear()
-        logging.error("Reseting zone_positions...")
-        logging.error(self.zone_positions)
+        self.zone_icons = {
+            'zone-1': '/xblock/resource/drag-and-drop-v2/public/img/zone-1.png',
+            'zone-2': '/xblock/resource/drag-and-drop-v2/public/img/zone-2.png',
+            'zone-3': '/xblock/resource/drag-and-drop-v2/public/img/zone-3.png',
+            'zone-4': '/xblock/resource/drag-and-drop-v2/public/img/zone-4.png',
+        }
+        print self.zone_icons
         return self._get_user_state()
 
     @XBlock.json_handler
