@@ -7,6 +7,7 @@ import json
 import webob
 import copy
 import urllib
+import logging
 
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
@@ -254,27 +255,27 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     def check_position(self, zone, y_percent):
         print "Top position sent: %s for zone: %s" % (y_percent, zone)
         if not self.zone_positions:
-            print "----------------"
-            print "zone_positions empty"
+            logging.error( "----------------")
+            logging.error("zone_positions empty") 
             #self.zone_positions.append({zone: 1})
             self.zone_positions[zone] = 1
-            print "Appended: "
-            print self.zone_positions
-            print "New top position: %s for zone: %s" % (y_percent, zone)
-            print "----------------"
+            logging.error("Appended: ")
+            logging.error(self.zone_positions)
+            logging.error("New top position: %s for zone: %s" % (y_percent, zone))
+            logging.error("----------------")
             return y_percent
         else:
-            print "----------------"
-            print "zone_positions not empty"
+            logging.error("----------------")
+            logging.error("zone_positions not empty")
             if zone in self.zone_positions:
-                print "Zone already exists"
-                print zone
+                logging.error("Zone already exists")
+                logging.error(zone)
                 pos = y_percent + (self.zone_positions[zone]*11)
                 self.zone_positions[zone] += 1
-                print "New top position: %s for zone: %s" % (pos, zone)
-                print self.zone_positions
-                print "----------------"
-                return pos
+                logging.error("New top position: %s for zone: %s" % (pos, zone))
+                logging.error(self.zone_positions)
+                logging.error("----------------")
+                logging.error(pos)
             else:
                 self.zone_positions[zone] = 1
                 print "New top position: %s for zone: %s" % (y_percent, zone)
@@ -386,8 +387,8 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         self.hint_count = 3
         #self.zone_positions[:] = []
         self.zone_positions.clear()
-        print "Reseting zone_positions..."
-        print self.zone_positions
+        logging.error("Reseting zone_positions...")
+        logging.error(self.zone_positions)
         return self._get_user_state()
 
     @XBlock.json_handler
