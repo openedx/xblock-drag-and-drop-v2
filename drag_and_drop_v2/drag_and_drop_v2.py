@@ -275,7 +275,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
                 logging.error("New top position: %s for zone: %s" % (pos, zone))
                 logging.error(self.zone_positions)
                 logging.error("----------------")
-                logging.error(pos)
+                return pos
             else:
                 self.zone_positions[zone] = 1
                 print "New top position: %s for zone: %s" % (y_percent, zone)
