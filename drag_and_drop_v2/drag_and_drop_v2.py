@@ -10,7 +10,7 @@ import urllib
 
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
-from xblock.fields import Scope, String, Dict, Float, Boolean
+from xblock.fields import Scope, String, Dict, Float, Boolean, List
 from xblock.fragment import Fragment
 from xblockutils.resources import ResourceLoader
 from xblockutils.settings import XBlockWithSettingsMixin, ThemableXBlockMixin
@@ -109,7 +109,13 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         default=3,
     )
 
-    zone_positions = []
+    zone_positions = Dict(
+        help=_("Information about zone positions."),
+        scope=Scope.user_state,
+        default={},
+    )
+
+    #zone_positions = []
     block_settings_key = 'drag-and-drop-v2'
     has_score = True
 
@@ -250,7 +256,8 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         if not self.zone_positions:
             print "----------------"
             print "zone_positions empty"
-            self.zone_positions.append({zone: 1})
+            #self.zone_positions.append({zone: 1})
+            self.zone_positions[zone] = 1
             print "Appended: "
             print self.zone_positions
             print "New top position: %s for zone: %s" % (y_percent, zone)
@@ -259,21 +266,37 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         else:
             print "----------------"
             print "zone_positions not empty"
-            for item in self.zone_positions:
-                if item.get(zone):
-                    print "Zone already exists"
-                    pos = y_percent + (item[zone]*11)
-                    item[zone] += 1
-                    print "New top position: %s for zone: %s" % (pos, zone)
-                    print self.zone_positions
-                    print "----------------"
-                    return pos
-                else:
-                    self.zone_positions.append({zone: 1})
-                    print "New top position: %s for zone: %s" % (y_percent, zone)
-                    print self.zone_positions
-                    print "----------------"
-                    return y_percent
+            if zone in self.zone_positions:
+                print "Zone already exists"
+                print zone
+                pos = y_percent + (self.zone_positions[zone]*11)
+                self.zone_positions[zone] += 1
+                print "New top position: %s for zone: %s" % (pos, zone)
+                print self.zone_positions
+                print "----------------"
+                return pos
+            else:
+                self.zone_positions[zone] = 1
+                print "New top position: %s for zone: %s" % (y_percent, zone)
+                print self.zone_positions
+                print "----------------"
+                return y_percent
+
+            #for item in self.zone_positions:
+            #    if item.get(zone):
+            #        print "Zone already exists"
+            #        pos = y_percent + (item[zone]*11)
+            #        item[zone] += 1
+            #        print "New top position: %s for zone: %s" % (pos, zone)
+            #        print self.zone_positions
+            #        print "----------------"
+            #        return pos
+            #    else:
+            #        self.zone_positions.append({zone: 1})
+            #        print "New top position: %s for zone: %s" % (y_percent, zone)
+            #        print self.zone_positions
+            #        print "----------------"
+            #        return y_percent
 
     @XBlock.json_handler
     def do_attempt(self, attempt, suffix=''):
@@ -361,7 +384,8 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     def reset(self, data, suffix=''):
         self.item_state = {}
         self.hint_count = 3
-        self.zone_positions[:] = []
+        #self.zone_positions[:] = []
+        self.zone_positions.clear()
         print "Reseting zone_positions..."
         print self.zone_positions
         return self._get_user_state()
