@@ -939,6 +939,9 @@ function DragAndDropBlock(runtime, element, configuration) {
 
                     $('.ui-droppable').removeClass("border-solid");
                     $('.ui-draggable').removeClass("border-solid");
+                    
+                    $(".target").find("[data-uid='" + data.hint_item_zone['zone'] + "']").addClass("border-solid");
+                    $(".item-bank").find("[data-value='" + data.hint_item_zone['item'] + "']").addClass("border-solid");
 
                 } else {
                     delete state.items[item_id];
@@ -1033,6 +1036,8 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var resetProblem = function(evt) {
+        $(".option").removeClass("border-solid");
+        $(".zone").removeClass("border-solid");
         evt.preventDefault();
         $.ajax({
             type: 'POST',
@@ -1176,6 +1181,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             display_reset_button: Object.keys(state.items).length > 0,
             hint_count: configuration.hint_count,
             zone_icons: configuration.zone_icons,
+            hint_item_zone: configuration.hint_item_zone,
         };
 
         return DragAndDropBlock.renderView(context);

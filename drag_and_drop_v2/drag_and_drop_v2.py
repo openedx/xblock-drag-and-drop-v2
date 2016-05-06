@@ -127,6 +127,12 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         },
     )
 
+    hint_item_zone = Dict(
+        help=_("Dictionary containging item with it's correct zone."),
+        scope=Scope.user_state,
+        default={},
+    )
+
     block_settings_key = 'drag-and-drop-v2'
     has_score = True
 
@@ -202,7 +208,8 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             "item_text_color": self.item_text_color or None,
             "initial_feedback": self.data['feedback']['start'],
             "hint_count": self.hint_count,
-            "zone_icons": self.zone_icons
+            "zone_icons": self.zone_icons,
+            "hint_item_zone": self.hint_item_zone
             # final feedback (data.feedback.finish) is not included - it may give away answers.
         }
 
@@ -299,6 +306,9 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
                     is_correct = False
         elif item['zone'] == attempt['zone']:  # Student placed item in correct zone
             top_position = self._check_position(attempt['zone'], attempt['y_percent'])
+            if self.hint_item_zone:
+                if self.hint_item_zone['zone'] == attempt['zone'] and self.hint_item_zone['item'] == item['id']:
+                    self.hint_item_zone.clear()
             self.zone_icons[attempt['zone']] = ''
             is_correct_location = True
             if 'inputOptions' in item:
@@ -356,7 +366,8 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             'finished': self._is_finished(),
             'overall_feedback': overall_feedback,
             'feedback': feedback,
-            'top_position': top_position
+            'top_position': top_position,
+            'hint_item_zone': self.hint_item_zone
         }
 
     @XBlock.json_handler
@@ -370,14 +381,17 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             'zone-3': '/xblock/resource/drag-and-drop-v2/public/img/zone-3.png',
             'zone-4': '/xblock/resource/drag-and-drop-v2/public/img/zone-4.png',
         }
-        print self.zone_icons
+        self.hint_item_zone.clear()
         return self._get_user_state()
 
     @XBlock.json_handler
     def hint(self, data, suffix=''):
-        if self.hint_count > 0: 
-            self.hint_count = self.hint_count - 1 
+        if self.hint_count > 0:
             item = self._get_item_definition(data['val'])
+            if not self.hint_item_zone:
+                self.hint_count = self.hint_count - 1 
+                self.hint_item_zone['zone'] = item['zone']
+                self.hint_item_zone['item'] = item['id']
             return {'zone': item['zone'], 'hint_count': self.hint_count}
         else:
             return {'hint_count': self.hint_count}
