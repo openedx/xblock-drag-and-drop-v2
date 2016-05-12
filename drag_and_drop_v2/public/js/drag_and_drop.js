@@ -366,6 +366,7 @@ function DragNDropTemplates(url_name) {
         var items_placed_unaligned = $.grep(items_placed, is_item_placed_unaligned);
         return (
             h('section.themed-xblock.xblock--drag-and-drop', [
+                h('h5.screen-too-small.text-center', "This activity requires a larger screen. Check it out on a computer screen with a larger browser window."),
                 problemTitle,
                 h('section.problem', [
                     problemHeader,
@@ -410,7 +411,7 @@ function DragNDropTemplates(url_name) {
                     ]
                     ),
                 ]),
-                h('div',
+                h('div.buttons-container',
                 {   
 
                 },

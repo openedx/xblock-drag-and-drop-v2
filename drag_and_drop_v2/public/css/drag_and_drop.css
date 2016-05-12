@@ -455,3 +455,25 @@
 .no-padding{
     padding: 0;
 }
+@media screen and (min-width: 1000px) {
+    .screen-too-small{
+        display: none;
+    }
+}
+@media screen and (max-width: 999px) {
+    .xblock--drag-and-drop {
+        /*display: none; */
+    }
+    .xblock--drag-and-drop .problem-title{
+        display: none;
+    }
+    .problem{
+        display: none;
+    }
+    .xblock--drag-and-drop .drag-container{
+        display: none;
+    }
+    .buttons-container{
+        display: none;
+    }
+}
