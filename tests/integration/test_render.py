@@ -161,7 +161,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
     def test_drag_container(self):
         self.load_scenario()
         item_bank = self._page.find_element_by_css_selector('.drag-container')
-        self.assertEqual(item_bank.get_attribute('role'), 'application')
+        self.assertIsNone(item_bank.get_attribute('role'))
 
     def test_zones(self):
         self.load_scenario()

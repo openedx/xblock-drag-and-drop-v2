@@ -279,7 +279,7 @@ function DragNDropTemplates(url_name) {
                     problemHeader,
                     h('p', {innerHTML: ctx.problem_html}),
                 ]),
-                h('section.drag-container', { attributes: { role: 'application' } }, [
+                h('section.drag-container', {}, [
                     h(
                         'div.item-bank',
                         renderCollection(itemTemplate, items_in_bank, ctx)
