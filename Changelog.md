@@ -1,3 +1,8 @@
+Version 2.0.6 (2016-05-20)
+--------------------------
+
+* Accessibility fix: Removes role="application"
+
 Version 2.0.5 (2016-03-30)
 --------------------------
 
