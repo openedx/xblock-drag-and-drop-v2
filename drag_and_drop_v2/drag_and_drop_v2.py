@@ -310,6 +310,9 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     @XBlock.json_handler
     def do_attempt(self, attempt, suffix=''):
         item = self._get_item_definition(attempt['val'])
+        logging.error("#### do_attempt called, item received:")
+        logging.error(attempt['val'])
+        logging.error("########")
         state = None
         zone = None
         feedback = item['feedback']['incorrect']
@@ -356,7 +359,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         # If problem is in Assessment mode and user failed answer, add item id to incorrect_items List
         if self.assessment_mode and item['zone'] != attempt['zone']:
             logging.error("#### Assessment mode, item incorrect, appending to incorrect_items ####")
-            self.incorrect_items.append(item['id'])
+            self.incorrect_items.append(attempt['val'])
             logging.error("#### incorrect_items items after append: ####")
             logging.error(self.incorrect_items)
 
