@@ -989,6 +989,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 if (data.correct_location) {
                     state.items[item_id].correct_input = Boolean(data.correct);
                     state.items[item_id].submitting_location = false;
+                    state.correct_count = data.correct_count;
 
                     if(!assessment_mode){
                         playSound("TileCorrect");
@@ -1225,6 +1226,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             }
             return itemProperties;
         });
+
         var context = {
             // configuration - parts that never change:
             bg_image_width: bgImgNaturalWidth, // Not stored in configuration since it's unknown on the server side
@@ -1241,13 +1243,13 @@ function DragAndDropBlock(runtime, element, configuration) {
             items: items,
             hint_count: configuration.hint_count,
             zone_icons: configuration.zone_icons,
-            hint_item_zone: configuration.hint_item_zone,
-            correct_count: configuration.correct_count,
+            hint_item_zone: configuration.hint_item_zone,         
             // state - parts that can change:
             last_action_correct: state.last_action_correct,
             popup_html: state.feedback || '',
             feedback_html: $.trim(state.overall_feedback),
             incorrect_items: state.incorrect_items,
+            correct_count: state.correct_count,
             display_reset_button: Object.keys(state.items).length > 0,
         };
 

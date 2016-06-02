@@ -531,6 +531,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             'finished': is_finished,
             'overall_feedback': overall_feedback,
             'incorrect_items': self.incorrect_items,
+            'correct_count': self.correct_count,
         }
 
     def _get_item_state(self):
