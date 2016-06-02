@@ -8,10 +8,11 @@ import webob
 import copy
 import urllib
 import logging
+import random
 
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
-from xblock.fields import Scope, String, Dict, Float, Boolean
+from xblock.fields import Scope, String, Dict, Float, Boolean, Integer
 from xblock.fragment import Fragment
 from xblockutils.resources import ResourceLoader
 from xblockutils.settings import XBlockWithSettingsMixin, ThemableXBlockMixin
@@ -133,6 +134,19 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         default={},
     )
 
+    assessment_mode = Boolean(
+        help=_("Indicates whether the problem is in practice or assessment mode."),
+        scope=Scope.settings,
+        default=False,
+    )
+
+    correct_count = Integer(
+        help=_("The number of correct items student solved in problem."),
+        scope=Scope.user_state,
+        default=0,
+    )
+
+    incorrect_items = []
     block_settings_key = 'drag-and-drop-v2'
     has_score = True
 
@@ -179,6 +193,8 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         def items_without_answers():
             items = copy.deepcopy(self.data.get('items', ''))
+            random.shuffle(items)
+
             for item in items:
                 del item['feedback']
                 del item['zone']
@@ -209,7 +225,10 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             "initial_feedback": self.data['feedback']['start'],
             "hint_count": self.hint_count,
             "zone_icons": self.zone_icons,
-            "hint_item_zone": self.hint_item_zone
+            "hint_item_zone": self.hint_item_zone,
+            "assessment_mode": self.assessment_mode,
+            "correct_count": self.correct_count,
+            "incorrect_items": self.incorrect_items
             # final feedback (data.feedback.finish) is not included - it may give away answers.
         }
 
@@ -259,6 +278,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     def studio_submit(self, submissions, suffix=''):
         self.display_name = submissions['display_name']
         self.show_title = submissions['show_title']
+        self.assessment_mode = submissions['assessment_mode']
         self.question_text = submissions['problem_text']
         self.show_question_header = submissions['show_problem_header']
         self.weight = float(submissions['weight'])
@@ -271,15 +291,19 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         }
 
     def _check_position(self, zone, y_percent):
+        # If zone_positions Dict is empty, add zone
         if not self.zone_positions:
             self.zone_positions[zone] = 1
             return y_percent
         else:
+            # Else check if zone is already in zone_positions
             if zone in self.zone_positions:
+                # If True add zone position to Dict with offset of counter, increase counter
                 pos = y_percent + (self.zone_positions[zone]*11)
                 self.zone_positions[zone] += 1
                 return pos
             else:
+                # If False add position with counter=1 to Dict
                 self.zone_positions[zone] = 1
                 return y_percent
 
@@ -304,13 +328,16 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
                     feedback = item['feedback']['correct']
                 else:
                     is_correct = False
-        elif item['zone'] == attempt['zone']:  # Student placed item in correct zone
+        elif item['zone'] == attempt['zone'] or self.assessment_mode:  # Student placed item in correct zone, allow if is in assessment mode
+            # Get top position by sending current position
             top_position = self._check_position(attempt['zone'], attempt['y_percent'])
             if self.hint_item_zone:
+                # If correct zone/item combo is same as the zone/item used in hints, clear Dict
                 if self.hint_item_zone['zone'] == attempt['zone'] and self.hint_item_zone['item'] == item['id']:
                     self.hint_item_zone.clear()
             self.zone_icons[attempt['zone']] = ''
             is_correct_location = True
+
             if 'inputOptions' in item:
                 # Input value will have to be provided for the item.
                 # It is not (yet) correct and no feedback should be shown yet.
@@ -326,6 +353,14 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
                 'y_percent': top_position,
             }
 
+        # If problem is in Assessment mode and user failed answer, add item id to incorrect_items List
+        if self.assessment_mode and item['zone'] != attempt['zone']:
+            self.incorrect_items.append(item['id'])
+
+        # Increase correct_count for correct answers
+        if item['zone'] == attempt['zone']:
+            self.correct_count += 1
+
         if state:
             self.item_state[str(item['id'])] = state
             zone = self._get_zone_by_uid(state['zone'])
@@ -334,22 +369,29 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         if not zone:
             raise JsonHandlerError(400, "Item zone data invalid.")
 
-        if self._is_finished():
-            overall_feedback = self.data['feedback']['finish']
-
         # don't publish the grade if the student has already completed the problem
         if not self.completed:
             if self._is_finished():
                 self.completed = True
-            try:
-                self.runtime.publish(self, 'grade', {
-                    'value': self._get_grade(),
-                    'max_value': self.weight,
-                })
-            except NotImplementedError:
-                # Note, this publish method is unimplemented in Studio runtimes,
-                # so we have to figure that we're running in Studio for now
-                pass
+                try:
+                    self.runtime.publish(self, 'grade', {
+                        'value': self._get_grade(),
+                        'max_value': self.weight,
+                    })
+                except NotImplementedError:
+                    # Note, this publish method is unimplemented in Studio runtimes,
+                    # so we have to figure that we're running in Studio for now
+                    pass
+
+        if self._is_finished():
+            if self.assessment_mode:
+                # If user achieved perfect score
+                if self.correct_count == len(self.data['items']):
+                    overall_feedback = self.data['feedback']['assessment_perfect']
+                else:
+                    overall_feedback = self.data['feedback']['assessment_finish']               
+            else:    
+                overall_feedback = self.data['feedback']['finish']
 
         self.runtime.publish(self, 'edx.drag_and_drop_v2.item.dropped', {
             'item_id': item['id'],
@@ -360,6 +402,10 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             'is_correct': is_correct,
         })
 
+        # Return is_correct_location is True for assessment mode
+        if self.assessment_mode:
+            is_correct_location = True
+
         return {
             'correct': is_correct,
             'correct_location': is_correct_location,
@@ -367,14 +413,20 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             'overall_feedback': overall_feedback,
             'feedback': feedback,
             'top_position': top_position,
-            'hint_item_zone': self.hint_item_zone
+            'hint_item_zone': self.hint_item_zone,
+            'correct_count': self.correct_count,
+            'incorrect_items': self.incorrect_items
         }
 
     @XBlock.json_handler
     def reset(self, data, suffix=''):
-        self.item_state = {}
+        #self.item_state = {}
+        self.item_state.clear()
         self.hint_count = 3
         self.zone_positions.clear()
+        self.completed = False
+        self.incorrect_items[:] = []
+        self.correct_count = 0
         self.zone_icons = {
             'zone-1': '/xblock/resource/drag-and-drop-v2/public/img/zone-1.png',
             'zone-2': '/xblock/resource/drag-and-drop-v2/public/img/zone-2.png',
@@ -395,7 +447,6 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             return {'zone': item['zone'], 'hint_count': self.hint_count}
         else:
             return {'hint_count': self.hint_count}
-        
 
     def _expand_static_url(self, url):
         """
@@ -458,10 +509,24 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
                 item['zone'] = definition.get('zone', 'unknown')
 
         is_finished = self._is_finished()
+
+        overall_feedback = None
+        if is_finished:
+            if self.assessment_mode:
+                if self.correct_count == len(self.data['items']):
+                    overall_feedback = self.data['feedback']['assessment_perfect']
+                else:
+                    overall_feedback = self.data['feedback']['assessment_finish']
+            else:
+                overall_feedback = self.data['feedback']['finish']
+        else:
+            overall_feedback = self.data['feedback']['start']
+
         return {
             'items': item_state,
             'finished': is_finished,
-            'overall_feedback': self.data['feedback']['finish' if is_finished else 'start'],
+            'overall_feedback': overall_feedback,
+            'incorrect_items': self.incorrect_items,
         }
 
     def _get_item_state(self):
@@ -513,19 +578,22 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """
         Returns the student's grade for this block.
         """
-        correct_count = 0
-        total_count = 0
-        item_state = self._get_item_state()
 
-        for item in self.data['items']:
-            if item['zone'] != 'none':
-                total_count += 1
-                item_id = str(item['id'])
-                if item_id in item_state:
-                    if self._is_correct_input(item, item_state[item_id].get('input')):
-                        correct_count += 1
+        # Total number of items
+        total_count = len(self.data['items'])
+        #item_state = self._get_item_state()
 
-        return correct_count / float(total_count) * self.weight
+        #for item in self.data['items']:
+        #    if item['zone'] != 'none':
+        #        item_id = str(item['id'])
+        #        if item_id in item_state:
+        #            if item['zone'] == item_state[item_id]['zone']:
+        #                self.correct_count += 1
+                    #elif item_id not in self.incorrect_items:
+                        # Add item id in incorrect_items List
+                    #    self.incorrect_items.append(item_id)
+
+        return self.correct_count / float(total_count) * self.weight
 
     def _is_finished(self):
         """

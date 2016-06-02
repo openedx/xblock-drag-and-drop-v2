@@ -452,8 +452,25 @@
 .border-solid{
     border: solid 5px #3E51B5;
 }
+.border-incorrect{
+    border: solid 2px #ad0d0d;
+}
 .no-padding{
     padding: 0;
+}
+.try-again-button{
+    margin: 20px auto;
+    transition: all 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s;
+    border: none !important;
+    border-radius: 0 !important;
+    background: #3E51B5;
+    color: #fff;
+}
+.try-again-button:hover{
+    background: #B2B9E1 !important;
+}
+.try-again-button:focus{
+    box-shadow: none !important;
 }
 @media screen and (min-width: 1000px) {
     .screen-too-small{

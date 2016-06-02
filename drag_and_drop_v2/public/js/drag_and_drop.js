@@ -153,7 +153,17 @@ function DragNDropTemplates(url_name) {
             );
             children.splice(1, 0, item_description);
         }
-        children.splice(1, 0, item_content);
+        children.splice(1, 0, item_content); 
+
+        // Add border-incorrect class only to items from incorrect list and in assessment_mode only
+        if(ctx.incorrect_items && ctx.assessment_mode){
+            for( var id = 0; id < ctx.incorrect_items.length; id++){
+                if(attributes['data-value'] == ctx.incorrect_items[id]){
+                    className += " border-incorrect";
+                }
+            }
+        }
+    
         return (
             h(
                 'div.option',
@@ -311,11 +321,31 @@ function DragNDropTemplates(url_name) {
 
     var feedbackTemplate = function(ctx) {
         var feedback_display = ctx.feedback_html ? 'block' : 'none';
-        var properties = { attributes: { 'aria-live': 'polite' } };
+        var properties = { attributes: { 'aria-live': 'polite' } };       
+        var feedback_html = ctx.feedback_html;
+        var button_display = 'none';
+
+        if(ctx.feedback_html && ctx.assessment_mode){
+            var feedback_html = ctx.feedback_html.replace('<span id="correct_count"></span>', ctx.correct_count).replace('<span id="total_count"></span>', ctx.items.length);
+            if(ctx.correct_count < ctx.items.length){
+                button_display = '';
+            }
+        }
         return (
             h('section.feedback.clearfix', properties, [
-                //h('h3.title1', { style: { display: feedbac_kdisplay } }, gettext('Feedback')),
-                h('div.message', { style: { display: feedback_display }, innerHTML: ctx.feedback_html })
+                //h('h3.title1', { style: { display: feedback_display } }, gettext('Feedback')),
+                h('div.message', { style: { display: feedback_display }, innerHTML: feedback_html }),
+                h('button.try-again-button', { style: { display: button_display } },
+                [
+                    h('span', { innerHTML : 'Try Again' }),
+                    h('span.icon.fa.fa-chevron-next', 
+                        { 
+                            attributes: { 'aria-hidden': 'true' },
+                            style:{ 'margin-left': '10px' }
+                        }
+                    )
+                ]),
+                
             ])
         );
     };
@@ -354,9 +384,11 @@ function DragNDropTemplates(url_name) {
         var problemTitle = ctx.show_title ? h('h2.problem-title.ee-h2', {innerHTML: ctx.title_html}) : null;
         var problemHeader = ctx.show_problem_header ? h('h3.title1', gettext('Problem')) : null;
         var popupSelector = 'div.popup';
-        if (ctx.popup_html && !ctx.last_action_correct) {
-            popupSelector += '.popup-incorrect';
+        if (!ctx.assessment_mode && ctx.popup_html && !ctx.last_action_correct) {
+            // Show incorrect message if not in assessment mode
+            popupSelector += '.popup-incorrect'; 
         }
+
         // Render only items_in_bank and items_placed_unaligned here;
         // items placed in aligned zones will be rendered by zoneTemplate.
         var is_item_placed = function(i) { return i.is_placed; };
@@ -467,6 +499,8 @@ function DragAndDropBlock(runtime, element, configuration) {
     var $selectedItem;
     var $focusedElement;
 
+    var assessment_mode = configuration.assessment_mode;
+
     var init = function() {
         // Load the current user state, and load the image, then render the block.
         // We load the user state via AJAX rather than passing it in statically (like we do with
@@ -497,6 +531,10 @@ function DragAndDropBlock(runtime, element, configuration) {
             });
             $element.on('click', '.reset-button', resetProblem);
             $element.on('keydown', '.reset-button', function(evt) {
+                runOnKey(evt, RET, resetProblem);
+            });
+            $element.on('click', '.try-again-button', resetProblem);
+            $element.on('keydown', '.try-again-button', function(evt) {
                 runOnKey(evt, RET, resetProblem);
             });
             $element.on('click', '.hint-button', useHint);
@@ -923,38 +961,58 @@ function DragAndDropBlock(runtime, element, configuration) {
 
         $.post(url, JSON.stringify(data), 'json')
             .done(function(data){
+                
+                // Animate item reposition
+                var item = $(".target").find("[data-value='" + item_id + "']");
+                item.animate({
+                    top: data.top_position + '%',
+                    left: left_position + '%',
+                }, 400);
+
+                // Remove class with border if hint was used
+                $('.ui-droppable').removeClass("border-solid");
+                $('.ui-draggable').removeClass("border-solid");
+
+                // Add class with border to zone/item in case hint was not used
+                $(".target").find("[data-uid='" + data.hint_item_zone['zone'] + "']").addClass("border-solid");
+                $(".item-bank").find("[data-value='" + data.hint_item_zone['item'] + "']").addClass("border-solid");
+                
                 state.last_action_correct = data.correct_location;
-                if (data.correct_location) {
-                    state.items[item_id].correct_input = Boolean(data.correct);
-                    state.items[item_id].submitting_location = false;
-                    playSound("TileCorrect");
+
+                // Remove background image if correct item is dropped or when item dropped in assessment mode
+                if (data.correct_location || assessment_mode){
                     var el = $(".target").find("[data-uid='" + zone + "']").find('.zone-img').css({
                         'background-image': ''
                     });
-                
-                    var item = $(".target").find("[data-value='" + item_id + "']");
-                    item.animate({
-                        top: data.top_position + '%',
-                        left: left_position + '%',
-                    }, 400);
+                }
 
-                    $('.ui-droppable').removeClass("border-solid");
-                    $('.ui-draggable').removeClass("border-solid");
-                    
-                    $(".target").find("[data-uid='" + data.hint_item_zone['zone'] + "']").addClass("border-solid");
-                    $(".item-bank").find("[data-value='" + data.hint_item_zone['item'] + "']").addClass("border-solid");
+                if (data.correct_location) {
+                    state.items[item_id].correct_input = Boolean(data.correct);
+                    state.items[item_id].submitting_location = false;
 
+                    if(!assessment_mode){
+                        playSound("TileCorrect");
+                    }
                 } else {
-                    delete state.items[item_id];
-                    playSound("TileIncorrect");
+                    if(!assessment_mode){
+                        delete state.items[item_id];
+                        playSound("TileIncorrect");
+                    }
                 }
                 state.feedback = data.feedback;
+                var total_count = data.correct_count + data.incorrect_items.length;
                 if (data.finished) {
-                    setTimeout(function() { //offset the "TileCorrect" sound
+                    if(!assessment_mode){
+                        setTimeout(function() { //offset the "TileCorrect" sound
+                            playSound("AllCompleted");
+                        }, 1000);
+                    }
+                    else{
                         playSound("AllCompleted");
-                    }, 1000);
+                    }
                     state.finished = true;
-                    state.overall_feedback = data.overall_feedback;
+                    state.overall_feedback = data.overall_feedback.replace('<span id="correct_count"></span>', data.correct_count).replace('<span id="total_count"></span>', total_count);
+                    state.incorrect_items = data.incorrect_items;
                 }
                 applyState();
                 if (data.correct_location == false) {
@@ -965,6 +1023,15 @@ function DragAndDropBlock(runtime, element, configuration) {
                         });
                     }, 3500);
                 };
+                // After applying state. If problem is finished in assessment mode, mark all incorrect items.
+                if (data.finished && assessment_mode) {
+                    for( var id = 0; id < data.incorrect_items.length; id++){
+                        $(".target").find("[data-value='" + data.incorrect_items[id] + "']").addClass("border-incorrect");
+                    } 
+                    if(data.correct_count < total_count){
+                        $('.try-again-button').css({ 'display': ''});
+                    }
+                }
             })
             .fail(function (data) {
                 delete state.items[item_id];
@@ -996,6 +1063,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 state.items[item_id].submitting_input = false;
                 state.items[item_id].correct_input = data.correct;
                 state.feedback = data.feedback;
+
                 if (data.finished) {
                     state.finished = true;
                     state.overall_feedback = data.overall_feedback;
@@ -1040,21 +1108,26 @@ function DragAndDropBlock(runtime, element, configuration) {
         $(".option").removeClass("border-solid");
         $(".zone").removeClass("border-solid");
         evt.preventDefault();
+        var spinner = "<i class='fa fa-spin fa-spinner initial-load-spinner' style='float: right;margin-top: 4px;margin-left: 5px;'></i>";
+        $('.reset-button').append(spinner);
         $.ajax({
             type: 'POST',
             url: runtime.handlerUrl(element, 'reset'),
             data: '{}',
-        });
-        state = {
-            'items': [],
-            'finished': false,
-            'overall_feedback': configuration.initial_feedback,
-        };
-        applyState();
-        $(".hint-button").removeClass('disabled');
-        $(".hint-button-text").text("Use a Hint (3 remaining)");
-        setZoneBackground();
-        playSound("ResetTiles");
+            success: function(data){
+                $(".fa-spin").remove();
+                state = {
+                    'items': [],
+                    'finished': false,
+                    'overall_feedback': configuration.initial_feedback,
+                }; 
+                setZoneBackground();
+                playSound("ResetTiles");
+                applyState();
+                $(".hint-button").removeClass('disabled');
+                $(".hint-button-text").text("Use a Hint (3 remaining)"); 
+            }
+        });       
     };
 
     var setZoneBackground = function() {
@@ -1098,16 +1171,6 @@ function DragAndDropBlock(runtime, element, configuration) {
                 zone.addClass("border-solid");         
                 
                 el.addClass("border-solid");
-                /*
-                setTimeout(function() {
-                    el.css('border','5px solid #3E51B5').animate({
-                        borderWidth: 0
-                    }, 100);
-                    zone.css('border','5px solid #3E51B5').animate({
-                        borderWidth: 0
-                    }, 100);
-                }, 2000);
-                */
             }
         });
     };
@@ -1167,6 +1230,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             bg_image_width: bgImgNaturalWidth, // Not stored in configuration since it's unknown on the server side
             title_html: configuration.title,
             show_title: configuration.show_title,
+            assessment_mode: configuration.assessment_mode,
             problem_html: configuration.problem_text,
             show_problem_header: configuration.show_problem_header,
             target_img_src: configuration.target_img_expanded_url,
@@ -1175,14 +1239,16 @@ function DragAndDropBlock(runtime, element, configuration) {
             display_zone_borders: configuration.display_zone_borders,
             zones: configuration.zones,
             items: items,
+            hint_count: configuration.hint_count,
+            zone_icons: configuration.zone_icons,
+            hint_item_zone: configuration.hint_item_zone,
+            correct_count: configuration.correct_count,
             // state - parts that can change:
             last_action_correct: state.last_action_correct,
             popup_html: state.feedback || '',
             feedback_html: $.trim(state.overall_feedback),
+            incorrect_items: state.incorrect_items,
             display_reset_button: Object.keys(state.items).length > 0,
-            hint_count: configuration.hint_count,
-            zone_icons: configuration.zone_icons,
-            hint_item_zone: configuration.hint_item_zone,
         };
 
         return DragAndDropBlock.renderView(context);

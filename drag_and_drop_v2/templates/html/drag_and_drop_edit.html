@@ -12,6 +12,13 @@
 
             <section class="tab-content">
                 <form class="feedback-form">
+                    <label title="{{ self.assessment_mode }}">
+                      <input class="assessment-mode" type="checkbox"
+                        {% if self.assessment_mode %}checked="checked"{% endif %}>
+                      {% trans "Assesment moode" %}
+                      <span class="sr">{{ self.assessment_mode }}</span>
+                    </label>
+                    
                     <label class="h3" for="display-name">{% trans "Problem title" %}</label>
                     <input id="display-name" value="{{ self.display_name }}" />
                     <label title="{{ help_texts.show_title }}">
@@ -36,8 +43,14 @@
                     <label class="h3" for="intro-feedback">{% trans "Introductory Feedback" %}</label>
                     <textarea id="intro-feedback">{{ self.data.feedback.start }}</textarea>
 
-                    <label class="h3" for="final-feedback">{% trans "Final Feedback" %}</label>
+                    <label class="h3" for="final-feedback">{% trans "Final Feedback (Practice mode)" %}</label>
                     <textarea id="final-feedback">{{ self.data.feedback.finish }}</textarea>
+
+                    <label class="h3" for="assessment-final-feedback">{% trans "Assessment mode - Final Feedback" %}</label>
+                    <textarea id="assessment-final-feedback">{{ self.data.feedback.assessment_finish }}</textarea>
+
+                    <label class="h3" for="assessment-perfect-feedback">{% trans "Assessment mode - Perfect Score" %}</label>
+                    <textarea id="assessment-perfect-feedback">{{ self.data.feedback.assessment_perfect }}</textarea>
                 </form>
             </section>
         </div>
