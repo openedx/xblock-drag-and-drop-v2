@@ -157,9 +157,7 @@ function DragNDropTemplates(url_name) {
 
         // Add border-incorrect class only to items from incorrect list and in assessment_mode only
         if(ctx.incorrect_items && ctx.assessment_mode){
-            console.log("Refreshed, ids: ");
             for( var id = 0; id < ctx.incorrect_items.length; id++){
-                console.log("Incorrect ids: " + ctx.incorrect_items[id]);
                 if(attributes['data-value'] == ctx.incorrect_items[id]){
                     className += " border-incorrect";
                 }
@@ -1015,8 +1013,6 @@ function DragAndDropBlock(runtime, element, configuration) {
                     state.finished = true;
                     state.overall_feedback = data.overall_feedback.replace('<span id="correct_count"></span>', data.correct_count).replace('<span id="total_count"></span>', total_count);
                     state.incorrect_items = data.incorrect_items;
-                    console.log("Correct count: " + data.correct_count);
-                    console.log("Total count: " + total_count);
                 }
                 applyState();
                 if (data.correct_location == false) {
@@ -1029,10 +1025,8 @@ function DragAndDropBlock(runtime, element, configuration) {
                 };
                 // After applying state. If problem is finished in assessment mode, mark all incorrect items.
                 if (data.finished && assessment_mode) {
-                    console.log("Incorrect ids:");
                     for( var id = 0; id < data.incorrect_items.length; id++){
                         $(".target").find("[data-value='" + data.incorrect_items[id] + "']").addClass("border-incorrect");
-                        console.log("ID: " + data.incorrect_items[id]);
                     } 
                     if(data.correct_count < total_count){
                         $('.try-again-button').css({ 'display': ''});
