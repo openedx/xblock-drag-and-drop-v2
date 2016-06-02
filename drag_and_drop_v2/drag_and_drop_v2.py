@@ -12,7 +12,7 @@ import random
 
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
-from xblock.fields import Scope, String, Dict, Float, Boolean, Integer
+from xblock.fields import Scope, String, Dict, Float, Boolean, Integer, List
 from xblock.fragment import Fragment
 from xblockutils.resources import ResourceLoader
 from xblockutils.settings import XBlockWithSettingsMixin, ThemableXBlockMixin
@@ -146,7 +146,13 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         default=0,
     )
 
-    incorrect_items = []
+    incorrect_items = List(
+        display_name="Incorrect Items",
+        help=_("List of incorrect ids."),
+        scope=Scope.user_state,
+        default=[],
+    )
+
     block_settings_key = 'drag-and-drop-v2'
     has_score = True
 
@@ -179,7 +185,9 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             fragment.add_javascript_url(self.runtime.local_resource_url(self, js_url))
 
         self.include_theme_files(fragment)
-
+        logging.error("+++++++++++++++++++++++++++++++++++++")
+        logging.error(self.incorrect_items)
+        logging.error("+++++++++++++++++++++++++++++++++++++")
         fragment.initialize_js('DragAndDropBlock', self.get_configuration())
 
         return fragment
@@ -312,6 +320,8 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         item = self._get_item_definition(attempt['val'])
         logging.error("#### do_attempt called, item received:")
         logging.error(attempt['val'])
+        logging.error("### attempt['val'] Type:")
+        logging.error(type(attempt['val']))
         logging.error("########")
         state = None
         zone = None
@@ -446,7 +456,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         logging.error("#### completed ####")
         logging.error(self.completed)
 
-        self.incorrect_items[:] = []
+        self.incorrect_items = []
         logging.error("#### incorrect_items ####")
         logging.error(self.incorrect_items)
 
