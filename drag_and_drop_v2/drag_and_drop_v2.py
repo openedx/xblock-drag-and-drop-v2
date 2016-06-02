@@ -355,11 +355,17 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         # If problem is in Assessment mode and user failed answer, add item id to incorrect_items List
         if self.assessment_mode and item['zone'] != attempt['zone']:
+            logging.error("#### Assessment mode, item incorrect, appending to incorrect_items ####")
             self.incorrect_items.append(item['id'])
+            logging.error("#### incorrect_items items after append: ####")
+            logging.error(self.incorrect_items)
 
         # Increase correct_count for correct answers
         if item['zone'] == attempt['zone']:
             self.correct_count += 1
+            logging.error("#### Item correct, increasing correct_count. Correct count now: ####")
+            logging.error(self.correct_count)
+            logging.error("#### ####")
 
         if state:
             self.item_state[str(item['id'])] = state
@@ -420,13 +426,31 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
     @XBlock.json_handler
     def reset(self, data, suffix=''):
-        #self.item_state = {}
+        logging.error("#### RESET ####")
         self.item_state.clear()
+        logging.error("#### item_state ####")
+        logging.error(self.item_state)
+
         self.hint_count = 3
+        logging.error("#### hint_count ####")
+        logging.error(self.hint_count)
+
         self.zone_positions.clear()
+        logging.error("#### zone_positions ####")
+        logging.error(self.zone_positions)
+
         self.completed = False
+        logging.error("#### completed ####")
+        logging.error(self.completed)
+
         self.incorrect_items[:] = []
+        logging.error("#### incorrect_items ####")
+        logging.error(self.incorrect_items)
+
         self.correct_count = 0
+        logging.error("#### correct_count ####")
+        logging.error(self.correct_count)
+
         self.zone_icons = {
             'zone-1': '/xblock/resource/drag-and-drop-v2/public/img/zone-1.png',
             'zone-2': '/xblock/resource/drag-and-drop-v2/public/img/zone-2.png',
