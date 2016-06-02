@@ -185,9 +185,6 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             fragment.add_javascript_url(self.runtime.local_resource_url(self, js_url))
 
         self.include_theme_files(fragment)
-        logging.error("+++++++++++++++++++++++++++++++++++++")
-        logging.error(self.incorrect_items)
-        logging.error("+++++++++++++++++++++++++++++++++++++")
         fragment.initialize_js('DragAndDropBlock', self.get_configuration())
 
         return fragment
@@ -318,11 +315,6 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     @XBlock.json_handler
     def do_attempt(self, attempt, suffix=''):
         item = self._get_item_definition(attempt['val'])
-        logging.error("#### do_attempt called, item received:")
-        logging.error(attempt['val'])
-        logging.error("### attempt['val'] Type:")
-        logging.error(type(attempt['val']))
-        logging.error("########")
         state = None
         zone = None
         feedback = item['feedback']['incorrect']
@@ -368,17 +360,11 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         # If problem is in Assessment mode and user failed answer, add item id to incorrect_items List
         if self.assessment_mode and item['zone'] != attempt['zone']:
-            logging.error("#### Assessment mode, item incorrect, appending to incorrect_items ####")
             self.incorrect_items.append(attempt['val'])
-            logging.error("#### incorrect_items items after append: ####")
-            logging.error(self.incorrect_items)
 
         # Increase correct_count for correct answers
         if item['zone'] == attempt['zone']:
             self.correct_count += 1
-            logging.error("#### Item correct, increasing correct_count. Correct count now: ####")
-            logging.error(self.correct_count)
-            logging.error("#### ####")
 
         if state:
             self.item_state[str(item['id'])] = state
@@ -439,31 +425,12 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
     @XBlock.json_handler
     def reset(self, data, suffix=''):
-        logging.error("#### RESET ####")
         self.item_state.clear()
-        logging.error("#### item_state ####")
-        logging.error(self.item_state)
-
         self.hint_count = 3
-        logging.error("#### hint_count ####")
-        logging.error(self.hint_count)
-
         self.zone_positions.clear()
-        logging.error("#### zone_positions ####")
-        logging.error(self.zone_positions)
-
-        self.completed = False
-        logging.error("#### completed ####")
-        logging.error(self.completed)
-
+        self.completed = False        
         self.incorrect_items = []
-        logging.error("#### incorrect_items ####")
-        logging.error(self.incorrect_items)
-
         self.correct_count = 0
-        logging.error("#### correct_count ####")
-        logging.error(self.correct_count)
-
         self.zone_icons = {
             'zone-1': '/xblock/resource/drag-and-drop-v2/public/img/zone-1.png',
             'zone-2': '/xblock/resource/drag-and-drop-v2/public/img/zone-2.png',
@@ -615,20 +582,8 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """
         Returns the student's grade for this block.
         """
-
         # Total number of items
         total_count = len(self.data['items'])
-        #item_state = self._get_item_state()
-
-        #for item in self.data['items']:
-        #    if item['zone'] != 'none':
-        #        item_id = str(item['id'])
-        #        if item_id in item_state:
-        #            if item['zone'] == item_state[item_id]['zone']:
-        #                self.correct_count += 1
-                    #elif item_id not in self.incorrect_items:
-                        # Add item id in incorrect_items List
-                    #    self.incorrect_items.append(item_id)
 
         return self.correct_count / float(total_count) * self.weight
 
