@@ -95,6 +95,7 @@ msgid "Drag and Drop"
 msgstr ""
 
 #: drag_and_drop_v2.py
+#: templates/html/drag_and_drop_edit.html
 msgid "Show title"
 msgstr ""
 
@@ -103,6 +104,7 @@ msgid "Display the title to the learner?"
 msgstr ""
 
 #: drag_and_drop_v2.py
+#: templates/html/drag_and_drop_edit.html
 msgid "Problem text"
 msgstr ""
 
@@ -111,6 +113,7 @@ msgid "The description of the problem or instructions shown to the learner"
 msgstr ""
 
 #: drag_and_drop_v2.py
+#: templates/html/drag_and_drop_edit.html
 msgid "Show \"Problem\" heading"
 msgstr ""
 
@@ -273,19 +276,7 @@ msgid "Problem title"
 msgstr ""
 
 #: templates/html/drag_and_drop_edit.html
-msgid "Show title"
-msgstr ""
-
-#: templates/html/drag_and_drop_edit.html
 msgid "Maximum score"
-msgstr ""
-
-#: templates/html/drag_and_drop_edit.html
-msgid "Problem text"
-msgstr ""
-
-#: templates/html/drag_and_drop_edit.html
-msgid "Show \"Problem\" heading"
 msgstr ""
 
 #: templates/html/drag_and_drop_edit.html
