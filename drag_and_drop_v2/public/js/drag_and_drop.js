@@ -54,7 +54,7 @@ function DragNDropTemplates(url_name) {
 
     var resetItemButton = function(){
         return (
-            h('div.fa.fa-times-circle.reset-item-button', {
+            h('div.fa.fa-times.reset-item-button', {
                 attributes: { 'aria-hidden': 'true', },
                 style:{
                     'position': 'absolute',
@@ -812,9 +812,6 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var placeItem = function($zone, $item) {
-        console.log("placeItem");
-        console.log("State - place item - :");
-        console.log(state);
         var item_id;
         var $anchor;
         if ($item !== undefined) {
@@ -847,7 +844,6 @@ function DragAndDropBlock(runtime, element, configuration) {
             y_percent: y_pos_percent,
             submitting_location: true,
         };
-        console.log(state.items);
         
         // Wrap in setTimeout to let the droppable event finish.
         setTimeout(function() {
@@ -910,7 +906,6 @@ function DragAndDropBlock(runtime, element, configuration) {
 
     var initDraggable = function() {
         $root.find('.item-bank .option').not('[data-drag-disabled=true]').each(function() {
-        //$root.find('.drag-container .option').not('[data-drag-disabled=true]').each(function() {
             var $item = $(this);
 
             // Allow item to be "picked up" using the keyboard
@@ -952,12 +947,8 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var grabItem = function($item) {
-        console.log("grabItem");
         $('.ui-droppable').addClass("border-dashed");
         var item_id = $item.data('value');
-        /////
-        console.log($item);
-        //destroySingleDraggable($item);
 
         $item.css({
             'position': 'relative'
@@ -967,7 +958,6 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var releaseItem = function($item) {
-        console.log("releaseItem");
         $('.ui-droppable').removeClass("border-dashed");
         var item_id = $item.data('value');
         setGrabbedState(item_id, false);
@@ -979,17 +969,6 @@ function DragAndDropBlock(runtime, element, configuration) {
             if (configuration.items[i].id === item_id) {
                 configuration.items[i].grabbed = grabbed;
             }
-        }
-    };
-
-    var destroySingleDraggable = function($item) {
-        $item.off();
-
-        try {
-            $item.draggable('destroy');
-        } catch (e) {
-            // Destroying the draggable will fail if draggable was
-            // not initialized in the first place. Ignore the exception.
         }
     };
 
@@ -1009,7 +988,6 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var submitLocation = function(item_id, zone, x_percent, y_percent) {
-        console.log("submitLocation");
         if (!zone) {
             return;
         }
@@ -1188,36 +1166,31 @@ function DragAndDropBlock(runtime, element, configuration) {
                 // Remove item from zone and apply state
                 delete state['items'][$id];
                 applyState();
-
-                console.log("Success");
-                console.log(data['changed_items']); 
-                for( var i = 0; i < Object.keys(data['changed_items']).length; i++){
-                    console.log(data['changed_items'][i]);
-                    console.log("id: " + data['changed_items'][i]['id']);
-
+                // If zone name was returned in response, reset zone background
+                if(data['zone']){
+                    var $parent = $(".target").find("[data-uid='" + data['zone'] + "']");
+                    $parent.children(".zone-img").css({
+                        backgroundImage: "url('/xblock/resource/drag-and-drop-v2/public/img/" + data['zone'] + ".png')",
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "center",
+                        width: 100 + "%",
+                        height: 100 + "%",
+                        opacity: 0.4
+                    });
+                }
+                // Loop through returned items that have top position changed
+                for( var i = 0; i < Object.keys(data['changed_items']).length; i++){            
                     // Animate item reposition
-                    var item = $(".target").find("[data-value='" + data['changed_items'][i]['id'] + "']");
-                    item.animate({
+                    var $item = $(".target").find("[data-value='" + data['changed_items'][i]['id'] + "']");
+                    $item.animate({
                         top: data['changed_items'][i]['position'] + '%',
                     }, 400);
-                }  
+                } 
             }
         });
     }
 
-    var resetProblem = function(evt) {
-        /*
-        console.log("State before problem reset:");
-        console.log(state);
-
-        console.log(state['items']['3']);
-        delete state['items']['1'];
-        applyState();
-
-        console.log("State after problem reset:");
-        console.log(state);
-        */
-        
+    var resetProblem = function(evt) {        
         $(".option").removeClass("border-solid");
         $(".zone").removeClass("border-solid");
         evt.preventDefault();
@@ -1234,8 +1207,6 @@ function DragAndDropBlock(runtime, element, configuration) {
                     'finished': false,
                     'overall_feedback': configuration.initial_feedback,
                 }; 
-                console.log("State after problem reset:");
-                console.log(state);
                 setZoneBackground();
                 playSound("ResetTiles");
                 applyState();
