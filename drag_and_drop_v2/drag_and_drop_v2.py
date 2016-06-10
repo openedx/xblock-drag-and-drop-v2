@@ -112,7 +112,13 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     )
 
     zone_positions = Dict(
-        help=_("Information about zone positions."),
+        help=_("Dict with zone name as key and number of items assigned to it."),
+        scope=Scope.user_state,
+        default={},
+    )
+
+    item_zone = Dict(
+        help=_("Required for Assessment mode. Contains item id as key and zone name as value."),
         scope=Scope.user_state,
         default={},
     )
@@ -129,7 +135,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     )
 
     hint_item_zone = Dict(
-        help=_("Dictionary containging item with it's correct zone."),
+        help=_("Dictionary containging item with it's correct zone. Holds single key:value pair at a time."),
         scope=Scope.user_state,
         default={},
     )
@@ -146,9 +152,16 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         default=0,
     )
 
+    correct_items = List(
+        display_name="Correct Items",
+        help=_("List of correct items id's."),
+        scope=Scope.user_state,
+        default=[],
+    )
+
     incorrect_items = List(
         display_name="Incorrect Items",
-        help=_("List of incorrect ids."),
+        help=_("List of incorrect items id's."),
         scope=Scope.user_state,
         default=[],
     )
@@ -165,6 +178,11 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """
         Player view, displayed to the student
         """
+        logging.error("--- _get_item_state()")
+        logging.error(self._get_item_state())
+        logging.error("--- item_state")
+        logging.error(self.item_state)
+        logging.error("--- item_state ---------------------")
 
         fragment = Fragment()
         fragment.add_content(loader.render_template('/templates/html/drag_and_drop.html'))
@@ -233,7 +251,8 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             "hint_item_zone": self.hint_item_zone,
             "assessment_mode": self.assessment_mode,
             "correct_count": self.correct_count,
-            "incorrect_items": self.incorrect_items
+            "incorrect_items": self.incorrect_items,
+            'finished': self._is_finished()
             # final feedback (data.feedback.finish) is not included - it may give away answers.
         }
 
@@ -334,6 +353,16 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
                 else:
                     is_correct = False
         elif item['zone'] == attempt['zone'] or self.assessment_mode:  # Student placed item in correct zone, allow if is in assessment mode
+            # If in Assessment mode,add item id as key and submitted zone as value to item_zone Dict
+            self.item_zone[unicode(attempt['val'])] = attempt['zone']
+            logging.error("+++++++++++++++++++++++++++++++++++++")
+            logging.error("+++++++++++++++++ do attempt ++++++++++++++++++++")
+            logging.error(self.item_zone)
+            logging.error("-- id type --q")
+            logging.error(type(attempt['val']))
+            logging.error("+++++++++++++++++++++++++++++++++++++")
+            logging.error("+++++++++++++++++++++++++++++++++++++")
+
             # Get top position by sending current position
             top_position = self._check_position(attempt['zone'], attempt['y_percent'])
             if self.hint_item_zone:
@@ -360,11 +389,13 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         # If problem is in Assessment mode and user failed answer, add item id to incorrect_items List
         if self.assessment_mode and item['zone'] != attempt['zone']:
-            self.incorrect_items.append(attempt['val'])
+            self.incorrect_items.append(unicode(attempt['val']))
 
         # Increase correct_count for correct answers
         if item['zone'] == attempt['zone']:
             self.correct_count += 1
+            # Edit comment
+            self.correct_items.append(unicode(attempt['val']))
 
         if state:
             self.item_state[str(item['id'])] = state
@@ -391,7 +422,9 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         if self._is_finished():
             if self.assessment_mode:
                 # If user achieved perfect score
-                if self.correct_count == len(self.data['items']):
+                # Edit if loop
+                #if self.correct_count == len(self.data['items']):
+                if len(self.correct_items) == len(self.data['items']):
                     overall_feedback = self.data['feedback']['assessment_perfect']
                 else:
                     overall_feedback = self.data['feedback']['assessment_finish']               
@@ -424,12 +457,84 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         }
 
     @XBlock.json_handler
+    def reset_item(self, data, suffix=''):
+        logging.error("RESET ITEM:")
+
+        # Get item
+        #item = self._get_item_definition(int(data['id']))
+        #logging.error(item)
+        #logging.error("--- item position")
+        #logging.error(item[''])
+
+        # Get item id
+        item_id = unicode(data['id'])
+        # Get zone on which item was placed
+        zone = self.item_zone[item_id]
+
+        # Get item top position
+        top_position = self.item_state[str(data['id'])]['y_percent']
+        logging.error("--- top position")
+        logging.error(top_position)
+
+        # Note: remove both properties after top_position, zone initialization and before checking
+        # for item with bigger top position value 
+        # Remove item from item_state
+        del self.item_state[str(data['id'])]
+        # Remove item and zone from item_zone
+        del self.item_zone[item_id]
+
+        # Define changed_items List in which changed items with top positions will be added
+        changed_items = []
+        # Check if there is item with bigger top position value
+        # If True, decrease that item's y_percent by current item top position
+        for key, value in self.item_state.iteritems():
+            if value['zone'] == zone and value['y_percent'] > top_position:
+                self.item_state[str(key)]['y_percent'] = value['y_percent'] - 11
+                logging.error("--- OLD VALUE")
+                logging.error(value['y_percent'])
+                logging.error("--- NEW VALUE")
+                logging.error(value['y_percent'] - 11)
+                changed_items.append({
+                    'id': key,
+                    'position': self.item_state[str(key)]['y_percent'],
+                })
+                logging.error("--- True in if, y_percent:")
+                logging.error(value['y_percent'])
+            logging.error("--- key:")
+            logging.error(key)
+            logging.error("--- value:")
+            logging.error(value)
+
+        # Decrease zone counter from zone_positions
+        self.zone_positions[zone] -= 1
+        # If zone counter in zone_positions is 0, remove zone from Dict 
+        if self.zone_positions[zone] == 0:
+            del self.zone_positions[zone]
+            # Reset zone background image
+            self.zone_icons[zone] = '/xblock/resource/drag-and-drop-v2/public/img/' + zone + '.png'
+
+        # Remove item id from correct_items or incorrect_items List
+        if item_id in self.correct_items:
+            self.correct_items.remove(item_id)
+            # Edit - correct_count maybe not needed
+            self.correct_count -= 1
+        elif item_id in self.incorrect_items:
+            self.incorrect_items.remove(item_id)
+
+        #return self._get_user_state()
+        return {
+            'changed_items': changed_items,
+        }
+
+    @XBlock.json_handler
     def reset(self, data, suffix=''):
         self.item_state.clear()
         self.hint_count = 3
         self.zone_positions.clear()
+        self.item_zone.clear()
         self.completed = False        
         self.incorrect_items = []
+        self.correct_items = []
         self.correct_count = 0
         self.zone_icons = {
             'zone-1': '/xblock/resource/drag-and-drop-v2/public/img/zone-1.png',
@@ -517,7 +622,9 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         overall_feedback = None
         if is_finished:
             if self.assessment_mode:
-                if self.correct_count == len(self.data['items']):
+                # Edit if loop
+                #if self.correct_count == len(self.data['items']):
+                if len(self.correct_items) == len(self.data['items']):
                     overall_feedback = self.data['feedback']['assessment_perfect']
                 else:
                     overall_feedback = self.data['feedback']['assessment_finish']
@@ -526,6 +633,9 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         else:
             overall_feedback = self.data['feedback']['start']
 
+        logging.error(self.data['items'])
+        logging.error("-------------------")
+        logging.error(item_state)
         return {
             'items': item_state,
             'finished': is_finished,
@@ -585,8 +695,10 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """
         # Total number of items
         total_count = len(self.data['items'])
-
-        return self.correct_count / float(total_count) * self.weight
+        correct_count = len(self.correct_items)
+        # Edit if return
+        #return self.correct_count / float(total_count) * self.weight
+        return float(correct_count) / float(total_count) * self.weight
 
     def _is_finished(self):
         """

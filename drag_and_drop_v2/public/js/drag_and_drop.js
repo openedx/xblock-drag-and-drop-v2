@@ -52,6 +52,22 @@ function DragNDropTemplates(url_name) {
         );
     };
 
+    var resetItemButton = function(){
+        return (
+            h('div.fa.fa-times-circle.reset-item-button', {
+                attributes: { 'aria-hidden': 'true', },
+                style:{
+                    'position': 'absolute',
+                    'top': '0px',
+                    'right': '0px',
+                    'font-size': '1.3em',
+                    'color': '#ad0d0d',
+                    'display': 'none',
+                }
+            })
+        );
+    };
+
     var getZone = function(zoneUID, ctx) {
         for (var i = 0; i < ctx.zones.length; i++) {
             if (ctx.zones[i].uid === zoneUID) {
@@ -134,7 +150,8 @@ function DragNDropTemplates(url_name) {
         // Define children
         var children = [
             itemSpinnerTemplate(item.xhr_active),
-            itemInputTemplate(item.input)
+            itemInputTemplate(item.input),
+            resetItemButton(),
         ];
         var item_content_html = item.displayName;
         if (item.imageURL) {
@@ -156,7 +173,7 @@ function DragNDropTemplates(url_name) {
         children.splice(1, 0, item_content); 
 
         // Add border-incorrect class only to items from incorrect list and in assessment_mode only
-        if(ctx.incorrect_items && ctx.assessment_mode){
+        if(ctx.incorrect_items && ctx.assessment_mode && ctx.finished){
             for( var id = 0; id < ctx.incorrect_items.length; id++){
                 if(attributes['data-value'] == ctx.incorrect_items[id]){
                     className += " border-incorrect";
@@ -226,7 +243,7 @@ function DragNDropTemplates(url_name) {
                         height: 100 + "%",
                         opacity: 0.4
                     }
-                })
+                }),
             ]
         );
 
@@ -529,6 +546,26 @@ function DragAndDropBlock(runtime, element, configuration) {
             $element.on('keydown', '.keyboard-help-button', function(evt) {
                 runOnKey(evt, RET, showKeyboardHelp);
             });
+
+            $element.on('click', '.reset-item-button', function(){
+                var $parent = $(this).parent();
+                resetItem($parent);
+            });
+            $element.on('keydown', '.reset-item-button', function(evt) {
+                runOnKey(evt, RET, resetItem);
+            });
+
+            $element.on('mouseover', '.target .option.fade', function(evt) {
+                $(this).find(".reset-item-button").css({
+                    'display': ''
+                });
+            });
+            $element.on('mouseout', '.target .option.fade', function(evt) {
+                $(this).find(".reset-item-button").css({
+                    'display': 'none'
+                });
+            });
+
             $element.on('click', '.reset-button', resetProblem);
             $element.on('keydown', '.reset-button', function(evt) {
                 runOnKey(evt, RET, resetProblem);
@@ -775,6 +812,9 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var placeItem = function($zone, $item) {
+        console.log("placeItem");
+        console.log("State - place item - :");
+        console.log(state);
         var item_id;
         var $anchor;
         if ($item !== undefined) {
@@ -799,7 +839,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         var y_pos = $anchor.offset().top + ($anchor.outerHeight()/2) - $target_img.offset().top;
         var x_pos_percent = x_pos / $target_img.width() * 100;
         var y_pos_percent = y_pos / $target_img.height() * 100;
-
+        
         state.items[item_id] = {
             zone: zone,
             zone_align: zone_align,
@@ -807,6 +847,8 @@ function DragAndDropBlock(runtime, element, configuration) {
             y_percent: y_pos_percent,
             submitting_location: true,
         };
+        console.log(state.items);
+        
         // Wrap in setTimeout to let the droppable event finish.
         setTimeout(function() {
             applyState();
@@ -856,7 +898,9 @@ function DragAndDropBlock(runtime, element, configuration) {
             drop: function(evt, ui) {
                 var $zone = $(this);
                 var $item = ui.helper;
-                placeItem($zone, $item);
+                //if(!assessment_mode){
+                    placeItem($zone, $item);
+                //}
                 $(this).find('.zone-img').css({
                     'opacity': 0.4
                 });
@@ -866,6 +910,7 @@ function DragAndDropBlock(runtime, element, configuration) {
 
     var initDraggable = function() {
         $root.find('.item-bank .option').not('[data-drag-disabled=true]').each(function() {
+        //$root.find('.drag-container .option').not('[data-drag-disabled=true]').each(function() {
             var $item = $(this);
 
             // Allow item to be "picked up" using the keyboard
@@ -907,13 +952,22 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var grabItem = function($item) {
+        console.log("grabItem");
         $('.ui-droppable').addClass("border-dashed");
         var item_id = $item.data('value');
+        /////
+        console.log($item);
+        //destroySingleDraggable($item);
+
+        $item.css({
+            'position': 'relative'
+        });
         setGrabbedState(item_id, true);
         updateDOM();
     };
 
     var releaseItem = function($item) {
+        console.log("releaseItem");
         $('.ui-droppable').removeClass("border-dashed");
         var item_id = $item.data('value');
         setGrabbedState(item_id, false);
@@ -925,6 +979,17 @@ function DragAndDropBlock(runtime, element, configuration) {
             if (configuration.items[i].id === item_id) {
                 configuration.items[i].grabbed = grabbed;
             }
+        }
+    };
+
+    var destroySingleDraggable = function($item) {
+        $item.off();
+
+        try {
+            $item.draggable('destroy');
+        } catch (e) {
+            // Destroying the draggable will fail if draggable was
+            // not initialized in the first place. Ignore the exception.
         }
     };
 
@@ -943,14 +1008,17 @@ function DragAndDropBlock(runtime, element, configuration) {
         });
     };
 
-    var submitLocation = function(item_id, zone, x_percent, y_percent) { 
+    var submitLocation = function(item_id, zone, x_percent, y_percent) {
+        console.log("submitLocation");
         if (!zone) {
             return;
         }
 
+        // Find parent div so the top and left positions can be calculated
         var parent_div = $(".target").find("[data-uid='" + zone + "']").parent();
         var top_position = parseInt(parent_div[0].style.top) + 15;
         var left_position = parseInt(parent_div[0].style.left) + 27; 
+
         var url = runtime.handlerUrl(element, 'do_attempt');
         var data = {
             val: item_id,
@@ -1105,7 +1173,51 @@ function DragAndDropBlock(runtime, element, configuration) {
         applyState();
     };
 
+    var resetItem = function($item){
+        // Get id of sent item
+        var $id = $item.attr('data-value');
+
+        var data = {
+            id: $id,
+        };
+        $.ajax({
+            type: 'POST',
+            url: runtime.handlerUrl(element, 'reset_item'),
+            data: JSON.stringify(data),
+            success: function(data){
+                // Remove item from zone and apply state
+                delete state['items'][$id];
+                applyState();
+
+                console.log("Success");
+                console.log(data['changed_items']); 
+                for( var i = 0; i < Object.keys(data['changed_items']).length; i++){
+                    console.log(data['changed_items'][i]);
+                    console.log("id: " + data['changed_items'][i]['id']);
+
+                    // Animate item reposition
+                    var item = $(".target").find("[data-value='" + data['changed_items'][i]['id'] + "']");
+                    item.animate({
+                        top: data['changed_items'][i]['position'] + '%',
+                    }, 400);
+                }  
+            }
+        });
+    }
+
     var resetProblem = function(evt) {
+        /*
+        console.log("State before problem reset:");
+        console.log(state);
+
+        console.log(state['items']['3']);
+        delete state['items']['1'];
+        applyState();
+
+        console.log("State after problem reset:");
+        console.log(state);
+        */
+        
         $(".option").removeClass("border-solid");
         $(".zone").removeClass("border-solid");
         evt.preventDefault();
@@ -1122,13 +1234,15 @@ function DragAndDropBlock(runtime, element, configuration) {
                     'finished': false,
                     'overall_feedback': configuration.initial_feedback,
                 }; 
+                console.log("State after problem reset:");
+                console.log(state);
                 setZoneBackground();
                 playSound("ResetTiles");
                 applyState();
                 $(".hint-button").removeClass('disabled');
                 $(".hint-button-text").text("Use a Hint (3 remaining)"); 
             }
-        });       
+        });
     };
 
     var setZoneBackground = function() {
@@ -1197,7 +1311,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 grabbed = item.grabbed;
             }
             var placed = item_user_state && ('input' in item_user_state || item_user_state.correct_input);
-            var itemProperties = {
+            var itemProperties = { 
                 value: item.id,
                 drag_disabled: Boolean(item_user_state || state.finished),
                 class_name: placed || state.finished ? 'fade' : undefined,
@@ -1209,15 +1323,24 @@ function DragAndDropBlock(runtime, element, configuration) {
                 has_image: !!item.expandedImageURL,
                 grabbed: grabbed,
                 widthPercent: item.widthPercent, // widthPercent may be undefined (auto width)
-                imgNaturalWidth: item.imgNaturalWidth,
+                imgNaturalWidth: item.imgNaturalWidth, 
             };
+
+            // Allow dragging of items when they are placed if in Assessment mode
+            if(assessment_mode){
+                itemProperties.drag_disabled = false;
+                //itemProperties.class_name = undefined;
+            }
+            
             if (item_user_state) {
+            //if (item_user_state && !assessment_mode) {
                 itemProperties.is_placed = true;
                 itemProperties.zone = item_user_state.zone;
                 itemProperties.zone_align = item_user_state.zone_align;
                 itemProperties.x_percent = item_user_state.x_percent;
                 itemProperties.y_percent = item_user_state.y_percent;
             }
+
             if (configuration.item_background_color) {
                 itemProperties.background_color = configuration.item_background_color;
             }
@@ -1243,7 +1366,8 @@ function DragAndDropBlock(runtime, element, configuration) {
             items: items,
             hint_count: configuration.hint_count,
             zone_icons: configuration.zone_icons,
-            hint_item_zone: configuration.hint_item_zone,         
+            hint_item_zone: configuration.hint_item_zone,
+            finished: configuration.finished,         
             // state - parts that can change:
             last_action_correct: state.last_action_correct,
             popup_html: state.feedback || '',
