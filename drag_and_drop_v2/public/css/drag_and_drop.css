@@ -458,7 +458,7 @@
 .no-padding{
     padding: 0;
 }
-.try-again-button{
+.try-again-button, .get-grade-button{
     margin: 20px auto;
     transition: all 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s;
     border: none !important;
@@ -466,10 +466,10 @@
     background: #3E51B5;
     color: #fff;
 }
-.try-again-button:hover{
+.try-again-button:hover, .get-grade-button:hover{
     background: #B2B9E1 !important;
 }
-.try-again-button:focus{
+.try-again-button:focus, .get-grade-button:focus{
     box-shadow: none !important;
 }
 @media screen and (min-width: 1000px) {

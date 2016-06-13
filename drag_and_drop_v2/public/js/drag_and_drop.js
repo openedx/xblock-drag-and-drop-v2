@@ -52,7 +52,12 @@ function DragNDropTemplates(url_name) {
         );
     };
 
-    var resetItemButton = function(){
+    var resetItemButton = function(ctx){
+        // If the problem is graded, don't show reset item button
+        if(ctx.assessment_mode && ctx.is_graded){
+            return;
+        }
+
         return (
             h('div.fa.fa-times.reset-item-button', {
                 attributes: { 'aria-hidden': 'true', },
@@ -147,11 +152,12 @@ function DragNDropTemplates(url_name) {
                 style.maxWidth = item.widthPercent + "%";
             }
         }
+
         // Define children
         var children = [
             itemSpinnerTemplate(item.xhr_active),
             itemInputTemplate(item.input),
-            resetItemButton(),
+            resetItemButton(ctx),
         ];
         var item_content_html = item.displayName;
         if (item.imageURL) {
@@ -173,7 +179,7 @@ function DragNDropTemplates(url_name) {
         children.splice(1, 0, item_content); 
 
         // Add border-incorrect class only to items from incorrect list and in assessment_mode only
-        if(ctx.incorrect_items && ctx.assessment_mode && ctx.finished){
+        if(ctx.incorrect_items && ctx.assessment_mode && ctx.is_graded){
             for( var id = 0; id < ctx.incorrect_items.length; id++){
                 if(attributes['data-value'] == ctx.incorrect_items[id]){
                     className += " border-incorrect";
@@ -340,19 +346,24 @@ function DragNDropTemplates(url_name) {
         var feedback_display = ctx.feedback_html ? 'block' : 'none';
         var properties = { attributes: { 'aria-live': 'polite' } };       
         var feedback_html = ctx.feedback_html;
-        var button_display = 'none';
+        var try_again_button_display = 'none';
+        var get_grade_button_display = 'none';
 
-        if(ctx.feedback_html && ctx.assessment_mode){
+        if(ctx.feedback_html && ctx.assessment_mode && ctx.is_graded){
             var feedback_html = ctx.feedback_html.replace('<span id="correct_count"></span>', ctx.correct_count).replace('<span id="total_count"></span>', ctx.items.length);
             if(ctx.correct_count < ctx.items.length){
-                button_display = '';
+                try_again_button_display = '';
             }
+        }
+
+        if(ctx.feedback_html && ctx.assessment_mode && !ctx.is_graded){
+            get_grade_button_display = '';
         }
         return (
             h('section.feedback.clearfix', properties, [
                 //h('h3.title1', { style: { display: feedback_display } }, gettext('Feedback')),
                 h('div.message', { style: { display: feedback_display }, innerHTML: feedback_html }),
-                h('button.try-again-button', { style: { display: button_display } },
+                h('button.try-again-button', { style: { display: try_again_button_display } },
                 [
                     h('span', { innerHTML : 'Try Again' }),
                     h('span.icon.fa.fa-chevron-next', 
@@ -361,8 +372,17 @@ function DragNDropTemplates(url_name) {
                             style:{ 'margin-left': '10px' }
                         }
                     )
-                ]),
-                
+                ]), 
+                h('button.get-grade-button', { style: { display: get_grade_button_display } },
+                [
+                    h('span', { innerHTML : 'Get grade' }),
+                    h('span.icon.fa.fa-chevron-next', 
+                        { 
+                            attributes: { 'aria-hidden': 'true' },
+                            style:{ 'margin-left': '10px' }
+                        }
+                    )
+                ]),  
             ])
         );
     };
@@ -574,6 +594,11 @@ function DragAndDropBlock(runtime, element, configuration) {
             $element.on('keydown', '.try-again-button', function(evt) {
                 runOnKey(evt, RET, resetProblem);
             });
+            $element.on('click', '.get-grade-button', getGrade);
+            $element.on('keydown', '.get-grade-button', function(evt) {
+                runOnKey(evt, RET, getGrade);
+            });
+
             $element.on('click', '.hint-button', useHint);
             $element.on('keydown', '.hint-button', function(evt) {
                 runOnKey(evt, RET, useHint);
@@ -1035,7 +1060,6 @@ function DragAndDropBlock(runtime, element, configuration) {
                 if (data.correct_location) {
                     state.items[item_id].correct_input = Boolean(data.correct);
                     state.items[item_id].submitting_location = false;
-                    state.correct_count = data.correct_count;
 
                     if(!assessment_mode){
                         playSound("TileCorrect");
@@ -1047,7 +1071,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                     }
                 }
                 state.feedback = data.feedback;
-                var total_count = data.correct_count + data.incorrect_items.length;
+                
                 if (data.finished) {
                     if(!assessment_mode){
                         setTimeout(function() { //offset the "TileCorrect" sound
@@ -1058,8 +1082,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                         playSound("AllCompleted");
                     }
                     state.finished = true;
-                    state.overall_feedback = data.overall_feedback.replace('<span id="correct_count"></span>', data.correct_count).replace('<span id="total_count"></span>', total_count);
-                    state.incorrect_items = data.incorrect_items;
+                    state.overall_feedback = data.overall_feedback;
                 }
                 applyState();
                 if (data.correct_location == false) {
@@ -1070,15 +1093,6 @@ function DragAndDropBlock(runtime, element, configuration) {
                         });
                     }, 3500);
                 };
-                // After applying state. If problem is finished in assessment mode, mark all incorrect items.
-                if (data.finished && assessment_mode) {
-                    for( var id = 0; id < data.incorrect_items.length; id++){
-                        $(".target").find("[data-value='" + data.incorrect_items[id] + "']").addClass("border-incorrect");
-                    } 
-                    if(data.correct_count < total_count){
-                        $('.try-again-button').css({ 'display': ''});
-                    }
-                }
             })
             .fail(function (data) {
                 delete state.items[item_id];
@@ -1151,6 +1165,31 @@ function DragAndDropBlock(runtime, element, configuration) {
         applyState();
     };
 
+    var getGrade = function(){
+        $.ajax({
+            type: 'POST',
+            url: runtime.handlerUrl(element, 'get_grade'),
+            data: '{}',
+            success: function(data){
+                var total_count = data.correct_count + data.incorrect_items.length;
+                state.overall_feedback = data.overall_feedback.replace('<span id="correct_count"></span>', data.correct_count).replace('<span id="total_count"></span>', total_count);
+                state.incorrect_items = data.incorrect_items;
+                // After applying state. If problem is finished in assessment mode, mark all incorrect items.
+                for( var id = 0; id < data.incorrect_items.length; id++){
+                    $(".target").find("[data-value='" + data.incorrect_items[id] + "']").addClass("border-incorrect");
+                } 
+                if(data.correct_count < total_count){
+                    $('.try-again-button').css({ 'display': ''});
+                }
+                $('.get-grade-button').css({'display': 'none'});
+                //$('.reset-item-button').css({'display': 'none'});
+                $('.reset-item-button').remove();
+
+                applyState();
+            }
+        });
+    };
+
     var resetItem = function($item){
         // Get id of sent item
         var $id = $item.attr('data-value');
@@ -1158,6 +1197,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         var data = {
             id: $id,
         };
+
         $.ajax({
             type: 'POST',
             url: runtime.handlerUrl(element, 'reset_item'),
@@ -1165,6 +1205,11 @@ function DragAndDropBlock(runtime, element, configuration) {
             success: function(data){
                 // Remove item from zone and apply state
                 delete state['items'][$id];
+                state = {
+                    'items': state['items'],
+                    'finished': false,
+                    'overall_feedback': configuration.initial_feedback,
+                }; 
                 applyState();
                 // If zone name was returned in response, reset zone background
                 if(data['zone']){
@@ -1188,7 +1233,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 } 
             }
         });
-    }
+    };
 
     var resetProblem = function(evt) {        
         $(".option").removeClass("border-solid");
@@ -1212,6 +1257,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 applyState();
                 $(".hint-button").removeClass('disabled');
                 $(".hint-button-text").text("Use a Hint (3 remaining)"); 
+                $(".try-again-button").css({'display': 'none'}); 
             }
         });
     };
@@ -1339,6 +1385,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             zone_icons: configuration.zone_icons,
             hint_item_zone: configuration.hint_item_zone,
             finished: configuration.finished,         
+            is_graded: configuration.is_graded,         
             // state - parts that can change:
             last_action_correct: state.last_action_correct,
             popup_html: state.feedback || '',

@@ -46,6 +46,9 @@
                     <label class="h3" for="final-feedback">{% trans "Final Feedback (Practice mode)" %}</label>
                     <textarea id="final-feedback">{{ self.data.feedback.finish }}</textarea>
 
+                    <label class="h3" for="assessment-feedback-before-grading">{% trans "Assessment mode - Feedback before submitting problem for grade" %}</label>
+                    <textarea id="assessment-feedback-before-grading">{{ self.data.feedback.assessment_get_grade }}</textarea>
+
                     <label class="h3" for="assessment-final-feedback">{% trans "Assessment mode - Final Feedback" %}</label>
                     <textarea id="assessment-final-feedback">{{ self.data.feedback.assessment_finish }}</textarea>
 

@@ -383,6 +383,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                         _fn.data.feedback = {
                             start: $form.find('#intro-feedback').val(),
                             finish: $form.find('#final-feedback').val(),
+                            assessment_get_grade: $form.find('#assessment-feedback-before-grading').val(),
                             assessment_finish: $form.find('#assessment-final-feedback').val(),
                             assessment_perfect: $form.find('#assessment-perfect-feedback').val()
                         };

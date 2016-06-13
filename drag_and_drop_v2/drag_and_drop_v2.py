@@ -146,6 +146,12 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         default=False,
     )
 
+    is_graded = Boolean(
+        help=_("Indicates whether the problem is graded. Depending on this, user will get different feedback."),
+        scope=Scope.user_state,
+        default=False,
+    )
+
     correct_count = Integer(
         help=_("The number of correct items student solved in problem."),
         scope=Scope.user_state,
@@ -245,9 +251,10 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             "zone_icons": self.zone_icons,
             "hint_item_zone": self.hint_item_zone,
             "assessment_mode": self.assessment_mode,
-            "correct_count": self.correct_count,
+            "correct_count": len(self.correct_items),
             "incorrect_items": self.incorrect_items,
-            'finished': self._is_finished()
+            'finished': self._is_finished(),
+            'is_graded': self.is_graded
             # final feedback (data.feedback.finish) is not included - it may give away answers.
         }
 
@@ -381,8 +388,6 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         # Increase correct_count for correct answers
         if item['zone'] == attempt['zone']:
-            self.correct_count += 1
-            # Edit comment
             self.correct_items.append(unicode(attempt['val']))
 
         if state:
@@ -393,29 +398,9 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         if not zone:
             raise JsonHandlerError(400, "Item zone data invalid.")
 
-        # don't publish the grade if the student has already completed the problem
-        if not self.completed:
-            if self._is_finished():
-                self.completed = True
-                try:
-                    self.runtime.publish(self, 'grade', {
-                        'value': self._get_grade(),
-                        'max_value': self.weight,
-                    })
-                except NotImplementedError:
-                    # Note, this publish method is unimplemented in Studio runtimes,
-                    # so we have to figure that we're running in Studio for now
-                    pass
-
         if self._is_finished():
             if self.assessment_mode:
-                # If user achieved perfect score
-                # Edit if loop
-                #if self.correct_count == len(self.data['items']):
-                if len(self.correct_items) == len(self.data['items']):
-                    overall_feedback = self.data['feedback']['assessment_perfect']
-                else:
-                    overall_feedback = self.data['feedback']['assessment_finish']               
+                overall_feedback = self.data['feedback']['assessment_get_grade']              
             else:    
                 overall_feedback = self.data['feedback']['finish']
 
@@ -440,20 +425,43 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             'feedback': feedback,
             'top_position': top_position,
             'hint_item_zone': self.hint_item_zone,
-            'correct_count': self.correct_count,
+            #'correct_count': len(self.correct_items),
+            #'incorrect_items': self.incorrect_items
+        }
+
+    @XBlock.json_handler
+    def get_grade(self, data, suffix=''):
+        overall_feedback = None
+        # don't publish the grade if the student has already completed the problem
+        if not self.completed:
+            if self._is_finished():
+                self.completed = True
+                try:
+                    self.runtime.publish(self, 'grade', {
+                        'value': self._get_grade(),
+                        'max_value': self.weight,
+                    })
+                    # If publish goes through set is_graded flag to True
+                    self.is_graded = True
+                except NotImplementedError:
+                    # Note, this publish method is unimplemented in Studio runtimes,
+                    # so we have to figure that we're running in Studio for now
+                    pass
+
+        # If user achieved perfect score
+        if len(self.correct_items) == len(self.data['items']):
+            overall_feedback = self.data['feedback']['assessment_perfect']
+        else:
+            overall_feedback = self.data['feedback']['assessment_finish']
+
+        return {
+            'overall_feedback': overall_feedback,
+            'correct_count': len(self.correct_items),
             'incorrect_items': self.incorrect_items
         }
 
     @XBlock.json_handler
     def reset_item(self, data, suffix=''):
-        logging.error("RESET ITEM:")
-
-        # Get item
-        #item = self._get_item_definition(int(data['id']))
-        #logging.error(item)
-        #logging.error("--- item position")
-        #logging.error(item[''])
-
         # Get item id
         item_id = unicode(data['id'])
         # Get zone on which item was placed
@@ -461,8 +469,6 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         # Get item top position
         top_position = self.item_state[str(data['id'])]['y_percent']
-        logging.error("--- top position")
-        logging.error(top_position)
 
         # Note: remove both properties after top_position, zone initialization and before checking
         # for item with bigger top position value 
@@ -495,8 +501,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         # Remove item id from correct_items or incorrect_items List
         if item_id in self.correct_items:
             self.correct_items.remove(item_id)
-            # Edit - correct_count maybe not needed
-            self.correct_count -= 1
+
         elif item_id in self.incorrect_items:
             self.incorrect_items.remove(item_id)
 
@@ -512,7 +517,8 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         self.hint_count = 3
         self.zone_positions.clear()
         self.item_zone.clear()
-        self.completed = False        
+        self.completed = False 
+        self.is_graded = False       
         self.incorrect_items = []
         self.correct_items = []
         self.correct_count = 0
@@ -602,12 +608,13 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         overall_feedback = None
         if is_finished:
             if self.assessment_mode:
-                # Edit if loop
-                #if self.correct_count == len(self.data['items']):
-                if len(self.correct_items) == len(self.data['items']):
-                    overall_feedback = self.data['feedback']['assessment_perfect']
+                if self.is_graded:
+                    if len(self.correct_items) == len(self.data['items']):
+                        overall_feedback = self.data['feedback']['assessment_perfect']
+                    else:
+                        overall_feedback = self.data['feedback']['assessment_finish']
                 else:
-                    overall_feedback = self.data['feedback']['assessment_finish']
+                    overall_feedback = self.data['feedback']['assessment_get_grade']
             else:
                 overall_feedback = self.data['feedback']['finish']
         else:
@@ -616,9 +623,10 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         return {
             'items': item_state,
             'finished': is_finished,
+            'is_graded': self.is_graded,
             'overall_feedback': overall_feedback,
             'incorrect_items': self.incorrect_items,
-            'correct_count': self.correct_count,
+            'correct_count': len(self.correct_items),
         }
 
     def _get_item_state(self):
@@ -673,8 +681,6 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         # Total number of items
         total_count = len(self.data['items'])
         correct_count = len(self.correct_items)
-        # Edit if return
-        #return self.correct_count / float(total_count) * self.weight
         return float(correct_count) / float(total_count) * self.weight
 
     def _is_finished(self):
