@@ -1174,6 +1174,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 var total_count = data.correct_count + data.incorrect_items.length;
                 state.overall_feedback = data.overall_feedback.replace('<span id="correct_count"></span>', data.correct_count).replace('<span id="total_count"></span>', total_count);
                 state.incorrect_items = data.incorrect_items;
+                state.is_graded = true;
                 // After applying state. If problem is finished in assessment mode, mark all incorrect items.
                 for( var id = 0; id < data.incorrect_items.length; id++){
                     $(".target").find("[data-value='" + data.incorrect_items[id] + "']").addClass("border-incorrect");
@@ -1184,7 +1185,6 @@ function DragAndDropBlock(runtime, element, configuration) {
                 $('.get-grade-button').css({'display': 'none'});
                 //$('.reset-item-button').css({'display': 'none'});
                 $('.reset-item-button').remove();
-
                 applyState();
             }
         });
@@ -1251,6 +1251,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                     'items': [],
                     'finished': false,
                     'overall_feedback': configuration.initial_feedback,
+                    'is_graded': false,
                 }; 
                 setZoneBackground();
                 playSound("ResetTiles");
@@ -1384,8 +1385,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             hint_count: configuration.hint_count,
             zone_icons: configuration.zone_icons,
             hint_item_zone: configuration.hint_item_zone,
-            finished: configuration.finished,         
-            is_graded: configuration.is_graded,         
+            finished: configuration.finished,                  
             // state - parts that can change:
             last_action_correct: state.last_action_correct,
             popup_html: state.feedback || '',
@@ -1393,6 +1393,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             incorrect_items: state.incorrect_items,
             correct_count: state.correct_count,
             display_reset_button: Object.keys(state.items).length > 0,
+            is_graded: state.is_graded,
         };
 
         return DragAndDropBlock.renderView(context);

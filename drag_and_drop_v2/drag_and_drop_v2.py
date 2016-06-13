@@ -425,8 +425,6 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             'feedback': feedback,
             'top_position': top_position,
             'hint_item_zone': self.hint_item_zone,
-            #'correct_count': len(self.correct_items),
-            #'incorrect_items': self.incorrect_items
         }
 
     @XBlock.json_handler
