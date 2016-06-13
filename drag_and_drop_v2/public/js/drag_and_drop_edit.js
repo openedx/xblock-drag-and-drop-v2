@@ -382,7 +382,10 @@ function DragAndDropEditBlock(runtime, element, params) {
                     feedback: function($form) {
                         _fn.data.feedback = {
                             start: $form.find('#intro-feedback').val(),
-                            finish: $form.find('#final-feedback').val()
+                            finish: $form.find('#final-feedback').val(),
+                            assessment_get_grade: $form.find('#assessment-feedback-before-grading').val(),
+                            assessment_finish: $form.find('#assessment-final-feedback').val(),
+                            assessment_perfect: $form.find('#assessment-perfect-feedback').val()
                         };
                     },
                     item: {
@@ -501,10 +504,11 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                         _fn.data.items = items;
                         _fn.data.zones = _fn.build.form.zone.zoneObjects;
-
+                        console.log(_fn.data);
                         var data = {
                             'display_name': $element.find('#display-name').val(),
                             'show_title': $element.find('.show-title').is(':checked'),
+                            'assessment_mode': $element.find('.assessment-mode').is(':checked'),
                             'weight': $element.find('#weight').val(),
                             'problem_text': $element.find('#problem-text').val(),
                             'show_problem_header': $element.find('.show-problem-header').is(':checked'),

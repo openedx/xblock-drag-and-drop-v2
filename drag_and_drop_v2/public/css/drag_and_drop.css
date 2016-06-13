@@ -1,9 +1,9 @@
 .xblock--drag-and-drop {
     width: auto;
-    max-width: 770px;
     margin: 0;
     padding: 0;
 }
+
 
 .xblock--drag-and-drop .initial-load-spinner {
     margin-right: 3px;
@@ -52,9 +52,6 @@
 
 .xblock--drag-and-drop .title1 {
     color: #555555;
-    text-transform: uppercase;
-    font-weight: bold;
-    font-style: normal;
     margin: 10px 0;
     margin-top: 20px;
 }
@@ -63,8 +60,9 @@
 
 .xblock--drag-and-drop .drag-container {
     width: auto;
-    padding: 1%;
-    background-color: #ebf0f2;
+    background-color: #fff;
+    height: 500px;
+    margin: 20px 0 0 0;
 }
 
 /*** DRAGGABLE ITEMS ***/
@@ -72,9 +70,10 @@
 .xblock--drag-and-drop .item-bank {
     display: -ms-flexbox;
     display: flex;
+    flex-direction: column;
 
-    -ms-flex-flow: row wrap;
-    flex-flow: row wrap;
+    /*-ms-flex-flow: row wrap;*/
+    /*flex-flow: row wrap;*/
 
     -ms-justify-content: flex-start;
     justify-content: flex-start;
@@ -82,31 +81,31 @@
     -ms-flex-align: center;
     align-items: center;
 
+    float: left;
     position: relative;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 3px;
-    padding: 0; /* padding: 5px looks better but makes some blocks to change in size when dropped onto the target; */
+    padding: 5px 20px 5px 20px;
 }
-
+.xblock--drag-and-drop .item-bank h4{
+    margin-top: 0;
+}
 .xblock--drag-and-drop .drag-container .option {
     display: inline-block;
     width: auto;
     min-width: 4em;
-    max-width: 30%;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    box-sizing: border-box;
-    margin: 5px;
-    padding: 10px;
-    text-align: center;
-    background-color: #1d5280;
-    font-size: 14px;
-    color: #fff;
+    width: 100%;
+    max-width: 257px;
+    color: #000;
     opacity: 1;
     outline-color: #fff;
     outline-style: none;
     /* Some versions of the drag and drop library try to fiddle with this */
     z-index: 10 !important;
+
+    margin: 5px 0;
+    padding: 15px 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    background: #fff;
+    text-align: left;
 }
 
 .xblock--drag-and-drop .drag-container .option.specified-width img {
@@ -135,6 +134,10 @@
                  /* (this can happen if item displays image whose width exceeds computed max-width of item) */
     overflow-wrap: break-word;
     word-wrap: break-word;
+
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
 }
 
 /* Placed option */
@@ -142,11 +145,12 @@
     position: absolute;
     margin: 0;
     transform: translate(-50%, -50%); /* These blocks are to be centered on their absolute x,y position */
+    background-color: #fff;
 }
 
 /* Placed options in an aligned zone */
 .xblock--drag-and-drop .zone .item-wrapper {
-    width: 100%;
+    width: 0%;
     position: relative;
 }
 .xblock--drag-and-drop .zone .item-align .option {
@@ -175,15 +179,15 @@
 .xblock--drag-and-drop .drag-container .item-bank .option:focus,
 .xblock--drag-and-drop .drag-container .item-bank .option:hover,
 .xblock--drag-and-drop .drag-container .item-bank .option[aria-grabbed='true'] {
-    outline-width: 2px;
+    /*outline-width: 2px;
     outline-style: solid;
-    outline-offset: -4px;
+    outline-offset: -4px;*/
 }
 
 .xblock--drag-and-drop .drag-container .ui-draggable-dragging.option {
     box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.3);
-    border: 1px solid #ccc;
-    opacity: .65;
+    border-bottom: 5px solid #3E51B5;
+
     z-index: 20 !important;
     margin: 0; /* Allow the draggable to touch the edges of the target image */
 }
@@ -206,7 +210,8 @@
     top: 0;
     margin-right: 5px;
     padding-top: 6px;
-    color: #333;
+    color: green;
+    background-color: #00a7f6;
 }
 
 .xblock--drag-and-drop .drag-container .option .numerical-input .input {
@@ -237,7 +242,7 @@
 }
 
 .xblock--drag-and-drop .drag-container .option.fade {
-    opacity: 0.80;
+    width: 43%;
 }
 
 /*** DROP TARGET ***/
@@ -250,8 +255,8 @@
        can use it as a 'position: relative' anchor for the placed elements. */
     height: auto;
     position: relative;
-    margin-top: 1%;
-    background-color: #fff;
+    float: right;
+    padding: 0;
 }
 
 .xblock--drag-and-drop .target-img-wrapper {
@@ -263,7 +268,7 @@
     display: table-cell;
     width: 100%;
     max-width: 100%;
-    height: auto;
+    max-height: 500px;
 }
 
 .xblock--drag-and-drop .zone {
@@ -298,35 +303,27 @@
 
 /* Focused zone */
 .xblock--drag-and-drop .zone:focus {
-    border: 2px solid #a5a5a5;
+
 }
 
 .xblock--drag-and-drop .drag-container .target .zone p {
     width: 100%;
-    font-family: Arial;
-    font-size: 16px;
-    font-weight: bold;
     text-align: center;
-    margin-top: auto;
-    margin-bottom: auto;
 }
 
 /*** FEEDBACK ***/
 
 .xblock--drag-and-drop .feedback {
-    margin-bottom: 1%;
-    border-top: solid 1px #bdbdbd;
+    float: right;
 }
 
 .xblock--drag-and-drop .popup {
     position: absolute;
     display: none;
-    top: 5%;
+    top: 40%;
     right: 5%;
-    border: 1px solid #fff;
-    background-color: rgba(0, 0, 0, 0.8);
-    width: 500px;
-    max-width: 90%;
+    background-color: rgba(130,199,37,1.0);
+    width: 95%;
     min-height: 50px;
     max-height: 90%;
     overflow-y: auto;
@@ -334,26 +331,28 @@
 }
 
 .xblock--drag-and-drop .popup.popup-incorrect {
-    background-color: rgba(173, 13, 13, 0.8);
+    background-color: rgba(223,64,80,0.8);
+    display: block;
 }
 
 .xblock--drag-and-drop .popup .popup-content {
     color: #ffffff;
-    margin-left: 15px;
-    margin-top: 35px;
-    margin-bottom: 15px;
-    font-size: 14px;
+    font-weight: 400;
+    margin-top: 15px !important;
+    margin-left: 15px !important;
 }
 
 .xblock--drag-and-drop .popup .close {
     cursor: pointer;
     float: right;
-    margin-right: 8px;
+    margin-top: 15px;
+    margin-right: 15px;
+    opacity: 1;
+    /*
     margin-top: 8px;
-    margin-left: 20px;
+    margin-left: 20px;*/
     color: #ffffff;
     font-family: "fontawesome";
-    font-size: 18pt;
 }
 
 .xblock--drag-and-drop .popup .close:focus {
@@ -365,6 +364,7 @@
 .xblock--drag-and-drop .keyboard-help {
     margin-top: 3px;
     margin-bottom: 6px;
+    clear: both;
 }
 
 .xblock--drag-and-drop .keyboard-help-dialog {
@@ -416,25 +416,20 @@
     margin-left: 2%;
 }
 
-.xblock--drag-and-drop .link-button {
+.xblock--drag-and-drop .link-button, .hint-button, .hint-button-text {
     padding: 0;
     margin: 0;
     cursor: pointer;
-    color: #2d74b3;
+    color: #3E51B5;
     font-weight: normal;
-    font-size: 12pt;
+    font-size: 13pt;
     background: none;
     box-shadow: none;
     border: none;
 }
 
-.xblock--drag-and-drop .reset-button {
-    float: right;
-    margin-top: 3px;
-}
-
-.xblock--drag-and-drop .link-button:focus {
-    outline: 2px solid #2d74b3;
+.xblock--drag-and-drop .link-button:focus, .hint-button:focus {
+    outline: none
 }
 
 /* Make sure screen-reader content is hidden in the workbench: */
@@ -449,4 +444,53 @@
     width: 1px;
     background-color: #ffffff;
     color: #000000;
+}
+
+.border-dashed{
+    border: dashed 3px #3E51B5;
+}
+.border-solid{
+    border: solid 5px #3E51B5;
+}
+.border-incorrect{
+    border: solid 2px #ad0d0d;
+}
+.no-padding{
+    padding: 0;
+}
+.try-again-button, .get-grade-button{
+    margin: 20px auto;
+    transition: all 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s;
+    border: none !important;
+    border-radius: 0 !important;
+    background: #3E51B5;
+    color: #fff;
+}
+.try-again-button:hover, .get-grade-button:hover{
+    background: #B2B9E1 !important;
+}
+.try-again-button:focus, .get-grade-button:focus{
+    box-shadow: none !important;
+}
+@media screen and (min-width: 1000px) {
+    .screen-too-small{
+        display: none;
+    }
+}
+@media screen and (max-width: 999px) {
+    .xblock--drag-and-drop {
+        /*display: none; */
+    }
+    .xblock--drag-and-drop .problem-title{
+        display: none;
+    }
+    .problem{
+        display: none;
+    }
+    .xblock--drag-and-drop .drag-container{
+        display: none;
+    }
+    .buttons-container{
+        display: none;
+    }
 }
