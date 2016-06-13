@@ -53,8 +53,12 @@ function DragNDropTemplates(url_name) {
     };
 
     var resetItemButton = function(ctx){
-        // If the problem is graded, don't show reset item button
+        // If the problem is in Assessment mode and is graded, don't show reset item button
         if(ctx.assessment_mode && ctx.is_graded){
+            return;
+        }
+        // If problem is not in Assessment mode, don't show reset item button
+        if(!ctx.assessment_mode){
             return;
         }
 
@@ -1078,9 +1082,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                             playSound("AllCompleted");
                         }, 1000);
                     }
-                    else{
-                        playSound("AllCompleted");
-                    }
+
                     state.finished = true;
                     state.overall_feedback = data.overall_feedback;
                 }
@@ -1171,6 +1173,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             url: runtime.handlerUrl(element, 'get_grade'),
             data: '{}',
             success: function(data){
+                playSound("AllCompleted");
                 var total_count = data.correct_count + data.incorrect_items.length;
                 state.overall_feedback = data.overall_feedback.replace('<span id="correct_count"></span>', data.correct_count).replace('<span id="total_count"></span>', total_count);
                 state.incorrect_items = data.incorrect_items;
