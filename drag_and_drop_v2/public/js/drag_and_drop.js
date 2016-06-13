@@ -52,6 +52,31 @@ function DragNDropTemplates(url_name) {
         );
     };
 
+    var resetItemButton = function(ctx){
+        // If the problem is in Assessment mode and is graded, don't show reset item button
+        if(ctx.assessment_mode && ctx.is_graded){
+            return;
+        }
+        // If problem is not in Assessment mode, don't show reset item button
+        if(!ctx.assessment_mode){
+            return;
+        }
+
+        return (
+            h('div.fa.fa-times.reset-item-button', {
+                attributes: { 'aria-hidden': 'true', },
+                style:{
+                    'position': 'absolute',
+                    'top': '0px',
+                    'right': '0px',
+                    'font-size': '1.3em',
+                    'color': '#ad0d0d',
+                    'display': 'none',
+                }
+            })
+        );
+    };
+
     var getZone = function(zoneUID, ctx) {
         for (var i = 0; i < ctx.zones.length; i++) {
             if (ctx.zones[i].uid === zoneUID) {
@@ -75,7 +100,7 @@ function DragNDropTemplates(url_name) {
             'draggable': !item.drag_disabled,
             'aria-grabbed': item.grabbed,
             'data-value': item.value,
-            'data-drag-disabled': item.drag_disabled
+            'data-drag-disabled': item.drag_disabled,
         };
         var style = {};
         if (item.background_color) {
@@ -103,9 +128,10 @@ function DragNDropTemplates(url_name) {
                     style.marginRight = '190px';
                 }
                 // Make up for the fact we're in a wrapper container by calculating percentage differences.
-                var maxWidth = (item.widthPercent || 30) / 100;
+                var maxWidth = (item.widthPercent || 45) / 100;
                 var widthPercent = zone.width_percent / 100;
                 style.maxWidth = ((1 / (widthPercent / maxWidth)) * 100) + '%';
+                style.top = 12 + "%";
                 if (item.widthPercent) {
                     style.width = style.maxWidth;
                 }
@@ -130,16 +156,18 @@ function DragNDropTemplates(url_name) {
                 style.maxWidth = item.widthPercent + "%";
             }
         }
+
         // Define children
         var children = [
             itemSpinnerTemplate(item.xhr_active),
-            itemInputTemplate(item.input)
+            itemInputTemplate(item.input),
+            resetItemButton(ctx),
         ];
         var item_content_html = item.displayName;
         if (item.imageURL) {
             item_content_html = '<img src="' + item.imageURL + '" alt="' + item.imageDescription + '" />';
         }
-        var item_content = h('div', { innerHTML: item_content_html, className: "item-content" });
+        var item_content = h('div', { innerHTML: item_content_html, className: "item-content ee-p" });
         if (item.is_placed) {
             // Insert information about zone in which this item has been placed
             var item_description_id = url_name + '-item-' + item.value + '-description';
@@ -152,7 +180,17 @@ function DragNDropTemplates(url_name) {
             );
             children.splice(1, 0, item_description);
         }
-        children.splice(1, 0, item_content);
+        children.splice(1, 0, item_content); 
+
+        // Add border-incorrect class only to items from incorrect list and in assessment_mode only
+        if(ctx.incorrect_items && ctx.assessment_mode && ctx.is_graded){
+            for( var id = 0; id < ctx.incorrect_items.length; id++){
+                if(attributes['data-value'] == ctx.incorrect_items[id]){
+                    className += " border-incorrect";
+                }
+            }
+        }
+    
         return (
             h(
                 'div.option',
@@ -170,7 +208,7 @@ function DragNDropTemplates(url_name) {
     };
 
     var zoneTemplate = function(zone, ctx) {
-        var className = ctx.display_zone_labels ? 'zone-name' : 'zone-name sr';
+        var className = ctx.display_zone_labels ? 'zone-name ee-h4' : 'zone-name sr';
         var selector = ctx.display_zone_borders ? 'div.zone.zone-with-borders' : 'div.zone';
 
         // If zone is aligned, mark its item alignment
@@ -183,47 +221,172 @@ function DragNDropTemplates(url_name) {
             items_in_zone = $.grep(ctx.items, is_item_in_zone);
         }
 
+        var zone_title = h('h4', { className: className }, zone.title);
+        var zone_div = 
+        h(
+            selector,
+            {
+                id: zone.prefixed_uid,
+                attributes: {
+                    'tabindex': 0,
+                    'dropzone': 'move',
+                    'aria-dropeffect': 'move',
+                    'data-uid': zone.uid,
+                    'data-zone_id': zone.id,
+                    'data-zone_align': zone.align,
+                    'role': 'button',
+                },
+                style: {
+                    width: zone.width_percent + '%', height: zone.height_percent + "px",
+                    backgroundColor: "#ECEEF8",
+                    position: 'relative',
+                }
+            },
+            [
+                h(item_wrapper, renderCollection(itemTemplate, items_in_zone, ctx)),
+                h('div.zone-img', {
+                    style: {
+                        backgroundImage: "url(" + ctx.zone_icons[zone.uid] + ")",
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "center",
+                        width: 100 + "%",
+                        height: 100 + "%",
+                        opacity: 0.4
+                    }
+                }),
+            ]
+        );
+
         return (
             h(
-                selector,
-                {
-                    id: zone.prefixed_uid,
-                    attributes: {
-                        'tabindex': 0,
-                        'dropzone': 'move',
-                        'aria-dropeffect': 'move',
-                        'data-uid': zone.uid,
-                        'data-zone_id': zone.id,
-                        'data-zone_align': zone.align,
-                        'role': 'button',
-                    },
+                'div', 
+                {     
+                    className: 'col-sm-6',
                     style: {
-                        top: zone.y_percent + '%', left: zone.x_percent + "%",
-                        width: zone.width_percent + '%', height: zone.height_percent + "%",
+                    top: zone.y_percent + '%', left: zone.x_percent + "%",
+                    position: 'absolute',
+                    padding: '0 0 0 20px',
                     }
                 },
                 [
-                    h('p', { className: className }, zone.title),
-                    h('p', { className: 'zone-description sr' }, zone.description),
-                    h(item_wrapper, renderCollection(itemTemplate, items_in_zone, ctx))
+                    zone_title,
+                    zone_div
                 ]
             )
         );
     };
 
+    var resetProblemButton = function(ctx){
+        var reset_button_display = ctx.display_reset_button ? 'block' : 'none';
+        return(
+            h( 'div.reset-button.div.link-button',
+                {
+                    className: 'col-md-2 col-sm-3 pull-right text-right',
+                    style: { 
+                        display: reset_button_display,
+                    }, 
+                    attributes: { 
+                    tabindex: 0 
+                }, 
+                'aria-live': 'off'},
+                gettext('Reset problem')
+            )
+        );
+    };
+
+    var hintButton = function(ctx){
+        if(ctx.feedback_html != ''){
+            return;
+        }
+
+        else if(ctx.hint_count == 0){
+            return(
+            h('button.hint-button.unbutton.disabled', {
+                className: 'col-md-4 col-sm-5 no-padding pull-right',
+            }, 
+            [               
+                h('p.text-right.hint-button-text', {
+                    style:{
+                        'float': 'right'
+                    }
+                }, 'Use a Hint (' + ctx.hint_count + ' remaining)'),
+                h('i.fa.fa-lightbulb-o.text-right', {
+                    attributes: { 'aria-hidden': 'true' },
+                    style:{
+                        'float': 'right',
+                        'font-size': '20pt',
+                        'margin-right': '5px',
+                    }
+                }) 
+            ])
+        );
+        }
+        else{
+            return(
+            h('button.hint-button.unbutton', {
+                className: 'col-md-4 col-sm-5 no-padding pull-right',
+            }, 
+            [              
+                h('p.text-right.hint-button-text', {
+                    style:{
+                        'float': 'right'
+                    }
+                }, 'Use a Hint (' + ctx.hint_count + ' remaining)'),
+                h('i.fa.fa-lightbulb-o.text-right', {
+                    attributes: { 'aria-hidden': 'true' },
+                    style:{
+                        'float': 'right',
+                        'font-size': '20pt',
+                        'margin-right': '5px',
+                    }
+                })
+            ])
+        );
+        }
+        
+    }
+
     var feedbackTemplate = function(ctx) {
         var feedback_display = ctx.feedback_html ? 'block' : 'none';
-        var reset_button_display = ctx.display_reset_button ? 'block' : 'none';
-        var properties = { attributes: { 'aria-live': 'polite' } };
+        var properties = { attributes: { 'aria-live': 'polite' } };       
+        var feedback_html = ctx.feedback_html;
+        var try_again_button_display = 'none';
+        var get_grade_button_display = 'none';
+
+        if(ctx.feedback_html && ctx.assessment_mode && ctx.is_graded){
+            var feedback_html = ctx.feedback_html.replace('<span id="correct_count"></span>', ctx.correct_count).replace('<span id="total_count"></span>', ctx.items.length);
+            if(ctx.correct_count < ctx.items.length){
+                try_again_button_display = '';
+            }
+        }
+
+        if(ctx.feedback_html && ctx.assessment_mode && !ctx.is_graded){
+            get_grade_button_display = '';
+        }
         return (
-            h('section.feedback', properties, [
-                h(
-                    'button.reset-button.unbutton.link-button',
-                    { style: { display: reset_button_display }, attributes: { tabindex: 0 }, 'aria-live': 'off'},
-                    gettext('Reset problem')
-                ),
-                h('h3.title1', { style: { display: feedback_display } }, gettext('Feedback')),
-                h('p.message', { style: { display: feedback_display }, innerHTML: ctx.feedback_html })
+            h('section.feedback.clearfix', properties, [
+                //h('h3.title1', { style: { display: feedback_display } }, gettext('Feedback')),
+                h('div.message', { style: { display: feedback_display }, innerHTML: feedback_html }),
+                h('button.try-again-button', { style: { display: try_again_button_display } },
+                [
+                    h('span', { innerHTML : 'Try Again' }),
+                    h('span.icon.fa.fa-chevron-next', 
+                        { 
+                            attributes: { 'aria-hidden': 'true' },
+                            style:{ 'margin-left': '10px' }
+                        }
+                    )
+                ]), 
+                h('button.get-grade-button', { style: { display: get_grade_button_display } },
+                [
+                    h('span', { innerHTML : 'Get grade' }),
+                    h('span.icon.fa.fa-chevron-next', 
+                        { 
+                            attributes: { 'aria-hidden': 'true' },
+                            style:{ 'margin-left': '10px' }
+                        }
+                    )
+                ]),  
             ])
         );
     };
@@ -259,12 +422,14 @@ function DragNDropTemplates(url_name) {
     };
 
     var mainTemplate = function(ctx) {
-        var problemTitle = ctx.show_title ? h('h2.problem-title', {innerHTML: ctx.title_html}) : null;
+        var problemTitle = ctx.show_title ? h('h2.problem-title.ee-h2', {innerHTML: ctx.title_html}) : null;
         var problemHeader = ctx.show_problem_header ? h('h3.title1', gettext('Problem')) : null;
         var popupSelector = 'div.popup';
-        if (ctx.popup_html && !ctx.last_action_correct) {
-            popupSelector += '.popup-incorrect';
+        if (!ctx.assessment_mode && ctx.popup_html && !ctx.last_action_correct) {
+            // Show incorrect message if not in assessment mode
+            popupSelector += '.popup-incorrect'; 
         }
+
         // Render only items_in_bank and items_placed_unaligned here;
         // items placed in aligned zones will be rendered by zoneTemplate.
         var is_item_placed = function(i) { return i.is_placed; };
@@ -274,18 +439,25 @@ function DragNDropTemplates(url_name) {
         var items_placed_unaligned = $.grep(items_placed, is_item_placed_unaligned);
         return (
             h('section.themed-xblock.xblock--drag-and-drop', [
+                h('h5.screen-too-small.text-center', "This activity requires a larger screen. Check it out on a computer screen with a larger browser window."),
                 problemTitle,
                 h('section.problem', [
                     problemHeader,
-                    h('p', {innerHTML: ctx.problem_html}),
+                    h('p.ee-p', {innerHTML: ctx.problem_html}),
                 ]),
                 h('section.drag-container', {}, [
                     h(
                         'div.item-bank',
-                        renderCollection(itemTemplate, items_in_bank, ctx)
+                        {   
+                            className: 'col-sm-4',
+                        },
+                        [
+                            feedbackTemplate(ctx),
+                            renderCollection(itemTemplate, items_in_bank, ctx)
+                        ]
                     ),
                     h('div.target',
-                        {
+                        {   className: 'col-sm-8',
                             attributes: {
                                 'aria-live': 'polite',
                                 'aria-atomic': 'true',
@@ -296,10 +468,10 @@ function DragNDropTemplates(url_name) {
                             h(
                                 popupSelector,
                                 {
-                                    style: {display: ctx.popup_html ? 'block' : 'none'},
+                                    
                                 },
                                 [
-                                    h('div.close.icon-remove-sign.fa-times-circle'),
+                                    h('div.close.icon-remove-sign.fa-times'),
                                     h('p.popup-content', {innerHTML: ctx.popup_html}),
                                 ]
                             ),
@@ -312,14 +484,28 @@ function DragNDropTemplates(url_name) {
                     ]
                     ),
                 ]),
-                keyboardHelpTemplate(ctx),
-                feedbackTemplate(ctx),
+                h('div.buttons-container',
+                {   
+
+                },
+                [
+                    resetProblemButton(ctx),
+                    hintButton(ctx),
+                ]),
+                //keyboardHelpTemplate(ctx),                     
             ])
         );
     };
 
     DragAndDropBlock.renderView = mainTemplate;
+}
 
+function playSound(name){
+        var audioElement = document.createElement('audio');
+        var url = '/xblock/resource/drag-and-drop-v2/public/sounds/' + name + '.mp3';
+        audioElement.setAttribute('src', url);
+        audioElement.setAttribute('autoplay', 'autoplay');
+        audioElement.play();
 }
 
 function DragAndDropBlock(runtime, element, configuration) {
@@ -354,6 +540,8 @@ function DragAndDropBlock(runtime, element, configuration) {
     var $selectedItem;
     var $focusedElement;
 
+    var assessment_mode = configuration.assessment_mode;
+
     var init = function() {
         // Load the current user state, and load the image, then render the block.
         // We load the user state via AJAX rather than passing it in statically (like we do with
@@ -382,9 +570,42 @@ function DragAndDropBlock(runtime, element, configuration) {
             $element.on('keydown', '.keyboard-help-button', function(evt) {
                 runOnKey(evt, RET, showKeyboardHelp);
             });
+
+            $element.on('click', '.reset-item-button', function(){
+                var $parent = $(this).parent();
+                resetItem($parent);
+            });
+            $element.on('keydown', '.reset-item-button', function(evt) {
+                runOnKey(evt, RET, resetItem);
+            });
+
+            $element.on('mouseover', '.target .option.fade', function(evt) {
+                $(this).find(".reset-item-button").css({
+                    'display': ''
+                });
+            });
+            $element.on('mouseout', '.target .option.fade', function(evt) {
+                $(this).find(".reset-item-button").css({
+                    'display': 'none'
+                });
+            });
+
             $element.on('click', '.reset-button', resetProblem);
             $element.on('keydown', '.reset-button', function(evt) {
                 runOnKey(evt, RET, resetProblem);
+            });
+            $element.on('click', '.try-again-button', resetProblem);
+            $element.on('keydown', '.try-again-button', function(evt) {
+                runOnKey(evt, RET, resetProblem);
+            });
+            $element.on('click', '.get-grade-button', getGrade);
+            $element.on('keydown', '.get-grade-button', function(evt) {
+                runOnKey(evt, RET, getGrade);
+            });
+
+            $element.on('click', '.hint-button', useHint);
+            $element.on('keydown', '.hint-button', function(evt) {
+                runOnKey(evt, RET, useHint);
             });
             $element.on('click', '.submit-input', submitInput);
 
@@ -491,13 +712,13 @@ function DragAndDropBlock(runtime, element, configuration) {
         if (zone.x_percent === undefined) {
             // We can assume that if 'x_percent' is not set, 'y_percent', 'width_percent', and
             // 'height_percent' will also not be set.
-            zone.x_percent = (+zone.x) / bg_image_width * 100;
+            zone.x_percent = (+zone.x);
             delete zone.x;
-            zone.y_percent = (+zone.y) / bg_image_height * 100;
+            zone.y_percent = (+zone.y);
             delete zone.y;
-            zone.width_percent = (+zone.width) / bg_image_width * 100;
+            zone.width_percent = (+zone.width) * 2;
             delete zone.width;
-            zone.height_percent = (+zone.height) / bg_image_height * 100;
+            zone.height_percent = (+zone.height);
             delete zone.height;
             // Generate an HTML ID value that's unique within the DOM and not containing spaces etc:
             zone.prefixed_uid = configuration.url_name + '-' + zone.uid.replace(/([^\w\-])/g, "_");
@@ -633,6 +854,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             // so use relevant properties of *zone* when calculating new position below.
             $anchor = $zone;
         }
+        
         var zone = String($zone.data('uid'));
         var zone_id = $zone.data('zone_id');
         var zone_align = $zone.data('zone_align');
@@ -643,7 +865,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         var y_pos = $anchor.offset().top + ($anchor.outerHeight()/2) - $target_img.offset().top;
         var x_pos_percent = x_pos / $target_img.width() * 100;
         var y_pos_percent = y_pos / $target_img.height() * 100;
-
+        
         state.items[item_id] = {
             zone: zone,
             zone_align: zone_align,
@@ -651,6 +873,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             y_percent: y_pos_percent,
             submitting_location: true,
         };
+        
         // Wrap in setTimeout to let the droppable event finish.
         setTimeout(function() {
             applyState();
@@ -659,6 +882,19 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var initDroppable = function() {
+        // Change zone background when hovering
+        $(".zone").droppable({
+            over: function (event, ui) {
+                $(this).find('.zone-img').css({
+                    'opacity': 1
+                });
+            },
+            out: function( event, ui ) {
+                $(this).find('.zone-img').css({
+                    'opacity': 0.4
+                });
+            }
+        });
         // Set up zones for keyboard interaction
         $root.find('.zone').each(function() {
             var $zone = $(this);
@@ -687,7 +923,12 @@ function DragAndDropBlock(runtime, element, configuration) {
             drop: function(evt, ui) {
                 var $zone = $(this);
                 var $item = ui.helper;
-                placeItem($zone, $item);
+                //if(!assessment_mode){
+                    placeItem($zone, $item);
+                //}
+                $(this).find('.zone-img').css({
+                    'opacity': 0.4
+                });
             }
         });
     };
@@ -735,12 +976,18 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var grabItem = function($item) {
+        $('.ui-droppable').addClass("border-dashed");
         var item_id = $item.data('value');
+
+        $item.css({
+            'position': 'relative'
+        });
         setGrabbedState(item_id, true);
         updateDOM();
     };
 
     var releaseItem = function($item) {
+        $('.ui-droppable').removeClass("border-dashed");
         var item_id = $item.data('value');
         setGrabbedState(item_id, false);
         updateDOM();
@@ -773,29 +1020,81 @@ function DragAndDropBlock(runtime, element, configuration) {
         if (!zone) {
             return;
         }
+
+        // Find parent div so the top and left positions can be calculated
+        var parent_div = $(".target").find("[data-uid='" + zone + "']").parent();
+        var top_position = parseInt(parent_div[0].style.top) + 15;
+        var left_position = parseInt(parent_div[0].style.left) + 27; 
+
         var url = runtime.handlerUrl(element, 'do_attempt');
         var data = {
             val: item_id,
             zone: zone,
-            x_percent: x_percent,
-            y_percent: y_percent,
+            x_percent: left_position,
+            y_percent: top_position,
         };
 
         $.post(url, JSON.stringify(data), 'json')
             .done(function(data){
+                
+                // Animate item reposition
+                var item = $(".target").find("[data-value='" + item_id + "']");
+                item.animate({
+                    top: data.top_position + '%',
+                    left: left_position + '%',
+                }, 400);
+
+                // Remove class with border if hint was used
+                $('.ui-droppable').removeClass("border-solid");
+                $('.ui-draggable').removeClass("border-solid");
+
+                // Add class with border to zone/item in case hint was not used
+                $(".target").find("[data-uid='" + data.hint_item_zone['zone'] + "']").addClass("border-solid");
+                $(".item-bank").find("[data-value='" + data.hint_item_zone['item'] + "']").addClass("border-solid");
+                
                 state.last_action_correct = data.correct_location;
+
+                // Remove background image if correct item is dropped or when item dropped in assessment mode
+                if (data.correct_location || assessment_mode){
+                    var el = $(".target").find("[data-uid='" + zone + "']").find('.zone-img').css({
+                        'background-image': ''
+                    });
+                }
+
                 if (data.correct_location) {
                     state.items[item_id].correct_input = Boolean(data.correct);
                     state.items[item_id].submitting_location = false;
+
+                    if(!assessment_mode){
+                        playSound("TileCorrect");
+                    }
                 } else {
-                    delete state.items[item_id];
+                    if(!assessment_mode){
+                        delete state.items[item_id];
+                        playSound("TileIncorrect");
+                    }
                 }
                 state.feedback = data.feedback;
+                
                 if (data.finished) {
+                    if(!assessment_mode){
+                        setTimeout(function() { //offset the "TileCorrect" sound
+                            playSound("AllCompleted");
+                        }, 1000);
+                    }
+
                     state.finished = true;
                     state.overall_feedback = data.overall_feedback;
                 }
                 applyState();
+                if (data.correct_location == false) {
+                    setTimeout(function() {
+                        $('.popup-incorrect').fadeOut(500, function(){
+                            $(this).removeClass('popup-incorrect');
+                            $(this).css('display','');
+                        });
+                    }, 3500);
+                };
             })
             .fail(function (data) {
                 delete state.items[item_id];
@@ -827,6 +1126,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 state.items[item_id].submitting_input = false;
                 state.items[item_id].correct_input = data.correct;
                 state.feedback = data.feedback;
+
                 if (data.finished) {
                     state.finished = true;
                     state.overall_feedback = data.overall_feedback;
@@ -867,19 +1167,148 @@ function DragAndDropBlock(runtime, element, configuration) {
         applyState();
     };
 
-    var resetProblem = function(evt) {
+    var getGrade = function(){
+        $.ajax({
+            type: 'POST',
+            url: runtime.handlerUrl(element, 'get_grade'),
+            data: '{}',
+            success: function(data){
+                playSound("AllCompleted");
+                var total_count = data.correct_count + data.incorrect_items.length;
+                state.overall_feedback = data.overall_feedback.replace('<span id="correct_count"></span>', data.correct_count).replace('<span id="total_count"></span>', total_count);
+                state.incorrect_items = data.incorrect_items;
+                state.is_graded = true;
+                // After applying state. If problem is finished in assessment mode, mark all incorrect items.
+                for( var id = 0; id < data.incorrect_items.length; id++){
+                    $(".target").find("[data-value='" + data.incorrect_items[id] + "']").addClass("border-incorrect");
+                } 
+                if(data.correct_count < total_count){
+                    $('.try-again-button').css({ 'display': ''});
+                }
+                $('.get-grade-button').css({'display': 'none'});
+                //$('.reset-item-button').css({'display': 'none'});
+                $('.reset-item-button').remove();
+                applyState();
+            }
+        });
+    };
+
+    var resetItem = function($item){
+        // Get id of sent item
+        var $id = $item.attr('data-value');
+
+        var data = {
+            id: $id,
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: runtime.handlerUrl(element, 'reset_item'),
+            data: JSON.stringify(data),
+            success: function(data){
+                // Remove item from zone and apply state
+                delete state['items'][$id];
+                state = {
+                    'items': state['items'],
+                    'finished': false,
+                    'overall_feedback': configuration.initial_feedback,
+                }; 
+                applyState();
+                // If zone name was returned in response, reset zone background
+                if(data['zone']){
+                    var $parent = $(".target").find("[data-uid='" + data['zone'] + "']");
+                    $parent.children(".zone-img").css({
+                        backgroundImage: "url('/xblock/resource/drag-and-drop-v2/public/img/" + data['zone'] + ".png')",
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "center",
+                        width: 100 + "%",
+                        height: 100 + "%",
+                        opacity: 0.4
+                    });
+                }
+                // Loop through returned items that have top position changed
+                for( var i = 0; i < Object.keys(data['changed_items']).length; i++){            
+                    // Animate item reposition
+                    var $item = $(".target").find("[data-value='" + data['changed_items'][i]['id'] + "']");
+                    $item.animate({
+                        top: data['changed_items'][i]['position'] + '%',
+                    }, 400);
+                } 
+            }
+        });
+    };
+
+    var resetProblem = function(evt) {        
+        $(".option").removeClass("border-solid");
+        $(".zone").removeClass("border-solid");
         evt.preventDefault();
+        var spinner = "<i class='fa fa-spin fa-spinner initial-load-spinner' style='float: right;margin-top: 4px;margin-left: 5px;'></i>";
+        $('.reset-button').append(spinner);
         $.ajax({
             type: 'POST',
             url: runtime.handlerUrl(element, 'reset'),
             data: '{}',
+            success: function(data){
+                $(".fa-spin").remove();
+                state = {
+                    'items': [],
+                    'finished': false,
+                    'overall_feedback': configuration.initial_feedback,
+                    'is_graded': false,
+                }; 
+                setZoneBackground();
+                playSound("ResetTiles");
+                applyState();
+                $(".hint-button").removeClass('disabled');
+                $(".hint-button-text").text("Use a Hint (3 remaining)"); 
+                $(".try-again-button").css({'display': 'none'}); 
+            }
         });
-        state = {
-            'items': [],
-            'finished': false,
-            'overall_feedback': configuration.initial_feedback,
+    };
+
+    var setZoneBackground = function() {
+        var count = $('.zone').length;
+        var i;
+        for (i = 1; i <= count; i++) { 
+            var parent = $(".target").find("[data-uid='zone-" + i + "']");
+            parent.children(".zone-img").css({
+                backgroundImage: "url('/xblock/resource/drag-and-drop-v2/public/img/zone-" + i + ".png')",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                width: 100 + "%",
+                height: 100 + "%",
+                opacity: 0.4
+            });
+        }       
+    };
+
+    var useHint = function(evt) {
+        var el = $(".option").first(); // get first item from list
+        el.removeClass("border-solid"); // reset borders
+        $('.zone').removeClass("border-solid"); // reset borders
+        var data = {
+            val: el.data('value'),
         };
-        applyState();
+        var spinner = "<i class='fa fa-spin fa-spinner initial-load-spinner' style='float: right;margin-top: 4px;margin-left: 5px;'></i>";
+        $('.hint-button').prepend(spinner);
+        $.ajax({
+            type: 'POST',
+            url: runtime.handlerUrl(element, 'hint'),
+            data: JSON.stringify(data),
+            success: function(data){
+                playSound("HintMe");
+                $(".fa-spin").remove();
+                $(".hint-button-text").text("Use a Hint (" + data.hint_count + " remaining)");
+                if(data.hint_count == 0){
+                    $(".hint-button").addClass('disabled');
+                }
+                var zone = $(".zone[data-uid='" + data.zone +"']");
+                
+                zone.addClass("border-solid");         
+                
+                el.addClass("border-solid");
+            }
+        });
     };
 
     var render = function() {
@@ -903,7 +1332,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 grabbed = item.grabbed;
             }
             var placed = item_user_state && ('input' in item_user_state || item_user_state.correct_input);
-            var itemProperties = {
+            var itemProperties = { 
                 value: item.id,
                 drag_disabled: Boolean(item_user_state || state.finished),
                 class_name: placed || state.finished ? 'fade' : undefined,
@@ -915,15 +1344,24 @@ function DragAndDropBlock(runtime, element, configuration) {
                 has_image: !!item.expandedImageURL,
                 grabbed: grabbed,
                 widthPercent: item.widthPercent, // widthPercent may be undefined (auto width)
-                imgNaturalWidth: item.imgNaturalWidth,
+                imgNaturalWidth: item.imgNaturalWidth, 
             };
+
+            // Allow dragging of items when they are placed if in Assessment mode
+            if(assessment_mode){
+                itemProperties.drag_disabled = false;
+                //itemProperties.class_name = undefined;
+            }
+            
             if (item_user_state) {
+            //if (item_user_state && !assessment_mode) {
                 itemProperties.is_placed = true;
                 itemProperties.zone = item_user_state.zone;
                 itemProperties.zone_align = item_user_state.zone_align;
                 itemProperties.x_percent = item_user_state.x_percent;
                 itemProperties.y_percent = item_user_state.y_percent;
             }
+
             if (configuration.item_background_color) {
                 itemProperties.background_color = configuration.item_background_color;
             }
@@ -938,6 +1376,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             bg_image_width: bgImgNaturalWidth, // Not stored in configuration since it's unknown on the server side
             title_html: configuration.title,
             show_title: configuration.show_title,
+            assessment_mode: configuration.assessment_mode,
             problem_html: configuration.problem_text,
             show_problem_header: configuration.show_problem_header,
             target_img_src: configuration.target_img_expanded_url,
@@ -946,11 +1385,18 @@ function DragAndDropBlock(runtime, element, configuration) {
             display_zone_borders: configuration.display_zone_borders,
             zones: configuration.zones,
             items: items,
+            hint_count: configuration.hint_count,
+            zone_icons: configuration.zone_icons,
+            hint_item_zone: configuration.hint_item_zone,
+            finished: configuration.finished,                  
             // state - parts that can change:
             last_action_correct: state.last_action_correct,
             popup_html: state.feedback || '',
             feedback_html: $.trim(state.overall_feedback),
+            incorrect_items: state.incorrect_items,
+            correct_count: state.correct_count,
             display_reset_button: Object.keys(state.items).length > 0,
+            is_graded: state.is_graded,
         };
 
         return DragAndDropBlock.renderView(context);
@@ -1024,3 +1470,7 @@ function DragAndDropBlock(runtime, element, configuration) {
 
     init();
 }
+
+/***********************************************************************
+* Script for background change on zones when hovering items over it
+************************************************************************/

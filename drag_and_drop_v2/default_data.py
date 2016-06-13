@@ -6,17 +6,20 @@ TARGET_IMG_DESCRIPTION = _(
     "and the narrowest layer is located at the top."
 )
 
-TOP_ZONE_ID = "top"
-MIDDLE_ZONE_ID = "middle"
-BOTTOM_ZONE_ID = "bottom"
+FIRST_ZONE_ID = "zone-1"
+SECOND_ZONE_ID = "zone-2"
+THIRD_ZONE_ID = "zone-3"
+FOURTH_ZONE_ID = "zone-4"
 
-TOP_ZONE_TITLE = _("The Top Zone")
-MIDDLE_ZONE_TITLE = _("The Middle Zone")
-BOTTOM_ZONE_TITLE = _("The Bottom Zone")
+FIRST_ZONE_TITLE = _("Discover")
+SECOND_ZONE_TITLE = _("Design")
+THIRD_ZONE_TITLE = _("Develop")
+FOURTH_ZONE_TITLE = _("Deploy")
 
-TOP_ZONE_DESCRIPTION = _("Use this zone to associate an item with the top layer of the triangle.")
-MIDDLE_ZONE_DESCRIPTION = _("Use this zone to associate an item with the middle layer of the triangle.")
-BOTTOM_ZONE_DESCRIPTION = _("Use this zone to associate an item with the bottom layer of the triangle.")
+FIRST_ZONE_DESCRIPTION = _("Use this zone to associate an item with Discover.")
+SECOND_ZONE_DESCRIPTION = _("Use this zone to associate an item with Design.")
+THIRD_ZONE_DESCRIPTION = _("Use this zone to associate an item with Develop.")
+FOURTH_ZONE_DESCRIPTION = _("Use this zone to associate an item with Deploy.")
 
 ITEM_CORRECT_FEEDBACK = _("Correct! This one belongs to {zone}.")
 ITEM_INCORRECT_FEEDBACK = _("No, this item does not belong here. Try again.")
@@ -29,71 +32,80 @@ DEFAULT_DATA = {
   "targetImgDescription": TARGET_IMG_DESCRIPTION,
   "zones": [
     {
-      "uid": TOP_ZONE_ID,
-      "title": TOP_ZONE_TITLE,
-      "description": TOP_ZONE_DESCRIPTION,
-      "x": 160,
-      "y": 30,
-      "width": 196,
+      "uid": FIRST_ZONE_ID,
+      "title": FIRST_ZONE_TITLE,
+      "description": FIRST_ZONE_DESCRIPTION,
+      "x": 0,
+      "y": 0,
+      "width": 50,
       "height": 178,
     },
     {
-      "uid": MIDDLE_ZONE_ID,
-      "title": MIDDLE_ZONE_TITLE,
-      "description": MIDDLE_ZONE_DESCRIPTION,
-      "x": 86,
-      "y": 210,
-      "width": 340,
-      "height": 138,
+      "uid": SECOND_ZONE_ID,
+      "title": SECOND_ZONE_TITLE,
+      "description": SECOND_ZONE_DESCRIPTION,
+      "x": 50,
+      "y": 0,
+      "width": 50,
+      "height": 178,
     },
     {
-      "uid": BOTTOM_ZONE_ID,
-      "title": BOTTOM_ZONE_TITLE,
-      "description": BOTTOM_ZONE_DESCRIPTION,
-      "x": 15,
-      "y": 350,
-      "width": 485,
-      "height": 135,
+      "uid": THIRD_ZONE_ID,
+      "title": THIRD_ZONE_TITLE,
+      "description": THIRD_ZONE_DESCRIPTION,
+      "x": 0,
+      "y": 50,
+      "width": 50,
+      "height": 178,
+    },
+    {
+      "uid": FOURTH_ZONE_ID,
+      "title": FOURTH_ZONE_TITLE,
+      "description": FOURTH_ZONE_DESCRIPTION,
+      "x": 50,
+      "y": 50,
+      "width": 50,
+      "height": 178,
     }
   ],
   "items": [
     {
-      "displayName": _("Goes to the top"),
+      "displayName": _("Goes to the top left"),
       "feedback": {
         "incorrect": ITEM_INCORRECT_FEEDBACK,
-        "correct": ITEM_CORRECT_FEEDBACK.format(zone=TOP_ZONE_TITLE)
+        "correct": ITEM_CORRECT_FEEDBACK.format(zone=FIRST_ZONE_TITLE)
       },
-      "zone": TOP_ZONE_ID,
+      "zone": FIRST_ZONE_ID,
       "imageURL": "",
       "id": 0,
     },
     {
-      "displayName": _("Goes to the middle"),
+      "displayName": _("Goes to the top right"),
       "feedback": {
         "incorrect": ITEM_INCORRECT_FEEDBACK,
-        "correct": ITEM_CORRECT_FEEDBACK.format(zone=MIDDLE_ZONE_TITLE)
+        "correct": ITEM_CORRECT_FEEDBACK.format(zone=SECOND_ZONE_TITLE)
       },
-      "zone": MIDDLE_ZONE_ID,
+      "zone": SECOND_ZONE_ID,
       "imageURL": "",
       "id": 1,
     },
     {
-      "displayName": _("Goes to the bottom"),
+      "displayName": _("Goes to the bottom left"),
       "feedback": {
         "incorrect": ITEM_INCORRECT_FEEDBACK,
-        "correct": ITEM_CORRECT_FEEDBACK.format(zone=BOTTOM_ZONE_TITLE)
+        "correct": ITEM_CORRECT_FEEDBACK.format(zone=THIRD_ZONE_TITLE)
       },
-      "zone": BOTTOM_ZONE_ID,
+      "zone": THIRD_ZONE_ID,
       "imageURL": "",
       "id": 2,
     },
     {
-      "displayName": _("I don't belong anywhere"),
+      "displayName": _("Goes to the bottom right"),
       "feedback": {
-        "incorrect": ITEM_NO_ZONE_FEEDBACK,
-        "correct": ""
+        "incorrect": ITEM_INCORRECT_FEEDBACK,
+        "correct": ITEM_CORRECT_FEEDBACK.format(zone=FOURTH_ZONE_TITLE)
       },
-      "zone": "none",
+      "zone": FOURTH_ZONE_ID,
       "imageURL": "",
       "id": 3,
     },
