@@ -22,7 +22,6 @@ class TestCustomDataDragAndDropRendering(BaseIntegrationTest):
         self.assertEqual(len(items), 3)
         self.assertIn('<b>1</b>', self.get_element_html(items[0]))
         self.assertIn('<i>2</i>',  self.get_element_html(items[1]))
-        self.assertIn('<input class="input" type="text">',  self.get_element_html(items[1]))
         self.assertIn('<span style="color:red">X</span>', self.get_element_html(items[2]))
 
     def test_background_image(self):
