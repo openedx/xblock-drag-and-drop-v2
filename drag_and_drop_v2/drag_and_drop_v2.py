@@ -167,7 +167,6 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             for item in items:
                 del item['feedback']
                 del item['zone']
-                item['inputOptions'] = 'inputOptions' in item
                 # Fall back on "backgroundImage" to be backward-compatible.
                 image_url = item.get('imageURL') or item.get('backgroundImage')
                 if image_url:
@@ -267,31 +266,13 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         feedback = item['feedback']['incorrect']
         overall_feedback = None
         is_correct = False
-        is_correct_location = False
 
-        if 'input' in attempt:  # Student submitted numerical value for item
-            state = self._get_item_state().get(str(item['id']))
-            if state:
-                state['input'] = attempt['input']
-                is_correct_location = True
-                if self._is_correct_input(item, attempt['input']):
-                    is_correct = True
-                    feedback = item['feedback']['correct']
-                else:
-                    is_correct = False
-        elif item['zone'] == attempt['zone']:  # Student placed item in correct zone
-            is_correct_location = True
-            if 'inputOptions' in item:
-                # Input value will have to be provided for the item.
-                # It is not (yet) correct and no feedback should be shown yet.
-                is_correct = False
-                feedback = None
-            else:
-                # If this item has no input value set, we are done with it.
-                is_correct = True
-                feedback = item['feedback']['correct']
+        if item['zone'] == attempt['zone']:  # Student placed item in correct zone
+            is_correct = True
+            feedback = item['feedback']['correct']
             state = {
                 'zone': attempt['zone'],
+                'correct': True,
                 'x_percent': attempt['x_percent'],
                 'y_percent': attempt['y_percent'],
             }
@@ -325,14 +306,11 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             'item_id': item['id'],
             'location': zone.get("title"),
             'location_id': zone.get("uid"),
-            'input': attempt.get('input'),
-            'is_correct_location': is_correct_location,
             'is_correct': is_correct,
         })
 
         return {
             'correct': is_correct,
-            'correct_location': is_correct_location,
             'finished': self._is_finished(),
             'overall_feedback': overall_feedback,
             'feedback': feedback
@@ -396,7 +374,6 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         item_state = self._get_item_state()
         for item_id, item in item_state.iteritems():
             definition = self._get_item_definition(int(item_id))
-            item['correct_input'] = self._is_correct_input(definition, item.get('input'))
             # If information about zone is missing
             # (because problem was completed before a11y enhancements were implemented),
             # deduce zone in which item is placed from definition:
@@ -468,8 +445,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
                 total_count += 1
                 item_id = str(item['id'])
                 if item_id in item_state:
-                    if self._is_correct_input(item, item_state[item_id].get('input')):
-                        correct_count += 1
+                    correct_count += 1
 
         return correct_count / float(total_count) * self.weight
 
@@ -486,11 +462,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
                 total_count += 1
                 item_id = str(item['id'])
                 if item_id in item_state:
-                    if 'inputOptions' in item:
-                        if 'input' in item_state[item_id]:
-                            completed_count += 1
-                    else:
-                        completed_count += 1
+                    completed_count += 1
 
         return completed_count == total_count
 
@@ -511,25 +483,6 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         except AttributeError:
             # workaround for xblock workbench
             return usage_id
-
-    @staticmethod
-    def _is_correct_input(item, val):
-        """
-        Is submitted numerical value within the tolerated margin for this item.
-        """
-        input_options = item.get('inputOptions')
-
-        if input_options:
-            try:
-                submitted_value = float(val)
-            except (ValueError, TypeError):
-                return False
-            else:
-                expected_value = input_options['value']
-                margin = input_options['margin']
-                return abs(submitted_value - expected_value) <= margin
-        else:
-            return True
 
     @staticmethod
     def workbench_scenarios():

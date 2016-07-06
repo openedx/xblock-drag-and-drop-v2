@@ -193,49 +193,6 @@
     max-width: 100%;
 }
 
-.xblock--drag-and-drop .drag-container .option .numerical-input {
-    height: 32px;
-    position: absolute;
-    left: calc(100% + 5px);
-    top: calc(50% - 16px);
-}
-
-.xblock--drag-and-drop .drag-container .option .numerical-input .spinner-wrapper {
-    position: absolute;
-    right: 0;
-    top: 0;
-    margin-right: 5px;
-    padding-top: 6px;
-    color: #333;
-}
-
-.xblock--drag-and-drop .drag-container .option .numerical-input .input {
-    display: inline-block;
-    width: 144px;
-}
-
-.xblock--drag-and-drop .drag-container .option .numerical-input .submit-input {
-    position: absolute;
-    left: 150px;
-    top: 4px;
-    white-space: nowrap;  /* Fix cross-browser issue: Without this declaration, button text wraps in Chrome/Chromium */
-}
-
-.xblock--drag-and-drop .drag-container .option .numerical-input.correct .input-submit,
-.xblock--drag-and-drop .drag-container .option .numerical-input.incorrect .input-submit {
-    display: none;
-}
-
-.xblock--drag-and-drop .drag-container .option .numerical-input.correct .input {
-    background-color: #ceffce;
-    color: #087108;
-}
-
-.xblock--drag-and-drop .drag-container .option .numerical-input.incorrect .input {
-    background-color: #ffcece;
-    color: #ad0d0d;
-}
-
 .xblock--drag-and-drop .drag-container .option.fade {
     opacity: 0.80;
 }

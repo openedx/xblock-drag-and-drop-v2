@@ -46,7 +46,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         self.assertEqual(zones, DEFAULT_DATA["zones"])
         # Items should contain no answer data:
         self.assertEqual(items, [
-            {"id": i, "displayName": display_name, "imageURL": "", "expandedImageURL": "", "inputOptions": False}
+            {"id": i, "displayName": display_name, "imageURL": "", "expandedImageURL": ""}
             for i, display_name in enumerate(
                 ["Goes to the top", "Goes to the middle", "Goes to the bottom", "I don't belong anywhere"]
             )
@@ -76,15 +76,15 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         # Check the result:
         self.assertTrue(self.block.completed)
         self.assertEqual(self.block.item_state, {
-            '0': {'x_percent': '33%', 'y_percent': '11%', 'zone': TOP_ZONE_ID},
-            '1': {'x_percent': '67%', 'y_percent': '80%', 'zone': MIDDLE_ZONE_ID},
-            '2': {'x_percent': '99%', 'y_percent': '95%', 'zone': BOTTOM_ZONE_ID},
+            '0': {'x_percent': '33%', 'y_percent': '11%', 'correct': True, 'zone': TOP_ZONE_ID},
+            '1': {'x_percent': '67%', 'y_percent': '80%', 'correct': True, 'zone': MIDDLE_ZONE_ID},
+            '2': {'x_percent': '99%', 'y_percent': '95%', 'correct': True, 'zone': BOTTOM_ZONE_ID},
         })
         self.assertEqual(self.call_handler('get_user_state'), {
             'items': {
-                '0': {'x_percent': '33%', 'y_percent': '11%', 'correct_input': True, 'zone': TOP_ZONE_ID},
-                '1': {'x_percent': '67%', 'y_percent': '80%', 'correct_input': True, 'zone': MIDDLE_ZONE_ID},
-                '2': {'x_percent': '99%', 'y_percent': '95%', 'correct_input': True, 'zone': BOTTOM_ZONE_ID},
+                '0': {'x_percent': '33%', 'y_percent': '11%', 'correct': True, 'zone': TOP_ZONE_ID},
+                '1': {'x_percent': '67%', 'y_percent': '80%', 'correct': True, 'zone': MIDDLE_ZONE_ID},
+                '2': {'x_percent': '99%', 'y_percent': '95%', 'correct': True, 'zone': BOTTOM_ZONE_ID},
             },
             'finished': True,
             'overall_feedback': FINISH_FEEDBACK,

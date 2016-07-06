@@ -13,7 +13,6 @@ The editor is fully guided. Features include:
 * custom text and background colors for items
 * optional auto-alignment for items (left, right, center)
 * image items
-* items prompting for additional (numerical) input after being dropped
 * decoy items that don't have a zone
 * feedback popups for both correct and incorrect attempts
 * introductory and final feedback
@@ -135,15 +134,6 @@ after the learner drops the item on a zone - the success feedback is
 shown if the item is dropped on the correct zone, while the error
 feedback is shown when dropping the item on an incorrect drop zone.
 
-Additionally, items can have a numerical value (and an optional error
-margin) associated with them. When a learner drops an item that has a
-numerical value on the correct zone, an input field for entering a
-value is shown next to the item. The value that the learner submits is
-checked against the expected value for the item. If you also specify a
-margin, the value entered by the learner will be considered correct if
-it does not differ from the expected value by more than that margin
-(and incorrect otherwise).
-
 ![Zone dropdown](/doc/img/edit-view-zone-dropdown.png)
 
 The zone that an item belongs to is selected from a dropdown that
@@ -261,9 +251,7 @@ Example ("common" fields that are not interesting in this context have been left
 {
 ...
     "event": {
-      "input": null,
-      "is_correct": true,                                  --  False if there is an input in the draggable item, and the learner provided the wrong answer. Otherwise true.
-      "is_correct_location": true,                         --  Whether the draggable item has been placed in the correct location.
+      "is_correct": true,                                  --  Whether the draggable item has been placed in the correct location.
       "item_id": 0,                                        --  ID of the draggable item.
       "location": "The Top Zone",                          --  Name of the location the item was dragged to.
     },
@@ -284,11 +272,9 @@ Real event example (taken from a devstack):
     "referer": "http://example.com/courses/course-v1:DnD+DnD+DnD/courseware/ec546c58d2f447b7a9223c57b5de7344/756071f8de7f47c3b0ae726586ebbe16/1?activate_block_id=block-v1%3ADnD%2BDnD%2BDnD%2Btype%40vertical%2Bblock%40d2fc47476ca14c55816c4a1264a27280",
     "accept_language": "en;q=1.0, en;q=0.5",
     "event": {
-        "is_correct_location": true,
         "is_correct": true,
         "location": "The Top Zone",
         "item_id": 0,
-        "input": null
     },
     "event_source": "server",
     "context": {
