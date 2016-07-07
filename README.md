@@ -143,6 +143,13 @@ any zone.
 
 You can define an arbitrary number of drag items.
 
+Demo Course
+-----------
+
+Export of a demo course that showcases various Drag and Drop v2
+features is available at
+[github.com/open-craft/demo-courses/archive/drag-and-drop-v2.tar.gz](https://github.com/open-craft/demo-courses/archive/drag-and-drop-v2.tar.gz).
+
 Analytics Events
 ----------------
 
