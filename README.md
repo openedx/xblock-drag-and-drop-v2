@@ -97,10 +97,10 @@ and Drop component to a lesson, then click the `EDIT` button.
 ![Edit view](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/c955a38dc3a1aaf609c586d293ce19b282e11ffd/doc/img/edit-view.png)
 
 In the first step, you can set some basic properties of the component,
-such as the title, the maximum score, the problem text to render
-above the background image, the introductory feedback (shown
+such as the title, problem mode (Standard vs. Assessment), the maximum score, 
+the problem text to render above the background image, the introductory feedback (shown
 initially), and the final feedback (shown after the learner
-successfully completes the drag and drop problem).
+successfully completes the drag and drop problem). 
 
 ![Drop zone edit](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/ebd0b52d971bbf93b9c3873f310bd72d336d865b/doc/img/edit-view-zones.png)
 
