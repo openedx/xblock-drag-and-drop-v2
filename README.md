@@ -23,12 +23,12 @@ refreshes. All checking and record keeping is done on the server side.
 The following screenshot shows the Drag and Drop XBlock rendered
 inside the edX LMS before the user starts solving the problem:
 
-![Student view start](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/c955a38dc3a1aaf609c586d293ce19b282e11ffd/doc/img/student-view-start.png)
+![Student view start](/doc/img/student-view-start.png)
 
 This screenshot shows the XBlock after the learner successfully
 completed the Drag and Drop problem:
 
-![Student view finish](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/c955a38dc3a1aaf609c586d293ce19b282e11ffd/doc/img/student-view-finish.png)
+![Student view finish](/doc/img/student-view-finish.png)
 
 Installation
 ------------
@@ -94,7 +94,7 @@ Usage
 The Drag and Drop XBlock features an interactive editor. Add the Drag
 and Drop component to a lesson, then click the `EDIT` button.
 
-![Edit view](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/c955a38dc3a1aaf609c586d293ce19b282e11ffd/doc/img/edit-view.png)
+![Edit view](/doc/img/edit-view.png)
 
 In the first step, you can set some basic properties of the component,
 such as the title, problem mode (Standard vs. Assessment), the maximum score, 
@@ -102,7 +102,7 @@ the problem text to render above the background image, the introductory feedback
 initially), and the final feedback (shown after the learner
 successfully completes the drag and drop problem). 
 
-![Drop zone edit](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/ebd0b52d971bbf93b9c3873f310bd72d336d865b/doc/img/edit-view-zones.png)
+![Drop zone edit](/doc/img/edit-view-zones.png)
 
 In the next step, you set the URL and description for the background
 image and define the properties of the drop zones. For each zone you
@@ -124,7 +124,7 @@ items dropped in a zone will not overlap, but if the zone is not made large
 enough for all its items, they will overflow the bottom of the zone, and
 potentially, overlap the zones below.
 
-![Drag item edit](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/c955a38dc3a1aaf609c586d293ce19b282e11ffd/doc/img/edit-view-items.png)
+![Drag item edit](/doc/img/edit-view-items.png)
 
 In the final step, you define the background and text color for drag
 items, as well as the drag items themselves. A drag item can contain
@@ -134,7 +134,7 @@ after the learner drops the item on a zone - the success feedback is
 shown if the item is dropped on the correct zone, while the error
 feedback is shown when dropping the item on an incorrect drop zone.
 
-![Zone dropdown](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/c955a38dc3a1aaf609c586d293ce19b282e11ffd/doc/img/edit-view-zone-dropdown.png)
+![Zone dropdown](/doc/img/edit-view-zone-dropdown.png)
 
 The zone that an item belongs to is selected from a dropdown that
 includes all drop zones defined in the previous step and a `none`
