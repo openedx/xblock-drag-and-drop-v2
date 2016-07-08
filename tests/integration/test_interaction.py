@@ -27,12 +27,13 @@ loader = ResourceLoader(__name__)
 # Classes ###########################################################
 
 class ItemDefinition(object):
-    def __init__(self, item_id, zone_id, zone_title, feedback_positive, feedback_negative):
+    def __init__(self, item_id, zone_id, zone_title, feedback_positive, feedback_negative, input_value=None):
         self.feedback_negative = feedback_negative
         self.feedback_positive = feedback_positive
         self.zone_id = zone_id
         self.zone_title = zone_title
         self.item_id = item_id
+        self.input = input_value
 
 
 class InteractionTestBase(object):
@@ -76,6 +77,10 @@ class InteractionTestBase(object):
         zones_container = self._page.find_element_by_css_selector('.target')
         return zones_container.find_elements_by_xpath(".//div[@data-uid='{zone_id}']".format(zone_id=zone_id))[0]
 
+    def _get_input_div_by_value(self, item_value):
+        element = self._get_item_by_value(item_value)
+        return element.find_element_by_class_name('numerical-input')
+
     def _get_dialog_components(self, dialog):  # pylint: disable=no-self-use
         dialog_modal_overlay = dialog.find_element_by_css_selector('.modal-window-overlay')
         dialog_modal = dialog.find_element_by_css_selector('.modal-window')
@@ -113,6 +118,17 @@ class InteractionTestBase(object):
         for _ in range(zone_position):
             self._page.send_keys(Keys.TAB)
         self._get_zone_by_id(zone_id).send_keys(action_key)
+
+    def send_input(self, item_value, value):
+        element = self._get_item_by_value(item_value)
+        self.wait_until_visible(element)
+        # Since virtual-dom may be updating DOM elements by replacing them completely, the
+        # following method must be used to wait for the input box to appear:
+        textbox_visible_selector = '.numerical-input[style*="display: block"] input'
+        self.wait_until_exists(textbox_visible_selector)
+        textbox = self._page.find_element_by_css_selector(textbox_visible_selector)
+        textbox.send_keys(value)
+        element.find_element_by_class_name('submit-input').click()
 
     def assert_grabbed_item(self, item):
         self.assertEqual(item.get_attribute('aria-grabbed'), 'true')
@@ -169,10 +185,28 @@ class InteractionTestBase(object):
         self.scroll_down(pixels=scroll_down)
 
         for definition in self._get_items_with_zone(items_map).values():
-            self.place_item(definition.item_id, definition.zone_id, action_key)
-            self.wait_until_html_in(definition.feedback_positive, feedback_popup_content)
-            self.assertEqual(popup.get_attribute('class'), 'popup')
-            self.assert_placed_item(definition.item_id, definition.zone_title)
+            if not definition.input:
+                self.place_item(definition.item_id, definition.zone_id, action_key)
+                self.wait_until_html_in(definition.feedback_positive, feedback_popup_content)
+                self.assertEqual(popup.get_attribute('class'), 'popup')
+                self.assert_placed_item(definition.item_id, definition.zone_title)
+
+    def parameterized_item_positive_feedback_on_good_input(self, items_map, scroll_down=100, action_key=None):
+        popup = self._get_popup()
+        feedback_popup_content = self._get_popup_content()
+
+        # Scroll drop zones into view to make sure Selenium can successfully drop items
+        self.scroll_down(pixels=scroll_down)
+
+        for definition in self._get_items_with_zone(items_map).values():
+            if definition.input:
+                self.place_item(definition.item_id, definition.zone_id, action_key)
+                self.send_input(definition.item_id, definition.input)
+                self.wait_until_html_in(definition.feedback_positive, feedback_popup_content)
+                self.assertEqual(popup.get_attribute('class'), 'popup')
+                self.assert_placed_item(definition.item_id, definition.zone_title)
+                input_div = self._get_input_div_by_value(definition.item_id)
+                self.wait_until_has_class('correct', input_div)
 
     def parameterized_item_negative_feedback_on_bad_move(self, items_map, all_zones, scroll_down=100, action_key=None):
         popup = self._get_popup()
@@ -190,6 +224,23 @@ class InteractionTestBase(object):
                 self.assertEqual(popup.get_attribute('class'), 'popup popup-incorrect')
                 self.assert_reverted_item(definition.item_id)
 
+    def parameterized_item_negative_feedback_on_bad_input(self, items_map, scroll_down=100, action_key=None):
+        popup = self._get_popup()
+        feedback_popup_content = self._get_popup_content()
+
+        # Scroll drop zones into view to make sure Selenium can successfully drop items
+        self.scroll_down(pixels=scroll_down)
+
+        for definition in self._get_items_with_zone(items_map).values():
+            if definition.input:
+                self.place_item(definition.item_id, definition.zone_id, action_key)
+                self.send_input(definition.item_id, '1999999')
+                self.wait_until_html_in(definition.feedback_negative, feedback_popup_content)
+                self.assertEqual(popup.get_attribute('class'), 'popup popup-incorrect')
+                self.assert_placed_item(definition.item_id, definition.zone_title)
+                input_div = self._get_input_div_by_value(definition.item_id)
+                self.wait_until_has_class('incorrect', input_div)
+
     def parameterized_final_feedback_and_reset(self, items_map, feedback, scroll_down=100, action_key=None):
         feedback_message = self._get_feedback_message()
         self.assertEqual(self.get_element_html(feedback_message), feedback['intro'])  # precondition check
@@ -206,6 +257,10 @@ class InteractionTestBase(object):
 
         for item_key, definition in items.items():
             self.place_item(definition.item_id, definition.zone_id, action_key)
+            if definition.input:
+                self.send_input(item_key, definition.input)
+                input_div = self._get_input_div_by_value(item_key)
+                self.wait_until_has_class('correct', input_div)
             self.assert_placed_item(definition.item_id, definition.zone_title)
 
         self.wait_until_html_in(feedback['final'], self._get_feedback_message())
@@ -312,8 +367,14 @@ class BasicInteractionTest(DefaultDataTestMixin, InteractionTestBase):
     def test_item_positive_feedback_on_good_move(self):
         self.parameterized_item_positive_feedback_on_good_move(self.items_map)
 
+    def test_item_positive_feedback_on_good_input(self):
+        self.parameterized_item_positive_feedback_on_good_input(self.items_map)
+
     def test_item_negative_feedback_on_bad_move(self):
         self.parameterized_item_negative_feedback_on_bad_move(self.items_map, self.all_zones)
+
+    def test_item_negative_feedback_on_bad_input(self):
+        self.parameterized_item_negative_feedback_on_bad_input(self.items_map)
 
     def test_final_feedback_and_reset(self):
         self.parameterized_final_feedback_and_reset(self.items_map, self.feedback)
@@ -344,7 +405,9 @@ class EventsFiredTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegration
         {
             'name': 'edx.drag_and_drop_v2.item.dropped',
             'data': {
+                'input': None,
                 'is_correct': True,
+                'is_correct_location': True,
                 'item_id': 0,
                 'location': TOP_ZONE_TITLE,
                 'location_id': TOP_ZONE_ID,
@@ -396,8 +459,16 @@ class KeyboardInteractionTest(BasicInteractionTest, BaseIntegrationTest):
         self.parameterized_item_positive_feedback_on_good_move(self.items_map, action_key=action_key)
 
     @data(Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    def test_item_positive_feedback_on_good_input_with_keyboard(self, action_key):
+        self.parameterized_item_positive_feedback_on_good_input(self.items_map, action_key=action_key)
+
+    @data(Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
     def test_item_negative_feedback_on_bad_move_with_keyboard(self, action_key):
         self.parameterized_item_negative_feedback_on_bad_move(self.items_map, self.all_zones, action_key=action_key)
+
+    @data(Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    def test_item_negative_feedback_on_bad_input_with_keyboard(self, action_key):
+        self.parameterized_item_negative_feedback_on_bad_input(self.items_map, action_key=action_key)
 
     @data(Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
     def test_final_feedback_and_reset_with_keyboard(self, action_key):
@@ -410,7 +481,7 @@ class KeyboardInteractionTest(BasicInteractionTest, BaseIntegrationTest):
 class CustomDataInteractionTest(BasicInteractionTest, BaseIntegrationTest):
     items_map = {
         0: ItemDefinition(0, 'zone-1', "Zone 1", "Yes 1", "No 1"),
-        1: ItemDefinition(1, 'zone-2', "Zone 2", "Yes 2", "No 2"),
+        1: ItemDefinition(1, 'zone-2', "Zone 2", "Yes 2", "No 2", "102"),
         2: ItemDefinition(2, None, None, "", "No Zone for this")
     }
 
@@ -428,7 +499,7 @@ class CustomDataInteractionTest(BasicInteractionTest, BaseIntegrationTest):
 class CustomHtmlDataInteractionTest(BasicInteractionTest, BaseIntegrationTest):
     items_map = {
         0: ItemDefinition(0, 'zone-1', 'Zone <i>1</i>', "Yes <b>1</b>", "No <b>1</b>"),
-        1: ItemDefinition(1, 'zone-2', 'Zone <b>2</b>', "Yes <i>2</i>", "No <i>2</i>"),
+        1: ItemDefinition(1, 'zone-2', 'Zone <b>2</b>', "Yes <i>2</i>", "No <i>2</i>", "95"),
         2: ItemDefinition(2, None, None, "", "No Zone for <i>X</i>")
     }
 
@@ -453,12 +524,12 @@ class MultipleBlocksDataInteraction(InteractionTestBase, BaseIntegrationTest):
     item_maps = {
         'block1': {
             0: ItemDefinition(0, 'zone-1', 'Zone 1', "Yes 1", "No 1"),
-            1: ItemDefinition(1, 'zone-2', 'Zone 2', "Yes 2", "No 2"),
+            1: ItemDefinition(1, 'zone-2', 'Zone 2', "Yes 2", "No 2", "102"),
             2: ItemDefinition(2, None, None, "", "No Zone for this")
         },
         'block2': {
             10: ItemDefinition(10, 'zone-51', 'Zone 51', "Correct 1", "Incorrect 1"),
-            20: ItemDefinition(20, 'zone-52', 'Zone 52', "Correct 2", "Incorrect 2"),
+            20: ItemDefinition(20, 'zone-52', 'Zone 52', "Correct 2", "Incorrect 2", "102"),
             30: ItemDefinition(30, None, None, "", "No Zone for this")
         },
     }
@@ -487,6 +558,12 @@ class MultipleBlocksDataInteraction(InteractionTestBase, BaseIntegrationTest):
         self._switch_to_block(1)
         self.parameterized_item_positive_feedback_on_good_move(self.item_maps['block2'], scroll_down=900)
 
+    def test_item_positive_feedback_on_good_input(self):
+        self._switch_to_block(0)
+        self.parameterized_item_positive_feedback_on_good_input(self.item_maps['block1'])
+        self._switch_to_block(1)
+        self.parameterized_item_positive_feedback_on_good_input(self.item_maps['block2'], scroll_down=900)
+
     def test_item_negative_feedback_on_bad_move(self):
         self._switch_to_block(0)
         self.parameterized_item_negative_feedback_on_bad_move(self.item_maps['block1'], self.all_zones['block1'])
@@ -494,6 +571,12 @@ class MultipleBlocksDataInteraction(InteractionTestBase, BaseIntegrationTest):
         self.parameterized_item_negative_feedback_on_bad_move(
             self.item_maps['block2'], self.all_zones['block2'], scroll_down=900
         )
+
+    def test_item_negative_feedback_on_bad_input(self):
+        self._switch_to_block(0)
+        self.parameterized_item_negative_feedback_on_bad_input(self.item_maps['block1'])
+        self._switch_to_block(1)
+        self.parameterized_item_negative_feedback_on_bad_input(self.item_maps['block2'], scroll_down=900)
 
     def test_final_feedback_and_reset(self):
         self._switch_to_block(0)

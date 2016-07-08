@@ -36,25 +36,29 @@
           "displayName": "1",
           "imageURL": "",
           "expandedImageURL": "",
-          "id": 0
+          "id": 0,
+          "inputOptions": false
         },
         {
           "displayName": "2",
           "imageURL": "",
           "expandedImageURL": "",
-          "id": 1
+          "id": 1,
+          "inputOptions": true
         },
         {
           "displayName": "X",
           "imageURL": "/static/test_url_expansion",
           "expandedImageURL": "/course/test-course/assets/test_url_expansion",
-          "id": 2
+          "id": 2,
+          "inputOptions": false
         },
         {
           "displayName": "",
           "imageURL": "http://placehold.it/200x100",
           "expandedImageURL": "http://placehold.it/200x100",
-          "id": 3
+          "id": 3,
+          "inputOptions": false
         }
     ]
 }

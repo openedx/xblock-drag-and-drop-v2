@@ -1,6 +1,5 @@
 import unittest
 
-from drag_and_drop_v2.drag_and_drop_v2 import DragAndDropBlock
 from drag_and_drop_v2.default_data import (
     TARGET_IMG_DESCRIPTION, TOP_ZONE_ID, MIDDLE_ZONE_ID, BOTTOM_ZONE_ID,
     START_FEEDBACK, FINISH_FEEDBACK, DEFAULT_DATA
@@ -46,7 +45,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         self.assertEqual(zones, DEFAULT_DATA["zones"])
         # Items should contain no answer data:
         self.assertEqual(items, [
-            {"id": i, "displayName": display_name, "imageURL": "", "expandedImageURL": ""}
+            {"id": i, "displayName": display_name, "imageURL": "", "expandedImageURL": "", "inputOptions": False}
             for i, display_name in enumerate(
                 ["Goes to the top", "Goes to the middle", "Goes to the bottom", "I don't belong anywhere"]
             )
@@ -76,15 +75,15 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         # Check the result:
         self.assertTrue(self.block.completed)
         self.assertEqual(self.block.item_state, {
-            '0': {'x_percent': '33%', 'y_percent': '11%', 'correct': True, 'zone': TOP_ZONE_ID},
-            '1': {'x_percent': '67%', 'y_percent': '80%', 'correct': True, 'zone': MIDDLE_ZONE_ID},
-            '2': {'x_percent': '99%', 'y_percent': '95%', 'correct': True, 'zone': BOTTOM_ZONE_ID},
+            '0': {'x_percent': '33%', 'y_percent': '11%', 'zone': TOP_ZONE_ID},
+            '1': {'x_percent': '67%', 'y_percent': '80%', 'zone': MIDDLE_ZONE_ID},
+            '2': {'x_percent': '99%', 'y_percent': '95%', 'zone': BOTTOM_ZONE_ID},
         })
         self.assertEqual(self.call_handler('get_user_state'), {
             'items': {
-                '0': {'x_percent': '33%', 'y_percent': '11%', 'correct': True, 'zone': TOP_ZONE_ID},
-                '1': {'x_percent': '67%', 'y_percent': '80%', 'correct': True, 'zone': MIDDLE_ZONE_ID},
-                '2': {'x_percent': '99%', 'y_percent': '95%', 'correct': True, 'zone': BOTTOM_ZONE_ID},
+                '0': {'x_percent': '33%', 'y_percent': '11%', 'correct_input': True, 'zone': TOP_ZONE_ID},
+                '1': {'x_percent': '67%', 'y_percent': '80%', 'correct_input': True, 'zone': MIDDLE_ZONE_ID},
+                '2': {'x_percent': '99%', 'y_percent': '95%', 'correct_input': True, 'zone': BOTTOM_ZONE_ID},
             },
             'finished': True,
             'overall_feedback': FINISH_FEEDBACK,
@@ -98,7 +97,6 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
     def test_studio_submit(self):
         body = {
             'display_name': "Test Drag & Drop",
-            'mode': DragAndDropBlock.ASSESSMENT_MODE,
             'show_title': False,
             'problem_text': "Problem Drag & Drop",
             'show_problem_header': False,
@@ -113,7 +111,6 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         self.assertEqual(res, {'result': 'success'})
 
         self.assertEqual(self.block.show_title, False)
-        self.assertEqual(self.block.mode, DragAndDropBlock.ASSESSMENT_MODE)
         self.assertEqual(self.block.display_name, "Test Drag & Drop")
         self.assertEqual(self.block.question_text, "Problem Drag & Drop")
         self.assertEqual(self.block.show_question_header, False)

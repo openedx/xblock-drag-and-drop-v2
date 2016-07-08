@@ -4,6 +4,20 @@ function DragNDropTemplates(url_name) {
     // Set up a mock for gettext if it isn't available in the client runtime:
     if (!window.gettext) { window.gettext = function gettext_stub(string) { return string; }; }
 
+    var FocusHook = function() {
+        if (!(this instanceof FocusHook)) {
+            return new FocusHook();
+        }
+    };
+
+    FocusHook.prototype.hook = function(node, prop, prev) {
+        setTimeout(function() {
+            if (document.activeElement !== node) {
+                node.focus();
+            }
+        }, 0);
+    };
+
     var itemSpinnerTemplate = function(xhr_active) {
         if (!xhr_active) {
             return null;
@@ -20,6 +34,22 @@ function DragNDropTemplates(url_name) {
         return collection.map(function(item) {
             return template(item, ctx);
         });
+    };
+
+    var itemInputTemplate = function(input) {
+        if (!input) {
+            return null;
+        }
+        var focus_hook = input.has_value ? undefined : FocusHook();
+        return (
+            h('div.numerical-input', {className: input.class_name,
+                style: {display: input.is_visible ? 'block' : 'none'}}, [
+                h('input.input', {type: 'text', value: input.value, disabled: input.has_value,
+                    focusHook: focus_hook}),
+                itemSpinnerTemplate(input.xhr_active),
+                h('button.submit-input', {disabled: input.has_value}, gettext('ok'))
+            ])
+        );
     };
 
     var getZone = function(zoneUID, ctx) {
@@ -68,6 +98,10 @@ function DragNDropTemplates(url_name) {
                 }
             } else {
                 // This is an "aligned" zone, so the item position within the zone is calculated by the browser.
+                // Allow for the input + button width for aligned items
+                if (item.input) {
+                    style.marginRight = '190px';
+                }
                 // Make up for the fact we're in a wrapper container by calculating percentage differences.
                 var maxWidth = (item.widthPercent || 30) / 100;
                 var widthPercent = zone.width_percent / 100;
@@ -98,7 +132,8 @@ function DragNDropTemplates(url_name) {
         }
         // Define children
         var children = [
-            itemSpinnerTemplate(item.xhr_active)
+            itemSpinnerTemplate(item.xhr_active),
+            itemInputTemplate(item.input)
         ];
         var item_content_html = item.displayName;
         if (item.imageURL) {
@@ -351,6 +386,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             $element.on('keydown', '.reset-button', function(evt) {
                 runOnKey(evt, RET, resetProblem);
             });
+            $element.on('click', '.submit-input', submitInput);
 
             // For the next one, we need to use addEventListener with useCapture 'true' in order
             // to watch for load events on any child element, since load events do not bubble.
@@ -747,9 +783,9 @@ function DragAndDropBlock(runtime, element, configuration) {
 
         $.post(url, JSON.stringify(data), 'json')
             .done(function(data){
-                state.last_action_correct = data.correct;
-                if (data.correct) {
-                    state.items[item_id].correct = true;
+                state.last_action_correct = data.correct_location;
+                if (data.correct_location) {
+                    state.items[item_id].correct_input = Boolean(data.correct);
                     state.items[item_id].submitting_location = false;
                 } else {
                     delete state.items[item_id];
@@ -767,6 +803,42 @@ function DragAndDropBlock(runtime, element, configuration) {
             });
     };
 
+    var submitInput = function(evt) {
+        var item = $(evt.target).closest('.option');
+        var input_div = item.find('.numerical-input');
+        var input = input_div.find('.input');
+        var input_value = input.val();
+        var item_id = item.data('value');
+
+        if (!input_value) {
+            // Don't submit if the user didn't enter anything yet.
+            return;
+        }
+
+        state.items[item_id].input = input_value;
+        state.items[item_id].submitting_input = true;
+        applyState();
+
+        var url = runtime.handlerUrl(element, 'do_attempt');
+        var data = {val: item_id, input: input_value};
+        $.post(url, JSON.stringify(data), 'json')
+            .done(function(data) {
+                state.last_action_correct = data.correct;
+                state.items[item_id].submitting_input = false;
+                state.items[item_id].correct_input = data.correct;
+                state.feedback = data.feedback;
+                if (data.finished) {
+                    state.finished = true;
+                    state.overall_feedback = data.overall_feedback;
+                }
+                applyState();
+            })
+            .fail(function(data) {
+                state.items[item_id].submitting_input = false;
+                applyState();
+            });
+    };
+
     var closePopup = function(evt) {
         if (!state.feedback) {
             return;
@@ -775,8 +847,9 @@ function DragAndDropBlock(runtime, element, configuration) {
         var target = $(evt.target);
         var popup_box = '.xblock--drag-and-drop .popup';
         var close_button = '.xblock--drag-and-drop .popup .close';
+        var submit_input_button = '.xblock--drag-and-drop .submit-input';
 
-        if (target.is(popup_box)) {
+        if (target.is(popup_box) || target.is(submit_input_button)) {
             return;
         }
         if (target.parents(popup_box).length && !target.is(close_button)) {
@@ -811,17 +884,31 @@ function DragAndDropBlock(runtime, element, configuration) {
 
     var render = function() {
         var items = configuration.items.map(function(item) {
+            var input = null;
             var item_user_state = state.items[item.id];
+            if (item.inputOptions) {
+                input = {
+                    is_visible: item_user_state && !item_user_state.submitting_location,
+                    has_value: Boolean(item_user_state && 'input' in item_user_state),
+                    value : (item_user_state && item_user_state.input) || '',
+                    class_name: undefined,
+                    xhr_active: (item_user_state && item_user_state.submitting_input)
+                };
+                if (input.has_value && !item_user_state.submitting_input) {
+                    input.class_name = item_user_state.correct_input ? 'correct' : 'incorrect';
+                }
+            }
             var grabbed = false;
             if (item.grabbed !== undefined) {
                 grabbed = item.grabbed;
             }
-            var placed = item_user_state && item_user_state.correct;
+            var placed = item_user_state && ('input' in item_user_state || item_user_state.correct_input);
             var itemProperties = {
                 value: item.id,
                 drag_disabled: Boolean(item_user_state || state.finished),
                 class_name: placed || state.finished ? 'fade' : undefined,
                 xhr_active: (item_user_state && item_user_state.submitting_location),
+                input: input,
                 displayName: item.displayName,
                 imageURL: item.expandedImageURL,
                 imageDescription: item.imageDescription,

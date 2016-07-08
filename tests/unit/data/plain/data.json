@@ -38,7 +38,11 @@
       },
       "zone": "zone-2",
       "imageURL": "",
-      "id": 1
+      "id": 1,
+      "inputOptions": {
+        "value": 100,
+        "margin": 5
+      }
     },
     {
       "displayName": "X",

@@ -36,25 +36,29 @@
           "displayName": "<b>1</b>",
           "imageURL": "",
           "expandedImageURL": "",
-          "id": 0
+          "id": 0,
+          "inputOptions": false
         },
         {
           "displayName": "<i>2</i>",
           "imageURL": "",
           "expandedImageURL": "",
-          "id": 1
+          "id": 1,
+          "inputOptions": true
         },
         {
           "displayName": "X",
           "imageURL": "",
           "expandedImageURL": "",
-          "id": 2
+          "id": 2,
+          "inputOptions": false
         },
         {
           "displayName": "",
           "imageURL": "http://placehold.it/100x300",
           "expandedImageURL": "http://placehold.it/100x300",
-          "id": 3
+          "id": 3,
+          "inputOptions": false
         }
     ]
 }
