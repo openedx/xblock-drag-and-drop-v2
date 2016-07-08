@@ -65,6 +65,7 @@ class BaseDragAndDropAjaxFixture(TestCaseMixin):
             "overall_feedback": None,
             "finished": False,
             "correct": False,
+            "correct_location": False,
             "feedback": self.FEEDBACK[item_id]["incorrect"]
         })
 
@@ -76,6 +77,7 @@ class BaseDragAndDropAjaxFixture(TestCaseMixin):
             "overall_feedback": None,
             "finished": False,
             "correct": False,
+            "correct_location": False,
             "feedback": self.FEEDBACK[item_id]["incorrect"]
         })
 
@@ -87,8 +89,78 @@ class BaseDragAndDropAjaxFixture(TestCaseMixin):
             "overall_feedback": None,
             "finished": False,
             "correct": True,
+            "correct_location": True,
             "feedback": self.FEEDBACK[item_id]["correct"]
         })
+
+    def test_do_attempt_with_input(self):
+        # Drop item that requires numerical input
+        data = {"val": 1, "zone": self.ZONE_2, "x_percent": "0%", "y_percent": "85%"}
+        res = self.call_handler('do_attempt', data)
+        self.assertEqual(res, {
+            "finished": False,
+            "correct": False,
+            "correct_location": True,
+            "feedback": None,
+            "overall_feedback": None,
+        })
+
+        expected_state = {
+            'items': {
+                "1": {
+                    "x_percent": "0%", "y_percent": "85%", "correct_input": False, "zone": self.ZONE_2,
+                },
+            },
+            'finished': False,
+            'overall_feedback': self.initial_feedback(),
+        }
+        self.assertEqual(expected_state, self.call_handler('get_user_state', method="GET"))
+
+        # Submit incorrect value
+        data = {"val": 1, "input": "250"}
+        res = self.call_handler('do_attempt', data)
+        self.assertEqual(res, {
+            "finished": False,
+            "correct": False,
+            "correct_location": True,
+            "feedback": self.FEEDBACK[1]['incorrect'],
+            "overall_feedback": None
+        })
+
+        expected_state = {
+            'items': {
+                "1": {
+                    "x_percent": "0%", "y_percent": "85%", "correct_input": False, "zone": self.ZONE_2,
+                    "input": "250",
+                },
+            },
+            'finished': False,
+            'overall_feedback': self.initial_feedback(),
+        }
+        self.assertEqual(expected_state, self.call_handler('get_user_state', method="GET"))
+
+        # Submit correct value
+        data = {"val": 1, "input": "103"}
+        res = self.call_handler('do_attempt', data)
+        self.assertEqual(res, {
+            "finished": False,
+            "correct": True,
+            "correct_location": True,
+            "feedback": self.FEEDBACK[1]['correct'],
+            "overall_feedback": None,
+        })
+
+        expected_state = {
+            'items': {
+                "1": {
+                    "x_percent": "0%", "y_percent": "85%", "correct_input": True, "zone": self.ZONE_2,
+                    "input": "103",
+                },
+            },
+            'finished': False,
+            'overall_feedback': self.initial_feedback(),
+        }
+        self.assertEqual(expected_state, self.call_handler('get_user_state', method="GET"))
 
     def test_grading(self):
         published_grades = []
@@ -110,6 +182,11 @@ class BaseDragAndDropAjaxFixture(TestCaseMixin):
         })
 
         self.assertEqual(2, len(published_grades))
+        self.assertEqual({'value': 0.5, 'max_value': 1}, published_grades[-1])
+
+        self.call_handler('do_attempt', {"val": 1, "input": "99"})
+
+        self.assertEqual(3, len(published_grades))
         self.assertEqual({'value': 1, 'max_value': 1}, published_grades[-1])
 
     def test_do_attempt_final(self):
@@ -118,7 +195,7 @@ class BaseDragAndDropAjaxFixture(TestCaseMixin):
 
         expected_state = {
             "items": {
-                "0": {"x_percent": "33%", "y_percent": "11%", "correct": True, "zone": self.ZONE_1}
+                "0": {"x_percent": "33%", "y_percent": "11%", "correct_input": True, "zone": self.ZONE_1}
             },
             "finished": False,
             'overall_feedback': self.initial_feedback(),
@@ -127,20 +204,24 @@ class BaseDragAndDropAjaxFixture(TestCaseMixin):
 
         data = {"val": 1, "zone": self.ZONE_2, "x_percent": "22%", "y_percent": "22%"}
         res = self.call_handler('do_attempt', data)
+        data = {"val": 1, "input": "99"}
+        res = self.call_handler('do_attempt', data)
         self.assertEqual(res, {
             "overall_feedback": self.FINAL_FEEDBACK,
             "finished": True,
             "correct": True,
+            "correct_location": True,
             "feedback": self.FEEDBACK[1]["correct"]
         })
 
         expected_state = {
             "items": {
                 "0": {
-                    "x_percent": "33%", "y_percent": "11%", "correct": True, "zone": self.ZONE_1,
+                    "x_percent": "33%", "y_percent": "11%", "correct_input": True, "zone": self.ZONE_1,
                 },
                 "1": {
-                    "x_percent": "22%", "y_percent": "22%", "correct": True, "zone": self.ZONE_2,
+                    "x_percent": "22%", "y_percent": "22%", "correct_input": True, "zone": self.ZONE_2,
+                    "input": "99",
                 }
             },
             "finished": True,

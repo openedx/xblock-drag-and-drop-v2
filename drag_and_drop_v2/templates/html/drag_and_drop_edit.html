@@ -21,16 +21,6 @@
                       <span class="sr">{{ help_texts.show_title }}</span>
                     </label>
 
-                    <label class="h3" for="problem-mode" title="{{ help_texts.mode }}">{% trans "Problem mode" %}</label>
-                    <select id="problem-mode">
-                        {% for field_value in field_values.mode %}
-                            <option value="{{ field_value.value }}" {% if self.mode == field_value.value %}selected{% endif %}>
-                                {{ field_value.display_name }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                    <span class="sr">{{ help_texts.mode }}</span>
-
                     <label class="h3" for="weight">{% trans "Maximum score" %}</label>
                     <input id="weight" type="number" step="0.1" value="{{ self.weight|unlocalize }}" />
 

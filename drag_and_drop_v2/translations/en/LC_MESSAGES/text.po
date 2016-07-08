@@ -248,6 +248,19 @@ msgid ""
 "automatic width):"
 msgstr ""
 
+#: templates/html/js_templates.html
+msgid ""
+"Optional numerical value (if you set this, learners will be prompted for "
+"this value after dropping this item)"
+msgstr ""
+
+#: templates/html/js_templates.html
+msgid ""
+"Margin ± (when a numerical value is required, values entered by learners "
+"must not differ from the expected value by more than this margin; default "
+"is zero)"
+msgstr ""
+
 #: templates/html/drag_and_drop.html
 msgid "Loading drag and drop problem."
 msgstr ""

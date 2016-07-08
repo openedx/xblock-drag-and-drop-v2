@@ -304,6 +304,29 @@ msgstr ""
 "Préférréd wïdth äs ä pérçéntägé öf thé ßäçkgröünd ïmägé wïdth (ör ßlänk för "
 "äütömätïç wïdth): Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
 
+#: templates/html/js_templates.html
+msgid ""
+"Optional numerical value (if you set this, learners will be prompted for "
+"this value after dropping this item)"
+msgstr ""
+"Öptïönäl nümérïçäl välüé (ïf ýöü sét thïs, léärnérs wïll ßé prömptéd för "
+"thïs välüé äftér dröppïng thïs ïtém) Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: templates/html/js_templates.html
+msgid ""
+"Margin ± (when a numerical value is required, values entered by learners "
+"must not differ from the expected value by more than this margin; default is"
+" zero)"
+msgstr ""
+"Märgïn ± (whén ä nümérïçäl välüé ïs réqüïréd, välüés éntéréd ßý léärnérs "
+"müst nöt dïffér fröm thé éxpéçtéd välüé ßý möré thän thïs märgïn; défäült ïs"
+" zérö) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ "
+"єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм"
+" νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα "
+"¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт"
+" єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт "
+"¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσ#"
+
 #: templates/html/drag_and_drop.html
 msgid "Loading drag and drop problem."
 msgstr "Löädïng dräg änd dröp prößlém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
