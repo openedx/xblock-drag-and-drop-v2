@@ -414,10 +414,6 @@ function DragAndDropEditBlock(runtime, element, params) {
                                     // block, but preserve the data in case we need it again:
                                     ctx.pixelHeight = itemData.size.height.substr(0, itemData.size.height.length - 2); // Remove 'px'
                                 }
-                                if (itemData.inputOptions) {
-                                    ctx.numericalValue = itemData.inputOptions.value;
-                                    ctx.numericalMargin = itemData.inputOptions.margin;
-                                }
                             }
 
                             ctx.dropdown = _fn.build.form.createDropdown(ctx.zone);
@@ -486,15 +482,6 @@ function DragAndDropEditBlock(runtime, element, params) {
                                 var widthPercent = $el.find('.item-width').val();
                                 if (widthPercent && +widthPercent > 0) { data.widthPercent = widthPercent; }
 
-                                var numValue = parseFloat($el.find('.item-numerical-value').val());
-                                var numMargin = parseFloat($el.find('.item-numerical-margin').val());
-                                if (isFinite(numValue)) {
-                                    data.inputOptions = {
-                                        value: numValue,
-                                        margin: isFinite(numMargin) ? numMargin : 0
-                                    };
-                                }
-
                                 items.push(data);
                             }
                         });
@@ -504,6 +491,7 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                         var data = {
                             'display_name': $element.find('#display-name').val(),
+                            'mode': $element.find("#problem-mode").val(),
                             'show_title': $element.find('.show-title').is(':checked'),
                             'weight': $element.find('#weight').val(),
                             'problem_text': $element.find('#problem-text').val(),

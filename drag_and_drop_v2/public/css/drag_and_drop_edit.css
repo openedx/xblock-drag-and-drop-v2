@@ -196,12 +196,6 @@
     width: 50px;
 }
 
-.xblock--drag-and-drop--editor .items-form .item-numerical-value,
-.xblock--drag-and-drop--editor .items-form .item-numerical-margin {
-    margin: 0 1%;
-    width: 50%;
-}
-
 .xblock--drag-and-drop--editor .items-form textarea {
     width: 97%;
     margin: 0 1%;
