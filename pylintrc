@@ -20,4 +20,4 @@ disable=
     no-member
 
 [SIMILARITIES]
-min-similarity-lines=8
+min-similarity-lines=4

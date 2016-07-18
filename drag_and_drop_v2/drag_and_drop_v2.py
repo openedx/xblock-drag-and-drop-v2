@@ -32,11 +32,28 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     """
     XBlock that implements a friendly Drag-and-Drop problem
     """
+    STANDARD_MODE = "standard"
+    ASSESSMENT_MODE = "assessment"
+
     display_name = String(
         display_name=_("Title"),
         help=_("The title of the drag and drop problem. The title is displayed to learners."),
         scope=Scope.settings,
         default=_("Drag and Drop"),
+    )
+
+    mode = String(
+        display_name=_("Mode"),
+        help=_(
+            "Standard mode: feedback is provided to learner right after an item is dropped to a zone. "
+            "Assessment mode: learner must place all the items to zones to see the feedback."
+        ),
+        scope=Scope.settings,
+        values=[
+            {"display_name": _("Standard"), "value": STANDARD_MODE},
+            {"display_name": _("Assessment"), "value": ASSESSMENT_MODE},
+        ],
+        default=STANDARD_MODE
     )
 
     show_title = Boolean(
@@ -186,9 +203,14 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             field_name: self.ugettext(field.help)
             for field_name, field in self.fields.viewitems() if hasattr(field, "help")
         }
+        field_values = {
+            field_name: field.values
+            for field_name, field in self.fields.viewitems() if hasattr(field, "values")
+        }
         context = {
             'js_templates': js_templates,
             'help_texts': help_texts,
+            'field_values': field_values,
             'self': self,
             'data': urllib.quote(json.dumps(self.data)),
         }
@@ -221,6 +243,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     @XBlock.json_handler
     def studio_submit(self, submissions, suffix=''):
         self.display_name = submissions['display_name']
+        self.mode = submissions['mode']
         self.show_title = submissions['show_title']
         self.question_text = submissions['problem_text']
         self.show_question_header = submissions['show_problem_header']

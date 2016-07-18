@@ -1,5 +1,6 @@
 import unittest
 
+from drag_and_drop_v2.drag_and_drop_v2 import DragAndDropBlock
 from drag_and_drop_v2.default_data import (
     TARGET_IMG_DESCRIPTION, TOP_ZONE_ID, MIDDLE_ZONE_ID, BOTTOM_ZONE_ID,
     START_FEEDBACK, FINISH_FEEDBACK, DEFAULT_DATA
@@ -97,6 +98,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
     def test_studio_submit(self):
         body = {
             'display_name': "Test Drag & Drop",
+            'mode': DragAndDropBlock.ASSESSMENT_MODE,
             'show_title': False,
             'problem_text': "Problem Drag & Drop",
             'show_problem_header': False,
@@ -111,6 +113,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         self.assertEqual(res, {'result': 'success'})
 
         self.assertEqual(self.block.show_title, False)
+        self.assertEqual(self.block.mode, DragAndDropBlock.ASSESSMENT_MODE)
         self.assertEqual(self.block.display_name, "Test Drag & Drop")
         self.assertEqual(self.block.question_text, "Problem Drag & Drop")
         self.assertEqual(self.block.show_question_header, False)
