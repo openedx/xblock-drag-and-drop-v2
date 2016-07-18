@@ -45,8 +45,10 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     mode = String(
         display_name=_("Mode"),
         help=_(
-            "Standard mode: feedback is provided to learner right after an item is dropped to a zone. "
-            "Assessment mode: learner must place all the items to zones to see the feedback."
+            "Standard mode: the problem provides immediate feedback each time "
+            "a learner drops an item on a target zone. "
+            "Assessment mode: the problem provides feedback only after "
+            "a learner drops all available items on target zones."
         ),
         scope=Scope.settings,
         values=[
