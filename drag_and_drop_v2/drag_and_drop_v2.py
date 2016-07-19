@@ -238,7 +238,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         # Do a bit of manipulation so we get the appearance of a list of zone options on
         # items that still have just a single zone stored
-        data = self.data.deepcopy()
+        data = copy.deepcopy(self.data)
         items = data.get('items', [])
 
         for item in items:
