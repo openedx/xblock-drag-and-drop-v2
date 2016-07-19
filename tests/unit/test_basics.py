@@ -99,6 +99,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         body = {
             'display_name': "Test Drag & Drop",
             'mode': DragAndDropBlock.ASSESSMENT_MODE,
+            'max_attempts': 1,
             'show_title': False,
             'problem_text': "Problem Drag & Drop",
             'show_problem_header': False,
@@ -114,6 +115,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
 
         self.assertEqual(self.block.show_title, False)
         self.assertEqual(self.block.mode, DragAndDropBlock.ASSESSMENT_MODE)
+        self.assertEqual(self.block.max_attempts, 1)
         self.assertEqual(self.block.display_name, "Test Drag & Drop")
         self.assertEqual(self.block.question_text, "Problem Drag & Drop")
         self.assertEqual(self.block.show_question_header, False)

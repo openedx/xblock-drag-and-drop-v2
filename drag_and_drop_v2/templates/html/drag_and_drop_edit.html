@@ -31,6 +31,9 @@
                     </select>
                     <span class="sr">{{ help_texts.mode }}</span>
 
+                    <label class="h3 setting assessment" for="max-attempts" title="{{ help_texts.max_attempts }}">{% trans "Maximum attempts" %}</label>
+                    <input class="setting assessment" id="max-attempts" type="number" min="1" step="1" {% if self.max_attempts %}value="{{ self.max_attempts }}"{% endif %} />
+
                     <label class="h3" for="weight">{% trans "Maximum score" %}</label>
                     <input id="weight" type="number" step="0.1" value="{{ self.weight|unlocalize }}" />
 

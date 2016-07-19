@@ -97,10 +97,10 @@ and Drop component to a lesson, then click the `EDIT` button.
 ![Edit view](/doc/img/edit-view.png)
 
 In the first step, you can set some basic properties of the component,
-such as the title, the maximum score, the problem text to render
-above the background image, the introductory feedback (shown
-initially), and the final feedback (shown after the learner
-successfully completes the drag and drop problem).
+such as the title, the mode, the maximum number of attempts, the maximum score,
+the problem text to render above the background image, the introductory feedback
+(shown initially), and the final feedback (shown after the learner successfully
+completes the drag and drop problem).
 
 ![Drop zone edit](/doc/img/edit-view-zones.png)
 

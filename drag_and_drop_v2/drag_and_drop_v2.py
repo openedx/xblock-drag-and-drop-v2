@@ -10,7 +10,7 @@ import urllib
 
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
-from xblock.fields import Scope, String, Dict, Float, Boolean
+from xblock.fields import Scope, String, Dict, Float, Boolean, Integer
 from xblock.fragment import Fragment
 from xblockutils.resources import ResourceLoader
 from xblockutils.settings import XBlockWithSettingsMixin, ThemableXBlockMixin
@@ -56,6 +56,16 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             {"display_name": _("Assessment"), "value": ASSESSMENT_MODE},
         ],
         default=STANDARD_MODE
+    )
+
+    max_attempts = Integer(
+        display_name=_("Maximum attempts"),
+        help=_(
+            "Defines the number of times a student can try to answer this problem. "
+            "If the value is not set, infinite attempts are allowed."
+        ),
+        scope=Scope.settings,
+        default=None,
     )
 
     show_title = Boolean(
@@ -245,6 +255,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     def studio_submit(self, submissions, suffix=''):
         self.display_name = submissions['display_name']
         self.mode = submissions['mode']
+        self.max_attempts = submissions['max_attempts']
         self.show_title = submissions['show_title']
         self.question_text = submissions['problem_text']
         self.show_question_header = submissions['show_problem_header']
