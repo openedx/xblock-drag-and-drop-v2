@@ -39,11 +39,7 @@
       },
       "zone": "Zone <b>2</b>",
       "imageURL": "",
-      "id": 1,
-      "inputOptions": {
-        "value": 100,
-        "margin": 5
-      }
+      "id": 1
     },
     {
       "displayName": "X",

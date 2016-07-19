@@ -32,16 +32,6 @@
     opacity: 1;
 }
 
-.themed-xblock.xblock--drag-and-drop .drag-container .option .numerical-input.correct .input {
-    background-color: #ceffce;
-    color: #087108;
-}
-
-.themed-xblock.xblock--drag-and-drop .drag-container .option .numerical-input.incorrect .input {
-    background-color: #ffcece;
-    color: #ad0d0d;
-}
-
 .themed-xblock.xblock--drag-and-drop .drag-container .option.fade {
     opacity: 0.5;
 }
