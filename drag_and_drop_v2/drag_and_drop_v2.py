@@ -244,7 +244,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         for item in items:
             zones = self._get_valid_item_zones(item['id'])
             item['zones'] = zones
-            #TODO: Pop item['zone'] out once the frontend can handle item['zones'].
+            item.pop('zone', None)
 
         fragment.initialize_js('DragAndDropEditBlock', {
             'data': data,
