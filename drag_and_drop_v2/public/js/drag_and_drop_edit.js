@@ -229,9 +229,9 @@ function DragAndDropEditBlock(runtime, element, params) {
                     problem: {
                         toggleAssessmentSettings: function(e) {
                             e.preventDefault();
-                            var $modeSetting = $(e.currentTarget);
-                            var $problemForm = $modeSetting.parent('form');
-                            var $assessmentSettings = $problemForm.find('.setting.assessment');
+                            var $modeSetting = $(e.currentTarget),
+                                $problemForm = $modeSetting.parent('form'),
+                                $assessmentSettings = $problemForm.find('.setting.assessment');
                             if ($modeSetting.val() === 'assessment') {
                                 $assessmentSettings.show();
                             } else {
