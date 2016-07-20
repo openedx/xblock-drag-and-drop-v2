@@ -31,7 +31,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                     _fn.tpl = {
                         zoneInput: Handlebars.compile($("#zone-input-tpl", element).html()),
                         zoneElement: Handlebars.compile($("#zone-element-tpl", element).html()),
-                        zoneDropdown: Handlebars.compile($("#zone-dropdown-tpl", element).html()),
+                        zoneCheckbox: Handlebars.compile($("#zone-checkbox-tpl", element).html()),
                         itemInput: Handlebars.compile($("#item-input-tpl", element).html()),
                     };
                 }
@@ -357,26 +357,21 @@ function DragAndDropEditBlock(runtime, element, params) {
                             _fn.build.form.zone.renderZonesPreview();
                         },
                     },
-                    createDropdown: function(selectedUID) {
-                        var template = _fn.tpl.zoneDropdown;
-                        var dropdown = [];
+                    createCheckboxes: function(selectedZones, itemId) {
+                        var template = _fn.tpl.zoneCheckbox;
+                        var checkboxes = [];
                         var zoneObjects = _fn.build.form.zone.zoneObjects;
 
                         zoneObjects.forEach(function(zoneObj) {
-                            dropdown.push(template({
-                                uid: zoneObj.uid,
+                            checkboxes.push(template({
+                                itemId: itemId
+                                zoneUid: zoneObj.uid
                                 title: zoneObj.title,
-                                selected: (zoneObj.uid == selectedUID) ? 'selected' : '',
+                                checked: $.inArray(zoneObj.uid, selectedZones) ? 'checked' : '',
                             }));
                         });
 
-                        dropdown.push(template({
-                            uid: "none",
-                            title: window.gettext("None"),
-                            selected: (selectedUID === "none") ? 'selected' : '',
-                        }));
-
-                        var html = dropdown.join('');
+                        var html = checkboxes.join('');
                         return new Handlebars.SafeString(html);
                     },
                     feedback: function($form) {
@@ -416,7 +411,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                                 }
                             }
 
-                            ctx.dropdown = _fn.build.form.createDropdown(ctx.zone);
+                            ctx.checkboxes = _fn.build.form.createCheckboxes(ctx.zones, itemData.id);
 
                             _fn.build.form.item.count++;
                             $form.append(tpl(ctx));
@@ -469,7 +464,9 @@ function DragAndDropEditBlock(runtime, element, params) {
                             if (name.length > 0 || imageURL.length > 0) {
                                 var data = {
                                     displayName: name,
-                                    zone: $el.find('.zone-select').val(),
+                                    zones: $.map($el.find('.zone-checkbox':checked)), function(c){
+                                        return c.value;
+                                    }),
                                     id: i,
                                     feedback: {
                                         correct: $el.find('.success-feedback').val(),

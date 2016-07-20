@@ -82,8 +82,15 @@
     </div>
 </script>
 
-<script id="zone-dropdown-tpl" type="text/html">
-    <option value="{{ uid }}" {{ selected }}>{{ title }}</option>
+<script id="zone-checkbox-tpl" type="text/html">
+    <label>
+        <input type="checkbox"
+               name="item-{{ itemId }}-zone"
+               value="{{ zoneUid }}"
+               class="zone-checkbox"
+               {{ checked }} />
+        {{ title }}
+    </label>
 </script>
 
 <script id="item-input-tpl" type="text/html">
@@ -94,12 +101,17 @@
                    id="item-{{id}}-text"
                    class="item-text"
                    value="{{ displayName }}" />
-            <label for="item-{{id}}-zone">{{i18n "Zone"}}</label>
-            <select id="item-{{id}}-zone"
-                    class="zone-select">{{ dropdown }}</select>
             <a href="#" class="remove-item hidden">
                 <div class="icon remove"></div>
             </a>
+        </div>
+        <div class="row">
+            <fieldset id="item-{{ id }}-zone">
+                <legend>
+                    {{ i18n "Zones" }}
+                </legend>
+                {{ checkboxes }}
+            </fieldset>
         </div>
         <div class="row">
             <label for="item-{{id}}-image-url">{{i18n "Image URL (alternative to the text)"}}</label>
