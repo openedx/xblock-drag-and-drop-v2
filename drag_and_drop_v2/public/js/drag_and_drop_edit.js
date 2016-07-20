@@ -409,7 +409,6 @@ function DragAndDropEditBlock(runtime, element, params) {
                                     ctx.pixelHeight = itemData.size.height.substr(0, itemData.size.height.length - 2); // Remove 'px'
                                 }
                             }
-                            console.log(ctx.zones)
                             ctx.checkboxes = _fn.build.form.createCheckboxes(ctx.zones);
 
                             _fn.build.form.item.count++;

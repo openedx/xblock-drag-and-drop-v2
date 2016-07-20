@@ -21,6 +21,7 @@ BOTTOM_ZONE_DESCRIPTION = _("Use this zone to associate an item with the bottom 
 ITEM_CORRECT_FEEDBACK = _("Correct! This one belongs to {zone}.")
 ITEM_INCORRECT_FEEDBACK = _("No, this item does not belong here. Try again.")
 ITEM_NO_ZONE_FEEDBACK = _("You silly, there are no zones for this one.")
+ITEM_ANY_ZONE_FEEDBACK = _("Of course it goes here! It goes anywhere!")
 
 START_FEEDBACK = _("Drag the items onto the image above.")
 FINISH_FEEDBACK = _("Good work! You have completed this drag and drop problem.")
@@ -96,6 +97,20 @@ DEFAULT_DATA = {
       "zone": "none",
       "imageURL": "",
       "id": 3,
+    },
+    {
+      "displayName": _("Goes anywhere on the triangle"),
+      "feedback": {
+        "correct": ITEM_ANY_ZONE_FEEDBACK,
+        "incorrect": ITEM_INCORRECT_FEEDBACK
+      },
+      "zones": [
+        TOP_ZONE_ID,
+        BOTTOM_ZONE_ID,
+        MIDDLE_ZONE_ID
+      ],
+      "imageURL": "",
+      "id": 4
     },
   ],
   "feedback": {

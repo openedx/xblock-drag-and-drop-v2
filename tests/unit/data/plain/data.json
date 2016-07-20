@@ -36,7 +36,10 @@
         "incorrect": "No 2",
         "correct": "Yes 2"
       },
-      "zone": "zone-2",
+      "zones": [
+        "zone-2",
+        "zone-1"
+      ],
       "imageURL": "",
       "id": 1
     },

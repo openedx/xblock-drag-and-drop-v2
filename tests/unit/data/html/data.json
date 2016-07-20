@@ -37,7 +37,10 @@
         "incorrect": "No <i>2</i>",
         "correct": "Yes <i>2</i>"
       },
-      "zone": "Zone <b>2</b>",
+      "zones": [
+        "Zone <b>2</b>",
+        "Zone <i>1</i>"
+      ],
       "imageURL": "",
       "id": 1
     },
