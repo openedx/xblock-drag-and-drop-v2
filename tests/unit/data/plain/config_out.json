@@ -1,5 +1,6 @@
 {
     "title": "DnDv2 XBlock with plain text instructions",
+    "mode": "standard",
     "show_title": true,
     "problem_text": "Can you solve this drag-and-drop problem?",
     "show_problem_header": true,

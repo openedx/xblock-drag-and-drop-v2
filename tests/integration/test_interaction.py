@@ -6,6 +6,7 @@ from mock import Mock, patch
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
 
 from workbench.runtime import WorkbenchRuntime
 from xblockutils.resources import ResourceLoader
@@ -89,6 +90,19 @@ class InteractionTestBase(object):
             'return $("div[data-uid=\'{zone_id}\']").prevAll(".zone").length'.format(zone_id=zone_id)
         )
 
+    @staticmethod
+    def wait_until_ondrop_xhr_finished(elem):
+        """
+        Waits until the XHR request triggered by dropping the item finishes loading.
+        """
+        wait = WebDriverWait(elem, 2)
+        # While the XHR is in progress, a spinner icon is shown inside the item.
+        # When the spinner disappears, we can assume that the XHR request has finished.
+        wait.until(
+            lambda e: 'fa-spinner' not in e.get_attribute('innerHTML'),
+            u"Spinner should not be in {}".format(elem.get_attribute('innerHTML'))
+        )
+
     def place_item(self, item_value, zone_id, action_key=None):
         if action_key is None:
             self.drag_item_to_zone(item_value, zone_id)
@@ -117,7 +131,7 @@ class InteractionTestBase(object):
     def assert_grabbed_item(self, item):
         self.assertEqual(item.get_attribute('aria-grabbed'), 'true')
 
-    def assert_placed_item(self, item_value, zone_title):
+    def assert_placed_item(self, item_value, zone_title, assessment_mode=False):
         item = self._get_placed_item_by_value(item_value)
         self.wait_until_visible(item)
         item_content = item.find_element_by_css_selector('.item-content')
@@ -131,7 +145,10 @@ class InteractionTestBase(object):
         self.assertEqual(item.get_attribute('data-drag-disabled'), 'true')
         self.assertEqual(item_content.get_attribute('aria-describedby'), item_description_id)
         self.assertEqual(item_description.get_attribute('id'), item_description_id)
-        self.assertEqual(item_description.text, 'Correctly placed in: {}'.format(zone_title))
+        if assessment_mode:
+            self.assertEqual(item_description.text, 'Placed in: {}'.format(zone_title))
+        else:
+            self.assertEqual(item_description.text, 'Correctly placed in: {}'.format(zone_title))
 
     def assert_reverted_item(self, item_value):
         item = self._get_item_by_value(item_value)
@@ -152,16 +169,28 @@ class InteractionTestBase(object):
         else:
             self.fail('Reverted item should not have .sr description.')
 
-    def assert_decoy_items(self, items_map):
+    def place_decoy_items(self, items_map, action_key):
+        decoy_items = self._get_items_without_zone(items_map)
+        # Place decoy items into first available zone.
+        zone_id, zone_title = self.all_zones[0]
+        for definition in decoy_items.values():
+            self.place_item(definition.item_id, zone_id, action_key)
+            self.assert_placed_item(definition.item_id, zone_title, assessment_mode=True)
+
+    def assert_decoy_items(self, items_map, assessment_mode=False):
         decoy_items = self._get_items_without_zone(items_map)
         for item_key in decoy_items:
             item = self._get_item_by_value(item_key)
-
-            self.assertEqual(item.get_attribute('class'), 'option fade')
             self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
             self.assertEqual(item.get_attribute('data-drag-disabled'), 'true')
+            if assessment_mode:
+                self.assertEqual(item.get_attribute('class'), 'option')
+            else:
+                self.assertEqual(item.get_attribute('class'), 'option fade')
 
-    def parameterized_item_positive_feedback_on_good_move(self, items_map, scroll_down=100, action_key=None):
+    def parameterized_item_positive_feedback_on_good_move(
+            self, items_map, scroll_down=100, action_key=None, assessment_mode=False
+    ):
         popup = self._get_popup()
         feedback_popup_content = self._get_popup_content()
 
@@ -170,11 +199,20 @@ class InteractionTestBase(object):
 
         for definition in self._get_items_with_zone(items_map).values():
             self.place_item(definition.item_id, definition.zone_ids[0], action_key)
-            self.wait_until_html_in(definition.feedback_positive, feedback_popup_content)
-            self.assertEqual(popup.get_attribute('class'), 'popup')
-            self.assert_placed_item(definition.item_id, definition.zone_title)
+            self.wait_until_ondrop_xhr_finished(self._get_item_by_value(definition.item_id))
+            self.assert_placed_item(definition.item_id, definition.zone_title, assessment_mode=assessment_mode)
+            feedback_popup_html = feedback_popup_content.get_attribute('innerHTML')
+            if assessment_mode:
+                self.assertEqual(feedback_popup_html, '')
+                self.assertFalse(popup.is_displayed())
+            else:
+                self.assertEqual(feedback_popup_html, definition.feedback_positive)
+                self.assertEqual(popup.get_attribute('class'), 'popup')
+                self.assertTrue(popup.is_displayed())
 
-    def parameterized_item_negative_feedback_on_bad_move(self, items_map, all_zones, scroll_down=100, action_key=None):
+    def parameterized_item_negative_feedback_on_bad_move(
+            self, items_map, all_zones, scroll_down=100, action_key=None, assessment_mode=False
+    ):
         popup = self._get_popup()
         feedback_popup_content = self._get_popup_content()
 
@@ -182,15 +220,31 @@ class InteractionTestBase(object):
         self.scroll_down(pixels=scroll_down)
 
         for definition in items_map.values():
-            for zone in all_zones:
-                if zone in definition.zone_ids:
-                    continue
-                self.place_item(definition.item_id, zone, action_key)
-                self.wait_until_html_in(definition.feedback_negative, feedback_popup_content)
-                self.assertEqual(popup.get_attribute('class'), 'popup popup-incorrect')
-                self.assert_reverted_item(definition.item_id)
+            # Get first zone that is not correct for this item.
+            zone_id = None
+            zone_title = None
+            for z_id, z_title in all_zones:
+                if z_id not in definition.zone_ids:
+                    zone_id = z_id
+                    zone_title = z_title
+                    break
+            if zone_id is not None:  # Some items may be placed in any zone, ignore those.
+                self.place_item(definition.item_id, zone_id, action_key)
+                if assessment_mode:
+                    self.wait_until_ondrop_xhr_finished(self._get_item_by_value(definition.item_id))
+                    feedback_popup_html = feedback_popup_content.get_attribute('innerHTML')
+                    self.assertEqual(feedback_popup_html, '')
+                    self.assertFalse(popup.is_displayed())
+                    self.assert_placed_item(definition.item_id, zone_title, assessment_mode=True)
+                else:
+                    self.wait_until_html_in(definition.feedback_negative, feedback_popup_content)
+                    self.assertEqual(popup.get_attribute('class'), 'popup popup-incorrect')
+                    self.assertTrue(popup.is_displayed())
+                    self.assert_reverted_item(definition.item_id)
 
-    def parameterized_final_feedback_and_reset(self, items_map, feedback, scroll_down=100, action_key=None):
+    def parameterized_final_feedback_and_reset(
+            self, items_map, feedback, scroll_down=100, action_key=None, assessment_mode=False
+    ):
         feedback_message = self._get_feedback_message()
         self.assertEqual(self.get_element_html(feedback_message), feedback['intro'])  # precondition check
 
@@ -206,12 +260,17 @@ class InteractionTestBase(object):
 
         for item_key, definition in items.items():
             self.place_item(definition.item_id, definition.zone_ids[0], action_key)
-            self.assert_placed_item(definition.item_id, definition.zone_title)
+            self.assert_placed_item(definition.item_id, definition.zone_title, assessment_mode=assessment_mode)
 
-        self.wait_until_html_in(feedback['final'], self._get_feedback_message())
+        if assessment_mode:
+            # In assessment mode we also place decoy items onto the board,
+            # to make sure they are correctly reverted back to the bank on problem reset.
+            self.place_decoy_items(items_map, action_key)
+        else:
+            self.wait_until_html_in(feedback['final'], self._get_feedback_message())
 
         # Check decoy items
-        self.assert_decoy_items(items_map)
+        self.assert_decoy_items(items_map, assessment_mode=assessment_mode)
 
         # Scroll "Reset problem" button into view to make sure Selenium can successfully click it
         self.scroll_down(pixels=scroll_down+150)
@@ -298,7 +357,11 @@ class DefaultDataTestMixin(object):
         4: ItemDefinition(4, [], None, "", ITEM_NO_ZONE_FEEDBACK),
     }
 
-    all_zones = [TOP_ZONE_ID, MIDDLE_ZONE_ID, BOTTOM_ZONE_ID]
+    all_zones = [
+        (TOP_ZONE_ID, TOP_ZONE_TITLE),
+        (MIDDLE_ZONE_ID, MIDDLE_ZONE_TITLE),
+        (BOTTOM_ZONE_ID, BOTTOM_ZONE_TITLE)
+    ]
 
     feedback = {
         "intro": START_FEEDBACK,
@@ -309,21 +372,66 @@ class DefaultDataTestMixin(object):
         return "<vertical_demo><drag-and-drop-v2/></vertical_demo>"
 
 
-class BasicInteractionTest(DefaultDataTestMixin, InteractionTestBase):
+class DefaultAssessmentDataTestMixin(DefaultDataTestMixin):
     """
-    Testing interactions with Drag and Drop XBlock against default data. If default data changes this will break.
+    Provides a test scenario with default options in assessment mode.
     """
-    def test_item_positive_feedback_on_good_move(self):
-        self.parameterized_item_positive_feedback_on_good_move(self.items_map)
+    def _get_scenario_xml(self):  # pylint: disable=no-self-use
+        return "<vertical_demo><drag-and-drop-v2 mode='assessment'/></vertical_demo>"
 
-    def test_item_negative_feedback_on_bad_move(self):
-        self.parameterized_item_negative_feedback_on_bad_move(self.items_map, self.all_zones)
 
-    def test_final_feedback_and_reset(self):
-        self.parameterized_final_feedback_and_reset(self.items_map, self.feedback)
+@ddt
+class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):
+    """
+    Testing interactions with Drag and Drop XBlock against default data.
+    All interactions are tested using mouse (action_key=None) and four different keyboard action keys.
+    If default data changes this will break.
+    """
+    @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    def test_item_positive_feedback_on_good_move(self, action_key):
+        self.parameterized_item_positive_feedback_on_good_move(self.items_map, action_key=action_key)
 
-    def test_keyboard_help(self):
-        self.interact_with_keyboard_help()
+    @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    def test_item_negative_feedback_on_bad_move(self, action_key):
+        self.parameterized_item_negative_feedback_on_bad_move(self.items_map, self.all_zones, action_key=action_key)
+
+    @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    def test_final_feedback_and_reset(self, action_key):
+        self.parameterized_final_feedback_and_reset(self.items_map, self.feedback, action_key=action_key)
+
+    @data(False, True)
+    def test_keyboard_help(self, use_keyboard):
+        self.interact_with_keyboard_help(use_keyboard=use_keyboard)
+
+
+@ddt
+class AssessmentInteractionTest(DefaultAssessmentDataTestMixin, InteractionTestBase, BaseIntegrationTest):
+    """
+    Testing interactions with Drag and Drop XBlock against default data in assessment mode.
+    All interactions are tested using mouse (action_key=None) and four different keyboard action keys.
+    If default data changes this will break.
+    """
+    @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    def test_item_no_feedback_on_good_move(self, action_key):
+        self.parameterized_item_positive_feedback_on_good_move(
+            self.items_map, action_key=action_key, assessment_mode=True
+        )
+
+    @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    def test_item_no_feedback_on_bad_move(self, action_key):
+        self.parameterized_item_negative_feedback_on_bad_move(
+            self.items_map, self.all_zones, action_key=action_key, assessment_mode=True
+        )
+
+    @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    def test_final_feedback_and_reset(self, action_key):
+        self.parameterized_final_feedback_and_reset(
+            self.items_map, self.feedback, action_key=action_key, assessment_mode=True
+        )
+
+    @data(False, True)
+    def test_keyboard_help(self, use_keyboard):
+        self.interact_with_keyboard_help(use_keyboard=use_keyboard)
 
 
 class MultipleValidOptionsInteractionTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):
@@ -417,32 +525,14 @@ class EventsFiredTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegration
         )
 
 
-@ddt
-class KeyboardInteractionTest(BasicInteractionTest, BaseIntegrationTest):
-    @data(Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
-    def test_item_positive_feedback_on_good_move_with_keyboard(self, action_key):
-        self.parameterized_item_positive_feedback_on_good_move(self.items_map, action_key=action_key)
-
-    @data(Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
-    def test_item_negative_feedback_on_bad_move_with_keyboard(self, action_key):
-        self.parameterized_item_negative_feedback_on_bad_move(self.items_map, self.all_zones, action_key=action_key)
-
-    @data(Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
-    def test_final_feedback_and_reset_with_keyboard(self, action_key):
-        self.parameterized_final_feedback_and_reset(self.items_map, self.feedback, action_key=action_key)
-
-    def test_keyboard_help(self):
-        self.interact_with_keyboard_help(use_keyboard=True)
-
-
-class CustomDataInteractionTest(BasicInteractionTest, BaseIntegrationTest):
+class CustomDataInteractionTest(StandardInteractionTest):
     items_map = {
         0: ItemDefinition(0, ['zone-1'], "Zone 1", "Yes 1", "No 1"),
         1: ItemDefinition(1, ['zone-2'], "Zone 2", "Yes 2", "No 2"),
         2: ItemDefinition(2, [], None, "", "No Zone for this")
     }
 
-    all_zones = ['zone-1', 'zone-2']
+    all_zones = [('zone-1', 'Zone 1'), ('zone-2', 'Zone 2')]
 
     feedback = {
         "intro": "Some Intro Feed",
@@ -453,14 +543,14 @@ class CustomDataInteractionTest(BasicInteractionTest, BaseIntegrationTest):
         return self._get_custom_scenario_xml("data/test_data.json")
 
 
-class CustomHtmlDataInteractionTest(BasicInteractionTest, BaseIntegrationTest):
+class CustomHtmlDataInteractionTest(StandardInteractionTest):
     items_map = {
         0: ItemDefinition(0, ['zone-1'], 'Zone <i>1</i>', "Yes <b>1</b>", "No <b>1</b>"),
         1: ItemDefinition(1, ['zone-2'], 'Zone <b>2</b>', "Yes <i>2</i>", "No <i>2</i>"),
         2: ItemDefinition(2, [], None, "", "No Zone for <i>X</i>")
     }
 
-    all_zones = ['zone-1', 'zone-2']
+    all_zones = [('zone-1', 'Zone 1'), ('zone-2', 'Zone 2')]
 
     feedback = {
         "intro": "Intro <i>Feed</i>",
@@ -492,8 +582,8 @@ class MultipleBlocksDataInteraction(InteractionTestBase, BaseIntegrationTest):
     }
 
     all_zones = {
-        'block1': ['zone-1', 'zone-2'],
-        'block2': ['zone-51', 'zone-52']
+        'block1': [('zone-1', 'Zone 1'), ('zone-2', 'Zone 2')],
+        'block2': [('zone-51', 'Zone 51'), ('zone-52', 'Zone 52')]
     }
 
     feedback = {

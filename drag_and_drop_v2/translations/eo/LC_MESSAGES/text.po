@@ -494,6 +494,10 @@ msgid "ok"
 msgstr "ök Ⱡ'σя#"
 
 #: public/js/drag_and_drop.js
+msgid "Placed in: "
+msgstr "Pläçéd ïn:  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: public/js/drag_and_drop.js
 msgid "Correctly placed in: "
 msgstr "Çörréçtlý pläçéd ïn:  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
