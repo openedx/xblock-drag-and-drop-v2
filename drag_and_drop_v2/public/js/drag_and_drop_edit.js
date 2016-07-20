@@ -357,17 +357,16 @@ function DragAndDropEditBlock(runtime, element, params) {
                             _fn.build.form.zone.renderZonesPreview();
                         },
                     },
-                    createCheckboxes: function(selectedZones, itemId) {
+                    createCheckboxes: function(selectedZones) {
                         var template = _fn.tpl.zoneCheckbox;
                         var checkboxes = [];
                         var zoneObjects = _fn.build.form.zone.zoneObjects;
 
                         zoneObjects.forEach(function(zoneObj) {
                             checkboxes.push(template({
-                                itemId: itemId
-                                zoneUid: zoneObj.uid
+                                zoneUid: zoneObj.uid,
                                 title: zoneObj.title,
-                                checked: $.inArray(zoneObj.uid, selectedZones) ? 'checked' : '',
+                                checked: $.inArray(zoneObj.uid, selectedZones) != -1 ? 'checked' : '',
                             }));
                         });
 
@@ -410,8 +409,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                                     ctx.pixelHeight = itemData.size.height.substr(0, itemData.size.height.length - 2); // Remove 'px'
                                 }
                             }
-
-                            ctx.checkboxes = _fn.build.form.createCheckboxes(ctx.zones, itemData.id);
+                            console.log(ctx.zones)
+                            ctx.checkboxes = _fn.build.form.createCheckboxes(ctx.zones);
 
                             _fn.build.form.item.count++;
                             $form.append(tpl(ctx));
@@ -464,7 +463,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                             if (name.length > 0 || imageURL.length > 0) {
                                 var data = {
                                     displayName: name,
-                                    zones: $.map($el.find('.zone-checkbox':checked)), function(c){
+                                    zones: $.map($el.find('.zone-checkbox:checked'), function(c){
                                         return c.value;
                                     }),
                                     id: i,
