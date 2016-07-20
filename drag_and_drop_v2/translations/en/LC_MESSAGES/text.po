@@ -95,6 +95,35 @@ msgid "Drag and Drop"
 msgstr ""
 
 #: drag_and_drop_v2.py
+msgid "Mode"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid ""
+"Standard mode: the problem provides immediate feedback each time a learner drops an item on a target zone. "
+"Assessment mode: the problem provides feedback only after a learner drops all available items on target zones."
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid "Standard"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid "Assessment"
+msgstr ""
+
+#: drag_and_drop_v2.py
+#: templates/html/drag_and_drop_edit.html
+msgid "Maximum attempts"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid ""
+"Defines the number of times a student can try to answer this problem. "
+"If the value is not set, infinite attempts are allowed."
+msgstr ""
+
+#: drag_and_drop_v2.py
 #: templates/html/drag_and_drop_edit.html
 msgid "Show title"
 msgstr ""
@@ -260,6 +289,10 @@ msgstr ""
 
 #: templates/html/drag_and_drop_edit.html
 msgid "Problem title"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Problem mode"
 msgstr ""
 
 #: templates/html/drag_and_drop_edit.html
