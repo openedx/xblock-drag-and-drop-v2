@@ -83,19 +83,21 @@
 </script>
 
 <script id="zone-checkbox-tpl" type="text/html">
-    <label>
-        <input type="checkbox"
-               value="{{ zoneUid }}"
-               class="zone-checkbox"
-               {{ checked }} />
-        {{ title }}
-    </label>
+    <div class="row">
+        <label>
+            <input type="checkbox"
+                   value="{{ zoneUid }}"
+                   class="zone-checkbox"
+                   {{ checked }} />
+            {{ title }}
+        </label>
+    </div>
 </script>
 
 <script id="item-input-tpl" type="text/html">
     <div class="item">
         <div class="row">
-            <label for="item-{{id}}-text">{{i18n "Text"}}</label>
+            <label for="item-{{id}}-text" class="h3 zone-checkbox-label">{{i18n "Text"}}</label>
             <input type="text"
                    id="item-{{id}}-text"
                    class="item-text"
@@ -106,14 +108,14 @@
         </div>
         <div class="row">
             <fieldset id="item-{{ id }}-zone">
-                <legend>
+                <legend class="h3">
                     {{ i18n "Zones" }}
                 </legend>
                 {{ checkboxes }}
             </fieldset>
         </div>
         <div class="row">
-            <label for="item-{{id}}-image-url">{{i18n "Image URL (alternative to the text)"}}</label>
+            <label for="item-{{id}}-image-url" class="h3">{{i18n "Image URL (alternative to the text)"}}</label>
             <input type="text"
                    id="item-{{id}}-image-url"
                    placeholder="{{i18n 'For example, http://example.com/image.png or /static/image.png'}}"
@@ -121,17 +123,17 @@
                    value="{{ imageURL }}" />
         </div>
         <div class="row">
-            <label for="item-{{id}}-image-description">{{i18n "Image description (should provide sufficient information to place the item even if the image did not load)"}}</label>
+            <label class="h3" for="item-{{id}}-image-description">{{i18n "Image description (should provide sufficient information to place the item even if the image did not load)"}}</label>
             <textarea id="item-{{id}}-image-description" {{#if imageURL}}required{{/if}}
                       class="item-image-description">{{ imageDescription }}</textarea>
         </div>
         <div class="row">
-            <label for="item-{{id}}-success-feedback">{{i18n "Success Feedback"}}</label>
+            <label class="h3" for="item-{{id}}-success-feedback">{{i18n "Success Feedback"}}</label>
             <textarea id="item-{{id}}-success-feedback"
                       class="success-feedback">{{ feedback.correct }}</textarea>
         </div>
         <div class="row">
-            <label for="item-{{id}}-error-feedback">{{i18n "Error Feedback"}}</label>
+            <label class="h3" for="item-{{id}}-error-feedback">{{i18n "Error Feedback"}}</label>
             <textarea id="item-{{id}}-error-feedback"
                       class="error-feedback">{{ feedback.incorrect }}</textarea>
         </div>
