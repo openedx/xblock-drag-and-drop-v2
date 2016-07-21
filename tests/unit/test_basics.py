@@ -52,8 +52,8 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
                     "Goes to the top",
                     "Goes to the middle",
                     "Goes to the bottom",
-                    "I don't belong anywhere",
-                    "Goes anywhere on the triangle"
+                    "Goes anywhere",
+                    "I don't belong anywhere"
                 ]
             )
         ])
@@ -78,7 +78,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         self.call_handler('do_attempt', data)
         data = {"val": 2, "zone": BOTTOM_ZONE_ID, "x_percent": "99%", "y_percent": "95%"}
         self.call_handler('do_attempt', data)
-        data = {"val": 4, "zone": MIDDLE_ZONE_ID, "x_percent": "67%", "y_percent": "80%"}
+        data = {"val": 3, "zone": MIDDLE_ZONE_ID, "x_percent": "67%", "y_percent": "80%"}
         self.call_handler('do_attempt', data)
 
         # Check the result:
@@ -87,14 +87,14 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             '0': {'x_percent': '33%', 'y_percent': '11%', 'correct': True, 'zone': TOP_ZONE_ID},
             '1': {'x_percent': '67%', 'y_percent': '80%', 'correct': True, 'zone': MIDDLE_ZONE_ID},
             '2': {'x_percent': '99%', 'y_percent': '95%', 'correct': True, 'zone': BOTTOM_ZONE_ID},
-            '4': {'x_percent': '67%', 'y_percent': '80%', 'correct': True, "zone": MIDDLE_ZONE_ID},
+            '3': {'x_percent': '67%', 'y_percent': '80%', 'correct': True, "zone": MIDDLE_ZONE_ID},
         })
         self.assertEqual(self.call_handler('get_user_state'), {
             'items': {
                 '0': {'x_percent': '33%', 'y_percent': '11%', 'correct': True, 'zone': TOP_ZONE_ID},
                 '1': {'x_percent': '67%', 'y_percent': '80%', 'correct': True, 'zone': MIDDLE_ZONE_ID},
                 '2': {'x_percent': '99%', 'y_percent': '95%', 'correct': True, 'zone': BOTTOM_ZONE_ID},
-                '4': {'x_percent': '67%', 'y_percent': '80%', 'correct': True, "zone": MIDDLE_ZONE_ID},
+                '3': {'x_percent': '67%', 'y_percent': '80%', 'correct': True, "zone": MIDDLE_ZONE_ID},
             },
             'finished': True,
             'overall_feedback': FINISH_FEEDBACK,

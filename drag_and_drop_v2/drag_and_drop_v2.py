@@ -166,8 +166,9 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             items = copy.deepcopy(self.data.get('items', ''))
             for item in items:
                 del item['feedback']
-                # Switching to `pop` from `del`, as we no longer have any guarantee of
-                # either `zone` or `zones` being present.
+                # Use item.pop to remove both `item['zone']` and `item['zones']`; we don't have
+                # a guarantee that either will be present, so we can't use `del`. Legacy instances
+                # will have `item['zone']`, while current versions will have `item['zones']`.
                 item.pop('zone', None)
                 item.pop('zones', None)
                 # Fall back on "backgroundImage" to be backward-compatible.
@@ -242,7 +243,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         items = data.get('items', [])
 
         for item in items:
-            zones = self._get_valid_item_zones(item['id'])
+            zones = self._get_item_zones(item['id'])
             item['zones'] = zones
             item.pop('zone', None)
 
@@ -276,7 +277,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         state = None
         zone = None
-        feedback = item['feedback']['incorrect']
+        feedback = item['feedback'].get('incorrect', '')
         overall_feedback = None
         is_correct = False
 
@@ -336,12 +337,11 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
     def _is_attempt_correct(self, attempt):
         """
-        Bringing the logic to determine whether a placement is correct out of do_attempt to
-        improve clarity on the process for cases where we have multiple valid options.
+        Check if the item was placed correctly.
         """
-        valid_options = self._get_valid_item_zones(attempt['val'])
+        correct_zones = self._get_item_zones(attempt['val'])
 
-        return attempt['zone'] in valid_options
+        return attempt['zone'] in correct_zones
 
     def _expand_static_url(self, url):
         """
@@ -399,8 +399,12 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             # (because problem was completed before a11y enhancements were implemented),
             # deduce zone in which item is placed from definition:
             if item.get('zone') is None:
-                valid_zones = self._get_valid_item_zones(int(item_id))
+                valid_zones = self._get_item_zones(int(item_id))
                 if valid_zones:
+                    # If we get to this point, then the item was placed prior to support for
+                    # multiple correct zones being added. As a result, it can only be correct
+                    # on a single zone, and so we can trust that the item was placed on the
+                    # zone with index 0.
                     item['zone'] = valid_zones[0]
                 else:
                     item['zone'] = 'unknown'
@@ -433,21 +437,21 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """
         return next(i for i in self.data['items'] if i['id'] == item_id)
 
-    def _get_valid_item_zones(self, item_id):
+    def _get_item_zones(self, item_id):
         """
-        Returns a list of the zones that are valid options for the item. If
-        we have an existing configured list of options, return that. If we
-        have an existing single item, return that encapsulated in a list.
-        If we don't have either, which would be weird, return an empty list.
+        Returns a list of the zones that are valid options for the item.
+        
+        If the item is configured with a list of zones, return that list. If
+        the item is configured with a single zone, encapsulate that zone's
+        ID in a list and return the list. If the item is not configured with
+        any zones, or if it's configured explicitly with no zones, return an
+        empty list.
         """
         item = self._get_item_definition(item_id)
-
         if item.get('zones') is not None:
             return item.get('zones')
-
         elif item.get('zone') is not None and item.get('zone') != 'none':
             return [item.get('zone')]
-
         else:
             return []
 
@@ -485,7 +489,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         for item in self.data['items']:
             item_id = item['id']
-            if self._get_valid_item_zones(item_id) != []:
+            if self._get_item_zones(item_id) != []:
                 total_count += 1
                 if str(item_id) in item_state:
                     correct_count += 1
@@ -503,7 +507,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         for item in self.data['items']:
             item_id = item['id']
-            if self._get_valid_item_zones(item_id) != []:
+            if self._get_item_zones(item_id) != []:
                 total_count += 1
                 if str(item_id) in item_state:
                     completed_count += 1

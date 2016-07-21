@@ -64,7 +64,9 @@ DEFAULT_DATA = {
         "incorrect": ITEM_INCORRECT_FEEDBACK,
         "correct": ITEM_CORRECT_FEEDBACK.format(zone=TOP_ZONE_TITLE)
       },
-      "zone": TOP_ZONE_ID,
+      "zones": [
+        TOP_ZONE_ID
+      ],
       "imageURL": "",
       "id": 0,
     },
@@ -74,7 +76,9 @@ DEFAULT_DATA = {
         "incorrect": ITEM_INCORRECT_FEEDBACK,
         "correct": ITEM_CORRECT_FEEDBACK.format(zone=MIDDLE_ZONE_TITLE)
       },
-      "zone": MIDDLE_ZONE_ID,
+      "zones": [
+        MIDDLE_ZONE_ID
+      ],
       "imageURL": "",
       "id": 1,
     },
@@ -84,25 +88,16 @@ DEFAULT_DATA = {
         "incorrect": ITEM_INCORRECT_FEEDBACK,
         "correct": ITEM_CORRECT_FEEDBACK.format(zone=BOTTOM_ZONE_TITLE)
       },
-      "zone": BOTTOM_ZONE_ID,
+      "zones": [
+        BOTTOM_ZONE_ID
+      ],
       "imageURL": "",
       "id": 2,
     },
     {
-      "displayName": _("I don't belong anywhere"),
+      "displayName": _("Goes anywhere"),
       "feedback": {
-        "incorrect": ITEM_NO_ZONE_FEEDBACK,
-        "correct": ""
-      },
-      "zone": "none",
-      "imageURL": "",
-      "id": 3,
-    },
-    {
-      "displayName": _("Goes anywhere on the triangle"),
-      "feedback": {
-        "correct": ITEM_ANY_ZONE_FEEDBACK,
-        "incorrect": ITEM_INCORRECT_FEEDBACK
+        "correct": ITEM_ANY_ZONE_FEEDBACK
       },
       "zones": [
         TOP_ZONE_ID,
@@ -110,7 +105,17 @@ DEFAULT_DATA = {
         MIDDLE_ZONE_ID
       ],
       "imageURL": "",
-      "id": 4
+      "id": 3
+    },
+    {
+      "displayName": _("I don't belong anywhere"),
+      "feedback": {
+        "incorrect": ITEM_NO_ZONE_FEEDBACK,
+        "correct": ""
+      },
+      "zones": [],
+      "imageURL": "",
+      "id": 4,
     },
   ],
   "feedback": {

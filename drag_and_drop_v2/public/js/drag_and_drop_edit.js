@@ -366,7 +366,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                             checkboxes.push(template({
                                 zoneUid: zoneObj.uid,
                                 title: zoneObj.title,
-                                checked: $.inArray(zoneObj.uid, selectedZones) != -1 ? 'checked' : '',
+                                checked: $.inArray(zoneObj.uid, selectedZones) !== -1 ? 'checked' : '',
                             }));
                         });
 

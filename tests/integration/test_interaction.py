@@ -291,11 +291,11 @@ class DefaultDataTestMixin(object):
             2, [BOTTOM_ZONE_ID], BOTTOM_ZONE_TITLE,
             ITEM_CORRECT_FEEDBACK.format(zone=BOTTOM_ZONE_TITLE), ITEM_INCORRECT_FEEDBACK
         ),
-        3: ItemDefinition(3, [], None, "", ITEM_NO_ZONE_FEEDBACK),
-        4: ItemDefinition(
-            4, [MIDDLE_ZONE_ID, TOP_ZONE_ID, BOTTOM_ZONE_ID], MIDDLE_ZONE_TITLE,
+        3: ItemDefinition(
+            3, [MIDDLE_ZONE_ID, TOP_ZONE_ID, BOTTOM_ZONE_ID], MIDDLE_ZONE_TITLE,
             ITEM_ANY_ZONE_FEEDBACK, ITEM_INCORRECT_FEEDBACK
-        )
+        ),
+        4: ItemDefinition(4, [], None, "", ITEM_NO_ZONE_FEEDBACK),
     }
 
     all_zones = [TOP_ZONE_ID, MIDDLE_ZONE_ID, BOTTOM_ZONE_ID]
