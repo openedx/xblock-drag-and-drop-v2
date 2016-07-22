@@ -483,15 +483,15 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
     def _get_item_stats(self):
         """
-        Returns a 3-tuple representing the number of correct items placed, the number of completed
-        items, right or wrong, and the total number of items that must be completed.
+        Returns a tuple representing the number of correctly-placed items,
+        and the total number of items that must be placed on the board (non-decoy items).
         """
         all_items = self.data['items']
         item_state = self._get_item_state()
 
         required_items = [str(item['id']) for item in all_items if self._get_item_zones(item['id']) != []]
-        completed_items = [item for item in required_items if item in item_state]
-        correct_items = [item for item in completed_items if item_state[item]['correct']]
+        placed_items = [item for item in required_items if item in item_state]
+        correct_items = [item for item in placed_items if item_state[item]['correct']]
 
         required_count = len(required_items)
         correct_count = len(correct_items)
