@@ -458,12 +458,13 @@ function DragAndDropEditBlock(runtime, element, params) {
                                 name = $el.find('.item-text').val(),
                                 imageURL = $el.find('.item-image-url').val(),
                                 imageDescription = $el.find('.item-image-description').val();
+                                checkedCheckboxes = $el.find('.zone-checkbox:checked')
 
                             if (name.length > 0 || imageURL.length > 0) {
                                 var data = {
                                     displayName: name,
-                                    zones: $.map($el.find('.zone-checkbox:checked'), function(c){
-                                        return c.value;
+                                    zones: $.map(checkedCheckboxes, function(checkbox){
+                                        return checkbox.value;
                                     }),
                                     id: i,
                                     feedback: {

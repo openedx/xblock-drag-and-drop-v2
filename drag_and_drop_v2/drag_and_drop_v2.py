@@ -239,16 +239,19 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         # Do a bit of manipulation so we get the appearance of a list of zone options on
         # items that still have just a single zone stored
-        data = copy.deepcopy(self.data)
-        items = data.get('items', [])
+
+        items = self.data.get('items', [])
 
         for item in items:
             zones = self._get_item_zones(item['id'])
+            # Note that we appear to be mutating the state of the XBlock here, but because
+            # the change won't be committed, we're actually just affecting the data that
+            # we're going to send to the client, not what's saved in the backing store.
             item['zones'] = zones
             item.pop('zone', None)
 
         fragment.initialize_js('DragAndDropEditBlock', {
-            'data': data,
+            'data': self.data,
             'target_img_expanded_url': self.target_img_expanded_url,
             'default_background_image_url': self.default_background_image_url,
         })
@@ -440,7 +443,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     def _get_item_zones(self, item_id):
         """
         Returns a list of the zones that are valid options for the item.
-        
+
         If the item is configured with a list of zones, return that list. If
         the item is configured with a single zone, encapsulate that zone's
         ID in a list and return the list. If the item is not configured with
@@ -479,40 +482,38 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             if zone["uid"] == uid:
                 return zone
 
+    def _get_item_stats(self):
+        """
+        Returns a 3-tuple representing the number of correct items placed, the number of completed
+        items, right or wrong, and the total number of items that must be completed.
+        """
+        all_items = self.data['items']
+        item_state = self._get_item_state()
+
+        required_items = [str(item['id']) for item in all_items if self._get_item_zones(item['id']) != []]
+        completed_items = [item for item in required_items if item in item_state]
+        correct_items = [item for item in completed_items if item_state[item]['correct']]
+
+        required_count = len(required_items)
+        completed_count = len(completed_items)
+        correct_count = len(correct_items)
+
+        return correct_count, completed_count, required_count
+
     def _get_grade(self):
         """
         Returns the student's grade for this block.
         """
-        correct_count = 0
-        total_count = 0
-        item_state = self._get_item_state()
-
-        for item in self.data['items']:
-            item_id = item['id']
-            if self._get_item_zones(item_id) != []:
-                total_count += 1
-                if str(item_id) in item_state:
-                    correct_count += 1
-
-        return correct_count / float(total_count) * self.weight
+        correct_count, _, required_count = self._get_item_stats()
+        return correct_count / float(required_count) * self.weight
 
     def _is_finished(self):
         """
         All items are at their correct place and a value has been
         submitted for each item that expects a value.
         """
-        completed_count = 0
-        total_count = 0
-        item_state = self._get_item_state()
-
-        for item in self.data['items']:
-            item_id = item['id']
-            if self._get_item_zones(item_id) != []:
-                total_count += 1
-                if str(item_id) in item_state:
-                    completed_count += 1
-
-        return completed_count == total_count
+        correct, completed, required = self._get_item_stats()
+        return correct == completed == required
 
     @XBlock.json_handler
     def publish_event(self, data, suffix=''):
