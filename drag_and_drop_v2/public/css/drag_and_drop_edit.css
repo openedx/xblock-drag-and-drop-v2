@@ -79,6 +79,11 @@
     font-size: 100%;
 }
 
+.xblock--drag-and-drop--editor .tab .nested-input {
+    display: block;
+    margin-top: 8px;
+}
+
 .xblock--drag-and-drop--editor .tab-header,
 .xblock--drag-and-drop--editor .tab-content,
 .xblock--drag-and-drop--editor .tab-footer {
