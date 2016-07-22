@@ -504,7 +504,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """
         Returns the student's grade for this block.
         """
-        correct_count, _, required_count = self._get_item_stats()
+        correct_count, completed_count, required_count = self._get_item_stats()  # pylint: disable=unused-variable
         return correct_count / float(required_count) * self.weight
 
     def _is_finished(self):
@@ -512,8 +512,8 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         All items are at their correct place and a value has been
         submitted for each item that expects a value.
         """
-        correct, completed, required = self._get_item_stats()
-        return correct == completed == required
+        correct_count, completed_count, required_count = self._get_item_stats()
+        return correct_count == completed_count == required_count
 
     @XBlock.json_handler
     def publish_event(self, data, suffix=''):
