@@ -27,7 +27,7 @@
         "incorrect": "No <b>1</b>",
         "correct": "Yes <b>1</b>"
       },
-      "zone": "Zone <i>1</i>",
+      "zones": ["Zone <i>1</i>"],
       "imageURL": "",
       "id": 0
     },
@@ -50,7 +50,7 @@
         "incorrect": "",
         "correct": ""
       },
-      "zone": "none",
+      "zones": [],
       "imageURL": "",
       "id": 2
     },
@@ -60,7 +60,7 @@
         "incorrect": "",
         "correct": ""
       },
-      "zone": "none",
+      "zones": [],
       "imageURL": "http://placehold.it/100x300",
       "id": 3
     }

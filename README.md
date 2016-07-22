@@ -136,7 +136,7 @@ feedback is shown when dropping the item on an incorrect drop zone.
 
 You can select any number of zones for an item to belong to using
 the checkboxes; all zones defined in the previous step are available.
-You can leave none of the checkboxes checked in order to create a
+You can leave all of the checkboxes unchecked in order to create a
 "decoy" item that doesn't belong to any zone.
 
 You can define an arbitrary number of drag items, each of which may

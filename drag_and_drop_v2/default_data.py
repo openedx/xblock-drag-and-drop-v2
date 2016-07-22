@@ -97,6 +97,7 @@ DEFAULT_DATA = {
     {
       "displayName": _("Goes anywhere"),
       "feedback": {
+        "incorrect": "",
         "correct": ITEM_ANY_ZONE_FEEDBACK
       },
       "zones": [
