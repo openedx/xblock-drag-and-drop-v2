@@ -143,6 +143,11 @@
     margin: 0;
     transform: translate(-50%, -50%); /* These blocks are to be centered on their absolute x,y position */
 }
+/* Dragging placed option to a different zone in assessment mode */
+.xblock--drag-and-drop .drag-container .target .option.grabbed-with-mouse {
+    transform: none; /* The transform messes with jQuery UI Draggable positioning, */
+                     /* so remove it while dragging with the mouse. */
+}
 
 /* Placed options in an aligned zone */
 .xblock--drag-and-drop .zone .item-wrapper {
@@ -172,20 +177,23 @@
 }
 
 /* Focused option */
-.xblock--drag-and-drop .drag-container .item-bank .option:focus,
-.xblock--drag-and-drop .drag-container .item-bank .option:hover,
-.xblock--drag-and-drop .drag-container .item-bank .option[aria-grabbed='true'] {
+.xblock--drag-and-drop .drag-container .option[draggable='true']:focus,
+.xblock--drag-and-drop .drag-container .option[draggable='true']:hover,
+.xblock--drag-and-drop .drag-container .option[draggable='true'][aria-grabbed='true'] {
     outline-width: 2px;
     outline-style: solid;
     outline-offset: -4px;
 }
 
-.xblock--drag-and-drop .drag-container .ui-draggable-dragging.option {
+.xblock--drag-and-drop .drag-container .option.grabbed-with-mouse {
     box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.3);
     border: 1px solid #ccc;
     opacity: .65;
     z-index: 20 !important;
     margin: 0; /* Allow the draggable to touch the edges of the target image */
+}
+.xblock--drag-and-drop .drag-container .item-align-center .option.grabbed-with-mouse {
+    margin: 0 auto; /* Revert to auto margin when dragging with mouse to not confuse jQuery UI draggable */
 }
 
 .xblock--drag-and-drop .drag-container .option img {
@@ -254,8 +262,9 @@
 }
 
 /* Focused zone */
+.xblock--drag-and-drop .item-bank:focus,
 .xblock--drag-and-drop .zone:focus {
-    border: 2px solid #a5a5a5;
+    outline: 2px solid #a5a5a5;
 }
 
 .xblock--drag-and-drop .drag-container .target .zone p {

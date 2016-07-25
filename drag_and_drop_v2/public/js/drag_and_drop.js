@@ -30,6 +30,29 @@ function DragAndDropTemplates(configuration) {
         }
     };
 
+    var bankItemWidthStyles = function(item, ctx) {
+        var style = {};
+        if (item.widthPercent) {
+            // The item bank container is often wider than the background image, and the
+            // widthPercent is specified relative to the background image so we have to
+            // convert it to pixels. But if the browser window / mobile screen is not as
+            // wide as the image, then the background image will be scaled down and this
+            // pixel value would be too large, so we also specify it as a max-width
+            // percentage.
+            style.width = (item.widthPercent / 100 * ctx.bg_image_width) + "px";
+            style.maxWidth = item.widthPercent + "%";
+        }
+        return style;
+    };
+
+    var itemContentTemplate = function(item) {
+        var item_content_html = item.displayName;
+        if (item.imageURL) {
+            item_content_html = '<img src="' + item.imageURL + '" alt="' + item.imageDescription + '" />';
+        }
+        return h('div', { innerHTML: item_content_html, className: "item-content" });
+    };
+
     var itemTemplate = function(item, ctx) {
         // Define properties
         var className = (item.class_name) ? item.class_name : "";
@@ -40,12 +63,15 @@ function DragAndDropTemplates(configuration) {
         if (item.widthPercent) {
             className += " specified-width";  // The author has specified a width for this item.
         }
+        if (item.grabbed_with) {
+            className += " grabbed-with-" + item.grabbed_with;
+        }
         var attributes = {
             'role': 'button',
             'draggable': !item.drag_disabled,
             'aria-grabbed': item.grabbed,
             'data-value': item.value,
-            'data-drag-disabled': item.drag_disabled
+            'tabindex': item.focusable ? 0 : undefined
         };
         var style = {};
         if (item.background_color) {
@@ -83,28 +109,13 @@ function DragAndDropTemplates(configuration) {
                 // ^ Hack to detect image width at runtime and make webkit consistent with Firefox
             }
         } else {
-            // If an item has not been placed it must be possible to move focus to it using the keyboard:
-            attributes.tabindex = 0;
-            if (item.widthPercent) {
-                // The item bank container is often wider than the background image, and the
-                // widthPercent is specified relative to the background image so we have to
-                // convert it to pixels. But if the browser window / mobile screen is not as
-                // wide as the image, then the background image will be scaled down and this
-                // pixel value would be too large, so we also specify it as a max-width
-                // percentage.
-                style.width = (item.widthPercent / 100 * ctx.bg_image_width) + "px";
-                style.maxWidth = item.widthPercent + "%";
-            }
+            $.extend(style, bankItemWidthStyles(item, ctx));
         }
         // Define children
         var children = [
             itemSpinnerTemplate(item.xhr_active)
         ];
-        var item_content_html = item.displayName;
-        if (item.imageURL) {
-            item_content_html = '<img src="' + item.imageURL + '" alt="' + item.imageDescription + '" />';
-        }
-        var item_content = h('div', { innerHTML: item_content_html, className: "item-content" });
+        var item_content = itemContentTemplate(item);
         if (item.is_placed) {
             // Insert information about zone in which this item has been placed
             var item_description_id = configuration.url_name + '-item-' + item.value + '-description';
@@ -143,6 +154,35 @@ function DragAndDropTemplates(configuration) {
         );
     };
 
+    // When an item is dragged out of the bank, a hidden placeholder of the same width and height as
+    // the original item is rendered in the bank. The function of the placeholder is to take up the
+    // same amount of space as the original item so that the bank does not collapse when you've dragged
+    // all items out.
+    var itemPlaceholderTemplate = function(item, ctx) {
+        var className = "";
+        if (item.has_image) {
+            className += " " + "option-with-image";
+        }
+        if (item.widthPercent) {
+            className += " specified-width";  // The author has specified a width for this item.
+        }
+        var style = bankItemWidthStyles(item, ctx);
+        // Placeholder should never be visible.
+        style.visibility = 'hidden';
+        return (
+            h(
+                'div.option',
+                {
+                    key: 'placeholder-' + item.value,
+                    className: className,
+                    attributes: {draggable: false},
+                    style: style
+                },
+                itemContentTemplate(item)
+            )
+        );
+    };
+
     var zoneTemplate = function(zone, ctx) {
         var className = ctx.display_zone_labels ? 'zone-name' : 'zone-name sr';
         var selector = ctx.display_zone_borders ? 'div.zone.zone-with-borders' : 'div.zone';
@@ -161,6 +201,7 @@ function DragAndDropTemplates(configuration) {
             h(
                 selector,
                 {
+                    key: zone.prefixed_uid,
                     id: zone.prefixed_uid,
                     attributes: {
                         'tabindex': 0,
@@ -246,6 +287,15 @@ function DragAndDropTemplates(configuration) {
         var items_in_bank = $.grep(ctx.items, is_item_placed, true);
         var is_item_placed_unaligned = function(i) { return i.zone_align === 'none'; };
         var items_placed_unaligned = $.grep(items_placed, is_item_placed_unaligned);
+        var item_bank_properties = {};
+        if (ctx.item_bank_focusable) {
+            item_bank_properties.attributes = {
+                'tabindex': 0,
+                'dropzone': 'move',
+                'aria-dropeffect': 'move',
+                'role': 'button'
+            };
+        }
         return (
             h('section.themed-xblock.xblock--drag-and-drop', [
                 problemTitle,
@@ -254,10 +304,11 @@ function DragAndDropTemplates(configuration) {
                     h('p', {innerHTML: ctx.problem_html}),
                 ]),
                 h('section.drag-container', {}, [
-                    h(
-                        'div.item-bank',
-                        renderCollection(itemTemplate, items_in_bank, ctx)
-                    ),
+                    h('div.item-bank', item_bank_properties, [
+                        h('p', { className: 'zone-description sr' }, gettext('Item Bank')),
+                        renderCollection(itemTemplate, items_in_bank, ctx),
+                        renderCollection(itemPlaceholderTemplate, items_placed, ctx)
+                    ]),
                     h('div.target',
                         {
                             attributes: {
@@ -281,10 +332,9 @@ function DragAndDropTemplates(configuration) {
                                 h('img.target-img', {src: ctx.target_img_src, alt: ctx.target_img_description}),
                             ]
                         ),
-                        renderCollection(zoneTemplate, ctx.zones, ctx),
-                        renderCollection(itemTemplate, items_placed_unaligned, ctx)
-                    ]
-                    ),
+                        renderCollection(itemTemplate, items_placed_unaligned, ctx),
+                        renderCollection(zoneTemplate, ctx.zones, ctx)
+                    ]),
                 ]),
                 keyboardHelpTemplate(ctx),
                 feedbackTemplate(ctx),
@@ -327,7 +377,6 @@ function DragAndDropBlock(runtime, element, configuration) {
     var TAB = 9;
     var M = 77;
 
-    var placementMode = false;
     var $selectedItem;
     var $focusedElement;
 
@@ -579,20 +628,31 @@ function DragAndDropBlock(runtime, element, configuration) {
         return key === RET || key === SPC;
     };
 
+    var isSpaceKey = function(evt) {
+        var key = evt.which;
+        return key === SPC;
+    };
+
     var focusNextZone = function(evt, $currentZone) {
+        var zones = $root.find('.target .zone').toArray();
+        // In assessment mode, item bank is a valid drop zone
+        if (configuration.mode === DragAndDropBlock.ASSESSMENT_MODE) {
+            zones.push($root.find('.item-bank')[0]);
+        }
+        var idx = zones.indexOf($currentZone[0]);
         if (evt.shiftKey) {  // Going backward
-            var isFirstZone = $currentZone.prev('.zone').length === 0;
-            if (isFirstZone) {
-                evt.preventDefault();
-                $root.find('.target .zone').last().focus();
+            idx--;
+            if (idx < 0) {
+                idx = zones.length - 1;
             }
         } else {  // Going forward
-            var isLastZone = $currentZone.next('.zone').length === 0;
-            if (isLastZone) {
-                evt.preventDefault();
-                $root.find('.target .zone').first().focus();
+            idx++;
+            if (idx > zones.length - 1) {
+                idx = 0;
             }
         }
+        evt.preventDefault();
+        zones[idx].focus();
     };
 
     var placeItem = function($zone, $item) {
@@ -636,29 +696,39 @@ function DragAndDropBlock(runtime, element, configuration) {
 
     var initDroppable = function() {
         // Set up zones for keyboard interaction
-        $root.find('.zone').each(function() {
+        $root.find('.zone, .item-bank').each(function() {
             var $zone = $(this);
             $zone.on('keydown', function(evt) {
-                if (placementMode) {
+                if (state.keyboard_placement_mode) {
                     if (isCycleKey(evt)) {
                         focusNextZone(evt, $zone);
                     } else if (isCancelKey(evt)) {
                         evt.preventDefault();
-                        placementMode = false;
+                        state.keyboard_placement_mode = false;
                         releaseItem($selectedItem);
                     } else if (isActionKey(evt)) {
                         evt.preventDefault();
-                        placementMode = false;
-                        placeItem($zone);
+                        state.keyboard_placement_mode = false;
                         releaseItem($selectedItem);
+                        if ($zone.is('.item-bank')) {
+                            delete state.items[$selectedItem.data('value')];
+                            applyState();
+                        } else {
+                            placeItem($zone);
+                        }
                     }
+                } else if (isSpaceKey(evt)) {
+                  // Pressing the space bar moves the page down by default in most browsers.
+                  // That can be distracting while moving items with the keyboard, so prevent
+                  // the default scroll from happening while a zone is focused.
+                  evt.preventDefault();
                 }
             });
         });
 
-        // Make zone accept items that are dropped using the mouse
+        // Make zones accept items that are dropped using the mouse
         $root.find('.zone').droppable({
-            accept: '.item-bank .option',
+            accept: '.drag-container .option',
             tolerance: 'pointer',
             drop: function(evt, ui) {
                 var $zone = $(this);
@@ -666,18 +736,34 @@ function DragAndDropBlock(runtime, element, configuration) {
                 placeItem($zone, $item);
             }
         });
+
+        if (configuration.mode === DragAndDropBlock.ASSESSMENT_MODE) {
+            // Make item bank accept items that are returned to the bank using the mouse
+            $root.find('.item-bank').droppable({
+                accept: '.target .option',
+                tolerance: 'pointer',
+                drop: function(evt, ui) {
+                    var $item = ui.helper;
+                    var item_id = $item.data('value');
+                    releaseItem($item);
+                    delete state.items[item_id];
+                    applyState();
+                }
+            });
+        }
     };
 
     var initDraggable = function() {
-        $root.find('.item-bank .option').not('[data-drag-disabled=true]').each(function() {
+        $root.find('.drag-container .option[draggable=true]').each(function() {
             var $item = $(this);
 
             // Allow item to be "picked up" using the keyboard
             $item.on('keydown', function(evt) {
                 if (isActionKey(evt)) {
                     evt.preventDefault();
-                    placementMode = true;
-                    grabItem($item);
+                    evt.stopPropagation();
+                    state.keyboard_placement_mode = true;
+                    grabItem($item, 'keyboard');
                     $selectedItem = $item;
                     $root.find('.target .zone').first().focus();
                 }
@@ -686,20 +772,32 @@ function DragAndDropBlock(runtime, element, configuration) {
             // Make item draggable using the mouse
             try {
                 $item.draggable({
+                    addClasses: false,  // don't add ui-draggable-* classes as they don't play well with virtual DOM.
                     containment: $root.find('.drag-container'),
                     cursor: 'move',
-                    stack: $root.find('.item-bank .option'),
+                    stack: $root.find('.drag-container .option'),
                     revert: 'invalid',
                     revertDuration: 150,
                     start: function(evt, ui) {
                         var $item = $(this);
-                        grabItem($item);
+                        // Store initial position of dragged item to be able to revert back to it on cancelled drag
+                        // (when user drops the item onto an area that is not a droppable zone).
+                        // The jQuery UI draggable library usually knows how to revert correctly, but our dropped items
+                        // have a translation transform that confuses jQuery UI draggable, so we "help" it do the right
+                        // thing by manually storing the initial position and resetting it in the 'stop' handler below.
+                        $item.data('initial-position', {
+                            left: $item.css('left'),
+                            top: $item.css('top')
+                        });
+                        grabItem($item, 'mouse');
                         publishEvent({
                             event_type: 'edx.drag_and_drop_v2.item.picked_up',
                             item_id: $item.data('value'),
                         });
                     },
                     stop: function(evt, ui) {
+                        // Revert to original position.
+                        $item.css($item.data('initial-position'));
                         releaseItem($(this));
                     }
                 });
@@ -710,9 +808,9 @@ function DragAndDropBlock(runtime, element, configuration) {
         });
     };
 
-    var grabItem = function($item) {
+    var grabItem = function($item, interaction_type) {
         var item_id = $item.data('value');
-        setGrabbedState(item_id, true);
+        setGrabbedState(item_id, true, interaction_type);
         updateDOM();
     };
 
@@ -722,16 +820,22 @@ function DragAndDropBlock(runtime, element, configuration) {
         updateDOM();
     };
 
-    var setGrabbedState = function(item_id, grabbed) {
-        for (var i = 0; i < configuration.items.length; i++) {
-            if (configuration.items[i].id === item_id) {
-                configuration.items[i].grabbed = grabbed;
+    var setGrabbedState = function(item_id, grabbed, interaction_type) {
+        configuration.items.forEach(function(item) {
+            if (item.id === item_id) {
+                if (grabbed) {
+                    item.grabbed = true;
+                    item.grabbed_with = interaction_type;
+                } else {
+                    item.grabbed = false;
+                    delete item.grabbed_with;
+                }
             }
-        }
+        });
     };
 
     var destroyDraggable = function() {
-        $root.find('.item-bank .option[data-drag-disabled=true]').each(function() {
+        $root.find('.drag-container .option[draggable=false]').each(function() {
             var $item = $(this);
 
             $item.off();
@@ -764,12 +868,10 @@ function DragAndDropBlock(runtime, element, configuration) {
                 // In assessment mode we leave it in the chosen zone until explicit answer submission.
                 if (configuration.mode === DragAndDropBlock.STANDARD_MODE) {
                     state.last_action_correct = data.correct;
-                    if (data.correct) {
-                        state.items[item_id].correct = true;
-                    } else {
+                    state.feedback = data.feedback;
+                    if (!data.correct) {
                         delete state.items[item_id];
                     }
-                    state.feedback = data.feedback;
                     if (data.finished) {
                         state.finished = true;
                         state.overall_feedback = data.overall_feedback;
@@ -832,22 +934,32 @@ function DragAndDropBlock(runtime, element, configuration) {
             if (item.grabbed !== undefined) {
                 grabbed = item.grabbed;
             }
-            var placed = item_user_state && item_user_state.correct;
+            var drag_disabled;
+            // In standard mode items placed in correct zone are no longer draggable.
+            // In assessment mode items are draggable and can be moved between zones
+            // until user explicitly submits the problem.
+            if (configuration.mode === DragAndDropBlock.STANDARD_MODE) {
+                drag_disabled = Boolean(state.finished || item_user_state);
+            } else {
+                drag_disabled = Boolean(state.finished);
+            }
             var itemProperties = {
                 value: item.id,
-                drag_disabled: Boolean(item_user_state || state.finished),
-                class_name: placed || state.finished ? 'fade' : undefined,
+                drag_disabled: drag_disabled,
+                focusable: !drag_disabled,
+                class_name: drag_disabled ? 'fade' : undefined,
                 xhr_active: (item_user_state && item_user_state.submitting_location),
                 displayName: item.displayName,
                 imageURL: item.expandedImageURL,
                 imageDescription: item.imageDescription,
                 has_image: !!item.expandedImageURL,
                 grabbed: grabbed,
+                grabbed_with: item.grabbed_with,
+                is_placed: Boolean(item_user_state),
                 widthPercent: item.widthPercent, // widthPercent may be undefined (auto width)
                 imgNaturalWidth: item.imgNaturalWidth,
             };
             if (item_user_state) {
-                itemProperties.is_placed = true;
                 itemProperties.zone = item_user_state.zone;
                 itemProperties.zone_align = item_user_state.zone_align;
                 itemProperties.x_percent = item_user_state.x_percent;
@@ -861,6 +973,11 @@ function DragAndDropBlock(runtime, element, configuration) {
             }
             return itemProperties;
         });
+
+        // In assessment mode, it is possible to move items back to the bank, so the bank should be able to
+        // gain focus while keyboard placement is in progress.
+        var item_bank_focusable = state.keyboard_placement_mode &&
+                configuration.mode === DragAndDropBlock.ASSESSMENT_MODE;
 
         var context = {
             // configuration - parts that never change:
@@ -877,6 +994,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             items: items,
             // state - parts that can change:
             last_action_correct: state.last_action_correct,
+            item_bank_focusable: item_bank_focusable,
             popup_html: state.feedback || '',
             feedback_html: $.trim(state.overall_feedback),
             display_reset_button: Object.keys(state.items).length > 0,

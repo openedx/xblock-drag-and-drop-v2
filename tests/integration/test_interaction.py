@@ -66,7 +66,7 @@ class InteractionTestBase(object):
         return self._page.find_elements_by_xpath(".//div[@data-value='{item_id}']".format(item_id=item_value))[0]
 
     def _get_unplaced_item_by_value(self, item_value):
-        items_container = self._page.find_element_by_css_selector('.item-bank')
+        items_container = self._get_item_bank()
         return items_container.find_elements_by_xpath(".//div[@data-value='{item_id}']".format(item_id=item_value))[0]
 
     def _get_placed_item_by_value(self, item_value):
@@ -85,10 +85,31 @@ class InteractionTestBase(object):
     def _get_dialog_dismiss_button(self, dialog_modal):  # pylint: disable=no-self-use
         return dialog_modal.find_element_by_css_selector('.modal-dismiss-button')
 
+    def _get_item_bank(self):
+        return self._page.find_element_by_css_selector('.item-bank')
+
     def _get_zone_position(self, zone_id):
         return self.browser.execute_script(
             'return $("div[data-uid=\'{zone_id}\']").prevAll(".zone").length'.format(zone_id=zone_id)
         )
+
+    def _get_draggable_property(self, item_value):
+        """
+        Returns the value of the 'draggable' property of item.
+
+        Selenium has the element.get_attribute method that looks up properties and attributes,
+        but for some reason it *always* returns "true" for the 'draggable' property, event though
+        both the HTML attribute and the DOM property are set to false.
+        We work around that selenium bug by using JavaScript to get the correct value of 'draggable'.
+        """
+        script = "return $('div.option[data-value={}]').prop('draggable')".format(item_value)
+        return self.browser.execute_script(script)
+
+    def assertDraggable(self, item_value):
+        self.assertTrue(self._get_draggable_property(item_value))
+
+    def assertNotDraggable(self, item_value):
+        self.assertFalse(self._get_draggable_property(item_value))
 
     @staticmethod
     def wait_until_ondrop_xhr_finished(elem):
@@ -104,29 +125,55 @@ class InteractionTestBase(object):
         )
 
     def place_item(self, item_value, zone_id, action_key=None):
+        """
+        Place item with ID of item_value into zone with ID of zone_id.
+        zone_id=None means place item back to the item bank.
+        action_key=None means simulate mouse drag/drop instead of placing the item with keyboard.
+        """
         if action_key is None:
             self.drag_item_to_zone(item_value, zone_id)
         else:
             self.move_item_to_zone(item_value, zone_id, action_key)
 
     def drag_item_to_zone(self, item_value, zone_id):
-        element = self._get_unplaced_item_by_value(item_value)
-        target = self._get_zone_by_id(zone_id)
+        """
+        Drag item to desired zone using mouse interaction.
+        zone_id=None means drag item back to the item bank.
+        """
+        element = self._get_item_by_value(item_value)
+        if zone_id is None:
+            target = self._get_item_bank()
+        else:
+            target = self._get_zone_by_id(zone_id)
         action_chains = ActionChains(self.browser)
         action_chains.drag_and_drop(element, target).perform()
 
     def move_item_to_zone(self, item_value, zone_id, action_key):
-        # Get zone position
-        zone_position = self._get_zone_position(zone_id)
+        """
+        Place item to descired zone using keybard interaction.
+        zone_id=None means place item back into the item bank.
+        """
         # Focus on the item:
-        item = self._get_unplaced_item_by_value(item_value)
+        item = self._get_item_by_value(item_value)
         ActionChains(self.browser).move_to_element(item).perform()
         # Press the action key:
         item.send_keys(action_key)  # Focus is on first *zone* now
         self.assert_grabbed_item(item)
-        for _ in range(zone_position):
+        # Get desired zone and figure out how many times we have to press Tab to focus the zone.
+        if zone_id is None:  # moving back to the bank
+            zone = self._get_item_bank()
+            # When switching focus between zones in keyboard placement mode,
+            # the item bank always gets focused last (after all regular zones),
+            # so we have to press Tab once for every regular zone to move focus to the item bank.
+            tab_press_count = len(self.all_zones)
+        else:
+            zone = self._get_zone_by_id(zone_id)
+            # The number of times we have to press Tab to focus the desired zone equals the zero-based
+            # position of the zone (zero presses for first zone, one press for second zone, etc).
+            tab_press_count = self._get_zone_position(zone_id)
+        for _ in range(tab_press_count):
             self._page.send_keys(Keys.TAB)
-        self._get_zone_by_id(zone_id).send_keys(action_key)
+        zone.send_keys(action_key)
 
     def assert_grabbed_item(self, item):
         self.assertEqual(item.get_attribute('aria-grabbed'), 'true')
@@ -134,32 +181,37 @@ class InteractionTestBase(object):
     def assert_placed_item(self, item_value, zone_title, assessment_mode=False):
         item = self._get_placed_item_by_value(item_value)
         self.wait_until_visible(item)
+        self.wait_until_ondrop_xhr_finished(item)
         item_content = item.find_element_by_css_selector('.item-content')
         self.wait_until_visible(item_content)
         item_description = item.find_element_by_css_selector('.sr')
         self.wait_until_visible(item_description)
         item_description_id = '-item-{}-description'.format(item_value)
 
-        self.assertIsNone(item.get_attribute('tabindex'))
         self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
-        self.assertEqual(item.get_attribute('data-drag-disabled'), 'true')
         self.assertEqual(item_content.get_attribute('aria-describedby'), item_description_id)
         self.assertEqual(item_description.get_attribute('id'), item_description_id)
         if assessment_mode:
+            self.assertDraggable(item_value)
+            self.assertEqual(item.get_attribute('class'), 'option')
+            self.assertEqual(item.get_attribute('tabindex'), '0')
             self.assertEqual(item_description.text, 'Placed in: {}'.format(zone_title))
         else:
+            self.assertNotDraggable(item_value)
+            self.assertEqual(item.get_attribute('class'), 'option fade')
+            self.assertIsNone(item.get_attribute('tabindex'))
             self.assertEqual(item_description.text, 'Correctly placed in: {}'.format(zone_title))
 
     def assert_reverted_item(self, item_value):
         item = self._get_item_by_value(item_value)
         self.wait_until_visible(item)
+        self.wait_until_ondrop_xhr_finished(item)
         item_content = item.find_element_by_css_selector('.item-content')
 
-        self.assertEqual(item.get_attribute('class'), 'option ui-draggable')
+        self.assertDraggable(item_value)
+        self.assertEqual(item.get_attribute('class'), 'option')
         self.assertEqual(item.get_attribute('tabindex'), '0')
-        self.assertEqual(item.get_attribute('draggable'), 'true')
         self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
-        self.assertEqual(item.get_attribute('data-drag-disabled'), 'false')
         self.assertIsNone(item_content.get_attribute('aria-describedby'))
 
         try:
@@ -182,10 +234,11 @@ class InteractionTestBase(object):
         for item_key in decoy_items:
             item = self._get_item_by_value(item_key)
             self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
-            self.assertEqual(item.get_attribute('data-drag-disabled'), 'true')
             if assessment_mode:
+                self.assertDraggable(item_key)
                 self.assertEqual(item.get_attribute('class'), 'option')
             else:
+                self.assertNotDraggable(item_key)
                 self.assertEqual(item.get_attribute('class'), 'option fade')
 
     def parameterized_item_positive_feedback_on_good_move(
@@ -241,6 +294,50 @@ class InteractionTestBase(object):
                     self.assertEqual(popup.get_attribute('class'), 'popup popup-incorrect')
                     self.assertTrue(popup.is_displayed())
                     self.assert_reverted_item(definition.item_id)
+
+    def parameterized_move_items_between_zones(self, items_map, all_zones, scroll_down=100, action_key=None):
+        # Scroll drop zones into view to make sure Selenium can successfully drop items
+        self.scroll_down(pixels=scroll_down)
+
+        # Take each item, place it into first zone, then continue moving it until it has visited all zones.
+        for item_key in items_map.keys():
+            for zone_id, zone_title in all_zones:
+                self.place_item(item_key, zone_id, action_key)
+                self.assert_placed_item(item_key, zone_title, assessment_mode=True)
+            # Finally, move them all back to the bank.
+            self.place_item(item_key, None, action_key)
+            self.assert_reverted_item(item_key)
+
+    def parameterized_cannot_move_items_between_zones(self, items_map, all_zones, scroll_down=100, action_key=None):
+        # Scroll drop zones into view to make sure Selenium can successfully drop items
+        self.scroll_down(pixels=scroll_down)
+
+        # Take each item an assigned zone, place it into the correct zone, then ensure it cannot be moved to other.
+        # zones or back to the bank.
+        for item_key, definition in items_map.items():
+            if definition.zone_ids:  # skip decoy items
+                self.place_item(definition.item_id, definition.zone_ids[0], action_key)
+                self.assert_placed_item(definition.item_id, definition.zone_title, assessment_mode=False)
+                if action_key:
+                    item = self._get_item_by_value(definition.item_id)
+                    # When using the keyboard, ensure that dropped items cannot get "grabbed".
+                    # Assert item has no tabindex.
+                    self.assertIsNone(item.get_attribute('tabindex'))
+                    # Focus on the item:
+                    ActionChains(self.browser).move_to_element(item).perform()
+                    # Press the action key:
+                    item.send_keys(action_key)
+                    # Assert item is not grabbed.
+                    self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
+                else:
+                    # When using the mouse, try to drag items and observe it doesn't work.
+                    for zone_id, _zone_title in all_zones:
+                        if zone_id not in definition.zone_ids:
+                            self.place_item(item_key, zone_id, action_key)
+                            self.assert_placed_item(definition.item_id, definition.zone_title, assessment_mode=False)
+                        # Finally, try to move item back to the bank.
+                        self.place_item(item_key, None, action_key)
+                        self.assert_placed_item(definition.item_id, definition.zone_title, assessment_mode=False)
 
     def parameterized_final_feedback_and_reset(
             self, items_map, feedback, scroll_down=100, action_key=None, assessment_mode=False
@@ -396,6 +493,12 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, BaseInt
         self.parameterized_item_negative_feedback_on_bad_move(self.items_map, self.all_zones, action_key=action_key)
 
     @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    def test_cannot_move_items_between_zones(self, action_key):
+        self.parameterized_cannot_move_items_between_zones(
+            self.items_map, self.all_zones, action_key=action_key
+        )
+
+    @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
     def test_final_feedback_and_reset(self, action_key):
         self.parameterized_final_feedback_and_reset(self.items_map, self.feedback, action_key=action_key)
 
@@ -421,6 +524,12 @@ class AssessmentInteractionTest(DefaultAssessmentDataTestMixin, InteractionTestB
     def test_item_no_feedback_on_bad_move(self, action_key):
         self.parameterized_item_negative_feedback_on_bad_move(
             self.items_map, self.all_zones, action_key=action_key, assessment_mode=True
+        )
+
+    @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    def test_move_items_between_zones(self, action_key):
+        self.parameterized_move_items_between_zones(
+            self.items_map, self.all_zones, action_key=action_key
         )
 
     @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
@@ -523,6 +632,34 @@ class EventsFiredTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegration
         self.assertEqual(
                 published_data, event['data']
         )
+
+
+class PreventSpaceBarScrollTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):
+    """"
+    Test that browser default page down action is prevented when pressing the space bar while
+    any zone is focused.
+    """
+    def get_scroll(self):
+        return self.browser.execute_script('return $(window).scrollTop()')
+
+    def test_space_bar_scroll(self):
+        # Window should not be scrolled at first.
+        self.assertEqual(self.get_scroll(), 0)
+        # Pressing space bar while no zone is focused should scroll the window down (default browser action).
+        self._page.send_keys(Keys.SPACE)
+        # Window should be scrolled down a bit.
+        wait = WebDriverWait(self, 2)
+        # While the XHR is in progress, a spinner icon is shown inside the item.
+        # When the spinner disappears, we can assume that the XHR request has finished.
+        wait.until(lambda s: s.get_scroll() > 0)
+        # Scroll the window back.
+        self.scroll_down(pixels=0)
+        self.assertEqual(self.get_scroll(), 0)
+        # Now press Space while one of the zones is focused.
+        zone = self._get_zone_by_id(self.all_zones[0][0])
+        zone.send_keys(Keys.SPACE)
+        # No scrolling should occur.
+        self.assertEqual(self.get_scroll(), 0)
 
 
 class CustomDataInteractionTest(StandardInteractionTest):
