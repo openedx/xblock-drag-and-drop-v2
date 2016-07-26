@@ -338,7 +338,7 @@ class MultipleValidOptionsInteractionTest(DefaultDataTestMixin, InteractionTestB
         reset = self._get_reset_button()
         self.scroll_down(pixels=100)
 
-        for name, item in self.items_map.items():
+        for item in self.items_map.values():
             for i, zone in enumerate(item.zone_ids):
                 self.place_item(item.item_id, zone, None)
                 self.wait_until_html_in(item.feedback_positive[i], feedback_popup_content)
