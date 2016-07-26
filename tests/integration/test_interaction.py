@@ -326,6 +326,30 @@ class BasicInteractionTest(DefaultDataTestMixin, InteractionTestBase):
         self.interact_with_keyboard_help()
 
 
+class MultipleValidOptionsInteractionTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):
+
+    items_map = {
+        0: ItemDefinition(0, ['zone-1', 'zone-2'], ["Zone 1", "Zone 2"], ["Yes 1", "Yes 1"], ["No 1", "No 1"]),
+    }
+
+    def test_multiple_positive_feedback(self):
+        popup = self._get_popup()
+        feedback_popup_content = self._get_popup_content()
+        reset = self._get_reset_button()
+        self.scroll_down(pixels=100)
+
+        for name, item in self.items_map.items():
+            for i, zone in enumerate(item.zone_ids):
+                self.place_item(item.item_id, zone, None)
+                self.wait_until_html_in(item.feedback_positive[i], feedback_popup_content)
+                self.assertEqual(popup.get_attribute('class'), 'popup')
+                self.assert_placed_item(item.item_id, item.zone_title[i])
+                reset.click()
+
+    def _get_scenario_xml(self):
+        return self._get_custom_scenario_xml("data/test_multiple_options_data.json")
+
+
 @ddt
 class EventsFiredTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):
     """

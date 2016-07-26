@@ -1,0 +1,59 @@
+{
+  "zones": [
+    {
+      "width": 200,
+      "title": "Zone 1",
+      "height": 100,
+      "y": "200",
+      "x": "100",
+      "uid": "zone-1"
+    },
+    {
+      "width": 200,
+      "title": "Zone 2",
+      "height": 100,
+      "y": 0,
+      "x": 0,
+      "uid": "zone-2"
+    }
+  ],
+  "items": [
+    {
+      "displayName": "1 here",
+      "feedback": {
+        "incorrect": "No 1",
+        "correct": "Yes 1"
+      },
+      "zones": [
+        "zone-1",
+        "zone-2"
+      ],
+      "imageURL": "",
+      "id": 0
+    },
+    {
+      "displayName": "2 here",
+      "feedback": {
+        "incorrect": "No 2",
+        "correct": "Yes 2"
+      },
+      "zone": "zone-2",
+      "imageURL": "",
+      "id": 1
+    },
+    {
+      "displayName": "X",
+      "feedback": {
+        "incorrect": "No Zone for this",
+        "correct": ""
+      },
+      "zone": "none",
+      "imageURL": "",
+      "id": 2
+    }
+  ],
+  "feedback": {
+    "start": "Some Intro Feed",
+    "finish": "Some Final Feed"
+  }
+}

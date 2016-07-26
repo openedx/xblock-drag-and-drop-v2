@@ -116,12 +116,13 @@
             </fieldset>
         </div>
         <div class="row">
-            <label for="item-{{id}}-image-url" class="h3">{{i18n "Image URL (alternative to the text)"}}</label>
-            <input type="text"
-                   id="item-{{id}}-image-url"
-                   placeholder="{{i18n 'For example, http://example.com/image.png or /static/image.png'}}"
-                   class="item-image-url"
-                   value="{{ imageURL }}" />
+            <label class="h3">{{i18n "Image URL (alternative to the text)"}}
+                <input type="text"
+                       id="item-{{id}}-image-url"
+                       placeholder="{{i18n 'For example, http://example.com/image.png or /static/image.png'}}"
+                       class="item-image-url"
+                       value="{{ imageURL }}" />
+            </label>
         </div>
         <div class="row">
             <label class="h3" for="item-{{id}}-image-description">{{i18n "Image description (should provide sufficient information to place the item even if the image did not load)"}}</label>
