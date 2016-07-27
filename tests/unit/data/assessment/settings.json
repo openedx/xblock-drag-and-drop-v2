@@ -1,6 +1,7 @@
 {
     "display_name": "DnDv2 XBlock with plain text instructions",
-    "max_attempts": 0,
+    "mode": "assessment",
+    "max_attempts": 10,
     "show_title": true,
     "question_text": "Can you solve this drag-and-drop problem?",
     "show_question_header": true,

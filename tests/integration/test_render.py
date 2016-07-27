@@ -213,7 +213,6 @@ class TestDragAndDropRender(BaseIntegrationTest):
     def test_keyboard_help(self):
         self.load_scenario()
 
-        self._get_keyboard_help()
         keyboard_help_button = self._get_keyboard_help_button()
         keyboard_help_dialog = self._get_keyboard_help_dialog()
         dialog_modal_overlay = keyboard_help_dialog.find_element_by_css_selector('.modal-window-overlay')
@@ -223,7 +222,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
         self.assertFalse(dialog_modal_overlay.is_displayed())
         self.assertFalse(dialog_modal.is_displayed())
         self.assertEqual(dialog_modal.get_attribute('role'), 'dialog')
-        self.assertEqual(dialog_modal.get_attribute('aria-labelledby'), 'modal-window-title')
+        self.assertEqual(dialog_modal.get_attribute('aria-labelledby'), 'modal-window-title-')
 
     def test_feedback(self):
         self.load_scenario()

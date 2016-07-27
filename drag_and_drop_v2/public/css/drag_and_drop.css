@@ -326,13 +326,174 @@
     outline: 2px solid white;
 }
 
-/*** KEYBOARD HELP ***/
+/*** edX pattern library components ***/
+
+/* reset stock edx-platform button styles */
+.xblock--drag-and-drop button,
+.xblock--drag-and-drop button:hover,
+.xblock--drag-and-drop button.is-hovered,
+.xblock--drag-and-drop button:focus,
+.xblock--drag-and-drop button.is-focused,
+.xblock--drag-and-drop button:active,
+.xblock--drag-and-drop button.is-active {
+    box-shadow: none;
+    text-shadow: none;
+    background-image: none;
+}
+
+.xblock--drag-and-drop .btn-default,
+.xblock--drag-and-drop .btn-brand {
+    display: inline-block;
+    font-weight: normal;
+    background: #0079bc;
+    color: #fcfcfc;
+    -webkit-transition: color 0.125s ease-in-out 0s, border-color 0.125s ease-in-out 0s, background 0.125s ease-in-out 0s, box-shadow 0.125s ease-in-out 0s;
+    -moz-transition: color 0.125s ease-in-out 0s, border-color 0.125s ease-in-out 0s, background 0.125s ease-in-out 0s, box-shadow 0.125s ease-in-out 0s;
+    transition: color 0.125s ease-in-out 0s, border-color 0.125s ease-in-out 0s, background 0.125s ease-in-out 0s, box-shadow 0.125s ease-in-out 0s;
+    border-radius: 3px;
+    border: 1px solid #0079bc;
+    padding: 0.625em 1.25em;
+    font-size: 1em;
+}
+
+.xblock--drag-and-drop .btn-default {
+    border-color: transparent;
+    background: transparent;
+    color: #0074b4
+}
+
+.xblock--drag-and-drop .btn-brand {
+  border-color: #0075b4;
+  background: white;
+  color: #0075b4;
+}
+
+.xblock--drag-and-drop .btn-small {
+  padding: 0.625em 0.625em;
+  font-size: 0.875em;
+}
+
+.xblock--drag-and-drop .btn-default:hover,
+.xblock--drag-and-drop .btn-default.is-hovered,
+.xblock--drag-and-drop .btn-default:focus,
+.xblock--drag-and-drop .btn-default.is-focused {
+    background-color: transparent;
+    border: 1px solid #0074b4;
+    color: #0074b4
+}
+
+.xblock--drag-and-drop .btn-default:active,
+.xblock--drag-and-drop .btn-default.is-pressed,
+.xblock--drag-and-drop .btn-default.is-active {
+    border-color: #0074b4;
+    color: #0074b4
+}
+
+.xblock--drag-and-drop .btn-default:disabled,
+.xblock--drag-and-drop .btn-default.is-disabled {
+    color: #6b6969
+}
+
+.xblock--drag-and-drop .btn-brand {
+    border-color: #0074b4;
+    background: #0074b4;
+    color: #fcfcfc
+}
+
+.xblock--drag-and-drop .btn-brand:hover,
+.xblock--drag-and-drop .btn-brand.is-hovered,
+.xblock--drag-and-drop .btn-brand:focus,
+.xblock--drag-and-drop .btn-brand.is-focused {
+    border-color: #008bd8;
+    background-color: #008bd8;
+    color: #fcfcfc
+}
+
+.xblock--drag-and-drop .btn-brand:active,
+.xblock--drag-and-drop .btn-brand.is-pressed,
+.xblock--drag-and-drop .btn-brand.is-active {
+    border-color: #0074b4;
+    background: #0074b4
+}
+
+.xblock--drag-and-drop .btn-brand:disabled,
+.xblock--drag-and-drop .btn-brand.is-disabled {
+    border-color: #d2d0d0;
+    background: #f2f3f3;
+    color: #676666
+}
+
+
+/*** ACTIONS TOOLBAR ***/
+
+.xblock--drag-and-drop .actions-toolbar {
+    min-height: 3.75em;
+    width: auto;
+    position: relative;
+}
+
+.xblock--drag-and-drop .actions-toolbar .action-toolbar-item {
+    display: inline-block;
+    margin: 10px 0;
+}
+
+.xblock--drag-and-drop .attempts-used {
+    margin-left: 0.675em;
+    font-size: 0.875em;
+    color: #666;
+}
+
+.xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
+    text-align: left;
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
+        float: right;
+        margin: 0;
+        padding-right: -5px;
+    }
+}
+
+.xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper {
+    border-right: 1px solid #ddd;
+    border-collapse: collapse;
+    padding: 0 5px;
+    display: inline-block;
+    height: 100%;
+}
+
+.xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper:first-child {
+    padding-left: 0;
+}
+
+.xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper:last-child {
+    border-right: none;
+    padding-right: 0;
+}
+
+.xblock--drag-and-drop .sidebar-buttons .btn-brand {
+    display: inline-block;
+    padding: 3px 5px;
+}
 
 .xblock--drag-and-drop .keyboard-help {
     margin-top: 3px;
     margin-bottom: 6px;
 }
 
+.xblock--drag-and-drop .btn-icon {
+    display: block;
+}
+
+.xblock--drag-and-drop .reset-button {
+    margin-top: 3px;
+}
+
+/*** ACTIONS TOOLBAR END ***/
+
+/*** KEYBOARD HELP ***/
 .xblock--drag-and-drop .keyboard-help-dialog {
     position: fixed;
     left: 50%;
@@ -382,26 +543,7 @@
     margin-left: 2%;
 }
 
-.xblock--drag-and-drop .link-button {
-    padding: 0;
-    margin: 0;
-    cursor: pointer;
-    color: #2d74b3;
-    font-weight: normal;
-    font-size: 12pt;
-    background: none;
-    box-shadow: none;
-    border: none;
-}
-
-.xblock--drag-and-drop .reset-button {
-    float: right;
-    margin-top: 3px;
-}
-
-.xblock--drag-and-drop .link-button:focus {
-    outline: 2px solid #2d74b3;
-}
+/*** KEYBOARD HELP END ***/
 
 /* Make sure screen-reader content is hidden in the workbench: */
 .xblock--drag-and-drop .sr {
