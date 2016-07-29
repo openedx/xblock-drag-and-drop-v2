@@ -64,6 +64,9 @@ function DragAndDropEditBlock(runtime, element, params) {
                     _fn.build.$el.targetImage.show();
 
                     _fn.build.clickHandlers();
+
+                    // Hide settings that are specific to assessment mode
+                    _fn.build.$el.feedback.form.find('#problem-mode').trigger('change');
                 },
 
                 validate: function() {
@@ -171,6 +174,9 @@ function DragAndDropEditBlock(runtime, element, params) {
                         });
                     });
 
+                    $fbkTab
+                        .on('change', '#problem-mode', _fn.build.form.problem.toggleAssessmentSettings);
+
                     $zoneTab
                         .on('click', '.add-zone', function(e) {
                             e.preventDefault();
@@ -220,6 +226,19 @@ function DragAndDropEditBlock(runtime, element, params) {
                         .on('input', '.item-image-url', _fn.build.form.item.imageURLChanged);
                 },
                 form: {
+                    problem: {
+                        toggleAssessmentSettings: function(e) {
+                            e.preventDefault();
+                            var $modeSetting = $(e.currentTarget),
+                                $problemForm = $modeSetting.parent('form'),
+                                $assessmentSettings = $problemForm.find('.setting.assessment');
+                            if ($modeSetting.val() === 'assessment') {
+                                $assessmentSettings.show();
+                            } else {
+                                $assessmentSettings.hide();
+                            }
+                        }
+                    },
                     zone: {
                         totalZonesCreated: 0, // This counter is used for HTML IDs. Never decremented.
                         zoneObjects: [],
@@ -488,6 +507,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                         var data = {
                             'display_name': $element.find('#display-name').val(),
                             'mode': $element.find("#problem-mode").val(),
+                            'max_attempts': $element.find(".max-attempts").val(),
                             'show_title': $element.find('.show-title').is(':checked'),
                             'weight': $element.find('#weight').val(),
                             'problem_text': $element.find('#problem-text').val(),

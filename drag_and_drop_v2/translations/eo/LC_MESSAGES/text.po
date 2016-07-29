@@ -128,6 +128,42 @@ msgid "Drag and Drop"
 msgstr "Dräg änd Dröp Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
 #: drag_and_drop_v2.py
+msgid "Mode"
+msgstr "Mödé Ⱡ'σяєм ι#"
+
+#: drag_and_drop_v2.py
+msgid ""
+"Standard mode: the problem provides immediate feedback each time a learner drops an item on a target zone. "
+"Assessment mode: the problem provides feedback only after a learner drops all available items on target zones."
+msgstr ""
+"Ständärd mödé: thé prößlém prövïdés ïmmédïäté féédßäçk éäçh tïmé ä léärnér dröps än ïtém ön ä tärgét zöné. "
+"Àsséssmént mödé: thé prößlém prövïdés féédßäçk önlý äftér ä léärnér dröps äll äväïläßlé ïtéms ön tärgét zönés. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє "
+"мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαт#"
+
+#: drag_and_drop_v2.py
+msgid "Standard"
+msgstr "Ständärd Ⱡ'σяєм ιρѕυм ∂#"
+
+#: drag_and_drop_v2.py
+msgid "Assessment"
+msgstr "Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: drag_and_drop_v2.py
+#: templates/html/drag_and_drop_edit.html
+msgid "Maximum attempts"
+msgstr "Mäxïmüm ättémpts Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: drag_and_drop_v2.py
+msgid ""
+"Defines the number of times a student can try to answer this problem. "
+"If the value is not set, infinite attempts are allowed."
+msgstr ""
+"Défïnés thé nümßér öf tïmés ä stüdént çän trý tö änswér thïs prößlém. "
+"Ìf thé välüé ïs nöt sét, ïnfïnïté ättémpts äré ällöwéd. Ⱡ'σяєм #"
+
+#: drag_and_drop_v2.py
 msgid "Show title"
 msgstr "Shöw tïtlé Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
@@ -337,6 +373,10 @@ msgstr ""
 #: templates/html/drag_and_drop_edit.html
 msgid "Problem title"
 msgstr "Prößlém tïtlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Problem mode"
+msgstr "Prößlém mödé Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
 #: templates/html/drag_and_drop_edit.html
 msgid "Show title"
