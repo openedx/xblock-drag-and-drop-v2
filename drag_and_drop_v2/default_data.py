@@ -21,6 +21,7 @@ BOTTOM_ZONE_DESCRIPTION = _("Use this zone to associate an item with the bottom 
 ITEM_CORRECT_FEEDBACK = _("Correct! This one belongs to {zone}.")
 ITEM_INCORRECT_FEEDBACK = _("No, this item does not belong here. Try again.")
 ITEM_NO_ZONE_FEEDBACK = _("You silly, there are no zones for this one.")
+ITEM_ANY_ZONE_FEEDBACK = _("Of course it goes here! It goes anywhere!")
 
 START_FEEDBACK = _("Drag the items onto the image above.")
 FINISH_FEEDBACK = _("Good work! You have completed this drag and drop problem.")
@@ -63,7 +64,9 @@ DEFAULT_DATA = {
         "incorrect": ITEM_INCORRECT_FEEDBACK,
         "correct": ITEM_CORRECT_FEEDBACK.format(zone=TOP_ZONE_TITLE)
       },
-      "zone": TOP_ZONE_ID,
+      "zones": [
+        TOP_ZONE_ID
+      ],
       "imageURL": "",
       "id": 0,
     },
@@ -73,7 +76,9 @@ DEFAULT_DATA = {
         "incorrect": ITEM_INCORRECT_FEEDBACK,
         "correct": ITEM_CORRECT_FEEDBACK.format(zone=MIDDLE_ZONE_TITLE)
       },
-      "zone": MIDDLE_ZONE_ID,
+      "zones": [
+        MIDDLE_ZONE_ID
+      ],
       "imageURL": "",
       "id": 1,
     },
@@ -83,9 +88,25 @@ DEFAULT_DATA = {
         "incorrect": ITEM_INCORRECT_FEEDBACK,
         "correct": ITEM_CORRECT_FEEDBACK.format(zone=BOTTOM_ZONE_TITLE)
       },
-      "zone": BOTTOM_ZONE_ID,
+      "zones": [
+        BOTTOM_ZONE_ID
+      ],
       "imageURL": "",
       "id": 2,
+    },
+    {
+      "displayName": _("Goes anywhere"),
+      "feedback": {
+        "incorrect": "",
+        "correct": ITEM_ANY_ZONE_FEEDBACK
+      },
+      "zones": [
+        TOP_ZONE_ID,
+        BOTTOM_ZONE_ID,
+        MIDDLE_ZONE_ID
+      ],
+      "imageURL": "",
+      "id": 3
     },
     {
       "displayName": _("I don't belong anywhere"),
@@ -93,9 +114,9 @@ DEFAULT_DATA = {
         "incorrect": ITEM_NO_ZONE_FEEDBACK,
         "correct": ""
       },
-      "zone": "none",
+      "zones": [],
       "imageURL": "",
-      "id": 3,
+      "id": 4,
     },
   ],
   "feedback": {

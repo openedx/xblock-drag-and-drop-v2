@@ -82,45 +82,61 @@
     </div>
 </script>
 
-<script id="zone-dropdown-tpl" type="text/html">
-    <option value="{{ uid }}" {{ selected }}>{{ title }}</option>
+<script id="zone-checkbox-tpl" type="text/html">
+    <div class="zone-checkbox-row">
+        <label>
+            <input type="checkbox"
+                   value="{{ zoneUid }}"
+                   class="zone-checkbox"
+                   {{ checked }} />
+            {{ title }}
+        </label>
+    </div>
 </script>
 
 <script id="item-input-tpl" type="text/html">
     <div class="item">
         <div class="row">
-            <label for="item-{{id}}-text">{{i18n "Text"}}</label>
-            <input type="text"
-                   id="item-{{id}}-text"
-                   class="item-text"
-                   value="{{ displayName }}" />
-            <label for="item-{{id}}-zone">{{i18n "Zone"}}</label>
-            <select id="item-{{id}}-zone"
-                    class="zone-select">{{ dropdown }}</select>
+            <label class="h3">
+                {{i18n "Text"}}
+                <input type="text"
+                       placeholder="{{i18n 'Use text that is clear and descriptive of the item to be placed'}}"
+                       class="item-text"
+                       value="{{ displayName }}" />
+            </label>
             <a href="#" class="remove-item hidden">
                 <div class="icon remove"></div>
             </a>
         </div>
         <div class="row">
-            <label for="item-{{id}}-image-url">{{i18n "Image URL (alternative to the text)"}}</label>
-            <input type="text"
-                   id="item-{{id}}-image-url"
-                   placeholder="{{i18n 'For example, http://example.com/image.png or /static/image.png'}}"
-                   class="item-image-url"
-                   value="{{ imageURL }}" />
+            <fieldset>
+                <legend class="h3">
+                    {{ i18n "Zones" }}
+                </legend>
+                {{ checkboxes }}
+            </fieldset>
         </div>
         <div class="row">
-            <label for="item-{{id}}-image-description">{{i18n "Image description (should provide sufficient information to place the item even if the image did not load)"}}</label>
+            <label class="h3">
+                {{i18n "Image URL (alternative to the text)"}}
+                <input type="text"
+                       placeholder="{{i18n 'For example, http://example.com/image.png or /static/image.png'}}"
+                       class="item-image-url"
+                       value="{{ imageURL }}" />
+            </label>
+        </div>
+        <div class="row">
+            <label class="h3" for="item-{{id}}-image-description">{{i18n "Image description (should provide sufficient information to place the item even if the image did not load)"}}</label>
             <textarea id="item-{{id}}-image-description" {{#if imageURL}}required{{/if}}
                       class="item-image-description">{{ imageDescription }}</textarea>
         </div>
         <div class="row">
-            <label for="item-{{id}}-success-feedback">{{i18n "Success Feedback"}}</label>
+            <label class="h3" for="item-{{id}}-success-feedback">{{i18n "Success Feedback"}}</label>
             <textarea id="item-{{id}}-success-feedback"
                       class="success-feedback">{{ feedback.correct }}</textarea>
         </div>
         <div class="row">
-            <label for="item-{{id}}-error-feedback">{{i18n "Error Feedback"}}</label>
+            <label class="h3" for="item-{{id}}-error-feedback">{{i18n "Error Feedback"}}</label>
             <textarea id="item-{{id}}-error-feedback"
                       class="error-feedback">{{ feedback.incorrect }}</textarea>
         </div>
@@ -128,8 +144,14 @@
             <a href="#">{{i18n "Show advanced settings" }}</a>
         </div>
         <div class="row advanced">
-            <label for="item-{{id}}-width-percent">{{i18n "Preferred width as a percentage of the background image width (or blank for automatic width):"}}</label>
-            <input type="number" id="item-{{id}}-width-percent" class="item-width" value="{{ singleDecimalFloat widthPercent }}" step="0.1" min="1" max="99" />%
+            <label>
+                {{i18n "Preferred width as a percentage of the background image width (or blank for automatic width):"}}
+                <input type="number"
+                       class="item-width"
+                       value="{{ singleDecimalFloat widthPercent }}"
+                       step="0.1"
+                       min="1"
+                       max="99" />%
         </div>
     </div>
 </script>

@@ -104,6 +104,14 @@ msgstr "Göés tö thé ßöttöm Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α�
 msgid "I don't belong anywhere"
 msgstr "Ì dön't ßélöng änýwhéré Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
 
+#: default_data.py
+msgid "Of course it goes here! It goes anywhere!"
+msgstr "Öf çöürsé ït göés héré! Ìt göés änýwhéré! Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: default_data.py
+msgid "Goes anywhere"
+msgstr "Göés änýwhéré Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
 #: drag_and_drop_v2.py
 msgid "Title"
 msgstr "Tïtlé Ⱡ'σяєм ιρѕ#"
@@ -303,6 +311,16 @@ msgid ""
 msgstr ""
 "Préférréd wïdth äs ä pérçéntägé öf thé ßäçkgröünd ïmägé wïdth (ör ßlänk för "
 "äütömätïç wïdth): Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
+
+#: templates/html/js_templates.html
+msgid "Zones"
+msgstr "Zönés Ⱡ'σяєм ιρѕ#"
+
+#: templates/html/js_templates.html
+msgid "Use text that is clear and descriptive of the item to be placed"
+msgstr ""
+"Ûsé téxt thät ïs çléär änd désçrïptïvé öf thé ïtém tö ßé pläçéd Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
 #: templates/html/drag_and_drop.html
 msgid "Loading drag and drop problem."

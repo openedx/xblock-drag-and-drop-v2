@@ -26,7 +26,7 @@
         "incorrect": "No 1",
         "correct": "Yes 1"
       },
-      "zone": "zone-1",
+      "zones": ["zone-1"],
       "imageURL": "",
       "id": 0
     },
@@ -36,7 +36,10 @@
         "incorrect": "No 2",
         "correct": "Yes 2"
       },
-      "zone": "zone-2",
+      "zones": [
+        "zone-2",
+        "zone-1"
+      ],
       "imageURL": "",
       "id": 1
     },
@@ -46,7 +49,7 @@
         "incorrect": "",
         "correct": ""
       },
-      "zone": "none",
+      "zones": [],
       "imageURL": "/static/test_url_expansion",
       "id": 2
     },
@@ -56,7 +59,7 @@
         "incorrect": "",
         "correct": ""
       },
-      "zone": "none",
+      "zones": [],
       "imageURL": "http://placehold.it/200x100",
       "id": 3
     }

@@ -131,17 +131,16 @@ items, as well as the drag items themselves. A drag item can contain
 either text or an image. You can define custom success and error
 feedback for each item. The feedback text is displayed in a popup
 after the learner drops the item on a zone - the success feedback is
-shown if the item is dropped on the correct zone, while the error
+shown if the item is dropped on a correct zone, while the error
 feedback is shown when dropping the item on an incorrect drop zone.
 
-![Zone dropdown](/doc/img/edit-view-zone-dropdown.png)
+You can select any number of zones for an item to belong to using
+the checkboxes; all zones defined in the previous step are available.
+You can leave all of the checkboxes unchecked in order to create a
+"decoy" item that doesn't belong to any zone.
 
-The zone that an item belongs to is selected from a dropdown that
-includes all drop zones defined in the previous step and a `none`
-option that can be used for "decoy" items - items that don't belong to
-any zone.
-
-You can define an arbitrary number of drag items.
+You can define an arbitrary number of drag items, each of which may
+be attached to any number of zones.
 
 Demo Course
 -----------

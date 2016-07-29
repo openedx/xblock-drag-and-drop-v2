@@ -19,6 +19,14 @@ msgid ""
 msgstr ""
 
 #: default_data.py
+msgid "Of course it goes here! It goes anywhere!"
+msgstr ""
+
+#: default_data.py
+msgid "Goes anywhere"
+msgstr ""
+
+#: default_data.py
 msgid "The Top Zone"
 msgstr ""
 
@@ -246,6 +254,14 @@ msgstr ""
 msgid ""
 "Preferred width as a percentage of the background image width (or blank for "
 "automatic width):"
+msgstr ""
+
+#: templates/html/js_templates.html
+msgid "Zones"
+msgstr ""
+
+#: templates/html/js_templates.html
+msgid "Use text that is clear and descriptive of the item to be placed"
 msgstr ""
 
 #: templates/html/drag_and_drop.html

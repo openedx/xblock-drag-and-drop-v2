@@ -178,17 +178,22 @@
     margin: 15px 0;
 }
 
-.xblock--drag-and-drop--editor .items-form label {
+.xblock--drag-and-drop--editor .items-form label,
+.xblock--drag-and-drop--editor .items-form .h3 {
     margin: 0 1%;
 }
 
-.xblock--drag-and-drop--editor .items-form input,
 .xblock--drag-and-drop--editor .items-form select {
     width: 35%;
 }
 
+.xblock--drag-and-drop--editor .items-form .zone-checkbox {
+    width: initial;
+}
+
+.xblock--drag-and-drop--editor .items-form .item-text,
 .xblock--drag-and-drop--editor .items-form .item-image-url {
-    width: 81%;
+    width: 50%;
     margin: 0 1%;
 }
 
@@ -201,6 +206,10 @@
     margin: 0 1%;
 }
 
+.xblock--drag-and-drop--editor .items-form .zone-checkbox-label {
+    text-align: left;
+}
+
 .xblock--drag-and-drop--editor .items-form .row {
     margin-bottom: 20px;
 }
@@ -210,6 +219,9 @@
 .xblock--drag-and-drop--editor .items-form .row.advanced-link {
     padding-left: 1em;
     font-size: 80%;
+}
+.xblock--drag-and-drop-editor .items-form .zone-checkbox-row {
+    margin-bottom: 0px;
 }
 
 /** Buttons **/
@@ -243,8 +255,9 @@
 }
 
 .xblock--drag-and-drop--editor .remove-item {
+    float: right;
     display: inline-block;
-    margin-left: 95px;
+    margin-right: 16px;
 }
 
 .xblock--drag-and-drop--editor .icon {

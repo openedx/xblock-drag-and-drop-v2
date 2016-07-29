@@ -14,7 +14,7 @@ from drag_and_drop_v2.default_data import (
     TOP_ZONE_ID, MIDDLE_ZONE_ID, BOTTOM_ZONE_ID,
     TOP_ZONE_TITLE, MIDDLE_ZONE_TITLE, BOTTOM_ZONE_TITLE,
     ITEM_CORRECT_FEEDBACK, ITEM_INCORRECT_FEEDBACK, ITEM_NO_ZONE_FEEDBACK,
-    START_FEEDBACK, FINISH_FEEDBACK
+    ITEM_ANY_ZONE_FEEDBACK, START_FEEDBACK, FINISH_FEEDBACK
 )
 from .test_base import BaseIntegrationTest
 
@@ -27,10 +27,10 @@ loader = ResourceLoader(__name__)
 # Classes ###########################################################
 
 class ItemDefinition(object):
-    def __init__(self, item_id, zone_id, zone_title, feedback_positive, feedback_negative):
+    def __init__(self, item_id, zone_ids, zone_title, feedback_positive, feedback_negative):
         self.feedback_negative = feedback_negative
         self.feedback_positive = feedback_positive
-        self.zone_id = zone_id
+        self.zone_ids = zone_ids
         self.zone_title = zone_title
         self.item_id = item_id
 
@@ -40,14 +40,14 @@ class InteractionTestBase(object):
     def _get_items_with_zone(cls, items_map):
         return {
             item_key: definition for item_key, definition in items_map.items()
-            if definition.zone_id is not None
+            if definition.zone_ids != []
         }
 
     @classmethod
     def _get_items_without_zone(cls, items_map):
         return {
             item_key: definition for item_key, definition in items_map.items()
-            if definition.zone_id is None
+            if definition.zone_ids == []
         }
 
     def setUp(self):
@@ -169,7 +169,7 @@ class InteractionTestBase(object):
         self.scroll_down(pixels=scroll_down)
 
         for definition in self._get_items_with_zone(items_map).values():
-            self.place_item(definition.item_id, definition.zone_id, action_key)
+            self.place_item(definition.item_id, definition.zone_ids[0], action_key)
             self.wait_until_html_in(definition.feedback_positive, feedback_popup_content)
             self.assertEqual(popup.get_attribute('class'), 'popup')
             self.assert_placed_item(definition.item_id, definition.zone_title)
@@ -183,7 +183,7 @@ class InteractionTestBase(object):
 
         for definition in items_map.values():
             for zone in all_zones:
-                if zone == definition.zone_id:
+                if zone in definition.zone_ids:
                     continue
                 self.place_item(definition.item_id, zone, action_key)
                 self.wait_until_html_in(definition.feedback_negative, feedback_popup_content)
@@ -205,7 +205,7 @@ class InteractionTestBase(object):
         self.scroll_down(pixels=scroll_down)
 
         for item_key, definition in items.items():
-            self.place_item(definition.item_id, definition.zone_id, action_key)
+            self.place_item(definition.item_id, definition.zone_ids[0], action_key)
             self.assert_placed_item(definition.item_id, definition.zone_title)
 
         self.wait_until_html_in(feedback['final'], self._get_feedback_message())
@@ -280,18 +280,22 @@ class DefaultDataTestMixin(object):
 
     items_map = {
         0: ItemDefinition(
-            0, TOP_ZONE_ID, TOP_ZONE_TITLE,
+            0, [TOP_ZONE_ID], TOP_ZONE_TITLE,
             ITEM_CORRECT_FEEDBACK.format(zone=TOP_ZONE_TITLE), ITEM_INCORRECT_FEEDBACK
         ),
         1: ItemDefinition(
-            1, MIDDLE_ZONE_ID, MIDDLE_ZONE_TITLE,
+            1, [MIDDLE_ZONE_ID], MIDDLE_ZONE_TITLE,
             ITEM_CORRECT_FEEDBACK.format(zone=MIDDLE_ZONE_TITLE), ITEM_INCORRECT_FEEDBACK
         ),
         2: ItemDefinition(
-            2, BOTTOM_ZONE_ID, BOTTOM_ZONE_TITLE,
+            2, [BOTTOM_ZONE_ID], BOTTOM_ZONE_TITLE,
             ITEM_CORRECT_FEEDBACK.format(zone=BOTTOM_ZONE_TITLE), ITEM_INCORRECT_FEEDBACK
         ),
-        3: ItemDefinition(3, None, None, "", ITEM_NO_ZONE_FEEDBACK),
+        3: ItemDefinition(
+            3, [MIDDLE_ZONE_ID, TOP_ZONE_ID, BOTTOM_ZONE_ID], MIDDLE_ZONE_TITLE,
+            ITEM_ANY_ZONE_FEEDBACK, ITEM_INCORRECT_FEEDBACK
+        ),
+        4: ItemDefinition(4, [], None, "", ITEM_NO_ZONE_FEEDBACK),
     }
 
     all_zones = [TOP_ZONE_ID, MIDDLE_ZONE_ID, BOTTOM_ZONE_ID]
@@ -322,6 +326,30 @@ class BasicInteractionTest(DefaultDataTestMixin, InteractionTestBase):
         self.interact_with_keyboard_help()
 
 
+class MultipleValidOptionsInteractionTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):
+
+    items_map = {
+        0: ItemDefinition(0, ['zone-1', 'zone-2'], ["Zone 1", "Zone 2"], ["Yes 1", "Yes 1"], ["No 1", "No 1"]),
+    }
+
+    def test_multiple_positive_feedback(self):
+        popup = self._get_popup()
+        feedback_popup_content = self._get_popup_content()
+        reset = self._get_reset_button()
+        self.scroll_down(pixels=100)
+
+        for item in self.items_map.values():
+            for i, zone in enumerate(item.zone_ids):
+                self.place_item(item.item_id, zone, None)
+                self.wait_until_html_in(item.feedback_positive[i], feedback_popup_content)
+                self.assertEqual(popup.get_attribute('class'), 'popup')
+                self.assert_placed_item(item.item_id, item.zone_title[i])
+                reset.click()
+
+    def _get_scenario_xml(self):
+        return self._get_custom_scenario_xml("data/test_multiple_options_data.json")
+
+
 @ddt
 class EventsFiredTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):
     """
@@ -339,7 +367,7 @@ class EventsFiredTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegration
         },
         {
             'name': 'grade',
-            'data': {'max_value': 1, 'value': (1.0 / 3)},
+            'data': {'max_value': 1, 'value': (1.0 / 4)},
         },
         {
             'name': 'edx.drag_and_drop_v2.item.dropped',
@@ -409,9 +437,9 @@ class KeyboardInteractionTest(BasicInteractionTest, BaseIntegrationTest):
 
 class CustomDataInteractionTest(BasicInteractionTest, BaseIntegrationTest):
     items_map = {
-        0: ItemDefinition(0, 'zone-1', "Zone 1", "Yes 1", "No 1"),
-        1: ItemDefinition(1, 'zone-2', "Zone 2", "Yes 2", "No 2"),
-        2: ItemDefinition(2, None, None, "", "No Zone for this")
+        0: ItemDefinition(0, ['zone-1'], "Zone 1", "Yes 1", "No 1"),
+        1: ItemDefinition(1, ['zone-2'], "Zone 2", "Yes 2", "No 2"),
+        2: ItemDefinition(2, [], None, "", "No Zone for this")
     }
 
     all_zones = ['zone-1', 'zone-2']
@@ -427,9 +455,9 @@ class CustomDataInteractionTest(BasicInteractionTest, BaseIntegrationTest):
 
 class CustomHtmlDataInteractionTest(BasicInteractionTest, BaseIntegrationTest):
     items_map = {
-        0: ItemDefinition(0, 'zone-1', 'Zone <i>1</i>', "Yes <b>1</b>", "No <b>1</b>"),
-        1: ItemDefinition(1, 'zone-2', 'Zone <b>2</b>', "Yes <i>2</i>", "No <i>2</i>"),
-        2: ItemDefinition(2, None, None, "", "No Zone for <i>X</i>")
+        0: ItemDefinition(0, ['zone-1'], 'Zone <i>1</i>', "Yes <b>1</b>", "No <b>1</b>"),
+        1: ItemDefinition(1, ['zone-2'], 'Zone <b>2</b>', "Yes <i>2</i>", "No <i>2</i>"),
+        2: ItemDefinition(2, [], None, "", "No Zone for <i>X</i>")
     }
 
     all_zones = ['zone-1', 'zone-2']
@@ -452,14 +480,14 @@ class MultipleBlocksDataInteraction(InteractionTestBase, BaseIntegrationTest):
 
     item_maps = {
         'block1': {
-            0: ItemDefinition(0, 'zone-1', 'Zone 1', "Yes 1", "No 1"),
-            1: ItemDefinition(1, 'zone-2', 'Zone 2', "Yes 2", "No 2"),
-            2: ItemDefinition(2, None, None, "", "No Zone for this")
+            0: ItemDefinition(0, ['zone-1'], 'Zone 1', "Yes 1", "No 1"),
+            1: ItemDefinition(1, ['zone-2'], 'Zone 2', "Yes 2", "No 2"),
+            2: ItemDefinition(2, [], None, "", "No Zone for this")
         },
         'block2': {
-            10: ItemDefinition(10, 'zone-51', 'Zone 51', "Correct 1", "Incorrect 1"),
-            20: ItemDefinition(20, 'zone-52', 'Zone 52', "Correct 2", "Incorrect 2"),
-            30: ItemDefinition(30, None, None, "", "No Zone for this")
+            10: ItemDefinition(10, ['zone-51'], 'Zone 51', "Correct 1", "Incorrect 1"),
+            20: ItemDefinition(20, ['zone-52'], 'Zone 52', "Correct 2", "Incorrect 2"),
+            30: ItemDefinition(30, [], None, "", "No Zone for this")
         },
     }
 

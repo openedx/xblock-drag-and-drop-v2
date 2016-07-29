@@ -31,7 +31,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                     _fn.tpl = {
                         zoneInput: Handlebars.compile($("#zone-input-tpl", element).html()),
                         zoneElement: Handlebars.compile($("#zone-element-tpl", element).html()),
-                        zoneDropdown: Handlebars.compile($("#zone-dropdown-tpl", element).html()),
+                        zoneCheckbox: Handlebars.compile($("#zone-checkbox-tpl", element).html()),
                         itemInput: Handlebars.compile($("#item-input-tpl", element).html()),
                     };
                 }
@@ -357,26 +357,20 @@ function DragAndDropEditBlock(runtime, element, params) {
                             _fn.build.form.zone.renderZonesPreview();
                         },
                     },
-                    createDropdown: function(selectedUID) {
-                        var template = _fn.tpl.zoneDropdown;
-                        var dropdown = [];
+                    createCheckboxes: function(selectedZones) {
+                        var template = _fn.tpl.zoneCheckbox;
+                        var checkboxes = [];
                         var zoneObjects = _fn.build.form.zone.zoneObjects;
 
                         zoneObjects.forEach(function(zoneObj) {
-                            dropdown.push(template({
-                                uid: zoneObj.uid,
+                            checkboxes.push(template({
+                                zoneUid: zoneObj.uid,
                                 title: zoneObj.title,
-                                selected: (zoneObj.uid == selectedUID) ? 'selected' : '',
+                                checked: $.inArray(zoneObj.uid, selectedZones) !== -1 ? 'checked' : '',
                             }));
                         });
 
-                        dropdown.push(template({
-                            uid: "none",
-                            title: window.gettext("None"),
-                            selected: (selectedUID === "none") ? 'selected' : '',
-                        }));
-
-                        var html = dropdown.join('');
+                        var html = checkboxes.join('');
                         return new Handlebars.SafeString(html);
                     },
                     feedback: function($form) {
@@ -415,8 +409,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                                     ctx.pixelHeight = itemData.size.height.substr(0, itemData.size.height.length - 2); // Remove 'px'
                                 }
                             }
-
-                            ctx.dropdown = _fn.build.form.createDropdown(ctx.zone);
+                            ctx.checkboxes = _fn.build.form.createCheckboxes(ctx.zones);
 
                             _fn.build.form.item.count++;
                             $form.append(tpl(ctx));
@@ -464,12 +457,15 @@ function DragAndDropEditBlock(runtime, element, params) {
                             var $el = $(el),
                                 name = $el.find('.item-text').val(),
                                 imageURL = $el.find('.item-image-url').val(),
-                                imageDescription = $el.find('.item-image-description').val();
+                                imageDescription = $el.find('.item-image-description').val(),
+                                selectedZones = $el.find('.zone-checkbox:checked');
 
                             if (name.length > 0 || imageURL.length > 0) {
                                 var data = {
                                     displayName: name,
-                                    zone: $el.find('.zone-select').val(),
+                                    zones: $.map(selectedZones, function(checkbox){
+                                        return checkbox.value;
+                                    }),
                                     id: i,
                                     feedback: {
                                         correct: $el.find('.success-feedback').val(),
