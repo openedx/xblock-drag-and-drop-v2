@@ -5,6 +5,8 @@ import unittest
 
 from xblockutils.resources import ResourceLoader
 
+from drag_and_drop_v2.drag_and_drop_v2 import DragAndDropBlock
+
 from ..utils import make_block, TestCaseMixin
 
 
@@ -89,6 +91,14 @@ class BaseDragAndDropAjaxFixture(TestCaseMixin):
             "correct": True,
             "feedback": self.FEEDBACK[item_id]["correct"]
         })
+
+    def test_do_attempt_in_assessment_mode(self):
+        self.block.mode = DragAndDropBlock.ASSESSMENT_MODE
+        item_id, zone_id = 0, self.ZONE_1
+        data = {"val": item_id, "zone": zone_id, "x_percent": "33%", "y_percent": "11%"}
+        res = self.call_handler('do_attempt', data)
+        # In assessment mode, the do_attempt doesn't return any data.
+        self.assertEqual(res, {})
 
     def test_grading(self):
         published_grades = []

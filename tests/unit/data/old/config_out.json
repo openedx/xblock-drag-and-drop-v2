@@ -1,5 +1,6 @@
 {
     "title": "Drag and Drop",
+    "mode": "standard",
     "show_title": true,
     "problem_text": "",
     "show_problem_header": true,

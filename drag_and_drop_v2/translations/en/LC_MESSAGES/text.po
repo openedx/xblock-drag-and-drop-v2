@@ -409,6 +409,10 @@ msgid "ok"
 msgstr ""
 
 #: public/js/drag_and_drop.js
+msgid "Placed in: "
+msgstr ""
+
+#: public/js/drag_and_drop.js
 msgid "Correctly placed in: "
 msgstr ""
 

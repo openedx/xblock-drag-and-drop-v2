@@ -1,4 +1,4 @@
-function DragNDropTemplates(url_name) {
+function DragAndDropTemplates(configuration) {
     "use strict";
     var h = virtualDom.h;
     // Set up a mock for gettext if it isn't available in the client runtime:
@@ -107,13 +107,22 @@ function DragNDropTemplates(url_name) {
         var item_content = h('div', { innerHTML: item_content_html, className: "item-content" });
         if (item.is_placed) {
             // Insert information about zone in which this item has been placed
-            var item_description_id = url_name + '-item-' + item.value + '-description';
+            var item_description_id = configuration.url_name + '-item-' + item.value + '-description';
             item_content.properties.attributes = { 'aria-describedby': item_description_id };
             var zone_title = (zone.title || "Unknown Zone");  // This "Unknown" text should never be seen, so does not need i18n
+            var description_content;
+            if (configuration.mode === DragAndDropBlock.ASSESSMENT_MODE) {
+              // In assessment mode placed items will "stick" even when not in correct zone.
+              description_content = gettext('Placed in: {zone_title}').replace('{zone_title}', zone_title);
+            } else {
+              // In standard mode item is immediately returned back to the bank if dropped on a wrong zone,
+              // so all placed items are always in the correct zone.
+              description_content = gettext('Correctly placed in: {zone_title}').replace('{zone_title}', zone_title);
+            }
             var item_description = h(
                 'div',
                 { id: item_description_id, className: 'sr' },
-                gettext('Correctly placed in: ') + zone_title
+                description_content
             );
             children.splice(1, 0, item_description);
         }
@@ -283,14 +292,17 @@ function DragNDropTemplates(url_name) {
         );
     };
 
-    DragAndDropBlock.renderView = mainTemplate;
-
+    return mainTemplate;
 }
 
 function DragAndDropBlock(runtime, element, configuration) {
     "use strict";
 
-    DragNDropTemplates(configuration.url_name);
+    DragAndDropBlock.STANDARD_MODE = 'standard';
+    DragAndDropBlock.ASSESSMENT_MODE = 'assessment';
+
+    var renderView = DragAndDropTemplates(configuration);
+
     // Set up a mock for gettext if it isn't available in the client runtime:
     if (!window.gettext) { window.gettext = function gettext_stub(string) { return string; }; }
 
@@ -747,17 +759,21 @@ function DragAndDropBlock(runtime, element, configuration) {
 
         $.post(url, JSON.stringify(data), 'json')
             .done(function(data){
-                state.last_action_correct = data.correct;
-                if (data.correct) {
-                    state.items[item_id].correct = true;
-                    state.items[item_id].submitting_location = false;
-                } else {
-                    delete state.items[item_id];
-                }
-                state.feedback = data.feedback;
-                if (data.finished) {
-                    state.finished = true;
-                    state.overall_feedback = data.overall_feedback;
+                state.items[item_id].submitting_location = false;
+                // In standard mode we immediately return item to the bank if dropped on wrong zone.
+                // In assessment mode we leave it in the chosen zone until explicit answer submission.
+                if (configuration.mode === DragAndDropBlock.STANDARD_MODE) {
+                    state.last_action_correct = data.correct;
+                    if (data.correct) {
+                        state.items[item_id].correct = true;
+                    } else {
+                        delete state.items[item_id];
+                    }
+                    state.feedback = data.feedback;
+                    if (data.finished) {
+                        state.finished = true;
+                        state.overall_feedback = data.overall_feedback;
+                    }
                 }
                 applyState();
             })
@@ -866,7 +882,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             display_reset_button: Object.keys(state.items).length > 0,
         };
 
-        return DragAndDropBlock.renderView(context);
+        return renderView(context);
     };
 
     /**

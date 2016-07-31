@@ -190,6 +190,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             return items
 
         return {
+            "mode": self.mode,
             "zones": self._get_zones(),
             # SDK doesn't supply url_name.
             "url_name": getattr(self, 'url_name', ''),
@@ -337,12 +338,18 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             'is_correct': is_correct,
         })
 
-        return {
-            'correct': is_correct,
-            'finished': self._is_finished(),
-            'overall_feedback': overall_feedback,
-            'feedback': feedback
-        }
+        if self.mode == self.ASSESSMENT_MODE:
+            # In assessment mode we don't send any feedback on drop.
+            result = {}
+        else:
+            result = {
+                'correct': is_correct,
+                'finished': self._is_finished(),
+                'overall_feedback': overall_feedback,
+                'feedback': feedback
+            }
+
+        return result
 
     @XBlock.json_handler
     def reset(self, data, suffix=''):
