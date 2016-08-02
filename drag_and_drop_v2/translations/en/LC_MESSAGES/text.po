@@ -286,10 +286,6 @@ msgid ""
 msgstr ""
 
 #: templates/html/js_templates.html
-msgid "Zones"
-msgstr ""
-
-#: templates/html/js_templates.html
 msgid "Use text that is clear and descriptive of the item to be placed"
 msgstr ""
 
@@ -323,6 +319,7 @@ msgstr ""
 msgid "Final Feedback"
 msgstr ""
 
+#: templates/html/js_templates.html
 #: templates/html/drag_and_drop_edit.html
 msgid "Zones"
 msgstr ""
@@ -421,7 +418,10 @@ msgid "Correctly placed in: {zone_title}"
 msgstr ""
 
 #: public/js/drag_and_drop.js
-msgid "Reset problem"
+msgid "Reset"
+msgstr ""
+
+msgid "Submit"
 msgstr ""
 
 #: public/js/drag_and_drop.js
@@ -485,3 +485,29 @@ msgstr ""
 #: public/js/drag_and_drop_edit.js
 msgid "Error: "
 msgstr ""
+
+#: utils.py:18
+msgid "Final attempt was used, highest score is {score}"
+msgstr ""
+
+#: utils.py:19
+msgid "Misplaced items were returned to item bank."
+msgstr ""
+
+#: utils.py:24
+msgid "Correctly placed {correct_count} item."
+msgid_plural "Correctly placed {correct_count} items."
+msgstr[0] ""
+msgstr[1] ""
+
+#: utils.py:32
+msgid "Misplaced {misplaced_count} item."
+msgid_plural "Misplaced {misplaced_count} items."
+msgstr[0] ""
+msgstr[1] ""
+
+#: utils.py:40
+msgid "Did not place {missing_count} required item."
+msgid_plural "Did not place {missing_count} required items."
+msgstr[0] ""
+msgstr[1] ""

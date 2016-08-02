@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 #
-
+""" Drag and Drop v2 XBlock """
 # Imports ###########################################################
 
-import json
-import webob
 import copy
+import json
 import urllib
+import webob
 
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
@@ -15,7 +15,7 @@ from xblock.fragment import Fragment
 from xblockutils.resources import ResourceLoader
 from xblockutils.settings import XBlockWithSettingsMixin, ThemableXBlockMixin
 
-from .utils import _  # pylint: disable=unused-import
+from .utils import _, DummyTranslationService, FeedbackMessage, FeedbackMessages
 from .default_data import DEFAULT_DATA
 
 
@@ -34,6 +34,22 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     """
     STANDARD_MODE = "standard"
     ASSESSMENT_MODE = "assessment"
+
+    SOLUTION_CORRECT = "correct"
+    SOLUTION_PARTIAL = "partial"
+    SOLUTION_INCORRECT = "incorrect"
+
+    GRADE_FEEDBACK_CLASSES = {
+        SOLUTION_CORRECT: FeedbackMessages.MessageClasses.CORRECT_SOLUTION,
+        SOLUTION_PARTIAL: FeedbackMessages.MessageClasses.PARTIAL_SOLUTION,
+        SOLUTION_INCORRECT: FeedbackMessages.MessageClasses.INCORRECT_SOLUTION,
+    }
+
+    PROBLEM_FEEDBACK_CLASSES = {
+        SOLUTION_CORRECT: FeedbackMessages.MessageClasses.CORRECT_SOLUTION,
+        SOLUTION_PARTIAL: None,
+        SOLUTION_INCORRECT: None
+    }
 
     display_name = String(
         display_name=_("Title"),
@@ -127,7 +143,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         default={},
     )
 
-    num_attempts = Integer(
+    attempts = Integer(
         help=_("Number of attempts learner used"),
         scope=Scope.user_state,
         default=0
@@ -137,6 +153,12 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         help=_("Indicates whether a learner has completed the problem at least once"),
         scope=Scope.user_state,
         default=False,
+    )
+
+    grade = Float(
+        help=_("Keeps maximum achieved score by student"),
+        scope=Scope.user_state,
+        default=0
     )
 
     block_settings_key = 'drag-and-drop-v2'
@@ -179,6 +201,9 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """
 
         def items_without_answers():
+            """
+            Removes feedback and answer from items
+            """
             items = copy.deepcopy(self.data.get('items', ''))
             for item in items:
                 del item['feedback']
@@ -278,6 +303,9 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
     @XBlock.json_handler
     def studio_submit(self, submissions, suffix=''):
+        """
+        Handles studio save.
+        """
         self.display_name = submissions['display_name']
         self.mode = submissions['mode']
         self.max_attempts = submissions['max_attempts']
@@ -294,49 +322,285 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         }
 
     @XBlock.json_handler
-    def do_attempt(self, attempt, suffix=''):
-        item = self._get_item_definition(attempt['val'])
+    def drop_item(self, item_attempt, suffix=''):
+        """
+        Handles dropping item into a zone.
+        """
+        self._validate_drop_item(item_attempt)
 
-        state = None
-        zone = None
-        feedback = item['feedback']['incorrect']
-        overall_feedback = None
-        is_correct = False
-
-        if self._is_attempt_correct(attempt):  # Student placed item in a correct zone
-            is_correct = True
-            feedback = item['feedback']['correct']
-            state = {
-                'zone': attempt['zone'],
-                'correct': True,
-                'x_percent': attempt['x_percent'],
-                'y_percent': attempt['y_percent'],
-            }
-
-        if state:
-            self.item_state[str(item['id'])] = state
-            zone = self._get_zone_by_uid(state['zone'])
+        if self.mode == self.ASSESSMENT_MODE:
+            return self._drop_item_assessment(item_attempt)
+        elif self.mode == self.STANDARD_MODE:
+            return self._drop_item_standard(item_attempt)
         else:
-            zone = self._get_zone_by_uid(attempt['zone'])
+            raise JsonHandlerError(
+                500,
+                self.i18n_service.gettext("Unknown DnDv2 mode {mode} - course is misconfigured").format(self.mode)
+            )
+
+    @XBlock.json_handler
+    def do_attempt(self, data, suffix=''):
+        """
+        Checks submitted solution and returns feedback.
+
+        Raises:
+             * JsonHandlerError with 400 error code in standard mode.
+             * JsonHandlerError with 409 error code if no more attempts left
+        """
+        self._validate_do_attempt()
+
+        self.attempts += 1
+        self._mark_complete_and_publish_grade()  # must happen before _get_feedback
+
+        overall_feedback_msgs, misplaced_ids = self._get_feedback()
+
+        for item_id in misplaced_ids:
+            del self.item_state[item_id]
+
+        return {
+            'attempts': self.attempts,
+            'misplaced_items': list(misplaced_ids),
+            'overall_feedback': self._present_overall_feedback(overall_feedback_msgs)
+        }
+
+    @XBlock.json_handler
+    def publish_event(self, data, suffix=''):
+        """
+        Handler to publish XBlock event from frontend
+        """
+        try:
+            event_type = data.pop('event_type')
+        except KeyError:
+            return {'result': 'error', 'message': 'Missing event_type in JSON data'}
+
+        self.runtime.publish(self, event_type, data)
+        return {'result': 'success'}
+
+    @XBlock.json_handler
+    def reset(self, data, suffix=''):
+        """
+        Resets problem to initial state
+        """
+        self.item_state = {}
+        return self._get_user_state()
+
+    @XBlock.json_handler
+    def expand_static_url(self, url, suffix=''):
+        """ AJAX-accessible handler for expanding URLs to static [image] files """
+        return {'url': self._expand_static_url(url)}
+
+    @property
+    def i18n_service(self):
+        """ Obtains translation service """
+        i18n_service = self.runtime.service(self, "i18n")
+        if i18n_service:
+            return i18n_service
+        else:
+            return DummyTranslationService()
+
+    @property
+    def target_img_expanded_url(self):
+        """ Get the expanded URL to the target image (the image items are dragged onto). """
+        if self.data.get("targetImg"):
+            return self._expand_static_url(self.data["targetImg"])
+        else:
+            return self.default_background_image_url
+
+    @property
+    def target_img_description(self):
+        """ Get the description for the target image (the image items are dragged onto). """
+        return self.data.get("targetImgDescription", "")
+
+    @property
+    def default_background_image_url(self):
+        """ The URL to the default background image, shown when no custom background is used """
+        return self.runtime.local_resource_url(self, "public/img/triangle.png")
+
+    @property
+    def attempts_remain(self):
+        """
+        Checks if current student still have more attempts.
+        """
+        return self.max_attempts is None or self.max_attempts == 0 or self.attempts < self.max_attempts
+
+    @XBlock.handler
+    def get_user_state(self, request, suffix=''):
+        """ GET all user-specific data, and any applicable feedback """
+        data = self._get_user_state()
+
+        return webob.Response(body=json.dumps(data), content_type='application/json')
+
+    def _validate_do_attempt(self):
+        """
+        Validates if `do_attempt` handler should be executed
+        """
+        if self.mode != self.ASSESSMENT_MODE:
+            raise JsonHandlerError(
+                400,
+                self.i18n_service.gettext("do_attempt handler should only be called for assessment mode")
+            )
+        if not self.attempts_remain:
+            raise JsonHandlerError(
+                409,
+                self.i18n_service.gettext("Max number of attempts reached")
+            )
+
+    def _get_feedback(self):
+        """
+        Builds overall feedback for both standard and assessment modes
+        """
+        answer_correctness = self._answer_correctness()
+        is_correct = answer_correctness == self.SOLUTION_CORRECT
+
+        if self.mode == self.STANDARD_MODE or not self.attempts:
+            feedback_key = 'finish' if is_correct else 'start'
+            return [FeedbackMessage(self.data['feedback'][feedback_key], None)], set()
+
+        required_ids, placed_ids, correct_ids = self._get_item_raw_stats()
+        missing_ids = required_ids - placed_ids
+        misplaced_ids = placed_ids - correct_ids
+
+        feedback_msgs = []
+
+        def _add_msg_if_exists(ids_list, message_template, message_class):
+            """ Adds message to feedback messages if corresponding items list is not empty """
+            if ids_list:
+                message = message_template(len(ids_list), self.i18n_service.ngettext)
+                feedback_msgs.append(FeedbackMessage(message, message_class))
+
+        _add_msg_if_exists(
+            correct_ids, FeedbackMessages.correctly_placed, FeedbackMessages.MessageClasses.CORRECTLY_PLACED
+        )
+        _add_msg_if_exists(misplaced_ids, FeedbackMessages.misplaced, FeedbackMessages.MessageClasses.MISPLACED)
+        _add_msg_if_exists(missing_ids, FeedbackMessages.not_placed, FeedbackMessages.MessageClasses.NOT_PLACED)
+
+        if misplaced_ids and self.attempts_remain:
+            feedback_msgs.append(
+                FeedbackMessage(FeedbackMessages.MISPLACED_ITEMS_RETURNED, None)
+            )
+
+        if self.attempts_remain and (misplaced_ids or missing_ids):
+            problem_feedback_message = self.data['feedback']['start']
+        else:
+            problem_feedback_message = self.data['feedback']['finish']
+
+        problem_feedback_class = self.PROBLEM_FEEDBACK_CLASSES.get(answer_correctness, None)
+        grade_feedback_class = self.GRADE_FEEDBACK_CLASSES.get(answer_correctness, None)
+
+        feedback_msgs.append(FeedbackMessage(problem_feedback_message, problem_feedback_class))
+
+        if not self.attempts_remain:
+            feedback_msgs.append(
+                FeedbackMessage(FeedbackMessages.FINAL_ATTEMPT_TPL.format(score=self.grade), grade_feedback_class)
+            )
+
+        return feedback_msgs, misplaced_ids
+
+    @staticmethod
+    def _present_overall_feedback(feedback_messages):
+        """
+        Transforms feedback messages into format expected by frontend code
+        """
+        return [
+            {"message": msg.message, "message_class": msg.message_class}
+            for msg in feedback_messages
+            if msg.message
+        ]
+
+    def _drop_item_standard(self, item_attempt):
+        """
+        Handles dropping item to a zone in standard mode.
+        """
+        item = self._get_item_definition(item_attempt['val'])
+
+        is_correct = self._is_attempt_correct(item_attempt)  # Student placed item in a correct zone
+        if is_correct:  # In standard mode state is only updated when attempt is correct
+            self.item_state[str(item['id'])] = self._make_state_from_attempt(item_attempt, is_correct)
+
+        self._mark_complete_and_publish_grade()  # must happen before _get_feedback
+        self._publish_item_dropped_event(item_attempt, is_correct)
+
+        item_feedback_key = 'correct' if is_correct else 'incorrect'
+        item_feedback = item['feedback'][item_feedback_key]
+        overall_feedback, __ = self._get_feedback()
+
+        return {
+            'correct': is_correct,
+            'finished': self._is_answer_correct(),
+            'overall_feedback': self._present_overall_feedback(overall_feedback),
+            'feedback': item_feedback
+        }
+
+    def _drop_item_assessment(self, item_attempt):
+        """
+        Handles dropping item into a zone in assessment mode
+        """
+        if not self.attempts_remain:
+            raise JsonHandlerError(409, self.i18n_service.gettext("Max number of attempts reached"))
+
+        item = self._get_item_definition(item_attempt['val'])
+
+        is_correct = self._is_attempt_correct(item_attempt)
+        # State is always updated in assessment mode to store intermediate item positions
+        self.item_state[str(item['id'])] = self._make_state_from_attempt(item_attempt, is_correct)
+
+        self._publish_item_dropped_event(item_attempt, is_correct)
+
+        return {}
+
+    def _validate_drop_item(self, item):
+        """
+        Validates `drop_item` parameters
+        """
+        zone = self._get_zone_by_uid(item['zone'])
         if not zone:
             raise JsonHandlerError(400, "Item zone data invalid.")
 
-        if self._is_finished():
-            overall_feedback = self.data['feedback']['finish']
+    @staticmethod
+    def _make_state_from_attempt(attempt, correct):
+        """
+        Converts "attempt" data coming from browser into "state" entry stored in item_state
+        """
+        return {
+            'zone': attempt['zone'],
+            'correct': correct,
+            'x_percent': attempt['x_percent'],
+            'y_percent': attempt['y_percent'],
+        }
 
-        # don't publish the grade if the student has already completed the problem
-        if not self.completed:
-            if self._is_finished():
-                self.completed = True
-            try:
-                self.runtime.publish(self, 'grade', {
-                    'value': self._get_grade(),
-                    'max_value': self.weight,
-                })
-            except NotImplementedError:
-                # Note, this publish method is unimplemented in Studio runtimes,
-                # so we have to figure that we're running in Studio for now
-                pass
+    def _mark_complete_and_publish_grade(self):
+        """
+        Helper method to update `self.completed` and submit grade event if appropriate conditions met.
+        """
+        # There's no going back from "completed" status to "incomplete"
+        self.completed = self.completed or self._is_answer_correct() or not self.attempts_remain
+        grade = self._get_grade()
+        # ... and from higher grade to lower
+        if grade > self.grade:
+            self.grade = grade
+            self._publish_grade()
+
+    def _publish_grade(self):
+        """
+        Publishes grade
+        """
+        try:
+            self.runtime.publish(self, 'grade', {
+                'value': self.grade,
+                'max_value': self.weight,
+            })
+        except NotImplementedError:
+            # Note, this publish method is unimplemented in Studio runtimes,
+            # so we have to figure that we're running in Studio for now
+            pass
+
+    def _publish_item_dropped_event(self, attempt, is_correct):
+        """
+        Publishes item dropped event.
+        """
+        item = self._get_item_definition(attempt['val'])
+        # attempt should already be validated here - not doing the check for existing zone again
+        zone = self._get_zone_by_uid(attempt['zone'])
 
         self.runtime.publish(self, 'edx.drag_and_drop_v2.item.dropped', {
             'item_id': item['id'],
@@ -344,24 +608,6 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             'location_id': zone.get("uid"),
             'is_correct': is_correct,
         })
-
-        if self.mode == self.ASSESSMENT_MODE:
-            # In assessment mode we don't send any feedback on drop.
-            result = {}
-        else:
-            result = {
-                'correct': is_correct,
-                'finished': self._is_finished(),
-                'overall_feedback': overall_feedback,
-                'feedback': feedback
-            }
-
-        return result
-
-    @XBlock.json_handler
-    def reset(self, data, suffix=''):
-        self.item_state = {}
-        return self._get_user_state()
 
     def _is_attempt_correct(self, attempt):
         """
@@ -389,35 +635,6 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
                 pass
         return url
 
-    @XBlock.json_handler
-    def expand_static_url(self, url, suffix=''):
-        """ AJAX-accessible handler for expanding URLs to static [image] files """
-        return {'url': self._expand_static_url(url)}
-
-    @property
-    def target_img_expanded_url(self):
-        """ Get the expanded URL to the target image (the image items are dragged onto). """
-        if self.data.get("targetImg"):
-            return self._expand_static_url(self.data["targetImg"])
-        else:
-            return self.default_background_image_url
-
-    @property
-    def target_img_description(self):
-        """ Get the description for the target image (the image items are dragged onto). """
-        return self.data.get("targetImgDescription", "")
-
-    @property
-    def default_background_image_url(self):
-        """ The URL to the default background image, shown when no custom background is used """
-        return self.runtime.local_resource_url(self, "public/img/triangle.png")
-
-    @XBlock.handler
-    def get_user_state(self, request, suffix=''):
-        """ GET all user-specific data, and any applicable feedback """
-        data = self._get_user_state()
-        return webob.Response(body=json.dumps(data), content_type='application/json')
-
     def _get_user_state(self):
         """ Get all user-specific data, and any applicable feedback """
         item_state = self._get_item_state()
@@ -436,24 +653,38 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
                 else:
                     item['zone'] = 'unknown'
 
-        is_finished = self._is_finished()
+            # In assessment mode, if item is placed correctly and than the page is refreshed, "correct"
+            # will spill to the frontend, making item "disabled", thus allowing students to obtain answer by trial
+            # and error + refreshing the page. In order to avoid that, we remove "correct" from an item here
+            if self.mode == self.ASSESSMENT_MODE:
+                del item["correct"]
+
+        overall_feedback_msgs, __ = self._get_feedback()
+        if self.mode == self.STANDARD_MODE:
+            is_finished = self._is_answer_correct()
+        else:
+            is_finished = not self.attempts_remain
+
         return {
             'items': item_state,
             'finished': is_finished,
-            'num_attempts': self.num_attempts,
-            'overall_feedback': self.data['feedback']['finish' if is_finished else 'start'],
+            'attempts': self.attempts,
+            'overall_feedback': self._present_overall_feedback(overall_feedback_msgs)
         }
 
     def _get_item_state(self):
         """
-        Returns the user item state.
+        Returns a copy of the user item state.
         Converts to a dict if data is stored in legacy tuple form.
         """
+
+        # IMPORTANT: this method should always return a COPY of self.item_state - it is called from get_user_state
+        # handler and manipulated there to hide correctness of items placed
         state = {}
 
         for item_id, item in self.item_state.iteritems():
             if isinstance(item, dict):
-                state[item_id] = item
+                state[item_id] = item.copy()  # items are manipulated in _get_user_state, so we protect actual data
             else:
                 state[item_id] = {'top': item[0], 'left': item[1]}
 
@@ -512,17 +743,28 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         Returns a tuple representing the number of correctly-placed items,
         and the total number of items that must be placed on the board (non-decoy items).
         """
-        all_items = self.data['items']
+        required_items, __, correct_items = self._get_item_raw_stats()
+
+        return len(correct_items), len(required_items)
+
+    def _get_item_raw_stats(self):
+        """
+        Returns a 3-tuple containing required, placed and correct items.
+
+        Returns:
+            tuple: (required_items, placed_items, correct_items)
+                * required_items - IDs of items that must be placed on the board
+                * placed_items - IDs of items actually placed on the board
+                * correct_items - IDs of items that were placed correctly
+        """
+        all_items = [str(item['id']) for item in self.data['items']]
         item_state = self._get_item_state()
 
-        required_items = [str(item['id']) for item in all_items if self._get_item_zones(item['id']) != []]
-        placed_items = [item for item in required_items if item in item_state]
-        correct_items = [item for item in placed_items if item_state[item]['correct']]
+        required_items = set(item_id for item_id in all_items if self._get_item_zones(int(item_id)) != [])
+        placed_items = set(item_id for item_id in all_items if item_id in item_state)
+        correct_items = set(item_id for item_id in placed_items if item_state[item_id]['correct'])
 
-        required_count = len(required_items)
-        correct_count = len(correct_items)
-
-        return correct_count, required_count
+        return required_items, placed_items, correct_items
 
     def _get_grade(self):
         """
@@ -531,31 +773,32 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         correct_count, required_count = self._get_item_stats()
         return correct_count / float(required_count) * self.weight
 
-    def _is_finished(self):
+    def _answer_correctness(self):
         """
-        All items are at their correct place and a value has been
-        submitted for each item that expects a value.
+        Checks answer correctness:
+
+        Returns:
+            string: Correct/Incorrect/Partial
+                * Correct: All items are at their correct place.
+                * Partial: Some items are at their correct place.
+                * Incorrect: None items are at their correct place.
         """
         correct_count, required_count = self._get_item_stats()
-        return correct_count == required_count
+        if correct_count == required_count:
+            return self.SOLUTION_CORRECT
+        elif correct_count == 0:
+            return self.SOLUTION_INCORRECT
+        else:
+            return self.SOLUTION_PARTIAL
 
-    @XBlock.json_handler
-    def publish_event(self, data, suffix=''):
-        try:
-            event_type = data.pop('event_type')
-        except KeyError:
-            return {'result': 'error', 'message': 'Missing event_type in JSON data'}
+    def _is_answer_correct(self):
+        """
+        Helper - checks if answer is correct
 
-        self.runtime.publish(self, event_type, data)
-        return {'result': 'success'}
-
-    def _get_unique_id(self):
-        usage_id = self.scope_ids.usage_id
-        try:
-            return usage_id.name
-        except AttributeError:
-            # workaround for xblock workbench
-            return usage_id
+        Returns:
+            bool: True if current answer is correct
+        """
+        return self._answer_correctness() == self.SOLUTION_CORRECT
 
     @staticmethod
     def workbench_scenarios():

@@ -41,6 +41,16 @@
       "id": 1
     },
     {
+      "displayName": "3",
+      "feedback": {
+        "incorrect": "No 3",
+        "correct": "Yes 3"
+      },
+      "zone": "zone-2",
+      "imageURL": "",
+      "id": 2
+    },
+    {
       "displayName": "X",
       "feedback": {
         "incorrect": "",
@@ -48,7 +58,7 @@
       },
       "zone": "none",
       "imageURL": "/static/test_url_expansion",
-      "id": 2
+      "id": 3
     },
     {
       "displayName": "",
@@ -58,7 +68,7 @@
       },
       "zone": "none",
       "imageURL": "http://placehold.it/200x100",
-      "id": 3
+      "id": 4
     }
   ],
 

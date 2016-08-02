@@ -227,12 +227,21 @@ function DragAndDropTemplates(configuration) {
     };
 
     var feedbackTemplate = function(ctx) {
-        var feedback_display = ctx.feedback_html ? 'block' : 'none';
         var properties = { attributes: { 'aria-live': 'polite' } };
+        var messages = ctx.overall_feedback_messages || [];
+        var feedback_display = messages.length > 0 ? 'block' : 'none';
+        var feedback_messages = messages.map(function(message) {
+            var selector = "p.message";
+            if (message.message_class) {
+                selector += "."+message.message_class;
+            }
+            return h(selector, {innerHTML: message.message}, []);
+        });
+
         return (
             h('section.feedback', properties, [
                 h('h3.title1', { style: { display: feedback_display } }, gettext('Feedback')),
-                h('p.message', { style: { display: feedback_display }, innerHTML: ctx.feedback_html })
+                h('div.messages', { style: { display: feedback_display } }, feedback_messages)
             ])
         );
     };
@@ -266,20 +275,23 @@ function DragAndDropTemplates(configuration) {
     var submitAnswerTemplate = function(ctx) {
         var attemptsUsedId = "attempts-used-"+configuration.url_name;
         var attemptsUsedDisplay = (ctx.max_attempts && ctx.max_attempts > 0) ? 'inline': 'none';
-        var button_enabled = ctx.items.some(function(item) {return item.is_placed;}) &&
-            (ctx.max_attempts === null || ctx.max_attempts > ctx.num_attempts);
 
         return (
           h("section.action-toolbar-item.submit-answer", {}, [
               h(
                   "button.btn-brand.submit-answer-button",
-                  {disabled: !button_enabled, attributes: {"aria-describedby": attemptsUsedId}},
-                  gettext("Submit")
+                  {
+                      disabled: ctx.disable_submit_button || ctx.submit_spinner, 
+                      attributes: {"aria-describedby": attemptsUsedId}},
+                  [
+                      (ctx.submit_spinner ? h("span.fa.fa-spin.fa-spinner") : null),
+                      gettext("Submit")
+                  ]
               ),
               h(
                   "span.attempts-used#"+attemptsUsedId, {style: {display: attemptsUsedDisplay}},
                   gettext("You have used {used} of {total} attempts.")
-                      .replace("{used}", ctx.num_attempts).replace("{total}", ctx.max_attempts)
+                      .replace("{used}", ctx.attempts).replace("{total}", ctx.max_attempts)
               )
           ])
         );
@@ -444,6 +456,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             // Set up event handlers:
 
             $(document).on('keydown mousedown touchstart', closePopup);
+            $element.on('click', '.submit-answer-button', doAttempt);
             $element.on('click', '.keyboard-help-button', showKeyboardHelp);
             $element.on('keydown', '.keyboard-help-button', function(evt) {
                 runOnKey(evt, RET, showKeyboardHelp);
@@ -897,7 +910,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         if (!zone) {
             return;
         }
-        var url = runtime.handlerUrl(element, 'do_attempt');
+        var url = runtime.handlerUrl(element, 'drop_item');
         var data = {
             val: item_id,
             zone: zone,
@@ -969,6 +982,45 @@ function DragAndDropBlock(runtime, element, configuration) {
         });
     };
 
+    var doAttempt = function(evt) {
+        evt.preventDefault();
+        state.submit_spinner = true;
+        applyState();
+
+        $.ajax({
+            type: 'POST',
+            url: runtime.handlerUrl(element, "do_attempt"),
+            data: '{}'
+        }).done(function(data){
+            state.attempts = data.attempts;
+            state.overall_feedback = data.overall_feedback;
+            if (attemptsRemain()) {
+                data.misplaced_items.forEach(function(misplaced_item_id) {
+                    delete state.items[misplaced_item_id]
+                });
+            } else {
+                state.finished = true;
+            }
+            focusFirstDraggable();
+        }).always(function() {
+            state.submit_spinner = false;
+            applyState();
+        });
+    };
+
+    var canSubmitAttempt = function() {
+        return Object.keys(state.items).length > 0 && attemptsRemain();
+    };
+
+    var canReset = function() {
+        return Object.keys(state.items).length > 0 &&
+            (configuration.mode !== DragAndDropBlock.ASSESSMENT_MODE || attemptsRemain())
+    };
+
+    var attemptsRemain = function() {
+        return !configuration.max_attempts || configuration.max_attempts > state.attempts;
+    };
+
     var render = function() {
         var items = configuration.items.map(function(item) {
             var item_user_state = state.items[item.id];
@@ -1028,7 +1080,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             show_title: configuration.show_title,
             mode: configuration.mode,
             max_attempts: configuration.max_attempts,
-            num_attempts: state.num_attempts,
+            attempts: state.attempts,
             problem_html: configuration.problem_text,
             show_problem_header: configuration.show_problem_header,
             show_submit_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
@@ -1042,8 +1094,10 @@ function DragAndDropBlock(runtime, element, configuration) {
             last_action_correct: state.last_action_correct,
             item_bank_focusable: item_bank_focusable,
             popup_html: state.feedback || '',
-            feedback_html: $.trim(state.overall_feedback),
-            disable_reset_button: Object.keys(state.items).length == 0,
+            overall_feedback_messages: state.overall_feedback,
+            disable_reset_button: !canReset(),
+            disable_submit_button: !canSubmitAttempt(),
+            submit_spinner: state.submit_spinner
         };
 
         return renderView(context);

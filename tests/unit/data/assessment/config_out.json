@@ -47,16 +47,22 @@
           "id": 1
         },
         {
+          "displayName": "3",
+          "imageURL": "",
+          "expandedImageURL": "",
+          "id": 2
+        },
+        {
           "displayName": "X",
           "imageURL": "/static/test_url_expansion",
           "expandedImageURL": "/course/test-course/assets/test_url_expansion",
-          "id": 2
+          "id": 3
         },
         {
           "displayName": "",
           "imageURL": "http://placehold.it/200x100",
           "expandedImageURL": "http://placehold.it/200x100",
-          "id": 3
+          "id": 4
         }
     ]
 }
