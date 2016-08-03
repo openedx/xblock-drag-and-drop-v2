@@ -106,7 +106,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     )
 
     weight = Float(
-        display_name=_("Weight"),
+        display_name=_("Maximum score"),
         help=_("The maximum score the learner can receive for the problem"),
         scope=Scope.settings,
         default=1,

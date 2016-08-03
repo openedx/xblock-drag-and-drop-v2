@@ -165,9 +165,7 @@
     height: 128px;
 }
 
-.xblock--drag-and-drop--editor .zones-form .zones-form-help,
-.xblock--drag-and-drop--editor .target-image-form .target-image-form-help,
-.xblock--drag-and-drop--editor .item-styles-form .item-styles-form-help {
+.xblock--drag-and-drop--editor .form-help {
     margin-top: 5px;
     font-size: small;
 }
@@ -222,6 +220,7 @@
     display: none;
 }
 .xblock--drag-and-drop--editor .items-form .row.advanced-link {
+    cursor: pointer;
     padding-left: 1em;
     font-size: 80%;
 }
@@ -254,14 +253,15 @@
 }
 
 .xblock--drag-and-drop--editor .remove-zone {
+    cursor: pointer;
     float: right;
     margin-top: 2px;
     margin-right: 16px;
 }
 
 .xblock--drag-and-drop--editor .remove-item {
+    cursor: pointer;
     float: right;
-    display: inline-block;
     margin-right: 16px;
 }
 
