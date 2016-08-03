@@ -25,6 +25,15 @@ if __name__ == "__main__":
     # Silence too verbose Django logging
     logging.disable(logging.DEBUG)
 
+    def disable_native_firefox_events(firefox_profile):
+        """
+        If using Firefox, patch bok_choy to use synthetic events, which are much more reliable
+        See https://bugs.launchpad.net/selenium-simple-test/+bug/1242364
+        """
+        firefox_profile.native_events_enabled = False
+    from bok_choy.browser import FIREFOX_PROFILE_CUSTOMIZERS
+    FIREFOX_PROFILE_CUSTOMIZERS.append(disable_native_firefox_events)
+
     try:
         os.mkdir('var')
     except OSError:

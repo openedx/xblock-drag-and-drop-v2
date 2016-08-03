@@ -3,4 +3,5 @@
 pip install -e git://github.com/edx/xblock-sdk.git@v0.1.2#egg=xblock-sdk==v0.1.2
 cd $VIRTUAL_ENV/src/xblock-sdk/ && pip install -r requirements/base.txt \
                                 && pip install -r requirements/test.txt && cd -
+pip install git+https://github.com/edx/bok-choy.git@0afb723a7b3f23de8d6f44c19d3626ee001ccc1d#egg=bok-choy==0afb723a7b3f23de8d6f44c19d3626ee001ccc1d
 pip install -r requirements.txt
