@@ -4,16 +4,15 @@ function DragAndDropTemplates(configuration) {
     // Set up a mock for gettext if it isn't available in the client runtime:
     if (!window.gettext) { window.gettext = function gettext_stub(string) { return string; }; }
 
-    var itemSpinnerTemplate = function(xhr_active) {
-        if (!xhr_active) {
+    var itemSpinnerTemplate = function(item) {
+        if (!item.xhr_active) {
             return null;
         }
-        return (h(
-            "div.spinner-wrapper",
-            [
+        return (
+            h("div.spinner-wrapper", {key: item.value + '-spinner'}, [
                 h("i.fa.fa-spin.fa-spinner")
-            ]
-        ));
+            ])
+        );
     };
 
     var renderCollection = function(template, collection, ctx) {
@@ -50,7 +49,8 @@ function DragAndDropTemplates(configuration) {
         if (item.imageURL) {
             item_content_html = '<img src="' + item.imageURL + '" alt="' + item.imageDescription + '" />';
         }
-        return h('div', { innerHTML: item_content_html, className: "item-content" });
+        var key = item.value + '-content';
+        return h('div', { key: key, innerHTML: item_content_html, className: "item-content" });
     };
 
     var itemTemplate = function(item, ctx) {
@@ -113,7 +113,7 @@ function DragAndDropTemplates(configuration) {
         }
         // Define children
         var children = [
-            itemSpinnerTemplate(item.xhr_active)
+            itemSpinnerTemplate(item)
         ];
         var item_content = itemContentTemplate(item);
         if (item.is_placed) {
@@ -123,16 +123,16 @@ function DragAndDropTemplates(configuration) {
             var zone_title = (zone.title || "Unknown Zone");  // This "Unknown" text should never be seen, so does not need i18n
             var description_content;
             if (configuration.mode === DragAndDropBlock.ASSESSMENT_MODE) {
-              // In assessment mode placed items will "stick" even when not in correct zone.
-              description_content = gettext('Placed in: {zone_title}').replace('{zone_title}', zone_title);
+                // In assessment mode placed items will "stick" even when not in correct zone.
+                description_content = gettext('Placed in: {zone_title}').replace('{zone_title}', zone_title);
             } else {
-              // In standard mode item is immediately returned back to the bank if dropped on a wrong zone,
-              // so all placed items are always in the correct zone.
-              description_content = gettext('Correctly placed in: {zone_title}').replace('{zone_title}', zone_title);
+                // In standard mode item is immediately returned back to the bank if dropped on a wrong zone,
+                // so all placed items are always in the correct zone.
+                description_content = gettext('Correctly placed in: {zone_title}').replace('{zone_title}', zone_title);
             }
             var item_description = h(
                 'div',
-                { id: item_description_id, className: 'sr' },
+                { key: item.value + '-description', id: item_description_id, className: 'sr' },
                 description_content
             );
             children.splice(1, 0, item_description);
