@@ -690,7 +690,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                     cursor: 'move',
                     stack: $root.find('.item-bank .option'),
                     revert: 'invalid',
-                    revertDuration: 150,
+                    revertDuration: 2500,
                     start: function(evt, ui) {
                         var $item = $(this);
                         grabItem($item);
