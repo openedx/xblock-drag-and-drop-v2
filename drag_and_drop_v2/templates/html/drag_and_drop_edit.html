@@ -12,8 +12,10 @@
 
             <section class="tab-content">
                 <form class="feedback-form">
-                    <label class="h3" for="display-name">{% trans self.fields.display_name.display_name %}</label>
-                    <input id="display-name" value="{{ self.display_name }}" />
+                    <label class="h3">
+                        <span>{% trans self.fields.display_name.display_name %}</span>
+                        <input class="display-name" value="{{ self.display_name }}" />
+                    </label>
                     <label title="{{ help_texts.show_title }}">
                       <input class="show-title" type="checkbox"
                         {% if self.show_title %}checked="checked"{% endif %}>
@@ -21,50 +23,62 @@
                       <span class="sr">{{ help_texts.show_title }}</span>
                     </label>
 
-                    <label class="h3" for="problem-mode">{% trans self.fields.mode.display_name %}</label>
-                    <select id="problem-mode" aria-describedby="problem-mode-description">
-                        {% for field_value in field_values.mode %}
-                            <option value="{{ field_value.value }}" {% if self.mode == field_value.value %}selected{% endif %}>
-                                {{ field_value.display_name }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                    <div id="problem-mode-description" class="form-help">
+                    <label class="h3">
+                        <span>{% trans self.fields.mode.display_name %}</span>
+                        <select class="problem-mode" aria-describedby="problem-mode-description-{{id_suffix}}">
+                            {% for field_value in field_values.mode %}
+                                <option value="{{ field_value.value }}" {% if self.mode == field_value.value %}selected{% endif %}>
+                                    {{ field_value.display_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                    <div id="problem-mode-description-{{id_suffix}}" class="form-help">
                       {{ help_texts.mode }}
                     </div>
 
-                    <label class="h3 setting assessment">
+                    <label class="h3 assessment-setting">
                       {% trans self.fields.max_attempts.display_name %}
-                      <input class="nested-input max-attempts"
+                      <input class="max-attempts"
                              type="number"
                              min="1"
                              step="1"
-                             aria-describedby="max-attempts-description"
+                             aria-describedby="max-attempts-description-{{id_suffix}}"
                              {% if self.max_attempts %}value="{{ self.max_attempts }}"{% endif %} />
                     </label>
-                    <div id="max-attempts-description" class="form-help">
+                    <div id="max-attempts-description-{{id_suffix}}" class="assessment-setting form-help">
                       {{ help_texts.max_attempts }}
                     </div>
 
-                    <label class="h3" for="weight">{% trans self.fields.weight.display_name %}</label>
-                    <input id="weight" type="number" step="0.1" value="{{ self.weight|unlocalize }}" />
+                    <label class="h3">
+                        <span>{% trans self.fields.weight.display_name %}</span>
+                        <input class="weight" type="number" step="0.1" value="{{ self.weight|unlocalize }}" />
+                    </label>
 
-                    <label class="h3" for="problem-text">{% trans self.fields.question_text.display_name %}</label>
-                    <textarea id="problem-text">{{ self.question_text }}</textarea>
+                    <label class="h3">
+                        <span>{% trans self.fields.question_text.display_name %}</span>
+                        <textarea class="problem-text">{{ self.question_text }}</textarea>
+                    </label>
                     <label>
-                      <input class="show-problem-header" type="checkbox" aria-describedby="show-problem-header-description"
+                      <input class="show-problem-header"
+                             type="checkbox"
+                             aria-describedby="show-problem-header-description-{{id_suffix}}"
                         {% if self.show_question_header %}checked="checked"{% endif %}>
                       {% trans self.fields.show_question_header.display_name %}
                     </label>
-                    <div id="show-problem-header-description" class="form-help">
+                    <div id="show-problem-header-description-{{id_suffix}}" class="form-help">
                       {{ help_texts.show_question_header }}
                     </div>
 
-                    <label class="h3" for="intro-feedback">{% trans "Introductory Feedback" %}</label>
-                    <textarea id="intro-feedback">{{ self.data.feedback.start }}</textarea>
+                    <label class="h3">
+                        <span>{% trans "Introductory Feedback" %}</span>
+                        <textarea class="intro-feedback">{{ self.data.feedback.start }}</textarea>
+                    </label>
 
-                    <label class="h3" for="final-feedback">{% trans "Final Feedback" %}</label>
-                    <textarea id="final-feedback">{{ self.data.feedback.finish }}</textarea>
+                    <label class="h3">
+                        <span>{% trans "Final Feedback" %}</span>
+                        <textarea class="final-feedback">{{ self.data.feedback.finish }}</textarea>
+                    </label>
                 </form>
             </section>
         </div>
@@ -75,15 +89,21 @@
             </header>
             <section class="tab-content">
                 <form class="target-image-form">
-                    <label class="h3" for="background-url">{% trans "Background URL" %}</label>
-                    <input id="background-url"
+                    <label class="h3" for="background-url-{{id_suffix}}">
+                        <span>{% trans "Background URL" %}</span>
+                    </label>
+                    <input class="background-url"
+                           id="background-url-{{id_suffix}}"
                            type="text"
                            placeholder="{% trans 'For example, http://example.com/background.png or /static/background.png' %}">
+                    </label>
                     <button class="btn">{% trans "Change background" %}</button>
-                    <label class="h3" for="background-description">{% trans "Background description" %}</label>
-                    <textarea required id="background-description"
-                              aria-describedby="background-description-description"></textarea>
-                    <div id="background-description-description" class="form-help">
+                    <label class="h3">
+                        <span>{% trans "Background description" %}</span>
+                        <textarea required class="background-description"
+                                  aria-describedby="background-description-description-{{id_suffix}}"></textarea>
+                    </label>
+                    <div id="background-description-description-{{id_suffix}}" class="form-help">
                         {% blocktrans %}
                             Please provide a description of the image for non-visual users.
                             The description should provide sufficient information to allow anyone
@@ -95,13 +115,17 @@
             <section class="tab-content">
                 <form class="display-labels-form">
                     <h3>{% trans "Zone labels" %}</h3>
-                    <label for="display-labels">{% trans "Display label names on the image" %}:</label>
-                    <input name="display-labels" id="display-labels" type="checkbox" />
+                    <label>
+                        <span>{% trans "Display label names on the image" %}:</span>
+                        <input name="display-labels" class="display-labels" type="checkbox" />
+                    </label>
                 </form>
                 <form class="display-borders-form">
                     <h3>{% trans "Zone borders" %}</h3>
-                    <label for="display-borders">{% trans "Display zone borders on the image" %}:</label>
-                    <input name="display-borders" id="display-borders" type="checkbox" />
+                    <label>
+                        <span>{% trans "Display zone borders on the image" %}:</span>
+                        <input name="display-borders" class="display-borders" type="checkbox" />
+                    </label>
                 </form>
             </section>
             <section class="tab-content">
@@ -125,20 +149,24 @@
             </header>
             <section class="tab-content">
                 <form class="item-styles-form">
-                    <label class="h3" for="item-background-color">{% trans self.fields.item_background_color.display_name %}</label>
-                    <input id="item-background-color"
-                           placeholder="e.g. blue or #0000ff"
-                           value="{{ self.item_background_color }}"
-                           aria-describedby="item-background-color-description">
-                    <div id="item-background-color-description" class="form-help">
+                    <label class="h3">
+                        <span>{% trans self.fields.item_background_color.display_name %}</span>
+                        <input class="item-background-color"
+                               placeholder="e.g. blue or #0000ff"
+                               value="{{ self.item_background_color }}"
+                               aria-describedby="item-background-color-description-{{id_suffix}}">
+                    </label>
+                    <div id="item-background-color-description-{{id_suffix}}" class="form-help">
                       {{ help_texts.item_background_color }}
                     </div>
-                    <label class="h3" for="item-text-color">{% trans self.fields.item_text_color.display_name %}</label>
-                    <input id="item-text-color"
-                           placeholder="e.g. white or #ffffff"
-                           value="{{ self.item_text_color}}"
-                           aria-describedby="item-text-color-description">
-                    <div id="item-text-color-description" class="form-help">
+                    <label class="h3">
+                        <span>{% trans self.fields.item_text_color.display_name %}</span>
+                        <input class="item-text-color"
+                               placeholder="e.g. white or #ffffff"
+                               value="{{ self.item_text_color}}"
+                               aria-describedby="item-text-color-description-{{id_suffix}}">
+                    </label>
+                    <div id="item-text-color-description-{{id_suffix}}" class="form-help">
                       {{ help_texts.item_text_color }}
                     </div>
                 </form>

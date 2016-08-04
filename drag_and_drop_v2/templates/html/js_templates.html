@@ -1,4 +1,4 @@
-<script id="zone-element-tpl" type="text/html">
+<script class="zone-element-tpl" type="text/html">
     <div class="zone" data-zone="{{ uid }}" style="
         top:{{ y_percent }}%;
         left:{{ x_percent }}%;
@@ -9,80 +9,84 @@
     </div>
 </script>
 
-<script id="zone-input-tpl" type="text/html">
+<script class="zone-input-tpl" type="text/html">
     <div class="zone-row" data-uid="{{zone.uid}}">
-        <!-- uid values from old versions of the block may contain spaces and other characters, so we use 'index' as an alternate unique ID here. -->
-        <label for="zone-{{index}}-title">{{i18n "Text"}}</label>
-        <input type="text"
-               id="zone-{{index}}-title"
-               class="title"
-               value="{{ zone.title }}"
-               required />
-        <a class="remove-zone hidden">
+        <a class="remove-zone hidden" title="{{i18n 'Remove zone'}}">
             <div class="icon remove"></div>
         </a>
-        <label for="zone-{{index}}-description">{{i18n "Description"}}</label>
-        <input type="text"
-               id="zone-{{index}}-description"
-               class="description"
-               value="{{ zone.description }}"
-               placeholder="{{i18n 'Describe this zone to non-visual users'}}"
-               required />
+        <label>
+            <span>{{i18n "Text"}}</span>
+            <input type="text"
+                   class="title"
+                   value="{{ zone.title }}"
+                   required />
+        </label>
+        <label>
+            <span>{{i18n "Description"}}</span>
+            <input type="text"
+                   class="description"
+                   value="{{ zone.description }}"
+                   placeholder="{{i18n 'Describe this zone to non-visual users'}}"
+                   required />
+        </label>
         <div class="layout">
-            <label for="zone-{{index}}-width">{{i18n "width"}}</label>
-            <input type="text"
-                   id="zone-{{index}}-width"
-                   class="size width"
-                   value="{{ zone.width }}" />
-            <label for="zone-{{index}}-height">{{i18n "height"}}</label>
-            <input type="text"
-                   id="zone-{{index}}-height"
-                   class="size height"
-                   value="{{ zone.height }}" />
+            <label>
+                <span>{{i18n "width"}}</span>
+                <input type="text"
+                       class="size width"
+                       value="{{ zone.width }}" />
+            </label>
+            <label>
+                <span>{{i18n "height"}}</span>
+                <input type="text"
+                       class="size height"
+                       value="{{ zone.height }}" />
+            </label>
             <br />
-            <label for="zone-{{index}}-x">x</label>
-            <input type="text"
-                   id="zone-{{index}}-x"
-                   class="coord x"
-                   value="{{ zone.x }}" />
-            <label for="zone-{{index}}-y">y</label>
-            <input type="text"
-                   id="zone-{{index}}-y"
-                   class="coord y"
-                   value="{{ zone.y }}" />
+            <label>
+                <span>x</span>
+                <input type="text"
+                       class="coord x"
+                       value="{{ zone.x }}" />
+            </label>
+            <label>
+                <span>y</span>
+                <input type="text"
+                       class="coord y"
+                       value="{{ zone.y }}" />
+            </label>
         </div>
         <div class="alignment">
-            <label for="zone-{{index}}-align">
-                {{i18n "Alignment"}}
+            <label>
+                <span>{{i18n "Alignment"}}</span>
+                <select class="align-select"
+                        aria-describedby="zone-align-description-{{zone.uid}}-{{id_suffix}}">
+                    <option value=""
+                        {{#ifeq zone.align ""}}selected{{/ifeq}}>
+                        {{i18n "none"}}
+                    </option>
+                    <option value="left"
+                        {{#ifeq zone.align "left"}}selected{{/ifeq}}>
+                        {{i18n "left"}}
+                    </option>
+                    <option value="center"
+                        {{#ifeq zone.align "center"}}selected{{/ifeq}}>
+                        {{i18n "center"}}
+                    </option>
+                    <option value="right"
+                        {{#ifeq zone.align "right"}}selected{{/ifeq}}>
+                        {{i18n "right"}}
+                    </option>
+                </select>
             </label>
-            <select id="zone-{{index}}-align"
-                    class="align-select"
-                    aria-describedby="zone-align-description">
-                <option value="" 
-                    {{#ifeq zone.align ""}}selected{{/ifeq}}>
-                    {{i18n "none"}}
-                </option>
-                <option value="left" 
-                    {{#ifeq zone.align "left"}}selected{{/ifeq}}>
-                    {{i18n "left"}}
-                </option>
-                <option value="center" 
-                    {{#ifeq zone.align "center"}}selected{{/ifeq}}>
-                    {{i18n "center"}}
-                </option>
-                <option value="right"
-                    {{#ifeq zone.align "right"}}selected{{/ifeq}}>
-                    {{i18n "right"}}
-                </option>
-            </select>
-            <div id="zone-align-description" class="zones-form-help">
+            <div id="zone-align-description-{{zone.uid}}-{{id_suffix}}" class="form-help">
                 {{i18n "Align dropped items to the left, center, or right.  Default is no alignment (items stay exactly where the user drops them)."}}
             </div>
         </div>
     </div>
 </script>
 
-<script id="zone-checkbox-tpl" type="text/html">
+<script class="zone-checkbox-tpl" type="text/html">
     <div class="zone-checkbox-row">
         <label>
             <input type="checkbox"
@@ -94,7 +98,7 @@
     </div>
 </script>
 
-<script id="item-input-tpl" type="text/html">
+<script class="item-input-tpl" type="text/html">
     <div class="item">
         <div class="row">
             <label class="h3">
@@ -126,32 +130,38 @@
             </label>
         </div>
         <div class="row">
-            <label class="h3" for="item-{{id}}-image-description">{{i18n "Image description (should provide sufficient information to place the item even if the image did not load)"}}</label>
-            <textarea id="item-{{id}}-image-description" {{#if imageURL}}required{{/if}}
-                      class="item-image-description">{{ imageDescription }}</textarea>
+            <label class="h3">
+                <span>{{i18n "Image description (should provide sufficient information to place the item even if the image did not load)"}}</span>
+                <textarea {{#if imageURL}}required{{/if}} class="item-image-description">{{ imageDescription }}</textarea>
+            </label>
         </div>
         <div class="row">
-            <label class="h3" for="item-{{id}}-success-feedback">{{i18n "Success Feedback"}}</label>
-            <textarea id="item-{{id}}-success-feedback"
-                      class="success-feedback">{{ feedback.correct }}</textarea>
+            <label class="h3">
+                <span>{{i18n "Success Feedback"}}</span>
+                <textarea class="success-feedback">{{ feedback.correct }}</textarea>
+            </label>
         </div>
         <div class="row">
-            <label class="h3" for="item-{{id}}-error-feedback">{{i18n "Error Feedback"}}</label>
-            <textarea id="item-{{id}}-error-feedback"
-                      class="error-feedback">{{ feedback.incorrect }}</textarea>
+            <label class="h3">
+                <span>{{i18n "Error Feedback"}}</span>
+                <textarea class="error-feedback">{{ feedback.incorrect }}</textarea>
+            </label>
         </div>
         <div class="row advanced-link">
             <a>{{i18n "Show advanced settings" }}</a>
         </div>
         <div class="row advanced">
             <label>
-                {{i18n "Preferred width as a percentage of the background image width (or blank for automatic width):"}}
+                <span>
+                  {{i18n "Preferred width as a percentage of the background image width (or blank for automatic width):"}}
+                </span>
                 <input type="number"
                        class="item-width"
                        value="{{ singleDecimalFloat widthPercent }}"
                        step="0.1"
                        min="1"
                        max="99" />%
+            </label>
         </div>
     </div>
 </script>

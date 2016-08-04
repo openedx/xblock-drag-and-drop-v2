@@ -79,11 +79,6 @@
     font-size: 100%;
 }
 
-.xblock--drag-and-drop--editor .tab .nested-input {
-    display: block;
-    margin-top: 8px;
-}
-
 .xblock--drag-and-drop--editor .tab-header,
 .xblock--drag-and-drop--editor .tab-content,
 .xblock--drag-and-drop--editor .tab-footer {
@@ -106,6 +101,25 @@
 .xblock--drag-and-drop--editor .target-image-form input,
 .xblock--drag-and-drop--editor .target-image-form textarea {
     width: 50%;
+}
+
+.xblock--drag-and-drop--editor .target-image-form textarea {
+    display: block;
+}
+
+.xblock--drag-and-drop--editor label > span {
+    display: inline-block;
+    margin-bottom: 0.25em;
+}
+
+/* Main Tab */
+.xblock--drag-and-drop--editor .feedback-tab input,
+.xblock--drag-and-drop--editor .feedback-tab select {
+    display: block;
+}
+
+.xblock--drag-and-drop--editor .feedback-tab input[type=checkbox] {
+    display: inline-block;
 }
 
 /* Zones Tab */
@@ -138,11 +152,15 @@
 }
 
 .xblock--drag-and-drop--editor .zones-form .zone-row label {
-    display: inline-block;
-    width: 18%;
+    display: block;
 }
 
-.xblock--drag-and-drop--editor .zones-form .zone-row > input {
+.xblock--drag-and-drop--editor .zones-form .zone-row label > span {
+    display: inline-block;
+    width: 6em;
+}
+
+.xblock--drag-and-drop--editor .zones-form .zone-row label > input {
     width: 60%;
     margin: 0 0 5px;
     line-height: 2.664rem;  /* .title gets line-height from a Studio rule that does not apply to .description;
@@ -153,11 +171,16 @@
     margin-bottom: 15px;
 }
 
+.xblock--drag-and-drop--editor .zones-form .zone-row .layout label {
+    display: inline-block;
+    width: 40%;
+}
 
 .xblock--drag-and-drop--editor .zones-form .zone-row .layout .size,
 .xblock--drag-and-drop--editor .zones-form .zone-row .layout .coord {
-    width: 15%;
+    width: 35%;
     margin: 0 19px 5px 0;
+    line-height: inherit;
 }
 
 .xblock--drag-and-drop--editor .feedback-form textarea {
@@ -206,7 +229,6 @@
 
 .xblock--drag-and-drop--editor .items-form textarea {
     width: 97%;
-    margin: 0 1%;
 }
 
 .xblock--drag-and-drop--editor .items-form .zone-checkbox-label {
