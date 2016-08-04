@@ -187,6 +187,7 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
         target_img_width = target_img.size["width"]
         item_bank = self._page.find_element_by_css_selector('.item-bank')
         item_bank_width = item_bank.size["width"]
+        item_bank_height = item_bank.size["height"]
 
         if is_desktop:
             # If using a desktop-sized window, we can know the exact dimensions of various containers:
@@ -238,6 +239,10 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
                     self._get_placed_item_by_value(expect.item_id),
                     *expect.img_pixel_size_exact
                 )
+
+        # Test that the item bank maintains its original size.
+        self.assertEqual(item_bank.size["width"], item_bank_width)
+        self.assertEqual(item_bank.size["height"], item_bank_height)
 
 
 class AlignedSizingTests(SizingTests):

@@ -146,7 +146,6 @@ class TestDragAndDropRender(BaseIntegrationTest):
             self.assertEqual(item.get_attribute('draggable'), 'true')
             self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
             self.assertEqual(item.get_attribute('data-value'), str(index))
-            self.assertIn('ui-draggable', self.get_element_classes(item))
             self._test_item_style(item, color_settings)
             try:
                 background_image = item.find_element_by_css_selector('img')
@@ -160,8 +159,16 @@ class TestDragAndDropRender(BaseIntegrationTest):
 
     def test_drag_container(self):
         self.load_scenario()
-        item_bank = self._page.find_element_by_css_selector('.drag-container')
-        self.assertIsNone(item_bank.get_attribute('role'))
+        drag_container = self._page.find_element_by_css_selector('.drag-container')
+        self.assertIsNone(drag_container.get_attribute('role'))
+
+    def test_item_bank(self):
+        self.load_scenario()
+        item_bank = self._page.find_element_by_css_selector('.item-bank')
+        description = item_bank.find_element_by_css_selector('p.zone-description')
+        self.assertEqual(description.text, 'Item Bank')
+        # Description should only be visible to screen readers:
+        self.assertEqual(description.get_attribute('class'), 'zone-description sr')
 
     def test_zones(self):
         self.load_scenario()

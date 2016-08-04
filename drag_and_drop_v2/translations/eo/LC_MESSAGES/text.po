@@ -494,12 +494,16 @@ msgid "ok"
 msgstr "ök Ⱡ'σя#"
 
 #: public/js/drag_and_drop.js
-msgid "Placed in: "
-msgstr "Pläçéd ïn:  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+msgid "Item Bank"
+msgstr "Ìtém Bänk Ⱡ'σяєм ιρѕυм ∂σł#"
 
 #: public/js/drag_and_drop.js
-msgid "Correctly placed in: "
-msgstr "Çörréçtlý pläçéd ïn:  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+msgid "Placed in: {zone_title}"
+msgstr "Pläçéd ïn: {zone_title}  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: public/js/drag_and_drop.js
+msgid "Correctly placed in: {zone_title}"
+msgstr "Çörréçtlý pläçéd ïn: {zone_title} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
 #: public/js/drag_and_drop.js
 msgid "Reset problem"

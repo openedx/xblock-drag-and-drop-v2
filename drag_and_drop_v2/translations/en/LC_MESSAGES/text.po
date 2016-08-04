@@ -409,11 +409,15 @@ msgid "ok"
 msgstr ""
 
 #: public/js/drag_and_drop.js
-msgid "Placed in: "
+msgid "Item Bank"
 msgstr ""
 
 #: public/js/drag_and_drop.js
-msgid "Correctly placed in: "
+msgid "Placed in: {zone_title}"
+msgstr ""
+
+#: public/js/drag_and_drop.js
+msgid "Correctly placed in: {zone_title}"
 msgstr ""
 
 #: public/js/drag_and_drop.js
