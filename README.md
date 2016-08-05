@@ -429,3 +429,80 @@ Similarly, you can run the integration test suite via
 ```bash
 $ python run_tests.py tests/integration/
 ```
+
+
+i18n compatibility
+==================
+
+According to [edX docs on XBlock i18n][edx-docs-i18n], LMS runtime is capable of supporting XBlock i18n and l10n. 
+To comply with l10n requirements, XBlock is supposed to provide translations in 
+`xblock_package_root/translations/locale_code/LC_MESSAGES/text.po` folder in GNU Gettext Portable Object file format.
+
+[edx-docs-i18n]: http://edx.readthedocs.io/projects/xblock-tutorial/en/latest/edx_platform/edx_lms.html#internationalization-support
+
+Drag and Drop v2 XBlock aims to comply with i18n requirements for Open edX platform, including a stricter set of 
+requirements for `edx.org` itself, thus providing the required files. So far only two translations are available:
+
+* Default English translation
+* Fake "Esperanto" translation used to test i18n/l10n.
+
+Updates to translated strings are supposed to be propagated to `text.po` files. Unfortunately, the process is mostly 
+manual. EdX [i18n_tools][edx-i18n-tools] might be helpful, but they are too tied to edx-platform, so as of Aug 2016 
+do not provide any benefits over manual approach.
+
+[edx-i18n-tools]: https://github.com/edx/i18n-tools
+
+In lieu of automated solution (i.e. edX i18n-tools supporting XBlock use case), one can use GNU Gettext toolkit
+to simplify manual updating `text.po` files.
+
+This command scrapes all the strings in all `*.py` files in `drag_and_drop_v2` folder and outputs `messages.po` file
+ in `drag_and_drop_v2` folder:
+
+```
+~/xblock-drag-and-drop-v2/drag_and_drop_v2$ find . -name "*.py" | xargs xgettext --language=python
+```
+
+Javascript command is a little bit more verbose:
+
+```
+~/xblock-drag-and-drop-v2/drag_and_drop_v2$ find . -name "*.js" -o  -path ./public/js/vendor -prune -a -type f | xargs xgettext --language=javascript --from-code=utf-8
+```
+
+Note that both commands generate partial `messages.po` file - JS or python only, while `test.po` is supposed to contain
+all translatable strings. Both commands can be modified to append to *exsisting* `messages.po` file by adding 
+`--join-existing` key.
+
+To check if `text.po` is correct, one can run `msgfmt` to build a `text.mo` file:
+
+```
+~/xblock-drag-and-drop-v2/drag_and_drop_v2$ msgfmt translations/en/LC_MESSAGES/text.po -o translations/en/LC_MESSAGES/text.mo 
+```
+
+If everything is correct, it will silently exit and create `translations/en/LC_MESSAGES/text.mo` file.
+
+**Note:** As of 2016-08-04, XBlock translation feature was (partially?) broken, so switching to other locale did not 
+cause Drag and Drop v2 to be fully translated - only some strings that happen to exist in edx-platform translation
+files are translated. There's an ongoing effort to fix this problem: https://openedx.atlassian.net/browse/WL-230.
+
+Building fake "Esperanto" translation
+-------------------------------------
+
+As previously said, this fake translation mainly exists for testing reasons. For edX platform it is built using Dummy
+translator from edX i18n-tools. Luckily, it is possible to use "translation" generation feature without the rest of
+i18n-tools.
+
+To do so, in any virtualenv, install i18n-tools, i.e.
+
+    (virtualenv)$ pip install -e git+https://github.com/edx/i18n-tools.git
+    
+Then start python interpreter, import `Dummy` translator and follow instructions on `Dummy` docstring:
+ 
+    (virtualenv)$ python
+    >>> from i18n.dummy import Dummy
+    >>> help(Dummy)
+    
+    # or just do
+    >>> conv = Dummy()
+    >>> print conv.convert("String to translate")
+    
+Then copy output and paste it into `translations/eo/LC_MESSAGES/text.po`.
