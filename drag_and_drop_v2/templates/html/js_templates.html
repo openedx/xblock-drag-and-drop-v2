@@ -15,16 +15,16 @@
             <div class="icon remove"></div>
         </a>
         <label>
-            <span>{{i18n "Text"}}</span>
+            <span>{{i18n "Title"}}</span>
             <input type="text"
-                   class="title"
+                   class="zone-title"
                    value="{{ zone.title }}"
                    required />
         </label>
         <label>
             <span>{{i18n "Description"}}</span>
             <input type="text"
-                   class="description"
+                   class="zone-description"
                    value="{{ zone.description }}"
                    placeholder="{{i18n 'Describe this zone to non-visual users'}}"
                    required />
@@ -33,33 +33,33 @@
             <label>
                 <span>{{i18n "width"}}</span>
                 <input type="text"
-                       class="size width"
+                       class="zone-size zone-width"
                        value="{{ zone.width }}" />
             </label>
             <label>
                 <span>{{i18n "height"}}</span>
                 <input type="text"
-                       class="size height"
+                       class="zone-size zone-height"
                        value="{{ zone.height }}" />
             </label>
             <br />
             <label>
                 <span>x</span>
                 <input type="text"
-                       class="coord x"
+                       class="zone-coord zone-x"
                        value="{{ zone.x }}" />
             </label>
             <label>
                 <span>y</span>
                 <input type="text"
-                       class="coord y"
+                       class="zone-coord zone-y"
                        value="{{ zone.y }}" />
             </label>
         </div>
         <div class="alignment">
             <label>
                 <span>{{i18n "Alignment"}}</span>
-                <select class="align-select"
+                <select class="zone-align-select"
                         aria-describedby="zone-align-description-{{zone.uid}}-{{id_suffix}}">
                     <option value=""
                         {{#ifeq zone.align ""}}selected{{/ifeq}}>

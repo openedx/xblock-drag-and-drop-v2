@@ -255,19 +255,10 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         # connect 'for' and 'aria-describedby' attributes to the associated elements.
         id_suffix = uuid.uuid4().hex[:16]
         js_templates = js_templates.replace('{{id_suffix}}', id_suffix)
-        help_texts = {
-            field_name: self.ugettext(field.help)
-            for field_name, field in self.fields.viewitems() if hasattr(field, "help")
-        }
-        field_values = {
-            field_name: field.values
-            for field_name, field in self.fields.viewitems() if hasattr(field, "values")
-        }
         context = {
             'js_templates': js_templates,
-            'help_texts': help_texts,
-            'field_values': field_values,
             'id_suffix': id_suffix,
+            'fields': self.fields,
             'self': self,
             'data': urllib.quote(json.dumps(self.data)),
         }

@@ -354,19 +354,19 @@ function DragAndDropEditBlock(runtime, element, params) {
                             var $changedInput = $(ev.currentTarget);
                             var $row = $changedInput.closest('.zone-row');
                             var record = _fn.build.form.zone.getZoneObjByUID(String($row.data('uid')));
-                            if ($changedInput.hasClass('title')) {
+                            if ($changedInput.hasClass('zone-title')) {
                                 record.title = $changedInput.val();
-                            } else if ($changedInput.hasClass('width')) {
+                            } else if ($changedInput.hasClass('zone-width')) {
                                 record.width = $changedInput.val();
-                            } else if ($changedInput.hasClass('description')) {
+                            } else if ($changedInput.hasClass('zone-description')) {
                                 record.description = $changedInput.val();
-                            } else if ($changedInput.hasClass('height')) {
+                            } else if ($changedInput.hasClass('zone-height')) {
                                 record.height = $changedInput.val();
-                            } else if ($changedInput.hasClass('x')) {
+                            } else if ($changedInput.hasClass('zone-x')) {
                                 record.x = $changedInput.val();
-                            } else if ($changedInput.hasClass('y')) {
+                            } else if ($changedInput.hasClass('zone-y')) {
                                 record.y = $changedInput.val();
-                            } else if ($changedInput.hasClass('align-select')) {
+                            } else if ($changedInput.hasClass('zone-align-select')) {
                                 record.align = $changedInput.val();
                             }
                             _fn.build.form.zone.renderZonesPreview();

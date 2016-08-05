@@ -176,8 +176,8 @@
     width: 40%;
 }
 
-.xblock--drag-and-drop--editor .zones-form .zone-row .layout .size,
-.xblock--drag-and-drop--editor .zones-form .zone-row .layout .coord {
+.xblock--drag-and-drop--editor .zones-form .zone-row .layout .zone-size,
+.xblock--drag-and-drop--editor .zones-form .zone-row .layout .zone-coord {
     width: 35%;
     margin: 0 19px 5px 0;
     line-height: inherit;
