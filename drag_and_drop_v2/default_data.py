@@ -38,6 +38,7 @@ DEFAULT_DATA = {
             "y": 30,
             "width": 196,
             "height": 178,
+            "align": "center"
         },
         {
             "uid": MIDDLE_ZONE_ID,
@@ -47,6 +48,7 @@ DEFAULT_DATA = {
             "y": 210,
             "width": 340,
             "height": 138,
+            "align": "center"
         },
         {
             "uid": BOTTOM_ZONE_ID,
@@ -56,6 +58,7 @@ DEFAULT_DATA = {
             "y": 350,
             "width": 485,
             "height": 135,
+            "align": "center"
         }
     ],
     "items": [
@@ -65,7 +68,9 @@ DEFAULT_DATA = {
                 "incorrect": ITEM_INCORRECT_FEEDBACK,
                 "correct": ITEM_CORRECT_FEEDBACK.format(zone=TOP_ZONE_TITLE)
             },
-            "zones": [TOP_ZONE_ID],
+            "zones": [
+                TOP_ZONE_ID
+            ],
             "imageURL": "",
             "id": 0,
         },
@@ -75,7 +80,9 @@ DEFAULT_DATA = {
                 "incorrect": ITEM_INCORRECT_FEEDBACK,
                 "correct": ITEM_CORRECT_FEEDBACK.format(zone=MIDDLE_ZONE_TITLE)
             },
-            "zones": [MIDDLE_ZONE_ID],
+            "zones": [
+                MIDDLE_ZONE_ID
+            ],
             "imageURL": "",
             "id": 1,
         },
@@ -85,7 +92,9 @@ DEFAULT_DATA = {
                 "incorrect": ITEM_INCORRECT_FEEDBACK,
                 "correct": ITEM_CORRECT_FEEDBACK.format(zone=BOTTOM_ZONE_TITLE)
             },
-            "zones": [BOTTOM_ZONE_ID],
+            "zones": [
+                BOTTOM_ZONE_ID
+            ],
             "imageURL": "",
             "id": 2,
         },
@@ -95,7 +104,11 @@ DEFAULT_DATA = {
                 "incorrect": "",
                 "correct": ITEM_ANY_ZONE_FEEDBACK
             },
-            "zones": [TOP_ZONE_ID, BOTTOM_ZONE_ID, MIDDLE_ZONE_ID],
+            "zones": [
+                TOP_ZONE_ID,
+                BOTTOM_ZONE_ID,
+                MIDDLE_ZONE_ID
+            ],
             "imageURL": "",
             "id": 3
         },

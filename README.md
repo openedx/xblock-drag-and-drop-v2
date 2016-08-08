@@ -11,7 +11,7 @@ The editor is fully guided. Features include:
 * custom zone labels
 * ability to show or hide zone borders
 * custom text and background colors for items
-* optional auto-alignment for items (left, right, center)
+* auto-alignment for items: left, right, center
 * image items
 * decoy items that don't have a zone
 * feedback popups for both correct and incorrect attempts
@@ -122,15 +122,13 @@ whether or not to display borders outlining the zones. It is possible
 to define an arbitrary number of drop zones as long as their labels
 are unique.
 
-Additionally, you can specify the alignment for items once they are dropped in
-the zone.  No alignment is the default, and causes items to stay where the
-learner drops them.  Left alignment causes dropped items to be placed from left
+You can specify the alignment for items once they are dropped in
+the zone. Centered alignment is the default, and places items from top to bottom
+along the center of the zone. Left alignment causes dropped items to be placed from left
 to right across the zone. Right alignment causes the items to be placed from
-right to left across the zone. Center alignment places items from top to bottom
-along the center of the zone. If left, right, or center alignment is chosen,
-items dropped in a zone will not overlap, but if the zone is not made large
-enough for all its items, they will overflow the bottom of the zone, and
-potentially, overlap the zones below.
+right to left across the zone. Items dropped in a zone will not overlap,
+but if the zone is not made large enough for all its items, they will overflow the bottom
+of the zone, and potentially overlap the zones below.
 
 ![Drag item edit](/doc/img/edit-view-items.png)
 
@@ -150,6 +148,9 @@ You can leave all of the checkboxes unchecked in order to create a
 
 You can define an arbitrary number of drag items, each of which may
 be attached to any number of zones.
+
+"Maximum items per Zone" setting controls how many items can be dropped into a
+single zone, allowing some degree of control over items overlapping zones below.
 
 Scoring
 -------

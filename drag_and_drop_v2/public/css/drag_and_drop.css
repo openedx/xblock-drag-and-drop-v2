@@ -171,9 +171,9 @@
     text-align: center;
 }
 .xblock--drag-and-drop .zone .item-align-center .option {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+    display: inline-block;
+    margin-left: 1px;
+    margin-right: 1px;
 }
 
 /* Focused option */

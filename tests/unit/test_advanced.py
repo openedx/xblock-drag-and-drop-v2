@@ -75,7 +75,7 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
     """
     def test_drop_item_wrong_with_feedback(self):
         item_id, zone_id = 0, self.ZONE_2
-        data = {"val": item_id, "zone": zone_id, "x_percent": "33%", "y_percent": "11%"}
+        data = {"val": item_id, "zone": zone_id}
         res = self.call_handler(self.DROP_ITEM_HANDLER, data)
         self.assertEqual(res, {
             "overall_feedback": [self._make_feedback_message(message=self.INITIAL_FEEDBACK)],
@@ -86,7 +86,7 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
 
     def test_drop_item_wrong_without_feedback(self):
         item_id, zone_id = 2, self.ZONE_1
-        data = {"val": item_id, "zone": zone_id, "x_percent": "33%", "y_percent": "11%"}
+        data = {"val": item_id, "zone": zone_id}
         res = self.call_handler(self.DROP_ITEM_HANDLER, data)
         self.assertEqual(res, {
             "overall_feedback": [self._make_feedback_message(message=self.INITIAL_FEEDBACK)],
@@ -97,7 +97,7 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
 
     def test_drop_item_correct(self):
         item_id, zone_id = 0, self.ZONE_1
-        data = {"val": item_id, "zone": zone_id, "x_percent": "33%", "y_percent": "11%"}
+        data = {"val": item_id, "zone": zone_id}
         res = self.call_handler(self.DROP_ITEM_HANDLER, data)
         self.assertEqual(res, {
             "overall_feedback": [self._make_feedback_message(message=self.INITIAL_FEEDBACK)],
@@ -114,27 +114,23 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
                 published_grades.append(params)
         self.block.runtime.publish = mock_publish
 
-        self.call_handler(self.DROP_ITEM_HANDLER, {
-            "val": 0, "zone": self.ZONE_1, "y_percent": "11%", "x_percent": "33%"
-        })
+        self.call_handler(self.DROP_ITEM_HANDLER, {"val": 0, "zone": self.ZONE_1})
 
         self.assertEqual(1, len(published_grades))
         self.assertEqual({'value': 0.75, 'max_value': 1}, published_grades[-1])
 
-        self.call_handler(self.DROP_ITEM_HANDLER, {
-            "val": 1, "zone": self.ZONE_2, "y_percent": "90%", "x_percent": "42%"
-        })
+        self.call_handler(self.DROP_ITEM_HANDLER, {"val": 1, "zone": self.ZONE_2})
 
         self.assertEqual(2, len(published_grades))
         self.assertEqual({'value': 1, 'max_value': 1}, published_grades[-1])
 
     def test_drop_item_final(self):
-        data = {"val": 0, "zone": self.ZONE_1, "x_percent": "33%", "y_percent": "11%"}
+        data = {"val": 0, "zone": self.ZONE_1}
         self.call_handler(self.DROP_ITEM_HANDLER, data)
 
         expected_state = {
             "items": {
-                "0": {"x_percent": "33%", "y_percent": "11%", "correct": True, "zone": self.ZONE_1}
+                "0": {"correct": True, "zone": self.ZONE_1}
             },
             "finished": False,
             "attempts": 0,
@@ -142,8 +138,7 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
         }
         self.assertEqual(expected_state, self.call_handler('get_user_state', method="GET"))
 
-        data = {"val": 1, "zone": self.ZONE_2, "x_percent": "22%", "y_percent": "22%"}
-        res = self.call_handler(self.DROP_ITEM_HANDLER, data)
+        res = self.call_handler(self.DROP_ITEM_HANDLER, {"val": 1, "zone": self.ZONE_2})
         self.assertEqual(res, {
             "overall_feedback": [self._make_feedback_message(message=self.FINAL_FEEDBACK)],
             "finished": True,
@@ -153,12 +148,8 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
 
         expected_state = {
             "items": {
-                "0": {
-                    "x_percent": "33%", "y_percent": "11%", "correct": True, "zone": self.ZONE_1,
-                },
-                "1": {
-                    "x_percent": "22%", "y_percent": "22%", "correct": True, "zone": self.ZONE_2,
-                }
+                "0": {"correct": True, "zone": self.ZONE_1},
+                "1": {"correct": True, "zone": self.ZONE_2}
             },
             "finished": True,
             "attempts": 0,
@@ -182,9 +173,7 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
     """
     @staticmethod
     def _make_submission(item_id, zone_id):
-        x_percent, y_percent = str(random.randint(0, 100)) + '%', str(random.randint(0, 100)) + '%'
-        data = {"val": item_id, "zone": zone_id, "x_percent": x_percent, "y_percent": y_percent}
-        return data
+        return {"val": item_id, "zone": zone_id}
 
     def _submit_solution(self, solution):
         for item_id, zone_id in solution.iteritems():
@@ -209,12 +198,11 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
         item_zone_map = {0: self.ZONE_1, 1: self.ZONE_2}
         for item_id, zone_id in item_zone_map.iteritems():
             data = self._make_submission(item_id, zone_id)
-            x_percent, y_percent = data['x_percent'], data['y_percent']
             res = self.call_handler(self.DROP_ITEM_HANDLER, data)
 
             self.assertEqual(res, {})
 
-            expected_item_state = {'zone': zone_id, 'correct': True, 'x_percent': x_percent, 'y_percent': y_percent}
+            expected_item_state = {'zone': zone_id, 'correct': True}
 
             self.assertIn(str(item_id), self.block.item_state)
             self.assertEqual(self.block.item_state[str(item_id)], expected_item_state)

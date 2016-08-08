@@ -118,6 +118,10 @@ msgid "Title"
 msgstr "Tïtlé Ⱡ'σяєм ιρѕ#"
 
 #: drag_and_drop_v2.py
+#: msgid "This setting limits the number of items that can be dropped into a single zone."
+#: msgstr "Thïs séttïng lïmïts thé nümßér öf ïtéms thät çän ßé dröppéd ïntö ä sïnglé zöné."
+
+#: drag_and_drop_v2.py
 msgid ""
 "The title of the drag and drop problem. The title is displayed to learners."
 msgstr ""
@@ -194,7 +198,7 @@ msgstr ""
 
 #: drag_and_drop_v2.py
 msgid "Maximum score"
-msgstr Mäxïmüm sçöré Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#
+msgstr "Mäxïmüm sçöré Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
 #: drag_and_drop_v2.py
 msgid "The maximum score the learner can receive for the problem."
@@ -260,10 +264,6 @@ msgstr ""
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
 #: drag_and_drop_v2.py
-msgid "Keeps maximum achieved score by student"
-msgstr "Kééps mäxïmüm äçhïévéd sçöré ßý stüdént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
-
-#: drag_and_drop_v2.py
 msgid "do_attempt handler should only be called for assessment mode"
 msgstr "dö_ättémpt händlér shöüld önlý ßé çälléd för ässéssmént mödé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
@@ -278,6 +278,19 @@ msgstr "Ûnknöwn DnDv2 mödé {mode} - çöürsé ïs mïsçönfïgüréd Ⱡ'�
 #: templates/html/js_templates.html
 msgid "Remove zone"
 msgstr "Rémövé zöné Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: drag_and_drop_v2.py
+msgid "Keeps maximum score achieved by student"
+msgstr "Kééps mäxïmüm sçöré äçhïévéd ßý stüdént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
+
+#: drag_and_drop_v2.py
+msgid "Failed to parse \"Maximum items per zone\""
+msgstr "Fäïléd tö pärsé \"Mäxïmüm ïtéms pér zöné\" Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
+
+#: drag_and_drop_v2.py
+msgid ""
+"\"Maximum items per zone\" should be positive integer, got {max_items_per_zone}"
+msgstr "\"Mäxïmüm ïtéms pér zöné\" shöüld ßé pösïtïvé ïntégér, göt {max_items_per_zone} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
 #: templates/html/js_templates.html
 msgid "Text"
@@ -322,12 +335,8 @@ msgid "right"
 msgstr "rïght Ⱡ'σяєм ιρѕ#"
 
 #: templates/html/js_templates.html
-msgid ""
-"Align dropped items to the left, center, or right.  Default is no alignment "
-"(items stay exactly where the user drops them)."
-msgstr ""
-"Àlïgn dröppéd ïtéms tö thé léft, çéntér, ör rïght.  Défäült ïs nö älïgnmént "
-"(ïtéms stäý éxäçtlý whéré thé üsér dröps thém). Ⱡ'σяєм ιρ#"
+msgid "Align dropped items to the left, center, or right."
+msgstr "Àlïgn dröppéd ïtéms tö thé léft, çéntér, ör rïght. Ⱡ'σяєм ιρ#"
 
 #: templates/html/js_templates.html
 msgid "Remove item"
@@ -589,11 +598,6 @@ msgstr ""
 #: public/js/drag_and_drop_edit.js
 msgid "None"
 msgstr "Nöné Ⱡ'σяєм ι#"
-
-#: public/js/drag_and_drop_edit.js
-msgid "Error: "
-msgstr "Érrör:  Ⱡ'σяєм ιρѕυм #"
-
 
 #: utils.py:18
 msgid "Fïnäl ättémpt wäs üséd, hïghést sçöré ïs {score} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"

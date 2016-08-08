@@ -64,10 +64,6 @@
                 <span>{{i18n "Alignment"}}</span>
                 <select class="zone-align-select"
                         aria-describedby="zone-align-description-{{zone.uid}}-{{id_suffix}}">
-                    <option value=""
-                        {{#ifeq zone.align ""}}selected{{/ifeq}}>
-                        {{i18n "none"}}
-                    </option>
                     <option value="left"
                         {{#ifeq zone.align "left"}}selected{{/ifeq}}>
                         {{i18n "left"}}
@@ -83,7 +79,7 @@
                 </select>
             </label>
             <div id="zone-align-description-{{zone.uid}}-{{id_suffix}}" class="form-help">
-                {{i18n "Align dropped items to the left, center, or right.  Default is no alignment (items stay exactly where the user drops them)."}}
+                {{i18n "Align dropped items to the left, center, or right."}}
             </div>
         </div>
     </fieldset>

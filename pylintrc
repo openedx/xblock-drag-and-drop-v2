@@ -17,7 +17,7 @@ disable=
 min-similarity-lines=4
 
 [OPTIONS]
-good-names=_,__,log,loader
+good-names=_,__,logger,loader
 method-rgx=_?[a-z_][a-z0-9_]{2,40}$
 function-rgx=_?[a-z_][a-z0-9_]{2,40}$
 method-name-hint=_?[a-z_][a-z0-9_]{2,40}$

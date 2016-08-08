@@ -6,6 +6,7 @@
 
 import copy
 import json
+import logging
 import urllib
 import webob
 
@@ -16,16 +17,17 @@ from xblock.fragment import Fragment
 from xblockutils.resources import ResourceLoader
 from xblockutils.settings import XBlockWithSettingsMixin, ThemableXBlockMixin
 
-from .utils import _, DummyTranslationService, FeedbackMessage, FeedbackMessages, ItemStats
+from .utils import _, DummyTranslationService, FeedbackMessage, FeedbackMessages, ItemStats, StateMigration, Constants
 from .default_data import DEFAULT_DATA
 
 
 # Globals ###########################################################
 
 loader = ResourceLoader(__name__)
-
+logger = logging.getLogger(__name__)
 
 # Classes ###########################################################
+
 
 @XBlock.wants('settings')
 @XBlock.needs('i18n')
@@ -33,8 +35,6 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     """
     XBlock that implements a friendly Drag-and-Drop problem
     """
-    STANDARD_MODE = "standard"
-    ASSESSMENT_MODE = "assessment"
 
     SOLUTION_CORRECT = "correct"
     SOLUTION_PARTIAL = "partial"
@@ -69,10 +69,10 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         ),
         scope=Scope.settings,
         values=[
-            {"display_name": _("Standard"), "value": STANDARD_MODE},
-            {"display_name": _("Assessment"), "value": ASSESSMENT_MODE},
+            {"display_name": _("Standard"), "value": Constants.STANDARD_MODE},
+            {"display_name": _("Assessment"), "value": Constants.ASSESSMENT_MODE},
         ],
-        default=STANDARD_MODE
+        default=Constants.STANDARD_MODE
     )
 
     max_attempts = Integer(
@@ -127,6 +127,13 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         default="",
     )
 
+    max_items_per_zone = Integer(
+        display_name=_("Maximum items per zone"),
+        help=_("This setting limits the number of items that can be dropped into a single zone."),
+        scope=Scope.settings,
+        default=None
+    )
+
     data = Dict(
         display_name=_("Problem data"),
         help=_(
@@ -157,7 +164,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     )
 
     grade = Float(
-        help=_("Keeps maximum achieved score by student"),
+        help=_("Keeps maximum score achieved by student"),
         scope=Scope.user_state,
         default=0
     )
@@ -223,8 +230,9 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         return {
             "mode": self.mode,
+            "zones": self.zones,
             "max_attempts": self.max_attempts,
-            "zones": self._get_zones(),
+            "max_items_per_zone": self.max_items_per_zone,
             # SDK doesn't supply url_name.
             "url_name": getattr(self, 'url_name', ''),
             "display_zone_labels": self.data.get('displayLabels', False),
@@ -286,7 +294,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         items = self.data.get('items', [])
 
         for item in items:
-            zones = self._get_item_zones(item['id'])
+            zones = self.get_item_zones(item['id'])
             # Note that we appear to be mutating the state of the XBlock here, but because
             # the change won't be committed, we're actually just affecting the data that
             # we're going to send to the client, not what's saved in the backing store.
@@ -315,11 +323,45 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         self.weight = float(submissions['weight'])
         self.item_background_color = submissions['item_background_color']
         self.item_text_color = submissions['item_text_color']
+        self.max_items_per_zone = self._get_max_items_per_zone(submissions)
         self.data = submissions['data']
 
         return {
             'result': 'success',
         }
+
+    @staticmethod
+    def _get_max_items_per_zone(submissions):
+        """
+        Parses Max items per zone value coming from editor.
+
+        Returns:
+            * None if invalid value is passed (i.e. not an integer)
+            * None if value is parsed into zero or negative integer
+            * Positive integer otherwise.
+
+        Examples:
+            * _get_max_items_per_zone(None) -> None
+            * _get_max_items_per_zone('string') -> None
+            * _get_max_items_per_zone('-1') -> None
+            * _get_max_items_per_zone(-1) -> None
+            * _get_max_items_per_zone('0') -> None
+            * _get_max_items_per_zone('') -> None
+            * _get_max_items_per_zone('42') -> 42
+            * _get_max_items_per_zone(42) -> 42
+        """
+        raw_max_items_per_zone = submissions.get('max_items_per_zone', None)
+
+        # Entries that aren't numbers should be treated as null. We assume that if we can
+        # turn it into an int, a number was submitted.
+        try:
+            max_attempts = int(raw_max_items_per_zone)
+            if max_attempts > 0:
+                return max_attempts
+            else:
+                return None
+        except (ValueError, TypeError):
+            return None
 
     @XBlock.json_handler
     def drop_item(self, item_attempt, suffix=''):
@@ -328,9 +370,9 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """
         self._validate_drop_item(item_attempt)
 
-        if self.mode == self.ASSESSMENT_MODE:
+        if self.mode == Constants.ASSESSMENT_MODE:
             return self._drop_item_assessment(item_attempt)
-        elif self.mode == self.STANDARD_MODE:
+        elif self.mode == Constants.STANDARD_MODE:
             return self._drop_item_standard(item_attempt)
         else:
             raise JsonHandlerError(
@@ -434,7 +476,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """
         Validates if `do_attempt` handler should be executed
         """
-        if self.mode != self.ASSESSMENT_MODE:
+        if self.mode != Constants.ASSESSMENT_MODE:
             raise JsonHandlerError(
                 400,
                 self.i18n_service.gettext("do_attempt handler should only be called for assessment mode")
@@ -452,7 +494,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         answer_correctness = self._answer_correctness()
         is_correct = answer_correctness == self.SOLUTION_CORRECT
 
-        if self.mode == self.STANDARD_MODE or not self.attempts:
+        if self.mode == Constants.STANDARD_MODE or not self.attempts:
             feedback_key = 'finish' if is_correct else 'start'
             return [FeedbackMessage(self.data['feedback'][feedback_key], None)], set()
 
@@ -563,9 +605,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """
         return {
             'zone': attempt['zone'],
-            'correct': correct,
-            'x_percent': attempt['x_percent'],
-            'y_percent': attempt['y_percent'],
+            'correct': correct
         }
 
     def _mark_complete_and_publish_grade(self):
@@ -613,7 +653,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """
         Check if the item was placed correctly.
         """
-        correct_zones = self._get_item_zones(attempt['val'])
+        correct_zones = self.get_item_zones(attempt['val'])
         return attempt['zone'] in correct_zones
 
     def _expand_static_url(self, url):
@@ -640,12 +680,12 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         item_state = self._get_item_state()
         # In assessment mode, we do not want to leak the correctness info for individual items to the frontend,
         # so we remove "correct" from all items when in assessment mode.
-        if self.mode == self.ASSESSMENT_MODE:
+        if self.mode == Constants.ASSESSMENT_MODE:
             for item in item_state.values():
                 del item["correct"]
 
         overall_feedback_msgs, __ = self._get_feedback()
-        if self.mode == self.STANDARD_MODE:
+        if self.mode == Constants.STANDARD_MODE:
             is_finished = self._is_answer_correct()
         else:
             is_finished = not self.attempts_remain
@@ -666,33 +706,10 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         # IMPORTANT: this method should always return a COPY of self.item_state - it is called from get_user_state
         # handler and the data it returns is manipulated there to hide correctness of items placed.
         state = {}
+        migrator = StateMigration(self)
 
-        for item_id, raw_item in self.item_state.iteritems():
-            if isinstance(raw_item, dict):
-                # Items are manipulated in _get_user_state, so we protect actual data.
-                item = copy.deepcopy(raw_item)
-            else:
-                item = {'top': raw_item[0], 'left': raw_item[1]}
-            # If information about zone is missing
-            # (because problem was completed before a11y enhancements were implemented),
-            # deduce zone in which item is placed from definition:
-            if item.get('zone') is None:
-                valid_zones = self._get_item_zones(int(item_id))
-                if valid_zones:
-                    # If we get to this point, then the item was placed prior to support for
-                    # multiple correct zones being added. As a result, it can only be correct
-                    # on a single zone, and so we can trust that the item was placed on the
-                    # zone with index 0.
-                    item['zone'] = valid_zones[0]
-                else:
-                    item['zone'] = 'unknown'
-            # If correctness information is missing
-            # (because problem was completed before assessment mode was implemented),
-            # assume the item is in correct zone (in standard mode, only items placed
-            # into correct zone are stored in item state).
-            if item.get('correct') is None:
-                item['correct'] = True
-            state[item_id] = item
+        for item_id, item in self.item_state.iteritems():
+            state[item_id] = migrator.apply_item_state_migrations(item_id, item)
 
         return state
 
@@ -702,7 +719,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """
         return next(i for i in self.data['items'] if i['id'] == item_id)
 
-    def _get_item_zones(self, item_id):
+    def get_item_zones(self, item_id):
         """
         Returns a list of the zones that are valid options for the item.
 
@@ -720,27 +737,20 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         else:
             return []
 
-    def _get_zones(self):
+    @property
+    def zones(self):
         """
         Get drop zone data, defined by the author.
         """
         # Convert zone data from old to new format if necessary
-        zones = []
-        for zone in self.data.get('zones', []):
-            zone = zone.copy()
-            if "uid" not in zone:
-                zone["uid"] = zone.get("title")  # Older versions used title as the zone UID
-            # Remove old, now-unused zone attributes, if present:
-            zone.pop("id", None)
-            zone.pop("index", None)
-            zones.append(zone)
-        return zones
+        migrator = StateMigration(self)
+        return [migrator.apply_zone_migrations(zone) for zone in self.data.get('zones', [])]
 
     def _get_zone_by_uid(self, uid):
         """
         Given a zone UID, return that zone, or None.
         """
-        for zone in self._get_zones():
+        for zone in self.zones:
             if zone["uid"] == uid:
                 return zone
 
@@ -772,7 +782,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         item_state = self._get_item_state()
 
         all_items = set(str(item['id']) for item in self.data['items'])
-        required = set(item_id for item_id in all_items if self._get_item_zones(int(item_id)) != [])
+        required = set(item_id for item_id in all_items if self.get_item_zones(int(item_id)) != [])
         placed = set(item_id for item_id in all_items if item_id in item_state)
         correctly_placed = set(item_id for item_id in placed if item_state[item_id]['correct'])
         decoy = all_items - required

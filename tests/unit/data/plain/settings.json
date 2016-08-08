@@ -7,5 +7,6 @@
     "weight": 1,
     "item_background_color": "",
     "item_text_color": "",
-    "url_name": "test"
+    "url_name": "test",
+    "max_items_per_zone": 4
 }
