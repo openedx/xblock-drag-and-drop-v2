@@ -473,8 +473,12 @@ class DefaultAssessmentDataTestMixin(DefaultDataTestMixin):
     """
     Provides a test scenario with default options in assessment mode.
     """
+    MAX_ATTEMPTS = 5
+
     def _get_scenario_xml(self):  # pylint: disable=no-self-use
-        return "<vertical_demo><drag-and-drop-v2 mode='assessment'/></vertical_demo>"
+        return """
+            <vertical_demo><drag-and-drop-v2 mode='assessment' max_attempts='{max_attempts}'/></vertical_demo>
+        """.format(max_attempts=self.MAX_ATTEMPTS)
 
 
 @ddt
@@ -541,6 +545,22 @@ class AssessmentInteractionTest(DefaultAssessmentDataTestMixin, InteractionTestB
     @data(False, True)
     def test_keyboard_help(self, use_keyboard):
         self.interact_with_keyboard_help(use_keyboard=use_keyboard)
+
+    def test_submit_button_shown(self):
+        first_item_definition = self._get_items_with_zone(self.items_map).values()[0]
+
+        submit_button = self._get_submit_button()
+        self.assertTrue(submit_button.is_displayed())
+        self.assertEqual(submit_button.get_attribute('disabled'), 'true')  # no items are placed
+
+        attempts_info = self._get_attempts_info()
+        expected_text = "You have used {num} of {max} attempts.".format(num=0, max=self.MAX_ATTEMPTS)
+        self.assertEqual(attempts_info.text, expected_text)
+        self.assertEqual(attempts_info.is_displayed(), self.MAX_ATTEMPTS > 0)
+
+        self.place_item(first_item_definition.item_id, first_item_definition.zone_ids[0], None)
+
+        self.assertEqual(submit_button.get_attribute('disabled'), None)
 
 
 class MultipleValidOptionsInteractionTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):

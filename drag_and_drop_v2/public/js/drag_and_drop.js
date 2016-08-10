@@ -228,49 +228,85 @@ function DragAndDropTemplates(configuration) {
 
     var feedbackTemplate = function(ctx) {
         var feedback_display = ctx.feedback_html ? 'block' : 'none';
-        var reset_button_display = ctx.display_reset_button ? 'block' : 'none';
         var properties = { attributes: { 'aria-live': 'polite' } };
         return (
             h('section.feedback', properties, [
-                h(
-                    'button.reset-button.unbutton.link-button',
-                    { style: { display: reset_button_display }, attributes: { tabindex: 0 }, 'aria-live': 'off'},
-                    gettext('Reset problem')
-                ),
                 h('h3.title1', { style: { display: feedback_display } }, gettext('Feedback')),
                 h('p.message', { style: { display: feedback_display }, innerHTML: ctx.feedback_html })
             ])
         );
     };
 
-    var keyboardHelpTemplate = function(ctx) {
-        var dialog_attributes = { role: 'dialog', 'aria-labelledby': 'modal-window-title' };
-        var dialog_style = {};
+    var keyboardHelpPopupTemplate = function(ctx) {
+        var labelledby_id = 'modal-window-title-'+configuration.url_name;
         return (
-            h('section.keyboard-help', [
-                h('button.keyboard-help-button.unbutton.link-button', { attributes: { tabindex: 0 } }, gettext('Keyboard Help')),
-                h('div.keyboard-help-dialog', [
-                    h('div.modal-window-overlay'),
-                    h('div.modal-window', { attributes: dialog_attributes, style: dialog_style }, [
-                        h('div.modal-header', [
-                            h('h2.modal-window-title', gettext('Keyboard Help'))
-                        ]),
-                        h('div.modal-content', [
-                            h('p', gettext('You can complete this problem using only your keyboard.')),
-                            h('ul', [
-                                h('li', gettext('Use "Tab" and "Shift-Tab" to navigate between items and zones.')),
-                                h('li', gettext('Press "Enter", "Space", "Ctrl-m", or "⌘-m" on an item to select it for dropping, then navigate to the zone you want to drop it on.')),
-                                h('li', gettext('Press "Enter", "Space", "Ctrl-m", or "⌘-m" to drop the item on the current zone.')),
-                                h('li', gettext('Press "Esc" if you want to cancel the drop operation (for example, to select a different item).')),
-                            ])
-                        ]),
-                        h('div.modal-actions', [
-                            h('button.modal-dismiss-button', gettext("OK"))
+            h('div.keyboard-help-dialog', [
+                h('div.modal-window-overlay'),
+                h('div.modal-window', {attributes: {role: 'dialog', 'aria-labelledby': labelledby_id}}, [
+                    h('div.modal-header', [
+                        h('h2.modal-window-title#'+labelledby_id, gettext('Keyboard Help'))
+                    ]),
+                    h('div.modal-content', [
+                        h('p', gettext('You can complete this problem using only your keyboard.')),
+                        h('ul', [
+                            h('li', gettext('Use "Tab" and "Shift-Tab" to navigate between items and zones.')),
+                            h('li', gettext('Press "Enter", "Space", "Ctrl-m", or "⌘-m" on an item to select it for dropping, then navigate to the zone you want to drop it on.')),
+                            h('li', gettext('Press "Enter", "Space", "Ctrl-m", or "⌘-m" to drop the item on the current zone.')),
+                            h('li', gettext('Press "Esc" if you want to cancel the drop operation (for example, to select a different item).')),
                         ])
+                    ]),
+                    h('div.modal-actions', [
+                        h('button.modal-dismiss-button', gettext("OK"))
                     ])
                 ])
             ])
         );
+    };
+
+    var submitAnswerTemplate = function(ctx) {
+        var attemptsUsedId = "attempts-used-"+configuration.url_name;
+        var attemptsUsedDisplay = (ctx.max_attempts && ctx.max_attempts > 0) ? 'inline': 'none';
+        var button_enabled = ctx.items.some(function(item) {return item.is_placed;}) &&
+            (ctx.max_attempts === null || ctx.max_attempts > ctx.num_attempts);
+
+        return (
+          h("section.action-toolbar-item.submit-answer", {}, [
+              h(
+                  "button.btn-brand.submit-answer-button",
+                  {disabled: !button_enabled, attributes: {"aria-describedby": attemptsUsedId}},
+                  gettext("Submit")
+              ),
+              h(
+                  "span.attempts-used#"+attemptsUsedId, {style: {display: attemptsUsedDisplay}},
+                  gettext("You have used {used} of {total} attempts.")
+                      .replace("{used}", ctx.num_attempts).replace("{total}", ctx.max_attempts)
+              )
+          ])
+        );
+    };
+
+    var sidebarButtonTemplate = function(buttonClass, iconClass, buttonText, disabled) {
+        return (
+            h('span.sidebar-button-wrapper', {}, [
+                h(
+                    'button.unbutton.btn-default.btn-small.'+buttonClass,
+                    {disabled: disabled || false, attributes: {tabindex: 0}},
+                    [
+                        h("span.btn-icon.fa."+iconClass, {attributes: {"aria-hidden": true}}, []),
+                        buttonText
+                    ]
+                )
+            ])
+        );
+    };
+
+    var sidebarTemplate = function(ctx) {
+        return(
+            h("section.action-toolbar-item.sidebar-buttons", {}, [
+                sidebarButtonTemplate("keyboard-help-button", "fa-question", gettext('Keyboard Help')),
+                sidebarButtonTemplate("reset-button", "fa-refresh", gettext('Reset'), ctx.disable_reset_button),
+            ])
+        )
     };
 
     var mainTemplate = function(ctx) {
@@ -336,7 +372,11 @@ function DragAndDropTemplates(configuration) {
                         renderCollection(zoneTemplate, ctx.zones, ctx)
                     ]),
                 ]),
-                keyboardHelpTemplate(ctx),
+                h("section.actions-toolbar", {}, [
+                    sidebarTemplate(ctx),
+                    (ctx.show_submit_answer ? submitAnswerTemplate(ctx) : null),
+                ]),
+                keyboardHelpPopupTemplate(ctx),
                 feedbackTemplate(ctx),
             ])
         );
@@ -655,6 +695,10 @@ function DragAndDropBlock(runtime, element, configuration) {
         zones[idx].focus();
     };
 
+    var focusFirstDraggable = function() {
+        $root.find('.item-bank .option').first().focus();
+    };
+
     var placeItem = function($zone, $item) {
         var item_id;
         var $anchor;
@@ -918,13 +962,11 @@ function DragAndDropBlock(runtime, element, configuration) {
             type: 'POST',
             url: runtime.handlerUrl(element, 'reset'),
             data: '{}',
+        }).done(function(data) {
+            state = data;
+            applyState();
+            focusFirstDraggable();
         });
-        state = {
-            'items': [],
-            'finished': false,
-            'overall_feedback': configuration.initial_feedback,
-        };
-        applyState();
     };
 
     var render = function() {
@@ -984,8 +1026,12 @@ function DragAndDropBlock(runtime, element, configuration) {
             bg_image_width: bgImgNaturalWidth, // Not stored in configuration since it's unknown on the server side
             title_html: configuration.title,
             show_title: configuration.show_title,
+            mode: configuration.mode,
+            max_attempts: configuration.max_attempts,
+            num_attempts: state.num_attempts,
             problem_html: configuration.problem_text,
             show_problem_header: configuration.show_problem_header,
+            show_submit_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
             target_img_src: configuration.target_img_expanded_url,
             target_img_description: configuration.target_img_description,
             display_zone_labels: configuration.display_zone_labels,
@@ -997,7 +1043,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             item_bank_focusable: item_bank_focusable,
             popup_html: state.feedback || '',
             feedback_html: $.trim(state.overall_feedback),
-            display_reset_button: Object.keys(state.items).length > 0,
+            disable_reset_button: Object.keys(state.items).length == 0,
         };
 
         return renderView(context);
@@ -1035,8 +1081,8 @@ function DragAndDropBlock(runtime, element, configuration) {
                     if (configuration.items[i].id === +item_id) {
                         var size = configuration.items[i].size;
                         // size is an object like '{width: "50px", height: "auto"}'
-                        if (parseInt(size.width ) > 0) {  width = parseInt(size.width); }
-                        if (parseInt(size.height) > 0) { height = parseInt(size.height); }
+                        if (parseInt(size.width ) > 0) {width = parseInt(size.width);}
+                        if (parseInt(size.height) > 0) {height = parseInt(size.height);}
                         break;
                     }
                 }

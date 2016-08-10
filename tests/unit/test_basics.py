@@ -31,6 +31,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         items = config.pop("items")
         self.assertEqual(config, {
             "mode": DragAndDropBlock.STANDARD_MODE,
+            "max_attempts": None,
             "display_zone_borders": False,
             "display_zone_labels": False,
             "title": "Drag and Drop",
@@ -68,6 +69,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             self.assertEqual(self.call_handler("get_user_state"), {
                 'items': {},
                 'finished': False,
+                "num_attempts": 0,
                 'overall_feedback': START_FEEDBACK,
             })
         assert_user_state_empty()
@@ -98,6 +100,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
                 '3': {'x_percent': '67%', 'y_percent': '80%', 'correct': True, "zone": MIDDLE_ZONE_ID},
             },
             'finished': True,
+            "num_attempts": 0,
             'overall_feedback': FINISH_FEEDBACK,
         })
 

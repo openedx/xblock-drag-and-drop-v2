@@ -127,6 +127,12 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         default={},
     )
 
+    num_attempts = Integer(
+        help=_("Number of attempts learner used"),
+        scope=Scope.user_state,
+        default=0
+    )
+
     completed = Boolean(
         help=_("Indicates whether a learner has completed the problem at least once"),
         scope=Scope.user_state,
@@ -191,6 +197,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         return {
             "mode": self.mode,
+            "max_attempts": self.max_attempts,
             "zones": self._get_zones(),
             # SDK doesn't supply url_name.
             "url_name": getattr(self, 'url_name', ''),
@@ -433,6 +440,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         return {
             'items': item_state,
             'finished': is_finished,
+            'num_attempts': self.num_attempts,
             'overall_feedback': self.data['feedback']['finish' if is_finished else 'start'],
         }
 

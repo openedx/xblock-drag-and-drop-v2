@@ -5,8 +5,6 @@ import unittest
 
 from xblockutils.resources import ResourceLoader
 
-from drag_and_drop_v2.drag_and_drop_v2 import DragAndDropBlock
-
 from ..utils import make_block, TestCaseMixin
 
 
@@ -57,8 +55,13 @@ class BaseDragAndDropAjaxFixture(TestCaseMixin):
         return cls.expected_configuration()["initial_feedback"]
 
     def test_get_configuration(self):
-        self.assertEqual(self.expected_configuration(), self.block.get_configuration())
+        self.assertEqual(self.block.get_configuration(), self.expected_configuration())
 
+
+class StandardModeFixture(BaseDragAndDropAjaxFixture):
+    """
+    Common tests for drag and drop in standard mode
+    """
     def test_do_attempt_wrong_with_feedback(self):
         item_id, zone_id = 0, self.ZONE_2
         data = {"val": item_id, "zone": zone_id, "x_percent": "33%", "y_percent": "11%"}
@@ -92,14 +95,6 @@ class BaseDragAndDropAjaxFixture(TestCaseMixin):
             "feedback": self.FEEDBACK[item_id]["correct"]
         })
 
-    def test_do_attempt_in_assessment_mode(self):
-        self.block.mode = DragAndDropBlock.ASSESSMENT_MODE
-        item_id, zone_id = 0, self.ZONE_1
-        data = {"val": item_id, "zone": zone_id, "x_percent": "33%", "y_percent": "11%"}
-        res = self.call_handler('do_attempt', data)
-        # In assessment mode, the do_attempt doesn't return any data.
-        self.assertEqual(res, {})
-
     def test_grading(self):
         published_grades = []
 
@@ -131,6 +126,7 @@ class BaseDragAndDropAjaxFixture(TestCaseMixin):
                 "0": {"x_percent": "33%", "y_percent": "11%", "correct": True, "zone": self.ZONE_1}
             },
             "finished": False,
+            "num_attempts": 0,
             'overall_feedback': self.initial_feedback(),
         }
         self.assertEqual(expected_state, self.call_handler('get_user_state', method="GET"))
@@ -154,12 +150,25 @@ class BaseDragAndDropAjaxFixture(TestCaseMixin):
                 }
             },
             "finished": True,
+            "num_attempts": 0,
             'overall_feedback': self.FINAL_FEEDBACK,
         }
         self.assertEqual(expected_state, self.call_handler('get_user_state', method="GET"))
 
 
-class TestDragAndDropHtmlData(BaseDragAndDropAjaxFixture, unittest.TestCase):
+class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
+    """
+    Common tests for drag and drop in assessment mode
+    """
+    def test_do_attempt_in_assessment_mode(self):
+        item_id, zone_id = 0, self.ZONE_1
+        data = {"val": item_id, "zone": zone_id, "x_percent": "33%", "y_percent": "11%"}
+        res = self.call_handler('do_attempt', data)
+        # In assessment mode, the do_attempt doesn't return any data.
+        self.assertEqual(res, {})
+
+
+class TestDragAndDropHtmlData(StandardModeFixture, unittest.TestCase):
     FOLDER = "html"
 
     ZONE_1 = "Zone <i>1</i>"
@@ -174,7 +183,7 @@ class TestDragAndDropHtmlData(BaseDragAndDropAjaxFixture, unittest.TestCase):
     FINAL_FEEDBACK = "Final <strong>feedback</strong>!"
 
 
-class TestDragAndDropPlainData(BaseDragAndDropAjaxFixture, unittest.TestCase):
+class TestDragAndDropPlainData(StandardModeFixture, unittest.TestCase):
     FOLDER = "plain"
 
     ZONE_1 = "zone-1"
@@ -198,3 +207,18 @@ class TestOldDataFormat(TestDragAndDropPlainData):
 
     ZONE_1 = "Zone 1"
     ZONE_2 = "Zone 2"
+
+
+class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
+    FOLDER = "assessment"
+
+    ZONE_1 = "zone-1"
+    ZONE_2 = "zone-2"
+
+    FEEDBACK = {
+        0: {"correct": "Yes 1", "incorrect": "No 1"},
+        1: {"correct": "Yes 2", "incorrect": "No 2"},
+        2: {"correct": "", "incorrect": ""}
+    }
+
+    FINAL_FEEDBACK = "This is the final feedback."
