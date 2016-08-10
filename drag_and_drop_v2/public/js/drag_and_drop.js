@@ -367,9 +367,73 @@ function DragAndDropTemplates(configuration) {
         )
     };
 
+    var itemFeedbackPopupTemplate = function(ctx) {
+        var popupSelector = 'div.popup.item-feedback-popup.popup-wrapper';
+        var msgs = ctx.feedback_messages || [];
+        var have_messages = msgs.length > 0;
+        var popup_content;
+
+        var close_button_describedby_id = "close-popup-"+configuration.url_name;
+
+        if (msgs.length > 0 && !ctx.last_action_correct) {
+            popupSelector += '.popup-incorrect';
+        }
+
+        if (ctx.mode == DragAndDropBlock.ASSESSMENT_MODE) {
+            var content_items = [
+                (!ctx.last_action_correct) ? h("p", {}, gettext("Some of your answers were not correct.")) : null,
+                h("p", {}, gettext("Hints:")),
+                h("ul", {}, msgs.map(function(message) {
+                    return h("li", {innerHTML: message.message});
+                }))
+            ];
+            popup_content = h("div.popup-content", {}, have_messages ? content_items : []);
+        } else {
+            popup_content = h("div.popup-content", {}, msgs.map(function(message) {
+                return h("p", {innerHTML: message.message});
+            }))
+        }
+
+        return h(
+            popupSelector,
+            {
+                style: {display: have_messages ? 'block' : 'none'},
+                attributes: {
+                    "tabindex": "-1",
+                    'aria-live': 'polite',
+                    'aria-atomic': 'true',
+                    'aria-relevant': 'additions',
+                }
+            },
+            [
+                h(
+                    'button.unbutton.close-feedback-popup-button',
+                    {},
+                    [
+                        h(
+                            'span.sr',
+                            {
+                                innerHTML: gettext("Close item feedback popup")
+                            }
+                        ),
+                        h(
+                            'span.icon.fa.fa-times-circle',
+                            {
+                                attributes: {
+                                    'aria-hidden': true
+                                }
+                            }
+                        )
+                    ]
+                ),
+                popup_content
+            ]
+        )
+    };
+
     var mainTemplate = function(ctx) {
-        var problemTitle = ctx.show_title ? h('h2.problem-title', {innerHTML: ctx.title_html}) : null;
-        var problemHeader = ctx.show_problem_header ? h('h3.title1', gettext('Problem')) : null;
+        var problemTitle = ctx.show_title ? h('h3.problem-title', {innerHTML: ctx.title_html}) : null;
+        var problemHeader = ctx.show_problem_header ? h('h4.title1', gettext('Problem')) : null;
 
         // Render only items_in_bank and items_placed_unaligned here;
         // items placed in aligned zones will be rendered by zoneTemplate.
@@ -401,7 +465,7 @@ function DragAndDropTemplates(configuration) {
                     h('div.target',
                         {},
                         [
-                            popupTemplate(ctx),
+                            itemFeedbackPopupTemplate(ctx),
                             h('div.target-img-wrapper', [
                                 h('img.target-img', {src: ctx.target_img_src, alt: ctx.target_img_description}),
                             ]
@@ -427,6 +491,11 @@ function DragAndDropBlock(runtime, element, configuration) {
 
     DragAndDropBlock.STANDARD_MODE = 'standard';
     DragAndDropBlock.ASSESSMENT_MODE = 'assessment';
+
+    var Selector = {
+        popup_box: '.popup',
+        close_button: '.popup .close-feedback-popup-button'
+    };
 
     var renderView = DragAndDropTemplates(configuration);
 
@@ -482,7 +551,7 @@ function DragAndDropBlock(runtime, element, configuration) {
 
             // Set up event handlers:
 
-            $(document).on('keydown mousedown touchstart', closePopup);
+            $element.on('click', '.item-feedback-popup .close-feedback-popup-button', closePopupEventHandler);
             $element.on('click', '.submit-answer-button', doAttempt);
             $element.on('click', '.keyboard-help-button', showKeyboardHelp);
             $element.on('keydown', '.keyboard-help-button', function(evt) {
@@ -646,12 +715,23 @@ function DragAndDropBlock(runtime, element, configuration) {
     /**
      * Update the DOM to reflect 'state'.
      */
-    var applyState = function() {
+    var applyState = function(keepDraggableInit) {
+        sendFeedbackPopupEvents();
+        updateDOM();
+        if (!keepDraggableInit) {
+            destroyDraggable();
+            if (!state.finished) {
+                initDraggable();
+            }
+        }
+    };
+
+    var sendFeedbackPopupEvents = function() {
         // Has the feedback popup been closed?
         if (state.closing) {
             var data = {
                 event_type: 'edx.drag_and_drop_v2.feedback.closed',
-                content: previousFeedback || state.feedback,
+                content: concatenateFeedback(previousFeedback || state.feedback),
                 manually: state.manually_closed,
             };
             truncateField(data, 'content');
@@ -663,17 +743,15 @@ function DragAndDropBlock(runtime, element, configuration) {
         if (state.feedback) {
             var data = {
                 event_type: 'edx.drag_and_drop_v2.feedback.opened',
-                content: state.feedback,
+                content: concatenateFeedback(state.feedback),
             };
             truncateField(data, 'content');
             publishEvent(data);
         }
+    };
 
-        updateDOM();
-        destroyDraggable();
-        if (!state.finished) {
-            initDraggable();
-        }
+    var concatenateFeedback = function (feedback_msgs_list) {
+        return feedback_msgs_list.map(function(message) { return message.message; }).join('\n');
     };
 
     var updateDOM = function(state) {
@@ -739,6 +817,15 @@ function DragAndDropBlock(runtime, element, configuration) {
         $root.find('.item-bank .option').first().focus();
     };
 
+    var focusItemFeedbackPopup = function() {
+        var popup = $root.find('.item-feedback-popup');
+        if (popup.length && popup.is(":visible")) {
+            popup.focus();
+            return true;
+        }
+        return false;
+    };
+
     var placeItem = function($zone, $item) {
         var item_id;
         if ($item !== undefined) {
@@ -753,7 +840,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         var items_in_zone_count = countItemsInZone(zone, [item_id.toString()]);
         if (configuration.max_items_per_zone && configuration.max_items_per_zone <= items_in_zone_count) {
             state.last_action_correct = false;
-            state.feedback = gettext("You cannot add any more items to this zone.");
+            state.feedback = [{message: gettext("You cannot add any more items to this zone."), message_class: null}];
             applyState();
             return;
         }
@@ -763,6 +850,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             zone_align: zone_align,
             submitting_location: true,
         };
+
         // Wrap in setTimeout to let the droppable event finish.
         setTimeout(function() {
             applyState();
@@ -895,13 +983,16 @@ function DragAndDropBlock(runtime, element, configuration) {
     var grabItem = function($item, interaction_type) {
         var item_id = $item.data('value');
         setGrabbedState(item_id, true, interaction_type);
-        updateDOM();
+        closePopup(false);
+        // applyState(true) skips destroying and initializing draggable
+        applyState(true);
     };
 
     var releaseItem = function($item) {
         var item_id = $item.data('value');
         setGrabbedState(item_id, false);
-        updateDOM();
+        // applyState(true) skips destroying and initializing draggable
+        applyState(true);
     };
 
     var setGrabbedState = function(item_id, grabbed, interaction_type) {
@@ -967,31 +1058,31 @@ function DragAndDropBlock(runtime, element, configuration) {
             });
     };
 
-    var closePopup = function(evt) {
+    var closePopupEventHandler = function(evt) {
         if (!state.feedback) {
             return;
         }
 
         var target = $(evt.target);
-        var popup_box = '.xblock--drag-and-drop .popup';
-        var close_button = '.xblock--drag-and-drop .popup .close';
 
-        if (target.is(popup_box)) {
+        if (target.is(Selector.popup_box)) {
             return;
         }
-        if (target.parents(popup_box).length && !target.is(close_button)) {
+        if (target.parents(Selector.popup_box).length && !target.parent().is(Selector.close_button) && !target.is(Selector.close_button)) {
             return;
         }
 
-        state.closing = true;
-        previousFeedback = state.feedback;
-        if (target.is(close_button)) {
-            state.manually_closed = true;
-        } else {
-            state.manually_closed = false;
-        }
-
+        closePopup(target.is(Selector.close_button) || target.parent().is(Selector.close_button));
         applyState();
+    };
+
+    var closePopup = function(manually_closed) {
+        // do not apply state here - callers are responsible to call it when other appropriate state changes are applied
+        if ($root.find(Selector.popup_box).is(":visible")) {
+            state.closing = true;
+            previousFeedback = state.feedback;
+            state.manually_closed = manually_closed;
+        }
     };
 
     var resetProblem = function(evt) {
@@ -1018,7 +1109,10 @@ function DragAndDropBlock(runtime, element, configuration) {
             data: '{}'
         }).done(function(data){
             state.attempts = data.attempts;
+            state.feedback = data.feedback;
             state.overall_feedback = data.overall_feedback;
+            state.last_action_correct = data.correct;
+
             if (attemptsRemain()) {
                 data.misplaced_items.forEach(function(misplaced_item_id) {
                     delete state.items[misplaced_item_id]
@@ -1026,15 +1120,15 @@ function DragAndDropBlock(runtime, element, configuration) {
             } else {
                 state.finished = true;
             }
-            focusFirstDraggable();
         }).always(function() {
             state.submit_spinner = false;
             applyState();
+            focusItemFeedbackPopup() || focusFirstDraggable();
         });
     };
 
     var canSubmitAttempt = function() {
-        return Object.keys(state.items).length > 0 && attemptsRemain();
+        return Object.keys(state.items).length > 0 && attemptsRemain() && !submittingLocation();
     };
 
     var canReset = function() {
@@ -1056,6 +1150,15 @@ function DragAndDropBlock(runtime, element, configuration) {
     var attemptsRemain = function() {
         return !configuration.max_attempts || configuration.max_attempts > state.attempts;
     };
+
+    var submittingLocation = function() {
+        var result = false;
+        Object.keys(state.items).forEach(function(item_id) {
+            var item = state.items[item_id];
+            result = result || item.submitting_location;
+        });
+        return result;
+    }
 
     var render = function() {
         var items = configuration.items.map(function(item) {
@@ -1114,7 +1217,6 @@ function DragAndDropBlock(runtime, element, configuration) {
             show_title: configuration.show_title,
             mode: configuration.mode,
             max_attempts: configuration.max_attempts,
-            attempts: state.attempts,
             problem_html: configuration.problem_text,
             show_problem_header: configuration.show_problem_header,
             show_submit_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
@@ -1125,9 +1227,10 @@ function DragAndDropBlock(runtime, element, configuration) {
             zones: configuration.zones,
             items: items,
             // state - parts that can change:
+            attempts: state.attempts,
             last_action_correct: state.last_action_correct,
             item_bank_focusable: item_bank_focusable,
-            popup_html: state.feedback || '',
+            feedback_messages: state.feedback,
             overall_feedback_messages: state.overall_feedback,
             disable_reset_button: !canReset(),
             disable_submit_button: !canSubmitAttempt(),

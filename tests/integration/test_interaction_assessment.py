@@ -2,6 +2,7 @@
 
 from ddt import ddt, data
 from mock import Mock, patch
+import time
 
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
@@ -175,7 +176,6 @@ class AssessmentInteractionTest(
             FeedbackMessages.correctly_placed(1),
             FeedbackMessages.misplaced(1),
             FeedbackMessages.not_placed(2),
-            FeedbackMessages.MISPLACED_ITEMS_RETURNED,
             START_FEEDBACK
         ]
         expected_feedback = "\n".join(feedback_lines)
@@ -219,6 +219,44 @@ class AssessmentInteractionTest(
         expected_grade = {'max_value': 1, 'value': (1.0 / 5.0)}
         self.assertEqual(published_grade, expected_grade)
 
+    def test_per_item_feedback_multiple_misplaced(self):
+        self.place_item(0, MIDDLE_ZONE_ID, Keys.RETURN)
+        self.place_item(1, BOTTOM_ZONE_ID, Keys.RETURN)
+        self.place_item(2, TOP_ZONE_ID, Keys.RETURN)
+
+        self.click_submit()
+
+        placed_item_definitions = [self.items_map[item_id] for item_id in (1, 2, 3)]
+
+        expected_message_elements = [
+            "<li>{msg}</li>".format(msg=definition.feedback_negative)
+            for definition in placed_item_definitions
+        ]
+
+        for message_element in expected_message_elements:
+            self.assertIn(message_element, self._get_popup_content().get_attribute('innerHTML'))
+
+    def test_submit_disabled_during_drop_item(self):
+        def delayed_drop_item(item_attempt, suffix=''):  # pylint: disable=unused-argument
+            # some delay to allow selenium check submit button disabled status while "drop_item"
+            # XHR is still executing
+            time.sleep(0.1)
+            return {}
+
+        self.place_item(0, TOP_ZONE_ID)
+        self.assert_placed_item(0, TOP_ZONE_TITLE, assessment_mode=True)
+
+        submit_button = self._get_submit_button()
+        self.assert_button_enabled(submit_button)  # precondition check
+        with patch('drag_and_drop_v2.DragAndDropBlock._drop_item_assessment', Mock(side_effect=delayed_drop_item)):
+            item_id = 1
+            self.place_item(item_id, MIDDLE_ZONE_ID, wait=False)
+            # do not wait for XHR to complete
+            self.assert_button_enabled(submit_button, enabled=False)
+            self.wait_until_ondrop_xhr_finished(self._get_placed_item_by_value(item_id))
+
+            self.assert_button_enabled(submit_button, enabled=True)
+
 
 class TestMaxItemsPerZoneAssessment(TestMaxItemsPerZone):
     assessment_mode = True
@@ -228,6 +266,9 @@ class TestMaxItemsPerZoneAssessment(TestMaxItemsPerZone):
         return self._make_scenario_xml(data=scenario_data, max_items_per_zone=2, mode=Constants.ASSESSMENT_MODE)
 
     def test_drop_item_to_same_zone_does_not_show_popup(self):
+        """
+        Tests that picking item from saturated zone and dropping it back again does not trigger error popup
+        """
         zone_id = "Zone Left Align"
         self.place_item(6, zone_id)
         self.place_item(7, zone_id)

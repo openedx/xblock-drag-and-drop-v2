@@ -209,7 +209,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
         popup_wrapper = self._get_popup_wrapper()
         popup_content = self._get_popup_content()
         self.assertFalse(popup.is_displayed())
-        self.assertEqual(popup.get_attribute('class'), 'popup')
+        self.assertIn('popup', popup.get_attribute('class'))
         self.assertEqual(popup_content.text, "")
         self.assertEqual(popup_wrapper.get_attribute('aria-live'), 'polite')
 

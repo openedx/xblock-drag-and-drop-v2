@@ -214,6 +214,8 @@ class DefaultDataTestMixin(object):
 
 
 class InteractionTestBase(object):
+    POPUP_ERROR_CLASS = "popup-incorrect"
+
     @classmethod
     def _get_items_with_zone(cls, items_map):
         return {
@@ -309,7 +311,7 @@ class InteractionTestBase(object):
             u"Spinner should not be in {}".format(elem.get_attribute('innerHTML'))
         )
 
-    def place_item(self, item_value, zone_id, action_key=None):
+    def place_item(self, item_value, zone_id, action_key=None, wait=True):
         """
         Place item with ID of item_value into zone with ID of zone_id.
         zone_id=None means place item back to the item bank.
@@ -319,7 +321,8 @@ class InteractionTestBase(object):
             self.drag_item_to_zone(item_value, zone_id)
         else:
             self.move_item_to_zone(item_value, zone_id, action_key)
-        self.wait_for_ajax()
+        if wait:
+            self.wait_for_ajax()
 
     def drag_item_to_zone(self, item_value, zone_id):
         """
@@ -429,3 +432,12 @@ class InteractionTestBase(object):
         """ Only needed if there are multiple blocks on the page. """
         self._page = self.browser.find_elements_by_css_selector(self.default_css_selector)[idx]
         self.scroll_down(0)
+
+    def assert_popup_correct(self, popup):
+        self.assertNotIn(self.POPUP_ERROR_CLASS, popup.get_attribute('class'))
+
+    def assert_popup_incorrect(self, popup):
+        self.assertIn(self.POPUP_ERROR_CLASS, popup.get_attribute('class'))
+
+    def assert_button_enabled(self, submit_button, enabled=True):
+        self.assertEqual(submit_button.is_enabled(), enabled)

@@ -499,6 +499,10 @@ msgstr ""
 msgid "You have used {used} of {total} attempts."
 msgstr ""
 
+#: public/js/drag_and_drop.js
+msgid "Some of your answers were not correct."
+msgstr ""
+
 #: public/js/drag_and_drop_edit.js
 msgid "There was an error with your form."
 msgstr ""
@@ -511,12 +515,12 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: utils.py:18
-msgid "Final attempt was used, highest score is {score}"
+#: public/js/drag_and_drop_edit.js
+msgid "Close item feedback popup"
 msgstr ""
 
-#: utils.py:19
-msgid "Misplaced items were returned to item bank."
+#: utils.py:18
+msgid "Final attempt was used, highest score is {score}"
 msgstr ""
 
 #: utils.py:24
@@ -526,8 +530,8 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: utils.py:32
-msgid "Misplaced {misplaced_count} item."
-msgid_plural "Misplaced {misplaced_count} items."
+msgid "Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
+msgid_plural "Misplaced {misplaced_count} items. Misplaced items were returned to item bank."
 msgstr[0] ""
 msgstr[1] ""
 

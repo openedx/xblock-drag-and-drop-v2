@@ -138,8 +138,8 @@ image. You can define custom success and error feedback for each item. In
 standard mode, the feedback text is displayed in a popup after the learner drops
 the item on a zone - the success feedback is shown if the item is dropped on a
 correct zone, while the error feedback is shown when dropping the item on an
-incorrect drop zone.  In assessment mode, the success and error feedback texts
-are not used.
+incorrect drop zone.  In assessment mode, the success feedback texts
+are not used, while error feedback texts are shown when learner submits a solution.
 
 You can select any number of zones for an item to belong to using
 the checkboxes; all zones defined in the previous step are available.

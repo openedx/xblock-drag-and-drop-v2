@@ -69,7 +69,6 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             "target_img_description": TARGET_IMG_DESCRIPTION,
             "item_background_color": None,
             "item_text_color": None,
-            "initial_feedback": START_FEEDBACK,
             "url_name": "",
         })
         self.assertEqual(zones, DEFAULT_DATA["zones"])

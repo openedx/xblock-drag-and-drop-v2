@@ -42,7 +42,6 @@ class FeedbackMessages(object):
         NOT_PLACED = INCORRECT_SOLUTION
 
     FINAL_ATTEMPT_TPL = _('Final attempt was used, highest score is {score}')
-    MISPLACED_ITEMS_RETURNED = _('Misplaced item(s) were returned to item bank.')
 
     @staticmethod
     def correctly_placed(number, ngettext=ngettext_fallback):
