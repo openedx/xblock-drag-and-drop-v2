@@ -12,18 +12,18 @@
 
             <section class="tab-content">
                 <form class="feedback-form">
-                    <label class="h3">
+                    <label class="h4">
                         <span>{% trans fields.display_name.display_name %}</span>
                         <input class="display-name" value="{{ self.display_name }}" />
                     </label>
-                    <label title="{% trans fields.show_title.help %}">
+                    <label class="checkbox-label" title="{% trans fields.show_title.help %}">
                       <input class="show-title" type="checkbox"
                         {% if self.show_title %}checked="checked"{% endif %}>
                       {% trans fields.show_title.display_name %}
                       <span class="sr">{% trans fields.show_title.help %}</span>
                     </label>
 
-                    <label class="h3">
+                    <label class="h4">
                         <span>{% trans fields.mode.display_name %}</span>
                         <select class="problem-mode" aria-describedby="problem-mode-description-{{id_suffix}}">
                             {% for field_value in fields.mode.values %}
@@ -37,8 +37,8 @@
                       {% trans fields.mode.help %}
                     </div>
 
-                    <label class="h3 assessment-setting">
-                      {% trans fields.max_attempts.display_name %}
+                    <label class="h4 assessment-setting">
+                      <span>{% trans fields.max_attempts.display_name %}</span>
                       <input class="max-attempts"
                              type="number"
                              min="1"
@@ -50,16 +50,16 @@
                       {% trans fields.max_attempts.help %}
                     </div>
 
-                    <label class="h3">
+                    <label class="h4">
                         <span>{% trans fields.weight.display_name %}</span>
                         <input class="weight" type="number" step="0.1" value="{{ self.weight|unlocalize }}" />
                     </label>
 
-                    <label class="h3">
+                    <label class="h4">
                         <span>{% trans fields.question_text.display_name %}</span>
                         <textarea class="problem-text">{{ self.question_text }}</textarea>
                     </label>
-                    <label>
+                    <label class="checkbox-label">
                       <input class="show-problem-header"
                              type="checkbox"
                              aria-describedby="show-problem-header-description-{{id_suffix}}"
@@ -70,12 +70,12 @@
                       {% trans fields.show_question_header.help %}
                     </div>
 
-                    <label class="h3">
+                    <label class="h4">
                         <span>{% trans "Introductory Feedback" %}</span>
                         <textarea class="intro-feedback">{{ self.data.feedback.start }}</textarea>
                     </label>
 
-                    <label class="h3">
+                    <label class="h4">
                         <span>{% trans "Final Feedback" %}</span>
                         <textarea class="final-feedback">{{ self.data.feedback.finish }}</textarea>
                     </label>
@@ -89,16 +89,19 @@
             </header>
             <section class="tab-content">
                 <form class="target-image-form">
-                    <label class="h3" for="background-url-{{id_suffix}}">
+                    <label class="h4" for="background-url-{{id_suffix}}">
                         <span>{% trans "Background URL" %}</span>
                     </label>
                     <input class="background-url"
                            id="background-url-{{id_suffix}}"
                            type="text"
-                           placeholder="{% trans 'For example, http://example.com/background.png or /static/background.png' %}">
+                           aria-describedby="background-url-{{id_suffix}}" />
                     </label>
                     <button class="btn">{% trans "Change background" %}</button>
-                    <label class="h3">
+                    <div id="background-url-description-{{id_suffix}}" class="form-help">
+                        {% trans "For example, 'http://example.com/background.png' or '/static/background.png'." %}
+                    </div>
+                    <label class="h4">
                         <span>{% trans "Background description" %}</span>
                         <textarea required class="background-description"
                                   aria-describedby="background-description-description-{{id_suffix}}"></textarea>
@@ -114,25 +117,29 @@
             </section>
             <section class="tab-content">
                 <form class="display-labels-form">
-                    <h3>{% trans "Zone labels" %}</h3>
-                    <label>
-                        <span>{% trans "Display label names on the image" %}:</span>
+                    <h4>{% trans "Zone labels" %}</h4>
+                    <label class="checkbox-label">
                         <input name="display-labels" class="display-labels" type="checkbox" />
+                        <span>{% trans "Display label names on the image" %}</span>
                     </label>
                 </form>
                 <form class="display-borders-form">
-                    <h3>{% trans "Zone borders" %}</h3>
-                    <label>
-                        <span>{% trans "Display zone borders on the image" %}:</span>
+                    <h4>{% trans "Zone borders" %}</h4>
+                    <label class="checkbox-label">
                         <input name="display-borders" class="display-borders" type="checkbox" />
+                        <span>{% trans "Display zone borders on the image" %}</span>
                     </label>
                 </form>
             </section>
             <section class="tab-content">
+                <h4>{% trans "Zone definitions" %}</h4>
                 <div class="zone-editor">
                     <div class="controls">
                         <form class="zones-form"></form>
-                        <a href="#" class="add-zone add-element"><div class="icon add"></div>{% trans "Add a zone" %}</a>
+                        <button class="btn add-zone add-element">
+                            <span class="icon add"></span>
+                            {% trans "Add a zone" %}
+                        </button>
                     </div>
                     <div class="target">
                         <img class="target-img">
@@ -149,20 +156,18 @@
             </header>
             <section class="tab-content">
                 <form class="item-styles-form">
-                    <label class="h3">
+                    <label class="h4">
                         <span>{% trans fields.item_background_color.display_name %}</span>
                         <input class="item-background-color"
-                               placeholder="{% blocktrans with example1='blue' example2='#0000ff' %}e.g. {{example1}} or {{example2}}{% endblocktrans %}"
                                value="{{ self.item_background_color }}"
                                aria-describedby="item-background-color-description-{{id_suffix}}">
                     </label>
                     <div id="item-background-color-description-{{id_suffix}}" class="form-help">
                       {% trans fields.item_background_color.help %}
                     </div>
-                    <label class="h3">
+                    <label class="h4">
                         <span>{% trans fields.item_text_color.display_name %}</span>
                         <input class="item-text-color"
-                               placeholder="{% blocktrans with example1='white' example2='#ffffff' %}e.g. {{example1}} or {{example2}}{% endblocktrans %}"
                                value="{{ self.item_text_color}}"
                                aria-describedby="item-text-color-description-{{id_suffix}}">
                     </label>
@@ -172,11 +177,13 @@
                 </form>
             </section>
             <section class="tab-content">
+                <h4>{% trans "Item definitions" %}</h4>
                 <form class="items-form"></form>
+                <button class="btn add-item add-element">
+                    <span class="icon add"></span>
+                    {% trans "Add an item" %}
+                </button>
             </section>
-            <footer class="tab-footer">
-                <a href="#" class="add-item add-element"><div class="icon add"></div>{% trans "Add an item" %}</a>
-            </footer>
         </div>
 
     </section>

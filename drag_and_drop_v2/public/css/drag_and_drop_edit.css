@@ -68,15 +68,19 @@
   clear: both;
 }
 
-.xblock--drag-and-drop--editor .tab h3,
-.xblock--drag-and-drop--editor .tab .h3 {
+.xblock--drag-and-drop--editor .tab h3 {
+    font-size: 18px;
+}
+
+.xblock--drag-and-drop--editor .tab h4,
+.xblock--drag-and-drop--editor .tab .h4 {
+    display: block;
+    font-size: 16px;
     margin: 20px 0 8px 0;
 }
 
-.xblock--drag-and-drop--editor .tab .h3 {
-    display: block;
-    font: inherit;
-    font-size: 100%;
+.xblock--drag-and-drop--editor .tab .items-form .item .row:first-of-type .h4 {
+    margin-top: 0;
 }
 
 .xblock--drag-and-drop--editor .tab-header,
@@ -98,18 +102,35 @@
     margin: 10px 0 0 0;
 }
 
-.xblock--drag-and-drop--editor .target-image-form input,
-.xblock--drag-and-drop--editor .target-image-form textarea {
+.xblock--drag-and-drop--editor .target-image-form input {
     width: 50%;
+}
+.xblock--drag-and-drop--editor .target-image-form textarea {
+    width: 97%;
 }
 
 .xblock--drag-and-drop--editor .target-image-form textarea {
     display: block;
 }
 
+.xblock--drag-and-drop--editor input,
+.xblock--drag-and-drop--editor textarea {
+    box-sizing: border-box;
+    font-size: 14px;
+    background: #fff;
+    box-shadow: none;
+    padding: 6px 8px;
+    border: 1px solid #b2b2b2;
+    color: #4c4c4c;
+}
+
 .xblock--drag-and-drop--editor label > span {
     display: inline-block;
     margin-bottom: 0.25em;
+}
+
+.xblock--drag-and-drop--editor label.checkbox-label {
+    font-size: 14px;
 }
 
 /* Main Tab */
@@ -151,29 +172,36 @@
   max-width: 100%;
 }
 
+.xblock--drag-and-drop--editor .zones-form .zone-row {
+    background-color: #b1d9f1;
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
 .xblock--drag-and-drop--editor .zones-form .zone-row label {
     display: block;
 }
 
 .xblock--drag-and-drop--editor .zones-form .zone-row label > span {
     display: inline-block;
-    width: 6em;
+    font-size: 14px;
+    min-width: 8rem;
 }
 
 .xblock--drag-and-drop--editor .zones-form .zone-row label > input {
-    width: 60%;
+    width: 66%;
     margin: 0 0 5px;
     line-height: 2.664rem;  /* .title gets line-height from a Studio rule that does not apply to .description;
                                here we make sure that both input fields get the same value for line-height */
 }
 
-.xblock--drag-and-drop--editor .zones-form .zone-row .alignment {
-    margin-bottom: 15px;
+.xblock--drag-and-drop--editor .zones-form .zone-row .layout {
+    margin: 2rem 0;
 }
 
 .xblock--drag-and-drop--editor .zones-form .zone-row .layout label {
     display: inline-block;
-    width: 40%;
+    width: 45%;
 }
 
 .xblock--drag-and-drop--editor .zones-form .zone-row .layout .zone-size,
@@ -183,14 +211,19 @@
     line-height: inherit;
 }
 
+.xblock--drag-and-drop--editor .zones-form .zone-row .alignment {
+    margin-bottom: 15px;
+}
+
+
 .xblock--drag-and-drop--editor .feedback-form textarea {
     width: 99%;
     height: 128px;
 }
 
 .xblock--drag-and-drop--editor .form-help {
-    margin-top: 5px;
-    font-size: small;
+    margin: 0.5rem 0 1rem;
+    font-size: 12px;
 }
 
 .xblock--drag-and-drop--editor .item-styles-form,
@@ -199,14 +232,9 @@
 }
 
 .xblock--drag-and-drop--editor .items-form .item {
-    background-color: #8fcaec;
-    padding: 10px 0 1px;
-    margin: 15px 0;
-}
-
-.xblock--drag-and-drop--editor .items-form label,
-.xblock--drag-and-drop--editor .items-form .h3 {
-    margin: 0 1%;
+    background-color: #b1d9f1;
+    padding: 2rem;
+    margin-bottom: 2rem;
 }
 
 .xblock--drag-and-drop--editor .items-form select {
@@ -220,7 +248,6 @@
 .xblock--drag-and-drop--editor .items-form .item-text,
 .xblock--drag-and-drop--editor .items-form .item-image-url {
     width: 50%;
-    margin: 0 1%;
 }
 
 .xblock--drag-and-drop--editor .items-form .item-width {
@@ -235,16 +262,21 @@
     text-align: left;
 }
 
-.xblock--drag-and-drop--editor .items-form .row {
-    margin-bottom: 20px;
-}
 .xblock--drag-and-drop--editor .items-form .row.advanced {
     display: none;
 }
 .xblock--drag-and-drop--editor .items-form .row.advanced-link {
-    cursor: pointer;
-    padding-left: 1em;
-    font-size: 80%;
+    font-size: 12px;
+    margin-top: 2em;
+}
+.xblock--drag-and-drop--editor .items-form .row.advanced-link button {
+    background: none;
+    border: none;
+    color: #4c4c4c;
+}
+.xblock--drag-and-drop--editor .items-form .row.advanced-link button:before {
+    content: '\25B6';
+    margin-right: 0.5em;
 }
 .xblock--drag-and-drop-editor .items-form .zone-checkbox-row {
     margin-bottom: 0px;
@@ -269,22 +301,11 @@
     opacity: 0.5;
 }
 
-.xblock--drag-and-drop--editor .add-element {
-    text-decoration: none;
-    color: #1d5280;
-}
-
-.xblock--drag-and-drop--editor .remove-zone {
-    cursor: pointer;
-    float: right;
-    margin-top: 2px;
-    margin-right: 16px;
-}
-
+.xblock--drag-and-drop--editor .remove-zone,
 .xblock--drag-and-drop--editor .remove-item {
-    cursor: pointer;
     float: right;
-    margin-right: 16px;
+    padding: 3px;
+    border-radius: 12px;
 }
 
 .xblock--drag-and-drop--editor .icon {
@@ -292,9 +313,12 @@
     height: 14px;
     border-radius: 7px;
     background-color: #1d5280;
-    position: relative;
-    float: left;
-    margin: 0 5px 0 0;
+    display: inline-block;
+}
+
+.xblock--drag-and-drop--editor .remove-zone .icon,
+.xblock--drag-and-drop--editor .remove-item .icon {
+    display: block;
 }
 
 .xblock--drag-and-drop--editor .add-zone:hover,
@@ -363,13 +387,4 @@
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
-}
-
-.xblock--drag-and-drop--editor .remove-item .icon.remove {
-    background-color: #fff;
-    color: #0072a7;  /* Override default color from Studio to ensure contrast is large enough */
-}
-.xblock--drag-and-drop--editor .remove-item .icon.remove:before,
-.xblock--drag-and-drop--editor .remove-item .icon.remove:after {
-    background-color: #1d5280;
 }

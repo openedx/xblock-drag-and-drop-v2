@@ -222,7 +222,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                             _fn.build.form.item.add();
                         })
                         .on('click', '.remove-item', _fn.build.form.item.remove)
-                        .on('click', '.advanced-link a', _fn.build.form.item.showAdvancedSettings)
+                        .on('click', '.advanced-link button', _fn.build.form.item.showAdvancedSettings)
                         .on('input', '.item-image-url', _fn.build.form.item.imageURLChanged);
                 },
                 form: {
@@ -430,7 +430,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                             }
                             ctx.checkboxes = _fn.build.form.createCheckboxes(ctx.zones);
 
-                            _fn.build.form.item.count++;
+                            ctx.index = _fn.build.form.item.count++;
                             $form.append(tpl(ctx));
                             _fn.build.form.item.enableDelete();
 

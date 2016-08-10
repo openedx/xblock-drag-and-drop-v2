@@ -10,10 +10,10 @@
 </script>
 
 <script class="zone-input-tpl" type="text/html">
-    <div class="zone-row" data-uid="{{zone.uid}}">
-        <a class="remove-zone hidden" title="{{i18n 'Remove zone'}}">
-            <div class="icon remove"></div>
-        </a>
+    <fieldset class="zone-row" data-uid="{{zone.uid}}">
+        <button type="button" class="btn remove-zone hidden" title="{{i18n 'Remove zone'}}">
+            <span class="icon remove"></span>
+        </button>
         <label>
             <span>{{i18n "Title"}}</span>
             <input type="text"
@@ -26,8 +26,11 @@
             <input type="text"
                    class="zone-description"
                    value="{{ zone.description }}"
-                   placeholder="{{i18n 'Describe this zone to non-visual users'}}"
+                   aria-describedby="zone-description-description-{{zone.uid}}-{{id_suffix}}"
                    required />
+            <div id="zone-description-description-{{zone.uid}}-{{id_suffix}}" class="form-help">
+                {{i18n "Describe this zone to non-visual users."}}
+            </div>
         </label>
         <div class="layout">
             <label>
@@ -83,12 +86,12 @@
                 {{i18n "Align dropped items to the left, center, or right.  Default is no alignment (items stay exactly where the user drops them)."}}
             </div>
         </div>
-    </div>
+    </fieldset>
 </script>
 
 <script class="zone-checkbox-tpl" type="text/html">
     <div class="zone-checkbox-row">
-        <label>
+        <label class="checkbox-label">
             <input type="checkbox"
                    value="{{ zoneUid }}"
                    class="zone-checkbox"
@@ -99,69 +102,77 @@
 </script>
 
 <script class="item-input-tpl" type="text/html">
-    <div class="item">
+    <fieldset class="item">
+        <button type="button" class="btn remove-item hidden" title="{{i18n 'Remove item'}}">
+            <span class="icon remove"></span>
+        </button>
         <div class="row">
-            <label class="h3">
+            <label class="h4">
                 {{i18n "Text"}}
                 <input type="text"
-                       placeholder="{{i18n 'Use text that is clear and descriptive of the item to be placed'}}"
+                       aria-describedby="item-text-description-{{index}}-{{id_suffix}}"
                        class="item-text"
                        value="{{ displayName }}" />
             </label>
-            <a class="remove-item hidden">
-                <div class="icon remove"></div>
-            </a>
+            <div id="item-text-description-{{index}}-{{id_suffix}}" class="form-help">
+                {{i18n "Use text that is clear and descriptive of the item to be placed."}}
+            </div>
         </div>
         <div class="row">
             <fieldset>
-                <legend class="h3">
+                <legend class="h4">
                     {{ i18n "Zones" }}
                 </legend>
                 {{ checkboxes }}
             </fieldset>
         </div>
         <div class="row">
-            <label class="h3">
+            <label class="h4">
                 {{i18n "Image URL (alternative to the text)"}}
                 <input type="text"
-                       placeholder="{{i18n 'For example, http://example.com/image.png or /static/image.png'}}"
+                       aria-describedby="item-image-url-description-{{index}}-{{id_suffix}}"
                        class="item-image-url"
                        value="{{ imageURL }}" />
             </label>
+            <div id="item-image-url-description-{{index}}-{{id_suffix}}" class="form-help">
+                {{i18n "For example, 'http://example.com/image.png' or '/static/image.png'."}}
+            </div>
         </div>
         <div class="row">
-            <label class="h3">
+            <label class="h4">
                 <span>{{i18n "Image description (should provide sufficient information to place the item even if the image did not load)"}}</span>
                 <textarea {{#if imageURL}}required{{/if}} class="item-image-description">{{ imageDescription }}</textarea>
             </label>
         </div>
         <div class="row">
-            <label class="h3">
+            <label class="h4">
                 <span>{{i18n "Success Feedback"}}</span>
                 <textarea class="success-feedback">{{ feedback.correct }}</textarea>
             </label>
         </div>
         <div class="row">
-            <label class="h3">
+            <label class="h4">
                 <span>{{i18n "Error Feedback"}}</span>
                 <textarea class="error-feedback">{{ feedback.incorrect }}</textarea>
             </label>
         </div>
         <div class="row advanced-link">
-            <a>{{i18n "Show advanced settings" }}</a>
+            <button type="button">{{i18n "Show advanced settings" }}</button>
         </div>
         <div class="row advanced">
-            <label>
-                <span>
-                  {{i18n "Preferred width as a percentage of the background image width (or blank for automatic width):"}}
-                </span>
+            <label class="h4">
+                <span>{{i18n "Preferred width"}}</span>
                 <input type="number"
                        class="item-width"
                        value="{{ singleDecimalFloat widthPercent }}"
+                       aria-describedby="item-width-description-{{index}}-{{id_suffix}}"
                        step="0.1"
                        min="1"
                        max="99" />%
             </label>
+            <div id="item-width-description-{{index}}-{{id_suffix}}" class="form-help">
+                {{i18n "Specify preferred width as percentage of the background image width. Leave blank for automatic width."}}
+            </div>
         </div>
-    </div>
+    </fieldset>
 </script>

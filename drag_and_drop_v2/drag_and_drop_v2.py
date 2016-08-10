@@ -7,7 +7,6 @@
 import copy
 import json
 import urllib
-import uuid
 import webob
 
 from xblock.core import XBlock
@@ -95,7 +94,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
     question_text = String(
         display_name=_("Problem text"),
-        help=_("The description of the problem or instructions shown to the learner"),
+        help=_("The description of the problem or instructions shown to the learner."),
         scope=Scope.settings,
         default="",
     )
@@ -109,21 +108,21 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
     weight = Float(
         display_name=_("Maximum score"),
-        help=_("The maximum score the learner can receive for the problem"),
+        help=_("The maximum score the learner can receive for the problem."),
         scope=Scope.settings,
         default=1,
     )
 
     item_background_color = String(
         display_name=_("Item background color"),
-        help=_("The background color of draggable items in the problem."),
+        help=_("The background color of draggable items in the problem (e.g. 'blue' or '#0000ff')."),
         scope=Scope.settings,
         default="",
     )
 
     item_text_color = String(
         display_name=_("Item text color"),
-        help=_("Text color to use for draggable items."),
+        help=_("Text color to use for draggable items (e.g. 'white' or '#ffffff')."),
         scope=Scope.settings,
         default="",
     )
@@ -249,11 +248,12 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """
 
         js_templates = loader.load_unicode('/templates/html/js_templates.html')
-        # A short random string to append to HTML element ID attributes to avoid multiple instances
-        # of the DnDv2 block on the same page sharing the same ID values.
+        # Get a 'html_id' string that is unique for this block.
+        # We append it to HTML element ID attributes to ensure multiple instances of the DnDv2 block
+        # on the same page don't share the same ID value.
         # We avoid using ID attributes in preference to classes, but sometimes we still need IDs to
         # connect 'for' and 'aria-describedby' attributes to the associated elements.
-        id_suffix = uuid.uuid4().hex[:16]
+        id_suffix = self.location.html_id()
         js_templates = js_templates.replace('{{id_suffix}}', id_suffix)
         context = {
             'js_templates': js_templates,
