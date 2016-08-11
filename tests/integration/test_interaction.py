@@ -1,9 +1,12 @@
+# pylint: disable=too-many-lines
+# -*- coding: utf-8 -*-
+
 # Imports ###########################################################
 
 from ddt import ddt, data, unpack
 from mock import Mock, patch
 
-from selenium.common.exceptions import NoSuchElementException, WebDriverException
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -19,14 +22,13 @@ from drag_and_drop_v2.default_data import (
 )
 from drag_and_drop_v2.utils import FeedbackMessages
 from .test_base import BaseIntegrationTest
-
+import time
 
 # Globals ###########################################################
-
 loader = ResourceLoader(__name__)
 
-
 # Classes ###########################################################
+
 
 class ItemDefinition(object):
     def __init__(self, item_id, zone_ids, zone_title, feedback_positive, feedback_negative):
@@ -52,12 +54,21 @@ class InteractionTestBase(object):
             if definition.zone_ids == []
         }
 
+    @classmethod
+    def _get_items_by_zone(cls, items_map):
+        zone_ids = set([definition.zone_ids[0] for _, definition in items_map.items() if definition.zone_ids])
+        return {
+            zone_id: {item_key: definition for item_key, definition in items_map.items()
+                      if definition.zone_ids and definition.zone_ids[0] is zone_id}
+            for zone_id in zone_ids
+        }
+
     def setUp(self):
         super(InteractionTestBase, self).setUp()
 
         scenario_xml = self._get_scenario_xml()
         self._add_scenario(self.PAGE_ID, self.PAGE_TITLE, scenario_xml)
-
+        time.sleep(2)
         self._page = self.go_to_page(self.PAGE_TITLE)
         # Resize window so that the entire drag container is visible.
         # Selenium has issues when dragging to an area that is off screen.
@@ -214,14 +225,12 @@ class InteractionTestBase(object):
         self.assertEqual(item.get_attribute('class'), 'option')
         self.assertEqual(item.get_attribute('tabindex'), '0')
         self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
-        self.assertIsNone(item_content.get_attribute('aria-describedby'))
+        item_description_id = '-item-{}-description'.format(item_value)
+        self.assertEqual(item_content.get_attribute('aria-describedby'), item_description_id)
 
-        try:
-            item.find_element_by_css_selector('.sr')
-        except NoSuchElementException:
-            pass
-        else:
-            self.fail('Reverted item should not have .sr description.')
+        describedby_text = (u'Press "Enter", "Space", "Ctrl-m", or "⌘-m" on an item to select it for dropping, '
+                            'then navigate to the zone you want to drop it on.')
+        self.assertEqual(item.find_element_by_css_selector('.sr').text, describedby_text)
 
     def place_decoy_items(self, items_map, action_key):
         decoy_items = self._get_items_without_zone(items_map)
@@ -519,6 +528,45 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, BaseInt
         self.parameterized_cannot_move_items_between_zones(
             self.items_map, self.all_zones, action_key=action_key
         )
+
+    def test_alt_text_image(self):
+        target_img = self._page.find_element_by_css_selector('.target-img')
+        alt_text = target_img.get_attribute('alt')
+        items_container = self._page.find_element_by_css_selector('.target')
+        if items_container.get_attribute('aria-describedby'):
+            self.assertEqual(items_container.get_attribute('aria-describedby').text, alt_text)
+
+    def test_alt_text_keyboard_help_over_item(self):
+        for _, definition in self.items_map.items():
+            item = self._get_unplaced_item_by_value(definition.item_id)
+            ActionChains(self.browser).move_to_element(item).perform()
+            keyboard_help_text = (u'Press "Enter", "Space", "Ctrl-m", or "⌘-m" on an item to select it for dropping, '
+                                  'then navigate to the zone you want to drop it on.')
+            self.assertEqual(item.find_element_by_css_selector('.sr').text, keyboard_help_text)
+
+    def test_alt_text_for_zones(self):
+        self._get_popup()
+        self._get_popup_content()
+        self.scroll_down(pixels=100)
+
+        # Place all items in zones where they belong
+        for definition in self._get_items_with_zone(self.items_map).values():
+            self.place_item(definition.item_id, definition.zone_ids[0])
+
+        # Check if alt text appears for that item when the user tabs over the zone
+        for zone_id, items_dict in self._get_items_by_zone(self.items_map).items():
+            if zone_id is None:
+                continue
+            zone = self._get_zone_by_id(zone_id)
+            zone_description = zone.find_element_by_id(zone.get_attribute('aria-describedby')).text
+
+            # Iterate over all items placed in that zone and save a list of their descriptions
+            for _, definition in items_dict.items():
+                item = self._get_placed_item_by_value(definition.item_id)
+                self.wait_until_visible(item)
+                item_content = item.find_element_by_css_selector('.item-content')
+                self.wait_until_visible(item_content)
+                self.assertTrue(item_content.text in zone_description)
 
     @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
     def test_final_feedback_and_reset(self, action_key):
