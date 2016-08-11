@@ -181,6 +181,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                         .on('click', '.add-zone', function(e) {
                             e.preventDefault();
                             _fn.build.form.zone.add();
+                            // Set focus to first field of the new zone.
+                            $('.zones-form .zone-row:last input[type=text]:first', element).select().focus();
                         })
                         .on('click', '.remove-zone', _fn.build.form.zone.remove)
                         .on('input', '.zone-row input', _fn.build.form.zone.changedInputHandler)
@@ -220,6 +222,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                         .on('click', '.add-item', function(e) {
                             e.preventDefault();
                             _fn.build.form.item.add();
+                            // Set focus to first field of the new item.
+                            $('.items-form .item:last input[type=text]:first', element).select().focus();
                         })
                         .on('click', '.remove-item', _fn.build.form.item.remove)
                         .on('click', '.advanced-link button', _fn.build.form.item.showAdvancedSettings)
