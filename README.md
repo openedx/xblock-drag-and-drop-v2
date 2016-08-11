@@ -151,6 +151,32 @@ You can leave all of the checkboxes unchecked in order to create a
 You can define an arbitrary number of drag items, each of which may
 be attached to any number of zones.
 
+Scoring
+-------
+
+Student assessment scores for the Drag and Drop XBlock are calculated according
+to the following formula:
+
+    score = (C + D) / T
+
+Where *C* is the number of correctly placed regular items, *D* is the number of
+decoy items that were correctly left unplaced, and *T* is the total number of
+items available.
+
+Example: consider a Drag and Drop instance configured with a total of four
+items, of which three are regular items and one is a decoy.  If a learner
+places two of the normal items correctly and one incorrectly (`C = 2`), and
+wrongly places the decoy item onto a drop zone (`D = 0`), that learner's score
+will be `50%`, as given by:
+
+    score = (2 + 0) / 4
+
+If the learner were to then move the decoy item back to the bank (`D = 1`) and
+move the wrongly placed regular item to the correct dropzone (`C = 3`), their
+score would be `100%`:
+
+    score = (3 + 1) / 4
+
 Demo Course
 -----------
 

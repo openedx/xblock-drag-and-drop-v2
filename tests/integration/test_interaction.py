@@ -673,6 +673,26 @@ class AssessmentInteractionTest(
         expected_feedback = "\n".join(feedback_lines)
         self.assertEqual(self._get_feedback().text, expected_feedback)
 
+    def test_grade(self):
+        """
+        Test grading after submitting solution in assessment mode
+        """
+        mock = Mock()
+        context = patch.object(WorkbenchRuntime, 'publish', mock)
+        context.start()
+        self.addCleanup(context.stop)
+        self.publish = mock
+
+        self.place_item(0, TOP_ZONE_ID, Keys.RETURN)  # Correctly placed item
+        self.place_item(1, BOTTOM_ZONE_ID, Keys.RETURN)  # Incorrectly placed item
+        self.place_item(4, MIDDLE_ZONE_ID, Keys.RETURN)  # Incorrectly placed decoy
+        self.click_submit()
+
+        events = self.publish.call_args_list
+        published_grade = next((event[0][2] for event in events if event[0][1] == 'grade'))
+        expected_grade = {'max_value': 1, 'value': (1.0 / 5.0)}
+        self.assertEqual(published_grade, expected_grade)
+
 
 class MultipleValidOptionsInteractionTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):
 
@@ -716,7 +736,7 @@ class EventsFiredTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegration
         },
         {
             'name': 'grade',
-            'data': {'max_value': 1, 'value': (1.0 / 4)},
+            'data': {'max_value': 1, 'value': (2.0 / 5)},
         },
         {
             'name': 'edx.drag_and_drop_v2.item.dropped',

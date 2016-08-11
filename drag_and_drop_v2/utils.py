@@ -78,3 +78,7 @@ class FeedbackMessages(object):
 
 
 FeedbackMessage = namedtuple("FeedbackMessage", ["message", "message_class"])  # pylint: disable=invalid-name
+ItemStats = namedtuple(  # pylint: disable=invalid-name
+    'ItemStats',
+    ["required", "placed", "correctly_placed", "decoy", "decoy_in_bank"]
+)
