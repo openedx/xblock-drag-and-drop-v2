@@ -137,6 +137,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                         $fbkTab.addClass('hidden');
                         $zoneTab.removeClass('hidden');
                         self.scrollToTop();
+                        $zoneTab.find('input:first').focus();
 
                         $(this).one('click', function loadThirdTab(e) {
                             // $zoneTab -> $itemTab
@@ -157,6 +158,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                             $zoneTab.addClass('hidden');
                             $itemTab.removeClass('hidden');
                             self.scrollToTop();
+                            $itemTab.find('input:first').focus();
 
                             $(this).addClass('hidden');
                             $('.save-button', element).parent()
