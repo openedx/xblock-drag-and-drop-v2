@@ -67,6 +67,9 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                     // Hide settings that are specific to assessment mode
                     _fn.build.$el.feedback.form.find('.problem-mode').trigger('change');
+
+                    // Set focus on first input field.
+                    $element.find('input:first').select();
                 },
 
                 validate: function() {
@@ -137,7 +140,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                         $fbkTab.addClass('hidden');
                         $zoneTab.removeClass('hidden');
                         self.scrollToTop();
-                        $zoneTab.find('input:first').focus();
+                        $zoneTab.find('input:first').select();
 
                         $(this).one('click', function loadThirdTab(e) {
                             // $zoneTab -> $itemTab
@@ -158,7 +161,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                             $zoneTab.addClass('hidden');
                             $itemTab.removeClass('hidden');
                             self.scrollToTop();
-                            $itemTab.find('input:first').focus();
+                            $itemTab.find('input:first').select();
 
                             $(this).addClass('hidden');
                             $('.save-button', element).parent()
@@ -184,7 +187,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                             e.preventDefault();
                             _fn.build.form.zone.add();
                             // Set focus to first field of the new zone.
-                            $('.zones-form .zone-row:last input[type=text]:first', element).select().focus();
+                            $('.zones-form .zone-row:last input[type=text]:first', element).select();
                         })
                         .on('click', '.remove-zone', _fn.build.form.zone.remove)
                         .on('input', '.zone-row input', _fn.build.form.zone.changedInputHandler)
@@ -225,7 +228,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                             e.preventDefault();
                             _fn.build.form.item.add();
                             // Set focus to first field of the new item.
-                            $('.items-form .item:last input[type=text]:first', element).select().focus();
+                            $('.items-form .item:last input[type=text]:first', element).select();
                         })
                         .on('click', '.remove-item', _fn.build.form.item.remove)
                         .on('click', '.advanced-link button', _fn.build.form.item.showAdvancedSettings)
