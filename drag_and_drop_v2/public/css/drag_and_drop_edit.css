@@ -179,7 +179,7 @@
 }
 
 .xblock--drag-and-drop--editor .zones-form .zone-row label > input {
-    width: 66%;
+    width: 63%;
     margin: 0 0 5px;
     line-height: 2.664rem;  /* .title gets line-height from a Studio rule that does not apply to .description;
                                here we make sure that both input fields get the same value for line-height */
