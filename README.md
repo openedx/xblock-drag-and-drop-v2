@@ -96,11 +96,19 @@ and Drop component to a lesson, then click the `EDIT` button.
 
 ![Edit view](/doc/img/edit-view.png)
 
-In the first step, you can set some basic properties of the component,
-such as the title, the mode, the maximum number of attempts, the maximum score,
+In the first step, you can set some basic properties of the component, such as
+the title, the problem mode, the maximum number of attempts, the maximum score,
 the problem text to render above the background image, the introductory feedback
 (shown initially), and the final feedback (shown after the learner successfully
-completes the drag and drop problem).
+completes the drag and drop problem, or when the learner runs out of attempts).
+
+There are two problem modes available:
+
+* **Standard**: In this mode, the learner gets immediate feedback on each
+  attempt to place an item, and the number of attempts is not limited.
+* **Assessment**: In this mode, the learner places all items on the board and
+  then clicks a "Submit" button to get feedback.  The number of attempts can be
+  limited.
 
 ![Drop zone edit](/doc/img/edit-view-zones.png)
 
@@ -126,13 +134,14 @@ potentially, overlap the zones below.
 
 ![Drag item edit](/doc/img/edit-view-items.png)
 
-In the final step, you define the background and text color for drag
-items, as well as the drag items themselves. A drag item can contain
-either text or an image. You can define custom success and error
-feedback for each item. The feedback text is displayed in a popup
-after the learner drops the item on a zone - the success feedback is
-shown if the item is dropped on a correct zone, while the error
-feedback is shown when dropping the item on an incorrect drop zone.
+In the final step, you define the background and text color for drag items, as
+well as the drag items themselves. A drag item can contain either text or an
+image. You can define custom success and error feedback for each item. In
+standard mode, the feedback text is displayed in a popup after the learner drops
+the item on a zone - the success feedback is shown if the item is dropped on a
+correct zone, while the error feedback is shown when dropping the item on an
+incorrect drop zone.  In assessment mode, the success and error feedback texts
+are not used.
 
 You can select any number of zones for an item to belong to using
 the checkboxes; all zones defined in the previous step are available.

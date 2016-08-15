@@ -164,6 +164,7 @@ msgstr ""
 "Ìf thé välüé ïs nöt sét, ïnfïnïté ättémpts äré ällöwéd. Ⱡ'σяєм #"
 
 #: drag_and_drop_v2.py
+#: templates/html/drag_and_drop_edit.html
 msgid "Show title"
 msgstr "Shöw tïtlé Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
@@ -173,6 +174,7 @@ msgstr ""
 "Dïspläý thé tïtlé tö thé léärnér? Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
 #: drag_and_drop_v2.py
+#: templates/html/drag_and_drop_edit.html
 msgid "Problem text"
 msgstr "Prößlém téxt Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
@@ -349,6 +351,7 @@ msgstr ""
 "äütömätïç wïdth): Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
 
 #: templates/html/js_templates.html
+#: templates/html/drag_and_drop_edit.html
 msgid "Zones"
 msgstr "Zönés Ⱡ'σяєм ιρѕ#"
 
@@ -379,20 +382,8 @@ msgid "Problem mode"
 msgstr "Prößlém mödé Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
 #: templates/html/drag_and_drop_edit.html
-msgid "Show title"
-msgstr "Shöw tïtlé Ⱡ'σяєм ιρѕυм ∂σłσ#"
-
-#: templates/html/drag_and_drop_edit.html
 msgid "Maximum score"
 msgstr "Mäxïmüm sçöré Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
-
-#: templates/html/drag_and_drop_edit.html
-msgid "Problem text"
-msgstr "Prößlém téxt Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
-
-#: templates/html/drag_and_drop_edit.html
-msgid "Show \"Problem\" heading"
-msgstr "Shöw \"Prößlém\" héädïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
 
 #: templates/html/drag_and_drop_edit.html
 msgid "Introductory Feedback"
@@ -401,10 +392,6 @@ msgstr "Ìntrödüçtörý Féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕ�
 #: templates/html/drag_and_drop_edit.html
 msgid "Final Feedback"
 msgstr "Fïnäl Féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
-
-#: templates/html/drag_and_drop_edit.html
-msgid "Zones"
-msgstr "Zönés Ⱡ'σяєм ιρѕ#"
 
 #: templates/html/drag_and_drop_edit.html
 msgid "Background URL"
@@ -506,8 +493,11 @@ msgid "Correctly placed in: {zone_title}"
 msgstr "Çörréçtlý pläçéd ïn: {zone_title} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
 #: public/js/drag_and_drop.js
-msgid "Reset problem"
-msgstr "Rését prößlém Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+msgid "Reset"
+msgstr "Rését Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+msgid "Submit"
+msgstr "Süßmït Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
 #: public/js/drag_and_drop.js
 msgid "Feedback"
@@ -584,3 +574,30 @@ msgstr "Nöné Ⱡ'σяєм ι#"
 #: public/js/drag_and_drop_edit.js
 msgid "Error: "
 msgstr "Érrör:  Ⱡ'σяєм ιρѕυм #"
+
+
+#: utils.py:18
+msgid "Fïnäl ättémpt wäs üséd, hïghést sçöré ïs {score} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+msgstr ""
+
+#: utils.py:19
+msgid "Mïspläçéd ïtéms wéré rétürnéd tö ïtém ßänk. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+msgstr ""
+
+#: utils.py:24
+msgid "Çörréçtlý pläçéd {correct_count} ïtém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+msgid_plural "Çörréçtlý pläçéd {correct_count} ïtéms. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
+msgstr[0] ""
+msgstr[1] ""
+
+#: utils.py:32
+msgid "Mïspläçéd {misplaced_count} ïtém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
+msgid_plural "Mïspläçéd {misplaced_count} ïtéms. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+msgstr[0] ""
+msgstr[1] ""
+
+#: utils.py:40
+msgid "Dïd nöt pläçé {missing_count} réqüïréd ïtém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+msgid_plural "Dïd nöt pläçé {missing_count} réqüïréd ïtéms. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+msgstr[0] ""
+msgstr[1] ""

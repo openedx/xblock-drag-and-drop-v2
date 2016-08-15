@@ -1,0 +1,23 @@
+[REPORTS]
+reports=no
+
+[FORMAT]
+max-line-length=120
+
+[MESSAGES CONTROL]
+disable=
+    attribute-defined-outside-init,
+    locally-disabled,
+    missing-docstring,
+    abstract-class-little-used,
+    too-many-ancestors,
+    too-few-public-methods,
+    too-many-public-methods,
+    invalid-name,
+    no-member
+
+[SIMILARITIES]
+min-similarity-lines=4
+
+[OPTIONS]
+max-args=6

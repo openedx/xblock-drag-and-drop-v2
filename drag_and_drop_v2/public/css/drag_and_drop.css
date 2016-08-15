@@ -284,6 +284,57 @@
     border-top: solid 1px #bdbdbd;
 }
 
+.xblock--drag-and-drop .feedback p {
+    margin: 2px 0;
+    padding: 0.5em;
+    border: 2px solid #999;
+}
+
+.xblock--drag-and-drop .feedback p.correct {
+    color: #166e36;
+    border: 2px solid #166e36;
+}
+
+.xblock--drag-and-drop .feedback p.partial {
+    color: #166e36;
+    border: 2px solid #166e36;
+}
+
+.xblock--drag-and-drop .feedback p.incorrect {
+    color: #b20610;
+    border: 2px solid #b20610;
+}
+
+
+/* Font Awesome icons have different width - margin-right tries to compensate it */
+.xblock--drag-and-drop .feedback p:before {
+    content: "\f129";
+    font-family: FontAwesome;
+    margin-right: 0.7em;
+    margin-left: 0.3em;
+}
+
+.xblock--drag-and-drop .feedback p.correct:before {
+    content: "\f00c";
+    font-family: FontAwesome;
+    margin-right: 0.3em;
+    margin-left: 0;
+}
+
+.xblock--drag-and-drop .feedback p.partial:before {
+    content: "\f069";
+    font-family: FontAwesome;
+    margin-right: 0.3em;
+    margin-left: 0;
+}
+
+.xblock--drag-and-drop .feedback p.incorrect:before {
+    content: "\f00d";
+    font-family: FontAwesome;
+    margin-right: 0.45em;
+    margin-left: 0.1em;
+}
+
 .xblock--drag-and-drop .popup {
     position: absolute;
     display: none;

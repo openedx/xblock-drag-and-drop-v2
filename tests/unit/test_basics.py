@@ -69,20 +69,20 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             self.assertEqual(self.call_handler("get_user_state"), {
                 'items': {},
                 'finished': False,
-                "num_attempts": 0,
-                'overall_feedback': START_FEEDBACK,
+                "attempts": 0,
+                'overall_feedback': [{"message": START_FEEDBACK, "message_class": None}]
             })
         assert_user_state_empty()
 
         # Drag three items into the correct spot:
         data = {"val": 0, "zone": TOP_ZONE_ID, "x_percent": "33%", "y_percent": "11%"}
-        self.call_handler('do_attempt', data)
+        self.call_handler(self.DROP_ITEM_HANDLER, data)
         data = {"val": 1, "zone": MIDDLE_ZONE_ID, "x_percent": "67%", "y_percent": "80%"}
-        self.call_handler('do_attempt', data)
+        self.call_handler(self.DROP_ITEM_HANDLER, data)
         data = {"val": 2, "zone": BOTTOM_ZONE_ID, "x_percent": "99%", "y_percent": "95%"}
-        self.call_handler('do_attempt', data)
+        self.call_handler(self.DROP_ITEM_HANDLER, data)
         data = {"val": 3, "zone": MIDDLE_ZONE_ID, "x_percent": "67%", "y_percent": "80%"}
-        self.call_handler('do_attempt', data)
+        self.call_handler(self.DROP_ITEM_HANDLER, data)
 
         # Check the result:
         self.assertTrue(self.block.completed)
@@ -100,8 +100,8 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
                 '3': {'x_percent': '67%', 'y_percent': '80%', 'correct': True, "zone": MIDDLE_ZONE_ID},
             },
             'finished': True,
-            "num_attempts": 0,
-            'overall_feedback': FINISH_FEEDBACK,
+            "attempts": 0,
+            'overall_feedback': [{"message": FINISH_FEEDBACK, "message_class": None}],
         })
 
         # Reset to initial conditions

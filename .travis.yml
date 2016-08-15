@@ -12,7 +12,8 @@ install:
     - "pip install dist/xblock-drag-and-drop-v2-2.0.7.tar.gz"
 script:
     - pep8 drag_and_drop_v2 tests --max-line-length=120
-    - pylint drag_and_drop_v2 tests
+    - pylint drag_and_drop_v2
+    - pylint tests --rcfile=tests/pylintrc
     - python run_tests.py
 notifications:
     email: false
