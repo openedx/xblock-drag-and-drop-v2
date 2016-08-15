@@ -1,3 +1,16 @@
+Version 2.0.8 (2016-08-15)
+--------------------------
+
+* Numerical input feature removed
+* Multiple drop zones per item
+* Assessment mode - first version
+
+
+Version 2.0.7 (2016-06-10)
+--------------------------
+
+* Translation fix: removed duplicate entries in translation files
+
 Version 2.0.6 (2016-05-20)
 --------------------------
 
