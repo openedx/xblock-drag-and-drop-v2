@@ -115,14 +115,14 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
     item_background_color = String(
         display_name=_("Item background color"),
-        help=_("The background color of draggable items in the problem (e.g. 'blue' or '#0000ff')."),
+        help=_("The background color of draggable items in the problem (example: 'blue' or '#0000ff')."),
         scope=Scope.settings,
         default="",
     )
 
     item_text_color = String(
         display_name=_("Item text color"),
-        help=_("Text color to use for draggable items (e.g. 'white' or '#ffffff')."),
+        help=_("Text color to use for draggable items (example: 'white' or '#ffffff')."),
         scope=Scope.settings,
         default="",
     )

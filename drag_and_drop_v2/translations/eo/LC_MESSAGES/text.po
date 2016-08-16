@@ -209,20 +209,20 @@ msgid "Item background color"
 msgstr "Ìtém ßäçkgröünd çölör Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
 #: drag_and_drop_v2.py
-msgid "The background color of draggable items in the problem."
+msgid "The background color of draggable items in the problem (example: 'blue' or '#0000ff')."
 msgstr ""
-"Thé ßäçkgröünd çölör öf dräggäßlé ïtéms ïn thé prößlém. Ⱡ'σяєм ιρѕυм ∂σłσя "
-"ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+"Thé ßäçkgröünd çölör öf dräggäßlé ïtéms ïn thé prößlém (éxämplé: 'ßlüé' ör '#0000ff'). "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
 #: drag_and_drop_v2.py
 msgid "Item text color"
 msgstr "Ìtém téxt çölör Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
 #: drag_and_drop_v2.py
-msgid "Text color to use for draggable items."
+msgid "Text color to use for draggable items (example: 'white' or '#ffffff')."
 msgstr ""
-"Téxt çölör tö üsé för dräggäßlé ïtéms. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя#"
+"Téxt çölör tö üsé för dräggäßlé ïtéms (éxämplé: 'whïté' ör '#ffffff'). "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
 #: drag_and_drop_v2.py
 msgid "Problem data"

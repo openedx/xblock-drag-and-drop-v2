@@ -184,7 +184,6 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                     $zoneTab
                         .on('click', '.add-zone', function(e) {
-                            e.preventDefault();
                             _fn.build.form.zone.add();
                             // Set focus to first field of the new zone.
                             $('.zones-form .zone-row:last input[type=text]:first', element).select();
@@ -193,8 +192,6 @@ function DragAndDropEditBlock(runtime, element, params) {
                         .on('input', '.zone-row input', _fn.build.form.zone.changedInputHandler)
                         .on('change', '.align-select', _fn.build.form.zone.changedInputHandler)
                         .on('click', '.target-image-form button', function(e) {
-                            e.preventDefault();
-
                             var new_img_url = $.trim($('.target-image-form .background-url', element).val());
                             if (new_img_url) {
                                 // We may need to 'expand' the URL before it will be valid.
@@ -225,7 +222,6 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                     $itemTab
                         .on('click', '.add-item', function(e) {
-                            e.preventDefault();
                             _fn.build.form.item.add();
                             // Set focus to first field of the new item.
                             $('.items-form .item:last input[type=text]:first', element).select();
@@ -308,7 +304,6 @@ function DragAndDropEditBlock(runtime, element, params) {
                                 uid = String($el.data('uid')),  // cast to string since UID must be string but .data() converts data-uid="5" to 5
                                 array_index;
 
-                            e.preventDefault();
                             $el.detach();
 
                             // Find the uid of the zone in the array and remove it.
@@ -447,7 +442,6 @@ function DragAndDropEditBlock(runtime, element, params) {
                         remove: function(e) {
                             var $el = $(e.currentTarget).closest('.item');
 
-                            e.preventDefault();
                             $el.detach();
 
                             _fn.build.form.item.count--;
@@ -471,7 +465,6 @@ function DragAndDropEditBlock(runtime, element, params) {
                             }
                         },
                         showAdvancedSettings: function(e) {
-                            e.preventDefault();
                             var $el = $(e.currentTarget).closest('.item');
                             $el.find('.row.advanced').show();
                             $el.find('.row.advanced-link').hide();

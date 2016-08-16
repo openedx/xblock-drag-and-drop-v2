@@ -171,7 +171,7 @@ msgid "Item background color"
 msgstr ""
 
 #: drag_and_drop_v2.py
-msgid "The background color of draggable items in the problem."
+msgid "The background color of draggable items in the problem (example: 'blue' or '#0000ff')."
 msgstr ""
 
 #: drag_and_drop_v2.py
@@ -179,7 +179,7 @@ msgid "Item text color"
 msgstr ""
 
 #: drag_and_drop_v2.py
-msgid "Text color to use for draggable items."
+msgid "Text color to use for draggable items (example: 'white' or '#ffffff')."
 msgstr ""
 
 #: drag_and_drop_v2.py
