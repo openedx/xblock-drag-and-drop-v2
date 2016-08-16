@@ -253,7 +253,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         # on the same page don't share the same ID value.
         # We avoid using ID attributes in preference to classes, but sometimes we still need IDs to
         # connect 'for' and 'aria-describedby' attributes to the associated elements.
-        id_suffix = self.location.html_id()
+        id_suffix = self.location.html_id()  # pylint: disable=no-member
         js_templates = js_templates.replace('{{id_suffix}}', id_suffix)
         context = {
             'js_templates': js_templates,
