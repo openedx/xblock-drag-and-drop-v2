@@ -90,6 +90,7 @@ msgid "I don't belong anywhere"
 msgstr ""
 
 #: drag_and_drop_v2.py
+#: templates/html/js_templates.html
 msgid "Title"
 msgstr ""
 
@@ -121,7 +122,6 @@ msgid "Assessment"
 msgstr ""
 
 #: drag_and_drop_v2.py
-#: templates/html/drag_and_drop_edit.html
 msgid "Maximum attempts"
 msgstr ""
 
@@ -132,7 +132,6 @@ msgid ""
 msgstr ""
 
 #: drag_and_drop_v2.py
-#: templates/html/drag_and_drop_edit.html
 msgid "Show title"
 msgstr ""
 
@@ -141,16 +140,14 @@ msgid "Display the title to the learner?"
 msgstr ""
 
 #: drag_and_drop_v2.py
-#: templates/html/drag_and_drop_edit.html
 msgid "Problem text"
 msgstr ""
 
 #: drag_and_drop_v2.py
-msgid "The description of the problem or instructions shown to the learner"
+msgid "The description of the problem or instructions shown to the learner."
 msgstr ""
 
 #: drag_and_drop_v2.py
-#: templates/html/drag_and_drop_edit.html
 msgid "Show \"Problem\" heading"
 msgstr ""
 
@@ -159,11 +156,11 @@ msgid "Display the heading \"Problem\" above the problem text?"
 msgstr ""
 
 #: drag_and_drop_v2.py
-msgid "Weight"
+msgid "Maximum score"
 msgstr ""
 
 #: drag_and_drop_v2.py
-msgid "The maximum score the learner can receive for the problem"
+msgid "The maximum score the learner can receive for the problem."
 msgstr ""
 
 #: drag_and_drop_v2.py
@@ -200,7 +197,31 @@ msgid ""
 msgstr ""
 
 #: drag_and_drop_v2.py
+msgid "Number of attempts learner used"
+msgstr ""
+
+#: drag_and_drop_v2.py
 msgid "Indicates whether a learner has completed the problem at least once"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid "Keeps maximum achieved score by student"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid "do_attempt handler should only be called for assessment mode"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid "Max number of attempts reached"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid "Unknown DnDv2 mode {mode} - course is misconfigured"
+msgstr ""
+
+#: templates/html/js_templates.html
+msgid "Remove zone"
 msgstr ""
 
 #: templates/html/js_templates.html
@@ -212,7 +233,7 @@ msgid "Description"
 msgstr ""
 
 #: templates/html/js_templates.html
-msgid "Describe this zone to non-visual users"
+msgid "Describe this zone to non-visual users."
 msgstr ""
 
 #: templates/html/js_templates.html
@@ -250,6 +271,10 @@ msgid ""
 msgstr ""
 
 #: templates/html/js_templates.html
+msgid "Remove item"
+msgstr ""
+
+#: templates/html/js_templates.html
 msgid "Zone"
 msgstr ""
 
@@ -258,7 +283,7 @@ msgid "Image URL (alternative to the text)"
 msgstr ""
 
 #: templates/html/js_templates.html
-msgid "For example, http://example.com/image.png or /static/image.png"
+msgid "For example, 'http://example.com/image.png' or '/static/image.png'."
 msgstr ""
 
 #: templates/html/js_templates.html
@@ -280,13 +305,17 @@ msgid "Show advanced settings"
 msgstr ""
 
 #: templates/html/js_templates.html
-msgid ""
-"Preferred width as a percentage of the background image width (or blank for "
-"automatic width):"
+msgid "Preferred width"
 msgstr ""
 
 #: templates/html/js_templates.html
-msgid "Use text that is clear and descriptive of the item to be placed"
+msgid ""
+"Specify preferred width as percentage of the background image width. "
+"Leave blank for automatic width."
+msgstr ""
+
+#: templates/html/js_templates.html
+msgid "Use text that is clear and descriptive of the item to be placed."
 msgstr ""
 
 #: templates/html/drag_and_drop.html
@@ -300,18 +329,6 @@ msgid ""
 msgstr ""
 
 #: templates/html/drag_and_drop_edit.html
-msgid "Problem title"
-msgstr ""
-
-#: templates/html/drag_and_drop_edit.html
-msgid "Problem mode"
-msgstr ""
-
-#: templates/html/drag_and_drop_edit.html
-msgid "Maximum score"
-msgstr ""
-
-#: templates/html/drag_and_drop_edit.html
 msgid "Introductory Feedback"
 msgstr ""
 
@@ -319,8 +336,8 @@ msgstr ""
 msgid "Final Feedback"
 msgstr ""
 
-#: templates/html/js_templates.html
 #: templates/html/drag_and_drop_edit.html
+#: templates/html/js_templates.html
 msgid "Zones"
 msgstr ""
 
@@ -330,7 +347,7 @@ msgstr ""
 
 #: templates/html/drag_and_drop_edit.html
 msgid ""
-"For example, http://example.com/background.png or /static/background.png"
+"For example, 'http://example.com/background.png' or '/static/background.png'."
 msgstr ""
 
 #: templates/html/drag_and_drop_edit.html
@@ -351,6 +368,10 @@ msgid ""
 "                            to solve the problem even without seeing the "
 "image.\n"
 "                        "
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Zone definitions"
 msgstr ""
 
 #: templates/html/drag_and_drop_edit.html
@@ -375,14 +396,6 @@ msgstr ""
 
 #: templates/html/drag_and_drop_edit.html
 msgid "Items"
-msgstr ""
-
-#: templates/html/drag_and_drop_edit.html
-msgid "Background color"
-msgstr ""
-
-#: templates/html/drag_and_drop_edit.html
-msgid "Text color"
 msgstr ""
 
 #: templates/html/drag_and_drop_edit.html
@@ -421,6 +434,7 @@ msgstr ""
 msgid "Reset"
 msgstr ""
 
+#: public/js/drag_and_drop.js
 msgid "Submit"
 msgstr ""
 
@@ -468,6 +482,10 @@ msgstr ""
 
 #: public/js/drag_and_drop.js
 msgid "An error occurred. Unable to load drag and drop problem."
+msgstr ""
+
+#: public/js/drag_and_drop.js
+msgid "You have used {used} of {total} attempts."
 msgstr ""
 
 #: public/js/drag_and_drop_edit.js
