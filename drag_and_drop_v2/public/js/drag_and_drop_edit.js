@@ -29,10 +29,10 @@ function DragAndDropEditBlock(runtime, element, params) {
             tpl: {
                 init: function() {
                     _fn.tpl = {
-                        zoneInput: Handlebars.compile($("#zone-input-tpl", element).html()),
-                        zoneElement: Handlebars.compile($("#zone-element-tpl", element).html()),
-                        zoneCheckbox: Handlebars.compile($("#zone-checkbox-tpl", element).html()),
-                        itemInput: Handlebars.compile($("#item-input-tpl", element).html()),
+                        zoneInput: Handlebars.compile($(".zone-input-tpl", element).html()),
+                        zoneElement: Handlebars.compile($(".zone-element-tpl", element).html()),
+                        zoneCheckbox: Handlebars.compile($(".zone-checkbox-tpl", element).html()),
+                        itemInput: Handlebars.compile($(".item-input-tpl", element).html()),
                     };
                 }
             },
@@ -66,7 +66,10 @@ function DragAndDropEditBlock(runtime, element, params) {
                     _fn.build.clickHandlers();
 
                     // Hide settings that are specific to assessment mode
-                    _fn.build.$el.feedback.form.find('#problem-mode').trigger('change');
+                    _fn.build.$el.feedback.form.find('.problem-mode').trigger('change');
+
+                    // Set focus on first input field.
+                    $element.find('input:first').select();
                 },
 
                 validate: function() {
@@ -120,8 +123,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                         }
 
                         // Set the target image and bind its event handler:
-                        $('.target-image-form #background-url', element).val(_fn.data.targetImg);
-                        $('.target-image-form #background-description', element).val(_fn.data.targetImgDescription);
+                        $('.target-image-form .background-url', element).val(_fn.data.targetImg);
+                        $('.target-image-form .background-description', element).val(_fn.data.targetImgDescription);
                         _fn.build.$el.targetImage.load(_fn.build.form.zone.imageLoaded);
                         _fn.build.$el.targetImage.attr('src', params.target_img_expanded_url);
                         _fn.build.$el.targetImage.attr('alt', _fn.data.targetImgDescription);
@@ -137,6 +140,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                         $fbkTab.addClass('hidden');
                         $zoneTab.removeClass('hidden');
                         self.scrollToTop();
+                        $zoneTab.find('input:first').select();
 
                         $(this).one('click', function loadThirdTab(e) {
                             // $zoneTab -> $itemTab
@@ -157,6 +161,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                             $zoneTab.addClass('hidden');
                             $itemTab.removeClass('hidden');
                             self.scrollToTop();
+                            $itemTab.find('input:first').select();
 
                             $(this).addClass('hidden');
                             $('.save-button', element).parent()
@@ -175,20 +180,19 @@ function DragAndDropEditBlock(runtime, element, params) {
                     });
 
                     $fbkTab
-                        .on('change', '#problem-mode', _fn.build.form.problem.toggleAssessmentSettings);
+                        .on('change', '.problem-mode', _fn.build.form.problem.toggleAssessmentSettings);
 
                     $zoneTab
                         .on('click', '.add-zone', function(e) {
-                            e.preventDefault();
                             _fn.build.form.zone.add();
+                            // Set focus to first field of the new zone.
+                            $('.zones-form .zone-row:last input[type=text]:first', element).select();
                         })
                         .on('click', '.remove-zone', _fn.build.form.zone.remove)
                         .on('input', '.zone-row input', _fn.build.form.zone.changedInputHandler)
                         .on('change', '.align-select', _fn.build.form.zone.changedInputHandler)
                         .on('click', '.target-image-form button', function(e) {
-                            e.preventDefault();
-
-                            var new_img_url = $.trim($('.target-image-form #background-url', element).val());
+                            var new_img_url = $.trim($('.target-image-form .background-url', element).val());
                             if (new_img_url) {
                                 // We may need to 'expand' the URL before it will be valid.
                                 // e.g. '/static/blah.png' becomes '/asset-v1:course+id/blah.png'
@@ -202,9 +206,9 @@ function DragAndDropEditBlock(runtime, element, params) {
                             }
                             _fn.data.targetImg = new_img_url;
                         })
-                        .on('input', '.target-image-form #background-description', function(e) {
+                        .on('input', '.target-image-form .background-description', function(e) {
                             var new_description = $.trim(
-                                $('.target-image-form #background-description', element).val()
+                                $('.target-image-form .background-description', element).val()
                             );
                             _fn.build.$el.targetImage.attr('alt', new_description);
                             _fn.data.targetImgDescription = new_description;
@@ -218,11 +222,12 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                     $itemTab
                         .on('click', '.add-item', function(e) {
-                            e.preventDefault();
                             _fn.build.form.item.add();
+                            // Set focus to first field of the new item.
+                            $('.items-form .item:last input[type=text]:first', element).select();
                         })
                         .on('click', '.remove-item', _fn.build.form.item.remove)
-                        .on('click', '.advanced-link a', _fn.build.form.item.showAdvancedSettings)
+                        .on('click', '.advanced-link button', _fn.build.form.item.showAdvancedSettings)
                         .on('input', '.item-image-url', _fn.build.form.item.imageURLChanged);
                 },
                 form: {
@@ -230,8 +235,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                         toggleAssessmentSettings: function(e) {
                             e.preventDefault();
                             var $modeSetting = $(e.currentTarget),
-                                $problemForm = $modeSetting.parent('form'),
-                                $assessmentSettings = $problemForm.find('.setting.assessment');
+                                $problemForm = $modeSetting.closest('form'),
+                                $assessmentSettings = $problemForm.find('.assessment-setting');
                             if ($modeSetting.val() === 'assessment') {
                                 $assessmentSettings.show();
                             } else {
@@ -299,7 +304,6 @@ function DragAndDropEditBlock(runtime, element, params) {
                                 uid = String($el.data('uid')),  // cast to string since UID must be string but .data() converts data-uid="5" to 5
                                 array_index;
 
-                            e.preventDefault();
                             $el.detach();
 
                             // Find the uid of the zone in the array and remove it.
@@ -354,19 +358,19 @@ function DragAndDropEditBlock(runtime, element, params) {
                             var $changedInput = $(ev.currentTarget);
                             var $row = $changedInput.closest('.zone-row');
                             var record = _fn.build.form.zone.getZoneObjByUID(String($row.data('uid')));
-                            if ($changedInput.hasClass('title')) {
+                            if ($changedInput.hasClass('zone-title')) {
                                 record.title = $changedInput.val();
-                            } else if ($changedInput.hasClass('width')) {
+                            } else if ($changedInput.hasClass('zone-width')) {
                                 record.width = $changedInput.val();
-                            } else if ($changedInput.hasClass('description')) {
+                            } else if ($changedInput.hasClass('zone-description')) {
                                 record.description = $changedInput.val();
-                            } else if ($changedInput.hasClass('height')) {
+                            } else if ($changedInput.hasClass('zone-height')) {
                                 record.height = $changedInput.val();
-                            } else if ($changedInput.hasClass('x')) {
+                            } else if ($changedInput.hasClass('zone-x')) {
                                 record.x = $changedInput.val();
-                            } else if ($changedInput.hasClass('y')) {
+                            } else if ($changedInput.hasClass('zone-y')) {
                                 record.y = $changedInput.val();
-                            } else if ($changedInput.hasClass('align-select')) {
+                            } else if ($changedInput.hasClass('zone-align-select')) {
                                 record.align = $changedInput.val();
                             }
                             _fn.build.form.zone.renderZonesPreview();
@@ -394,8 +398,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                     },
                     feedback: function($form) {
                         _fn.data.feedback = {
-                            start: $form.find('#intro-feedback').val(),
-                            finish: $form.find('#final-feedback').val()
+                            start: $form.find('.intro-feedback').val(),
+                            finish: $form.find('.final-feedback').val()
                         };
                     },
                     item: {
@@ -430,7 +434,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                             }
                             ctx.checkboxes = _fn.build.form.createCheckboxes(ctx.zones);
 
-                            _fn.build.form.item.count++;
+                            ctx.index = _fn.build.form.item.count++;
                             $form.append(tpl(ctx));
                             _fn.build.form.item.enableDelete();
 
@@ -438,7 +442,6 @@ function DragAndDropEditBlock(runtime, element, params) {
                         remove: function(e) {
                             var $el = $(e.currentTarget).closest('.item');
 
-                            e.preventDefault();
                             $el.detach();
 
                             _fn.build.form.item.count--;
@@ -462,7 +465,6 @@ function DragAndDropEditBlock(runtime, element, params) {
                             }
                         },
                         showAdvancedSettings: function(e) {
-                            e.preventDefault();
                             var $el = $(e.currentTarget).closest('.item');
                             $el.find('.row.advanced').show();
                             $el.find('.row.advanced-link').hide();
@@ -505,15 +507,15 @@ function DragAndDropEditBlock(runtime, element, params) {
                         _fn.data.zones = _fn.build.form.zone.zoneObjects;
 
                         var data = {
-                            'display_name': $element.find('#display-name').val(),
-                            'mode': $element.find("#problem-mode").val(),
+                            'display_name': $element.find('.display-name').val(),
+                            'mode': $element.find(".problem-mode").val(),
                             'max_attempts': $element.find(".max-attempts").val(),
                             'show_title': $element.find('.show-title').is(':checked'),
-                            'weight': $element.find('#weight').val(),
-                            'problem_text': $element.find('#problem-text').val(),
+                            'weight': $element.find('.weight').val(),
+                            'problem_text': $element.find('.problem-text').val(),
                             'show_problem_header': $element.find('.show-problem-header').is(':checked'),
-                            'item_background_color': $element.find('#item-background-color').val(),
-                            'item_text_color': $element.find('#item-text-color').val(),
+                            'item_background_color': $element.find('.item-background-color').val(),
+                            'item_text_color': $element.find('.item-text-color').val(),
                             'data': _fn.data,
                         };
 

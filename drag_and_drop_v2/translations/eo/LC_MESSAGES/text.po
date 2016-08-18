@@ -113,6 +113,7 @@ msgid "Goes anywhere"
 msgstr "Göés änýwhéré Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
 #: drag_and_drop_v2.py
+#: templates/html/js_templates.html
 msgid "Title"
 msgstr "Tïtlé Ⱡ'σяєм ιρѕ#"
 
@@ -151,7 +152,6 @@ msgid "Assessment"
 msgstr "Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
 #: drag_and_drop_v2.py
-#: templates/html/drag_and_drop_edit.html
 msgid "Maximum attempts"
 msgstr "Mäxïmüm ättémpts Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
@@ -164,7 +164,6 @@ msgstr ""
 "Ìf thé välüé ïs nöt sét, ïnfïnïté ättémpts äré ällöwéd. Ⱡ'σяєм #"
 
 #: drag_and_drop_v2.py
-#: templates/html/drag_and_drop_edit.html
 msgid "Show title"
 msgstr "Shöw tïtlé Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
@@ -174,14 +173,13 @@ msgstr ""
 "Dïspläý thé tïtlé tö thé léärnér? Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
 #: drag_and_drop_v2.py
-#: templates/html/drag_and_drop_edit.html
 msgid "Problem text"
 msgstr "Prößlém téxt Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
 #: drag_and_drop_v2.py
-msgid "The description of the problem or instructions shown to the learner"
+msgid "The description of the problem or instructions shown to the learner."
 msgstr ""
-"Thé désçrïptïön öf thé prößlém ör ïnstrüçtïöns shöwn tö thé léärnér Ⱡ'σяєм "
+"Thé désçrïptïön öf thé prößlém ör ïnstrüçtïöns shöwn tö thé léärnér. Ⱡ'σяєм "
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
 #: drag_and_drop_v2.py
@@ -195,11 +193,11 @@ msgstr ""
 "ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
 #: drag_and_drop_v2.py
-msgid "Weight"
-msgstr "Wéïght Ⱡ'σяєм ιρѕυ#"
+msgid "Maximum score"
+msgstr Mäxïmüm sçöré Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#
 
 #: drag_and_drop_v2.py
-msgid "The maximum score the learner can receive for the problem"
+msgid "The maximum score the learner can receive for the problem."
 msgstr ""
 "Thé mäxïmüm sçöré thé léärnér çän réçéïvé för thé prößlém Ⱡ'σяєм ιρѕυм ∂σłσя"
 " ѕιт αмєт, ¢σηѕє¢тєтυя α#"
@@ -209,20 +207,20 @@ msgid "Item background color"
 msgstr "Ìtém ßäçkgröünd çölör Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
 #: drag_and_drop_v2.py
-msgid "The background color of draggable items in the problem."
+msgid "The background color of draggable items in the problem (example: 'blue' or '#0000ff')."
 msgstr ""
-"Thé ßäçkgröünd çölör öf dräggäßlé ïtéms ïn thé prößlém. Ⱡ'σяєм ιρѕυм ∂σłσя "
-"ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+"Thé ßäçkgröünd çölör öf dräggäßlé ïtéms ïn thé prößlém (éxämplé: 'ßlüé' ör '#0000ff'). "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
 #: drag_and_drop_v2.py
 msgid "Item text color"
 msgstr "Ìtém téxt çölör Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
 #: drag_and_drop_v2.py
-msgid "Text color to use for draggable items."
+msgid "Text color to use for draggable items (example: 'white' or '#ffffff')."
 msgstr ""
-"Téxt çölör tö üsé för dräggäßlé ïtéms. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя#"
+"Téxt çölör tö üsé för dräggäßlé ïtéms (éxämplé: 'whïté' ör '#ffffff'). "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
 #: drag_and_drop_v2.py
 msgid "Problem data"
@@ -252,10 +250,34 @@ msgstr ""
 "thé tärgét ïmägé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
 #: drag_and_drop_v2.py
+msgid "Number of attempts learner used"
+msgstr "Nümßér öf ättémpts léärnér üséd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+
+#: drag_and_drop_v2.py
 msgid "Indicates whether a learner has completed the problem at least once"
 msgstr ""
 "Ìndïçätés whéthér ä léärnér häs çömplétéd thé prößlém ät léäst önçé Ⱡ'σяєм "
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: drag_and_drop_v2.py
+msgid "Keeps maximum achieved score by student"
+msgstr "Kééps mäxïmüm äçhïévéd sçöré ßý stüdént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
+
+#: drag_and_drop_v2.py
+msgid "do_attempt handler should only be called for assessment mode"
+msgstr "dö_ättémpt händlér shöüld önlý ßé çälléd för ässéssmént mödé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: drag_and_drop_v2.py
+msgid "Max number of attempts reached"
+msgstr "Mäx nümßér öf ättémpts réäçhéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+
+#: drag_and_drop_v2.py
+msgid "Unknown DnDv2 mode {mode} - course is misconfigured"
+msgstr "Ûnknöwn DnDv2 mödé {mode} - çöürsé ïs mïsçönfïgüréd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/html/js_templates.html
+msgid "Remove zone"
+msgstr "Rémövé zöné Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
 #: templates/html/js_templates.html
 msgid "Text"
@@ -266,9 +288,9 @@ msgid "Description"
 msgstr "Désçrïptïön Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
 #: templates/html/js_templates.html
-msgid "Describe this zone to non-visual users"
+msgid "Describe this zone to non-visual users."
 msgstr ""
-"Désçrïßé thïs zöné tö nön-vïsüäl üsérs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"Désçrïßé thïs zöné tö nön-vïsüäl üsérs. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢тєтυя#"
 
 #: templates/html/js_templates.html
@@ -308,6 +330,10 @@ msgstr ""
 "(ïtéms stäý éxäçtlý whéré thé üsér dröps thém). Ⱡ'σяєм ιρ#"
 
 #: templates/html/js_templates.html
+msgid "Remove item"
+msgstr "Rémövé ïtém Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: templates/html/js_templates.html
 msgid "Zone"
 msgstr "Zöné Ⱡ'σяєм ι#"
 
@@ -317,7 +343,7 @@ msgstr ""
 "Ìmägé ÛRL (ältérnätïvé tö thé téxt) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
 #: templates/html/js_templates.html
-msgid "For example, http://example.com/image.png or /static/image.png"
+msgid "For example, 'http://example.com/image.png' or '/static/image.png'."
 msgstr ""
 "För éxämplé, http://éxämplé.çöm/ïmägé.png ör /stätïç/ïmägé.png Ⱡ'σяєм ιρѕυм "
 "∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
@@ -343,12 +369,16 @@ msgid "Show advanced settings"
 msgstr "Shöw ädvänçéd séttïngs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
 
 #: templates/html/js_templates.html
+msgid "Preferred width"
+msgstr "Préférréd wïdth Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: templates/html/js_templates.html
 msgid ""
-"Preferred width as a percentage of the background image width (or blank for "
-"automatic width):"
+"Specify preferred width as percentage of the background image width. "
+"Leave blank for automatic width."
 msgstr ""
-"Préférréd wïdth äs ä pérçéntägé öf thé ßäçkgröünd ïmägé wïdth (ör ßlänk för "
-"äütömätïç wïdth): Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
+"Spéçïfý préférréd wïdth äs pérçéntägé öf thé ßäçkgröünd ïmägé wïdth. "
+"Léävé ßlänk för äütömätïç wïdth. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
 #: templates/html/js_templates.html
 #: templates/html/drag_and_drop_edit.html
@@ -356,9 +386,9 @@ msgid "Zones"
 msgstr "Zönés Ⱡ'σяєм ιρѕ#"
 
 #: templates/html/js_templates.html
-msgid "Use text that is clear and descriptive of the item to be placed"
+msgid "Use text that is clear and descriptive of the item to be placed."
 msgstr ""
-"Ûsé téxt thät ïs çléär änd désçrïptïvé öf thé ïtém tö ßé pläçéd Ⱡ'σяєм "
+"Ûsé téxt thät ïs çléär änd désçrïptïvé öf thé ïtém tö ßé pläçéd. Ⱡ'σяєм "
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
 #: templates/html/drag_and_drop.html
@@ -374,18 +404,6 @@ msgstr ""
 "thé prößlém änd çréäté ä néw öné. Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
 #: templates/html/drag_and_drop_edit.html
-msgid "Problem title"
-msgstr "Prößlém tïtlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
-
-#: templates/html/drag_and_drop_edit.html
-msgid "Problem mode"
-msgstr "Prößlém mödé Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
-
-#: templates/html/drag_and_drop_edit.html
-msgid "Maximum score"
-msgstr "Mäxïmüm sçöré Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
-
-#: templates/html/drag_and_drop_edit.html
 msgid "Introductory Feedback"
 msgstr "Ìntrödüçtörý Féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
@@ -399,9 +417,9 @@ msgstr "Bäçkgröünd ÛRL Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 
 #: templates/html/drag_and_drop_edit.html
 msgid ""
-"For example, http://example.com/background.png or /static/background.png"
+"For example, 'http://example.com/background.png' or '/static/background.png'."
 msgstr ""
-"För éxämplé, http://éxämplé.çöm/ßäçkgröünd.png ör /stätïç/ßäçkgröünd.png "
+"För éxämplé, 'http://éxämplé.çöm/ßäçkgröünd.png' ör '/stätïç/ßäçkgröünd.png'. "
 "Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
 
 #: templates/html/drag_and_drop_edit.html
@@ -425,6 +443,10 @@ msgstr ""
 "                            Thé désçrïptïön shöüld prövïdé süffïçïént ïnförmätïön tö ällöw änýöné\n"
 "                            tö sölvé thé prößlém évén wïthöüt sééïng thé ïmägé.\n"
 "                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Zone definitions"
+msgstr "Zöné défïnïtïöns Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
 #: templates/html/drag_and_drop_edit.html
 msgid "Zone labels"
@@ -451,14 +473,6 @@ msgstr "Àdd ä zöné Ⱡ'σяєм ιρѕυм ∂σłσ#"
 #: templates/html/drag_and_drop_edit.html
 msgid "Items"
 msgstr "Ìtéms Ⱡ'σяєм ιρѕ#"
-
-#: templates/html/drag_and_drop_edit.html
-msgid "Background color"
-msgstr "Bäçkgröünd çölör Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
-
-#: templates/html/drag_and_drop_edit.html
-msgid "Text color"
-msgstr "Téxt çölör Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
 #: templates/html/drag_and_drop_edit.html
 msgid "Add an item"
@@ -496,6 +510,7 @@ msgstr "Çörréçtlý pläçéd ïn: {zone_title} Ⱡ'σяєм ιρѕυм ∂σ
 msgid "Reset"
 msgstr "Rését Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
+#: public/js/drag_and_drop.js
 msgid "Submit"
 msgstr "Süßmït Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
@@ -556,6 +571,10 @@ msgid "An error occurred. Unable to load drag and drop problem."
 msgstr ""
 "Àn érrör öççürréd. Ûnäßlé tö löäd dräg änd dröp prößlém. Ⱡ'σяєм ιρѕυм ∂σłσя "
 "ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: public/js/drag_and_drop.js
+msgid "You have used {used} of {total} attempts."
+msgstr "Ýöü hävé üséd {used} öf {total} ättémpts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
 #: public/js/drag_and_drop_edit.js
 msgid "There was an error with your form."
