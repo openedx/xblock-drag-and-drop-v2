@@ -111,9 +111,10 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
         self._check_sizes(1, self.EXPECTATIONS, expected_img_width=500)
 
     def _size_for_mobile(self):
-        self.browser.set_window_size(375, 627)  # iPhone 6 viewport size
+        width, height = 400, 627  # iPhone 6 viewport size is 375x627; this is the closest Chrome can get
+        self.browser.set_window_size(width, height)
         wait = WebDriverWait(self.browser, 2)
-        wait.until(lambda browser: browser.get_window_size()["width"] == 375)
+        wait.until(lambda browser: browser.get_window_size()["width"] == width)
         # Fix platform inconsistencies caused by scrollbar size:
         self.browser.execute_script('$("body").css("margin-right", "40px")')
         scrollbar_width = self.browser.execute_script(
@@ -188,16 +189,20 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
         item_bank = self._page.find_element_by_css_selector('.item-bank')
         item_bank_width = item_bank.size["width"]
         item_bank_height = item_bank.size["height"]
+        page_width = self._page.size["width"]  # self._page is the .xblock--drag-and-drop div
 
         if is_desktop:
             # If using a desktop-sized window, we can know the exact dimensions of various containers:
-            self.assertEqual(self._page.size["width"], 770)  # self._page is the .xblock--drag-and-drop div
-            self.assertEqual(target_img_width, expected_img_width or 755)
-            self.assertEqual(item_bank_width, 755)
+            self.assertEqual(page_width, 770)  # div has max-width: 770px
         else:
-            self.assertEqual(self._page.size["width"], 335)  # self._page is the .xblock--drag-and-drop div
-            self.assertEqual(target_img_width, expected_img_width or 328)
-            self.assertEqual(item_bank_width, 328)
+            window_width = self.browser.get_window_size()["width"]
+            self.assertLessEqual(window_width, 400)
+            self.assertEqual(page_width, window_width - 40)
+
+        # The item bank and other elements are inside a wrapper with 'padding: 1%', so we expect
+        # their width to be 98% of item_bank_width in general
+        self.assertAlmostEqual(target_img_width, expected_img_width or (page_width * 0.98), delta=1)
+        self.assertAlmostEqual(item_bank_width, page_width * 0.98, delta=1)
 
         # Test each element, before it is placed (while it is in the item bank).
         for expect in expectations:

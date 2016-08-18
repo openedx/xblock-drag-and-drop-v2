@@ -3,7 +3,7 @@
 from ddt import ddt, data, unpack
 from mock import Mock, patch
 
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, WebDriverException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -135,6 +135,7 @@ class InteractionTestBase(object):
             self.drag_item_to_zone(item_value, zone_id)
         else:
             self.move_item_to_zone(item_value, zone_id, action_key)
+        self.wait_for_ajax()
 
     def drag_item_to_zone(self, item_value, zone_id):
         """
@@ -154,11 +155,11 @@ class InteractionTestBase(object):
         Place item to descired zone using keybard interaction.
         zone_id=None means place item back into the item bank.
         """
-        # Focus on the item:
+        # Focus on the item, then press the action key:
         item = self._get_item_by_value(item_value)
-        ActionChains(self.browser).move_to_element(item).perform()
-        # Press the action key:
-        item.send_keys(action_key)  # Focus is on first *zone* now
+        item.send_keys("")
+        item.send_keys(action_key)
+        # Focus is on first *zone* now
         self.assert_grabbed_item(item)
         # Get desired zone and figure out how many times we have to press Tab to focus the zone.
         if zone_id is None:  # moving back to the bank
@@ -173,7 +174,7 @@ class InteractionTestBase(object):
             # position of the zone (zero presses for first zone, one press for second zone, etc).
             tab_press_count = self._get_zone_position(zone_id)
         for _ in range(tab_press_count):
-            self._page.send_keys(Keys.TAB)
+            ActionChains(self.browser).send_keys(Keys.TAB).perform()
         zone.send_keys(action_key)
 
     def assert_grabbed_item(self, item):
@@ -324,10 +325,8 @@ class InteractionTestBase(object):
                     # When using the keyboard, ensure that dropped items cannot get "grabbed".
                     # Assert item has no tabindex.
                     self.assertIsNone(item.get_attribute('tabindex'))
-                    # Focus on the item:
-                    ActionChains(self.browser).move_to_element(item).perform()
-                    # Press the action key:
-                    item.send_keys(action_key)
+                    # Focus on the item, then press the action key:
+                    ActionChains(self.browser).move_to_element(item).send_keys(action_key).perform()
                     # Assert item is not grabbed.
                     self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
                 else:
@@ -417,7 +416,7 @@ class InteractionTestBase(object):
             self.assertTrue(dialog_modal_overlay.is_displayed())
             self.assertTrue(dialog_modal.is_displayed())
 
-            self._page.send_keys(Keys.ESCAPE)
+            ActionChains(self.browser).send_keys(Keys.ESCAPE).perform()
 
             self.assertFalse(dialog_modal_overlay.is_displayed())
             self.assertFalse(dialog_modal.is_displayed())
@@ -497,6 +496,7 @@ class AssessmentTestMixin(object):
         self._wait_until_enabled(submit_button)
 
         submit_button.click()
+        self.wait_for_ajax()
 
 
 @ddt
@@ -693,6 +693,7 @@ class MultipleValidOptionsInteractionTest(DefaultDataTestMixin, InteractionTestB
                 self.assertEqual(popup.get_attribute('class'), 'popup')
                 self.assert_placed_item(item.item_id, item.zone_title[i])
                 reset.click()
+                self.wait_until_disabled(reset)
 
     def _get_scenario_xml(self):
         return self._get_custom_scenario_xml("data/test_multiple_options_data.json")
@@ -773,11 +774,18 @@ class PreventSpaceBarScrollTest(DefaultDataTestMixin, InteractionTestBase, BaseI
     def get_scroll(self):
         return self.browser.execute_script('return $(window).scrollTop()')
 
+    def hit_spacebar(self):
+        """ Send a spacebar event to the page/browser """
+        try:
+            self._page.send_keys(Keys.SPACE)  # Firefox (chrome doesn't allow sending keys to non-focusable elements)
+        except WebDriverException:
+            ActionChains(self.browser).send_keys(Keys.SPACE).perform()  # Chrome (Firefox types this into the URL bar)
+
     def test_space_bar_scroll(self):
         # Window should not be scrolled at first.
         self.assertEqual(self.get_scroll(), 0)
         # Pressing space bar while no zone is focused should scroll the window down (default browser action).
-        self._page.send_keys(Keys.SPACE)
+        self.hit_spacebar()
         # Window should be scrolled down a bit.
         wait = WebDriverWait(self, 2)
         # While the XHR is in progress, a spinner icon is shown inside the item.
@@ -984,3 +992,4 @@ class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
                 self.scroll_down(pixels=200)
                 reset.click()
                 self.scroll_down(pixels=0)
+                self.wait_until_disabled(reset)

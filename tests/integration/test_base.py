@@ -3,6 +3,7 @@
 from xml.sax.saxutils import escape
 from selenium.webdriver.support.ui import WebDriverWait
 
+from bok_choy.promise import EmptyPromise
 from workbench import scenarios
 from xblockutils.resources import ResourceLoader
 
@@ -122,3 +123,14 @@ class BaseIntegrationTest(SeleniumBaseTest):
         wait = WebDriverWait(elem, 2)
         wait.until(lambda e: class_name in e.get_attribute('class').split(),
                    u"Class name {} not in {}".format(class_name, elem.get_attribute('class')))
+
+    def wait_for_ajax(self, timeout=15):
+        """
+        Wait for jQuery to be loaded and for all ajax requests to finish.
+        Same as bok-choy's PageObject.wait_for_ajax()
+        """
+        def is_ajax_finished():
+            """ Check if all the ajax calls on the current page have completed. """
+            return self.browser.execute_script("return typeof(jQuery)!='undefined' && jQuery.active==0")
+
+        EmptyPromise(is_ajax_finished, "Finished waiting for ajax requests.", timeout=timeout).fulfill()
