@@ -227,7 +227,6 @@ function DragAndDropTemplates(configuration) {
     };
 
     var feedbackTemplate = function(ctx) {
-        var properties = { attributes: { 'aria-live': 'polite' } };
         var messages = ctx.overall_feedback_messages || [];
         var feedback_display = messages.length > 0 ? 'block' : 'none';
         var feedback_messages = messages.map(function(message) {
@@ -239,11 +238,49 @@ function DragAndDropTemplates(configuration) {
         });
 
         return (
-            h('section.feedback', properties, [
-                h('h3.title1', { style: { display: feedback_display } }, gettext('Feedback')),
-                h('div.messages', { style: { display: feedback_display } }, feedback_messages)
+            h('section.feedback', {}, [
+                h(
+                    "div.feedback-content",
+                    { attributes: { 'aria-live': 'polite' } },
+                    [
+                        h('h3.title1', { style: { display: feedback_display } }, gettext('Feedback')),
+                        h('div.messages', { style: { display: feedback_display } }, feedback_messages),
+                    ]
+                )
             ])
         );
+    };
+
+    var popupTemplate = function(ctx) {
+        var popupSelector = 'div.popup';
+        if (ctx.popup_html && !ctx.last_action_correct) {
+            popupSelector += '.popup-incorrect';
+        }
+
+        return (
+            h(
+                "div.popup-wrapper",
+                {
+                    attributes: {
+                        'aria-live': 'polite',
+                        'aria-atomic': 'true',
+                        'aria-relevant': 'additions',
+                    }
+                },
+                [
+                    h(
+                        popupSelector,
+                        {
+                            style: {display: ctx.popup_html ? 'block' : 'none'},
+                        },
+                        [
+                            h('div.close.icon-remove-sign.fa-times-circle'),
+                            h('p.popup-content', {innerHTML: ctx.popup_html}),
+                        ]
+                    )
+                ]
+            )
+        )
     };
 
     var keyboardHelpPopupTemplate = function(ctx) {
@@ -324,10 +361,7 @@ function DragAndDropTemplates(configuration) {
     var mainTemplate = function(ctx) {
         var problemTitle = ctx.show_title ? h('h2.problem-title', {innerHTML: ctx.title_html}) : null;
         var problemHeader = ctx.show_problem_header ? h('h3.title1', gettext('Problem')) : null;
-        var popupSelector = 'div.popup';
-        if (ctx.popup_html && !ctx.last_action_correct) {
-            popupSelector += '.popup-incorrect';
-        }
+
         // Render only items_in_bank and items_placed_unaligned here;
         // items placed in aligned zones will be rendered by zoneTemplate.
         var is_item_placed = function(i) { return i.is_placed; };
@@ -358,24 +392,9 @@ function DragAndDropTemplates(configuration) {
                         renderCollection(itemPlaceholderTemplate, items_placed, ctx)
                     ]),
                     h('div.target',
-                        {
-                            attributes: {
-                                'aria-live': 'polite',
-                                'aria-atomic': 'true',
-                                'aria-relevant': 'additions',
-                            },
-                        },
+                        {},
                         [
-                            h(
-                                popupSelector,
-                                {
-                                    style: {display: ctx.popup_html ? 'block' : 'none'},
-                                },
-                                [
-                                    h('div.close.icon-remove-sign.fa-times-circle'),
-                                    h('p.popup-content', {innerHTML: ctx.popup_html}),
-                                ]
-                            ),
+                            popupTemplate(ctx),
                             h('div.target-img-wrapper', [
                                 h('img.target-img', {src: ctx.target_img_src, alt: ctx.target_img_description}),
                             ]
@@ -1013,8 +1032,19 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var canReset = function() {
-        return Object.keys(state.items).length > 0 &&
-            (configuration.mode !== DragAndDropBlock.ASSESSMENT_MODE || attemptsRemain())
+        var any_items_placed = false;
+        // Now set any_items_placed to true if any items have been successfully placed on the board.
+        // Exclude just-dropped items that are making an AJAX call to the server, or else screen readers
+        // will read out "Reset problem" instead of the contents of the correct popup.
+        for (var key in state.items) {
+            if (state.items.hasOwnProperty(key)) {
+                if (!state.items[key].submitting_location) {
+                    any_items_placed = true;
+                    break;
+                }
+            }
+        }
+        return any_items_placed && (configuration.mode !== DragAndDropBlock.ASSESSMENT_MODE || attemptsRemain());
     };
 
     var attemptsRemain = function() {

@@ -68,6 +68,9 @@ class BaseIntegrationTest(SeleniumBaseTest):
     def _get_popup(self):
         return self._page.find_element_by_css_selector(".popup")
 
+    def _get_popup_wrapper(self):
+        return self._page.find_element_by_css_selector(".popup-wrapper")
+
     def _get_popup_content(self):
         return self._page.find_element_by_css_selector(".popup .popup-content")
 
@@ -90,7 +93,7 @@ class BaseIntegrationTest(SeleniumBaseTest):
         return self._page.find_element_by_css_selector('.attempts-used')
 
     def _get_feedback(self):
-        return self._page.find_element_by_css_selector(".feedback")
+        return self._page.find_element_by_css_selector(".feedback-content")
 
     def _get_feedback_message(self):
         return self._page.find_element_by_css_selector(".feedback .message")
