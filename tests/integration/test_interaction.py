@@ -275,7 +275,15 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
 class MultipleValidOptionsInteractionTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):
 
     items_map = {
-        0: ItemDefinition(0, ['zone-1', 'zone-2'], ["Zone 1", "Zone 2"], ["Yes 1", "Yes 1"], ["No 1", "No 1"]),
+        0: ItemDefinition(
+            0,
+            "Item",
+            "",
+            ['zone-1', 'zone-2'],
+            ["Zone 1", "Zone 2"],
+            ["Yes 1", "Yes 1"],
+            ["No 1", "No 1"]
+        ),
     }
 
     def test_multiple_positive_feedback(self):
@@ -334,9 +342,9 @@ class PreventSpaceBarScrollTest(DefaultDataTestMixin, InteractionTestBase, BaseI
 
 class CustomDataInteractionTest(StandardInteractionTest):
     items_map = {
-        0: ItemDefinition(0, ['zone-1'], "Zone 1", "Yes 1", "No 1"),
-        1: ItemDefinition(1, ['zone-2'], "Zone 2", "Yes 2", "No 2"),
-        2: ItemDefinition(2, [], None, "", "No Zone for this")
+        0: ItemDefinition(0, "Item 0", "", ['zone-1'], "Zone 1", "Yes 1", "No 1"),
+        1: ItemDefinition(1, "Item 1", "", ['zone-2'], "Zone 2", "Yes 2", "No 2"),
+        2: ItemDefinition(2, "Item 2", "", [], None, "", "No Zone for this")
     }
 
     all_zones = [('zone-1', 'Zone 1'), ('zone-2', 'Zone 2')]
@@ -352,9 +360,9 @@ class CustomDataInteractionTest(StandardInteractionTest):
 
 class CustomHtmlDataInteractionTest(StandardInteractionTest):
     items_map = {
-        0: ItemDefinition(0, ['zone-1'], 'Zone <i>1</i>', "Yes <b>1</b>", "No <b>1</b>"),
-        1: ItemDefinition(1, ['zone-2'], 'Zone <b>2</b>', "Yes <i>2</i>", "No <i>2</i>"),
-        2: ItemDefinition(2, [], None, "", "No Zone for <i>X</i>")
+        0: ItemDefinition(0, "Item 0", "", ['zone-1'], 'Zone <i>1</i>', "Yes <b>1</b>", "No <b>1</b>"),
+        1: ItemDefinition(1, "Item 1", "", ['zone-2'], 'Zone <b>2</b>', "Yes <i>2</i>", "No <i>2</i>"),
+        2: ItemDefinition(2, "Item 2", "", [], None, "", "No Zone for <i>X</i>")
     }
 
     all_zones = [('zone-1', 'Zone 1'), ('zone-2', 'Zone 2')]
@@ -377,14 +385,14 @@ class MultipleBlocksDataInteraction(ParameterizedTestsMixin, InteractionTestBase
 
     item_maps = {
         'block1': {
-            0: ItemDefinition(0, ['zone-1'], 'Zone 1', "Yes 1", "No 1"),
-            1: ItemDefinition(1, ['zone-2'], 'Zone 2', "Yes 2", "No 2"),
-            2: ItemDefinition(2, [], None, "", "No Zone for this")
+            0: ItemDefinition(0, "Item 0", "", ['zone-1'], 'Zone 1', "Yes 1", "No 1"),
+            1: ItemDefinition(1, "Item 1", "", ['zone-2'], 'Zone 2', "Yes 2", "No 2"),
+            2: ItemDefinition(2, "Item 2", "", [], None, "", "No Zone for this")
         },
         'block2': {
-            10: ItemDefinition(10, ['zone-51'], 'Zone 51', "Correct 1", "Incorrect 1"),
-            20: ItemDefinition(20, ['zone-52'], 'Zone 52', "Correct 2", "Incorrect 2"),
-            30: ItemDefinition(30, [], None, "", "No Zone for this")
+            10: ItemDefinition(10, "Item 10", "", ['zone-51'], 'Zone 51', "Correct 1", "Incorrect 1"),
+            20: ItemDefinition(20, "Item 20", "", ['zone-52'], 'Zone 52', "Correct 2", "Incorrect 2"),
+            30: ItemDefinition(30, "Item 30", "", [], None, "", "No Zone for this")
         },
     }
 

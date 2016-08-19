@@ -663,7 +663,12 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         # attempt should already be validated here - not doing the check for existing zone again
         zone = self._get_zone_by_uid(attempt['zone'])
 
+        item_label = item.get("displayName")
+        if not item_label:
+            item_label = item.get("imageURL")
+
         self.runtime.publish(self, 'edx.drag_and_drop_v2.item.dropped', {
+            'item': item_label,
             'item_id': item['id'],
             'location': zone.get("title"),
             'location_id': zone.get("uid"),

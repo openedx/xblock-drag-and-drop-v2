@@ -294,8 +294,10 @@ Example ("common" fields that are not interesting in this context have been left
 ...
     "event": {
       "is_correct": true,                                  --  Whether the draggable item has been placed in the correct location.
+      "item": "Goes to the top",                           --  Name, or in the absence thereof, image URL of the draggable item.
       "item_id": 0,                                        --  ID of the draggable item.
       "location": "The Top Zone",                          --  Name of the location the item was dragged to.
+      "location_id": 1,                                    --  ID of the location the item was dragged to.
     },
     "event_source": "server",                              --  Common field, contains event source.
     "event_type": "edx.drag_and_drop_v2.dropped",          --  Common field, contains event name.
@@ -316,6 +318,8 @@ Real event example (taken from a devstack):
     "event": {
         "is_correct": true,
         "location": "The Top Zone",
+        "location_id": 1,
+        "item": "Goes to the top",
         "item_id": 0,
     },
     "event_source": "server",
