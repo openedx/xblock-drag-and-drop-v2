@@ -22,9 +22,10 @@ from drag_and_drop_v2.default_data import (
 )
 from drag_and_drop_v2.utils import FeedbackMessages
 from .test_base import BaseIntegrationTest
-import time
+
 
 # Globals ###########################################################
+
 loader = ResourceLoader(__name__)
 
 # Classes ###########################################################
@@ -68,7 +69,6 @@ class InteractionTestBase(object):
 
         scenario_xml = self._get_scenario_xml()
         self._add_scenario(self.PAGE_ID, self.PAGE_TITLE, scenario_xml)
-        time.sleep(2)
         self._page = self.go_to_page(self.PAGE_TITLE)
         # Resize window so that the entire drag container is visible.
         # Selenium has issues when dragging to an area that is off screen.

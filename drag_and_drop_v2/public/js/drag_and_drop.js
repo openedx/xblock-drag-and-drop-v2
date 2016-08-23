@@ -198,7 +198,7 @@ function DragAndDropTemplates(configuration) {
         var item_wrapper = 'div.item-wrapper';
         var is_item_in_zone = function(i) { return i.is_placed && (i.zone === zone.uid); };
         var items_in_zone = $.grep(ctx.items, is_item_in_zone);
-        var zone_description_id = 'zone-' + zone.id + '-description';
+        var zone_description_id = 'zone-' + zone.uid + '-description';
         if (items_in_zone.length == 0) {
           var zone_description = h(
             'div',
@@ -229,7 +229,6 @@ function DragAndDropTemplates(configuration) {
                         'dropzone': 'move',
                         'aria-dropeffect': 'move',
                         'data-uid': zone.uid,
-                        'data-zone_id': zone.id,
                         'data-zone_align': zone.align,
                         'role': 'button',
                         'aria-describedby': zone_description_id,
@@ -769,7 +768,6 @@ function DragAndDropBlock(runtime, element, configuration) {
             $anchor = $zone;
         }
         var zone = String($zone.data('uid'));
-        var zone_id = $zone.data('zone_id');
         var zone_align = $zone.data('zone_align');
         var $target_img = $root.find('.target-img');
 
