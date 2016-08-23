@@ -150,7 +150,8 @@ class TestDragAndDropRender(BaseIntegrationTest):
             try:
                 background_image = item.find_element_by_css_selector('img')
             except NoSuchElementException:
-                self.assertEqual(item.text, self.ITEM_PROPERTIES[index]['text'])
+                item_content = item.find_element_by_css_selector('.item-content')
+                self.assertEqual(item_content.text, self.ITEM_PROPERTIES[index]['text'])
             else:
                 self.assertEqual(
                     background_image.get_attribute('alt'),

@@ -116,10 +116,10 @@ function DragAndDropTemplates(configuration) {
             itemSpinnerTemplate(item)
         ];
         var item_content = itemContentTemplate(item);
+        // Insert information about zone in which this item has been placed
+        var item_description_id = configuration.url_name + '-item-' + item.value + '-description';
+        item_content.properties.attributes = { 'aria-describedby': item_description_id };
         if (item.is_placed) {
-            // Insert information about zone in which this item has been placed
-            var item_description_id = configuration.url_name + '-item-' + item.value + '-description';
-            item_content.properties.attributes = { 'aria-describedby': item_description_id };
             var zone_title = (zone.title || "Unknown Zone");  // This "Unknown" text should never be seen, so does not need i18n
             var description_content;
             if (configuration.mode === DragAndDropBlock.ASSESSMENT_MODE) {
@@ -135,8 +135,14 @@ function DragAndDropTemplates(configuration) {
                 { key: item.value + '-description', id: item_description_id, className: 'sr' },
                 description_content
             );
-            children.splice(1, 0, item_description);
+        } else {
+            var item_description = h(
+              'div',
+              { id: item_description_id, className: 'sr'},
+              gettext('Press "Enter", "Space", "Ctrl-m", or "⌘-m" on an item to select it for dropping, then navigate to the zone you want to drop it on.')
+            );
         }
+        children.splice(1, 0, item_description);
         children.splice(1, 0, item_content);
         return (
             h(
@@ -190,13 +196,28 @@ function DragAndDropTemplates(configuration) {
         // If zone is aligned, mark its item alignment
         // and render its placed items as children
         var item_wrapper = 'div.item-wrapper';
-        var items_in_zone = [];
-        if (zone.align !== 'none') {
-            item_wrapper += '.item-align.item-align-' + zone.align;
-            var is_item_in_zone = function(i) { return i.is_placed && (i.zone === zone.uid); };
-            items_in_zone = $.grep(ctx.items, is_item_in_zone);
+        var is_item_in_zone = function(i) { return i.is_placed && (i.zone === zone.uid); };
+        var items_in_zone = $.grep(ctx.items, is_item_in_zone);
+        var zone_description_id = 'zone-' + zone.uid + '-description';
+        if (items_in_zone.length == 0) {
+          var zone_description = h(
+            'div',
+            { id: zone_description_id, className: 'sr'},
+            gettext("No items placed here")
+          );
+        } else {
+          var zone_description = h(
+            'div',
+            { id: zone_description_id, className: 'sr'},
+            gettext('Items placed here: ') + items_in_zone.map(function (item) { return item.displayName; }).join(", ")
+          );
         }
-
+        if (zone.align !== 'none') {
+          item_wrapper += '.item-align.item-align-' + zone.align;
+          //items_in_zone = $.grep(ctx.items, is_item_in_zone);
+        } else {
+          items_in_zone = [];
+        }
         return (
             h(
                 selector,
@@ -208,9 +229,9 @@ function DragAndDropTemplates(configuration) {
                         'dropzone': 'move',
                         'aria-dropeffect': 'move',
                         'data-uid': zone.uid,
-                        'data-zone_id': zone.id,
                         'data-zone_align': zone.align,
                         'role': 'button',
+                        'aria-describedby': zone_description_id,
                     },
                     style: {
                         top: zone.y_percent + '%', left: zone.x_percent + "%",
@@ -220,7 +241,8 @@ function DragAndDropTemplates(configuration) {
                 [
                     h('p', { className: className }, zone.title),
                     h('p', { className: 'zone-description sr' }, zone.description),
-                    h(item_wrapper, renderCollection(itemTemplate, items_in_zone, ctx))
+                    h(item_wrapper, renderCollection(itemTemplate, items_in_zone, ctx)),
+                    zone_description
                 ]
             )
         );
@@ -746,7 +768,6 @@ function DragAndDropBlock(runtime, element, configuration) {
             $anchor = $zone;
         }
         var zone = String($zone.data('uid'));
-        var zone_id = $zone.data('zone_id');
         var zone_align = $zone.data('zone_align');
         var $target_img = $root.find('.target-img');
 
