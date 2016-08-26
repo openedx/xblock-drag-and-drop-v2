@@ -119,7 +119,7 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
         })
 
         self.assertEqual(1, len(published_grades))
-        self.assertEqual({'value': 0.5, 'max_value': 1}, published_grades[-1])
+        self.assertEqual({'value': 0.75, 'max_value': 1}, published_grades[-1])
 
         self.call_handler(self.DROP_ITEM_HANDLER, {
             "val": 1, "zone": self.ZONE_2, "y_percent": "90%", "x_percent": "42%"
@@ -446,7 +446,7 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
 
     def _submit_partial_solution(self):
         self._submit_solution({0: self.ZONE_1})
-        return 1.0 / 3.0
+        return 3.0 / 5.0
 
     def _submit_incorrect_solution(self):
         self._submit_solution({0: self.ZONE_2, 1: self.ZONE_1})
@@ -518,9 +518,9 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
 
     def test_do_attempt_keeps_highest_score(self):
         self.assertFalse(self.block.completed)  # precondition check
-        expected_score = 2.0 / 3.0
+        expected_score = 4.0 / 5.0
 
-        self._submit_solution({0: self.ZONE_1, 1: self.ZONE_2})  # partial solution, 0.66 score
+        self._submit_solution({0: self.ZONE_1, 1: self.ZONE_2})  # partial solution, 0.8 score
         self.call_handler(self.DO_ATTEMPT_HANDLER, data={})
         self.assertEqual(self.block.grade, expected_score)
 
@@ -528,7 +528,7 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
         # make it a last attempt so we can check feedback
         self._set_final_attempt()
 
-        self._submit_solution({0: self.ZONE_1})  # partial solution, 0.33 score
+        self._submit_solution({0: self.ZONE_1})  # partial solution, 0.6 score
         res = self.call_handler(self.DO_ATTEMPT_HANDLER, data={})
         self.assertEqual(self.block.grade, expected_score)
 
@@ -537,3 +537,25 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
             FeedbackMessages.MessageClasses.PARTIAL_SOLUTION
         )
         self.assertIn(expected_feedback, res[self.OVERALL_FEEDBACK_KEY])
+
+    def test_do_attempt_check_score_with_decoy(self):
+        self.assertFalse(self.block.completed)  # precondition check
+        expected_score = 4.0 / 5.0
+        self._submit_solution({
+            0: self.ZONE_1,
+            1: self.ZONE_2,
+            2: self.ZONE_2,
+            3: self.ZONE_1,
+        })  # incorrect solution, 0.8 score
+        self.call_handler(self.DO_ATTEMPT_HANDLER, data={})
+        self.assertEqual(self.block.grade, expected_score)
+
+    def test_do_attempt_zero_score_with_all_decoys(self):
+        self.assertFalse(self.block.completed)  # precondition check
+        expected_score = 0
+        self._submit_solution({
+            3: self.ZONE_1,
+            4: self.ZONE_2,
+        })  # incorrect solution, 0 score
+        self.call_handler(self.DO_ATTEMPT_HANDLER, data={})
+        self.assertEqual(self.block.grade, expected_score)

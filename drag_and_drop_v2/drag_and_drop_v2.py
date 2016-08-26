@@ -16,7 +16,7 @@ from xblock.fragment import Fragment
 from xblockutils.resources import ResourceLoader
 from xblockutils.settings import XBlockWithSettingsMixin, ThemableXBlockMixin
 
-from .utils import _, DummyTranslationService, FeedbackMessage, FeedbackMessages
+from .utils import _, DummyTranslationService, FeedbackMessage, FeedbackMessages, ItemStats
 from .default_data import DEFAULT_DATA
 
 
@@ -456,9 +456,9 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             feedback_key = 'finish' if is_correct else 'start'
             return [FeedbackMessage(self.data['feedback'][feedback_key], None)], set()
 
-        required_ids, placed_ids, correct_ids = self._get_item_raw_stats()
-        missing_ids = required_ids - placed_ids
-        misplaced_ids = placed_ids - correct_ids
+        items = self._get_item_raw_stats()
+        missing_ids = items.required - items.placed
+        misplaced_ids = items.placed - items.correctly_placed
 
         feedback_msgs = []
 
@@ -469,7 +469,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
                 feedback_msgs.append(FeedbackMessage(message, message_class))
 
         _add_msg_if_exists(
-            correct_ids, FeedbackMessages.correctly_placed, FeedbackMessages.MessageClasses.CORRECTLY_PLACED
+            items.correctly_placed, FeedbackMessages.correctly_placed, FeedbackMessages.MessageClasses.CORRECTLY_PLACED
         )
         _add_msg_if_exists(misplaced_ids, FeedbackMessages.misplaced, FeedbackMessages.MessageClasses.MISPLACED)
         _add_msg_if_exists(missing_ids, FeedbackMessages.not_placed, FeedbackMessages.MessageClasses.NOT_PLACED)
@@ -740,31 +740,39 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
     def _get_item_stats(self):
         """
-        Returns a tuple representing the number of correctly-placed items,
-        and the total number of items that must be placed on the board (non-decoy items).
+        Returns a tuple representing the number of correctly placed items,
+        and the total number of items required (including decoy items).
         """
-        required_items, __, correct_items = self._get_item_raw_stats()
+        items = self._get_item_raw_stats()
 
-        return len(correct_items), len(required_items)
+        correct_count = len(items.correctly_placed) + len(items.decoy_in_bank)
+        total_count = len(items.required) + len(items.decoy)
+
+        return correct_count, total_count
 
     def _get_item_raw_stats(self):
         """
-        Returns a 3-tuple containing required, placed and correct items.
+        Returns a named tuple containing required, decoy, placed, correctly
+        placed, and correctly unplaced decoy items.
 
         Returns:
-            tuple: (required_items, placed_items, correct_items)
-                * required_items - IDs of items that must be placed on the board
-                * placed_items - IDs of items actually placed on the board
-                * correct_items - IDs of items that were placed correctly
+            namedtuple: (required, placed, correctly_placed, decoy, decoy_in_bank)
+                * required - IDs of items that must be placed on the board
+                * placed - IDs of items actually placed on the board
+                * correctly_placed - IDs of items that were placed correctly
+                * decoy - IDs of decoy items
+                * decoy_in_bank - IDs of decoy items that were unplaced
         """
-        all_items = [str(item['id']) for item in self.data['items']]
         item_state = self._get_item_state()
 
-        required_items = set(item_id for item_id in all_items if self._get_item_zones(int(item_id)) != [])
-        placed_items = set(item_id for item_id in all_items if item_id in item_state)
-        correct_items = set(item_id for item_id in placed_items if item_state[item_id]['correct'])
+        all_items = set(str(item['id']) for item in self.data['items'])
+        required = set(item_id for item_id in all_items if self._get_item_zones(int(item_id)) != [])
+        placed = set(item_id for item_id in all_items if item_id in item_state)
+        correctly_placed = set(item_id for item_id in placed if item_state[item_id]['correct'])
+        decoy = all_items - required
+        decoy_in_bank = set(item_id for item_id in decoy if item_id not in item_state)
 
-        return required_items, placed_items, correct_items
+        return ItemStats(required, placed, correctly_placed, decoy, decoy_in_bank)
 
     def _get_grade(self):
         """
