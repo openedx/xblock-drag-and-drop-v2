@@ -638,9 +638,8 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     def _get_user_state(self):
         """ Get all user-specific data, and any applicable feedback """
         item_state = self._get_item_state()
-        # In assessment mode, if item is placed correctly and than the page is refreshed, "correct"
-        # will spill to the frontend, making item "disabled", thus allowing students to obtain answer by trial
-        # and error + refreshing the page. In order to avoid that, we remove "correct" from an item here
+        # In assessment mode, we do not want to leak the correctness info for individual items to the frontend,
+        # so we remove "correct" from all items when in assessment mode.
         if self.mode == self.ASSESSMENT_MODE:
             for item in item_state.values():
                 del item["correct"]
@@ -665,7 +664,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """
 
         # IMPORTANT: this method should always return a COPY of self.item_state - it is called from get_user_state
-        # handler and manipulated there to hide correctness of items placed
+        # handler and the data it returns is manipulated there to hide correctness of items placed.
         state = {}
 
         for item_id, raw_item in self.item_state.iteritems():
