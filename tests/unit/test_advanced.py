@@ -190,6 +190,14 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
 
         self.assertEqual(res.status_code, 400)
 
+    def test_show_answer_not_available(self):
+        """
+        Tests that do_attempt handler returns 400 error for standard mode DnDv2
+        """
+        res = self.call_handler(self.SHOW_ANSWER_HANDLER, expect_json=False)
+
+        self.assertEqual(res.status_code, 400)
+
 
 @ddt.ddt
 class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
@@ -204,6 +212,12 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
         for item_id, zone_id in solution.iteritems():
             data = self._make_submission(item_id, zone_id)
             self.call_handler(self.DROP_ITEM_HANDLER, data)
+
+    def _get_all_solutions(self):  # pylint: disable=no-self-use
+        raise NotImplementedError()
+
+    def _get_all_decoys(self):  # pylint: disable=no-self-use
+        raise NotImplementedError()
 
     def _submit_complete_solution(self):  # pylint: disable=no-self-use
         raise NotImplementedError()
@@ -402,6 +416,51 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
 
         self.assertEqual(self.block.item_state, original_item_state)
 
+    @ddt.data(
+        (None, 10, True),
+        (0, 12, True),
+        (3, 3, False),
+    )
+    @ddt.unpack
+    def test_show_answer_validation(self, max_attempts, attempts, expect_validation_error):
+        """
+        Test that show_answer returns a 409 when max_attempts = None, or when
+        there are still attempts remaining.
+        """
+        self.block.max_attempts = max_attempts
+        self.block.attempts = attempts
+        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
+
+        if expect_validation_error:
+            self.assertEqual(res.status_code, 409)
+        else:
+            self.assertEqual(res.status_code, 200)
+
+    def test_get_correct_state(self):
+        """
+        Test that _get_correct_state returns one of the possible correct
+        solutions for the configuration.
+        """
+        self._set_final_attempt()
+        self._submit_incorrect_solution()
+        self.call_handler(self.DO_ATTEMPT_HANDLER, data={})
+
+        self.assertFalse(self.block.attempts_remain)  # precondition check
+
+        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={})
+
+        self.assertIn('items', res)
+
+        decoys = self._get_all_decoys()
+        solution = {}
+        for item_id, item_state in res['items'].iteritems():
+            self.assertIn('correct', item_state)
+            self.assertIn('zone', item_state)
+            self.assertNotIn(int(item_id), decoys)
+            solution[int(item_id)] = item_state['zone']
+
+        self.assertIn(solution, self._get_all_solutions())
+
 
 class TestDragAndDropHtmlData(StandardModeFixture, unittest.TestCase):
     FOLDER = "html"
@@ -467,6 +526,12 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
     def _assert_item_and_overall_feedback(self, res, expected_item_feedback, expected_overall_feedback):
         self.assertEqual(res[self.FEEDBACK_KEY], expected_item_feedback)
         self.assertEqual(res[self.OVERALL_FEEDBACK_KEY], expected_overall_feedback)
+
+    def _get_all_solutions(self):
+        return [{0: self.ZONE_1, 1: self.ZONE_2, 2: self.ZONE_2}]
+
+    def _get_all_decoys(self):
+        return [3, 4]
 
     def _submit_complete_solution(self):
         self._submit_solution({0: self.ZONE_1, 1: self.ZONE_2, 2: self.ZONE_2})

@@ -110,7 +110,7 @@ function DragAndDropTemplates(configuration) {
         if (item.is_placed) {
             var zone_title = (zone.title || "Unknown Zone");  // This "Unknown" text should never be seen, so does not need i18n
             var description_content;
-            if (configuration.mode === DragAndDropBlock.ASSESSMENT_MODE) {
+            if (configuration.mode === DragAndDropBlock.ASSESSMENT_MODE && !ctx.showing_answer) {
                 // In assessment mode placed items will "stick" even when not in correct zone.
                 description_content = gettext('Placed in: {zone_title}').replace('{zone_title}', zone_title);
             } else {
@@ -180,9 +180,8 @@ function DragAndDropTemplates(configuration) {
     var zoneTemplate = function(zone, ctx) {
         var className = ctx.display_zone_labels ? 'zone-name' : 'zone-name sr';
         var selector = ctx.display_zone_borders ? 'div.zone.zone-with-borders' : 'div.zone';
-        // If zone is aligned, mark its item alignment
-        // and render its placed items as children
-        var item_wrapper = 'div.item-wrapper';
+        // Mark item alignment and render its placed items as children
+        var item_wrapper = 'div.item-wrapper.item-align.item-align-' + zone.align;
         var is_item_in_zone = function(i) { return i.is_placed && (i.zone === zone.uid); };
         var items_in_zone = $.grep(ctx.items, is_item_in_zone);
         var zone_description_id = 'zone-' + zone.uid + '-description';
@@ -199,12 +198,7 @@ function DragAndDropTemplates(configuration) {
             gettext('Items placed here: ') + items_in_zone.map(function (item) { return item.displayName; }).join(", ")
           );
         }
-        if (zone.align !== 'none') {
-          item_wrapper += '.item-align.item-align-' + zone.align;
-          //items_in_zone = $.grep(ctx.items, is_item_in_zone);
-        } else {
-          items_in_zone = [];
-        }
+
         return (
             h(
                 selector,
@@ -343,14 +337,21 @@ function DragAndDropTemplates(configuration) {
         );
     };
 
-    var sidebarButtonTemplate = function(buttonClass, iconClass, buttonText, disabled) {
+    var sidebarButtonTemplate = function(buttonClass, iconClass, buttonText, disabled, spinner) {
+        if (spinner) {
+            iconClass = 'fa-spin.fa-spinner';
+        }
         return (
             h('span.sidebar-button-wrapper', {}, [
                 h(
                     'button.unbutton.btn-default.btn-small.'+buttonClass,
-                    {disabled: disabled || false, attributes: {tabindex: 0}},
+                    {disabled: disabled || spinner || false, attributes: {tabindex: 0}},
                     [
-                        h("span.btn-icon.fa."+iconClass, {attributes: {"aria-hidden": true}}, []),
+                        h(
+                            "span.btn-icon.fa." + iconClass,
+                            {attributes: {"aria-hidden": true}},
+                            []
+                        ),
                         buttonText
                     ]
                 )
@@ -359,10 +360,21 @@ function DragAndDropTemplates(configuration) {
     };
 
     var sidebarTemplate = function(ctx) {
+        var showAnswerButton = null;
+        if (ctx.show_show_answer) {
+            showAnswerButton = sidebarButtonTemplate(
+                "show-answer-button",
+                "fa-info-circle",
+                gettext('Show Answer'),
+                ctx.showing_answer ? true : ctx.disable_show_answer_button,
+                ctx.show_answer_spinner
+            );
+        }
         return(
             h("section.action-toolbar-item.sidebar-buttons", {}, [
                 sidebarButtonTemplate("keyboard-help-button", "fa-question", gettext('Keyboard Help')),
                 sidebarButtonTemplate("reset-button", "fa-refresh", gettext('Reset'), ctx.disable_reset_button),
+                showAnswerButton,
             ])
         )
     };
@@ -434,9 +446,8 @@ function DragAndDropTemplates(configuration) {
     var mainTemplate = function(ctx) {
         var problemTitle = ctx.show_title ? h('h3.problem-title', {innerHTML: ctx.title_html}) : null;
         var problemHeader = ctx.show_problem_header ? h('h4.title1', gettext('Problem')) : null;
-
-        // Render only items_in_bank and items_placed_unaligned here;
-        // items placed in aligned zones will be rendered by zoneTemplate.
+        // Render only items in the bank here, including placeholders.  Placed
+        // items will be rendered by zoneTemplate.
         var is_item_placed = function(i) { return i.is_placed; };
         var items_placed = $.grep(ctx.items, is_item_placed);
         var items_in_bank = $.grep(ctx.items, is_item_placed, true);
@@ -560,6 +571,10 @@ function DragAndDropBlock(runtime, element, configuration) {
             $element.on('click', '.reset-button', resetProblem);
             $element.on('keydown', '.reset-button', function(evt) {
                 runOnKey(evt, RET, resetProblem);
+            });
+            $element.on('click', '.show-answer-button', showAnswer);
+            $element.on('keydown', '.show-answer-button', function(evt) {
+                runOnKey(evt, RET, showAnswer);
             });
 
             // For the next one, we need to use addEventListener with useCapture 'true' in order
@@ -1098,6 +1113,26 @@ function DragAndDropBlock(runtime, element, configuration) {
         });
     };
 
+    var showAnswer = function(evt) {
+        evt.preventDefault();
+        state.show_answer_spinner = true;
+        applyState();
+
+        $.ajax({
+            type: 'POST',
+            url: runtime.handlerUrl(element, 'show_answer'),
+            data: '{}',
+        }).done(function(data) {
+            state.items = data.items;
+            state.showing_answer = true;
+            delete state.feedback;
+        }).always(function() {
+            state.show_answer_spinner = false;
+            applyState();
+            $root.find('.item-bank').focus();
+        });
+    };
+
     var doAttempt = function(evt) {
         evt.preventDefault();
         state.submit_spinner = true;
@@ -1145,6 +1180,10 @@ function DragAndDropBlock(runtime, element, configuration) {
             }
         }
         return any_items_placed && (configuration.mode !== DragAndDropBlock.ASSESSMENT_MODE || attemptsRemain());
+    };
+
+    var canShowAnswer = function() {
+        return configuration.mode === DragAndDropBlock.ASSESSMENT_MODE && !attemptsRemain();
     };
 
     var attemptsRemain = function() {
@@ -1207,7 +1246,7 @@ function DragAndDropBlock(runtime, element, configuration) {
 
         // In assessment mode, it is possible to move items back to the bank, so the bank should be able to
         // gain focus while keyboard placement is in progress.
-        var item_bank_focusable = state.keyboard_placement_mode &&
+        var item_bank_focusable = (state.keyboard_placement_mode || state.showing_answer) &&
                 configuration.mode === DragAndDropBlock.ASSESSMENT_MODE;
 
         var context = {
@@ -1220,6 +1259,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             problem_html: configuration.problem_text,
             show_problem_header: configuration.show_problem_header,
             show_submit_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
+            show_show_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
             target_img_src: configuration.target_img_expanded_url,
             target_img_description: configuration.target_img_description,
             display_zone_labels: configuration.display_zone_labels,
@@ -1233,8 +1273,11 @@ function DragAndDropBlock(runtime, element, configuration) {
             feedback_messages: state.feedback,
             overall_feedback_messages: state.overall_feedback,
             disable_reset_button: !canReset(),
+            disable_show_answer_button: !canShowAnswer(),
             disable_submit_button: !canSubmitAttempt(),
-            submit_spinner: state.submit_spinner
+            submit_spinner: state.submit_spinner,
+            showing_answer: state.showing_answer,
+            show_answer_spinner: state.show_answer_spinner
         };
 
         return renderView(context);

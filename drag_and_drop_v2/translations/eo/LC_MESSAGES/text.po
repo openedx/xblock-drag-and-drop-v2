@@ -272,6 +272,14 @@ msgid "Max number of attempts reached"
 msgstr "Mäx nümßér öf ättémpts réäçhéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
 #: drag_and_drop_v2.py
+msgid "show_answer handler should only be called for assessment mode"
+msgstr "shöw_änswér händlér shöüld önlý ßé çälléd för ässéssmént mödé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: drag_and_drop_v2.py
+msgid "There are attempts remaining"
+msgstr "Théré äré ättémpts rémäïnïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+
+#: drag_and_drop_v2.py
 msgid "Unknown DnDv2 mode {mode} - course is misconfigured"
 msgstr "Ûnknöwn DnDv2 mödé {mode} - çöürsé ïs mïsçönfïgüréd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
@@ -518,6 +526,14 @@ msgstr "Çörréçtlý pläçéd ïn: {zone_title} Ⱡ'σяєм ιρѕυм ∂σ
 #: public/js/drag_and_drop.js
 msgid "Reset"
 msgstr "Rését Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: public/js/drag_and_drop.js
+msgid "Show Answer"
+msgstr "Shöw Ànswér Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: public/js/drag_and_drop.js
+msgid "Hide Answer"
+msgstr "Hïdé Ànswér Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
 #: public/js/drag_and_drop.js
 msgid "Submit"

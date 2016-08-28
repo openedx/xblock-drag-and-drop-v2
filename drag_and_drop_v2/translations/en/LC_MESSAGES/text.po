@@ -217,6 +217,14 @@ msgid "Max number of attempts reached"
 msgstr ""
 
 #: drag_and_drop_v2.py
+msgid "show_answer handler should only be called for assessment mode"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid "There are attempts remaining"
+msgstr ""
+
+#: drag_and_drop_v2.py
 msgid "Unknown DnDv2 mode {mode} - course is misconfigured"
 msgstr ""
 
@@ -443,6 +451,14 @@ msgstr ""
 
 #: public/js/drag_and_drop.js
 msgid "Reset"
+msgstr ""
+
+#: public/js/drag_and_drop.js
+msgid "Show Answer"
+msgstr ""
+
+#: public/js/drag_and_drop.js
+msgid "Hide Answer"
 msgstr ""
 
 #: public/js/drag_and_drop.js

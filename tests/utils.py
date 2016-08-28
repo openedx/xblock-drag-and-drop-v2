@@ -47,6 +47,7 @@ class TestCaseMixin(object):
     DROP_ITEM_HANDLER = 'drop_item'
     DO_ATTEMPT_HANDLER = 'do_attempt'
     RESET_HANDLER = 'reset'
+    SHOW_ANSWER_HANDLER = 'show_answer'
     USER_STATE_HANDLER = 'get_user_state'
 
     def patch_workbench(self):

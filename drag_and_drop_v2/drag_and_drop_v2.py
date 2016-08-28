@@ -438,6 +438,28 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         return self._get_user_state()
 
     @XBlock.json_handler
+    def show_answer(self, data, suffix=''):
+        """
+        Returns correct answer in assessment mode.
+
+        Raises:
+             * JsonHandlerError with 400 error code in standard mode.
+             * JsonHandlerError with 409 error code if there are still attempts left
+        """
+        if self.mode != Constants.ASSESSMENT_MODE:
+            raise JsonHandlerError(
+                400,
+                self.i18n_service.gettext("show_answer handler should only be called for assessment mode")
+            )
+        if self.attempts_remain:
+            raise JsonHandlerError(
+                409,
+                self.i18n_service.gettext("There are attempts remaining")
+            )
+
+        return self._get_correct_state()
+
+    @XBlock.json_handler
     def expand_static_url(self, url, suffix=''):
         """ AJAX-accessible handler for expanding URLs to static [image] files """
         return {'url': self._expand_static_url(url)}
@@ -723,6 +745,31 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             'overall_feedback': self._present_feedback(overall_feedback_msgs)
         }
 
+    def _get_correct_state(self):
+        """
+        Returns one of the possible correct states for the configured data.
+        """
+        state = {}
+        items = copy.deepcopy(self.data.get('items', []))
+        for item in items:
+            zones = item.get('zones')
+
+            # For backwards compatibility
+            if zones is None:
+                zones = []
+                zone = item.get('zone')
+                if zone is not None and zone != 'none':
+                    zones.append(zone)
+
+            if zones:
+                zone = zones.pop()
+                state[str(item['id'])] = {
+                    'zone': zone,
+                    'correct': True,
+                }
+
+        return {'items': state}
+
     def _get_item_state(self):
         """
         Returns a copy of the user item state.
@@ -855,4 +902,13 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """
         A canned scenario for display in the workbench.
         """
-        return [("Drag-and-drop-v2 scenario", "<vertical_demo><drag-and-drop-v2/></vertical_demo>")]
+        return [
+            (
+                "Drag-and-drop-v2 standard",
+                "<vertical_demo><drag-and-drop-v2/></vertical_demo>"
+            ),
+            (
+                "Drag-and-drop-v2 assessment",
+                "<vertical_demo><drag-and-drop-v2 mode='assessment' max_attempts='3'/></vertical_demo>"
+            ),
+        ]
