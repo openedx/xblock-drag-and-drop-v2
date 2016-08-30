@@ -109,6 +109,34 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         self.assertTrue(self.block.completed)
         assert_user_state_empty()
 
+    def test_legacy_state_support(self):
+        """
+        The form of items stored in user item_state has changed several times.
+        This test makes sure that legacy forms are properly converted to compatible format.
+        """
+        self.assertEqual(self.block.item_state, {})
+        self.assertEqual(self.call_handler('get_user_state')['items'], {})
+
+        self.block.item_state = {
+            # Legacy tuple (top, left) representation.
+            '0': [60, 20],
+            # Legacy dict with absolute values and no correctness or zone info.
+            '1': {'top': 45, 'left': 99},
+            # Legacy dict with no correctness info.
+            '2': {'x_percent': '99%', 'y_percent': '95%', 'zone': BOTTOM_ZONE_ID},
+            # Current dict form.
+            '3': {'x_percent': '67%', 'y_percent': '80%', 'zone': BOTTOM_ZONE_ID, 'correct': False},
+        }
+        self.block.save()
+
+        self.assertEqual(self.call_handler('get_user_state')['items'], {
+            # Legacy top/left values are converted to x/y percentage on the client.
+            '0': {'top': 60, 'left': 20, 'correct': True, 'zone': TOP_ZONE_ID},
+            '1': {'top': 45, 'left': 99, 'correct': True, 'zone': MIDDLE_ZONE_ID},
+            '2': {'x_percent': '99%', 'y_percent': '95%', 'correct': True, 'zone': BOTTOM_ZONE_ID},
+            '3': {'x_percent': '67%', 'y_percent': '80%', 'correct': False, "zone": BOTTOM_ZONE_ID},
+        })
+
     def test_studio_submit(self):
         body = {
             'display_name': "Test Drag & Drop",

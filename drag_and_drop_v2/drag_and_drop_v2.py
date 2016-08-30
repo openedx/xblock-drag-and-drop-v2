@@ -638,25 +638,10 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     def _get_user_state(self):
         """ Get all user-specific data, and any applicable feedback """
         item_state = self._get_item_state()
-        for item_id, item in item_state.iteritems():
-            # If information about zone is missing
-            # (because problem was completed before a11y enhancements were implemented),
-            # deduce zone in which item is placed from definition:
-            if item.get('zone') is None:
-                valid_zones = self._get_item_zones(int(item_id))
-                if valid_zones:
-                    # If we get to this point, then the item was placed prior to support for
-                    # multiple correct zones being added. As a result, it can only be correct
-                    # on a single zone, and so we can trust that the item was placed on the
-                    # zone with index 0.
-                    item['zone'] = valid_zones[0]
-                else:
-                    item['zone'] = 'unknown'
-
-            # In assessment mode, if item is placed correctly and than the page is refreshed, "correct"
-            # will spill to the frontend, making item "disabled", thus allowing students to obtain answer by trial
-            # and error + refreshing the page. In order to avoid that, we remove "correct" from an item here
-            if self.mode == self.ASSESSMENT_MODE:
+        # In assessment mode, we do not want to leak the correctness info for individual items to the frontend,
+        # so we remove "correct" from all items when in assessment mode.
+        if self.mode == self.ASSESSMENT_MODE:
+            for item in item_state.values():
                 del item["correct"]
 
         overall_feedback_msgs, __ = self._get_feedback()
@@ -679,14 +664,35 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """
 
         # IMPORTANT: this method should always return a COPY of self.item_state - it is called from get_user_state
-        # handler and manipulated there to hide correctness of items placed
+        # handler and the data it returns is manipulated there to hide correctness of items placed.
         state = {}
 
-        for item_id, item in self.item_state.iteritems():
-            if isinstance(item, dict):
-                state[item_id] = item.copy()  # items are manipulated in _get_user_state, so we protect actual data
+        for item_id, raw_item in self.item_state.iteritems():
+            if isinstance(raw_item, dict):
+                # Items are manipulated in _get_user_state, so we protect actual data.
+                item = copy.deepcopy(raw_item)
             else:
-                state[item_id] = {'top': item[0], 'left': item[1]}
+                item = {'top': raw_item[0], 'left': raw_item[1]}
+            # If information about zone is missing
+            # (because problem was completed before a11y enhancements were implemented),
+            # deduce zone in which item is placed from definition:
+            if item.get('zone') is None:
+                valid_zones = self._get_item_zones(int(item_id))
+                if valid_zones:
+                    # If we get to this point, then the item was placed prior to support for
+                    # multiple correct zones being added. As a result, it can only be correct
+                    # on a single zone, and so we can trust that the item was placed on the
+                    # zone with index 0.
+                    item['zone'] = valid_zones[0]
+                else:
+                    item['zone'] = 'unknown'
+            # If correctness information is missing
+            # (because problem was completed before assessment mode was implemented),
+            # assume the item is in correct zone (in standard mode, only items placed
+            # into correct zone are stored in item state).
+            if item.get('correct') is None:
+                item['correct'] = True
+            state[item_id] = item
 
         return state
 
