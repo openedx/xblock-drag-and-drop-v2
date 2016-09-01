@@ -1,3 +1,15 @@
+Version 2.0.9 (2016-09-01)
+--------------------------
+
+* ([#88](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/88)) Cleaned up studio editor template: styling, help texts, accessibility attributes, classes instead of IDs, etc.
+* ([#95](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/95)) Fixed flaky selenium tests
+* ([#85](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/85)) Accessibility improvements for item feedback popup
+* ([#73](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/73)) Accessibility improvements for item, zone and background image when using keyboard mode
+* ([#96](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/96)) Decoy items are properly accounted for in grade calculation and problem completion condition
+* ([#98](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/98)) Support for legacy item state
+* ([#92](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/92)) Prevented overlapping item placement: option to keep dropped item where learner dropped it was removed; items always use automatic layouts (left/center/right)
+* ([#93](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/93)) Per-item error feedback is shown in assessment mode when an attempt is submitted
+
 Version 2.0.8 (2016-08-15)
 --------------------------
 
