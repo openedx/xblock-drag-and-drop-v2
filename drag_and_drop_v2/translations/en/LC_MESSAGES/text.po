@@ -90,6 +90,10 @@ msgid "I don't belong anywhere"
 msgstr ""
 
 #: drag_and_drop_v2.py
+#: msgid "This setting limits the number of items that can be dropped into a single zone."
+#: msgstr ""
+
+#: drag_and_drop_v2.py
 #: templates/html/js_templates.html
 msgid "Title"
 msgstr ""
@@ -205,10 +209,6 @@ msgid "Indicates whether a learner has completed the problem at least once"
 msgstr ""
 
 #: drag_and_drop_v2.py
-msgid "Keeps maximum achieved score by student"
-msgstr ""
-
-#: drag_and_drop_v2.py
 msgid "do_attempt handler should only be called for assessment mode"
 msgstr ""
 
@@ -222,6 +222,19 @@ msgstr ""
 
 #: templates/html/js_templates.html
 msgid "Remove zone"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid "Keeps maximum score achieved by student"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid "Failed to parse \"Maximum items per zone\""
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid ""
+"\"Maximum items per zone\" should be positive integer, got {max_items_per_zone}"
 msgstr ""
 
 #: templates/html/js_templates.html
@@ -265,9 +278,7 @@ msgid "right"
 msgstr ""
 
 #: templates/html/js_templates.html
-msgid ""
-"Align dropped items to the left, center, or right.  Default is no alignment "
-"(items stay exactly where the user drops them)."
+msgid "Align dropped items to the left, center, or right."
 msgstr ""
 
 #: templates/html/js_templates.html
@@ -498,10 +509,6 @@ msgstr ""
 
 #: public/js/drag_and_drop_edit.js
 msgid "None"
-msgstr ""
-
-#: public/js/drag_and_drop_edit.js
-msgid "Error: "
 msgstr ""
 
 #: utils.py:18

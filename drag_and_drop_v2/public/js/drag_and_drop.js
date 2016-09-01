@@ -84,23 +84,11 @@ function DragAndDropTemplates(configuration) {
             style['outline-color'] = item.color;
         }
         if (item.is_placed) {
-            if (item.zone_align === 'none') {
-                // This is not an "aligned" zone, so the item gets positioned where the learner dropped it.
-                style.left = item.x_percent + "%";
-                style.top = item.y_percent + "%";
-                if (item.widthPercent) {  // This item has an author-defined explicit width
-                    style.width = item.widthPercent + "%";
-                    style.maxWidth = item.widthPercent + "%"; // default maxWidth is ~30%
-                }
-            } else {
-                // This is an "aligned" zone, so the item position within the zone is calculated by the browser.
-                // Make up for the fact we're in a wrapper container by calculating percentage differences.
-                var maxWidth = (item.widthPercent || 30) / 100;
-                var widthPercent = zone.width_percent / 100;
-                style.maxWidth = ((1 / (widthPercent / maxWidth)) * 100) + '%';
-                if (item.widthPercent) {
-                    style.width = style.maxWidth;
-                }
+            var maxWidth = (item.widthPercent || 30) / 100;
+            var widthPercent = zone.width_percent / 100;
+            style.maxWidth = ((1 / (widthPercent / maxWidth)) * 100) + '%';
+            if (item.widthPercent) {
+                style.width = style.maxWidth;
             }
             // Finally, if the item is using automatic sizing and contains an image, we
             // always prefer the natural width of the image (subject to the max-width):
@@ -192,7 +180,6 @@ function DragAndDropTemplates(configuration) {
     var zoneTemplate = function(zone, ctx) {
         var className = ctx.display_zone_labels ? 'zone-name' : 'zone-name sr';
         var selector = ctx.display_zone_borders ? 'div.zone.zone-with-borders' : 'div.zone';
-
         // If zone is aligned, mark its item alignment
         // and render its placed items as children
         var item_wrapper = 'div.item-wrapper';
@@ -389,8 +376,6 @@ function DragAndDropTemplates(configuration) {
         var is_item_placed = function(i) { return i.is_placed; };
         var items_placed = $.grep(ctx.items, is_item_placed);
         var items_in_bank = $.grep(ctx.items, is_item_placed, true);
-        var is_item_placed_unaligned = function(i) { return i.zone_align === 'none'; };
-        var items_placed_unaligned = $.grep(items_placed, is_item_placed_unaligned);
         var item_bank_properties = {};
         if (ctx.item_bank_focusable) {
             item_bank_properties.attributes = {
@@ -421,7 +406,6 @@ function DragAndDropTemplates(configuration) {
                                 h('img.target-img', {src: ctx.target_img_src, alt: ctx.target_img_description}),
                             ]
                         ),
-                        renderCollection(itemTemplate, items_placed_unaligned, ctx),
                         renderCollection(zoneTemplate, ctx.zones, ctx)
                     ]),
                 ]),
@@ -463,6 +447,8 @@ function DragAndDropBlock(runtime, element, configuration) {
     // Event string size limit.
     var MAX_LENGTH = 255;
 
+    var DEFAULT_ZONE_ALIGN = 'center';
+
     // Keyboard accessibility
     var ESC = 27;
     var RET = 13;
@@ -490,7 +476,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             });
             state = stateResult[0]; // stateResult is an array of [data, statusText, jqXHR]
             migrateConfiguration(bgImg.width);
-            migrateState(bgImg.width, bgImg.height);
+            migrateState();
             markItemZoneAlign();
             bgImgNaturalWidth = bgImg.width;
 
@@ -755,40 +741,40 @@ function DragAndDropBlock(runtime, element, configuration) {
 
     var placeItem = function($zone, $item) {
         var item_id;
-        var $anchor;
         if ($item !== undefined) {
             item_id = $item.data('value');
-            // Element was placed using the mouse,
-            // so use relevant properties of *item* when calculating new position below.
-            $anchor = $item;
         } else {
             item_id = $selectedItem.data('value');
-            // Element was placed using the keyboard,
-            // so use relevant properties of *zone* when calculating new position below.
-            $anchor = $zone;
         }
+
         var zone = String($zone.data('uid'));
         var zone_align = $zone.data('zone_align');
-        var $target_img = $root.find('.target-img');
 
-        // Calculate the position of the item to place relative to the image.
-        var x_pos = $anchor.offset().left + ($anchor.outerWidth()/2) - $target_img.offset().left;
-        var y_pos = $anchor.offset().top + ($anchor.outerHeight()/2) - $target_img.offset().top;
-        var x_pos_percent = x_pos / $target_img.width() * 100;
-        var y_pos_percent = y_pos / $target_img.height() * 100;
+        var items_in_zone_count = countItemsInZone(zone, [item_id.toString()]);
+        if (configuration.max_items_per_zone && configuration.max_items_per_zone <= items_in_zone_count) {
+            state.last_action_correct = false;
+            state.feedback = gettext("You cannot add any more items to this zone.");
+            applyState();
+            return;
+        }
 
         state.items[item_id] = {
             zone: zone,
             zone_align: zone_align,
-            x_percent: x_pos_percent,
-            y_percent: y_pos_percent,
             submitting_location: true,
         };
         // Wrap in setTimeout to let the droppable event finish.
         setTimeout(function() {
             applyState();
-            submitLocation(item_id, zone, x_pos_percent, y_pos_percent);
+            submitLocation(item_id, zone);
         }, 0);
+    };
+
+    var countItemsInZone = function(zone, exclude_ids) {
+        var ids_to_exclude = exclude_ids ? exclude_ids : [];
+        return Object.keys(state.items).filter(function(item_id) {
+            return state.items[item_id].zone === zone && $.inArray(item_id, ids_to_exclude) === -1;
+        }).length;
     };
 
     var initDroppable = function() {
@@ -805,6 +791,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                         releaseItem($selectedItem);
                     } else if (isActionKey(evt)) {
                         evt.preventDefault();
+                        evt.stopPropagation();
                         state.keyboard_placement_mode = false;
                         releaseItem($selectedItem);
                         if ($zone.is('.item-bank')) {
@@ -946,16 +933,14 @@ function DragAndDropBlock(runtime, element, configuration) {
         });
     };
 
-    var submitLocation = function(item_id, zone, x_percent, y_percent) {
+    var submitLocation = function(item_id, zone) {
         if (!zone) {
             return;
         }
         var url = runtime.handlerUrl(element, 'drop_item');
         var data = {
             val: item_id,
-            zone: zone,
-            x_percent: x_percent,
-            y_percent: y_percent,
+            zone: zone
         };
 
         $.post(url, JSON.stringify(data), 'json')
@@ -1107,8 +1092,6 @@ function DragAndDropBlock(runtime, element, configuration) {
             if (item_user_state) {
                 itemProperties.zone = item_user_state.zone;
                 itemProperties.zone_align = item_user_state.zone_align;
-                itemProperties.x_percent = item_user_state.x_percent;
-                itemProperties.y_percent = item_user_state.y_percent;
             }
             if (configuration.item_background_color) {
                 itemProperties.background_color = configuration.item_background_color;
@@ -1172,35 +1155,12 @@ function DragAndDropBlock(runtime, element, configuration) {
     /**
      * migrateState: Apply any changes necessary to support the 'state' format used by older
      * versions of this XBlock.
-     * We have to do this in JS, not python, since some migrations depend on the image size,
+     * Most migrations are applied in python, but migrations may depend on the image size,
      * which is not known in Python-land.
      */
-    var migrateState = function(bg_image_width, bg_image_height) {
-        Object.keys(state.items).forEach(function(item_id) {
-            var item = state.items[item_id];
-            if (item.x_percent === undefined) {
-                // Find the matching item in the configuration
-                var width = 190;
-                var height = 44;
-                for (var i in configuration.items) {
-                    if (configuration.items[i].id === +item_id) {
-                        var size = configuration.items[i].size;
-                        // size is an object like '{width: "50px", height: "auto"}'
-                        if (parseInt(size.width ) > 0) {width = parseInt(size.width);}
-                        if (parseInt(size.height) > 0) {height = parseInt(size.height);}
-                        break;
-                    }
-                }
-                // Update the user's item state to use centered relative coordinates
-                var left_px = parseFloat(item.left) - 220; // 220 px for the items container that used to be on the left
-                var top_px = parseFloat(item.top);
-                item.x_percent = (left_px + width/2) / bg_image_width * 100;
-                item.y_percent = (top_px + height/2) / bg_image_height * 100;
-                delete item.left;
-                delete item.top;
-                delete item.absolute;
-            }
-        });
+    var migrateState = function() {
+        // JS migrations were squashed down to "do nothing", but decided to keep the method
+        // to give a hint to future developers that migrations can be applied in JS
     };
 
     /**
@@ -1211,12 +1171,12 @@ function DragAndDropBlock(runtime, element, configuration) {
     var markItemZoneAlign = function() {
         var zone_alignments = {};
         configuration.zones.forEach(function(zone) {
-            if (!zone.align) zone.align = 'none';
+            if (!zone.align) zone.align = DEFAULT_ZONE_ALIGN;
             zone_alignments[zone.uid] = zone.align;
         });
         Object.keys(state.items).forEach(function(item_id) {
             var item = state.items[item_id];
-            item.zone_align = zone_alignments[item.zone] || 'none';
+            item.zone_align = zone_alignments[item.zone] || DEFAULT_ZONE_ALIGN;
         });
     };
 

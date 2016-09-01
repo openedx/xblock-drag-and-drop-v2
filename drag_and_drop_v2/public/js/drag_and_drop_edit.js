@@ -166,14 +166,10 @@ function DragAndDropEditBlock(runtime, element, params) {
                             $(this).addClass('hidden');
                             $('.save-button', element).parent()
                                 .removeClass('hidden')
-                                .one('click', function submitForm(e) {
+                                .on('click', function submitForm(e) {
                                     // $itemTab -> submit
 
                                     e.preventDefault();
-                                    if (!self.validate()) {
-                                        $(e.target).one('click', submitForm);
-                                        return
-                                    }
                                     _fn.build.form.submit();
                                 });
                         });
@@ -190,7 +186,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                         })
                         .on('click', '.remove-zone', _fn.build.form.zone.remove)
                         .on('input', '.zone-row input', _fn.build.form.zone.changedInputHandler)
-                        .on('change', '.align-select', _fn.build.form.zone.changedInputHandler)
+                        .on('change', '.zone-align-select', _fn.build.form.zone.changedInputHandler)
                         .on('click', '.target-image-form button', function(e) {
                             var new_img_url = $.trim($('.target-image-form .background-url', element).val());
                             if (new_img_url) {
@@ -516,19 +512,21 @@ function DragAndDropEditBlock(runtime, element, params) {
                             'show_problem_header': $element.find('.show-problem-header').is(':checked'),
                             'item_background_color': $element.find('.item-background-color').val(),
                             'item_text_color': $element.find('.item-text-color').val(),
+                            'max_items_per_zone': $element.find('.max-items-per-zone').val(),
                             'data': _fn.data,
                         };
 
-                        $('.xblock-editor-error-message', element).html();
-                        $('.xblock-editor-error-message', element).css('display', 'none');
                         var handlerUrl = runtime.handlerUrl(element, 'studio_submit');
+                        runtime.notify('save', {state: 'start', message: gettext("Saving")});
                         $.post(handlerUrl, JSON.stringify(data), 'json').done(function(response) {
                             if (response.result === 'success') {
-                                window.location.reload(false);
+                                runtime.notify('save', {state: 'end'});
                             } else {
-                                $('.xblock-editor-error-message', element)
-                                    .html(gettext('Error: ') + response.message);
-                                $('.xblock-editor-error-message', element).css('display', 'block');
+                                var message = response.messages.join(", ");
+                                runtime.notify('error', {
+                                    'title': window.gettext("There was an error with your form."),
+                                    'message': message
+                                });
                             }
                         });
                     }

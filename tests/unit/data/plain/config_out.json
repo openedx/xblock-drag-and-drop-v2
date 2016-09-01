@@ -13,6 +13,7 @@
     "display_zone_borders": false,
     "display_zone_labels": false,
     "url_name": "test",
+    "max_items_per_zone": 4,
 
     "zones": [
         {
@@ -21,7 +22,8 @@
           "x": 234,
           "width": 345,
           "height": 456,
-          "uid": "zone-1"
+          "uid": "zone-1",
+          "align": "left"
         },
         {
           "title": "Zone 2",
@@ -29,7 +31,8 @@
           "x": 10,
           "width": 30,
           "height": 40,
-          "uid": "zone-2"
+          "uid": "zone-2",
+          "align": "center"
         }
     ],
 

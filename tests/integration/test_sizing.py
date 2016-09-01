@@ -8,7 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from xblockutils.resources import ResourceLoader
 
 from .test_base import BaseIntegrationTest
-from .test_interaction import InteractionTestBase
+from tests.integration.test_base import InteractionTestBase
 
 loader = ResourceLoader(__name__)
 
@@ -82,7 +82,7 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
 
     EXPECTATIONS = [
         # The text 'Auto' with no fixed size specified should be 5-20% wide
-        Expectation(item_id=0, zone_id=ZONE_33, width_percent=[5, 20]),
+        Expectation(item_id=0, zone_id=ZONE_33, width_percent=[5, AUTO_MAX_WIDTH]),
         # The long text with no fixed size specified should be wrapped at the maximum width
         Expectation(item_id=1, zone_id=ZONE_33, width_percent=AUTO_MAX_WIDTH),
         # The text items that specify specific widths as a percentage of the background image:

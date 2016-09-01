@@ -13,9 +13,9 @@ from drag_and_drop_v2.default_data import (
     TOP_ZONE_ID, MIDDLE_ZONE_ID, BOTTOM_ZONE_ID,
     TOP_ZONE_TITLE, START_FEEDBACK, FINISH_FEEDBACK
 )
-from drag_and_drop_v2.utils import FeedbackMessages
+from drag_and_drop_v2.utils import FeedbackMessages, Constants
 from .test_base import BaseIntegrationTest
-from .test_interaction import InteractionTestBase, DefaultDataTestMixin
+from .test_interaction import InteractionTestBase, DefaultDataTestMixin, ParameterizedTestsMixin, TestMaxItemsPerZone
 
 
 # Globals ###########################################################
@@ -33,8 +33,8 @@ class DefaultAssessmentDataTestMixin(DefaultDataTestMixin):
 
     def _get_scenario_xml(self):  # pylint: disable=no-self-use
         return """
-            <vertical_demo><drag-and-drop-v2 mode='assessment' max_attempts='{max_attempts}'/></vertical_demo>
-        """.format(max_attempts=self.MAX_ATTEMPTS)
+            <vertical_demo><drag-and-drop-v2 mode='{mode}' max_attempts='{max_attempts}'/></vertical_demo>
+        """.format(mode=Constants.ASSESSMENT_MODE, max_attempts=self.MAX_ATTEMPTS)
 
 
 class AssessmentTestMixin(object):
@@ -57,7 +57,8 @@ class AssessmentTestMixin(object):
 
 @ddt
 class AssessmentInteractionTest(
-    DefaultAssessmentDataTestMixin, AssessmentTestMixin, InteractionTestBase, BaseIntegrationTest
+    DefaultAssessmentDataTestMixin, AssessmentTestMixin, ParameterizedTestsMixin,
+    InteractionTestBase, BaseIntegrationTest
 ):
     """
     Testing interactions with Drag and Drop XBlock against default data in assessment mode.
@@ -217,3 +218,28 @@ class AssessmentInteractionTest(
         published_grade = next((event[0][2] for event in events if event[0][1] == 'grade'))
         expected_grade = {'max_value': 1, 'value': (1.0 / 5.0)}
         self.assertEqual(published_grade, expected_grade)
+
+
+class TestMaxItemsPerZoneAssessment(TestMaxItemsPerZone):
+    assessment_mode = True
+
+    def _get_scenario_xml(self):
+        scenario_data = loader.load_unicode("data/test_zone_align.json")
+        return self._make_scenario_xml(data=scenario_data, max_items_per_zone=2, mode=Constants.ASSESSMENT_MODE)
+
+    def test_drop_item_to_same_zone_does_not_show_popup(self):
+        zone_id = "Zone Left Align"
+        self.place_item(6, zone_id)
+        self.place_item(7, zone_id)
+
+        popup = self._get_popup()
+
+        # precondition check - max items placed into zone
+        self.assert_placed_item(6, zone_id, assessment_mode=self.assessment_mode)
+        self.assert_placed_item(7, zone_id, assessment_mode=self.assessment_mode)
+
+        self.place_item(6, zone_id, Keys.RETURN)
+        self.assertFalse(popup.is_displayed())
+
+        self.place_item(7, zone_id, Keys.RETURN)
+        self.assertFalse(popup.is_displayed())

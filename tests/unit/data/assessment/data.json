@@ -6,7 +6,8 @@
       "x": 234,
       "width": 345,
       "height": 456,
-      "uid": "zone-1"
+      "uid": "zone-1",
+      "align": "right"
     },
     {
       "title": "Zone 2",

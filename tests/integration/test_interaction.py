@@ -4,24 +4,17 @@
 # Imports ###########################################################
 
 from ddt import ddt, data, unpack
-from mock import Mock, patch
 
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
-
-from workbench.runtime import WorkbenchRuntime
 from xblockutils.resources import ResourceLoader
 
-from drag_and_drop_v2.default_data import (
-    TOP_ZONE_ID, MIDDLE_ZONE_ID, BOTTOM_ZONE_ID,
-    TOP_ZONE_TITLE, MIDDLE_ZONE_TITLE, BOTTOM_ZONE_TITLE,
-    ITEM_CORRECT_FEEDBACK, ITEM_INCORRECT_FEEDBACK, ITEM_NO_ZONE_FEEDBACK,
-    ITEM_ANY_ZONE_FEEDBACK, START_FEEDBACK, FINISH_FEEDBACK
+from tests.integration.test_base import (
+    DefaultDataTestMixin, InteractionTestBase, ItemDefinition
 )
 from .test_base import BaseIntegrationTest
-
 
 # Globals ###########################################################
 
@@ -30,227 +23,7 @@ loader = ResourceLoader(__name__)
 # Classes ###########################################################
 
 
-class ItemDefinition(object):
-    def __init__(self, item_id, zone_ids, zone_title, feedback_positive, feedback_negative):
-        self.feedback_negative = feedback_negative
-        self.feedback_positive = feedback_positive
-        self.zone_ids = zone_ids
-        self.zone_title = zone_title
-        self.item_id = item_id
-
-
-class InteractionTestBase(object):
-    @classmethod
-    def _get_items_with_zone(cls, items_map):
-        return {
-            item_key: definition for item_key, definition in items_map.items()
-            if definition.zone_ids != []
-        }
-
-    @classmethod
-    def _get_items_without_zone(cls, items_map):
-        return {
-            item_key: definition for item_key, definition in items_map.items()
-            if definition.zone_ids == []
-        }
-
-    @classmethod
-    def _get_items_by_zone(cls, items_map):
-        zone_ids = set([definition.zone_ids[0] for _, definition in items_map.items() if definition.zone_ids])
-        return {
-            zone_id: {item_key: definition for item_key, definition in items_map.items()
-                      if definition.zone_ids and definition.zone_ids[0] is zone_id}
-            for zone_id in zone_ids
-        }
-
-    def setUp(self):
-        super(InteractionTestBase, self).setUp()
-
-        scenario_xml = self._get_scenario_xml()
-        self._add_scenario(self.PAGE_ID, self.PAGE_TITLE, scenario_xml)
-        self._page = self.go_to_page(self.PAGE_TITLE)
-        # Resize window so that the entire drag container is visible.
-        # Selenium has issues when dragging to an area that is off screen.
-        self.browser.set_window_size(1024, 800)
-
-    def _get_item_by_value(self, item_value):
-        return self._page.find_elements_by_xpath(".//div[@data-value='{item_id}']".format(item_id=item_value))[0]
-
-    def _get_unplaced_item_by_value(self, item_value):
-        items_container = self._get_item_bank()
-        return items_container.find_elements_by_xpath(".//div[@data-value='{item_id}']".format(item_id=item_value))[0]
-
-    def _get_placed_item_by_value(self, item_value):
-        items_container = self._page.find_element_by_css_selector('.target')
-        return items_container.find_elements_by_xpath(".//div[@data-value='{item_id}']".format(item_id=item_value))[0]
-
-    def _get_zone_by_id(self, zone_id):
-        zones_container = self._page.find_element_by_css_selector('.target')
-        return zones_container.find_elements_by_xpath(".//div[@data-uid='{zone_id}']".format(zone_id=zone_id))[0]
-
-    def _get_dialog_components(self, dialog):  # pylint: disable=no-self-use
-        dialog_modal_overlay = dialog.find_element_by_css_selector('.modal-window-overlay')
-        dialog_modal = dialog.find_element_by_css_selector('.modal-window')
-        return dialog_modal_overlay, dialog_modal
-
-    def _get_dialog_dismiss_button(self, dialog_modal):  # pylint: disable=no-self-use
-        return dialog_modal.find_element_by_css_selector('.modal-dismiss-button')
-
-    def _get_item_bank(self):
-        return self._page.find_element_by_css_selector('.item-bank')
-
-    def _get_zone_position(self, zone_id):
-        return self.browser.execute_script(
-            'return $("div[data-uid=\'{zone_id}\']").prevAll(".zone").length'.format(zone_id=zone_id)
-        )
-
-    def _get_draggable_property(self, item_value):
-        """
-        Returns the value of the 'draggable' property of item.
-
-        Selenium has the element.get_attribute method that looks up properties and attributes,
-        but for some reason it *always* returns "true" for the 'draggable' property, event though
-        both the HTML attribute and the DOM property are set to false.
-        We work around that selenium bug by using JavaScript to get the correct value of 'draggable'.
-        """
-        script = "return $('div.option[data-value={}]').prop('draggable')".format(item_value)
-        return self.browser.execute_script(script)
-
-    def assertDraggable(self, item_value):
-        self.assertTrue(self._get_draggable_property(item_value))
-
-    def assertNotDraggable(self, item_value):
-        self.assertFalse(self._get_draggable_property(item_value))
-
-    @staticmethod
-    def wait_until_ondrop_xhr_finished(elem):
-        """
-        Waits until the XHR request triggered by dropping the item finishes loading.
-        """
-        wait = WebDriverWait(elem, 2)
-        # While the XHR is in progress, a spinner icon is shown inside the item.
-        # When the spinner disappears, we can assume that the XHR request has finished.
-        wait.until(
-            lambda e: 'fa-spinner' not in e.get_attribute('innerHTML'),
-            u"Spinner should not be in {}".format(elem.get_attribute('innerHTML'))
-        )
-
-    def place_item(self, item_value, zone_id, action_key=None):
-        """
-        Place item with ID of item_value into zone with ID of zone_id.
-        zone_id=None means place item back to the item bank.
-        action_key=None means simulate mouse drag/drop instead of placing the item with keyboard.
-        """
-        if action_key is None:
-            self.drag_item_to_zone(item_value, zone_id)
-        else:
-            self.move_item_to_zone(item_value, zone_id, action_key)
-        self.wait_for_ajax()
-
-    def drag_item_to_zone(self, item_value, zone_id):
-        """
-        Drag item to desired zone using mouse interaction.
-        zone_id=None means drag item back to the item bank.
-        """
-        element = self._get_item_by_value(item_value)
-        if zone_id is None:
-            target = self._get_item_bank()
-        else:
-            target = self._get_zone_by_id(zone_id)
-        action_chains = ActionChains(self.browser)
-        action_chains.drag_and_drop(element, target).perform()
-
-    def move_item_to_zone(self, item_value, zone_id, action_key):
-        """
-        Place item to descired zone using keybard interaction.
-        zone_id=None means place item back into the item bank.
-        """
-        # Focus on the item, then press the action key:
-        item = self._get_item_by_value(item_value)
-        item.send_keys("")
-        item.send_keys(action_key)
-        # Focus is on first *zone* now
-        self.assert_grabbed_item(item)
-        # Get desired zone and figure out how many times we have to press Tab to focus the zone.
-        if zone_id is None:  # moving back to the bank
-            zone = self._get_item_bank()
-            # When switching focus between zones in keyboard placement mode,
-            # the item bank always gets focused last (after all regular zones),
-            # so we have to press Tab once for every regular zone to move focus to the item bank.
-            tab_press_count = len(self.all_zones)
-        else:
-            zone = self._get_zone_by_id(zone_id)
-            # The number of times we have to press Tab to focus the desired zone equals the zero-based
-            # position of the zone (zero presses for first zone, one press for second zone, etc).
-            tab_press_count = self._get_zone_position(zone_id)
-        for _ in range(tab_press_count):
-            ActionChains(self.browser).send_keys(Keys.TAB).perform()
-        zone.send_keys(action_key)
-
-    def assert_grabbed_item(self, item):
-        self.assertEqual(item.get_attribute('aria-grabbed'), 'true')
-
-    def assert_placed_item(self, item_value, zone_title, assessment_mode=False):
-        item = self._get_placed_item_by_value(item_value)
-        self.wait_until_visible(item)
-        self.wait_until_ondrop_xhr_finished(item)
-        item_content = item.find_element_by_css_selector('.item-content')
-        self.wait_until_visible(item_content)
-        item_description = item.find_element_by_css_selector('.sr')
-        self.wait_until_visible(item_description)
-        item_description_id = '-item-{}-description'.format(item_value)
-
-        self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
-        self.assertEqual(item_content.get_attribute('aria-describedby'), item_description_id)
-        self.assertEqual(item_description.get_attribute('id'), item_description_id)
-        if assessment_mode:
-            self.assertDraggable(item_value)
-            self.assertEqual(item.get_attribute('class'), 'option')
-            self.assertEqual(item.get_attribute('tabindex'), '0')
-            self.assertEqual(item_description.text, 'Placed in: {}'.format(zone_title))
-        else:
-            self.assertNotDraggable(item_value)
-            self.assertEqual(item.get_attribute('class'), 'option fade')
-            self.assertIsNone(item.get_attribute('tabindex'))
-            self.assertEqual(item_description.text, 'Correctly placed in: {}'.format(zone_title))
-
-    def assert_reverted_item(self, item_value):
-        item = self._get_item_by_value(item_value)
-        self.wait_until_visible(item)
-        self.wait_until_ondrop_xhr_finished(item)
-        item_content = item.find_element_by_css_selector('.item-content')
-
-        self.assertDraggable(item_value)
-        self.assertEqual(item.get_attribute('class'), 'option')
-        self.assertEqual(item.get_attribute('tabindex'), '0')
-        self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
-        item_description_id = '-item-{}-description'.format(item_value)
-        self.assertEqual(item_content.get_attribute('aria-describedby'), item_description_id)
-
-        describedby_text = (u'Press "Enter", "Space", "Ctrl-m", or "⌘-m" on an item to select it for dropping, '
-                            'then navigate to the zone you want to drop it on.')
-        self.assertEqual(item.find_element_by_css_selector('.sr').text, describedby_text)
-
-    def place_decoy_items(self, items_map, action_key):
-        decoy_items = self._get_items_without_zone(items_map)
-        # Place decoy items into first available zone.
-        zone_id, zone_title = self.all_zones[0]
-        for definition in decoy_items.values():
-            self.place_item(definition.item_id, zone_id, action_key)
-            self.assert_placed_item(definition.item_id, zone_title, assessment_mode=True)
-
-    def assert_decoy_items(self, items_map, assessment_mode=False):
-        decoy_items = self._get_items_without_zone(items_map)
-        for item_key in decoy_items:
-            item = self._get_item_by_value(item_key)
-            self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
-            if assessment_mode:
-                self.assertDraggable(item_key)
-                self.assertEqual(item.get_attribute('class'), 'option')
-            else:
-                self.assertNotDraggable(item_key)
-                self.assertEqual(item.get_attribute('class'), 'option fade')
-
+class ParameterizedTestsMixin(object):
     def parameterized_item_positive_feedback_on_good_move(
             self, items_map, scroll_down=100, action_key=None, assessment_mode=False
     ):
@@ -429,56 +202,9 @@ class InteractionTestBase(object):
             self.assertFalse(dialog_modal_overlay.is_displayed())
             self.assertFalse(dialog_modal.is_displayed())
 
-    def _switch_to_block(self, idx):
-        """ Only needed if ther eare multiple blocks on the page. """
-        self._page = self.browser.find_elements_by_css_selector(self.default_css_selector)[idx]
-        self.scroll_down(0)
-
-
-class DefaultDataTestMixin(object):
-    """
-    Provides a test scenario with default options.
-    """
-    PAGE_TITLE = 'Drag and Drop v2'
-    PAGE_ID = 'drag_and_drop_v2'
-
-    items_map = {
-        0: ItemDefinition(
-            0, [TOP_ZONE_ID], TOP_ZONE_TITLE,
-            ITEM_CORRECT_FEEDBACK.format(zone=TOP_ZONE_TITLE), ITEM_INCORRECT_FEEDBACK
-        ),
-        1: ItemDefinition(
-            1, [MIDDLE_ZONE_ID], MIDDLE_ZONE_TITLE,
-            ITEM_CORRECT_FEEDBACK.format(zone=MIDDLE_ZONE_TITLE), ITEM_INCORRECT_FEEDBACK
-        ),
-        2: ItemDefinition(
-            2, [BOTTOM_ZONE_ID], BOTTOM_ZONE_TITLE,
-            ITEM_CORRECT_FEEDBACK.format(zone=BOTTOM_ZONE_TITLE), ITEM_INCORRECT_FEEDBACK
-        ),
-        3: ItemDefinition(
-            3, [MIDDLE_ZONE_ID, TOP_ZONE_ID, BOTTOM_ZONE_ID], MIDDLE_ZONE_TITLE,
-            ITEM_ANY_ZONE_FEEDBACK, ITEM_INCORRECT_FEEDBACK
-        ),
-        4: ItemDefinition(4, [], None, "", ITEM_NO_ZONE_FEEDBACK),
-    }
-
-    all_zones = [
-        (TOP_ZONE_ID, TOP_ZONE_TITLE),
-        (MIDDLE_ZONE_ID, MIDDLE_ZONE_TITLE),
-        (BOTTOM_ZONE_ID, BOTTOM_ZONE_TITLE)
-    ]
-
-    feedback = {
-        "intro": START_FEEDBACK,
-        "final": FINISH_FEEDBACK,
-    }
-
-    def _get_scenario_xml(self):  # pylint: disable=no-self-use
-        return "<vertical_demo><drag-and-drop-v2/></vertical_demo>"
-
 
 @ddt
-class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):
+class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, ParameterizedTestsMixin, BaseIntegrationTest):
     """
     Testing interactions with Drag and Drop XBlock against default data.
     All interactions are tested using mouse (action_key=None) and four different keyboard action keys.
@@ -571,73 +297,6 @@ class MultipleValidOptionsInteractionTest(DefaultDataTestMixin, InteractionTestB
         return self._get_custom_scenario_xml("data/test_multiple_options_data.json")
 
 
-@ddt
-class EventsFiredTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):
-    """
-    Tests that the analytics events are fired and in the proper order.
-    """
-    # These events must be fired in this order.
-    scenarios = (
-        {
-            'name': 'edx.drag_and_drop_v2.loaded',
-            'data': {},
-        },
-        {
-            'name': 'edx.drag_and_drop_v2.item.picked_up',
-            'data': {'item_id': 0},
-        },
-        {
-            'name': 'grade',
-            'data': {'max_value': 1, 'value': (2.0 / 5)},
-        },
-        {
-            'name': 'edx.drag_and_drop_v2.item.dropped',
-            'data': {
-                'is_correct': True,
-                'item_id': 0,
-                'location': TOP_ZONE_TITLE,
-                'location_id': TOP_ZONE_ID,
-            },
-        },
-        {
-            'name': 'edx.drag_and_drop_v2.feedback.opened',
-            'data': {
-                'content': ITEM_CORRECT_FEEDBACK.format(zone=TOP_ZONE_TITLE),
-                'truncated': False,
-            },
-        },
-        {
-            'name': 'edx.drag_and_drop_v2.feedback.closed',
-            'data': {
-                'manually': False,
-                'content': ITEM_CORRECT_FEEDBACK.format(zone=TOP_ZONE_TITLE),
-                'truncated': False,
-            },
-        },
-    )
-
-    def setUp(self):
-        mock = Mock()
-        context = patch.object(WorkbenchRuntime, 'publish', mock)
-        context.start()
-        self.addCleanup(context.stop)
-        self.publish = mock
-        super(EventsFiredTest, self).setUp()
-
-    def _get_scenario_xml(self):  # pylint: disable=no-self-use
-        return "<vertical_demo><drag-and-drop-v2/></vertical_demo>"
-
-    @data(*enumerate(scenarios))  # pylint: disable=star-args
-    @unpack
-    def test_event(self, index, event):
-        self.parameterized_item_positive_feedback_on_good_move(self.items_map)
-        dummy, name, published_data = self.publish.call_args_list[index][0]
-        self.assertEqual(name, event['name'])
-        self.assertEqual(
-                published_data, event['data']
-        )
-
-
 class PreventSpaceBarScrollTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):
     """"
     Test that browser default page down action is prevented when pressing the space bar while
@@ -709,7 +368,7 @@ class CustomHtmlDataInteractionTest(StandardInteractionTest):
         return self._get_custom_scenario_xml("data/test_html_data.json")
 
 
-class MultipleBlocksDataInteraction(InteractionTestBase, BaseIntegrationTest):
+class MultipleBlocksDataInteraction(ParameterizedTestsMixin, InteractionTestBase, BaseIntegrationTest):
     PAGE_TITLE = 'Drag and Drop v2 Multiple Blocks'
     PAGE_ID = 'drag_and_drop_v2_multi'
 
@@ -821,35 +480,11 @@ class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
         self.assertEquals(self._get_style(zone_item_selector, 'left'), '0px')
         self.assertEquals(self._get_style(zone_item_selector, 'top'), '0px')
 
-        # Center-aligned items are display block
-        if align == 'center':
-            self.assertEquals(self._get_style(zone_item_selector, 'display'), 'block')
-        # but other aligned items are just inline-block
-        else:
-            self.assertEquals(self._get_style(zone_item_selector, 'display'), 'inline-block')
-
-    def test_no_zone_align(self):
-        """
-        Test items placed in a zone with no align setting.
-        Ensure that they are children of div.target, not the zone.
-        """
-        zone_id = "Zone No Align"
-        self.place_item(0, zone_id)
-        zone_item_selector = "div[data-uid='{zone_id}'] .item-wrapper .option".format(zone_id=zone_id)
-        self.assertEquals(len(self._page.find_elements_by_css_selector(zone_item_selector)), 0)
-
-        target_item_selector = '.target > .option'
-        placed_items = self._page.find_elements_by_css_selector(target_item_selector)
-        self.assertEquals(len(placed_items), 1)
-        self.assertEquals(placed_items[0].get_attribute('data-value'), '0')
-
-        # Non-aligned items are absolute positioned, with top/bottom set to px
-        self.assertEquals(self._get_style(target_item_selector, 'position'), 'absolute')
-        self.assertRegexpMatches(self._get_style(target_item_selector, 'left'), r'^\d+(\.\d+)?px$')
-        self.assertRegexpMatches(self._get_style(target_item_selector, 'top'), r'^\d+(\.\d+)?px$')
+        self.assertEquals(self._get_style(zone_item_selector, 'display'), 'inline-block')
 
     @data(
-        ([3, 4, 5], "Zone Invalid Align", "start"),
+        ([0, 1, 2], "Zone No Align", "center"),
+        ([3, 4, 5], "Zone Invalid Align", "center"),
         ([6, 7, 8], "Zone Left Align", "left"),
         ([9, 10, 11], "Zone Right Align", "right"),
         ([12, 13, 14], "Zone Center Align", "center"),
@@ -865,3 +500,60 @@ class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
                 reset.click()
                 self.scroll_down(pixels=0)
                 self.wait_until_disabled(reset)
+
+
+class TestMaxItemsPerZone(InteractionTestBase, BaseIntegrationTest):
+    """
+    Tests for max items per dropzone feature
+    """
+    PAGE_TITLE = 'Drag and Drop v2'
+    PAGE_ID = 'drag_and_drop_v2'
+
+    assessment_mode = False
+
+    def _get_scenario_xml(self):
+        scenario_data = loader.load_unicode("data/test_zone_align.json")
+        return self._make_scenario_xml(data=scenario_data, max_items_per_zone=2)
+
+    def test_item_returned_to_bank(self):
+        """
+        Tests that an item is returned to bank if max items per zone reached
+        """
+        zone_id = "Zone No Align"
+        self.place_item(0, zone_id)
+        self.place_item(1, zone_id)
+
+        # precondition check - max items placed into zone
+        self.assert_placed_item(0, zone_id, assessment_mode=self.assessment_mode)
+        self.assert_placed_item(1, zone_id, assessment_mode=self.assessment_mode)
+
+        self.place_item(2, zone_id)
+
+        self.assert_reverted_item(2)
+        feedback_popup = self._get_popup()
+        self.assertTrue(feedback_popup.is_displayed())
+
+        feedback_popup_content = self._get_popup_content()
+        self.assertEqual(
+            feedback_popup_content.get_attribute('innerHTML'),
+            "You cannot add any more items to this zone."
+        )
+
+    def test_item_returned_to_bank_after_refresh(self):
+        zone_id = "Zone Left Align"
+        self.place_item(6, zone_id)
+        self.place_item(7, zone_id)
+
+        # precondition check - max items placed into zone
+        self.assert_placed_item(6, zone_id, assessment_mode=self.assessment_mode)
+        self.assert_placed_item(7, zone_id, assessment_mode=self.assessment_mode)
+
+        self.place_item(8, zone_id)
+
+        self.assert_reverted_item(8)
+
+        self._page = self.go_to_page(self.PAGE_TITLE)  # refresh the page
+
+        self.assert_placed_item(6, zone_id, assessment_mode=self.assessment_mode)
+        self.assert_placed_item(7, zone_id, assessment_mode=self.assessment_mode)
+        self.assert_reverted_item(8)
