@@ -585,6 +585,10 @@ msgstr ""
 msgid "You have used {used} of {total} attempts."
 msgstr "Ýöü hävé üséd {used} öf {total} ättémpts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
+#: public/js/drag_and_drop.js
+msgid "Some of your answers were not correct."
+msgstr "Sömé öf ýöür änswérs wéré nöt cörréct. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
 #: public/js/drag_and_drop_edit.js
 msgid "There was an error with your form."
 msgstr ""
@@ -599,28 +603,28 @@ msgstr ""
 msgid "None"
 msgstr "Nöné Ⱡ'σяєм ι#"
 
-#: utils.py:18
-msgid "Fïnäl ättémpt wäs üséd, hïghést sçöré ïs {score} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
-msgstr ""
+#: public/js/drag_and_drop_edit.js
+msgid "Close item feedback popup"
+msgstr "Çlösé ïtém féédßäçk pöpüp Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: utils.py:19
-msgid "Mïspläçéd ïtéms wéré rétürnéd tö ïtém ßänk. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
-msgstr ""
+#: utils.py:18
+msgid "Final attempt was used, highest score is {score}"
+msgstr "Fïnäl ättémpt wäs üséd, hïghést sçöré ïs {score} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
 #: utils.py:24
-msgid "Çörréçtlý pläçéd {correct_count} ïtém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
-msgid_plural "Çörréçtlý pläçéd {correct_count} ïtéms. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
-msgstr[0] ""
-msgstr[1] ""
+msgid "Correctly placed {correct_count} item."
+msgid_plural "Correctly placed {correct_count} items."
+msgstr[0] "Çörréçtlý pläçéd {correct_count} ïtém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+msgstr[1] "Çörréçtlý pläçéd {correct_count} ïtéms. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
 
 #: utils.py:32
-msgid "Mïspläçéd {misplaced_count} ïtém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
-msgid_plural "Mïspläçéd {misplaced_count} ïtéms. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
-msgstr[0] ""
-msgstr[1] ""
+msgid "Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
+msgid_plural "Misplaced {misplaced_count} items. Misplaced items were returned to item bank."
+msgstr[0] "Mïspläçéd {misplaced_count} ïtém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
+msgstr[1] "Mïspläçéd {misplaced_count} ïtéms. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
 #: utils.py:40
-msgid "Dïd nöt pläçé {missing_count} réqüïréd ïtém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
-msgid_plural "Dïd nöt pläçé {missing_count} réqüïréd ïtéms. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
-msgstr[0] ""
-msgstr[1] ""
+msgid "Did not place {missing_count} required item."
+msgid_plural "Did not place {missing_count} required items."
+msgstr[0] "Dïd nöt pläçé {missing_count} réqüïréd ïtém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+msgstr[1] "Dïd nöt pläçé {missing_count} réqüïréd ïtéms. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"

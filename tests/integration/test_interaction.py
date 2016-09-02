@@ -42,8 +42,8 @@ class ParameterizedTestsMixin(object):
                 self.assertEqual(feedback_popup_html, '')
                 self.assertFalse(popup.is_displayed())
             else:
-                self.assertEqual(feedback_popup_html, definition.feedback_positive)
-                self.assertEqual(popup.get_attribute('class'), 'popup')
+                self.assertEqual(feedback_popup_html, "<p>{}</p>".format(definition.feedback_positive))
+                self.assert_popup_correct(popup)
                 self.assertTrue(popup.is_displayed())
 
     def parameterized_item_negative_feedback_on_bad_move(
@@ -74,7 +74,7 @@ class ParameterizedTestsMixin(object):
                     self.assert_placed_item(definition.item_id, zone_title, assessment_mode=True)
                 else:
                     self.wait_until_html_in(definition.feedback_negative, feedback_popup_content)
-                    self.assertEqual(popup.get_attribute('class'), 'popup popup-incorrect')
+                    self.assert_popup_incorrect(popup)
                     self.assertTrue(popup.is_displayed())
                     self.assert_reverted_item(definition.item_id)
 
@@ -288,7 +288,7 @@ class MultipleValidOptionsInteractionTest(DefaultDataTestMixin, InteractionTestB
             for i, zone in enumerate(item.zone_ids):
                 self.place_item(item.item_id, zone, None)
                 self.wait_until_html_in(item.feedback_positive[i], feedback_popup_content)
-                self.assertEqual(popup.get_attribute('class'), 'popup')
+                self.assert_popup_correct(popup)
                 self.assert_placed_item(item.item_id, item.zone_title[i])
                 reset.click()
                 self.wait_until_disabled(reset)
@@ -534,12 +534,15 @@ class TestMaxItemsPerZone(InteractionTestBase, BaseIntegrationTest):
         self.assertTrue(feedback_popup.is_displayed())
 
         feedback_popup_content = self._get_popup_content()
-        self.assertEqual(
-            feedback_popup_content.get_attribute('innerHTML'),
-            "You cannot add any more items to this zone."
+        self.assertIn(
+            "You cannot add any more items to this zone.",
+            feedback_popup_content.get_attribute('innerHTML')
         )
 
     def test_item_returned_to_bank_after_refresh(self):
+        """
+        Tests that an item returned to the bank stays there after page refresh
+        """
         zone_id = "Zone Left Align"
         self.place_item(6, zone_id)
         self.place_item(7, zone_id)

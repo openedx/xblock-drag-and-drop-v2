@@ -356,13 +356,11 @@
 
 .xblock--drag-and-drop .popup .popup-content {
     color: #ffffff;
-    margin-left: 15px;
-    margin-top: 35px;
-    margin-bottom: 15px;
+    margin: 35px 15px 15px 15px;
     font-size: 14px;
 }
 
-.xblock--drag-and-drop .popup .close {
+.xblock--drag-and-drop .popup .close-feedback-popup-button {
     cursor: pointer;
     float: right;
     margin-right: 8px;
@@ -373,7 +371,7 @@
     font-size: 18pt;
 }
 
-.xblock--drag-and-drop .popup .close:focus {
+.xblock--drag-and-drop .popup .close-feedback-popup-button:focus {
     outline: 2px solid white;
 }
 

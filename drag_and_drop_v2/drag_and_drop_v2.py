@@ -246,7 +246,6 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             "target_img_description": self.target_img_description,
             "item_background_color": self.item_background_color or None,
             "item_text_color": self.item_text_color or None,
-            "initial_feedback": self.data['feedback']['start'],
             # final feedback (data.feedback.finish) is not included - it may give away answers.
         }
 
@@ -392,17 +391,29 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         self._validate_do_attempt()
 
         self.attempts += 1
-        self._mark_complete_and_publish_grade()  # must happen before _get_feedback
+        # pylint: disable=fixme
+        # TODO: Refactor this method to "freeze" item_state and pass it to methods that need access to it.
+        # These implicit dependencies between methods exist because most of them use `item_state` or other
+        # fields, either as an "input" (i.e. read value) or as output (i.e. set value) or both. As a result,
+        # incorrect order of invocation causes issues:
+        self._mark_complete_and_publish_grade()  # must happen before _get_feedback - sets grade
+        correct = self._is_answer_correct()  # must happen before manipulating item_state - reads item_state
 
-        overall_feedback_msgs, misplaced_ids = self._get_feedback()
+        overall_feedback_msgs, misplaced_ids = self._get_feedback(include_item_feedback=True)
 
+        misplaced_items = []
         for item_id in misplaced_ids:
             del self.item_state[item_id]
+            misplaced_items.append(self._get_item_definition(int(item_id)))
+
+        feedback_msgs = [FeedbackMessage(item['feedback']['incorrect'], None) for item in misplaced_items]
 
         return {
+            'correct': correct,
             'attempts': self.attempts,
             'misplaced_items': list(misplaced_ids),
-            'overall_feedback': self._present_overall_feedback(overall_feedback_msgs)
+            'feedback': self._present_feedback(feedback_msgs),
+            'overall_feedback': self._present_feedback(overall_feedback_msgs)
         }
 
     @XBlock.json_handler
@@ -487,7 +498,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
                 self.i18n_service.gettext("Max number of attempts reached")
             )
 
-    def _get_feedback(self):
+    def _get_feedback(self, include_item_feedback=False):
         """
         Builds overall feedback for both standard and assessment modes
         """
@@ -510,16 +521,14 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
                 message = message_template(len(ids_list), self.i18n_service.ngettext)
                 feedback_msgs.append(FeedbackMessage(message, message_class))
 
-        _add_msg_if_exists(
-            items.correctly_placed, FeedbackMessages.correctly_placed, FeedbackMessages.MessageClasses.CORRECTLY_PLACED
-        )
-        _add_msg_if_exists(misplaced_ids, FeedbackMessages.misplaced, FeedbackMessages.MessageClasses.MISPLACED)
-        _add_msg_if_exists(missing_ids, FeedbackMessages.not_placed, FeedbackMessages.MessageClasses.NOT_PLACED)
-
-        if misplaced_ids and self.attempts_remain:
-            feedback_msgs.append(
-                FeedbackMessage(FeedbackMessages.MISPLACED_ITEMS_RETURNED, None)
+        if self.item_state or include_item_feedback:
+            _add_msg_if_exists(
+                items.correctly_placed,
+                FeedbackMessages.correctly_placed,
+                FeedbackMessages.MessageClasses.CORRECTLY_PLACED
             )
+            _add_msg_if_exists(misplaced_ids, FeedbackMessages.misplaced, FeedbackMessages.MessageClasses.MISPLACED)
+            _add_msg_if_exists(missing_ids, FeedbackMessages.not_placed, FeedbackMessages.MessageClasses.NOT_PLACED)
 
         if self.attempts_remain and (misplaced_ids or missing_ids):
             problem_feedback_message = self.data['feedback']['start']
@@ -539,7 +548,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         return feedback_msgs, misplaced_ids
 
     @staticmethod
-    def _present_overall_feedback(feedback_messages):
+    def _present_feedback(feedback_messages):
         """
         Transforms feedback messages into format expected by frontend code
         """
@@ -563,14 +572,14 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         self._publish_item_dropped_event(item_attempt, is_correct)
 
         item_feedback_key = 'correct' if is_correct else 'incorrect'
-        item_feedback = item['feedback'][item_feedback_key]
+        item_feedback = FeedbackMessage(item['feedback'][item_feedback_key], None)
         overall_feedback, __ = self._get_feedback()
 
         return {
             'correct': is_correct,
             'finished': self._is_answer_correct(),
-            'overall_feedback': self._present_overall_feedback(overall_feedback),
-            'feedback': item_feedback
+            'overall_feedback': self._present_feedback(overall_feedback),
+            'feedback': self._present_feedback([item_feedback])
         }
 
     def _drop_item_assessment(self, item_attempt):
@@ -612,6 +621,18 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """
         Helper method to update `self.completed` and submit grade event if appropriate conditions met.
         """
+        # pylint: disable=fixme
+        # TODO: (arguable) split this method into "clean" functions (with no side effects and implicit state)
+        # This method implicitly depends on self.item_state (via _is_answer_correct and _get_grade)
+        # and also updates self.grade if some conditions are met. As a result this method implies some order of
+        # invocation:
+        # * it should be called after learner-caused updates to self.item_state is applied
+        # * it should be called before self.item_state cleanup is applied (i.e. returning misplaced items to item bank)
+        # * it should be called before any method that depends on self.grade (i.e. self._get_feedback)
+
+        # Splitting it into a "clean" functions will allow to capture this implicit invocation order in caller method
+        # and help avoid bugs caused by invocation order violation in future.
+
         # There's no going back from "completed" status to "incomplete"
         self.completed = self.completed or self._is_answer_correct() or not self.attempts_remain
         grade = self._get_grade()
@@ -694,7 +715,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             'items': item_state,
             'finished': is_finished,
             'attempts': self.attempts,
-            'overall_feedback': self._present_overall_feedback(overall_feedback_msgs)
+            'overall_feedback': self._present_feedback(overall_feedback_msgs)
         }
 
     def _get_item_state(self):
@@ -794,8 +815,8 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """
         Returns the student's grade for this block.
         """
-        correct_count, required_count = self._get_item_stats()
-        return correct_count / float(required_count) * self.weight
+        correct_count, total_count = self._get_item_stats()
+        return correct_count / float(total_count) * self.weight
 
     def _answer_correctness(self):
         """
@@ -807,8 +828,8 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
                 * Partial: Some items are at their correct place.
                 * Incorrect: None items are at their correct place.
         """
-        correct_count, required_count = self._get_item_stats()
-        if correct_count == required_count:
+        correct_count, total_count = self._get_item_stats()
+        if correct_count == total_count:
             return self.SOLUTION_CORRECT
         elif correct_count == 0:
             return self.SOLUTION_INCORRECT
