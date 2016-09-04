@@ -304,11 +304,11 @@ msgid ""
 msgstr ""
 
 #: templates/html/js_templates.html
-msgid "Success Feedback"
+msgid "Success feedback"
 msgstr ""
 
 #: templates/html/js_templates.html
-msgid "Error Feedback"
+msgid "Error feedback"
 msgstr ""
 
 #: templates/html/js_templates.html
@@ -340,11 +340,11 @@ msgid ""
 msgstr ""
 
 #: templates/html/drag_and_drop_edit.html
-msgid "Introductory Feedback"
+msgid "Introductory feedback"
 msgstr ""
 
 #: templates/html/drag_and_drop_edit.html
-msgid "Final Feedback"
+msgid "Final feedback"
 msgstr ""
 
 #: templates/html/drag_and_drop_edit.html

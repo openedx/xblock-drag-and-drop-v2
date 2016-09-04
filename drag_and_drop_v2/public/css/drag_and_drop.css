@@ -396,6 +396,10 @@
     font-size: 14px;
 }
 
+.xblock--drag-and-drop .popup .popup-content img {
+    max-width: 100%;
+}
+
 .xblock--drag-and-drop .popup .close-feedback-popup-button {
     cursor: pointer;
     margin-top: 8px;
