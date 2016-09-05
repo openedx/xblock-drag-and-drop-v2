@@ -553,12 +553,19 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
             self._make_feedback_message(
                 FeedbackMessages.correctly_placed(1), FeedbackMessages.MessageClasses.CORRECTLY_PLACED
             ),
-            self._make_feedback_message(FeedbackMessages.misplaced(1), FeedbackMessages.MessageClasses.MISPLACED),
+            self._make_feedback_message(FeedbackMessages.misplaced_returned(1), FeedbackMessages.MessageClasses.MISPLACED),
             self._make_feedback_message(FeedbackMessages.not_placed(1), FeedbackMessages.MessageClasses.NOT_PLACED),
             self._make_feedback_message(self.INITIAL_FEEDBACK, None),
         ]
 
         self._assert_item_and_overall_feedback(res, expected_item_feedback, expected_overall_feedback)
+
+    def test_do_attempt_shows_correct_misplaced_feedback_at_last_attempt(self):
+        self._set_final_attempt()
+        self._submit_solution({0: self.ZONE_2})
+        res = self._do_attempt()
+        misplaced_message = self._make_feedback_message(FeedbackMessages.misplaced(1), FeedbackMessages.MessageClasses.MISPLACED)
+        self.assertIn(misplaced_message, res[self.OVERALL_FEEDBACK_KEY])
 
     def test_do_attempt_no_item_state(self):
         """
@@ -584,7 +591,7 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
             self._make_feedback_message(
                 FeedbackMessages.correctly_placed(2), FeedbackMessages.MessageClasses.CORRECTLY_PLACED
             ),
-            self._make_feedback_message(FeedbackMessages.misplaced(1), FeedbackMessages.MessageClasses.MISPLACED),
+            self._make_feedback_message(FeedbackMessages.misplaced_returned(1), FeedbackMessages.MessageClasses.MISPLACED),
             self._make_feedback_message(FeedbackMessages.not_placed(1), FeedbackMessages.MessageClasses.NOT_PLACED),
             self._make_feedback_message(self.INITIAL_FEEDBACK, None),
         ]

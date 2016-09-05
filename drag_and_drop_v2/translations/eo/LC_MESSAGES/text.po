@@ -633,11 +633,17 @@ msgid_plural "Correctly placed {correct_count} items."
 msgstr[0] "Çörréçtlý pläçéd {correct_count} ïtém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 msgstr[1] "Çörréçtlý pläçéd {correct_count} ïtéms. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
 
-#: utils.py:32
-msgid "Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
-msgid_plural "Misplaced {misplaced_count} items. Misplaced items were returned to item bank."
+#: utils.py:62
+msgid "Misplaced {misplaced_count} item."
+msgid_plural "Misplaced {misplaced_count} items."
 msgstr[0] "Mïspläçéd {misplaced_count} ïtém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
 msgstr[1] "Mïspläçéd {misplaced_count} ïtéms. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: utils.py:73
+msgid "Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
+msgid_plural "Misplaced {misplaced_count} items. Misplaced items were returned to item bank."
+msgstr[0] "Mïspläçéd {misplaced_count} ïtém. Mïspläçéd ïtém wäs rétürnéd tö ïtém ßänk. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+msgstr[1] "Mïspläçéd {misplaced_count} ïtéms. Mïspläçéd ïtéms wéré rétürnéd tö ïtém ßänk. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
 #: utils.py:40
 msgid "Did not place {missing_count} required item."

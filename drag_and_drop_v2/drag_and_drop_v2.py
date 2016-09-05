@@ -549,7 +549,14 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
                 FeedbackMessages.correctly_placed,
                 FeedbackMessages.MessageClasses.CORRECTLY_PLACED
             )
-            _add_msg_if_exists(misplaced_ids, FeedbackMessages.misplaced, FeedbackMessages.MessageClasses.MISPLACED)
+
+            # Misplaced items are not returned to the bank on the final attempt.
+            if self.attempts_remain:
+                misplaced_template = FeedbackMessages.misplaced_returned
+            else:
+                misplaced_template = FeedbackMessages.misplaced
+
+            _add_msg_if_exists(misplaced_ids, misplaced_template, FeedbackMessages.MessageClasses.MISPLACED)
             _add_msg_if_exists(missing_ids, FeedbackMessages.not_placed, FeedbackMessages.MessageClasses.NOT_PLACED)
 
         if self.attempts_remain and (misplaced_ids or missing_ids):

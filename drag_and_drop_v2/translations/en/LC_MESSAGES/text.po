@@ -545,7 +545,13 @@ msgid_plural "Correctly placed {correct_count} items."
 msgstr[0] ""
 msgstr[1] ""
 
-#: utils.py:32
+#: utils.py:62
+msgid "Misplaced {misplaced_count} item."
+msgid_plural "Misplaced {misplaced_count} items."
+msgstr[0] ""
+msgstr[1] ""
+
+#: utils.py:73
 msgid "Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
 msgid_plural "Misplaced {misplaced_count} items. Misplaced items were returned to item bank."
 msgstr[0] ""
