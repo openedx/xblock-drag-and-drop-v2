@@ -24,6 +24,12 @@ ITEM_INCORRECT_FEEDBACK = _("No, this item does not belong here. Try again.")
 ITEM_NO_ZONE_FEEDBACK = _("You silly, there are no zones for this one.")
 ITEM_ANY_ZONE_FEEDBACK = _("Of course it goes here! It goes anywhere!")
 
+ITEM_TOP_ZONE_NAME = _("Goes to the top")
+ITEM_MIDDLE_ZONE_NAME = _("Goes to the middle")
+ITEM_BOTTOM_ZONE_NAME = _("Goes to the bottom")
+ITEM_ANY_ZONE_NAME = _("Goes anywhere")
+ITEM_NO_ZONE_NAME = _("I don't belong anywhere")
+
 START_FEEDBACK = _("Drag the items onto the image above.")
 FINISH_FEEDBACK = _("Good work! You have completed this drag and drop problem.")
 
@@ -63,7 +69,7 @@ DEFAULT_DATA = {
     ],
     "items": [
         {
-            "displayName": _("Goes to the top"),
+            "displayName": ITEM_TOP_ZONE_NAME,
             "feedback": {
                 "incorrect": ITEM_INCORRECT_FEEDBACK,
                 "correct": ITEM_CORRECT_FEEDBACK.format(zone=TOP_ZONE_TITLE)
@@ -75,7 +81,7 @@ DEFAULT_DATA = {
             "id": 0,
         },
         {
-            "displayName": _("Goes to the middle"),
+            "displayName": ITEM_MIDDLE_ZONE_NAME,
             "feedback": {
                 "incorrect": ITEM_INCORRECT_FEEDBACK,
                 "correct": ITEM_CORRECT_FEEDBACK.format(zone=MIDDLE_ZONE_TITLE)
@@ -87,7 +93,7 @@ DEFAULT_DATA = {
             "id": 1,
         },
         {
-            "displayName": _("Goes to the bottom"),
+            "displayName": ITEM_BOTTOM_ZONE_NAME,
             "feedback": {
                 "incorrect": ITEM_INCORRECT_FEEDBACK,
                 "correct": ITEM_CORRECT_FEEDBACK.format(zone=BOTTOM_ZONE_TITLE)
@@ -99,7 +105,7 @@ DEFAULT_DATA = {
             "id": 2,
         },
         {
-            "displayName": _("Goes anywhere"),
+            "displayName": ITEM_ANY_ZONE_NAME,
             "feedback": {
                 "incorrect": "",
                 "correct": ITEM_ANY_ZONE_FEEDBACK
@@ -113,7 +119,7 @@ DEFAULT_DATA = {
             "id": 3
         },
         {
-            "displayName": _("I don't belong anywhere"),
+            "displayName": ITEM_NO_ZONE_NAME,
             "feedback": {
                 "incorrect": ITEM_NO_ZONE_FEEDBACK,
                 "correct": ""

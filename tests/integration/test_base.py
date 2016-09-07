@@ -7,6 +7,7 @@ from xml.sax.saxutils import escape
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
+from collections import namedtuple
 
 from bok_choy.promise import EmptyPromise
 from workbench import scenarios
@@ -20,6 +21,8 @@ from drag_and_drop_v2.default_data import (
     DEFAULT_DATA, START_FEEDBACK, FINISH_FEEDBACK,
     TOP_ZONE_ID, TOP_ZONE_TITLE, MIDDLE_ZONE_ID, MIDDLE_ZONE_TITLE, BOTTOM_ZONE_ID, BOTTOM_ZONE_TITLE,
     ITEM_CORRECT_FEEDBACK, ITEM_INCORRECT_FEEDBACK, ITEM_ANY_ZONE_FEEDBACK, ITEM_NO_ZONE_FEEDBACK,
+    ITEM_TOP_ZONE_NAME, ITEM_MIDDLE_ZONE_NAME, ITEM_BOTTOM_ZONE_NAME,
+    ITEM_ANY_ZONE_NAME, ITEM_NO_ZONE_NAME,
 )
 
 # Globals ###########################################################
@@ -29,13 +32,18 @@ loader = ResourceLoader(__name__)
 
 # Classes ###########################################################
 
-class ItemDefinition(object):
-    def __init__(self, item_id, zone_ids, zone_title, feedback_positive, feedback_negative):
-        self.feedback_negative = feedback_negative
-        self.feedback_positive = feedback_positive
-        self.zone_ids = zone_ids
-        self.zone_title = zone_title
-        self.item_id = item_id
+ItemDefinition = namedtuple(  # pylint: disable=invalid-name
+    "ItemDefinition",
+    [
+        "item_id",
+        "item_name",
+        "image_url",
+        "zone_ids",
+        "zone_title",
+        "feedback_positive",
+        "feedback_negative",
+    ]
+)
 
 
 class BaseIntegrationTest(SeleniumBaseTest):
@@ -180,22 +188,22 @@ class DefaultDataTestMixin(object):
 
     items_map = {
         0: ItemDefinition(
-            0, [TOP_ZONE_ID], TOP_ZONE_TITLE,
+            0, ITEM_TOP_ZONE_NAME, "", [TOP_ZONE_ID], TOP_ZONE_TITLE,
             ITEM_CORRECT_FEEDBACK.format(zone=TOP_ZONE_TITLE), ITEM_INCORRECT_FEEDBACK
         ),
         1: ItemDefinition(
-            1, [MIDDLE_ZONE_ID], MIDDLE_ZONE_TITLE,
+            1, ITEM_MIDDLE_ZONE_NAME, "", [MIDDLE_ZONE_ID], MIDDLE_ZONE_TITLE,
             ITEM_CORRECT_FEEDBACK.format(zone=MIDDLE_ZONE_TITLE), ITEM_INCORRECT_FEEDBACK
         ),
         2: ItemDefinition(
-            2, [BOTTOM_ZONE_ID], BOTTOM_ZONE_TITLE,
+            2, ITEM_BOTTOM_ZONE_NAME, "", [BOTTOM_ZONE_ID], BOTTOM_ZONE_TITLE,
             ITEM_CORRECT_FEEDBACK.format(zone=BOTTOM_ZONE_TITLE), ITEM_INCORRECT_FEEDBACK
         ),
         3: ItemDefinition(
-            3, [MIDDLE_ZONE_ID, TOP_ZONE_ID, BOTTOM_ZONE_ID], MIDDLE_ZONE_TITLE,
+            3, ITEM_ANY_ZONE_NAME, "", [MIDDLE_ZONE_ID, TOP_ZONE_ID, BOTTOM_ZONE_ID], MIDDLE_ZONE_TITLE,
             ITEM_ANY_ZONE_FEEDBACK, ITEM_INCORRECT_FEEDBACK
         ),
-        4: ItemDefinition(4, [], None, "", ITEM_NO_ZONE_FEEDBACK),
+        4: ItemDefinition(4, ITEM_NO_ZONE_NAME, "", [], None, "", ITEM_NO_ZONE_FEEDBACK),
     }
 
     all_zones = [
