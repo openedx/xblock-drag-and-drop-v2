@@ -502,6 +502,7 @@
         float: right;
         margin: 0;
         padding-right: -5px;
+        padding-top: 5px;
     }
 }
 
@@ -534,10 +535,6 @@
 
 .xblock--drag-and-drop .btn-icon {
     display: block;
-}
-
-.xblock--drag-and-drop .reset-button {
-    margin-top: 3px;
 }
 
 /*** ACTIONS TOOLBAR END ***/
