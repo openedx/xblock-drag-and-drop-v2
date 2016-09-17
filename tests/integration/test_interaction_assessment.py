@@ -139,6 +139,36 @@ class AssessmentInteractionTest(
         for item_id in misplaced_items:
             self.assert_reverted_item(item_id)
 
+    def test_misplaced_items_not_returned_to_bank_on_final_attempt(self):
+        """
+        Test items placed on incorrect zones are not returned to item bank
+        after submitting solution on the final attempt, and remain placed after
+        subsequently refreshing the page.
+        """
+        self.place_item(0, TOP_ZONE_ID, action_key=Keys.RETURN)
+
+        # Reach final attempt
+        for _ in xrange(self.MAX_ATTEMPTS-1):
+            self.click_submit()
+
+        # Place incorrect item on final attempt
+        self.place_item(1, TOP_ZONE_ID, action_key=Keys.RETURN)
+        self.click_submit()
+
+        # Incorrect item remains placed
+        def _assert_placed(item_id, zone_title):
+            item = self._get_placed_item_by_value(item_id)
+            item_description = item.find_element_by_css_selector('.sr')
+            self.assertEqual(item_description.text, 'Placed in: {}'.format(zone_title))
+
+        _assert_placed(1, TOP_ZONE_TITLE)
+
+        # Refresh the page
+        self._page = self.go_to_page(self.PAGE_TITLE)
+
+        # Incorrect item remains placed after refresh
+        _assert_placed(1, TOP_ZONE_TITLE)
+
     def test_max_attempts_reached_submit_and_reset_disabled(self):
         """
         Test "Submit" and "Reset" buttons are disabled when no more attempts remaining
