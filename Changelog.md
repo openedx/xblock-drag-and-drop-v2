@@ -1,3 +1,11 @@
+Version 2.0.10 (2016-09-22)
+---------------------------
+
+* ([#97](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/97)) Added "item" field to item.dropped event
+* ([#101](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/101)) Implement "show answer" button
+* ([#103](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/103)) Miscellaneous UI fixes
+* ([#105](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/105)) Correct an issue with background image selection
+
 Version 2.0.9 (2016-09-01)
 --------------------------
 
