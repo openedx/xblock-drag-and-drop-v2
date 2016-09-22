@@ -60,6 +60,17 @@ class FeedbackMessages(object):
         Formats "misplaced items" message
         """
         return ngettext(
+            'Misplaced {misplaced_count} item.',
+            'Misplaced {misplaced_count} items.',
+            number
+        ).format(misplaced_count=number)
+
+    @staticmethod
+    def misplaced_returned(number, ngettext=ngettext_fallback):
+        """
+        Formats "misplaced items returned to bank" message
+        """
+        return ngettext(
             'Misplaced {misplaced_count} item. Misplaced item was returned to item bank.',
             'Misplaced {misplaced_count} items. Misplaced items were returned to item bank.',
             number

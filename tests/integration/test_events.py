@@ -5,7 +5,8 @@ from selenium.webdriver.common.keys import Keys
 from workbench.runtime import WorkbenchRuntime
 
 from drag_and_drop_v2.default_data import (
-    TOP_ZONE_TITLE, TOP_ZONE_ID, MIDDLE_ZONE_TITLE, MIDDLE_ZONE_ID, ITEM_CORRECT_FEEDBACK, ITEM_INCORRECT_FEEDBACK,
+    TOP_ZONE_TITLE, TOP_ZONE_ID, MIDDLE_ZONE_TITLE, MIDDLE_ZONE_ID, BOTTOM_ZONE_ID,
+    ITEM_CORRECT_FEEDBACK, ITEM_INCORRECT_FEEDBACK,
     ITEM_TOP_ZONE_NAME, ITEM_MIDDLE_ZONE_NAME,
 )
 from tests.integration.test_base import BaseIntegrationTest, DefaultDataTestMixin, InteractionTestBase, ItemDefinition
@@ -145,6 +146,20 @@ class AssessmentEventsFiredTest(
             dummy, name, published_data = self.publish.call_args_list[index][0]
             self.assertEqual(name, event['name'])
             self.assertEqual(published_data, event['data'])
+
+    def test_grade(self):
+        """
+        Test grading after submitting solution in assessment mode
+        """
+        self.place_item(0, TOP_ZONE_ID, Keys.RETURN)  # Correctly placed item
+        self.place_item(1, BOTTOM_ZONE_ID, Keys.RETURN)  # Incorrectly placed item
+        self.place_item(4, MIDDLE_ZONE_ID, Keys.RETURN)  # Incorrectly placed decoy
+        self.click_submit()
+
+        events = self.publish.call_args_list
+        published_grade = next((event[0][2] for event in events if event[0][1] == 'grade'))
+        expected_grade = {'max_value': 1, 'value': (1.0 / 5.0)}
+        self.assertEqual(published_grade, expected_grade)
 
 
 @ddt

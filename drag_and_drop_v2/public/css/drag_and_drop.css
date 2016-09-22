@@ -568,6 +568,7 @@
     .ltr .xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
         float: right;
         padding-right: -5px;
+        padding-top: 5px;
     }
 
     .rtl .xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
@@ -621,10 +622,6 @@
 
 .xblock--drag-and-drop .btn-icon {
     display: block;
-}
-
-.xblock--drag-and-drop .reset-button {
-    margin-top: 3px;
 }
 
 /*** ACTIONS TOOLBAR END ***/

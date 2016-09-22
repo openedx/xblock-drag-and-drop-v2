@@ -108,7 +108,8 @@ There are two problem modes available:
   attempt to place an item, and the number of attempts is not limited.
 * **Assessment**: In this mode, the learner places all items on the board and
   then clicks a "Submit" button to get feedback.  The number of attempts can be
-  limited.
+  limited.  When all attempts are used, the learner can click a "Show Answer"
+  button to temporarily place items on their correct drop zones.
 
 ![Drop zone edit](/doc/img/edit-view-zones.png)
 

@@ -126,6 +126,9 @@ class BaseIntegrationTest(SeleniumBaseTest):
     def _get_reset_button(self):
         return self._page.find_element_by_css_selector('.reset-button')
 
+    def _get_show_answer_button(self):
+        return self._page.find_element_by_css_selector('.show-answer-button')
+
     def _get_submit_button(self):
         return self._page.find_element_by_css_selector('.submit-answer-button')
 
@@ -392,12 +395,21 @@ class InteractionTestBase(object):
             self.assertDraggable(item_value)
             self.assertEqual(item.get_attribute('class'), 'option')
             self.assertEqual(item.get_attribute('tabindex'), '0')
-            self.assertEqual(item_description.text, 'Placed in: {}'.format(zone_title))
+            description = 'Placed in: {}'
         else:
             self.assertNotDraggable(item_value)
             self.assertEqual(item.get_attribute('class'), 'option fade')
             self.assertIsNone(item.get_attribute('tabindex'))
-            self.assertEqual(item_description.text, 'Correctly placed in: {}'.format(zone_title))
+            description = 'Correctly placed in: {}'
+
+        # An item with multiple drop zones could be located in any one of these
+        # zones. In that case, zone_title will be a list, and we need to check
+        # whether the zone info in the description of the item matches any of
+        # the zones in that list.
+        if isinstance(zone_title, list):
+            self.assertIn(item_description.text, [description.format(title) for title in zone_title])
+        else:
+            self.assertEqual(item_description.text, description.format(zone_title))
 
     def assert_reverted_item(self, item_value):
         item = self._get_item_by_value(item_value)

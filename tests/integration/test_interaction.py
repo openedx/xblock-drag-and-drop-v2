@@ -442,7 +442,7 @@ class MultipleBlocksDataInteraction(ParameterizedTestsMixin, InteractionTestBase
 
         self._switch_to_block(1)
         # Test mouse and keyboard interaction
-        self.interact_with_keyboard_help(scroll_down=900)
+        self.interact_with_keyboard_help(scroll_down=1200)
         self.interact_with_keyboard_help(scroll_down=0, use_keyboard=True)
 
 
