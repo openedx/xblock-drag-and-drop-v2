@@ -307,32 +307,68 @@
 
 
 /* Font Awesome icons have different width - margin-right tries to compensate it */
-.xblock--drag-and-drop .feedback p:before {
+.ltr .xblock--drag-and-drop .feedback p:before,
+.rtl .xblock--drag-and-drop .feedback p:after {
     content: "\f129";
     font-family: FontAwesome;
+}
+
+.ltr .xblock--drag-and-drop .feedback p:before {
     margin-right: 0.7em;
     margin-left: 0.3em;
 }
 
-.xblock--drag-and-drop .feedback p.correct:before {
+.rtl .xblock--drag-and-drop .feedback p:after {
+    margin-left: 0.7em;
+    margin-right: 0.3em;
+}
+
+.ltr .xblock--drag-and-drop .feedback p.correct:before,
+.rtl .xblock--drag-and-drop .feedback p.correct:after {
     content: "\f00c";
     font-family: FontAwesome;
+}
+
+.ltr .xblock--drag-and-drop .feedback p.correct:before {
     margin-right: 0.3em;
     margin-left: 0;
 }
 
-.xblock--drag-and-drop .feedback p.partial:before {
+.rtl .xblock--drag-and-drop .feedback p.correct:after {
+    margin-left: 0.3em;
+    margin-right: 0;
+}
+
+.ltr .xblock--drag-and-drop .feedback p.partial:before,
+.rtl .xblock--drag-and-drop .feedback p.partial:after {
     content: "\f069";
     font-family: FontAwesome;
+}
+
+.ltr .xblock--drag-and-drop .feedback p.partial:before {
     margin-right: 0.3em;
     margin-left: 0;
 }
 
-.xblock--drag-and-drop .feedback p.incorrect:before {
+.rtl .xblock--drag-and-drop .feedback p.partial:after {
+    margin-left: 0.3em;
+    margin-right: 0;
+}
+
+.ltr .xblock--drag-and-drop .feedback p.incorrect:before,
+.rtl .xblock--drag-and-drop .feedback p.incorrect:after {
     content: "\f00d";
     font-family: FontAwesome;
+}
+
+.ltr .xblock--drag-and-drop .feedback p.incorrect:before {
     margin-right: 0.45em;
     margin-left: 0.1em;
+}
+
+.rtl .xblock--drag-and-drop .feedback p.incorrect:after {
+    margin-left: 0.45em;
+    margin-right: 0.1em;
 }
 
 .xblock--drag-and-drop .popup {
@@ -360,15 +396,28 @@
     font-size: 14px;
 }
 
+.xblock--drag-and-drop .popup .popup-content img {
+    max-width: 100%;
+}
+
 .xblock--drag-and-drop .popup .close-feedback-popup-button {
     cursor: pointer;
-    float: right;
-    margin-right: 8px;
     margin-top: 8px;
-    margin-left: 20px;
     color: #ffffff;
     font-family: "fontawesome";
     font-size: 18pt;
+}
+
+.ltr .xblock--drag-and-drop .popup .close-feedback-popup-button {
+    float: right;
+    margin-right: 8px;
+    margin-left: 20px;
+}
+
+.rtl .xblock--drag-and-drop .popup .close-feedback-popup-button {
+    float: left;
+    margin-right: 20px;
+    margin-left: 8px;
 }
 
 .xblock--drag-and-drop .popup .close-feedback-popup-button:focus {
@@ -487,39 +536,77 @@
 }
 
 .xblock--drag-and-drop .attempts-used {
-    margin-left: 0.675em;
     font-size: 0.875em;
     color: #666;
 }
 
+.ltr .xblock--drag-and-drop .attempts-used {
+    margin-left: 0.675em;
+}
+
+.rtl .xblock--drag-and-drop .attempts-used {
+    margin-right: 0.675em;
+}
+
 .xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
-    text-align: left;
     display: block;
+}
+
+.ltr .xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
+    text-align: left;
+}
+
+.rtl .xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
+    text-align: right;
 }
 
 @media (min-width: 768px) {
     .xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
-        float: right;
         margin: 0;
+    }
+
+    .ltr .xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
+        float: right;
         padding-right: -5px;
+    }
+
+    .rtl .xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
+        float: left;
+        padding-left: -5px;
     }
 }
 
 .xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper {
-    border-right: 1px solid #ddd;
     border-collapse: collapse;
     padding: 0 5px;
     display: inline-block;
     height: 100%;
 }
 
-.xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper:first-child {
+.ltr .xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper {
+    border-right: 1px solid #ddd;
+}
+
+.rtl .xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper {
+    border-left: 1px solid #ddd;
+}
+
+.ltr .xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper:first-child {
     padding-left: 0;
 }
 
-.xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper:last-child {
+.rtl .xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper:first-child {
+    padding-right: 0;
+}
+
+.ltr .xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper:last-child {
     border-right: none;
     padding-right: 0;
+}
+
+.rtl .xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper:last-child {
+    border-left: none;
+    padding-left: 0;
 }
 
 .xblock--drag-and-drop .sidebar-buttons .btn-brand {

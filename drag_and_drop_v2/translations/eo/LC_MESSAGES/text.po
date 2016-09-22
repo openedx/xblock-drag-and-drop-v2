@@ -366,12 +366,12 @@ msgstr ""
 "évén ïf thé ïmägé dïd nöt löäd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт #"
 
 #: templates/html/js_templates.html
-msgid "Success Feedback"
-msgstr "Süççéss Féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+msgid "Success feedback"
+msgstr "Süççéss féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
 #: templates/html/js_templates.html
-msgid "Error Feedback"
-msgstr "Érrör Féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+msgid "Error feedback"
+msgstr "Érrör féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 
 #: templates/html/js_templates.html
 msgid "Show advanced settings"
@@ -413,12 +413,12 @@ msgstr ""
 "thé prößlém änd çréäté ä néw öné. Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
 #: templates/html/drag_and_drop_edit.html
-msgid "Introductory Feedback"
-msgstr "Ìntrödüçtörý Féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+msgid "Introductory feedback"
+msgstr "Ìntrödüçtörý féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
 #: templates/html/drag_and_drop_edit.html
-msgid "Final Feedback"
-msgstr "Fïnäl Féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+msgid "Final feedback"
+msgstr "Fïnäl féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 
 #: templates/html/drag_and_drop_edit.html
 msgid "Background URL"

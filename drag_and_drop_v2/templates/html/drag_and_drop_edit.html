@@ -6,9 +6,6 @@
 
     <section class="drag-builder">
         <div class="tab feedback-tab">
-            <p class="tab-content">
-                {% trans "Note: do not edit the problem if students have already completed it. Delete the problem and create a new one." %}
-            </p>
 
             <section class="tab-content">
                 <form class="feedback-form">
@@ -71,12 +68,12 @@
                     </div>
 
                     <label class="h4">
-                        <span>{% trans "Introductory Feedback" %}</span>
+                        <span>{% trans "Introductory feedback" %}</span>
                         <textarea class="intro-feedback">{{ self.data.feedback.start }}</textarea>
                     </label>
 
                     <label class="h4">
-                        <span>{% trans "Final Feedback" %}</span>
+                        <span>{% trans "Final feedback" %}</span>
                         <textarea class="final-feedback">{{ self.data.feedback.finish }}</textarea>
                     </label>
                 </form>
