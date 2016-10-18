@@ -51,6 +51,9 @@
                         <span>{% trans fields.weight.display_name %}</span>
                         <input class="weight" type="number" step="0.1" value="{{ self.weight|unlocalize }}" />
                     </label>
+                    <div id="weight-description-{{id_suffix}}" class="assessment-setting form-help">
+                      {% trans fields.weight.help %}
+                    </div>
 
                     <label class="h4">
                         <span>{% trans fields.question_text.display_name %}</span>

@@ -5,6 +5,7 @@
 from ddt import ddt, data
 from mock import Mock, patch
 import time
+import re
 
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
@@ -250,15 +251,22 @@ class AssessmentInteractionTest(
 
         self.click_submit()
 
+        # There are five items total (4 items with zones and one decoy item).
+        # We place the first item into correct zone and left the decoy item in the bank,
+        # which means the current grade is 2/5.
+        expected_grade = 2.0 / 5.0
+
         feedback_lines = [
             "FEEDBACK",
             FeedbackMessages.correctly_placed(1),
             FeedbackMessages.not_placed(3),
-            START_FEEDBACK
+            START_FEEDBACK,
+            FeedbackMessages.GRADE_FEEDBACK_TPL.format(score=expected_grade)
         ]
         expected_feedback = "\n".join(feedback_lines)
         self.assertEqual(self._get_feedback().text, expected_feedback)
 
+        # Place the item into incorrect zone. The score does not change.
         self.place_item(1, BOTTOM_ZONE_ID, Keys.RETURN)
         self.click_submit()
 
@@ -267,7 +275,8 @@ class AssessmentInteractionTest(
             FeedbackMessages.correctly_placed(1),
             FeedbackMessages.misplaced_returned(1),
             FeedbackMessages.not_placed(2),
-            START_FEEDBACK
+            START_FEEDBACK,
+            FeedbackMessages.GRADE_FEEDBACK_TPL.format(score=expected_grade)
         ]
         expected_feedback = "\n".join(feedback_lines)
         self.assertEqual(self._get_feedback().text, expected_feedback)
@@ -281,11 +290,15 @@ class AssessmentInteractionTest(
         self.place_item(3, TOP_ZONE_ID, Keys.RETURN)
 
         self.click_submit()
+
+        # All items are correctly placed, so we get the full score (1.0).
+        expected_grade = 1.0
+
         feedback_lines = [
             "FEEDBACK",
             FeedbackMessages.correctly_placed(4),
             FINISH_FEEDBACK,
-            FeedbackMessages.FINAL_ATTEMPT_TPL.format(score=1.0)
+            FeedbackMessages.FINAL_ATTEMPT_TPL.format(score=expected_grade)
         ]
         expected_feedback = "\n".join(feedback_lines)
         self.assertEqual(self._get_feedback().text, expected_feedback)
@@ -327,6 +340,34 @@ class AssessmentInteractionTest(
             self.wait_until_ondrop_xhr_finished(self._get_placed_item_by_value(item_id))
 
             self.assert_button_enabled(submit_button, enabled=True)
+
+    def test_grade_display(self):
+        progress = self._page.find_element_by_css_selector('.problem-progress')
+        self.assertEqual(progress.text, '1 point possible (ungraded)')
+
+        items_with_zones = self._get_items_with_zone(self.items_map).values()
+        items_without_zones = self._get_items_without_zone(self.items_map).values()
+        total_items = len(items_with_zones) + len(items_without_zones)
+
+        # Place items into correct zones one by one:
+        for idx, item in enumerate(items_with_zones):
+            self.place_item(item.item_id, item.zone_ids[0])
+            # The number of items in correct positions currently equals:
+            # the number of items already placed + any decoy items which should stay in the bank.
+            grade = (idx + 1 + len(items_without_zones)) / float(total_items)
+            formatted_grade = '{:.04f}'.format(grade)  # display 4 decimal places
+            formatted_grade = re.sub(r'\.?0+$', '', formatted_grade)  # remove trailing zeros
+            expected_progress = '{}/1 point (ungraded)'.format(formatted_grade)
+            # Selenium does not see the refreshed text unless the text is in view (wtf??), so scroll back up.
+            self.scroll_down(pixels=0)
+            # Grade does NOT change until we submit.
+            self.assertNotEqual(progress.text, expected_progress)
+            self.click_submit()
+            self.scroll_down(pixels=0)
+            self.assertEqual(progress.text, expected_progress)
+
+        # After placing all items, we get the full score.
+        self.assertEqual(progress.text, '1/1 point (ungraded)')
 
 
 class TestMaxItemsPerZoneAssessment(TestMaxItemsPerZone):

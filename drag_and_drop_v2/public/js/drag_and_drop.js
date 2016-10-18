@@ -1,8 +1,6 @@
 function DragAndDropTemplates(configuration) {
     "use strict";
     var h = virtualDom.h;
-    // Set up a mock for gettext if it isn't available in the client runtime:
-    if (!window.gettext) { window.gettext = function gettext_stub(string) { return string; }; }
 
     var itemSpinnerTemplate = function(item) {
         if (!item.xhr_active) {
@@ -184,7 +182,7 @@ function DragAndDropTemplates(configuration) {
         var item_wrapper = 'div.item-wrapper.item-align.item-align-' + zone.align;
         var is_item_in_zone = function(i) { return i.is_placed && (i.zone === zone.uid); };
         var items_in_zone = $.grep(ctx.items, is_item_in_zone);
-        var zone_description_id = 'zone-' + zone.uid + '-description';
+        var zone_description_id = configuration.url_name + '-zone-' + zone.uid + '-description';
         if (items_in_zone.length == 0) {
           var zone_description = h(
             'div',
@@ -443,8 +441,63 @@ function DragAndDropTemplates(configuration) {
         )
     };
 
+    var progressTemplate = function(ctx) {
+        // Formats a number to 4 decimals without trailing zeros
+        // (1.00 -> '1'; 1.50 -> '1.5'; 1.333333333 -> '1.3333').
+        var formatNumber = function(n) { return n.toFixed(4).replace(/\.?0+$/, ''); };
+        var is_graded = ctx.graded && ctx.weighted_max_score > 0;
+        var progress_template;
+        if (ctx.grade !== null && ctx.weighted_max_score > 0) {
+            if (is_graded) {
+                progress_template = ngettext(
+                      // Translators: {earned} is the number of points earned. {possible} is the total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of points will always be at least 1. We pluralize based on the total number of points (example: 0/1 point; 1/2 points).
+                    '{earned}/{possible} point (graded)',
+                    '{earned}/{possible} points (graded)',
+                    ctx.weighted_max_score
+                );
+            } else {
+                progress_template = ngettext(
+                      // Translators: {earned} is the number of points earned. {possible} is the total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of points will always be at least 1. We pluralize based on the total number of points (example: 0/1 point; 1/2 points).
+                    '{earned}/{possible} point (ungraded)',
+                    '{earned}/{possible} points (ungraded)',
+                    ctx.weighted_max_score
+                );
+            }
+            progress_template = progress_template.replace('{earned}', formatNumber(ctx.grade));
+        } else {
+            if (is_graded) {
+                progress_template = ngettext(
+                    // Translators: {possible} is the number of points possible (examples: 1, 3, 10).
+                    '{possible} point possible (graded)',
+                    '{possible} points possible (graded)',
+                    ctx.weighted_max_score
+                );
+            } else {
+                progress_template = ngettext(
+                    // Translators: {possible} is the number of points possible (examples: 1, 3, 10).
+                    '{possible} point possible (ungraded)',
+                    '{possible} points possible (ungraded)',
+                    ctx.weighted_max_score
+                );
+            }
+        }
+        var progress_text = progress_template.replace('{possible}', formatNumber(ctx.weighted_max_score));
+
+        return h('div.problem-progress', {
+            id: configuration.url_name + '-problem-progress',
+            attributes: {'role': 'status', 'aria-live': 'polite'}
+        }, progress_text);
+    };
+
     var mainTemplate = function(ctx) {
-        var problemTitle = ctx.show_title ? h('h3.problem-title', {innerHTML: ctx.title_html}) : null;
+        var problemProgress = progressTemplate(ctx);
+        var problemTitle = null;
+        if (ctx.show_title) {
+            problemTitle = h('h3.problem-title', {
+                innerHTML: ctx.title_html,
+                attributes: {'aria-describedby': problemProgress.properties.id}
+            });
+        }
         var problemHeader = ctx.show_problem_header ? h('h4.title1', gettext('Problem')) : null;
         // Render only items in the bank here, including placeholders.  Placed
         // items will be rendered by zoneTemplate.
@@ -463,6 +516,7 @@ function DragAndDropTemplates(configuration) {
         return (
             h('section.themed-xblock.xblock--drag-and-drop', [
                 problemTitle,
+                problemProgress,
                 h('section.problem', [
                     problemHeader,
                     h('p', {innerHTML: ctx.problem_html}),
@@ -500,6 +554,12 @@ function DragAndDropTemplates(configuration) {
 function DragAndDropBlock(runtime, element, configuration) {
     "use strict";
 
+    // Set up a mock for gettext if it isn't available in the client runtime:
+    if (!window.gettext) {
+        window.gettext = function gettext_stub(string) { return string; };
+        window.ngettext = function ngettext_stub(strA, strB, n) { return n == 1 ? strA : strB; };
+    }
+
     DragAndDropBlock.STANDARD_MODE = 'standard';
     DragAndDropBlock.ASSESSMENT_MODE = 'assessment';
 
@@ -509,9 +569,6 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var renderView = DragAndDropTemplates(configuration);
-
-    // Set up a mock for gettext if it isn't available in the client runtime:
-    if (!window.gettext) { window.gettext = function gettext_stub(string) { return string; }; }
 
     var $element = $(element);
     element = $element[0]; // TODO: This line can be removed when we no longer support Dogwood.
@@ -1057,6 +1114,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 if (configuration.mode === DragAndDropBlock.STANDARD_MODE) {
                     state.last_action_correct = data.correct;
                     state.feedback = data.feedback;
+                    state.grade = data.grade;
                     if (!data.correct) {
                         delete state.items[item_id];
                     }
@@ -1144,6 +1202,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             data: '{}'
         }).done(function(data){
             state.attempts = data.attempts;
+            state.grade = data.grade;
             state.feedback = data.feedback;
             state.overall_feedback = data.overall_feedback;
             state.last_action_correct = data.correct;
@@ -1256,6 +1315,8 @@ function DragAndDropBlock(runtime, element, configuration) {
             show_title: configuration.show_title,
             mode: configuration.mode,
             max_attempts: configuration.max_attempts,
+            graded: configuration.graded,
+            weighted_max_score: configuration.weighted_max_score,
             problem_html: configuration.problem_text,
             show_problem_header: configuration.show_problem_header,
             show_submit_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
@@ -1268,6 +1329,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             items: items,
             // state - parts that can change:
             attempts: state.attempts,
+            grade: state.grade,
             last_action_correct: state.last_action_correct,
             item_bank_focusable: item_bank_focusable,
             feedback_messages: state.feedback,

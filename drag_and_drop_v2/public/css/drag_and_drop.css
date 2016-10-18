@@ -39,9 +39,10 @@
 
 /* Header, instruction text, etc. */
 
-.xblock--drag-and-drop .problem-title {
+.xblock--drag-and-drop .problem-progress {
     display: inline-block;
-    margin: 0 0 15px 0;
+    color: #5e5e5e;
+    font-size: 0.875em;
 }
 
 .xblock--drag-and-drop .problem p {

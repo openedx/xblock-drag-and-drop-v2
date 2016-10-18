@@ -4,6 +4,7 @@
 # Imports ###########################################################
 
 from ddt import ddt, data, unpack
+import re
 
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver import ActionChains
@@ -270,6 +271,29 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
     @data(False, True)
     def test_keyboard_help(self, use_keyboard):
         self.interact_with_keyboard_help(use_keyboard=use_keyboard)
+
+    def test_grade_display(self):
+        items_with_zones = self._get_items_with_zone(self.items_map).values()
+        items_without_zones = self._get_items_without_zone(self.items_map).values()
+        total_items = len(items_with_zones) + len(items_without_zones)
+
+        progress = self._page.find_element_by_css_selector('.problem-progress')
+        self.assertEqual(progress.text, '1 point possible (ungraded)')
+
+        # Place items into correct zones one by one:
+        for idx, item in enumerate(items_with_zones):
+            self.place_item(item.item_id, item.zone_ids[0])
+            # The number of items in correct positions currently equals:
+            # the number of items already placed + any decoy items which should stay in the bank.
+            grade = (idx + 1 + len(items_without_zones)) / float(total_items)
+            formatted_grade = '{:.04f}'.format(grade)  # display 4 decimal places
+            formatted_grade = re.sub(r'\.?0+$', '', formatted_grade)  # remove trailing zeros
+            # Selenium does not see the refreshed text unless the text is in view (wtf??), so scroll back up.
+            self.scroll_down(pixels=0)
+            self.assertEqual(progress.text, '{}/1 point (ungraded)'.format(formatted_grade))
+
+        # After placing all items, we get the full score.
+        self.assertEqual(progress.text, '1/1 point (ungraded)')
 
 
 class MultipleValidOptionsInteractionTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):

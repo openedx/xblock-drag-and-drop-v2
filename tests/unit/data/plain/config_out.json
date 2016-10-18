@@ -2,6 +2,8 @@
     "title": "DnDv2 XBlock with plain text instructions",
     "mode": "standard",
     "max_attempts": 0,
+    "graded": false,
+    "weighted_max_score": 1,
     "show_title": true,
     "problem_text": "Can you solve this drag-and-drop problem?",
     "show_problem_header": true,
