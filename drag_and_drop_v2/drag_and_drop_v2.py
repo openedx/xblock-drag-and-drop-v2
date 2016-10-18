@@ -403,7 +403,9 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         misplaced_items = []
         for item_id in misplaced_ids:
-            del self.item_state[item_id]
+            # Don't delete misplaced item states on the final attempt.
+            if self.attempts_remain:
+                del self.item_state[item_id]
             misplaced_items.append(self._get_item_definition(int(item_id)))
 
         feedback_msgs = [FeedbackMessage(item['feedback']['incorrect'], None) for item in misplaced_items]

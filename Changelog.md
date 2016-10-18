@@ -1,3 +1,8 @@
+Version 2.0.11 (2016-10-03)
+---------------------------
+
+* ([#106](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/106)) Don't delete misplaced items on final attempt
+
 Version 2.0.10 (2016-09-22)
 ---------------------------
 

@@ -404,6 +404,21 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
         expected_message = self._make_feedback_message(self.FINAL_FEEDBACK)
         self.assertIn(expected_message, res[self.OVERALL_FEEDBACK_KEY])
 
+    def test_do_attempt_does_not_delete_misplaced_items_at_last_attempt(self):
+        """
+        Upon submitting the final attempt, test that misplaced items are not
+        deleted from the item state.
+        """
+        self._set_final_attempt()
+        misplaced_ids = self._submit_incorrect_solution()
+
+        self.call_handler(self.DO_ATTEMPT_HANDLER, data={})
+
+        self.assertFalse(self.block.attempts_remain)  # precondition check
+
+        for i in misplaced_ids:
+            self.assertIn(str(i), self.block.item_state.keys())
+
     def test_get_user_state_does_not_include_correctness(self):
         self._submit_complete_solution()
         original_item_state = self.block.item_state
