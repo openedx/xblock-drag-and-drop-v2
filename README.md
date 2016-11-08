@@ -500,13 +500,13 @@ This command scrapes all the strings in all `*.py` files in `drag_and_drop_v2` f
  in `drag_and_drop_v2` folder:
 
 ```
-~/xblock-drag-and-drop-v2/drag_and_drop_v2$ find . -name "*.py" | xargs xgettext --language=python
+~/xblock-drag-and-drop-v2/drag_and_drop_v2$ find . -name "*.py" | xargs xgettext --language=python --add-comments="Translators:"
 ```
 
 Javascript command is a little bit more verbose:
 
 ```
-~/xblock-drag-and-drop-v2/drag_and_drop_v2$ find . -name "*.js" -o  -path ./public/js/vendor -prune -a -type f | xargs xgettext --language=javascript --from-code=utf-8
+~/xblock-drag-and-drop-v2/drag_and_drop_v2$ find . -name "*.js" -o  -path ./public/js/vendor -prune -a -type f | xargs xgettext --language=javascript --from-code=utf-8 --add-comments="Translators:"
 ```
 
 Note that both commands generate partial `messages.po` file - JS or python only, while `test.po` is supposed to contain

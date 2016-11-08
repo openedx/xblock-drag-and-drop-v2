@@ -7,6 +7,9 @@ before_install:
     - "sh -e /etc/init.d/xvfb start"
 install:
     - "sh install_test_deps.sh"
+    # Remove the next two lines after our test suite is compatible with selenium 3.
+    - "pip uninstall -y selenium"
+    - "pip install selenium==2.53.0"
     - "pip uninstall -y xblock-drag-and-drop-v2"
     - "python setup.py sdist"
     - "pip install dist/xblock-drag-and-drop-v2-2.0.11.tar.gz"

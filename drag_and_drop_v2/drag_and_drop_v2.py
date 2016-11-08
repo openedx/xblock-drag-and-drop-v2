@@ -107,8 +107,8 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     )
 
     weight = Float(
-        display_name=_("Maximum score"),
-        help=_("The maximum score the learner can receive for the problem."),
+        display_name=_("Problem Weight"),
+        help=_("Defines the number of points the problem is worth."),
         scope=Scope.settings,
         default=1,
     )
@@ -172,6 +172,23 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     block_settings_key = 'drag-and-drop-v2'
     has_score = True
 
+    def max_score(self):  # pylint: disable=no-self-use
+        """
+        Return the problem's max score, which for DnDv2 always equals 1.
+        Required by the grading system in the LMS.
+        """
+        return 1
+
+    def _learner_raw_score(self):
+        """
+        Calculate raw score for learner submission.
+
+        As it is calculated as ratio of correctly placed (or left in bank in case of decoys) items to
+        total number of items, it lays in interval [0..1]
+        """
+        correct_count, total_count = self._get_item_stats()
+        return correct_count / float(total_count)
+
     @XBlock.supports("multi_device")  # Enable this block for use in the mobile app via webview
     def student_view(self, context):
         """
@@ -232,6 +249,8 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             "mode": self.mode,
             "zones": self.zones,
             "max_attempts": self.max_attempts,
+            "graded": getattr(self, 'graded', False),
+            "weighted_max_score": self.max_score() * self.weight,
             "max_items_per_zone": self.max_items_per_zone,
             # SDK doesn't supply url_name.
             "url_name": getattr(self, 'url_name', ''),
@@ -413,6 +432,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         return {
             'correct': correct,
             'attempts': self.attempts,
+            'grade': self._get_grade_if_set(),
             'misplaced_items': list(misplaced_ids),
             'feedback': self._present_feedback(feedback_msgs),
             'overall_feedback': self._present_feedback(overall_feedback_msgs)
@@ -571,9 +591,14 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         feedback_msgs.append(FeedbackMessage(problem_feedback_message, problem_feedback_class))
 
-        if not self.attempts_remain:
+        if self.weight > 0:
+            if self.attempts_remain:
+                grade_feedback_template = FeedbackMessages.GRADE_FEEDBACK_TPL
+            else:
+                grade_feedback_template = FeedbackMessages.FINAL_ATTEMPT_TPL
+
             feedback_msgs.append(
-                FeedbackMessage(FeedbackMessages.FINAL_ATTEMPT_TPL.format(score=self.grade), grade_feedback_class)
+                FeedbackMessage(grade_feedback_template.format(score=self.grade), grade_feedback_class)
             )
 
         return feedback_msgs, misplaced_ids
@@ -608,6 +633,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         return {
             'correct': is_correct,
+            'grade': self._get_grade_if_set(),
             'finished': self._is_answer_correct(),
             'overall_feedback': self._present_feedback(overall_feedback),
             'feedback': self._present_feedback([item_feedback])
@@ -654,7 +680,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """
         # pylint: disable=fixme
         # TODO: (arguable) split this method into "clean" functions (with no side effects and implicit state)
-        # This method implicitly depends on self.item_state (via _is_answer_correct and _get_grade)
+        # This method implicitly depends on self.item_state (via _is_answer_correct and _calculate_grade)
         # and also updates self.grade if some conditions are met. As a result this method implies some order of
         # invocation:
         # * it should be called after learner-caused updates to self.item_state is applied
@@ -666,9 +692,10 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         # There's no going back from "completed" status to "incomplete"
         self.completed = self.completed or self._is_answer_correct() or not self.attempts_remain
-        grade = self._get_grade()
+        grade = self._calculate_grade()
         # ... and from higher grade to lower
-        if grade > self.grade:
+        current_grade = self._get_grade_if_set()
+        if current_grade is None or grade > current_grade:
             self.grade = grade
             self._publish_grade()
 
@@ -751,6 +778,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             'items': item_state,
             'finished': is_finished,
             'attempts': self.attempts,
+            'grade': self._get_grade_if_set(),
             'overall_feedback': self._present_feedback(overall_feedback_msgs)
         }
 
@@ -872,12 +900,21 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         return ItemStats(required, placed, correctly_placed, decoy, decoy_in_bank)
 
-    def _get_grade(self):
+    def _calculate_grade(self):
         """
-        Returns the student's grade for this block.
+        Calculates the student's grade for this block based on current item state.
         """
-        correct_count, total_count = self._get_item_stats()
-        return correct_count / float(total_count) * self.weight
+        return self._learner_raw_score() * self.weight
+
+    def _get_grade_if_set(self):
+        """
+        Returns student's grade if already explicitly set, otherwise returns None.
+        This is different from self.grade which returns 0 by default.
+        """
+        if self.fields['grade'].is_set_on(self):
+            return self.grade
+        else:
+            return None
 
     def _answer_correctness(self):
         """

@@ -2,6 +2,8 @@
     "title": "Drag and Drop",
     "mode": "standard",
     "max_attempts": null,
+    "graded": false,
+    "weighted_max_score": 1,
     "show_title": true,
     "problem_text": "",
     "show_problem_header": true,

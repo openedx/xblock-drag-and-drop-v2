@@ -41,6 +41,7 @@ class FeedbackMessages(object):
         MISPLACED = INCORRECT_SOLUTION
         NOT_PLACED = INCORRECT_SOLUTION
 
+    GRADE_FEEDBACK_TPL = _('Your highest score is {score}')
     FINAL_ATTEMPT_TPL = _('Final attempt was used, highest score is {score}')
 
     @staticmethod

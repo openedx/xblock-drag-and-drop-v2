@@ -1,5 +1,6 @@
 import ddt
 import unittest
+import random
 
 from drag_and_drop_v2.utils import Constants
 from drag_and_drop_v2.default_data import (
@@ -58,6 +59,8 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         self.assertEqual(config, {
             "mode": Constants.STANDARD_MODE,
             "max_attempts": None,
+            "graded": False,
+            "weighted_max_score": 1,
             "display_zone_borders": False,
             "display_zone_labels": False,
             "title": "Drag and Drop",
@@ -86,13 +89,25 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             )
         ])
 
+    @ddt.data(*[random.randint(1, 50) for _ in xrange(5)])  # pylint: disable=star-args
+    def test_grading_interface(self, weight):
+        """
+        Test that the methods required by the LMS grading interface work as expected.
+        """
+        self.block.weight = weight
+        # Max score is different from weight and should always equal 1 for drag and drop problems.
+        # See: https://openedx.atlassian.net/wiki/display/TNL/Robust+Grades+Design
+        self.assertEqual(self.block.max_score(), 1)
+        self.assertTrue(self.block.has_score)
+
     def test_ajax_solve_and_reset(self):
         # Check assumptions / initial conditions:
         self.assertFalse(self.block.completed)
 
-        def assert_user_state_empty():
+        def assert_user_state_empty(grade=None):
             self.assertEqual(self.block.item_state, {})
             self.assertEqual(self.call_handler("get_user_state"), {
+                "grade": grade,
                 'items': {},
                 'finished': False,
                 "attempts": 0,
@@ -127,13 +142,14 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             },
             'finished': True,
             "attempts": 0,
+            "grade": 1,
             'overall_feedback': [{"message": FINISH_FEEDBACK, "message_class": None}],
         })
 
         # Reset to initial conditions
         self.call_handler('reset', {})
         self.assertTrue(self.block.completed)
-        assert_user_state_empty()
+        assert_user_state_empty(grade=1)  # resetting student state does not reset the grade
 
     def test_legacy_state_support(self):
         """
