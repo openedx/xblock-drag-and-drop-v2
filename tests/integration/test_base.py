@@ -310,6 +310,10 @@ class InteractionTestBase(object):
     def assertNotDraggable(self, item_value):
         self.assertFalse(self._get_draggable_property(item_value))
 
+    def assertFocused(self, element):
+        focused_element = self.browser.switch_to.active_element
+        self.assertTrue(element == focused_element, 'expected element to have focus')
+
     @staticmethod
     def wait_until_ondrop_xhr_finished(elem):
         """

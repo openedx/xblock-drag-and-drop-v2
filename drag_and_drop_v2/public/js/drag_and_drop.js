@@ -261,8 +261,12 @@ function DragAndDropTemplates(configuration) {
             h('div.keyboard-help-dialog', [
                 h('div.modal-window-overlay'),
                 h('div.modal-window', {attributes: {role: 'dialog', 'aria-labelledby': labelledby_id, tabindex: -1}}, [
+                    h('button.modal-dismiss-button.unbutton', {attributes: {tabindex: 1}}, [
+                        h('span.fa.fa-remove', {attributes: {'aria-hidden': true}}),
+                        h('span.sr', gettext('Close'))
+                    ]),
                     h('div.modal-header', [
-                        h('h2.modal-window-title#'+labelledby_id, gettext('Keyboard Help'))
+                        h('h2.modal-window-title', {id: labelledby_id}, gettext('Keyboard Help'))
                     ]),
                     h('div.modal-content', [
                         h('p.sr', gettext('This is a screen reader-friendly problem.')),
@@ -275,9 +279,6 @@ function DragAndDropTemplates(configuration) {
                             h('li', gettext('Press ESC if you want to cancel the drop operation (for example, to select a different item).')),
                             h('li', gettext('TAB back to the list of draggable items and repeat this process until all of the draggable items have been placed on their respective dropzones.')),
                         ])
-                    ]),
-                    h('div.modal-actions', [
-                        h('button.modal-dismiss-button', gettext("OK"))
                     ])
                 ])
             ])

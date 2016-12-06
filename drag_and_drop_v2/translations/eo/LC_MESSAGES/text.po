@@ -627,8 +627,8 @@ msgstr ""
 "ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂ є#"
 
 #: public/js/drag_and_drop.js
-msgid "OK"
-msgstr "ÖK Ⱡ'σя#"
+msgid "Close"
+msgstr "Çlösé Ⱡ'σя#"
 
 #: public/js/drag_and_drop.js
 msgid "Problem"
