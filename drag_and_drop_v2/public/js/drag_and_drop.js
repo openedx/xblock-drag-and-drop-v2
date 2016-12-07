@@ -227,7 +227,7 @@ function DragAndDropTemplates(configuration) {
                 },
                 [
                     h('p', { className: className }, zone.title),
-                    h('p', { className: 'zone-description sr' }, zone.description),
+                    h('p', { className: 'zone-description sr' }, zone.description || gettext("droppable")),
                     h(item_wrapper, renderCollection(itemTemplate, items_in_zone, ctx)),
                     zone_description
                 ]
