@@ -434,7 +434,7 @@ function DragAndDropTemplates(configuration) {
                         h(
                             'span.sr',
                             {
-                                innerHTML: gettext("Close item feedback popup")
+                                innerHTML: gettext("Close")
                             }
                         ),
                         h(
