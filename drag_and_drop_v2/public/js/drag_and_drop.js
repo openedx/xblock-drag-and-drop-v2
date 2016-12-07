@@ -519,14 +519,17 @@ function DragAndDropTemplates(configuration) {
         var is_item_placed = function(i) { return i.is_placed; };
         var items_placed = $.grep(ctx.items, is_item_placed);
         var items_in_bank = $.grep(ctx.items, is_item_placed, true);
-        var item_bank_properties = {};
+        var item_bank_properties = {
+            attributes: {
+                'role': 'group',
+                'aria-label': gettext('Item Bank')
+            }
+        };
         if (ctx.item_bank_focusable) {
-            item_bank_properties.attributes = {
-                'tabindex': 0,
-                'dropzone': 'move',
-                'aria-dropeffect': 'move',
-                'role': 'button'
-            };
+            item_bank_properties.attributes['tabindex'] = 0;
+            item_bank_properties.attributes['dropzone'] = 'move';
+            item_bank_properties.attributes['aria-dropeffect'] = 'move';
+            item_bank_properties.attributes['role'] = 'button';
         }
         return (
             h('section.themed-xblock.xblock--drag-and-drop', [
@@ -539,7 +542,6 @@ function DragAndDropTemplates(configuration) {
                 h('div', {'className': 'sr'}, [forwardKeyboardHelpButtonTemplate(ctx)]),
                 h('section.drag-container', {}, [
                     h('div.item-bank', item_bank_properties, [
-                        h('p', { className: 'zone-description sr' }, gettext('Item Bank')),
                         renderCollection(itemTemplate, items_in_bank, ctx),
                         renderCollection(itemPlaceholderTemplate, items_placed, ctx)
                     ]),
