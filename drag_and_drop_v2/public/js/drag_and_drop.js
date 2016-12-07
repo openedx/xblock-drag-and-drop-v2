@@ -106,9 +106,9 @@ function DragAndDropTemplates(configuration) {
             itemSpinnerTemplate(item)
         ];
         var item_content = itemContentTemplate(item);
+        var item_description = null;
         // Insert information about zone in which this item has been placed
-        var item_description_id = configuration.url_name + '-item-' + item.value + '-description';
-        item_content.properties.attributes = { 'aria-describedby': item_description_id };
+
         if (item.is_placed) {
             var zone_title = (zone.title || "Unknown Zone");  // This "Unknown" text should never be seen, so does not need i18n
             var description_content;
@@ -120,25 +120,23 @@ function DragAndDropTemplates(configuration) {
                 // so all placed items are always in the correct zone.
                 description_content = gettext('Correctly placed in: {zone_title}').replace('{zone_title}', zone_title);
             }
-            var item_description = h(
+            var item_description_id = configuration.url_name + '-item-' + item.value + '-description';
+            item_content.properties.attributes = { 'aria-describedby': item_description_id };
+            item_description = h(
                 'div',
                 { key: item.value + '-description', id: item_description_id, className: descriptionClassName },
                 description_content
-            );
-        } else {
-            var item_description = h(
-              'div',
-              { id: item_description_id, className: descriptionClassName },
-              gettext('Press Ctrl-m on an item to select it for dropping, then navigate to the zone you want to drop it on.')
             );
         }
         children.splice(1, 0, item_description);
         children.splice(1, 0, item_content);
 
-        if (item.grabbed) {
-            var itemGrabbedSRNote = h('span', { className: 'sr dragged' }, gettext("draggable, grabbed"));
-            children.splice(2, 0, itemGrabbedSRNote);
-        }
+        var itemSRNote = h(
+            'span',
+            { className: 'sr draggable' },
+            (item.grabbed) ? gettext("draggable, grabbed") : gettext("draggable")
+        );
+        children.splice(2, 0, itemSRNote);
 
         return (
             h(
