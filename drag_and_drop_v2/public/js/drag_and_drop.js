@@ -2,6 +2,9 @@ function DragAndDropTemplates(configuration) {
     "use strict";
     var h = virtualDom.h;
 
+    var keyboardHelpButtonClass = "keyboard-help-button";
+    var keyboardHelpText = gettext('Keyboard Help');
+
     var itemSpinnerTemplate = function(item) {
         if (!item.xhr_active) {
             return null;
@@ -380,7 +383,7 @@ function DragAndDropTemplates(configuration) {
         }
         return(
             h("section.action-toolbar-item.sidebar-buttons", {}, [
-                sidebarButtonTemplate("keyboard-help-button", "fa-question", gettext('Keyboard Help')),
+                sidebarButtonTemplate(keyboardHelpButtonClass, "fa-question", keyboardHelpText),
                 sidebarButtonTemplate("reset-button", "fa-refresh", gettext('Reset'), ctx.disable_reset_button),
                 showAnswerButton,
             ])
@@ -449,6 +452,10 @@ function DragAndDropTemplates(configuration) {
                 popup_content
             ]
         )
+    };
+
+    var forwardKeyboardHelpButtonTemplate = function(ctx) {
+        return h("button", { attributes: {tabindex: 0}, className: keyboardHelpButtonClass }, keyboardHelpText);
     };
 
     var progressTemplate = function(ctx) {
@@ -531,6 +538,7 @@ function DragAndDropTemplates(configuration) {
                     problemHeader,
                     h('p', {innerHTML: ctx.problem_html}),
                 ]),
+                h('div', {'className': 'sr'}, [forwardKeyboardHelpButtonTemplate(ctx)]),
                 h('section.drag-container', {}, [
                     h('div.item-bank', item_bank_properties, [
                         h('p', { className: 'zone-description sr' }, gettext('Item Bank')),
