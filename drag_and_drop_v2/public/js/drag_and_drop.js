@@ -301,12 +301,15 @@ function DragAndDropTemplates(configuration) {
                         h('h2.modal-window-title#'+labelledby_id, gettext('Keyboard Help'))
                     ]),
                     h('div.modal-content', [
-                        h('p', gettext('You can complete this problem using only your keyboard.')),
+                        h('p', {className:'sr'}, gettext('This is a screen reader-friendly problem')),
+                        h('p', gettext('You can complete this problem using only your keyboard by following the guidance below:')),
+                        h('p', {className:'sr'}, gettext('Drag and Drop problems consist of draggable items and dropzones. Users should select a draggable item with their keyboard and then navigate to an appropriate dropzone to drop it.')),
                         h('ul', [
-                            h('li', gettext('Use "Tab" and "Shift-Tab" to navigate between items and zones.')),
-                            h('li', gettext('Press "Enter", "Space", "Ctrl-m", or "⌘-m" on an item to select it for dropping, then navigate to the zone you want to drop it on.')),
-                            h('li', gettext('Press "Enter", "Space", "Ctrl-m", or "⌘-m" to drop the item on the current zone.')),
+                            h('li', gettext('Use only TAB and SHIFT+TAB to navigate between draggable items and drop zones.')),
+                            h('li', gettext('Press CTRL+M to select a draggable item (effectively picking it up).')),
+                            h('li', gettext('Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press CTRL+M once more to drop it here.')),
                             h('li', gettext('Press "Esc" if you want to cancel the drop operation (for example, to select a different item).')),
+                            h('li', gettext('TAB back to the list of draggable items and repeat this process until all of the draggable items have been placed on their respective dropzones.')),
                         ])
                     ]),
                     h('div.modal-actions', [
