@@ -2,9 +2,6 @@ function DragAndDropTemplates(configuration) {
     "use strict";
     var h = virtualDom.h;
 
-    var keyboardHelpButtonClass = "keyboard-help-button";
-    var keyboardHelpText = gettext('Keyboard Help');
-
     var itemSpinnerTemplate = function(item) {
         if (!item.xhr_active) {
             return null;
@@ -73,7 +70,8 @@ function DragAndDropTemplates(configuration) {
             'draggable': !item.drag_disabled,
             'aria-grabbed': item.grabbed,
             'data-value': item.value,
-            'tabindex': item.focusable ? 0 : undefined
+            'tabindex': item.focusable ? 0 : undefined,
+            'aria-live': 'polite'
         };
         var style = {};
         if (item.background_color) {
@@ -102,9 +100,7 @@ function DragAndDropTemplates(configuration) {
             $.extend(style, bankItemWidthStyles(item, ctx));
         }
         // Define children
-        var children = [
-            itemSpinnerTemplate(item)
-        ];
+
         var item_content = itemContentTemplate(item);
         var item_description = null;
         // Insert information about zone in which this item has been placed
@@ -128,15 +124,14 @@ function DragAndDropTemplates(configuration) {
                 description_content
             );
         }
-        children.splice(1, 0, item_description);
-        children.splice(1, 0, item_content);
-
         var itemSRNote = h(
-            'span',
-            { className: 'sr draggable' },
-            (item.grabbed) ? gettext("draggable, grabbed") : gettext("draggable")
+            'span.sr.draggable',
+            (item.grabbed) ? gettext(", draggable, grabbed") : gettext(", draggable")
         );
-        children.splice(2, 0, itemSRNote);
+
+        var children = [
+            itemSpinnerTemplate(item), item_content, itemSRNote, item_description
+        ];
 
         return (
             h(
@@ -302,14 +297,14 @@ function DragAndDropTemplates(configuration) {
                         h('h2.modal-window-title#'+labelledby_id, gettext('Keyboard Help'))
                     ]),
                     h('div.modal-content', [
-                        h('p', {className:'sr'}, gettext('This is a screen reader-friendly problem')),
+                        h('p.sr', gettext('This is a screen reader-friendly problem.')),
+                        h('p.sr', gettext('Drag and Drop problems consist of draggable items and dropzones. Users should select a draggable item with their keyboard and then navigate to an appropriate dropzone to drop it.')),
                         h('p', gettext('You can complete this problem using only your keyboard by following the guidance below:')),
-                        h('p', {className:'sr'}, gettext('Drag and Drop problems consist of draggable items and dropzones. Users should select a draggable item with their keyboard and then navigate to an appropriate dropzone to drop it.')),
                         h('ul', [
                             h('li', gettext('Use only TAB and SHIFT+TAB to navigate between draggable items and drop zones.')),
                             h('li', gettext('Press CTRL+M to select a draggable item (effectively picking it up).')),
                             h('li', gettext('Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press CTRL+M once more to drop it here.')),
-                            h('li', gettext('Press "Esc" if you want to cancel the drop operation (for example, to select a different item).')),
+                            h('li', gettext('Press ESC if you want to cancel the drop operation (for example, to select a different item).')),
                             h('li', gettext('TAB back to the list of draggable items and repeat this process until all of the draggable items have been placed on their respective dropzones.')),
                         ])
                     ]),
@@ -381,7 +376,6 @@ function DragAndDropTemplates(configuration) {
         }
         return(
             h("section.action-toolbar-item.sidebar-buttons", {}, [
-                sidebarButtonTemplate(keyboardHelpButtonClass, "fa-question", keyboardHelpText),
                 sidebarButtonTemplate("reset-button", "fa-refresh", gettext('Reset'), ctx.disable_reset_button),
                 showAnswerButton,
             ])
@@ -453,7 +447,19 @@ function DragAndDropTemplates(configuration) {
     };
 
     var forwardKeyboardHelpButtonTemplate = function(ctx) {
-        return h("button", { attributes: {tabindex: 0}, className: keyboardHelpButtonClass }, keyboardHelpText);
+        return h(
+            'button.unbutton.btn-link.keyboard-help-button',
+            [
+                h(
+                    "span.btn-icon.fa.fa-keyboard-o",
+                    {attributes: {"aria-hidden": true}}
+                ),
+                // appending space is the simplest way to avoid sticking text to the button, but also to have
+                // them underlined together on hover. When margin was used there was a gap in underlining
+                " ",
+                gettext('Keyboard Help')
+            ]
+        );
     };
 
     var progressTemplate = function(ctx) {
@@ -535,11 +541,11 @@ function DragAndDropTemplates(configuration) {
             h('section.themed-xblock.xblock--drag-and-drop', [
                 problemTitle,
                 problemProgress,
+                h('div', [forwardKeyboardHelpButtonTemplate(ctx)]),
                 h('section.problem', [
                     problemHeader,
                     h('p', {innerHTML: ctx.problem_html}),
                 ]),
-                h('div', {'className': 'sr'}, [forwardKeyboardHelpButtonTemplate(ctx)]),
                 h('section.drag-container', {}, [
                     h('div.item-bank', item_bank_properties, [
                         renderCollection(itemTemplate, items_in_bank, ctx),

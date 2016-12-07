@@ -4,6 +4,7 @@
 
 import json
 from xml.sax.saxutils import escape
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -384,7 +385,7 @@ class InteractionTestBase(object):
         self.wait_until_ondrop_xhr_finished(item)
         item_content = item.find_element_by_css_selector('.item-content')
         self.wait_until_visible(item_content)
-        item_description = item.find_element_by_css_selector('.sr')
+        item_description = item.find_element_by_css_selector('.sr.description')
         self.wait_until_visible(item_description)
         item_description_id = '-item-{}-description'.format(item_value)
 
@@ -421,12 +422,13 @@ class InteractionTestBase(object):
         self.assertEqual(item.get_attribute('class'), 'option')
         self.assertEqual(item.get_attribute('tabindex'), '0')
         self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
-        item_description_id = '-item-{}-description'.format(item_value)
-        self.assertEqual(item_content.get_attribute('aria-describedby'), item_description_id)
+        self.assertEqual(item_content.get_attribute('aria-describedby'), None)
 
-        describedby_text = (u'Press "Enter", "Space", "Ctrl-m", or "⌘-m" on an item to select it for dropping, '
-                            'then navigate to the zone you want to drop it on.')
-        self.assertEqual(item.find_element_by_css_selector('.sr').text, describedby_text)
+        try:
+            item.find_element_by_css_selector('.sr.description')
+            self.fail("Description element exists")
+        except NoSuchElementException:
+            pass
 
     def place_decoy_items(self, items_map, action_key):
         decoy_items = self._get_items_without_zone(items_map)

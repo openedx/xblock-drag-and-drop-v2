@@ -43,6 +43,7 @@
     display: inline-block;
     color: #5e5e5e;
     font-size: 0.875em;
+    margin-bottom: 0.5em;
 }
 
 .xblock--drag-and-drop .problem p {
@@ -444,8 +445,6 @@
 .xblock--drag-and-drop .btn-brand {
     display: inline-block;
     font-weight: normal;
-    background: #0079bc;
-    color: #fcfcfc;
     -webkit-transition: color 0.125s ease-in-out 0s, border-color 0.125s ease-in-out 0s, background 0.125s ease-in-out 0s, box-shadow 0.125s ease-in-out 0s;
     -moz-transition: color 0.125s ease-in-out 0s, border-color 0.125s ease-in-out 0s, background 0.125s ease-in-out 0s, box-shadow 0.125s ease-in-out 0s;
     transition: color 0.125s ease-in-out 0s, border-color 0.125s ease-in-out 0s, background 0.125s ease-in-out 0s, box-shadow 0.125s ease-in-out 0s;
@@ -470,6 +469,12 @@
 .xblock--drag-and-drop .btn-small {
   padding: 0.625em 0.625em;
   font-size: 0.875em;
+}
+
+.xblock--drag-and-drop .btn-link {
+    padding: 1px;
+    font-size: 0.875em;
+    font-weight: normal;
 }
 
 .xblock--drag-and-drop .btn-default:hover,
@@ -623,6 +628,10 @@
 
 .xblock--drag-and-drop .btn-icon {
     display: block;
+}
+
+.xblock--drag-and-drop .btn-link .btn-icon {
+    display: inline;
 }
 
 /*** ACTIONS TOOLBAR END ***/

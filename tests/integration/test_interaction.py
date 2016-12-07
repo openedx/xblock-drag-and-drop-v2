@@ -169,7 +169,7 @@ class ParameterizedTestsMixin(object):
             self.assertDictEqual(locations_after_reset[item_key], initial_locations[item_key])
             self.assert_reverted_item(item_key)
 
-    def interact_with_keyboard_help(self, scroll_down=250, use_keyboard=False):
+    def interact_with_keyboard_help(self, scroll_down=100, use_keyboard=False):
         keyboard_help_button = self._get_keyboard_help_button()
         keyboard_help_dialog = self._get_keyboard_help_dialog()
         dialog_modal_overlay, dialog_modal = self._get_dialog_components(keyboard_help_dialog)
@@ -238,15 +238,12 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
         for _, definition in self.items_map.items():
             item = self._get_unplaced_item_by_value(definition.item_id)
             ActionChains(self.browser).move_to_element(item).perform()
-            keyboard_help_text = (u'Press Ctrl-m on an item to select it for dropping, '
-                                  'then navigate to the zone you want to drop it on.')
-            self.assertEqual(item.find_element_by_css_selector('.sr.description').text, keyboard_help_text)
-            self.assertEqual(item.find_element_by_css_selector('.sr draggable').text, "draggable")
+            self.assertEqual(item.find_element_by_css_selector('.sr.draggable').text, ", draggable")
             item.send_keys("")
-            item.send_keys(action_key)  # grabbed an item
-            self.assertEqual(item.find_element_by_css_selector('.sr draggable').text, "draggable, grabbed")
+            item.send_keys(Keys.ENTER)  # grabbed an item
+            self.assertEqual(item.find_element_by_css_selector('.sr.draggable').text, ", draggable, grabbed")
             item.send_keys(Keys.ESCAPE)
-            self.assertEqual(item.find_element_by_css_selector('.sr draggable').text, "draggable")
+            self.assertEqual(item.find_element_by_css_selector('.sr.draggable').text, ", draggable")
 
     def test_alt_text_for_zones(self):
         self._get_popup()
@@ -450,21 +447,21 @@ class MultipleBlocksDataInteraction(ParameterizedTestsMixin, InteractionTestBase
         self._switch_to_block(0)
         self.parameterized_item_positive_feedback_on_good_move(self.item_maps['block1'])
         self._switch_to_block(1)
-        self.parameterized_item_positive_feedback_on_good_move(self.item_maps['block2'], scroll_down=900)
+        self.parameterized_item_positive_feedback_on_good_move(self.item_maps['block2'], scroll_down=1000)
 
     def test_item_negative_feedback_on_bad_move(self):
         self._switch_to_block(0)
         self.parameterized_item_negative_feedback_on_bad_move(self.item_maps['block1'], self.all_zones['block1'])
         self._switch_to_block(1)
         self.parameterized_item_negative_feedback_on_bad_move(
-            self.item_maps['block2'], self.all_zones['block2'], scroll_down=900
+            self.item_maps['block2'], self.all_zones['block2'], scroll_down=1000
         )
 
     def test_final_feedback_and_reset(self):
         self._switch_to_block(0)
         self.parameterized_final_feedback_and_reset(self.item_maps['block1'], self.feedback['block1'])
         self._switch_to_block(1)
-        self.parameterized_final_feedback_and_reset(self.item_maps['block2'], self.feedback['block2'], scroll_down=900)
+        self.parameterized_final_feedback_and_reset(self.item_maps['block2'], self.feedback['block2'], scroll_down=1000)
 
     def test_keyboard_help(self):
         self._switch_to_block(0)
@@ -474,7 +471,7 @@ class MultipleBlocksDataInteraction(ParameterizedTestsMixin, InteractionTestBase
 
         self._switch_to_block(1)
         # Test mouse and keyboard interaction
-        self.interact_with_keyboard_help(scroll_down=1200)
+        self.interact_with_keyboard_help(scroll_down=1000)
         self.interact_with_keyboard_help(scroll_down=0, use_keyboard=True)
 
 
