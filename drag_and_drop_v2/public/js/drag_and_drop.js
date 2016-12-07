@@ -126,7 +126,7 @@ function DragAndDropTemplates(configuration) {
             var item_description = h(
               'div',
               { id: item_description_id, className: descriptionClassName },
-              gettext('Press "Enter", "Space", "Ctrl-m", or "⌘-m" on an item to select it for dropping, then navigate to the zone you want to drop it on.')
+              gettext('Press Ctrl-m on an item to select it for dropping, then navigate to the zone you want to drop it on.')
             );
         }
         children.splice(1, 0, item_description);
@@ -858,11 +858,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var isActionKey = function(evt) {
-        var key = evt.which;
-        if (evt.ctrlKey || evt.metaKey) {
-            return key === M;
-        }
-        return key === RET || key === SPC;
+        return evt.which == RET || (evt.ctrlKey && evt.which == M);
     };
 
     var isSpaceKey = function(evt) {

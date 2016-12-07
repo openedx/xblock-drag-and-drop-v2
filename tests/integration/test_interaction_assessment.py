@@ -18,7 +18,9 @@ from drag_and_drop_v2.default_data import (
 )
 from drag_and_drop_v2.utils import FeedbackMessages, Constants
 from .test_base import BaseIntegrationTest
-from .test_interaction import InteractionTestBase, DefaultDataTestMixin, ParameterizedTestsMixin, TestMaxItemsPerZone
+from .test_interaction import (
+    InteractionTestBase, DefaultDataTestMixin, ParameterizedTestsMixin, TestMaxItemsPerZone, ITEM_DRAG_KEYBOARD_KEYS
+)
 
 
 # Globals ###########################################################
@@ -76,25 +78,25 @@ class AssessmentInteractionTest(
     All interactions are tested using mouse (action_key=None) and four different keyboard action keys.
     If default data changes this will break.
     """
-    @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    @data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_item_no_feedback_on_good_move(self, action_key):
         self.parameterized_item_positive_feedback_on_good_move(
             self.items_map, action_key=action_key, assessment_mode=True
         )
 
-    @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    @data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_item_no_feedback_on_bad_move(self, action_key):
         self.parameterized_item_negative_feedback_on_bad_move(
             self.items_map, self.all_zones, action_key=action_key, assessment_mode=True
         )
 
-    @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    @data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_move_items_between_zones(self, action_key):
         self.parameterized_move_items_between_zones(
             self.items_map, self.all_zones, action_key=action_key
         )
 
-    @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    @data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_final_feedback_and_reset(self, action_key):
         self.parameterized_final_feedback_and_reset(
             self.items_map, self.feedback, action_key=action_key, assessment_mode=True

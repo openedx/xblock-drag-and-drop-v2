@@ -23,6 +23,8 @@ loader = ResourceLoader(__name__)
 
 # Classes ###########################################################
 
+ITEM_DRAG_KEYBOARD_KEYS = (None, Keys.RETURN, Keys.CONTROL+'m')
+
 
 class ParameterizedTestsMixin(object):
     def parameterized_item_positive_feedback_on_good_move(
@@ -211,15 +213,15 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
     All interactions are tested using mouse (action_key=None) and four different keyboard action keys.
     If default data changes this will break.
     """
-    @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    @data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_item_positive_feedback_on_good_move(self, action_key):
         self.parameterized_item_positive_feedback_on_good_move(self.items_map, action_key=action_key)
 
-    @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    @data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_item_negative_feedback_on_bad_move(self, action_key):
         self.parameterized_item_negative_feedback_on_bad_move(self.items_map, self.all_zones, action_key=action_key)
 
-    @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    @data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_cannot_move_items_between_zones(self, action_key):
         self.parameterized_cannot_move_items_between_zones(
             self.items_map, self.all_zones, action_key=action_key
@@ -236,7 +238,7 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
         for _, definition in self.items_map.items():
             item = self._get_unplaced_item_by_value(definition.item_id)
             ActionChains(self.browser).move_to_element(item).perform()
-            keyboard_help_text = (u'Press "Enter", "Space", "Ctrl-m", or "⌘-m" on an item to select it for dropping, '
+            keyboard_help_text = (u'Press Ctrl-m on an item to select it for dropping, '
                                   'then navigate to the zone you want to drop it on.')
             self.assertEqual(item.find_element_by_css_selector('.sr.description').text, keyboard_help_text)
             expected_sr_text = "draggable, grabbed"
@@ -266,7 +268,7 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
                 self.wait_until_visible(item_content)
                 self.assertTrue(item_content.text in zone_description)
 
-    @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    @data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_final_feedback_and_reset(self, action_key):
         self.parameterized_final_feedback_and_reset(self.items_map, self.feedback, action_key=action_key)
 
@@ -479,7 +481,7 @@ class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
     """
     PAGE_TITLE = 'Drag and Drop v2'
     PAGE_ID = 'drag_and_drop_v2'
-    ACTION_KEYS = (None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    ACTION_KEYS = ITEM_DRAG_KEYBOARD_KEYS
 
     def setUp(self):
         super(ZoneAlignInteractionTest, self).setUp()
