@@ -238,7 +238,9 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
             ActionChains(self.browser).move_to_element(item).perform()
             keyboard_help_text = (u'Press "Enter", "Space", "Ctrl-m", or "⌘-m" on an item to select it for dropping, '
                                   'then navigate to the zone you want to drop it on.')
-            self.assertEqual(item.find_element_by_css_selector('.sr').text, keyboard_help_text)
+            self.assertEqual(item.find_element_by_css_selector('.sr.description').text, keyboard_help_text)
+            expected_sr_text = "draggable, grabbed"
+            self.assertEqual(item.find_element_by_css_selector('.sr.dragged').text, expected_sr_text)
 
     def test_alt_text_for_zones(self):
         self._get_popup()

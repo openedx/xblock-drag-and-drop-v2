@@ -53,6 +53,7 @@ function DragAndDropTemplates(configuration) {
 
     var itemTemplate = function(item, ctx) {
         // Define properties
+        var descriptionClassName = "sr description";
         var className = (item.class_name) ? item.class_name : "";
         var zone = getZone(item.zone, ctx) || {};
         if (item.has_image) {
@@ -118,18 +119,24 @@ function DragAndDropTemplates(configuration) {
             }
             var item_description = h(
                 'div',
-                { key: item.value + '-description', id: item_description_id, className: 'sr' },
+                { key: item.value + '-description', id: item_description_id, className: descriptionClassName },
                 description_content
             );
         } else {
             var item_description = h(
               'div',
-              { id: item_description_id, className: 'sr'},
+              { id: item_description_id, className: descriptionClassName },
               gettext('Press "Enter", "Space", "Ctrl-m", or "⌘-m" on an item to select it for dropping, then navigate to the zone you want to drop it on.')
             );
         }
         children.splice(1, 0, item_description);
         children.splice(1, 0, item_content);
+
+        if (item.grabbed) {
+            var itemGrabbedSRNote = h('span', { className: 'sr dragged' }, gettext("draggable, grabbed"));
+            children.splice(2, 0, itemGrabbedSRNote);
+        }
+
         return (
             h(
                 'div.option',
