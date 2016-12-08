@@ -124,6 +124,9 @@ class BaseIntegrationTest(SeleniumBaseTest):
     def _get_keyboard_help_dialog(self):
         return self._page.find_element_by_css_selector(".keyboard-help-dialog")
 
+    def _get_go_to_beginning_button(self):
+        return self._page.find_element_by_css_selector('.go-to-beginning-button')
+
     def _get_reset_button(self):
         return self._page.find_element_by_css_selector('.reset-button')
 
@@ -151,6 +154,14 @@ class BaseIntegrationTest(SeleniumBaseTest):
         else:
             query = 'return $("{selector}").get(0).style.{style}'
         return self.browser.execute_script(query.format(selector=selector, style=style))
+
+    def assertFocused(self, element):
+        focused_element = self.browser.switch_to.active_element
+        self.assertTrue(element == focused_element, 'expected element to have focus')
+
+    def assertNotFocused(self, element):
+        focused_element = self.browser.switch_to.active_element
+        self.assertTrue(element != focused_element, 'expected element to not have focus')
 
     @staticmethod
     def get_element_html(element):
@@ -309,10 +320,6 @@ class InteractionTestBase(object):
 
     def assertNotDraggable(self, item_value):
         self.assertFalse(self._get_draggable_property(item_value))
-
-    def assertFocused(self, element):
-        focused_element = self.browser.switch_to.active_element
-        self.assertTrue(element == focused_element, 'expected element to have focus')
 
     @staticmethod
     def wait_until_ondrop_xhr_finished(elem):

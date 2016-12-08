@@ -27,6 +27,22 @@ ITEM_DRAG_KEYBOARD_KEYS = (None, Keys.RETURN, Keys.CONTROL+'m')
 
 
 class ParameterizedTestsMixin(object):
+    def _test_popup_focus_and_close(self, popup):
+        dismiss_popup_button = popup.find_element_by_css_selector('.close-feedback-popup-button')
+        self.assertFocused(dismiss_popup_button)
+        dismiss_popup_button.click()
+        self.assertFalse(popup.is_displayed())
+        # Assert focus moves to first enabled button in item bank after closing the popup.
+        focusable_items_in_bank = [item for item in self._get_items() if item.get_attribute('tabindex') == '0']
+        if len(focusable_items_in_bank) > 0:
+            self.assertFocused(focusable_items_in_bank[0])
+
+    def _test_next_tab_goes_to_go_to_beginning_button(self):
+        go_to_beginning_button = self._get_go_to_beginning_button()
+        self.assertNotFocused(go_to_beginning_button)
+        ActionChains(self.browser).send_keys(Keys.TAB).perform()
+        self.assertFocused(go_to_beginning_button)
+
     def parameterized_item_positive_feedback_on_good_move(
             self, items_map, scroll_down=100, action_key=None, assessment_mode=False
     ):
@@ -44,10 +60,14 @@ class ParameterizedTestsMixin(object):
             if assessment_mode:
                 self.assertEqual(feedback_popup_html, '')
                 self.assertFalse(popup.is_displayed())
+                if action_key:
+                    # Next TAB keypress should move focus to "Go to Beginning button"
+                    self._test_next_tab_goes_to_go_to_beginning_button()
             else:
                 self.assertEqual(feedback_popup_html, "<p>{}</p>".format(definition.feedback_positive))
                 self.assert_popup_correct(popup)
                 self.assertTrue(popup.is_displayed())
+                self._test_popup_focus_and_close(popup)
 
     def parameterized_item_negative_feedback_on_bad_move(
             self, items_map, all_zones, scroll_down=100, action_key=None, assessment_mode=False
@@ -75,11 +95,14 @@ class ParameterizedTestsMixin(object):
                     self.assertEqual(feedback_popup_html, '')
                     self.assertFalse(popup.is_displayed())
                     self.assert_placed_item(definition.item_id, zone_title, assessment_mode=True)
+                    if action_key:
+                        self._test_next_tab_goes_to_go_to_beginning_button()
                 else:
                     self.wait_until_html_in(definition.feedback_negative, feedback_popup_content)
                     self.assert_popup_incorrect(popup)
                     self.assertTrue(popup.is_displayed())
                     self.assert_reverted_item(definition.item_id)
+                    self._test_popup_focus_and_close(popup)
 
     def parameterized_move_items_between_zones(self, items_map, all_zones, scroll_down=100, action_key=None):
         # Scroll drop zones into view to make sure Selenium can successfully drop items
@@ -90,6 +113,8 @@ class ParameterizedTestsMixin(object):
             for zone_id, zone_title in all_zones:
                 self.place_item(item_key, zone_id, action_key)
                 self.assert_placed_item(item_key, zone_title, assessment_mode=True)
+                if action_key:
+                    self._test_next_tab_goes_to_go_to_beginning_button()
             # Finally, move them all back to the bank.
             self.place_item(item_key, None, action_key)
             self.assert_reverted_item(item_key)

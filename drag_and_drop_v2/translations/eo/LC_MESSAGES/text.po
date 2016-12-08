@@ -631,6 +631,10 @@ msgid "Close"
 msgstr "Çlösé Ⱡ'σя#"
 
 #: public/js/drag_and_drop.js
+msgid "Go to Beginning"
+msgstr "Gö tö Bégïnnïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: public/js/drag_and_drop.js
 msgid "Problem"
 msgstr "Prößlém Ⱡ'σяєм ιρѕυм #"
 

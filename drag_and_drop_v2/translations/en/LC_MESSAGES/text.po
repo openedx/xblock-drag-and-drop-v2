@@ -531,6 +531,10 @@ msgid "Close"
 msgstr ""
 
 #: public/js/drag_and_drop.js
+msgid "Go to Beginning"
+msgstr ""
+
+#: public/js/drag_and_drop.js
 msgid "Problem"
 msgstr ""
 
