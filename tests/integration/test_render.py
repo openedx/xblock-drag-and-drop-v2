@@ -217,7 +217,6 @@ class TestDragAndDropRender(BaseIntegrationTest):
         self.scroll_down(250)
 
         button = self._get_go_to_beginning_button()
-        self.assertEqual(button.get_attribute('tabindex'), '0')
         # Button is only visible to screen reader users by default.
         self.assertIn('sr', button.get_attribute('class').split())
         # Set focus to the element (cannot find a way to do this without execute_script).
