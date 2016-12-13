@@ -671,8 +671,11 @@
     padding: 7px;
     background-color: #e5e5e5;
     text-align: left;
-    direction: ltr;
     z-index: 1500;
+}
+
+.rtl .xblock--drag-and-drop .modal-window {
+    transform: translate(50%, -50%);
 }
 
 .xblock--drag-and-drop .modal-dismiss-button {
@@ -681,6 +684,12 @@
     top: 3px;
     right: 3px;
     padding: 5px 8px;
+}
+
+
+.rtl .xblock--drag-and-drop .modal-dismiss-button {
+    right: inherit;
+    left: 3px;
 }
 
 .xblock--drag-and-drop .modal-header h2 {
