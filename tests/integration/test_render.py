@@ -219,7 +219,11 @@ class TestDragAndDropRender(BaseIntegrationTest):
         button = self._get_go_to_beginning_button()
         # Button is only visible to screen reader users by default.
         self.assertIn('sr', button.get_attribute('class').split())
-        # Set focus to the element (cannot find a way to do this without execute_script).
+        # Set focus to the element. We have to use execute_script here because while TAB-ing
+        # to the button to make it the active element works in selenium, the focus event is not
+        # emitted unless the Firefox window controlled by selenium is the focused window, which
+        # usually is not the case when running integration tests.
+        # See: https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/7346
         self.browser.execute_script('$("button.go-to-beginning-button").focus()')
         self.assertFocused(button)
         # Button should be visible when focused.
