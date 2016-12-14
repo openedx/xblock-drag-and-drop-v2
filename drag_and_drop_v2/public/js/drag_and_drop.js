@@ -868,6 +868,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     var applyState = function(keepDraggableInit) {
         sendFeedbackPopupEvents();
         updateDOM();
+        readScreenReaderMessages();
         if (!keepDraggableInit) {
             destroyDraggable();
             if (!state.finished) {
@@ -904,12 +905,45 @@ function DragAndDropBlock(runtime, element, configuration) {
         return feedback_msgs_list.map(function(message) { return message.message; }).join('\n');
     };
 
-    var updateDOM = function(state) {
+    var updateDOM = function() {
         var new_vdom = render(state);
         var patches = virtualDom.diff(__vdom, new_vdom);
         root = virtualDom.patch(root, patches);
         $root = $(root);
         __vdom = new_vdom;
+    };
+
+    // Uses edX JS accessibility tools to read feedback messages when present.
+    var readScreenReaderMessages = function() {
+        if (window.SR && window.SR.readTexts) {
+            var pluckMessages = function(feedback_items) {
+                return feedback_items.map(function(item) {
+                    return item.message;
+                });
+            };
+            var messages = [];
+            // In standard mode, it makes more sense to read the per-item feedback before overall feedback.
+            if (state.feedback && configuration.mode === DragAndDropBlock.STANDARD_MODE) {
+                messages = messages.concat(pluckMessages(state.feedback));
+            }
+            if (state.overall_feedback) {
+                messages = messages.concat(pluckMessages(state.overall_feedback));
+            }
+            // In assessment mode overall feedback comes first then multiple per-item feedbacks.
+            if (state.feedback && configuration.mode === DragAndDropBlock.ASSESSMENT_MODE) {
+                if (state.feedback.length > 0) {
+                    if (!state.last_action_correct) {
+                        messages.push(gettext("Some of your answers were not correct."))
+                    }
+                    messages = messages.concat(
+                        gettext("Hints:"),
+                        pluckMessages(state.feedback)
+                    );
+                }
+            }
+
+            SR.readTexts(messages);
+        }
     };
 
     var publishEvent = function(data) {

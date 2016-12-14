@@ -163,6 +163,27 @@ class BaseIntegrationTest(SeleniumBaseTest):
         focused_element = self.browser.switch_to.active_element
         self.assertTrue(element != focused_element, 'expected element to not have focus')
 
+    def _patch_sr_read_texts(self):
+        """
+        Creates a mock SR.readTexts function that stores submitted texts into a global variable
+        for later inspection.
+        Returns a getter function that returns stored SR texts.
+        """
+        self.browser.execute_script(
+            """
+            window.SR = {
+                received_texts: [],
+                readTexts: function(texts) {
+                    window.SR.received_texts.push(texts);
+                }
+            };
+            """
+        )
+
+        def get_sr_texts():
+            return self.browser.execute_script('return window.SR.received_texts')
+        return get_sr_texts
+
     @staticmethod
     def get_element_html(element):
         return element.get_attribute('innerHTML').strip()
@@ -239,29 +260,6 @@ class DefaultDataTestMixin(object):
 class InteractionTestBase(object):
     POPUP_ERROR_CLASS = "popup-incorrect"
 
-    @classmethod
-    def _get_items_with_zone(cls, items_map):
-        return {
-            item_key: definition for item_key, definition in items_map.items()
-            if definition.zone_ids != []
-        }
-
-    @classmethod
-    def _get_items_without_zone(cls, items_map):
-        return {
-            item_key: definition for item_key, definition in items_map.items()
-            if definition.zone_ids == []
-        }
-
-    @classmethod
-    def _get_items_by_zone(cls, items_map):
-        zone_ids = set([definition.zone_ids[0] for _, definition in items_map.items() if definition.zone_ids])
-        return {
-            zone_id: {item_key: definition for item_key, definition in items_map.items()
-                      if definition.zone_ids and definition.zone_ids[0] is zone_id}
-            for zone_id in zone_ids
-        }
-
     def setUp(self):
         super(InteractionTestBase, self).setUp()
 
@@ -270,7 +268,42 @@ class InteractionTestBase(object):
         self._page = self.go_to_page(self.PAGE_TITLE)
         # Resize window so that the entire drag container is visible.
         # Selenium has issues when dragging to an area that is off screen.
-        self.browser.set_window_size(1024, 800)
+        self.browser.set_window_size(1024, 1024)
+
+    @staticmethod
+    def _get_items_with_zone(items_map):
+        return {
+            item_key: definition for item_key, definition in items_map.items()
+            if definition.zone_ids != []
+        }
+
+    @staticmethod
+    def _get_items_without_zone(items_map):
+        return {
+            item_key: definition for item_key, definition in items_map.items()
+            if definition.zone_ids == []
+        }
+
+    @staticmethod
+    def _get_items_by_zone(items_map):
+        zone_ids = set([definition.zone_ids[0] for _, definition in items_map.items() if definition.zone_ids])
+        return {
+            zone_id: {item_key: definition for item_key, definition in items_map.items()
+                      if definition.zone_ids and definition.zone_ids[0] is zone_id}
+            for zone_id in zone_ids
+        }
+
+    @staticmethod
+    def _get_incorrect_zone_for_item(item, zones):
+        """Returns the first zone that is not correct for this item."""
+        zone_id = None
+        zone_title = None
+        for z_id, z_title in zones:
+            if z_id not in item.zone_ids:
+                zone_id = z_id
+                zone_title = z_title
+                break
+        return [zone_id, zone_title]
 
     def _get_item_by_value(self, item_value):
         return self._page.find_elements_by_xpath(".//div[@data-value='{item_id}']".format(item_id=item_value))[0]

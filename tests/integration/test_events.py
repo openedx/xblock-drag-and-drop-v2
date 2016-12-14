@@ -76,7 +76,7 @@ class EventsFiredTest(DefaultDataTestMixin, ParameterizedTestsMixin, BaseEventsT
     @data(*enumerate(scenarios))  # pylint: disable=star-args
     @unpack
     def test_event(self, index, event):
-        self.parameterized_item_positive_feedback_on_good_move(self.items_map)
+        self.parameterized_item_positive_feedback_on_good_move_standard(self.items_map)
         dummy, name, published_data = self.publish.call_args_list[index][0]
         self.assertEqual(name, event['name'])
         self.assertEqual(published_data, event['data'])
