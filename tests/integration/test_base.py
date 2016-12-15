@@ -403,7 +403,7 @@ class InteractionTestBase(object):
         item.send_keys("")
         item.send_keys(action_key)
         # Focus is on first *zone* now
-        self.assert_grabbed_item(item)
+        self.assert_item_grabbed(item)
         # Get desired zone and figure out how many times we have to press Tab to focus the zone.
         if zone_id is None:  # moving back to the bank
             zone = self._get_item_bank()
@@ -420,8 +420,11 @@ class InteractionTestBase(object):
             ActionChains(self.browser).send_keys(Keys.TAB).perform()
         zone.send_keys(action_key)
 
-    def assert_grabbed_item(self, item):
+    def assert_item_grabbed(self, item):
         self.assertEqual(item.get_attribute('aria-grabbed'), 'true')
+
+    def assert_item_not_grabbed(self, item):
+        self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
 
     def assert_placed_item(self, item_value, zone_title, assessment_mode=False):
         item = self._get_placed_item_by_value(item_value)

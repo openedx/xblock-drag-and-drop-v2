@@ -1015,16 +1015,18 @@ function DragAndDropBlock(runtime, element, configuration) {
         return false;
     };
 
-    var placeItem = function($zone, $item) {
-        var item_id;
-        if ($item !== undefined) {
-            item_id = $item.data('value');
-        } else {
-            item_id = $selectedItem.data('value');
-        }
-
+    var placeGrabbedItem = function($zone) {
         var zone = String($zone.data('uid'));
         var zone_align = $zone.data('zone_align');
+        var items = configuration.items;
+
+        var item_id;
+        for (var i = 0; i < items.length; i++) {
+            if (items[i].grabbed) {
+                item_id = items[i].id;
+                break;
+            }
+        }
 
         var items_in_zone_count = countItemsInZone(zone, [item_id.toString()]);
         if (configuration.max_items_per_zone && configuration.max_items_per_zone <= items_in_zone_count) {
@@ -1070,18 +1072,17 @@ function DragAndDropBlock(runtime, element, configuration) {
                     } else if (isCancelKey(evt)) {
                         evt.preventDefault();
                         state.keyboard_placement_mode = false;
-                        releaseItem($selectedItem);
+                        releaseGrabbedItems();
                     } else if (isActionKey(evt)) {
                         evt.preventDefault();
                         evt.stopPropagation();
                         state.keyboard_placement_mode = false;
-                        releaseItem($selectedItem);
                         if ($zone.is('.item-bank')) {
                             delete state.items[$selectedItem.data('value')];
-                            applyState();
                         } else {
-                            placeItem($zone);
+                            placeGrabbedItem($zone);
                         }
+                        releaseGrabbedItems();
                     }
                 } else if (isTabKey(evt) && !evt.shiftKey) {
                     // If the user just dropped an item to this zone, next TAB keypress
@@ -1108,8 +1109,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             tolerance: 'pointer',
             drop: function(evt, ui) {
                 var $zone = $(this);
-                var $item = ui.helper;
-                placeItem($zone, $item);
+                placeGrabbedItem($zone);
             }
         });
 
@@ -1121,7 +1121,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 drop: function(evt, ui) {
                     var $item = ui.helper;
                     var item_id = $item.data('value');
-                    releaseItem($item);
+                    releaseGrabbedItems();
                     delete state.items[item_id];
                     applyState();
                 }
@@ -1174,7 +1174,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                     stop: function(evt, ui) {
                         // Revert to original position.
                         $item.css($item.data('initial-position'));
-                        releaseItem($(this));
+                        releaseGrabbedItems();
                     }
                 });
             } catch (e) {
@@ -1186,31 +1186,27 @@ function DragAndDropBlock(runtime, element, configuration) {
 
     var grabItem = function($item, interaction_type) {
         var item_id = $item.data('value');
-        setGrabbedState(item_id, true, interaction_type);
+        configuration.items.forEach(function(item) {
+            if (item.id === item_id) {
+                item.grabbed = true;
+                item.grabbed_with = interaction_type;
+            } else {
+                item.grabbed = false;
+                delete item.grabbed_with;
+            }
+        });
         closePopup(false);
         // applyState(true) skips destroying and initializing draggable
         applyState(true);
     };
 
-    var releaseItem = function($item) {
-        var item_id = $item.data('value');
-        setGrabbedState(item_id, false);
+    var releaseGrabbedItems = function() {
+        configuration.items.forEach(function(item) {
+            item.grabbed = false;
+            delete item.grabbed_with;
+        });
         // applyState(true) skips destroying and initializing draggable
         applyState(true);
-    };
-
-    var setGrabbedState = function(item_id, grabbed, interaction_type) {
-        configuration.items.forEach(function(item) {
-            if (item.id === item_id) {
-                if (grabbed) {
-                    item.grabbed = true;
-                    item.grabbed_with = interaction_type;
-                } else {
-                    item.grabbed = false;
-                    delete item.grabbed_with;
-                }
-            }
-        });
     };
 
     var destroyDraggable = function() {

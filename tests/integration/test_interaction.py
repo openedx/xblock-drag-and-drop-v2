@@ -382,6 +382,22 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
         # After placing all items, we get the full score.
         self.assertEqual(progress.text, '1/1 point (ungraded)')
 
+    @data(*ITEM_DRAG_KEYBOARD_KEYS)
+    def test_cannot_select_multiple_items(self, action_key):
+        all_item_ids = self.items_map.keys()
+        # Go through all items and select them all using the keyboard action key.
+        for item_id in all_item_ids:
+            item = self._get_item_by_value(item_id)
+            item.send_keys('')
+            item.send_keys(action_key)
+            # Item should be grabbed.
+            self.assert_item_grabbed(item)
+            # Other items should NOT be grabbed.
+            for other_item_id in all_item_ids:
+                if other_item_id != item_id:
+                    other_item = self._get_item_by_value(other_item_id)
+                    self.assert_item_not_grabbed(other_item)
+
 
 class MultipleValidOptionsInteractionTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):
 
