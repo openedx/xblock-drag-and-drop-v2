@@ -247,7 +247,7 @@ function DragAndDropTemplates(configuration) {
         });
 
         return (
-            h('section.feedback', {}, [
+            h('div.feedback', {attributes: {'role': 'group', 'aria-label': gettext('Feedback')}}, [
                 h(
                     "div.feedback-content",
                     { attributes: { 'aria-live': 'polite' } },
@@ -295,11 +295,11 @@ function DragAndDropTemplates(configuration) {
         var attemptsUsedDisplay = (ctx.max_attempts && ctx.max_attempts > 0) ? 'inline': 'none';
 
         return (
-          h("section.action-toolbar-item.submit-answer", {}, [
+          h("div.action-toolbar-item.submit-answer", {}, [
               h(
                   "button.btn-brand.submit-answer-button",
                   {
-                      disabled: ctx.disable_submit_button || ctx.submit_spinner, 
+                      disabled: ctx.disable_submit_button || ctx.submit_spinner,
                       attributes: {"aria-describedby": attemptsUsedId}},
                   [
                       (ctx.submit_spinner ? h("span.fa.fa-spin.fa-spinner") : null),
@@ -356,7 +356,7 @@ function DragAndDropTemplates(configuration) {
             go_to_beginning_button_class += ' sr';
         }
         return(
-            h("section.action-toolbar-item.sidebar-buttons", {}, [
+            h("div.action-toolbar-item.sidebar-buttons", {}, [
                 sidebarButtonTemplate(
                     go_to_beginning_button_class,
                     "fa-arrow-up",
@@ -526,32 +526,35 @@ function DragAndDropTemplates(configuration) {
             item_bank_properties.attributes['dropzone'] = 'move';
             item_bank_properties.attributes['aria-dropeffect'] = 'move';
         }
+        var main_element_properties = {
+            attributes: {
+                'role': 'group',
+                'aria-label': gettext('Drag and Drop Problem')
+            }
+        };
         return (
-            h('section.themed-xblock.xblock--drag-and-drop', [
+            h('div.themed-xblock.xblock--drag-and-drop', main_element_properties, [
                 problemTitle,
                 problemProgress,
                 h('div', [forwardKeyboardHelpButtonTemplate(ctx)]),
-                h('section.problem', [
+                h('div.problem', [
                     problemHeader,
                     h('p', {innerHTML: ctx.problem_html}),
                 ]),
-                h('section.drag-container', {}, [
+                h('div.drag-container', {}, [
                     h('div.item-bank', item_bank_properties, [
                         renderCollection(itemTemplate, items_in_bank, ctx),
                         renderCollection(itemPlaceholderTemplate, items_placed, ctx)
                     ]),
-                    h('div.target',
-                        {},
-                        [
-                            itemFeedbackPopupTemplate(ctx),
-                            h('div.target-img-wrapper', [
-                                h('img.target-img', {src: ctx.target_img_src, alt: ctx.target_img_description}),
-                            ]
-                        ),
+                    h('div.target', {attributes: {'role': 'group', 'arial-label': gettext('Drop Targets')}}, [
+                        itemFeedbackPopupTemplate(ctx),
+                        h('div.target-img-wrapper', [
+                            h('img.target-img', {src: ctx.target_img_src, alt: ctx.target_img_description}),
+                        ]),
                         renderCollection(zoneTemplate, ctx.zones, ctx)
                     ]),
                 ]),
-                h("section.actions-toolbar", {}, [
+                h("div.actions-toolbar", {attributes: {'role': 'group', 'aria-label': gettext('Actions')}}, [
                     sidebarTemplate(ctx),
                     (ctx.show_submit_answer ? submitAnswerTemplate(ctx) : null),
                 ]),
@@ -667,6 +670,9 @@ function DragAndDropBlock(runtime, element, configuration) {
             // For the next one, we need to use addEventListener with useCapture 'true' in order
             // to watch for load events on any child element, since load events do not bubble.
             element.addEventListener('load', webkitFix, true);
+
+            // Remove the spinner and create a blank slate for virtualDom to take over.
+            $root.empty();
 
             applyState();
             initDroppable();

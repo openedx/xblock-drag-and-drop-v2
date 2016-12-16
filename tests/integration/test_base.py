@@ -48,7 +48,7 @@ ItemDefinition = namedtuple(  # pylint: disable=invalid-name
 
 
 class BaseIntegrationTest(SeleniumBaseTest):
-    default_css_selector = 'section.themed-xblock.xblock--drag-and-drop'
+    default_css_selector = 'div.themed-xblock.xblock--drag-and-drop'
     module_name = __name__
 
     _additional_escapes = {
