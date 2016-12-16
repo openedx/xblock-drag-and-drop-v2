@@ -53,7 +53,6 @@ function DragAndDropTemplates(configuration) {
 
     var itemTemplate = function(item, ctx) {
         // Define properties
-        var descriptionClassName = "sr description";
         var className = (item.class_name) ? item.class_name : "";
         var zone = getZone(item.zone, ctx) || {};
         if (item.has_image) {
@@ -118,8 +117,8 @@ function DragAndDropTemplates(configuration) {
             var item_description_id = configuration.url_name + '-item-' + item.value + '-description';
             item_content.properties.attributes = { 'aria-describedby': item_description_id };
             item_description = h(
-                'div',
-                { key: item.value + '-description', id: item_description_id, className: descriptionClassName },
+                'div.sr.description',
+                { key: item_description_id, id: item_description_id},
                 description_content
             );
         }
@@ -184,7 +183,7 @@ function DragAndDropTemplates(configuration) {
         var item_wrapper = 'div.item-wrapper.item-align.item-align-' + zone.align;
         var is_item_in_zone = function(i) { return i.is_placed && (i.zone === zone.uid); };
         var items_in_zone = $.grep(ctx.items, is_item_in_zone);
-        var zone_description_id = configuration.url_name + '-zone-' + zone.uid + '-description';
+        var zone_description_id = zone.prefixed_uid + '-description';
         if (items_in_zone.length == 0) {
           var zone_description = h(
             'div',
