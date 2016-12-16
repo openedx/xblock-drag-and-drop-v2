@@ -142,7 +142,6 @@ class TestDragAndDropRender(BaseIntegrationTest):
 
         for index, item in enumerate(items):
             item_number = index + 1
-            self.assertEqual(item.get_attribute('role'), 'button')
             self.assertEqual(item.get_attribute('tabindex'), '0')
             self.assertEqual(item.get_attribute('draggable'), 'true')
             self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
@@ -194,7 +193,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
                 '#-Zone_{}'.format(zone_number), **zone_box_percentages
             )
             zone_name = zone.find_element_by_css_selector('p.zone-name')
-            self.assertEqual(zone_name.text, 'Zone {}'.format(zone_number))
+            self.assertEqual(zone_name.text, 'Zone {}\n, dropzone'.format(zone_number))
             zone_description = zone.find_element_by_css_selector('p.zone-description')
             self.assertEqual(zone_description.text, 'This describes zone {}'.format(zone_number))
             # Zone description should only be visible to screen readers:

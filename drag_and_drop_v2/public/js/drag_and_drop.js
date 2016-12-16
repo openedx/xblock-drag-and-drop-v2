@@ -66,7 +66,6 @@ function DragAndDropTemplates(configuration) {
             className += " grabbed-with-" + item.grabbed_with;
         }
         var attributes = {
-            'role': 'button',
             'draggable': !item.drag_disabled,
             'aria-grabbed': item.grabbed,
             'data-value': item.value,
@@ -212,7 +211,6 @@ function DragAndDropTemplates(configuration) {
                         'aria-dropeffect': 'move',
                         'data-uid': zone.uid,
                         'data-zone_align': zone.align,
-                        'role': 'button',
                         'aria-describedby': zone_description_id,
                     },
                     style: {
@@ -221,8 +219,15 @@ function DragAndDropTemplates(configuration) {
                     }
                 },
                 [
-                    h('p', { className: className }, zone.title),
-                    h('p', { className: 'zone-description sr' }, zone.description || gettext("droppable")),
+                    h(
+                        'p',
+                        { className: className },
+                        [
+                            zone.title,
+                            h('span.sr', gettext(', dropzone'))
+                        ]
+                    ),
+                    h('p', { className: 'zone-description sr' }, zone.description || gettext('droppable')),
                     h(item_wrapper, renderCollection(itemTemplate, items_in_zone, ctx)),
                     zone_description
                 ]
@@ -520,7 +525,6 @@ function DragAndDropTemplates(configuration) {
             item_bank_properties.attributes['tabindex'] = 0;
             item_bank_properties.attributes['dropzone'] = 'move';
             item_bank_properties.attributes['aria-dropeffect'] = 'move';
-            item_bank_properties.attributes['role'] = 'button';
         }
         return (
             h('section.themed-xblock.xblock--drag-and-drop', [
