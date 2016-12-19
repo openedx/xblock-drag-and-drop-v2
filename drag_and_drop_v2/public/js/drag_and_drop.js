@@ -290,27 +290,33 @@ function DragAndDropTemplates(configuration) {
     };
 
     var submitAnswerTemplate = function(ctx) {
-        var attemptsUsedId = "attempts-used-"+configuration.url_name;
-        var attemptsUsedDisplay = (ctx.max_attempts && ctx.max_attempts > 0) ? 'inline': 'none';
+        var submitButtonProperties = {
+            disabled: ctx.disable_submit_button || ctx.submit_spinner,
+            attributes: {}
+        };
+
+        var attemptsUsedInfo = null;
+        if (ctx.max_attempts && ctx.max_attempts > 0) {
+            var attemptsUsedId = "attempts-used-" + configuration.url_name;
+            submitButtonProperties.attributes["aria-describedby"] = attemptsUsedId;
+            var attemptsUsedTemplate = gettext("You have used {used} of {total} attempts.");
+            var attemptsUsedText = attemptsUsedTemplate.
+                replace("{used}", ctx.attempts).replace("{total}", ctx.max_attempts);
+            attemptsUsedInfo = h("span.attempts-used", {id: attemptsUsedId}, attemptsUsedText);
+        }
 
         return (
-          h("div.action-toolbar-item.submit-answer", {}, [
-              h(
-                  "button.btn-brand.submit-answer-button",
-                  {
-                      disabled: ctx.disable_submit_button || ctx.submit_spinner,
-                      attributes: {"aria-describedby": attemptsUsedId}},
-                  [
-                      (ctx.submit_spinner ? h("span.fa.fa-spin.fa-spinner") : null),
-                      gettext("Submit")
-                  ]
-              ),
-              h(
-                  "span.attempts-used#"+attemptsUsedId, {style: {display: attemptsUsedDisplay}},
-                  gettext("You have used {used} of {total} attempts.")
-                      .replace("{used}", ctx.attempts).replace("{total}", ctx.max_attempts)
-              )
-          ])
+            h("div.action-toolbar-item.submit-answer", {}, [
+                h(
+                    "button.btn-brand.submit-answer-button",
+                    submitButtonProperties,
+                    [
+                        (ctx.submit_spinner ? h("span.fa.fa-spin.fa-spinner") : null),
+                        gettext("Submit")
+                    ]
+                ),
+                attemptsUsedInfo
+            ])
         );
     };
 
