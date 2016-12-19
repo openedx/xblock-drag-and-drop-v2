@@ -4,10 +4,12 @@
 <div class="xblock--drag-and-drop--editor editor-with-buttons">
     {{ js_templates|safe }}
 
-    <section class="drag-builder">
-        <div class="tab feedback-tab">
-
-            <section class="tab-content">
+    <div class="drag-builder">
+        <section class="tab feedback-tab">
+            <header class="tab-header">
+                <h3>{% trans "Basic Settings" %}</h3>
+            </header>
+            <div class="tab-content">
                 <form class="feedback-form">
                     <label class="h4">
                         <span>{% trans fields.display_name.display_name %}</span>
@@ -80,14 +82,14 @@
                         <textarea class="final-feedback">{{ self.data.feedback.finish }}</textarea>
                     </label>
                 </form>
-            </section>
-        </div>
+            </div>
+        </section>
 
-        <div class="tab zones-tab hidden">
+        <section class="tab zones-tab hidden">
             <header class="tab-header">
                 <h3>{% trans "Zones" %}</h3>
             </header>
-            <section class="tab-content">
+            <div class="tab-content">
                 <form class="target-image-form">
                     <label class="h4" for="background-url-{{id_suffix}}">
                         <span>{% trans "Background URL" %}</span>
@@ -114,8 +116,8 @@
                         {% endblocktrans %}
                     </div>
                 </form>
-            </section>
-            <section class="tab-content">
+            </div>
+            <div class="tab-content">
                 <form class="display-labels-form">
                     <h4>{% trans "Zone labels" %}</h4>
                     <label class="checkbox-label">
@@ -130,8 +132,8 @@
                         <span>{% trans "Display zone borders on the image" %}</span>
                     </label>
                 </form>
-            </section>
-            <section class="tab-content">
+            </div>
+            <div class="tab-content">
                 <h4>{% trans "Zone definitions" %}</h4>
                 <div class="zone-editor">
                     <div class="controls">
@@ -147,14 +149,14 @@
                         </div>
                     </div>
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
 
-        <div class="tab items-tab hidden">
+        <section class="tab items-tab hidden">
             <header class="tab-header">
                 <h3>{% trans "Items" %}</h3>
             </header>
-            <section class="tab-content">
+            <div class="tab-content">
                 <form class="item-styles-form">
                     <label class="h4">
                         <span>{% trans fields.item_background_color.display_name %}</span>
@@ -184,18 +186,18 @@
                       {% trans fields.max_items_per_zone.help %}
                     </div>
                 </form>
-            </section>
-            <section class="tab-content">
+            </div>
+            <div class="tab-content">
                 <h4>{% trans "Item definitions" %}</h4>
                 <form class="items-form"></form>
                 <button class="btn add-item add-element">
                     <span class="icon add" aria-hidden="true"></span>
                     {% trans "Add an item" %}
                 </button>
-            </section>
-        </div>
+            </div>
+        </section>
 
-    </section>
+    </div>
 
     <div class="xblock-actions">
       <ul class="action-buttons">
