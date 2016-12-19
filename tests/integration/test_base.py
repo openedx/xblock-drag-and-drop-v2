@@ -163,9 +163,9 @@ class BaseIntegrationTest(SeleniumBaseTest):
         focused_element = self.browser.switch_to.active_element
         self.assertTrue(element != focused_element, 'expected element to not have focus')
 
-    def _patch_sr_read_texts(self):
+    def _patch_sr_read_text(self):
         """
-        Creates a mock SR.readTexts function that stores submitted texts into a global variable
+        Creates a mock SR.readText function that stores submitted text into a global variable
         for later inspection.
         Returns a getter function that returns stored SR texts.
         """
@@ -173,8 +173,9 @@ class BaseIntegrationTest(SeleniumBaseTest):
             """
             window.SR = {
                 received_texts: [],
-                readTexts: function(texts) {
-                    window.SR.received_texts.push(texts);
+                clear: function() {},
+                readText: function(text) {
+                    window.SR.received_texts.push(text);
                 }
             };
             """

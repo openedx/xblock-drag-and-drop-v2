@@ -249,7 +249,7 @@ function DragAndDropTemplates(configuration) {
             h('div.feedback', {attributes: {'role': 'group', 'aria-label': gettext('Feedback')}}, [
                 h(
                     "div.feedback-content",
-                    { attributes: { 'aria-live': 'polite' } },
+                    {attributes: {'aria-live': 'polite', 'aria-atomic': 'true', 'aria-relevant': 'all'}},
                     [
                         h('h3.title1', { style: { display: feedback_display } }, gettext('Feedback')),
                         h('div.messages', { style: { display: feedback_display } }, feedback_messages),
@@ -412,7 +412,7 @@ function DragAndDropTemplates(configuration) {
                     "tabindex": "-1",
                     'aria-live': 'polite',
                     'aria-atomic': 'true',
-                    'aria-relevant': 'additions',
+                    'aria-relevant': 'all',
                 }
             },
             [
@@ -930,7 +930,7 @@ function DragAndDropBlock(runtime, element, configuration) {
 
     // Uses edX JS accessibility tools to read feedback messages when present.
     var readScreenReaderMessages = function() {
-        if (window.SR && window.SR.readTexts) {
+        if (window.SR && window.SR.readText && window.SR.clear) {
             var pluckMessages = function(feedback_items) {
                 return feedback_items.map(function(item) {
                     return item.message;
@@ -957,7 +957,8 @@ function DragAndDropBlock(runtime, element, configuration) {
                 }
             }
 
-            SR.readTexts(messages);
+            SR.clear();
+            SR.readText(messages.join('\n'));
         }
     };
 
