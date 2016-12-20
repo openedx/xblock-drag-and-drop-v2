@@ -26,10 +26,10 @@ class TestDragAndDropTitleAndProblem(BaseIntegrationTest):
         self.addCleanup(scenarios.remove_scenario, const_page_id)
 
         page = self.go_to_page(const_page_name)
-        is_problem_header_visible = len(page.find_elements_by_css_selector('div.problem > h4')) > 0
+        is_problem_header_visible = len(page.find_elements_by_css_selector('.problem > h4')) > 0
         self.assertEqual(is_problem_header_visible, show_problem_header)
 
-        problem = page.find_element_by_css_selector('div.problem > p')
+        problem = page.find_element_by_css_selector('.problem > p')
         self.assertEqual(self.get_element_html(problem), problem_text)
 
     @unpack

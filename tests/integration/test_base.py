@@ -48,7 +48,7 @@ ItemDefinition = namedtuple(  # pylint: disable=invalid-name
 
 
 class BaseIntegrationTest(SeleniumBaseTest):
-    default_css_selector = 'div.themed-xblock.xblock--drag-and-drop'
+    default_css_selector = '.themed-xblock.xblock--drag-and-drop'
     module_name = __name__
 
     _additional_escapes = {
@@ -346,7 +346,7 @@ class InteractionTestBase(object):
         both the HTML attribute and the DOM property are set to false.
         We work around that selenium bug by using JavaScript to get the correct value of 'draggable'.
         """
-        script = "return $('div.option[data-value={}]').prop('draggable')".format(item_value)
+        script = "return $('.option[data-value={}]').prop('draggable')".format(item_value)
         return self.browser.execute_script(script)
 
     def assertDraggable(self, item_value):
