@@ -173,7 +173,6 @@ class BaseIntegrationTest(SeleniumBaseTest):
             """
             window.SR = {
                 received_texts: [],
-                clear: function() {},
                 readText: function(text) {
                     window.SR.received_texts.push(text);
                 }

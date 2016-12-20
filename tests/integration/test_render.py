@@ -203,12 +203,10 @@ class TestDragAndDropRender(BaseIntegrationTest):
         self.load_scenario()
 
         popup = self._get_popup()
-        popup_wrapper = self._get_popup_wrapper()
         popup_content = self._get_popup_content()
         self.assertFalse(popup.is_displayed())
         self.assertIn('popup', popup.get_attribute('class'))
         self.assertEqual(popup_content.text, "")
-        self.assertEqual(popup_wrapper.get_attribute('aria-live'), 'polite')
 
     @data(None, Keys.RETURN)
     def test_go_to_beginning_button(self, action_key):
@@ -252,9 +250,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
     def test_feedback(self):
         self.load_scenario()
 
-        feedback = self._get_feedback()
         feedback_message = self._get_feedback_message()
-        self.assertEqual(feedback.get_attribute('aria-live'), 'polite')
         self.assertEqual(feedback_message.text, START_FEEDBACK)
 
     def test_background_image(self):
