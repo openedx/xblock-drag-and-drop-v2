@@ -501,13 +501,19 @@ function DragAndDropTemplates(configuration) {
     };
 
     var mainTemplate = function(ctx) {
+        var main_element_properties = {attributes: {role: 'group'}};
         var problemProgress = progressTemplate(ctx);
         var problemTitle = null;
         if (ctx.show_title) {
+            var problem_title_id = configuration.url_name + '-problem-title';
             problemTitle = h('h3.problem-title', {
+                id: problem_title_id,
                 innerHTML: ctx.title_html,
                 attributes: {'aria-describedby': problemProgress.properties.id}
             });
+            main_element_properties.attributes['arial-labelledby'] = problem_title_id;
+        } else {
+            main_element_properties.attributes['aria-label'] = gettext('Drag and Drop Problem');
         }
         var problemHeader = ctx.show_problem_header ? h('h4.title1', gettext('Problem')) : null;
         // Render only items in the bank here, including placeholders.  Placed
@@ -526,12 +532,6 @@ function DragAndDropTemplates(configuration) {
             item_bank_properties.attributes['dropzone'] = 'move';
             item_bank_properties.attributes['aria-dropeffect'] = 'move';
         }
-        var main_element_properties = {
-            attributes: {
-                'role': 'group',
-                'aria-label': gettext('Drag and Drop Problem')
-            }
-        };
         return (
             h('div.themed-xblock.xblock--drag-and-drop', main_element_properties, [
                 problemTitle,
