@@ -595,6 +595,27 @@ msgid_plural "{possible} points possible (ungraded)"
 msgstr[0] ""
 msgstr[1] ""
 
+#: drag_and_drop_v2/public/js/drag_and_drop.js:374
+#: drag_and_drop_v2/public/js/drag_and_drop.js:839
+msgid "Hints:"
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:224
+msgid ", dropzone"
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:479
+msgid "Drag and Drop Problem"
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:509
+msgid "Drop Targets"
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:517
+msgid "Actions"
+msgstr ""
+
 #: utils.py:44
 msgid "Your highest score is {score}"
 msgstr ""
