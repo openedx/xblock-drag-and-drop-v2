@@ -8,7 +8,7 @@ function DragAndDropTemplates(configuration) {
         }
         return (
             h("div.spinner-wrapper", {key: item.value + '-spinner'}, [
-                h("i.fa.fa-spin.fa-spinner")
+                h("span.fa.fa-spin.fa-spinner")
             ])
         );
     };
