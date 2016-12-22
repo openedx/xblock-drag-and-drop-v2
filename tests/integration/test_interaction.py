@@ -56,7 +56,6 @@ class ParameterizedTestsMixin(object):
         if feedback is None:
             feedback = self.feedback
 
-        get_sr_texts = self._patch_sr_read_text()
         popup = self._get_popup()
         feedback_popup_content = self._get_popup_content()
 
@@ -79,7 +78,7 @@ class ParameterizedTestsMixin(object):
             else:
                 overall_feedback = feedback['intro']
             expected_sr_texts.append(overall_feedback)
-            self.assertEqual(get_sr_texts()[-1], '\n'.join(expected_sr_texts))
+            self.assert_reader_feedback_messages(expected_sr_texts)
             if action_key:
                 # Next TAB keypress should move focus to "Go to Beginning button"
                 self._test_next_tab_goes_to_go_to_beginning_button()
@@ -90,7 +89,6 @@ class ParameterizedTestsMixin(object):
         if feedback is None:
             feedback = self.feedback
 
-        get_sr_texts = self._patch_sr_read_text()
         popup = self._get_popup()
         feedback_popup_content = self._get_popup_content()
 
@@ -105,7 +103,7 @@ class ParameterizedTestsMixin(object):
             feedback_popup_html = feedback_popup_content.get_attribute('innerHTML')
             self.assertEqual(feedback_popup_html, '')
             self.assertFalse(popup.is_displayed())
-            self.assertEqual(get_sr_texts(), [])
+            self.assert_reader_feedback_messages([])
 
     def parameterized_item_negative_feedback_on_bad_move_standard(
             self, items_map, all_zones, scroll_down=100, action_key=None, feedback=None
@@ -113,7 +111,6 @@ class ParameterizedTestsMixin(object):
         if feedback is None:
             feedback = self.feedback
 
-        get_sr_texts = self._patch_sr_read_text()
         popup = self._get_popup()
         feedback_popup_content = self._get_popup_content()
 
@@ -129,7 +126,7 @@ class ParameterizedTestsMixin(object):
                 self.assertTrue(popup.is_displayed())
                 self.assert_reverted_item(definition.item_id)
                 expected_sr_texts = [definition.feedback_negative, feedback['intro']]
-                self.assertEqual(get_sr_texts()[-1], '\n'.join(expected_sr_texts))
+                self.assert_reader_feedback_messages(expected_sr_texts)
                 self._test_popup_focus_and_close(popup, action_key)
 
     def parameterized_item_negative_feedback_on_bad_move_assessment(
@@ -138,7 +135,6 @@ class ParameterizedTestsMixin(object):
         if feedback is None:
             feedback = self.feedback
 
-        get_sr_texts = self._patch_sr_read_text()
         popup = self._get_popup()
         feedback_popup_content = self._get_popup_content()
 
@@ -154,7 +150,7 @@ class ParameterizedTestsMixin(object):
                 self.assertEqual(feedback_popup_html, '')
                 self.assertFalse(popup.is_displayed())
                 self.assert_placed_item(definition.item_id, zone_title, assessment_mode=True)
-                self.assertEqual(get_sr_texts(), [])
+                self.assert_reader_feedback_messages([])
                 self._test_popup_focus_and_close(popup, action_key)
                 if action_key:
                     self._test_next_tab_goes_to_go_to_beginning_button()

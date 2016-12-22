@@ -248,8 +248,6 @@ class AssessmentInteractionTest(
         """
         Test updating overall feedback after submitting solution in assessment mode
         """
-        get_sr_texts = self._patch_sr_read_text()
-
         def check_feedback(overall_feedback_lines, per_item_feedback_lines=None):
             # Check that the feedback is correctly displayed in the overall feedback area.
             expected_overall_feedback = "\n".join(["FEEDBACK"] + overall_feedback_lines)
@@ -260,7 +258,7 @@ class AssessmentInteractionTest(
             if per_item_feedback_lines:
                 sr_feedback_lines += ["Some of your answers were not correct.", "Hints:"]
                 sr_feedback_lines += per_item_feedback_lines
-            self.assertEqual(get_sr_texts()[-1], '\n'.join(sr_feedback_lines))
+            self.assert_reader_feedback_messages(sr_feedback_lines)
 
         # used keyboard mode to avoid bug/feature with selenium "selecting" everything instead of dragging an element
         self.place_item(0, TOP_ZONE_ID, Keys.RETURN)

@@ -569,6 +569,10 @@ function DragAndDropTemplates(configuration) {
                 ]),
                 keyboardHelpPopupTemplate(ctx),
                 feedbackTemplate(ctx),
+                h('div.sr.reader-feedback-area', {
+                    attributes: {'aria-live': 'polite', 'aria-atomic': true},
+                    innerHTML: ctx.screen_reader_messages
+                }),
             ])
         );
     };
@@ -931,36 +935,49 @@ function DragAndDropBlock(runtime, element, configuration) {
         __vdom = new_vdom;
     };
 
-    // Uses edX JS accessibility tools to read feedback messages when present.
-    var readScreenReaderMessages = function() {
-        if (window.SR && window.SR.readText) {
-            var pluckMessages = function(feedback_items) {
-                return feedback_items.map(function(item) {
-                    return item.message;
-                });
-            };
-            var messages = [];
-            // In standard mode, it makes more sense to read the per-item feedback before overall feedback.
-            if (state.feedback && configuration.mode === DragAndDropBlock.STANDARD_MODE) {
-                messages = messages.concat(pluckMessages(state.feedback));
-            }
-            if (state.overall_feedback) {
-                messages = messages.concat(pluckMessages(state.overall_feedback));
-            }
-            // In assessment mode overall feedback comes first then multiple per-item feedbacks.
-            if (state.feedback && configuration.mode === DragAndDropBlock.ASSESSMENT_MODE) {
-                if (state.feedback.length > 0) {
-                    if (!state.last_action_correct) {
-                        messages.push(gettext("Some of your answers were not correct."));
-                    }
-                    messages = messages.concat(
-                        gettext("Hints:"),
-                        pluckMessages(state.feedback)
-                    );
-                }
-            }
-            SR.readText(messages.join('\n'));
+    var sr_clear_timeout = null;
+
+    var setScreenReaderMessages = function() {
+        clearTimeout(sr_clear_timeout);
+
+        var pluckMessages = function(feedback_items) {
+            return feedback_items.map(function(item) {
+                return item.message;
+            });
+        };
+        var messages = [];
+        // In standard mode, it makes more sense to read the per-item feedback before overall feedback.
+        if (state.feedback && configuration.mode === DragAndDropBlock.STANDARD_MODE) {
+            messages = messages.concat(pluckMessages(state.feedback));
         }
+        if (state.overall_feedback) {
+            messages = messages.concat(pluckMessages(state.overall_feedback));
+        }
+        // In assessment mode overall feedback comes first then multiple per-item feedbacks.
+        if (state.feedback && configuration.mode === DragAndDropBlock.ASSESSMENT_MODE) {
+            if (state.feedback.length > 0) {
+                if (!state.last_action_correct) {
+                    messages.push(gettext("Some of your answers were not correct."));
+                }
+                messages = messages.concat(
+                    gettext("Hints:"),
+                    pluckMessages(state.feedback)
+                );
+            }
+        }
+        var paragraphs = messages.map(function(msg) {
+            return '<p>' + msg + '</p>';
+        });
+
+        state.screen_reader_messages = paragraphs.join('');
+
+        // Remove the text on next redraw. This will make screen readers read the message again,
+        // next time the user performs an action, even if next feedback message did not change from
+        // last attempt (for example: if user drops the same item on two wrong zones one after another,
+        // the negative feedback should be read out twice, not only on first drop).
+        sr_clear_timeout = setTimeout(function() {
+            state.screen_reader_messages = '';
+        }, 0);
     };
 
     var publishEvent = function(data) {
@@ -1267,7 +1284,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                         state.finished = true;
                         state.overall_feedback = data.overall_feedback;
                     }
-                    readScreenReaderMessages();
+                    setScreenReaderMessages();
                 }
                 applyState();
                 if (state.feedback && state.feedback.length > 0) {
@@ -1372,7 +1389,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             } else {
                 state.finished = true;
             }
-            readScreenReaderMessages();
+            setScreenReaderMessages();
         }).always(function() {
             state.submit_spinner = false;
             applyState();
@@ -1500,7 +1517,8 @@ function DragAndDropBlock(runtime, element, configuration) {
             showing_answer: state.showing_answer,
             show_answer_spinner: state.show_answer_spinner,
             disable_go_to_beginning_button: !canGoToBeginning(),
-            show_go_to_beginning_button: state.go_to_beginning_button_visible
+            show_go_to_beginning_button: state.go_to_beginning_button_visible,
+            screen_reader_messages: (state.screen_reader_messages || '')
         };
 
         return renderView(context);
