@@ -8,7 +8,8 @@ function DragAndDropTemplates(configuration) {
         }
         return (
             h("div.spinner-wrapper", {key: item.value + '-spinner'}, [
-                h("span.fa.fa-spin.fa-spinner")
+                h("span.fa.fa-spin.fa-spinner", {attributes: {'aria-hidden': true}}),
+                h("span.sr", gettext('Saving'))
             ])
         );
     };
@@ -305,13 +306,22 @@ function DragAndDropTemplates(configuration) {
             attemptsUsedInfo = h("span.attempts-used", {id: attemptsUsedId}, attemptsUsedText);
         }
 
+        var submitSpinner = null;
+        if (ctx.submit_spinner) {
+            submitSpinner = h('span', [
+                h('span.fa.fa-spin.fa-spinner', {attributes: {'aria-hidden': true}}),
+                h('span.sr', gettext('Saving'))
+            ]);
+        }
+
         return (
             h("div.action-toolbar-item.submit-answer", {}, [
                 h(
                     "button.btn-brand.submit-answer-button",
                     submitButtonProperties,
                     [
-                        (ctx.submit_spinner ? h("span.fa.fa-spin.fa-spinner") : null),
+                        submitSpinner,
+                        ' ',  // whitespace between spinner icon and text
                         gettext("Submit")
                     ]
                 ),

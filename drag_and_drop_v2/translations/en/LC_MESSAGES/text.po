@@ -616,6 +616,10 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
+#: drag_and_drop_v2/public/js/drag_and_drop.js:12
+msgid "Saving"
+msgstr ""
+
 #: utils.py:44
 msgid "Your highest score is {score}"
 msgstr ""

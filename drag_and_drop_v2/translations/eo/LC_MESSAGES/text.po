@@ -715,6 +715,10 @@ msgstr "Dröp Tärgéts Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 msgid "Actions"
 msgstr "Àçtïöns Ⱡ'σяєм ιρѕυм #"
 
+#: drag_and_drop_v2/public/js/drag_and_drop.js:12
+msgid "Saving"
+msgstr "Sävïng Ⱡ'σяєм ιρѕυ#"
+
 #: utils.py:44
 msgid "Your highest score is {score}"
 msgstr "Ýöür hïghést sçöré ïs {score} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
