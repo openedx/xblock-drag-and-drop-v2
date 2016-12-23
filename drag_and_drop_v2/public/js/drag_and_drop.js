@@ -9,7 +9,7 @@ function DragAndDropTemplates(configuration) {
         return (
             h("div.spinner-wrapper", {key: item.value + '-spinner'}, [
                 h("span.fa.fa-spin.fa-spinner", {attributes: {'aria-hidden': true}}),
-                h("span.sr", gettext('Saving'))
+                h("span.sr", gettext('Submitting'))
             ])
         );
     };
@@ -310,7 +310,7 @@ function DragAndDropTemplates(configuration) {
         if (ctx.submit_spinner) {
             submitSpinner = h('span', [
                 h('span.fa.fa-spin.fa-spinner', {attributes: {'aria-hidden': true}}),
-                h('span.sr', gettext('Saving'))
+                h('span.sr', gettext('Submitting'))
             ]);
         }
 

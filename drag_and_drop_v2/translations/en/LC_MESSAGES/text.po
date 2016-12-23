@@ -617,7 +617,7 @@ msgid "Actions"
 msgstr ""
 
 #: drag_and_drop_v2/public/js/drag_and_drop.js:12
-msgid "Saving"
+msgid "Submitting"
 msgstr ""
 
 #: utils.py:44
