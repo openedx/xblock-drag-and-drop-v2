@@ -547,3 +547,14 @@ Then start python interpreter, import `Dummy` translator and follow instructions
     >>> print conv.convert("String to translate")
     
 Then copy output and paste it into `translations/eo/LC_MESSAGES/text.po`.
+
+Downloading translations from Transifex
+-------------------------------------
+
+If you want to download translations from Transifex install [Transifex client][transifex-client] and run this command while inside project root directory
+
+```bash
+$ tx pull -f --mode=reviewed -l en,ar,es_419,fr,he,hi,ko_KR,pt_BR,ru,zh_CN
+```
+
+[transifex-client]: https://docs.transifex.com/client/installing-the-client
