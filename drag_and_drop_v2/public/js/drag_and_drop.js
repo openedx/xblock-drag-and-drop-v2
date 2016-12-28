@@ -255,44 +255,12 @@ function DragAndDropTemplates(configuration) {
         );
     };
 
-    var popupTemplate = function(ctx) {
-        var popupSelector = 'div.popup';
-        if (ctx.popup_html && !ctx.last_action_correct) {
-            popupSelector += '.popup-incorrect';
-        }
-
-        return (
-            h(
-                "div.popup-wrapper",
-                {
-                    attributes: {
-                        'aria-live': 'polite',
-                        'aria-atomic': 'true',
-                        'aria-relevant': 'additions',
-                    }
-                },
-                [
-                    h(
-                        popupSelector,
-                        {
-                            style: {display: ctx.popup_html ? 'block' : 'none'},
-                        },
-                        [
-                            h('div.close.icon-remove-sign.fa-times-circle'),
-                            h('p.popup-content', {innerHTML: ctx.popup_html}),
-                        ]
-                    )
-                ]
-            )
-        )
-    };
-
     var keyboardHelpPopupTemplate = function(ctx) {
         var labelledby_id = 'modal-window-title-'+configuration.url_name;
         return (
             h('div.keyboard-help-dialog', [
                 h('div.modal-window-overlay'),
-                h('div.modal-window', {attributes: {role: 'dialog', 'aria-labelledby': labelledby_id}}, [
+                h('div.modal-window', {attributes: {role: 'dialog', 'aria-labelledby': labelledby_id, tabindex: -1}}, [
                     h('div.modal-header', [
                         h('h2.modal-window-title#'+labelledby_id, gettext('Keyboard Help'))
                     ]),
@@ -712,11 +680,10 @@ function DragAndDropBlock(runtime, element, configuration) {
         // Show dialog
         var $keyboardHelpDialog = $root.find('.keyboard-help-dialog');
         $keyboardHelpDialog.find('.modal-window-overlay').show();
-        $keyboardHelpDialog.find('.modal-window').show();
+        $keyboardHelpDialog.find('.modal-window').show().focus();
 
         // Handle focus
         $focusedElement = $(':focus');
-        focusModalButton();
 
         // Set up event handlers
         $(document).on('keydown', keyboardEventDispatcher);
