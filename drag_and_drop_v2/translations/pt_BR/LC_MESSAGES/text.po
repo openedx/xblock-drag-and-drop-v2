@@ -1,0 +1,613 @@
+# 
+# Translators:
+# danielcn <deo.daniel@gmail.com>, 2016
+# Genaro Costa <genarocosta@yahoo.com>, 2016
+# Heitor Oliveira <heitor.farol@gmail.com>, 2016
+# Renata Barboza-Murray, 2016
+# Rogério Santos Filho <rogerio.gns@gmail.com>, 2016
+# Salatiel Ewerton <salatiel2021@hotmail.com>, 2016
+msgid ""
+msgstr ""
+"Project-Id-Version: XBlocks\n"
+"POT-Creation-Date: 2016-03-30 16:54+0500\n"
+"PO-Revision-Date: 2016-12-23 05:47+0000\n"
+"Last-Translator: Renata Barboza-Murray\n"
+"Language-Team: Portuguese (Brazil) (http://www.transifex.com/open-edx/xblocks/language/pt_BR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pt_BR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: default_data.py
+msgid ""
+"An isosceles triangle with three layers of similar height. It is shown "
+"upright, so the widest layer is located at the bottom, and the narrowest "
+"layer is located at the top."
+msgstr "Um triângulo isósceles com três camadas de alturas semelhantes está sendo exibido verticalmente, assim a camada mais larga está localizada na parte inferior e a camada mais estreita no topo."
+
+#: default_data.py
+msgid "Of course it goes here! It goes anywhere!"
+msgstr ""
+
+#: default_data.py
+msgid "Goes anywhere"
+msgstr ""
+
+#: default_data.py
+msgid "The Top Zone"
+msgstr "A zona superior"
+
+#: default_data.py
+msgid "The Middle Zone"
+msgstr "A zona central"
+
+#: default_data.py
+msgid "The Bottom Zone"
+msgstr "A zona inferior"
+
+#: default_data.py
+msgid "Use this zone to associate an item with the top layer of the triangle."
+msgstr "Use esta zona para associar um item à camada superior do triângulo."
+
+#: default_data.py
+msgid ""
+"Use this zone to associate an item with the middle layer of the triangle."
+msgstr "Use esta zona para associar um item à camada central do triângulo."
+
+#: default_data.py
+msgid ""
+"Use this zone to associate an item with the bottom layer of the triangle."
+msgstr "Use esta zona para associar um item à camada inferior do triângulo."
+
+#: default_data.py
+#, python-brace-format
+msgid "Correct! This one belongs to {zone}."
+msgstr "Correto! Este item pertence à {zone}."
+
+#: default_data.py
+msgid "No, this item does not belong here. Try again."
+msgstr "Não, este não é o item correto. Tente novamente."
+
+#: default_data.py
+msgid "You silly, there are no zones for this one."
+msgstr "Não há zonas para este item."
+
+#: default_data.py
+msgid "Drag the items onto the image above."
+msgstr "Arraste os itens para a imagem acima."
+
+#: default_data.py
+msgid "Good work! You have completed this drag and drop problem."
+msgstr "Bom trabalho! Você completou este problema."
+
+#: default_data.py
+msgid "Goes to the top"
+msgstr "Vai para a zona superior"
+
+#: default_data.py
+msgid "Goes to the middle"
+msgstr "Vai para a zona central"
+
+#: default_data.py
+msgid "Goes to the bottom"
+msgstr "Vai para a zona inferior"
+
+#: default_data.py
+msgid "I don't belong anywhere"
+msgstr ""
+
+#: drag_and_drop_v2.py msgid "This setting limits the number of items that can
+#: be dropped into a single zone." msgstr "" drag_and_drop_v2.py
+#: templates/html/js_templates.html
+msgid "Title"
+msgstr "Título"
+
+#: drag_and_drop_v2.py
+msgid ""
+"The title of the drag and drop problem. The title is displayed to learners."
+msgstr "O título do problema de arraste e solte. O título é exibido aos alunos."
+
+#: drag_and_drop_v2.py
+msgid "Drag and Drop"
+msgstr "Arraste e Solte"
+
+#: drag_and_drop_v2.py
+msgid "Mode"
+msgstr "Modo"
+
+#: drag_and_drop_v2.py
+msgid ""
+"Standard mode: the problem provides immediate feedback each time a learner "
+"drops an item on a target zone. Assessment mode: the problem provides "
+"feedback only after a learner drops all available items on target zones."
+msgstr "Modo padrão: o problema fornece comentário imediatamente cada vez que um aluno solta um item numa zona-alvo. Modo avaliação: o problema fornece comentário somente depois que um aluno solta todos os itens nas áreas-alvo."
+
+#: drag_and_drop_v2.py
+msgid "Standard"
+msgstr "Padrão"
+
+#: drag_and_drop_v2.py
+msgid "Assessment"
+msgstr "Avaliação"
+
+#: drag_and_drop_v2.py
+msgid "Maximum attempts"
+msgstr "Máximo de tentativas"
+
+#: drag_and_drop_v2.py
+msgid ""
+"Defines the number of times a student can try to answer this problem. If the"
+" value is not set, infinite attempts are allowed."
+msgstr "Define o número de tentativas que os estudantes podem fazer para resolver este problema. Se o valor não for definido, infinitas tentativas serão permitidas."
+
+#: drag_and_drop_v2.py
+msgid "Show title"
+msgstr "Exibir título"
+
+#: drag_and_drop_v2.py
+msgid "Display the title to the learner?"
+msgstr "Exibir título ao aluno?"
+
+#: drag_and_drop_v2.py
+msgid "Problem text"
+msgstr "Descrição do problema"
+
+#: drag_and_drop_v2.py
+msgid "The description of the problem or instructions shown to the learner."
+msgstr "A descrição do problema ou instruções exibidas ao aluno."
+
+#: drag_and_drop_v2.py
+msgid "Show \"Problem\" heading"
+msgstr "Exibir o cabeçalho do \"Problema\""
+
+#: drag_and_drop_v2.py
+msgid "Display the heading \"Problem\" above the problem text?"
+msgstr "Exibir o cabeçalho de \"Problema\" acima da descrição?"
+
+#: drag_and_drop_v2.py
+msgid "Problem Weight"
+msgstr "Valor do problema"
+
+#: drag_and_drop_v2.py
+msgid "Defines the number of points the problem is worth."
+msgstr "Define o número de pontos válidos para este problema."
+
+#: drag_and_drop_v2.py
+msgid "Item background color"
+msgstr "Cor do plano de fundo"
+
+#: drag_and_drop_v2.py
+msgid ""
+"The background color of draggable items in the problem (example: 'blue' or "
+"'#0000ff')."
+msgstr "A cor do plano de fundo de itens que podem ser arrastados no problema (por exemplo: 'azul' ou '#0000ff')."
+
+#: drag_and_drop_v2.py
+msgid "Item text color"
+msgstr "Cor do texto"
+
+#: drag_and_drop_v2.py
+msgid "Text color to use for draggable items (example: 'white' or '#ffffff')."
+msgstr "Cor do texto para itens que podem ser arrastados (por exemplo: 'branco' ou '#ffffff')."
+
+#: drag_and_drop_v2.py
+msgid "Problem data"
+msgstr "Dados do problema"
+
+#: drag_and_drop_v2.py
+msgid ""
+"Information about zones, items, feedback, and background image for this "
+"problem. This information is derived from the input that a course author "
+"provides via the interactive editor when configuring the problem."
+msgstr "Informações sobre zonas, itens, feedback e imagem de plano de fundo deste problema. Informação obtida dos dados inseridos pelo autor do curso através dos editor interativo durante a configuração do problema."
+
+#: drag_and_drop_v2.py
+msgid ""
+"Information about current positions of items that a learner has dropped on "
+"the target image."
+msgstr "Informações sobre as posições atuais de itens que um aluno soltou na imagem-alvo."
+
+#: drag_and_drop_v2.py
+msgid "Number of attempts learner used"
+msgstr "Numero de tentativas usadas pelo aluno"
+
+#: drag_and_drop_v2.py
+msgid "Indicates whether a learner has completed the problem at least once"
+msgstr "Indica se um aluno completou o problema pelo menos uma vez"
+
+#: drag_and_drop_v2.py
+msgid "do_attempt handler should only be called for assessment mode"
+msgstr "A ferramenta do_attempt deve ser executada somente no modo de avaliação"
+
+#: drag_and_drop_v2.py
+msgid "Max number of attempts reached"
+msgstr "Número máximo de tentativas alcançado"
+
+#: drag_and_drop_v2.py
+msgid "show_answer handler should only be called for assessment mode"
+msgstr "A ferramenta show_answer deve somente ser executada no modo de avaliação"
+
+#: drag_and_drop_v2.py
+msgid "There are attempts remaining"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid "Unknown DnDv2 mode {mode} - course is misconfigured"
+msgstr "Modo {mode} DnDv2 desconhecido - o curso não está configurado corretamente"
+
+#: templates/html/js_templates.html
+msgid "Remove zone"
+msgstr "Remover zona"
+
+#: drag_and_drop_v2.py
+msgid "Keeps maximum score achieved by student"
+msgstr "Mantém a pontuação máxima alcançada pelo aluno"
+
+#: drag_and_drop_v2.py
+msgid "Failed to parse \"Maximum items per zone\""
+msgstr "Falha em analisar \"Máximo de itens por zona\""
+
+#: drag_and_drop_v2.py
+msgid ""
+"\"Maximum items per zone\" should be positive integer, got "
+"{max_items_per_zone}"
+msgstr "\"Máximo de itens por zona\" deve ser positivo e inteiro. Valor atual: {max_items_per_zone}"
+
+#: templates/html/js_templates.html
+msgid "Text"
+msgstr "Texto"
+
+#: templates/html/js_templates.html
+msgid "Description"
+msgstr "Descrição"
+
+#: templates/html/js_templates.html
+msgid "Describe this zone to non-visual users."
+msgstr ""
+
+#: templates/html/js_templates.html
+msgid "width"
+msgstr "largura"
+
+#: templates/html/js_templates.html
+msgid "height"
+msgstr "altura"
+
+#: templates/html/js_templates.html
+msgid "Alignment"
+msgstr "Alinhamento"
+
+#: templates/html/js_templates.html
+msgid "none"
+msgstr "nenhum"
+
+#: templates/html/js_templates.html
+msgid "left"
+msgstr "esquerda"
+
+#: templates/html/js_templates.html
+msgid "center"
+msgstr "centro"
+
+#: templates/html/js_templates.html
+msgid "right"
+msgstr "direita"
+
+#: templates/html/js_templates.html
+msgid "Align dropped items to the left, center, or right."
+msgstr "Alinhe itens soltos à esquerda, centro ou direita."
+
+#: templates/html/js_templates.html
+msgid "Remove item"
+msgstr "Remover item"
+
+#: templates/html/js_templates.html
+msgid "Zone"
+msgstr "Zona"
+
+#: templates/html/js_templates.html
+msgid "Image URL (alternative to the text)"
+msgstr "URL da imagem (em substituição do texto)"
+
+#: templates/html/js_templates.html
+msgid "For example, 'http://example.com/image.png' or '/static/image.png'."
+msgstr "Por exemplo, 'http://example.com/image.png' or '/static/image.png'."
+
+#: templates/html/js_templates.html
+msgid ""
+"Image description (should provide sufficient information to place the item "
+"even if the image did not load)"
+msgstr "Descrição da imagem (deve fornecer informação suficiente para que se posicione o item mesmo que a imagem não carregue)"
+
+#: templates/html/js_templates.html
+msgid "Success feedback"
+msgstr ""
+
+#: templates/html/js_templates.html
+msgid "Error feedback"
+msgstr ""
+
+#: templates/html/js_templates.html
+msgid "Show advanced settings"
+msgstr "Exibir configurações avançadas"
+
+#: templates/html/js_templates.html
+msgid "Preferred width"
+msgstr ""
+
+#: templates/html/js_templates.html
+msgid ""
+"Specify preferred width as percentage of the background image width. Leave "
+"blank for automatic width."
+msgstr ""
+
+#: templates/html/js_templates.html
+msgid "Use text that is clear and descriptive of the item to be placed."
+msgstr "Use textos que sejam claros e descritivos sobre o item a ser posicionado."
+
+#: templates/html/drag_and_drop.html
+msgid "Loading drag and drop problem."
+msgstr "Carregando o problema"
+
+#: templates/html/drag_and_drop_edit.html
+msgid ""
+"Note: do not edit the problem if students have already completed it. Delete "
+"the problem and create a new one."
+msgstr "Observação: não edite o problema se os alunoas já o completaram. Apague o problema e crie um novo."
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Introductory feedback"
+msgstr "Feedback introdutório"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Final feedback"
+msgstr "Comentário final"
+
+#: templates/html/drag_and_drop_edit.html templates/html/js_templates.html
+msgid "Zones"
+msgstr "Zonas"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Background URL"
+msgstr "URL do plano de fundo"
+
+#: templates/html/drag_and_drop_edit.html
+msgid ""
+"For example, 'http://example.com/background.png' or "
+"'/static/background.png'."
+msgstr "Por exemplo, 'http://example.com/background.png' ou '/static/background.png'."
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Change background"
+msgstr "Alterar plano de fundo"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Background description"
+msgstr "Descrição do plano de fundo"
+
+#: templates/html/drag_and_drop_edit.html
+msgid ""
+"\n"
+"                            Please provide a description of the image for non-visual users.\n"
+"                            The description should provide sufficient information to allow anyone\n"
+"                            to solve the problem even without seeing the image.\n"
+"                        "
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Zone definitions"
+msgstr "Definições da zona"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Zone labels"
+msgstr "Etiquetas da zona"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Display label names on the image"
+msgstr "Exibir nomes da etiqueta na imagem"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Zone borders"
+msgstr "Bordas da zona"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Display zone borders on the image"
+msgstr "Exibir as bordas da zona na imagem"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Add a zone"
+msgstr "Adicionar uma zona"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Items"
+msgstr "Itens"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Add an item"
+msgstr "Adicionar um item"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Continue"
+msgstr "Continuar"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Save"
+msgstr "Salvar"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: public/js/drag_and_drop.js
+msgid "ok"
+msgstr "ok"
+
+#: public/js/drag_and_drop.js
+msgid "Item Bank"
+msgstr "Banco de itens"
+
+#: public/js/drag_and_drop.js
+msgid "Placed in: {zone_title}"
+msgstr "Posicionado em: {zone_title}"
+
+#: public/js/drag_and_drop.js
+msgid "Correctly placed in: {zone_title}"
+msgstr "Corretamente posicionado em: {zone_title}"
+
+#: public/js/drag_and_drop.js
+msgid "Reset"
+msgstr "Redefinir"
+
+#: public/js/drag_and_drop.js
+msgid "Show Answer"
+msgstr "Exibir resposta"
+
+#: public/js/drag_and_drop.js
+msgid "Hide Answer"
+msgstr "Ocultar resposta"
+
+#: public/js/drag_and_drop.js
+msgid "Submit"
+msgstr "Enviar"
+
+#: public/js/drag_and_drop.js
+msgid "Feedback"
+msgstr "Comentário"
+
+#: public/js/drag_and_drop.js
+msgid "Keyboard Help"
+msgstr "Ajuda do Teclado"
+
+#: public/js/drag_and_drop.js
+msgid "You can complete this problem using only your keyboard."
+msgstr "Você pode completar este problema usando apenas seu teclado."
+
+#: public/js/drag_and_drop.js
+msgid "Use \"Tab\" and \"Shift-Tab\" to navigate between items and zones."
+msgstr "Use as teclas \"Tab\" e \"Shift-Tab\" para navegar entre itens e zonas."
+
+#: public/js/drag_and_drop.js
+msgid ""
+"Press \"Enter\", \"Space\", \"Ctrl-m\", or \"⌘-m\" on an item to select it "
+"for dropping, then navigate to the zone you want to drop it on."
+msgstr "Pressione \"Enter\", \"Espaço\", \"Ctrl-m\" ou \"⌘-m\" em um item para selecionar e arrastá-lo, em seguida, vá até à zona em que você deseja soltá-lo."
+
+#: public/js/drag_and_drop.js
+msgid ""
+"Press \"Enter\", \"Space\", \"Ctrl-m\", or \"⌘-m\" to drop the item on the "
+"current zone."
+msgstr "Pressione \"Enter\", \"Space\", \"Ctrl-m\" ou \"⌘-m\" para soltar o item na zona atual."
+
+#: public/js/drag_and_drop.js
+msgid ""
+"Press \"Esc\" if you want to cancel the drop operation (for example, to "
+"select a different item)."
+msgstr "Pressione \"Esc\" caso queira cancelar a ação de soltar (por exemplo, para selecionar um item diferente)."
+
+#: public/js/drag_and_drop.js
+msgid "OK"
+msgstr "OK"
+
+#: public/js/drag_and_drop.js
+msgid "Problem"
+msgstr "Problema"
+
+#: public/js/drag_and_drop.js
+msgid "An error occurred. Unable to load drag and drop problem."
+msgstr "Ocorreu um erro. Não foi possível carregar o problema de arraste e solte."
+
+#: public/js/drag_and_drop.js
+msgid "You have used {used} of {total} attempts."
+msgstr "Você fez {used} das {total} tentativas."
+
+#: public/js/drag_and_drop.js
+msgid "Some of your answers were not correct."
+msgstr "Algumas de suas respostas não são corretas."
+
+#: public/js/drag_and_drop_edit.js
+msgid "There was an error with your form."
+msgstr "Ocorreu um erro com seu formulário."
+
+#: public/js/drag_and_drop_edit.js
+msgid "Please check over your submission."
+msgstr "Por favor, verifique seu envio."
+
+#: public/js/drag_and_drop_edit.js
+msgid "None"
+msgstr "Nenhum"
+
+#: public/js/drag_and_drop_edit.js
+msgid "Close item feedback popup"
+msgstr "Fechar o pop-up de comentário do item"
+
+# Translators: {earned} is the number of points earned. {possible} is the
+# total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
+# points will always be at least 1. We pluralize based on the total number of
+# points (example: 0/1 point; 1/2 points).
+#: public/js/drag_and_drop.js:453
+msgid "{earned}/{possible} point (graded)"
+msgid_plural "{earned}/{possible} points (graded)"
+msgstr[0] "{earned}/{possible} ponto (corrigido)"
+msgstr[1] "{earned}/{possible} pontos (corrigidos)"
+
+# Translators: {earned} is the number of points earned. {possible} is the
+# total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
+# points will always be at least 1. We pluralize based on the total number of
+# points (example: 0/1 point; 1/2 points).
+#: public/js/drag_and_drop.js:459
+msgid "{earned}/{possible} point (ungraded)"
+msgid_plural "{earned}/{possible} points (ungraded)"
+msgstr[0] "{earned}/{possible} ponto (não corrigido)"
+msgstr[1] "{earned}/{possible} pontos (não corrigidos)"
+
+# Translators: {possible} is the number of points possible (examples: 1, 3,
+# 10).
+#: public/js/drag_and_drop.js:468
+msgid "{possible} point possible (graded)"
+msgid_plural "{possible} points possible (graded)"
+msgstr[0] "{possible} ponto possível (corrigido)"
+msgstr[1] "{possible} pontos possíveis (corrigidos)"
+
+# Translators: {possible} is the number of points possible (examples: 1, 3,
+# 10).
+#: public/js/drag_and_drop.js:474
+msgid "{possible} point possible (ungraded)"
+msgid_plural "{possible} points possible (ungraded)"
+msgstr[0] "{possible} ponto possível (não corrigido)"
+msgstr[1] "{possible} pontos possíveis (não corrigidos)"
+
+#: utils.py:44
+msgid "Your highest score is {score}"
+msgstr "Sua pontuação mais alta é {score}"
+
+#: utils.py:45
+msgid "Final attempt was used, highest score is {score}"
+msgstr ""
+
+#: utils.py:24
+msgid "Correctly placed {correct_count} item."
+msgid_plural "Correctly placed {correct_count} items."
+msgstr[0] "Item posicionado corretamente: {correct_count}"
+msgstr[1] "Itens posicionados corretamente: {correct_count}"
+
+#: utils.py:62
+msgid "Misplaced {misplaced_count} item."
+msgid_plural "Misplaced {misplaced_count} items."
+msgstr[0] "Item mal posicionado: {misplaced_count}"
+msgstr[1] "Itens mal posicionados: {misplaced_count}"
+
+#: utils.py:73
+msgid ""
+"Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
+msgid_plural ""
+"Misplaced {misplaced_count} items. Misplaced items were returned to item "
+"bank."
+msgstr[0] "Item mal posicionado: {misplaced_count}. O item mal posicionado foi devolvido ao banco de itens. "
+msgstr[1] "Itens mal posicionados: {misplaced_count}. Os itens mal posicionados foram devolvidos ao banco de itens. "
+
+#: utils.py:40
+msgid "Did not place {missing_count} required item."
+msgid_plural "Did not place {missing_count} required items."
+msgstr[0] "{missing_count} item obrigatório não foi posicionado."
+msgstr[1] "{missing_count} itens obrigatórios não foram posicionados."
