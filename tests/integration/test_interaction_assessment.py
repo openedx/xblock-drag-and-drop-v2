@@ -7,6 +7,7 @@ from mock import Mock, patch
 import time
 import re
 
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 
@@ -18,7 +19,9 @@ from drag_and_drop_v2.default_data import (
 )
 from drag_and_drop_v2.utils import FeedbackMessages, Constants
 from .test_base import BaseIntegrationTest
-from .test_interaction import InteractionTestBase, DefaultDataTestMixin, ParameterizedTestsMixin, TestMaxItemsPerZone
+from .test_interaction import (
+    InteractionTestBase, DefaultDataTestMixin, ParameterizedTestsMixin, TestMaxItemsPerZone, ITEM_DRAG_KEYBOARD_KEYS
+)
 
 
 # Globals ###########################################################
@@ -76,25 +79,25 @@ class AssessmentInteractionTest(
     All interactions are tested using mouse (action_key=None) and four different keyboard action keys.
     If default data changes this will break.
     """
-    @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    @data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_item_no_feedback_on_good_move(self, action_key):
         self.parameterized_item_positive_feedback_on_good_move(
             self.items_map, action_key=action_key, assessment_mode=True
         )
 
-    @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    @data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_item_no_feedback_on_bad_move(self, action_key):
         self.parameterized_item_negative_feedback_on_bad_move(
             self.items_map, self.all_zones, action_key=action_key, assessment_mode=True
         )
 
-    @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    @data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_move_items_between_zones(self, action_key):
         self.parameterized_move_items_between_zones(
             self.items_map, self.all_zones, action_key=action_key
         )
 
-    @data(None, Keys.RETURN, Keys.SPACE, Keys.CONTROL+'m', Keys.COMMAND+'m')
+    @data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_final_feedback_and_reset(self, action_key):
         self.parameterized_final_feedback_and_reset(
             self.items_map, self.feedback, action_key=action_key, assessment_mode=True
@@ -159,7 +162,7 @@ class AssessmentInteractionTest(
         # Incorrect item remains placed
         def _assert_placed(item_id, zone_title):
             item = self._get_placed_item_by_value(item_id)
-            item_description = item.find_element_by_css_selector('.sr')
+            item_description = item.find_element_by_css_selector('.sr.description')
             self.assertEqual(item_description.text, 'Placed in: {}'.format(zone_title))
 
         _assert_placed(1, TOP_ZONE_TITLE)
@@ -204,12 +207,13 @@ class AssessmentInteractionTest(
             self.assertEqual(item.get_attribute('class'), 'option fade')
 
             item_content = item.find_element_by_css_selector('.item-content')
-            item_description_id = '-item-{}-description'.format(item_definition.item_id)
-            self.assertEqual(item_content.get_attribute('aria-describedby'), item_description_id)
+            self.assertEqual(item_content.get_attribute('aria-describedby'), None)
 
-            describedby_text = (u'Press "Enter", "Space", "Ctrl-m", or "⌘-m" on an item to select it for dropping, '
-                                'then navigate to the zone you want to drop it on.')
-            self.assertEqual(item.find_element_by_css_selector('.sr').text, describedby_text)
+            try:
+                item.find_element_by_css_selector('.sr.description')
+                self.fail("Description element should not be present")
+            except NoSuchElementException:
+                pass
 
     def test_show_answer(self):
         """

@@ -521,6 +521,14 @@ msgstr "Pläçéd ïn: {zone_title}  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт 
 msgid "Correctly placed in: {zone_title}"
 msgstr "Çörréçtlý pläçéd ïn: {zone_title} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
+#: drag_and_drop_v2/public/js/drag_and_drop.js
+msgid ", draggable, grabbed"
+msgstr ", dräggäßlé, gräßßéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js
+msgid ", draggable"
+msgstr "dräggäßlé Ⱡ'σяєм ιρѕυм ∂σł#"
+
 #: public/js/drag_and_drop.js
 msgid "Reset"
 msgstr "Rését Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
@@ -545,41 +553,78 @@ msgstr "Féédßäçk Ⱡ'σяєм ιρѕυм ∂#"
 msgid "Keyboard Help"
 msgstr "Kéýßöärd Hélp Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: public/js/drag_and_drop.js
-msgid "You can complete this problem using only your keyboard."
+#: drag_and_drop_v2/public/js/drag_and_drop.js
+msgid "This is a screen reader-friendly problem."
 msgstr ""
-"Ýöü çän çömplété thïs prößlém üsïng önlý ýöür kéýßöärd. Ⱡ'σяєм ιρѕυм ∂σłσя "
-"ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+"Thïs ïs ä sçréén réädér-frïéndlý prößlém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
 
-#: public/js/drag_and_drop.js
-msgid "Use \"Tab\" and \"Shift-Tab\" to navigate between items and zones."
-msgstr ""
-"Ûsé \"Täß\" änd \"Shïft-Täß\" tö nävïgäté ßétwéén ïtéms änd zönés. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
-
-#: public/js/drag_and_drop.js
+#: drag_and_drop_v2/public/js/drag_and_drop.js
 msgid ""
-"Press \"Enter\", \"Space\", \"Ctrl-m\", or \"⌘-m\" on an item to select it "
-"for dropping, then navigate to the zone you want to drop it on."
+"You can complete this problem using only your keyboard by following the "
+"guidance below:"
 msgstr ""
-"Préss \"Éntér\", \"Späçé\", \"Çtrl-m\", ör \"⌘-m\" ön än ïtém tö séléçt ït "
-"för dröppïng, thén nävïgäté tö thé zöné ýöü wänt tö dröp ït ön. Ⱡ'#"
+"Ýöü çän çömplété thïs prößlém üsïng önlý ýöür kéýßöärd ßý föllöwïng thé "
+"güïdänçé ßélöw: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
 
-#: public/js/drag_and_drop.js
+#: drag_and_drop_v2/public/js/drag_and_drop.js
 msgid ""
-"Press \"Enter\", \"Space\", \"Ctrl-m\", or \"⌘-m\" to drop the item on the "
-"current zone."
+"Drag and Drop problems consist of draggable items and dropzones. Users "
+"should select a draggable item with their keyboard and then navigate to an "
+"appropriate dropzone to drop it."
 msgstr ""
-"Préss \"Éntér\", \"Späçé\", \"Çtrl-m\", ör \"⌘-m\" tö dröp thé ïtém ön thé "
-"çürrént zöné. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+"Dräg änd Dröp prößléms çönsïst öf dräggäßlé ïtéms änd dröpzönés. Ûsérs "
+"shöüld séléçt ä dräggäßlé ïtém wïth théïr kéýßöärd änd thén nävïgäté tö än "
+"äppröprïäté dröpzöné tö dröp ït. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя "
+"α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα"
+" αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ "
+"ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη "
+"яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα "
+"ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη #"
 
-#: public/js/drag_and_drop.js
+#: drag_and_drop_v2/public/js/drag_and_drop.js
 msgid ""
-"Press \"Esc\" if you want to cancel the drop operation (for example, to "
+"Use only TAB and SHIFT+TAB to navigate between draggable items and drop "
+"zones."
+msgstr ""
+"Ûsé önlý TÀB änd SHÌFT+TÀB tö nävïgäté ßétwéén dräggäßlé ïtéms änd dröp "
+"zönés. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js
+msgid "Press CTRL+M to select a draggable item (effectively picking it up)."
+msgstr ""
+"Préss ÇTRL+M tö séléçt ä dräggäßlé ïtém (éfféçtïvélý pïçkïng ït üp). Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js
+msgid ""
+"Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press "
+"CTRL+M once more to drop it here."
+msgstr ""
+"Nävïgäté üsïng TÀB änd SHÌFT+TÀB tö thé äppröprïäté dröpzöné änd préss "
+"ÇTRL+M önçé möré tö dröp ït héré. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js
+msgid ""
+"Press ESC if you want to cancel the drop operation (for example, to "
 "select a different item)."
 msgstr ""
-"Préss \"Ésç\" ïf ýöü wänt tö çänçél thé dröp öpérätïön (för éxämplé, tö "
+"Préss ÉSÇ ïf ýöü wänt tö çänçél thé dröp öpérätïön (för éxämplé, tö "
 "séléçt ä dïfférént ïtém). Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js
+msgid ""
+"TAB back to the list of draggable items and repeat this process until all of"
+" the draggable items have been placed on their respective dropzones."
+msgstr ""
+"TÀB ßäçk tö thé lïst öf dräggäßlé ïtéms änd répéät thïs pröçéss üntïl äll öf"
+" thé dräggäßlé ïtéms hävé ßéén pläçéd ön théïr réspéçtïvé dröpzönés. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя "
+"ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ "
+"ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
+"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂ є#"
 
 #: public/js/drag_and_drop.js
 msgid "OK"
@@ -641,9 +686,9 @@ msgid_plural "{possible} points possible (ungraded)"
 msgstr[0] "{possible} pöïnt pössïßlé (üngrädéd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 msgstr[1] "{possible} pöïnts pössïßlé (üngrädéd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
-#: public/js/drag_and_drop_edit.js
-msgid "Close item feedback popup"
-msgstr "Çlösé ïtém féédßäçk pöpüp Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+#: drag_and_drop_v2/public/js/drag_and_drop.js
+msgid "Close"
+msgstr "Çlösé Ⱡ'σяєм ιρѕ#"
 
 #: utils.py:44
 msgid "Your highest score is {score}"

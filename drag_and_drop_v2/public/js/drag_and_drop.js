@@ -53,6 +53,7 @@ function DragAndDropTemplates(configuration) {
 
     var itemTemplate = function(item, ctx) {
         // Define properties
+        var descriptionClassName = "sr description";
         var className = (item.class_name) ? item.class_name : "";
         var zone = getZone(item.zone, ctx) || {};
         if (item.has_image) {
@@ -69,7 +70,8 @@ function DragAndDropTemplates(configuration) {
             'draggable': !item.drag_disabled,
             'aria-grabbed': item.grabbed,
             'data-value': item.value,
-            'tabindex': item.focusable ? 0 : undefined
+            'tabindex': item.focusable ? 0 : undefined,
+            'aria-live': 'polite'
         };
         var style = {};
         if (item.background_color) {
@@ -98,13 +100,11 @@ function DragAndDropTemplates(configuration) {
             $.extend(style, bankItemWidthStyles(item, ctx));
         }
         // Define children
-        var children = [
-            itemSpinnerTemplate(item)
-        ];
+
         var item_content = itemContentTemplate(item);
+        var item_description = null;
         // Insert information about zone in which this item has been placed
-        var item_description_id = configuration.url_name + '-item-' + item.value + '-description';
-        item_content.properties.attributes = { 'aria-describedby': item_description_id };
+
         if (item.is_placed) {
             var zone_title = (zone.title || "Unknown Zone");  // This "Unknown" text should never be seen, so does not need i18n
             var description_content;
@@ -116,20 +116,23 @@ function DragAndDropTemplates(configuration) {
                 // so all placed items are always in the correct zone.
                 description_content = gettext('Correctly placed in: {zone_title}').replace('{zone_title}', zone_title);
             }
-            var item_description = h(
+            var item_description_id = configuration.url_name + '-item-' + item.value + '-description';
+            item_content.properties.attributes = { 'aria-describedby': item_description_id };
+            item_description = h(
                 'div',
-                { key: item.value + '-description', id: item_description_id, className: 'sr' },
+                { key: item.value + '-description', id: item_description_id, className: descriptionClassName },
                 description_content
             );
-        } else {
-            var item_description = h(
-              'div',
-              { id: item_description_id, className: 'sr'},
-              gettext('Press "Enter", "Space", "Ctrl-m", or "⌘-m" on an item to select it for dropping, then navigate to the zone you want to drop it on.')
-            );
         }
-        children.splice(1, 0, item_description);
-        children.splice(1, 0, item_content);
+        var itemSRNote = h(
+            'span.sr.draggable',
+            (item.grabbed) ? gettext(", draggable, grabbed") : gettext(", draggable")
+        );
+
+        var children = [
+            itemSpinnerTemplate(item), item_content, itemSRNote, item_description
+        ];
+
         return (
             h(
                 'div.option',
@@ -219,7 +222,7 @@ function DragAndDropTemplates(configuration) {
                 },
                 [
                     h('p', { className: className }, zone.title),
-                    h('p', { className: 'zone-description sr' }, zone.description),
+                    h('p', { className: 'zone-description sr' }, zone.description || gettext("droppable")),
                     h(item_wrapper, renderCollection(itemTemplate, items_in_zone, ctx)),
                     zone_description
                 ]
@@ -252,54 +255,25 @@ function DragAndDropTemplates(configuration) {
         );
     };
 
-    var popupTemplate = function(ctx) {
-        var popupSelector = 'div.popup';
-        if (ctx.popup_html && !ctx.last_action_correct) {
-            popupSelector += '.popup-incorrect';
-        }
-
-        return (
-            h(
-                "div.popup-wrapper",
-                {
-                    attributes: {
-                        'aria-live': 'polite',
-                        'aria-atomic': 'true',
-                        'aria-relevant': 'additions',
-                    }
-                },
-                [
-                    h(
-                        popupSelector,
-                        {
-                            style: {display: ctx.popup_html ? 'block' : 'none'},
-                        },
-                        [
-                            h('div.close.icon-remove-sign.fa-times-circle'),
-                            h('p.popup-content', {innerHTML: ctx.popup_html}),
-                        ]
-                    )
-                ]
-            )
-        )
-    };
-
     var keyboardHelpPopupTemplate = function(ctx) {
         var labelledby_id = 'modal-window-title-'+configuration.url_name;
         return (
             h('div.keyboard-help-dialog', [
                 h('div.modal-window-overlay'),
-                h('div.modal-window', {attributes: {role: 'dialog', 'aria-labelledby': labelledby_id}}, [
+                h('div.modal-window', {attributes: {role: 'dialog', 'aria-labelledby': labelledby_id, tabindex: -1}}, [
                     h('div.modal-header', [
                         h('h2.modal-window-title#'+labelledby_id, gettext('Keyboard Help'))
                     ]),
                     h('div.modal-content', [
-                        h('p', gettext('You can complete this problem using only your keyboard.')),
+                        h('p.sr', gettext('This is a screen reader-friendly problem.')),
+                        h('p.sr', gettext('Drag and Drop problems consist of draggable items and dropzones. Users should select a draggable item with their keyboard and then navigate to an appropriate dropzone to drop it.')),
+                        h('p', gettext('You can complete this problem using only your keyboard by following the guidance below:')),
                         h('ul', [
-                            h('li', gettext('Use "Tab" and "Shift-Tab" to navigate between items and zones.')),
-                            h('li', gettext('Press "Enter", "Space", "Ctrl-m", or "⌘-m" on an item to select it for dropping, then navigate to the zone you want to drop it on.')),
-                            h('li', gettext('Press "Enter", "Space", "Ctrl-m", or "⌘-m" to drop the item on the current zone.')),
-                            h('li', gettext('Press "Esc" if you want to cancel the drop operation (for example, to select a different item).')),
+                            h('li', gettext('Use only TAB and SHIFT+TAB to navigate between draggable items and drop zones.')),
+                            h('li', gettext('Press CTRL+M to select a draggable item (effectively picking it up).')),
+                            h('li', gettext('Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press CTRL+M once more to drop it here.')),
+                            h('li', gettext('Press ESC if you want to cancel the drop operation (for example, to select a different item).')),
+                            h('li', gettext('TAB back to the list of draggable items and repeat this process until all of the draggable items have been placed on their respective dropzones.')),
                         ])
                     ]),
                     h('div.modal-actions', [
@@ -370,7 +344,6 @@ function DragAndDropTemplates(configuration) {
         }
         return(
             h("section.action-toolbar-item.sidebar-buttons", {}, [
-                sidebarButtonTemplate("keyboard-help-button", "fa-question", gettext('Keyboard Help')),
                 sidebarButtonTemplate("reset-button", "fa-refresh", gettext('Reset'), ctx.disable_reset_button),
                 showAnswerButton,
             ])
@@ -423,7 +396,7 @@ function DragAndDropTemplates(configuration) {
                         h(
                             'span.sr',
                             {
-                                innerHTML: gettext("Close item feedback popup")
+                                innerHTML: gettext("Close")
                             }
                         ),
                         h(
@@ -439,6 +412,22 @@ function DragAndDropTemplates(configuration) {
                 popup_content
             ]
         )
+    };
+
+    var forwardKeyboardHelpButtonTemplate = function(ctx) {
+        return h(
+            'button.unbutton.btn-link.keyboard-help-button',
+            [
+                h(
+                    "span.btn-icon.fa.fa-keyboard-o",
+                    {attributes: {"aria-hidden": true}}
+                ),
+                // appending space is the simplest way to avoid sticking text to the button, but also to have
+                // them underlined together on hover. When margin was used there was a gap in underlining
+                " ",
+                gettext('Keyboard Help')
+            ]
+        );
     };
 
     var progressTemplate = function(ctx) {
@@ -504,26 +493,29 @@ function DragAndDropTemplates(configuration) {
         var is_item_placed = function(i) { return i.is_placed; };
         var items_placed = $.grep(ctx.items, is_item_placed);
         var items_in_bank = $.grep(ctx.items, is_item_placed, true);
-        var item_bank_properties = {};
+        var item_bank_properties = {
+            attributes: {
+                'role': 'group',
+                'aria-label': gettext('Item Bank')
+            }
+        };
         if (ctx.item_bank_focusable) {
-            item_bank_properties.attributes = {
-                'tabindex': 0,
-                'dropzone': 'move',
-                'aria-dropeffect': 'move',
-                'role': 'button'
-            };
+            item_bank_properties.attributes['tabindex'] = 0;
+            item_bank_properties.attributes['dropzone'] = 'move';
+            item_bank_properties.attributes['aria-dropeffect'] = 'move';
+            item_bank_properties.attributes['role'] = 'button';
         }
         return (
             h('section.themed-xblock.xblock--drag-and-drop', [
                 problemTitle,
                 problemProgress,
+                h('div', [forwardKeyboardHelpButtonTemplate(ctx)]),
                 h('section.problem', [
                     problemHeader,
                     h('p', {innerHTML: ctx.problem_html}),
                 ]),
                 h('section.drag-container', {}, [
                     h('div.item-bank', item_bank_properties, [
-                        h('p', { className: 'zone-description sr' }, gettext('Item Bank')),
                         renderCollection(itemTemplate, items_in_bank, ctx),
                         renderCollection(itemPlaceholderTemplate, items_placed, ctx)
                     ]),
@@ -688,11 +680,10 @@ function DragAndDropBlock(runtime, element, configuration) {
         // Show dialog
         var $keyboardHelpDialog = $root.find('.keyboard-help-dialog');
         $keyboardHelpDialog.find('.modal-window-overlay').show();
-        $keyboardHelpDialog.find('.modal-window').show();
+        $keyboardHelpDialog.find('.modal-window').show().focus();
 
         // Handle focus
         $focusedElement = $(':focus');
-        focusModalButton();
 
         // Set up event handlers
         $(document).on('keydown', keyboardEventDispatcher);
@@ -851,11 +842,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var isActionKey = function(evt) {
-        var key = evt.which;
-        if (evt.ctrlKey || evt.metaKey) {
-            return key === M;
-        }
-        return key === RET || key === SPC;
+        return evt.which == RET || (evt.ctrlKey && evt.which == M);
     };
 
     var isSpaceKey = function(evt) {

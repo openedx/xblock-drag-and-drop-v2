@@ -14,7 +14,8 @@ disable=
     too-few-public-methods,
     too-many-public-methods,
     invalid-name,
-    no-member
+    no-member,
+    star-args
 
 [SIMILARITIES]
 min-similarity-lines=4
