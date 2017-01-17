@@ -261,8 +261,12 @@ function DragAndDropTemplates(configuration) {
             h('div.keyboard-help-dialog', [
                 h('div.modal-window-overlay'),
                 h('div.modal-window', {attributes: {role: 'dialog', 'aria-labelledby': labelledby_id, tabindex: -1}}, [
+                    h('button.modal-dismiss-button.unbutton', [
+                        h('span.fa.fa-remove', {attributes: {'aria-hidden': true}}),
+                        h('span.sr', gettext('Close'))
+                    ]),
                     h('div.modal-header', [
-                        h('h2.modal-window-title#'+labelledby_id, gettext('Keyboard Help'))
+                        h('h2.modal-window-title', {id: labelledby_id}, gettext('Keyboard Help'))
                     ]),
                     h('div.modal-content', [
                         h('p.sr', gettext('This is a screen reader-friendly problem.')),
@@ -275,9 +279,6 @@ function DragAndDropTemplates(configuration) {
                             h('li', gettext('Press ESC if you want to cancel the drop operation (for example, to select a different item).')),
                             h('li', gettext('TAB back to the list of draggable items and repeat this process until all of the draggable items have been placed on their respective dropzones.')),
                         ])
-                    ]),
-                    h('div.modal-actions', [
-                        h('button.modal-dismiss-button', gettext("OK"))
                     ])
                 ])
             ])
@@ -309,21 +310,21 @@ function DragAndDropTemplates(configuration) {
         );
     };
 
-    var sidebarButtonTemplate = function(buttonClass, iconClass, buttonText, disabled, spinner) {
-        if (spinner) {
+    var sidebarButtonTemplate = function(buttonClass, iconClass, buttonText, options) {
+        options = options || {};
+        if (options.spinner) {
             iconClass = 'fa-spin.fa-spinner';
         }
         return (
             h('span.sidebar-button-wrapper', {}, [
                 h(
-                    'button.unbutton.btn-default.btn-small.'+buttonClass,
-                    {disabled: disabled || spinner || false, attributes: {tabindex: 0}},
+                    'button.unbutton.btn-default.btn-small',
+                    {
+                        className: buttonClass,
+                        disabled: options.disabled || options.spinner || false
+                    },
                     [
-                        h(
-                            "span.btn-icon.fa." + iconClass,
-                            {attributes: {"aria-hidden": true}},
-                            []
-                        ),
+                        h("span.btn-icon.fa", {className: iconClass, attributes: {"aria-hidden": true}}),
                         buttonText
                     ]
                 )
@@ -334,17 +335,35 @@ function DragAndDropTemplates(configuration) {
     var sidebarTemplate = function(ctx) {
         var showAnswerButton = null;
         if (ctx.show_show_answer) {
+            var options = {
+                disabled: ctx.showing_answer ? true : ctx.disable_show_answer_button,
+                spinner: ctx.show_answer_spinner
+            };
             showAnswerButton = sidebarButtonTemplate(
                 "show-answer-button",
                 "fa-info-circle",
                 gettext('Show Answer'),
-                ctx.showing_answer ? true : ctx.disable_show_answer_button,
-                ctx.show_answer_spinner
+                options
             );
+        }
+        var go_to_beginning_button_class = 'go-to-beginning-button';
+        if (!ctx.show_go_to_beginning_button) {
+            go_to_beginning_button_class += ' sr';
         }
         return(
             h("section.action-toolbar-item.sidebar-buttons", {}, [
-                sidebarButtonTemplate("reset-button", "fa-refresh", gettext('Reset'), ctx.disable_reset_button),
+                sidebarButtonTemplate(
+                    go_to_beginning_button_class,
+                    "fa-arrow-up",
+                    gettext("Go to Beginning"),
+                    {disabled: ctx.disable_go_to_beginning_button}
+                ),
+                sidebarButtonTemplate(
+                    "reset-button",
+                    "fa-refresh",
+                    gettext('Reset'),
+                    {disabled: ctx.disable_reset_button}
+                ),
                 showAnswerButton,
             ])
         )
@@ -355,8 +374,6 @@ function DragAndDropTemplates(configuration) {
         var msgs = ctx.feedback_messages || [];
         var have_messages = msgs.length > 0;
         var popup_content;
-
-        var close_button_describedby_id = "close-popup-"+configuration.url_name;
 
         if (msgs.length > 0 && !ctx.last_action_correct) {
             popupSelector += '.popup-incorrect';
@@ -612,6 +629,9 @@ function DragAndDropBlock(runtime, element, configuration) {
             // Set up event handlers:
 
             $element.on('click', '.item-feedback-popup .close-feedback-popup-button', closePopupEventHandler);
+            $element.on('keydown', '.item-feedback-popup .close-feedback-popup-button', closePopupKeydownHandler);
+            $element.on('keyup', '.item-feedback-popup .close-feedback-popup-button', preventFauxPopupCloseButtonClick);
+
             $element.on('click', '.submit-answer-button', doAttempt);
             $element.on('click', '.keyboard-help-button', showKeyboardHelp);
             $element.on('keydown', '.keyboard-help-button', function(evt) {
@@ -625,6 +645,20 @@ function DragAndDropBlock(runtime, element, configuration) {
             $element.on('keydown', '.show-answer-button', function(evt) {
                 runOnKey(evt, RET, showAnswer);
             });
+
+            // We need to register both mousedown and click event handlers because in some browsers the blur
+            // event is emitted right after mousedown, hiding our button and preventing the click event from
+            // being emitted.
+            // We still need the click handler to catch keydown events (other than RET which is handled below),
+            // since in some browser/OS combinations some other keyboard button presses (for example space bar)
+            // are also treated as clicks,
+            $element.on('mousedown click', '.go-to-beginning-button', onGoToBeginningButtonClick);
+            $element.on('keydown', '.go-to-beginning-button', function(evt) {
+                runOnKey(evt, RET, onGoToBeginningButtonClick);
+            });
+            // Go to Beginning button should only be visible when it has focus.
+            $element.on('focus', '.go-to-beginning-button', showGoToBeginningButton);
+            $element.on('blur', '.go-to-beginning-button', hideGoToBeginningButton);
 
             // For the next one, we need to use addEventListener with useCapture 'true' in order
             // to watch for load events on any child element, since load events do not bubble.
@@ -670,8 +704,61 @@ function DragAndDropBlock(runtime, element, configuration) {
         }
     };
 
+    var onGoToBeginningButtonClick = function(evt) {
+        evt.preventDefault();
+        // In theory the blur event handler should hide the button,
+        // but the blur event does not fire consistently in all browsers,
+        // so invoke hideGoToBeginningButton now to make sure it gets hidden.
+        // Invoking hideGoToBeginningButton multiple times is harmless.
+        hideGoToBeginningButton();
+        focusFirstDraggable();
+    };
+
+    var showGoToBeginningButton = function() {
+        if (!state.go_to_beginning_button_visible) {
+            state.go_to_beginning_button_visible = true;
+            applyState();
+        }
+    };
+
+    var hideGoToBeginningButton = function() {
+        if (state.go_to_beginning_button_visible) {
+            state.go_to_beginning_button_visible = false;
+            applyState();
+        }
+    };
+
+    // Browsers will emulate click events on keyboard keyup events.
+    // The feedback popup is shown very quickly after the user drops the item on the board.
+    // If the user uses the keyboard to drop the item, and the popup gets displayed and focused
+    // *before* the user releases the key, most browsers will emit an emulated click event on the
+    // close popup button. We prevent these from happenning by only letting the browser emulate
+    // a click event on keyup if the close button received a keydown event prior to the keyup.
+    var _popup_close_button_keydown_received = false;
+
+    var closePopupKeydownHandler = function(evt) {
+        _popup_close_button_keydown_received = true;
+        // Don't let user tab out of the button until the feedback is closed.
+        if (evt.which === TAB) {
+            evt.preventDefault();
+        }
+    };
+
+    var preventFauxPopupCloseButtonClick = function(evt) {
+      if (_popup_close_button_keydown_received) {
+          // The close button received a keydown event prior to this keyup,
+          // so this event is genuine.
+          _popup_close_button_keydown_received = false;
+      } else {
+          // There was no keydown prior to this keyup, so the keydown must have happend *before*
+          // the popup was displayed and focused and the keypress is still in progress.
+          // Make the browser ignore this keyup event.
+          evt.preventDefault();
+      }
+    };
+
     var focusModalButton = function() {
-        $root.find('.keyboard-help-dialog .modal-dismiss-button ').focus();
+        $root.find('.keyboard-help-dialog .modal-dismiss-button').focus();
     };
 
     var showKeyboardHelp = function(evt) {
@@ -850,6 +937,11 @@ function DragAndDropBlock(runtime, element, configuration) {
         return key === SPC;
     };
 
+    var isTabKey = function(evt) {
+        var key = evt.which;
+        return key === TAB;
+    };
+
     var focusNextZone = function(evt, $currentZone) {
         var zones = $root.find('.target .zone').toArray();
         // In assessment mode, item bank is a valid drop zone
@@ -872,6 +964,10 @@ function DragAndDropBlock(runtime, element, configuration) {
         zones[idx].focus();
     };
 
+    var focusGoToBeginningButton = function() {
+        $root.find('.go-to-beginning-button').focus();
+    };
+
     var focusFirstDraggable = function() {
         $root.find('.item-bank .option').first().focus();
     };
@@ -879,7 +975,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     var focusItemFeedbackPopup = function() {
         var popup = $root.find('.item-feedback-popup');
         if (popup.length && popup.is(":visible")) {
-            popup.focus();
+            popup.find('.close-feedback-popup-button').focus();
             return true;
         }
         return false;
@@ -924,6 +1020,11 @@ function DragAndDropBlock(runtime, element, configuration) {
         }).length;
     };
 
+    var canGoToBeginning = function() {
+        var all_items_placed = configuration.items.length === Object.keys(state.items).length;
+        return !all_items_placed && !state.finished;
+    };
+
     var initDroppable = function() {
         // Set up zones for keyboard interaction
         $root.find('.zone, .item-bank').each(function() {
@@ -948,12 +1049,22 @@ function DragAndDropBlock(runtime, element, configuration) {
                             placeItem($zone);
                         }
                     }
+                } else if (isTabKey(evt) && !evt.shiftKey) {
+                    // If the user just dropped an item to this zone, next TAB keypress
+                    // should move focus to "Go to Beginning" button.
+                    if (state.tab_to_go_to_beginning_button && canGoToBeginning()) {
+                        evt.preventDefault();
+                        focusGoToBeginningButton();
+                    }
                 } else if (isSpaceKey(evt)) {
-                  // Pressing the space bar moves the page down by default in most browsers.
-                  // That can be distracting while moving items with the keyboard, so prevent
-                  // the default scroll from happening while a zone is focused.
-                  evt.preventDefault();
+                    // Pressing the space bar moves the page down by default in most browsers.
+                    // That can be distracting while moving items with the keyboard, so prevent
+                    // the default scroll from happening while a zone is focused.
+                    evt.preventDefault();
                 }
+            });
+            $zone.on('blur', function() {
+                delete state.tab_to_go_to_beginning_button;
             });
         });
 
@@ -1111,6 +1222,13 @@ function DragAndDropBlock(runtime, element, configuration) {
                     }
                 }
                 applyState();
+                if (state.feedback && state.feedback.length > 0) {
+                    // Move focus the the close button of the feedback popup.
+                    focusItemFeedbackPopup();
+                } else {
+                    // Next tab press should take us to the "Go to Beginning" button.
+                    state.tab_to_go_to_beginning_button = true;
+                }
             })
             .fail(function (data) {
                 delete state.items[item_id];
@@ -1132,8 +1250,13 @@ function DragAndDropBlock(runtime, element, configuration) {
             return;
         }
 
-        closePopup(target.is(Selector.close_button) || target.parent().is(Selector.close_button));
+        var manually_closed = target.is(Selector.close_button) || target.parent().is(Selector.close_button);
+        closePopup(manually_closed);
         applyState();
+
+        if (manually_closed) {
+            focusFirstDraggable();
+        }
     };
 
     var closePopup = function(manually_closed) {
@@ -1326,7 +1449,9 @@ function DragAndDropBlock(runtime, element, configuration) {
             disable_submit_button: !canSubmitAttempt(),
             submit_spinner: state.submit_spinner,
             showing_answer: state.showing_answer,
-            show_answer_spinner: state.show_answer_spinner
+            show_answer_spinner: state.show_answer_spinner,
+            disable_go_to_beginning_button: !canGoToBeginning(),
+            show_go_to_beginning_button: state.go_to_beginning_button_visible
         };
 
         return renderView(context);

@@ -2,6 +2,7 @@
 
 from ddt import ddt, unpack, data
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.keys import Keys
 
 from xblockutils.resources import ResourceLoader
 
@@ -209,6 +210,33 @@ class TestDragAndDropRender(BaseIntegrationTest):
         self.assertIn('popup', popup.get_attribute('class'))
         self.assertEqual(popup_content.text, "")
         self.assertEqual(popup_wrapper.get_attribute('aria-live'), 'polite')
+
+    @data(None, Keys.RETURN)
+    def test_go_to_beginning_button(self, action_key):
+        self.load_scenario()
+        self.scroll_down(250)
+
+        button = self._get_go_to_beginning_button()
+        # Button is only visible to screen reader users by default.
+        self.assertIn('sr', button.get_attribute('class').split())
+        # Set focus to the element. We have to use execute_script here because while TAB-ing
+        # to the button to make it the active element works in selenium, the focus event is not
+        # emitted unless the Firefox window controlled by selenium is the focused window, which
+        # usually is not the case when running integration tests.
+        # See: https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/7346
+        self.browser.execute_script('$("button.go-to-beginning-button").focus()')
+        self.assertFocused(button)
+        # Button should be visible when focused.
+        self.assertNotIn('sr', button.get_attribute('class').split())
+        # Click/activate the button to move focus to the top.
+        if action_key:
+            button.send_keys(action_key)
+        else:
+            button.click()
+        first_focusable_item = self._get_items()[0]
+        self.assertFocused(first_focusable_item)
+        # Button should only be visible to screen readers again.
+        self.assertIn('sr', button.get_attribute('class').split())
 
     def test_keyboard_help(self):
         self.load_scenario()

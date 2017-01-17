@@ -63,7 +63,7 @@ class EventsFiredTest(DefaultDataTestMixin, ParameterizedTestsMixin, BaseEventsT
         {
             'name': 'edx.drag_and_drop_v2.feedback.closed',
             'data': {
-                'manually': False,
+                'manually': True,
                 'content': ITEM_CORRECT_FEEDBACK.format(zone=TOP_ZONE_TITLE),
                 'truncated': False,
             },
