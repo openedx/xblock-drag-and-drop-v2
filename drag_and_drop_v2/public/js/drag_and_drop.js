@@ -8,7 +8,8 @@ function DragAndDropTemplates(configuration) {
         }
         return (
             h("div.spinner-wrapper", {key: item.value + '-spinner'}, [
-                h("i.fa.fa-spin.fa-spinner")
+                h("span.fa.fa-spin.fa-spinner", {attributes: {'aria-hidden': true}}),
+                h("span.sr", gettext('Submitting'))
             ])
         );
     };
@@ -53,7 +54,6 @@ function DragAndDropTemplates(configuration) {
 
     var itemTemplate = function(item, ctx) {
         // Define properties
-        var descriptionClassName = "sr description";
         var className = (item.class_name) ? item.class_name : "";
         var zone = getZone(item.zone, ctx) || {};
         if (item.has_image) {
@@ -119,8 +119,8 @@ function DragAndDropTemplates(configuration) {
             var item_description_id = configuration.url_name + '-item-' + item.value + '-description';
             item_content.properties.attributes = { 'aria-describedby': item_description_id };
             item_description = h(
-                'div',
-                { key: item.value + '-description', id: item_description_id, className: descriptionClassName },
+                'div.sr.description',
+                { key: item_description_id, id: item_description_id},
                 description_content
             );
         }
@@ -185,7 +185,7 @@ function DragAndDropTemplates(configuration) {
         var item_wrapper = 'div.item-wrapper.item-align.item-align-' + zone.align;
         var is_item_in_zone = function(i) { return i.is_placed && (i.zone === zone.uid); };
         var items_in_zone = $.grep(ctx.items, is_item_in_zone);
-        var zone_description_id = configuration.url_name + '-zone-' + zone.uid + '-description';
+        var zone_description_id = zone.prefixed_uid + '-description';
         if (items_in_zone.length == 0) {
           var zone_description = h(
             'div',
@@ -221,8 +221,15 @@ function DragAndDropTemplates(configuration) {
                     }
                 },
                 [
-                    h('p', { className: className }, zone.title),
-                    h('p', { className: 'zone-description sr' }, zone.description || gettext("droppable")),
+                    h(
+                        'p',
+                        { className: className },
+                        [
+                            zone.title,
+                            h('span.sr', gettext(', dropzone'))
+                        ]
+                    ),
+                    h('p', { className: 'zone-description sr' }, zone.description || gettext('droppable')),
                     h(item_wrapper, renderCollection(itemTemplate, items_in_zone, ctx)),
                     zone_description
                 ]
@@ -242,10 +249,10 @@ function DragAndDropTemplates(configuration) {
         });
 
         return (
-            h('section.feedback', {}, [
+            h('div.feedback', {attributes: {'role': 'group', 'aria-label': gettext('Feedback')}}, [
                 h(
                     "div.feedback-content",
-                    { attributes: { 'aria-live': 'polite' } },
+                    {},
                     [
                         h('h3.title1', { style: { display: feedback_display } }, gettext('Feedback')),
                         h('div.messages', { style: { display: feedback_display } }, feedback_messages),
@@ -286,27 +293,42 @@ function DragAndDropTemplates(configuration) {
     };
 
     var submitAnswerTemplate = function(ctx) {
-        var attemptsUsedId = "attempts-used-"+configuration.url_name;
-        var attemptsUsedDisplay = (ctx.max_attempts && ctx.max_attempts > 0) ? 'inline': 'none';
+        var submitButtonProperties = {
+            disabled: ctx.disable_submit_button || ctx.submit_spinner,
+            attributes: {}
+        };
+
+        var attemptsUsedInfo = null;
+        if (ctx.max_attempts && ctx.max_attempts > 0) {
+            var attemptsUsedId = "attempts-used-" + configuration.url_name;
+            submitButtonProperties.attributes["aria-describedby"] = attemptsUsedId;
+            var attemptsUsedTemplate = gettext("You have used {used} of {total} attempts.");
+            var attemptsUsedText = attemptsUsedTemplate.
+                replace("{used}", ctx.attempts).replace("{total}", ctx.max_attempts);
+            attemptsUsedInfo = h("span.attempts-used", {id: attemptsUsedId}, attemptsUsedText);
+        }
+
+        var submitSpinner = null;
+        if (ctx.submit_spinner) {
+            submitSpinner = h('span', [
+                h('span.fa.fa-spin.fa-spinner', {attributes: {'aria-hidden': true}}),
+                h('span.sr', gettext('Submitting'))
+            ]);
+        }
 
         return (
-          h("section.action-toolbar-item.submit-answer", {}, [
-              h(
-                  "button.btn-brand.submit-answer-button",
-                  {
-                      disabled: ctx.disable_submit_button || ctx.submit_spinner, 
-                      attributes: {"aria-describedby": attemptsUsedId}},
-                  [
-                      (ctx.submit_spinner ? h("span.fa.fa-spin.fa-spinner") : null),
-                      gettext("Submit")
-                  ]
-              ),
-              h(
-                  "span.attempts-used#"+attemptsUsedId, {style: {display: attemptsUsedDisplay}},
-                  gettext("You have used {used} of {total} attempts.")
-                      .replace("{used}", ctx.attempts).replace("{total}", ctx.max_attempts)
-              )
-          ])
+            h("div.action-toolbar-item.submit-answer", {}, [
+                h(
+                    "button.btn-brand.submit-answer-button",
+                    submitButtonProperties,
+                    [
+                        submitSpinner,
+                        ' ',  // whitespace between spinner icon and text
+                        gettext("Submit")
+                    ]
+                ),
+                attemptsUsedInfo
+            ])
         );
     };
 
@@ -351,7 +373,7 @@ function DragAndDropTemplates(configuration) {
             go_to_beginning_button_class += ' sr';
         }
         return(
-            h("section.action-toolbar-item.sidebar-buttons", {}, [
+            h("div.action-toolbar-item.sidebar-buttons", {}, [
                 sidebarButtonTemplate(
                     go_to_beginning_button_class,
                     "fa-arrow-up",
@@ -397,13 +419,7 @@ function DragAndDropTemplates(configuration) {
         return h(
             popupSelector,
             {
-                style: {display: have_messages ? 'block' : 'none'},
-                attributes: {
-                    "tabindex": "-1",
-                    'aria-live': 'polite',
-                    'aria-atomic': 'true',
-                    'aria-relevant': 'additions',
-                }
+                style: {display: have_messages ? 'block' : 'none'}
             },
             [
                 h(
@@ -491,18 +507,24 @@ function DragAndDropTemplates(configuration) {
 
         return h('div.problem-progress', {
             id: configuration.url_name + '-problem-progress',
-            attributes: {'role': 'status', 'aria-live': 'polite'}
+            attributes: {role: 'status'}
         }, progress_text);
     };
 
     var mainTemplate = function(ctx) {
+        var main_element_properties = {attributes: {role: 'group'}};
         var problemProgress = progressTemplate(ctx);
         var problemTitle = null;
         if (ctx.show_title) {
+            var problem_title_id = configuration.url_name + '-problem-title';
             problemTitle = h('h3.problem-title', {
+                id: problem_title_id,
                 innerHTML: ctx.title_html,
                 attributes: {'aria-describedby': problemProgress.properties.id}
             });
+            main_element_properties.attributes['arial-labelledby'] = problem_title_id;
+        } else {
+            main_element_properties.attributes['aria-label'] = gettext('Drag and Drop Problem');
         }
         var problemHeader = ctx.show_problem_header ? h('h4.title1', gettext('Problem')) : null;
         // Render only items in the bank here, including placeholders.  Placed
@@ -523,36 +545,37 @@ function DragAndDropTemplates(configuration) {
             item_bank_properties.attributes['role'] = 'button';
         }
         return (
-            h('section.themed-xblock.xblock--drag-and-drop', [
+            h('div.themed-xblock.xblock--drag-and-drop', main_element_properties, [
                 problemTitle,
                 problemProgress,
                 h('div', [forwardKeyboardHelpButtonTemplate(ctx)]),
-                h('section.problem', [
+                h('div.problem', [
                     problemHeader,
                     h('p', {innerHTML: ctx.problem_html}),
                 ]),
-                h('section.drag-container', {}, [
+                h('div.drag-container', {}, [
                     h('div.item-bank', item_bank_properties, [
                         renderCollection(itemTemplate, items_in_bank, ctx),
                         renderCollection(itemPlaceholderTemplate, items_placed, ctx)
                     ]),
-                    h('div.target',
-                        {},
-                        [
-                            itemFeedbackPopupTemplate(ctx),
-                            h('div.target-img-wrapper', [
-                                h('img.target-img', {src: ctx.target_img_src, alt: ctx.target_img_description}),
-                            ]
-                        ),
+                    h('div.target', {attributes: {'role': 'group', 'arial-label': gettext('Drop Targets')}}, [
+                        itemFeedbackPopupTemplate(ctx),
+                        h('div.target-img-wrapper', [
+                            h('img.target-img', {src: ctx.target_img_src, alt: ctx.target_img_description}),
+                        ]),
                         renderCollection(zoneTemplate, ctx.zones, ctx)
                     ]),
                 ]),
-                h("section.actions-toolbar", {}, [
+                h("div.actions-toolbar", {attributes: {'role': 'group', 'aria-label': gettext('Actions')}}, [
                     sidebarTemplate(ctx),
                     (ctx.show_submit_answer ? submitAnswerTemplate(ctx) : null),
                 ]),
                 keyboardHelpPopupTemplate(ctx),
                 feedbackTemplate(ctx),
+                h('div.sr.reader-feedback-area', {
+                    attributes: {'aria-live': 'polite', 'aria-atomic': true},
+                    innerHTML: ctx.screen_reader_messages
+                }),
             ])
         );
     };
@@ -663,6 +686,9 @@ function DragAndDropBlock(runtime, element, configuration) {
             // For the next one, we need to use addEventListener with useCapture 'true' in order
             // to watch for load events on any child element, since load events do not bubble.
             element.addEventListener('load', webkitFix, true);
+
+            // Remove the spinner and create a blank slate for virtualDom to take over.
+            $root.empty();
 
             applyState();
             initDroppable();
@@ -904,12 +930,57 @@ function DragAndDropBlock(runtime, element, configuration) {
         return feedback_msgs_list.map(function(message) { return message.message; }).join('\n');
     };
 
-    var updateDOM = function(state) {
+    var updateDOM = function() {
         var new_vdom = render(state);
         var patches = virtualDom.diff(__vdom, new_vdom);
         root = virtualDom.patch(root, patches);
         $root = $(root);
         __vdom = new_vdom;
+    };
+
+    var sr_clear_timeout = null;
+
+    var setScreenReaderMessages = function() {
+        clearTimeout(sr_clear_timeout);
+
+        var pluckMessages = function(feedback_items) {
+            return feedback_items.map(function(item) {
+                return item.message;
+            });
+        };
+        var messages = [];
+        // In standard mode, it makes more sense to read the per-item feedback before overall feedback.
+        if (state.feedback && configuration.mode === DragAndDropBlock.STANDARD_MODE) {
+            messages = messages.concat(pluckMessages(state.feedback));
+        }
+        if (state.overall_feedback) {
+            messages = messages.concat(pluckMessages(state.overall_feedback));
+        }
+        // In assessment mode overall feedback comes first then multiple per-item feedbacks.
+        if (state.feedback && configuration.mode === DragAndDropBlock.ASSESSMENT_MODE) {
+            if (state.feedback.length > 0) {
+                if (!state.last_action_correct) {
+                    messages.push(gettext("Some of your answers were not correct."));
+                }
+                messages = messages.concat(
+                    gettext("Hints:"),
+                    pluckMessages(state.feedback)
+                );
+            }
+        }
+        var paragraphs = messages.map(function(msg) {
+            return '<p>' + msg + '</p>';
+        });
+
+        state.screen_reader_messages = paragraphs.join('');
+
+        // Remove the text on next redraw. This will make screen readers read the message again,
+        // next time the user performs an action, even if next feedback message did not change from
+        // last attempt (for example: if user drops the same item on two wrong zones one after another,
+        // the negative feedback should be read out twice, not only on first drop).
+        sr_clear_timeout = setTimeout(function() {
+            state.screen_reader_messages = '';
+        }, 0);
     };
 
     var publishEvent = function(data) {
@@ -981,16 +1052,18 @@ function DragAndDropBlock(runtime, element, configuration) {
         return false;
     };
 
-    var placeItem = function($zone, $item) {
-        var item_id;
-        if ($item !== undefined) {
-            item_id = $item.data('value');
-        } else {
-            item_id = $selectedItem.data('value');
-        }
-
+    var placeGrabbedItem = function($zone) {
         var zone = String($zone.data('uid'));
         var zone_align = $zone.data('zone_align');
+        var items = configuration.items;
+
+        var item_id;
+        for (var i = 0; i < items.length; i++) {
+            if (items[i].grabbed) {
+                item_id = items[i].id;
+                break;
+            }
+        }
 
         var items_in_zone_count = countItemsInZone(zone, [item_id.toString()]);
         if (configuration.max_items_per_zone && configuration.max_items_per_zone <= items_in_zone_count) {
@@ -1036,18 +1109,17 @@ function DragAndDropBlock(runtime, element, configuration) {
                     } else if (isCancelKey(evt)) {
                         evt.preventDefault();
                         state.keyboard_placement_mode = false;
-                        releaseItem($selectedItem);
+                        releaseGrabbedItems();
                     } else if (isActionKey(evt)) {
                         evt.preventDefault();
                         evt.stopPropagation();
                         state.keyboard_placement_mode = false;
-                        releaseItem($selectedItem);
                         if ($zone.is('.item-bank')) {
                             delete state.items[$selectedItem.data('value')];
-                            applyState();
                         } else {
-                            placeItem($zone);
+                            placeGrabbedItem($zone);
                         }
+                        releaseGrabbedItems();
                     }
                 } else if (isTabKey(evt) && !evt.shiftKey) {
                     // If the user just dropped an item to this zone, next TAB keypress
@@ -1074,8 +1146,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             tolerance: 'pointer',
             drop: function(evt, ui) {
                 var $zone = $(this);
-                var $item = ui.helper;
-                placeItem($zone, $item);
+                placeGrabbedItem($zone);
             }
         });
 
@@ -1087,7 +1158,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 drop: function(evt, ui) {
                     var $item = ui.helper;
                     var item_id = $item.data('value');
-                    releaseItem($item);
+                    releaseGrabbedItems();
                     delete state.items[item_id];
                     applyState();
                 }
@@ -1140,7 +1211,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                     stop: function(evt, ui) {
                         // Revert to original position.
                         $item.css($item.data('initial-position'));
-                        releaseItem($(this));
+                        releaseGrabbedItems();
                     }
                 });
             } catch (e) {
@@ -1152,31 +1223,27 @@ function DragAndDropBlock(runtime, element, configuration) {
 
     var grabItem = function($item, interaction_type) {
         var item_id = $item.data('value');
-        setGrabbedState(item_id, true, interaction_type);
+        configuration.items.forEach(function(item) {
+            if (item.id === item_id) {
+                item.grabbed = true;
+                item.grabbed_with = interaction_type;
+            } else {
+                item.grabbed = false;
+                delete item.grabbed_with;
+            }
+        });
         closePopup(false);
         // applyState(true) skips destroying and initializing draggable
         applyState(true);
     };
 
-    var releaseItem = function($item) {
-        var item_id = $item.data('value');
-        setGrabbedState(item_id, false);
+    var releaseGrabbedItems = function() {
+        configuration.items.forEach(function(item) {
+            item.grabbed = false;
+            delete item.grabbed_with;
+        });
         // applyState(true) skips destroying and initializing draggable
         applyState(true);
-    };
-
-    var setGrabbedState = function(item_id, grabbed, interaction_type) {
-        configuration.items.forEach(function(item) {
-            if (item.id === item_id) {
-                if (grabbed) {
-                    item.grabbed = true;
-                    item.grabbed_with = interaction_type;
-                } else {
-                    item.grabbed = false;
-                    delete item.grabbed_with;
-                }
-            }
-        });
     };
 
     var destroyDraggable = function() {
@@ -1220,6 +1287,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                         state.finished = true;
                         state.overall_feedback = data.overall_feedback;
                     }
+                    setScreenReaderMessages();
                 }
                 applyState();
                 if (state.feedback && state.feedback.length > 0) {
@@ -1324,6 +1392,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             } else {
                 state.finished = true;
             }
+            setScreenReaderMessages();
         }).always(function() {
             state.submit_spinner = false;
             applyState();
@@ -1451,7 +1520,8 @@ function DragAndDropBlock(runtime, element, configuration) {
             showing_answer: state.showing_answer,
             show_answer_spinner: state.show_answer_spinner,
             disable_go_to_beginning_button: !canGoToBeginning(),
-            show_go_to_beginning_button: state.go_to_beginning_button_visible
+            show_go_to_beginning_button: state.go_to_beginning_button_visible,
+            screen_reader_messages: (state.screen_reader_messages || '')
         };
 
         return renderView(context);

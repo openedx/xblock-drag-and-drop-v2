@@ -694,6 +694,31 @@ msgstr[1] "{possible} pöïnts pössïßlé (üngrädéd) Ⱡ'σяєм ιρѕυ�
 msgid "Close"
 msgstr "Çlösé Ⱡ'σяєм ιρѕ#"
 
+#: drag_and_drop_v2/public/js/drag_and_drop.js:374
+#: drag_and_drop_v2/public/js/drag_and_drop.js:839
+msgid "Hints:"
+msgstr "Hïnts: Ⱡ'σяєм ιρѕυ#"
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:224
+msgid ", dropzone"
+msgstr ", dröpzöné Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:479
+msgid "Drag and Drop Problem"
+msgstr "Dräg änd Dröp Prößlém Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:509
+msgid "Drop Targets"
+msgstr "Dröp Tärgéts Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:517
+msgid "Actions"
+msgstr "Àçtïöns Ⱡ'σяєм ιρѕυм #"
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:12
+msgid "Submitting"
+msgstr "Süßmïttïng Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
 #: utils.py:44
 msgid "Your highest score is {score}"
 msgstr "Ýöür hïghést sçöré ïs {score} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"

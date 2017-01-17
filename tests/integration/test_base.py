@@ -48,7 +48,7 @@ ItemDefinition = namedtuple(  # pylint: disable=invalid-name
 
 
 class BaseIntegrationTest(SeleniumBaseTest):
-    default_css_selector = 'section.themed-xblock.xblock--drag-and-drop'
+    default_css_selector = '.themed-xblock.xblock--drag-and-drop'
     module_name = __name__
 
     _additional_escapes = {
@@ -239,29 +239,6 @@ class DefaultDataTestMixin(object):
 class InteractionTestBase(object):
     POPUP_ERROR_CLASS = "popup-incorrect"
 
-    @classmethod
-    def _get_items_with_zone(cls, items_map):
-        return {
-            item_key: definition for item_key, definition in items_map.items()
-            if definition.zone_ids != []
-        }
-
-    @classmethod
-    def _get_items_without_zone(cls, items_map):
-        return {
-            item_key: definition for item_key, definition in items_map.items()
-            if definition.zone_ids == []
-        }
-
-    @classmethod
-    def _get_items_by_zone(cls, items_map):
-        zone_ids = set([definition.zone_ids[0] for _, definition in items_map.items() if definition.zone_ids])
-        return {
-            zone_id: {item_key: definition for item_key, definition in items_map.items()
-                      if definition.zone_ids and definition.zone_ids[0] is zone_id}
-            for zone_id in zone_ids
-        }
-
     def setUp(self):
         super(InteractionTestBase, self).setUp()
 
@@ -270,7 +247,42 @@ class InteractionTestBase(object):
         self._page = self.go_to_page(self.PAGE_TITLE)
         # Resize window so that the entire drag container is visible.
         # Selenium has issues when dragging to an area that is off screen.
-        self.browser.set_window_size(1024, 800)
+        self.browser.set_window_size(1024, 1024)
+
+    @staticmethod
+    def _get_items_with_zone(items_map):
+        return {
+            item_key: definition for item_key, definition in items_map.items()
+            if definition.zone_ids != []
+        }
+
+    @staticmethod
+    def _get_items_without_zone(items_map):
+        return {
+            item_key: definition for item_key, definition in items_map.items()
+            if definition.zone_ids == []
+        }
+
+    @staticmethod
+    def _get_items_by_zone(items_map):
+        zone_ids = set([definition.zone_ids[0] for _, definition in items_map.items() if definition.zone_ids])
+        return {
+            zone_id: {item_key: definition for item_key, definition in items_map.items()
+                      if definition.zone_ids and definition.zone_ids[0] is zone_id}
+            for zone_id in zone_ids
+        }
+
+    @staticmethod
+    def _get_incorrect_zone_for_item(item, zones):
+        """Returns the first zone that is not correct for this item."""
+        zone_id = None
+        zone_title = None
+        for z_id, z_title in zones:
+            if z_id not in item.zone_ids:
+                zone_id = z_id
+                zone_title = z_title
+                break
+        return [zone_id, zone_title]
 
     def _get_item_by_value(self, item_value):
         return self._page.find_elements_by_xpath(".//div[@data-value='{item_id}']".format(item_id=item_value))[0]
@@ -312,7 +324,7 @@ class InteractionTestBase(object):
         both the HTML attribute and the DOM property are set to false.
         We work around that selenium bug by using JavaScript to get the correct value of 'draggable'.
         """
-        script = "return $('div.option[data-value={}]').prop('draggable')".format(item_value)
+        script = "return $('.option[data-value={}]').prop('draggable')".format(item_value)
         return self.browser.execute_script(script)
 
     def assertDraggable(self, item_value):
@@ -370,7 +382,7 @@ class InteractionTestBase(object):
         item.send_keys("")
         item.send_keys(action_key)
         # Focus is on first *zone* now
-        self.assert_grabbed_item(item)
+        self.assert_item_grabbed(item)
         # Get desired zone and figure out how many times we have to press Tab to focus the zone.
         if zone_id is None:  # moving back to the bank
             zone = self._get_item_bank()
@@ -387,8 +399,11 @@ class InteractionTestBase(object):
             ActionChains(self.browser).send_keys(Keys.TAB).perform()
         zone.send_keys(action_key)
 
-    def assert_grabbed_item(self, item):
+    def assert_item_grabbed(self, item):
         self.assertEqual(item.get_attribute('aria-grabbed'), 'true')
+
+    def assert_item_not_grabbed(self, item):
+        self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
 
     def assert_placed_item(self, item_value, zone_title, assessment_mode=False):
         item = self._get_placed_item_by_value(item_value)
@@ -474,3 +489,10 @@ class InteractionTestBase(object):
 
     def assert_button_enabled(self, submit_button, enabled=True):
         self.assertEqual(submit_button.is_enabled(), enabled)
+
+    def assert_reader_feedback_messages(self, expected_message_lines):
+        expected_paragraphs = ['<p>{}</p>'.format(l) for l in expected_message_lines]
+        expected_html = ''.join(expected_paragraphs)
+        feedback_area = self._page.find_element_by_css_selector('.reader-feedback-area')
+        actual_html = feedback_area.get_attribute('innerHTML')
+        self.assertEqual(actual_html, expected_html)

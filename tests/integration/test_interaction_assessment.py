@@ -81,14 +81,12 @@ class AssessmentInteractionTest(
     """
     @data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_item_no_feedback_on_good_move(self, action_key):
-        self.parameterized_item_positive_feedback_on_good_move(
-            self.items_map, action_key=action_key, assessment_mode=True
-        )
+        self.parameterized_item_positive_feedback_on_good_move_assessment(self.items_map, action_key=action_key)
 
     @data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_item_no_feedback_on_bad_move(self, action_key):
-        self.parameterized_item_negative_feedback_on_bad_move(
-            self.items_map, self.all_zones, action_key=action_key, assessment_mode=True
+        self.parameterized_item_negative_feedback_on_bad_move_assessment(
+            self.items_map, self.all_zones, action_key=action_key
         )
 
     @data(*ITEM_DRAG_KEYBOARD_KEYS)
@@ -250,6 +248,18 @@ class AssessmentInteractionTest(
         """
         Test updating overall feedback after submitting solution in assessment mode
         """
+        def check_feedback(overall_feedback_lines, per_item_feedback_lines=None):
+            # Check that the feedback is correctly displayed in the overall feedback area.
+            expected_overall_feedback = "\n".join(["FEEDBACK"] + overall_feedback_lines)
+            self.assertEqual(self._get_feedback().text, expected_overall_feedback)
+
+            # Check that the SR.readText function was passed correct feedback messages.
+            sr_feedback_lines = overall_feedback_lines
+            if per_item_feedback_lines:
+                sr_feedback_lines += ["Some of your answers were not correct.", "Hints:"]
+                sr_feedback_lines += per_item_feedback_lines
+            self.assert_reader_feedback_messages(sr_feedback_lines)
+
         # used keyboard mode to avoid bug/feature with selenium "selecting" everything instead of dragging an element
         self.place_item(0, TOP_ZONE_ID, Keys.RETURN)
 
@@ -261,29 +271,25 @@ class AssessmentInteractionTest(
         expected_grade = 2.0 / 5.0
 
         feedback_lines = [
-            "FEEDBACK",
             FeedbackMessages.correctly_placed(1),
             FeedbackMessages.not_placed(3),
             START_FEEDBACK,
             FeedbackMessages.GRADE_FEEDBACK_TPL.format(score=expected_grade)
         ]
-        expected_feedback = "\n".join(feedback_lines)
-        self.assertEqual(self._get_feedback().text, expected_feedback)
+        check_feedback(feedback_lines)
 
         # Place the item into incorrect zone. The score does not change.
         self.place_item(1, BOTTOM_ZONE_ID, Keys.RETURN)
         self.click_submit()
 
         feedback_lines = [
-            "FEEDBACK",
             FeedbackMessages.correctly_placed(1),
             FeedbackMessages.misplaced_returned(1),
             FeedbackMessages.not_placed(2),
             START_FEEDBACK,
             FeedbackMessages.GRADE_FEEDBACK_TPL.format(score=expected_grade)
         ]
-        expected_feedback = "\n".join(feedback_lines)
-        self.assertEqual(self._get_feedback().text, expected_feedback)
+        check_feedback(feedback_lines, ["No, this item does not belong here. Try again."])
 
         # reach final attempt
         for _ in xrange(self.MAX_ATTEMPTS-3):
@@ -299,13 +305,11 @@ class AssessmentInteractionTest(
         expected_grade = 1.0
 
         feedback_lines = [
-            "FEEDBACK",
             FeedbackMessages.correctly_placed(4),
             FINISH_FEEDBACK,
             FeedbackMessages.FINAL_ATTEMPT_TPL.format(score=expected_grade)
         ]
-        expected_feedback = "\n".join(feedback_lines)
-        self.assertEqual(self._get_feedback().text, expected_feedback)
+        check_feedback(feedback_lines)
 
     def test_per_item_feedback_multiple_misplaced(self):
         self.place_item(0, MIDDLE_ZONE_ID, Keys.RETURN)
