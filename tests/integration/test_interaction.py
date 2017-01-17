@@ -79,9 +79,7 @@ class ParameterizedTestsMixin(object):
                 overall_feedback = feedback['intro']
             expected_sr_texts.append(overall_feedback)
             self.assert_reader_feedback_messages(expected_sr_texts)
-            if action_key:
-                # Next TAB keypress should move focus to "Go to Beginning button"
-                self._test_next_tab_goes_to_go_to_beginning_button()
+            self._test_popup_focus_and_close(popup, action_key)
 
     def parameterized_item_positive_feedback_on_good_move_assessment(
             self, items_map, scroll_down=100, action_key=None, feedback=None
@@ -104,6 +102,9 @@ class ParameterizedTestsMixin(object):
             self.assertEqual(feedback_popup_html, '')
             self.assertFalse(popup.is_displayed())
             self.assert_reader_feedback_messages([])
+            if action_key:
+                # Next TAB keypress should move focus to "Go to Beginning button"
+                self._test_next_tab_goes_to_go_to_beginning_button()
 
     def parameterized_item_negative_feedback_on_bad_move_standard(
             self, items_map, all_zones, scroll_down=100, action_key=None, feedback=None
@@ -151,7 +152,6 @@ class ParameterizedTestsMixin(object):
                 self.assertFalse(popup.is_displayed())
                 self.assert_placed_item(definition.item_id, zone_title, assessment_mode=True)
                 self.assert_reader_feedback_messages([])
-                self._test_popup_focus_and_close(popup, action_key)
                 if action_key:
                     self._test_next_tab_goes_to_go_to_beginning_button()
 
@@ -380,19 +380,20 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
 
     @data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_cannot_select_multiple_items(self, action_key):
-        all_item_ids = self.items_map.keys()
-        # Go through all items and select them all using the keyboard action key.
-        for item_id in all_item_ids:
-            item = self._get_item_by_value(item_id)
-            item.send_keys('')
-            item.send_keys(action_key)
-            # Item should be grabbed.
-            self.assert_item_grabbed(item)
-            # Other items should NOT be grabbed.
-            for other_item_id in all_item_ids:
-                if other_item_id != item_id:
-                    other_item = self._get_item_by_value(other_item_id)
-                    self.assert_item_not_grabbed(other_item)
+        if action_key:
+            all_item_ids = self.items_map.keys()
+            # Go through all items and select them all using the keyboard action key.
+            for item_id in all_item_ids:
+                item = self._get_item_by_value(item_id)
+                item.send_keys('')
+                item.send_keys(action_key)
+                # Item should be grabbed.
+                self.assert_item_grabbed(item)
+                # Other items should NOT be grabbed.
+                for other_item_id in all_item_ids:
+                    if other_item_id != item_id:
+                        other_item = self._get_item_by_value(other_item_id)
+                        self.assert_item_not_grabbed(other_item)
 
 
 class MultipleValidOptionsInteractionTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):
