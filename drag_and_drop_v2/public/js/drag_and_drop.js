@@ -66,6 +66,7 @@ function DragAndDropTemplates(configuration) {
             className += " grabbed-with-" + item.grabbed_with;
         }
         var attributes = {
+            'role': 'button',
             'draggable': !item.drag_disabled,
             'aria-grabbed': item.grabbed,
             'data-value': item.value,
@@ -211,6 +212,7 @@ function DragAndDropTemplates(configuration) {
                         'aria-dropeffect': 'move',
                         'data-uid': zone.uid,
                         'data-zone_align': zone.align,
+                        'role': 'button',
                         'aria-describedby': zone_description_id,
                     },
                     style: {
@@ -540,6 +542,7 @@ function DragAndDropTemplates(configuration) {
             item_bank_properties.attributes['tabindex'] = 0;
             item_bank_properties.attributes['dropzone'] = 'move';
             item_bank_properties.attributes['aria-dropeffect'] = 'move';
+            item_bank_properties.attributes['role'] = 'button';
         }
         return (
             h('div.themed-xblock.xblock--drag-and-drop', main_element_properties, [

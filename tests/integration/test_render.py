@@ -142,6 +142,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
 
         for index, item in enumerate(items):
             item_number = index + 1
+            self.assertEqual(item.get_attribute('role'), 'button')
             self.assertEqual(item.get_attribute('tabindex'), '0')
             self.assertEqual(item.get_attribute('draggable'), 'true')
             self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
