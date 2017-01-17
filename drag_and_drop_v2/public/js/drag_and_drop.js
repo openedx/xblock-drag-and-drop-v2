@@ -629,7 +629,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             // Set up event handlers:
 
             $element.on('click', '.item-feedback-popup .close-feedback-popup-button', closePopupEventHandler);
-            $element.on('keydown', '.item-feedback-popup .close-feedback-popup-button', registerPopupCloseButtonKeydown);
+            $element.on('keydown', '.item-feedback-popup .close-feedback-popup-button', closePopupKeydownHandler);
             $element.on('keyup', '.item-feedback-popup .close-feedback-popup-button', preventFauxPopupCloseButtonClick);
 
             $element.on('click', '.submit-answer-button', doAttempt);
@@ -736,8 +736,12 @@ function DragAndDropBlock(runtime, element, configuration) {
     // a click event on keyup if the close button received a keydown event prior to the keyup.
     var _popup_close_button_keydown_received = false;
 
-    var registerPopupCloseButtonKeydown = function(evt) {
+    var closePopupKeydownHandler = function(evt) {
         _popup_close_button_keydown_received = true;
+        // Don't let user tab out of the button until the feedback is closed.
+        if (evt.which === TAB) {
+            evt.preventDefault();
+        }
     };
 
     var preventFauxPopupCloseButtonClick = function(evt) {

@@ -27,10 +27,17 @@ ITEM_DRAG_KEYBOARD_KEYS = (None, Keys.RETURN, Keys.CONTROL+'m')
 
 
 class ParameterizedTestsMixin(object):
-    def _test_popup_focus_and_close(self, popup):
+    def _test_popup_focus_and_close(self, popup, action_key):
         dismiss_popup_button = popup.find_element_by_css_selector('.close-feedback-popup-button')
         self.assertFocused(dismiss_popup_button)
-        dismiss_popup_button.click()
+        # Assert focus is trapped - trying to tab out of the popup does not work, focus remains on the close button.
+        ActionChains(self.browser).send_keys(Keys.TAB).perform()
+        self.assertFocused(dismiss_popup_button)
+        # Close the popup now.
+        if action_key:
+            ActionChains(self.browser).send_keys(Keys.RETURN).perform()
+        else:
+            dismiss_popup_button.click()
         self.assertFalse(popup.is_displayed())
         # Assert focus moves to first enabled button in item bank after closing the popup.
         focusable_items_in_bank = [item for item in self._get_items() if item.get_attribute('tabindex') == '0']
@@ -67,7 +74,7 @@ class ParameterizedTestsMixin(object):
                 self.assertEqual(feedback_popup_html, "<p>{}</p>".format(definition.feedback_positive))
                 self.assert_popup_correct(popup)
                 self.assertTrue(popup.is_displayed())
-                self._test_popup_focus_and_close(popup)
+                self._test_popup_focus_and_close(popup, action_key)
 
     def parameterized_item_negative_feedback_on_bad_move(
             self, items_map, all_zones, scroll_down=100, action_key=None, assessment_mode=False
@@ -102,7 +109,7 @@ class ParameterizedTestsMixin(object):
                     self.assert_popup_incorrect(popup)
                     self.assertTrue(popup.is_displayed())
                     self.assert_reverted_item(definition.item_id)
-                    self._test_popup_focus_and_close(popup)
+                    self._test_popup_focus_and_close(popup, action_key)
 
     def parameterized_move_items_between_zones(self, items_map, all_zones, scroll_down=100, action_key=None):
         # Scroll drop zones into view to make sure Selenium can successfully drop items
