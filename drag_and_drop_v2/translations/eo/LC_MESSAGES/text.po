@@ -690,10 +690,6 @@ msgid_plural "{possible} points possible (ungraded)"
 msgstr[0] "{possible} pöïnt pössïßlé (üngrädéd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 msgstr[1] "{possible} pöïnts pössïßlé (üngrädéd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid "Close"
-msgstr "Çlösé Ⱡ'σяєм ιρѕ#"
-
 #: drag_and_drop_v2/public/js/drag_and_drop.js:374
 #: drag_and_drop_v2/public/js/drag_and_drop.js:839
 msgid "Hints:"
