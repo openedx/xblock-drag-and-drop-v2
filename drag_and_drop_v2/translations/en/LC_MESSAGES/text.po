@@ -562,11 +562,6 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: public/js/drag_and_drop_edit.js
-msgid "Close"
-msgstr ""
-
-
 # Translators: {earned} is the number of points earned. {possible} is the total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of points will always be at least 1. We pluralize based on the total number of points (example: 0/1 point; 1/2 points).
 #: public/js/drag_and_drop.js:453
 msgid "{earned}/{possible} point (graded)"
