@@ -510,7 +510,7 @@ Javascript command is a little bit more verbose:
 ```
 
 Note that both commands generate partial `messages.po` file - JS or python only, while `test.po` is supposed to contain
-all translatable strings. Both commands can be modified to append to *exsisting* `messages.po` file by adding 
+all translatable strings. Both commands can be modified to append to *existing* `messages.po` file by adding 
 `--join-existing` key.
 
 To check if `text.po` is correct, one can run `msgfmt` to build a `text.mo` file:
