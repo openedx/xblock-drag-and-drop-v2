@@ -41,7 +41,7 @@ class EventsFiredTest(DefaultDataTestMixin, ParameterizedTestsMixin, BaseEventsT
         },
         {
             'name': 'grade',
-            'data': {'max_value': 1, 'value': (2.0 / 5)},
+            'data': {'max_value': 1, 'value': (2.0 / 5), 'only_if_higher': None},
         },
         {
             'name': 'edx.drag_and_drop_v2.item.dropped',
@@ -77,7 +77,7 @@ class EventsFiredTest(DefaultDataTestMixin, ParameterizedTestsMixin, BaseEventsT
     @unpack
     def test_event(self, index, event):
         self.parameterized_item_positive_feedback_on_good_move_standard(self.items_map)
-        dummy, name, published_data = self.publish.call_args_list[index][0]
+        _, name, published_data = self.publish.call_args_list[index][0]
         self.assertEqual(name, event['name'])
         self.assertEqual(published_data, event['data'])
 
@@ -121,7 +121,7 @@ class AssessmentEventsFiredTest(
         },
         {
             'name': 'grade',
-            'data': {'max_value': 1, 'value': (1.0 / 5)},
+            'data': {'max_value': 1, 'value': (1.0 / 5), 'only_if_higher': None},
         },
         {
             'name': 'edx.drag_and_drop_v2.feedback.opened',
@@ -143,7 +143,7 @@ class AssessmentEventsFiredTest(
         self.click_submit()
         self.wait_for_ajax()
         for index, event in enumerate(self.scenarios):
-            dummy, name, published_data = self.publish.call_args_list[index][0]
+            _, name, published_data = self.publish.call_args_list[index][0]
             self.assertEqual(name, event['name'])
             self.assertEqual(published_data, event['data'])
 
@@ -158,7 +158,7 @@ class AssessmentEventsFiredTest(
 
         events = self.publish.call_args_list
         published_grade = next((event[0][2] for event in events if event[0][1] == 'grade'))
-        expected_grade = {'max_value': 1, 'value': (1.0 / 5.0)}
+        expected_grade = {'max_value': 1, 'value': (1.0 / 5.0), 'only_if_higher': None}
         self.assertEqual(published_grade, expected_grade)
 
 

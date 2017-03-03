@@ -223,6 +223,10 @@ class TestDragAndDropRender(BaseIntegrationTest):
         # usually is not the case when running integration tests.
         # See: https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/7346
         self.browser.execute_script('$("button.go-to-beginning-button").focus()')
+
+        # For unknown reasons the element only becomes visible when focus() is called twice.
+        # See: https://openedx.atlassian.net/browse/TNL-6736
+        self.browser.execute_script('$("button.go-to-beginning-button").focus()')
         self.assertFocused(button)
         # Button should be visible when focused.
         self.assertNotIn('sr', button.get_attribute('class').split())

@@ -14,6 +14,7 @@ from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 from xblock.fields import Scope, String, Dict, Float, Boolean, Integer
 from xblock.fragment import Fragment
+from xblock.scorable import ScorableXBlockMixin, Score
 from xblockutils.resources import ResourceLoader
 from xblockutils.settings import XBlockWithSettingsMixin, ThemableXBlockMixin
 
@@ -31,7 +32,12 @@ logger = logging.getLogger(__name__)
 
 @XBlock.wants('settings')
 @XBlock.needs('i18n')
-class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
+class DragAndDropBlock(
+    XBlock,
+    XBlockWithSettingsMixin,
+    ThemableXBlockMixin,
+    ScorableXBlockMixin
+):
     """
     XBlock that implements a friendly Drag-and-Drop problem
     """
@@ -164,13 +170,18 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     )
 
     grade = Float(
-        help=_("Keeps maximum score achieved by student"),
+        help=_("DEPRECATED. Keeps maximum score achieved by student as a weighted value."),
+        scope=Scope.user_state,
+        default=0
+    )
+
+    raw_earned = Float(
+        help=_("Keeps maximum score achieved by student as a raw value between 0 and 1."),
         scope=Scope.user_state,
         default=0
     )
 
     block_settings_key = 'drag-and-drop-v2'
-    has_score = True
 
     def max_score(self):  # pylint: disable=no-self-use
         """
@@ -178,6 +189,44 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         Required by the grading system in the LMS.
         """
         return 1
+
+    def get_score(self):
+        """
+        Return the problem's current score as raw values.
+        """
+        if not self._get_raw_earned_if_set():
+            self.raw_earned = self._learner_raw_score()
+        return Score(self.raw_earned, self.max_score())
+
+    def set_score(self, score):
+        """
+        Sets the score on this block.
+        Takes a Score namedtuple containing a raw
+        score and possible max (for this block, we expect that this will
+        always be 1).
+        """
+        assert score.raw_possible == self.max_score()
+        self.raw_earned = score.raw_earned
+
+    def calculate_score(self):
+        """
+        Returns a newly-calculated raw score on the problem for the learner
+        based on the learner's current state.
+        """
+        return Score(self._learner_raw_score(), self.max_score())
+
+    def has_submitted_answer(self):
+        """
+        Returns True if the user has made a submission.
+        """
+        return self.fields['raw_earned'].is_set_on(self) or self.fields['grade'].is_set_on(self)
+
+    def weighted_grade(self):
+        """
+        Returns the block's current saved grade multiplied by the block's
+        weight- the number of points earned by the learner.
+        """
+        return self.raw_earned * self.weight
 
     def _learner_raw_score(self):
         """
@@ -432,7 +481,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         return {
             'correct': correct,
             'attempts': self.attempts,
-            'grade': self._get_grade_if_set(),
+            'grade': self._get_raw_earned_if_set(),
             'misplaced_items': list(misplaced_ids),
             'feedback': self._present_feedback(feedback_msgs),
             'overall_feedback': self._present_feedback(overall_feedback_msgs)
@@ -598,7 +647,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
                 grade_feedback_template = FeedbackMessages.FINAL_ATTEMPT_TPL
 
             feedback_msgs.append(
-                FeedbackMessage(grade_feedback_template.format(score=self.grade), grade_feedback_class)
+                FeedbackMessage(grade_feedback_template.format(score=self.weighted_grade()), grade_feedback_class)
             )
 
         return feedback_msgs, misplaced_ids
@@ -633,7 +682,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         return {
             'correct': is_correct,
-            'grade': self._get_grade_if_set(),
+            'grade': self._get_raw_earned_if_set(),
             'finished': self._is_answer_correct(),
             'overall_feedback': self._present_feedback(overall_feedback),
             'feedback': self._present_feedback([item_feedback])
@@ -680,38 +729,25 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
         """
         # pylint: disable=fixme
         # TODO: (arguable) split this method into "clean" functions (with no side effects and implicit state)
-        # This method implicitly depends on self.item_state (via _is_answer_correct and _calculate_grade)
-        # and also updates self.grade if some conditions are met. As a result this method implies some order of
+        # This method implicitly depends on self.item_state (via _is_answer_correct and _learner_raw_score)
+        # and also updates self.raw_earned if some conditions are met. As a result this method implies some order of
         # invocation:
         # * it should be called after learner-caused updates to self.item_state is applied
         # * it should be called before self.item_state cleanup is applied (i.e. returning misplaced items to item bank)
-        # * it should be called before any method that depends on self.grade (i.e. self._get_feedback)
+        # * it should be called before any method that depends on self.raw_earned (i.e. self._get_feedback)
 
         # Splitting it into a "clean" functions will allow to capture this implicit invocation order in caller method
         # and help avoid bugs caused by invocation order violation in future.
 
         # There's no going back from "completed" status to "incomplete"
         self.completed = self.completed or self._is_answer_correct() or not self.attempts_remain
-        grade = self._calculate_grade()
+        current_raw_earned = self._learner_raw_score()
         # ... and from higher grade to lower
-        current_grade = self._get_grade_if_set()
-        if current_grade is None or grade > current_grade:
-            self.grade = grade
-            self._publish_grade()
-
-    def _publish_grade(self):
-        """
-        Publishes grade
-        """
-        try:
-            self.runtime.publish(self, 'grade', {
-                'value': self.grade,
-                'max_value': self.weight,
-            })
-        except NotImplementedError:
-            # Note, this publish method is unimplemented in Studio runtimes,
-            # so we have to figure that we're running in Studio for now
-            pass
+        # if we have an old-style (i.e. unreliable) grade, override no matter what
+        saved_raw_earned = self._get_raw_earned_if_set()
+        if current_raw_earned is None or current_raw_earned > saved_raw_earned:
+            self.raw_earned = current_raw_earned
+            self._publish_grade(Score(self.raw_earned, self.max_score()))
 
     def _publish_item_dropped_event(self, attempt, is_correct):
         """
@@ -778,7 +814,7 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
             'items': item_state,
             'finished': is_finished,
             'attempts': self.attempts,
-            'grade': self._get_grade_if_set(),
+            'grade': self._get_raw_earned_if_set(),
             'overall_feedback': self._present_feedback(overall_feedback_msgs)
         }
 
@@ -900,19 +936,13 @@ class DragAndDropBlock(XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
 
         return ItemStats(required, placed, correctly_placed, decoy, decoy_in_bank)
 
-    def _calculate_grade(self):
-        """
-        Calculates the student's grade for this block based on current item state.
-        """
-        return self._learner_raw_score() * self.weight
-
-    def _get_grade_if_set(self):
+    def _get_raw_earned_if_set(self):
         """
         Returns student's grade if already explicitly set, otherwise returns None.
-        This is different from self.grade which returns 0 by default.
+        This is different from self.raw_earned which returns 0 by default.
         """
-        if self.fields['grade'].is_set_on(self):
-            return self.grade
+        if self.fields['raw_earned'].is_set_on(self):
+            return self.raw_earned
         else:
             return None
 
