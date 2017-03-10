@@ -509,7 +509,7 @@ Javascript command is a little bit more verbose:
 ~/xblock-drag-and-drop-v2/drag_and_drop_v2$ find . -name "*.js" -o  -path ./public/js/vendor -prune -a -type f | xargs xgettext --language=javascript --from-code=utf-8 --add-comments="Translators:"
 ```
 
-Note that both commands generate partial `messages.po` file - JS or python only, while `test.po` is supposed to contain
+Note that both commands generate partial `messages.po` file - JS or python only, while `text.po` is supposed to contain
 all translatable strings. Both commands can be modified to append to *existing* `messages.po` file by adding 
 `--join-existing` key.
 
