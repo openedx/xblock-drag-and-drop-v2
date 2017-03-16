@@ -567,8 +567,9 @@ function DragAndDropTemplates(configuration) {
                     ]),
                 ]),
                 h("div.actions-toolbar", {attributes: {'role': 'group', 'aria-label': gettext('Actions')}}, [
-                    (ctx.show_submit_answer ? submitAnswerTemplate(ctx) : null),
                     sidebarTemplate(ctx),
+                    (ctx.show_submit_answer ? submitAnswerTemplate(ctx) : null),
+
                 ]),
                 keyboardHelpPopupTemplate(ctx),
                 feedbackTemplate(ctx),
