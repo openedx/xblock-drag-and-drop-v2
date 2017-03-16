@@ -680,8 +680,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 runOnKey(evt, RET, onGoToBeginningButtonClick);
             });
             // Go to Beginning button should only be visible when it has focus.
-            // $element.on('focus', '.go-to-beginning-button', showGoToBeginningButton);
-            $('.go-to-beginning-button')[0].addEventListener('focus', showGoToBeginningButton);
+            $element.on('focus', '.go-to-beginning-button', showGoToBeginningButton);
             $element.on('blur', '.go-to-beginning-button', hideGoToBeginningButton);
 
             // For the next one, we need to use addEventListener with useCapture 'true' in order
