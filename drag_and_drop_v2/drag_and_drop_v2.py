@@ -33,10 +33,10 @@ logger = logging.getLogger(__name__)
 @XBlock.wants('settings')
 @XBlock.needs('i18n')
 class DragAndDropBlock(
+    ScorableXBlockMixin,
     XBlock,
     XBlockWithSettingsMixin,
-    ThemableXBlockMixin,
-    ScorableXBlockMixin
+    ThemableXBlockMixin
 ):
     """
     XBlock that implements a friendly Drag-and-Drop problem
