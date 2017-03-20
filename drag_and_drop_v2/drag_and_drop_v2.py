@@ -194,7 +194,7 @@ class DragAndDropBlock(
         """
         Return the problem's current score as raw values.
         """
-        if not self._get_raw_earned_if_set():
+        if self._get_raw_earned_if_set() is None:
             self.raw_earned = self._learner_raw_score()
         return Score(self.raw_earned, self.max_score())
 
