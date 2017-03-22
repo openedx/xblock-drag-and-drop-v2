@@ -504,7 +504,6 @@ function DragAndDropTemplates(configuration) {
             }
         }
         var progress_text = progress_template.replace('{possible}', formatNumber(ctx.weighted_max_score));
-
         return h('div.problem-progress', {
             id: configuration.url_name + '-problem-progress',
             attributes: {role: 'status'}
@@ -626,7 +625,6 @@ function DragAndDropBlock(runtime, element, configuration) {
     var M = 77;
 
     var $selectedItem;
-    var $focusedElement;
 
     var init = function() {
         // Load the current user state, and load the image, then render the block.
@@ -706,11 +704,11 @@ function DragAndDropBlock(runtime, element, configuration) {
         }
     };
 
-    var keyboardEventDispatcher = function(evt) {
+    var keyboardEventDispatcher = function(evt, focusId) {
         if (evt.which === TAB) {
             trapFocus(evt);
         } else if (evt.which === ESC) {
-            hideKeyboardHelp(evt);
+            hideKeyboardHelp(evt, focusId);
         }
     };
 
@@ -788,6 +786,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var showKeyboardHelp = function(evt) {
+        var focusId = document.activeElement;
         evt.preventDefault();
 
         // Show dialog
@@ -795,15 +794,17 @@ function DragAndDropBlock(runtime, element, configuration) {
         $keyboardHelpDialog.find('.modal-window-overlay').show();
         $keyboardHelpDialog.find('.modal-window').show().focus();
 
-        // Handle focus
-        $focusedElement = $(':focus');
-
         // Set up event handlers
-        $(document).on('keydown', keyboardEventDispatcher);
-        $keyboardHelpDialog.find('.modal-dismiss-button').on('click', hideKeyboardHelp);
+        $(document).on('keydown', function(evt) {
+            keyboardEventDispatcher(evt, focusId);
+        });
+
+        $keyboardHelpDialog.find('.modal-dismiss-button').on('click', function(evt) {
+            hideKeyboardHelp(evt, focusId)
+        });
     };
 
-    var hideKeyboardHelp = function(evt) {
+    var hideKeyboardHelp = function(evt, focusId) {
         evt.preventDefault();
 
         // Hide dialog
@@ -811,12 +812,12 @@ function DragAndDropBlock(runtime, element, configuration) {
         $keyboardHelpDialog.find('.modal-window-overlay').hide();
         $keyboardHelpDialog.find('.modal-window').hide();
 
-        // Handle focus
-        $focusedElement.focus();
-
         // Remove event handlers
-        $(document).off('keydown', keyboardEventDispatcher);
+        $(document).off('keydown');
         $keyboardHelpDialog.find('.modal-dismiss-button').off();
+
+        // Handle focus
+        $(focusId).focus();
     };
 
     /** Asynchronously load the main background image used for this block. */
