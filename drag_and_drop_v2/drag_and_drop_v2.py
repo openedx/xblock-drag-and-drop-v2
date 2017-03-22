@@ -477,11 +477,10 @@ class DragAndDropBlock(
             misplaced_items.append(self._get_item_definition(int(item_id)))
 
         feedback_msgs = [FeedbackMessage(item['feedback']['incorrect'], None) for item in misplaced_items]
-
         return {
             'correct': correct,
             'attempts': self.attempts,
-            'grade': self._get_raw_earned_if_set(),
+            'grade': self._get_weighted_earned_if_set(),
             'misplaced_items': list(misplaced_ids),
             'feedback': self._present_feedback(feedback_msgs),
             'overall_feedback': self._present_feedback(overall_feedback_msgs)
@@ -679,10 +678,9 @@ class DragAndDropBlock(
         item_feedback_key = 'correct' if is_correct else 'incorrect'
         item_feedback = FeedbackMessage(item['feedback'][item_feedback_key], None)
         overall_feedback, __ = self._get_feedback()
-
         return {
             'correct': is_correct,
-            'grade': self._get_raw_earned_if_set(),
+            'grade': self._get_weighted_earned_if_set(),
             'finished': self._is_answer_correct(),
             'overall_feedback': self._present_feedback(overall_feedback),
             'feedback': self._present_feedback([item_feedback])
@@ -809,12 +807,11 @@ class DragAndDropBlock(
             is_finished = self._is_answer_correct()
         else:
             is_finished = not self.attempts_remain
-
         return {
             'items': item_state,
             'finished': is_finished,
             'attempts': self.attempts,
-            'grade': self._get_raw_earned_if_set(),
+            'grade': self._get_weighted_earned_if_set(),
             'overall_feedback': self._present_feedback(overall_feedback_msgs)
         }
 
@@ -943,6 +940,16 @@ class DragAndDropBlock(
         """
         if self.fields['raw_earned'].is_set_on(self):
             return self.raw_earned
+        else:
+            return None
+
+    def _get_weighted_earned_if_set(self):
+        """
+        Returns student's grade with the problem weight applied if set, otherwise
+        None.
+        """
+        if self.fields['raw_earned'].is_set_on(self):
+            return self.weighted_grade()
         else:
             return None
 

@@ -91,14 +91,15 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
         self.assertEqual(res[self.OVERALL_FEEDBACK_KEY], expected_overall_feedback)
 
     def test_drop_item_wrong_with_feedback(self):
+        self.block.weight = 2
         item_id, zone_id = 0, self.ZONE_2
         data = {"val": item_id, "zone": zone_id}
         res = self.call_handler(self.DROP_ITEM_HANDLER, data)
         item_feedback_message = self._make_item_feedback_message(item_id)
         expected_feedback = [item_feedback_message] if item_feedback_message else []
         # the item was dropped into wrong zone, but we have two items that were correctly left in the bank,
-        # so the score is 2 / 4.0.
-        expected_grade = 2 / 4.0
+        # so the raw score is 2 / 4.0.
+        expected_grade = self.block.weight * 2 / 4.0
 
         self.assertEqual(res, {
             "overall_feedback": [self._make_feedback_message(message=self.INITIAL_FEEDBACK)],
@@ -109,14 +110,15 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
         })
 
     def test_drop_item_wrong_without_feedback(self):
+        self.block.weight = 2
         item_id, zone_id = 2, self.ZONE_1
         data = {"val": item_id, "zone": zone_id}
         res = self.call_handler(self.DROP_ITEM_HANDLER, data)
         item_feedback_message = self._make_item_feedback_message(item_id)
         expected_feedback = [item_feedback_message] if item_feedback_message else []
         # the item was dropped into wrong zone, but we have two items that were correctly left in the bank,
-        # so the score is 2 / 4.0.
-        expected_grade = 2 / 4.0
+        # so the raw score is 2 / 4.0.
+        expected_grade = self.block.weight * 2 / 4.0
 
         self.assertEqual(res, {
             "overall_feedback": [self._make_feedback_message(message=self.INITIAL_FEEDBACK)],
@@ -127,14 +129,16 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
         })
 
     def test_drop_item_correct(self):
+        self.block.weight = 2
         item_id, zone_id = 0, self.ZONE_1
         data = {"val": item_id, "zone": zone_id}
         res = self.call_handler(self.DROP_ITEM_HANDLER, data)
         item_feedback_message = self._make_item_feedback_message(item_id, key="correct")
         expected_feedback = [item_feedback_message] if item_feedback_message else []
         # Item 0 is in correct zone, items 2 and 3 don't belong to any zone so it is correct to leave them in the bank.
-        # The only item that is not in correct position yet is item 1. The grade is therefore 3/4.
-        expected_grade = 3 / 4.0
+        # The only item that is not in correct position yet is item 1. The grade is therefore 3/4. The weight of the
+        # problem means that the displayed grade will be 1.5.
+        expected_grade = self.block.weight * 3 / 4.0
 
         self.assertEqual(res, {
             "overall_feedback": [self._make_feedback_message(message=self.INITIAL_FEEDBACK)],
@@ -230,12 +234,13 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
         self.assertEqual({'value': 1, 'max_value': 1, 'only_if_higher': None}, published_grades[-1])
 
     def test_drop_item_final(self):
+        self.block.weight = 2
         data = {"val": 0, "zone": self.ZONE_1}
         self.call_handler(self.DROP_ITEM_HANDLER, data)
 
         # Item 0 is in correct zone, items 2 and 3 don't belong to any zone so it is correct to leave them in the bank.
-        # The only item that is not in correct position yet is item 1. The grade is therefore 3/4.
-        expected_grade = 3 / 4.0
+        # The only item that is not in correct position yet is item 1. The raw grade is therefore 3/4.
+        expected_grade = self.block.weight * 3 / 4.0
         expected_state = {
             "items": {
                 "0": {"correct": True, "zone": self.ZONE_1}
@@ -248,8 +253,8 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
         self.assertEqual(expected_state, self.call_handler('get_user_state', method="GET"))
 
         res = self.call_handler(self.DROP_ITEM_HANDLER, {"val": 1, "zone": self.ZONE_2})
-        # All four items are in correct position, so the final grade is 4/4.
-        expected_grade = 4 / 4.0
+        # All four items are in correct position, so the final raw grade is 4/4.
+        expected_grade = self.block.weight * 4 / 4.0
         self.assertEqual(res, {
             "overall_feedback": [self._make_feedback_message(message=self.FINAL_FEEDBACK)],
             "finished": True,
@@ -406,7 +411,7 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
                 'only_if_higher': None,
             })
             self.assertTrue(res['correct'])
-            self.assertEqual(res['grade'], 1)
+            self.assertEqual(res['grade'], self.block.weight)
 
     @ddt.data(*[random.randint(1, 50) for _ in xrange(5)])  # pylint: disable=star-args
     def test_do_attempt_incorrect_publish_grade(self, weight):
@@ -424,7 +429,7 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
                 'only_if_higher': None,
             })
             self.assertFalse(res['correct'])
-            self.assertEqual(res['grade'], correctness)
+            self.assertEqual(res['grade'], correctness * self.block.weight)
 
     @ddt.data(*[random.randint(1, 50) for _ in xrange(5)])  # pylint: disable=star-args
     def test_do_attempt_post_correct_no_publish_grade(self, weight):
@@ -457,24 +462,25 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
 
         self._set_final_attempt()
 
-        expected_grade = self._submit_partial_solution()
+        expected_raw_grade = self._submit_partial_solution()
+        expected_weighted_grade = expected_raw_grade * self.block.weight
 
         with mock.patch('workbench.runtime.WorkbenchRuntime.publish', mock.Mock()) as patched_publish:
             res = self.call_handler(self.DO_ATTEMPT_HANDLER, data={})
 
             self.assertTrue(self.block.completed)
             patched_publish.assert_called_once_with(self.block, 'grade', {
-                'value': expected_grade,
+                'value': expected_raw_grade,
                 'max_value': 1,
                 'only_if_higher': None,
             })
 
             expected_grade_feedback = self._make_feedback_message(
-                FeedbackMessages.FINAL_ATTEMPT_TPL.format(score=expected_grade * self.block.weight),
+                FeedbackMessages.FINAL_ATTEMPT_TPL.format(score=expected_weighted_grade),
                 FeedbackMessages.MessageClasses.PARTIAL_SOLUTION
             )
             self.assertIn(expected_grade_feedback, res[self.OVERALL_FEEDBACK_KEY])
-            self.assertEqual(res['grade'], expected_grade)
+            self.assertEqual(res['grade'], expected_weighted_grade)
 
     @ddt.data(*[random.randint(1, 50) for _ in xrange(5)])  # pylint: disable=star-args
     def test_do_attempt_incorrect_final_attempt_after_correct(self, weight):
