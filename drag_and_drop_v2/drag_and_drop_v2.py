@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- # pylint: disable=C0302
 #
 """ Drag and Drop v2 XBlock """
 
@@ -694,22 +694,26 @@ class DragAndDropBlock(
             raise JsonHandlerError(409, self.i18n_service.gettext("Max number of attempts reached"))
 
         item = self._get_item_definition(item_attempt['val'])
-
         is_correct = self._is_attempt_correct(item_attempt)
-        # State is always updated in assessment mode to store intermediate item positions
-        self.item_state[str(item['id'])] = self._make_state_from_attempt(item_attempt, is_correct)
-
-        self._publish_item_dropped_event(item_attempt, is_correct)
+        if item_attempt['zone'] is None:
+            del self.item_state[str(item['id'])]
+            self._publish_item_to_bank_event(item['id'], is_correct)
+        else:
+            # State is always updated in assessment mode to store intermediate item positions
+            self.item_state[str(item['id'])] = self._make_state_from_attempt(item_attempt, is_correct)
+            self._publish_item_dropped_event(item_attempt, is_correct)
 
         return {}
 
     def _validate_drop_item(self, item):
         """
-        Validates `drop_item` parameters
+        Validates `drop_item` parameters. Assessment mode allows returning
+        items to the bank, so validation is unnecessary.
         """
-        zone = self._get_zone_by_uid(item['zone'])
-        if not zone:
-            raise JsonHandlerError(400, "Item zone data invalid.")
+        if self.mode != Constants.ASSESSMENT_MODE:
+            zone = self._get_zone_by_uid(item['zone'])
+            if not zone:
+                raise JsonHandlerError(400, "Item zone data invalid.")
 
     @staticmethod
     def _make_state_from_attempt(attempt, correct):
@@ -767,11 +771,31 @@ class DragAndDropBlock(
             'is_correct': is_correct,
         })
 
+    def _publish_item_to_bank_event(self, item_id, is_correct):
+        """
+        Publishes event when item moved back to the bank in assessment mode.
+        """
+        item = self._get_item_definition(item_id)
+
+        item_label = item.get("displayName")
+        if not item_label:
+            item_label = item.get("imageURL")
+
+        self.runtime.publish(self, 'edx.drag_and_drop_v2.item.dropped', {
+            'item': item_label,
+            'item_id': item['id'],
+            'location': 'item bank',
+            'location_id': -1,
+            'is_correct': is_correct,
+        })
+
     def _is_attempt_correct(self, attempt):
         """
         Check if the item was placed correctly.
         """
         correct_zones = self.get_item_zones(attempt['val'])
+        if correct_zones == [] and attempt['zone'] is None and self.mode == Constants.ASSESSMENT_MODE:
+            return True
         return attempt['zone'] in correct_zones
 
     def _expand_static_url(self, url):
