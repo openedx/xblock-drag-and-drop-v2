@@ -236,6 +236,17 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
 
         self.assertIsNone(self.block.max_items_per_zone)
 
+    def test_studio_submit_coerce_to_integer(self):
+        # Validate that numbers submitted as strings are being
+        # coerced to integers rather than being saved as strings
+        def modify_submission(submission):
+            submission['max_attempts'] = '1234567890'
+
+        body = self._make_submission(modify_submission)
+        self.call_handler('studio_submit', body)
+        self.assertEqual(self.block.max_attempts, 1234567890)
+        self.assertEqual(type(self.block.max_attempts), int)
+
     def test_expand_static_url(self):
         """ Test the expand_static_url handler needed in Studio when changing the image """
         res = self.call_handler('expand_static_url', '/static/blah.png')
