@@ -859,6 +859,24 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
         self._do_attempt()
         self.assertEqual(self.block.raw_earned, expected_score)
 
+    def test_move_item_back_to_bank(self):
+        self.assertFalse(self.block.completed)  # precondition check
+        expected_score = 3.0 / 5.0
+        self._submit_solution({
+            0: self.ZONE_1,
+            1: self.ZONE_2,
+            2: self.ZONE_2,
+            3: self.ZONE_1,
+        })  # would get a 0.8 score
+        self._submit_solution({
+            0: None,
+            1: self.ZONE_2,
+            2: self.ZONE_2,
+            3: self.ZONE_1,
+        })  # will get a 0.6 score
+        self._do_attempt()
+        self.assertEqual(self.block.raw_earned, expected_score)
+
     def test_do_attempt_zero_score_with_all_decoys(self):
         published_grades = []
 

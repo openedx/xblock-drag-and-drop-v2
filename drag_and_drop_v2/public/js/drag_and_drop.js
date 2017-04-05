@@ -1162,6 +1162,13 @@ function DragAndDropBlock(runtime, element, configuration) {
                     releaseGrabbedItems();
                     delete state.items[item_id];
                     applyState();
+                    var url = runtime.handlerUrl(element, 'drop_item');
+                    var data = {
+                        val: item_id,
+                        zone: null
+                    };
+
+                    $.post(url, JSON.stringify(data), 'json')
                 }
             });
         }
