@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- # pylint: disable=C0302
+# -*- coding: utf-8 -*- # pylint: disable=too-many-lines
 #
 """ Drag and Drop v2 XBlock """
 
