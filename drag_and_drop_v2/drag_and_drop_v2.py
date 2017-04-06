@@ -63,6 +63,7 @@ class DragAndDropBlock(
         help=_("The title of the drag and drop problem. The title is displayed to learners."),
         scope=Scope.settings,
         default=_("Drag and Drop"),
+        enforce_type=True,
     )
 
     mode = String(
@@ -78,7 +79,8 @@ class DragAndDropBlock(
             {"display_name": _("Standard"), "value": Constants.STANDARD_MODE},
             {"display_name": _("Assessment"), "value": Constants.ASSESSMENT_MODE},
         ],
-        default=Constants.STANDARD_MODE
+        default=Constants.STANDARD_MODE,
+        enforce_type=True,
     )
 
     max_attempts = Integer(
@@ -89,6 +91,7 @@ class DragAndDropBlock(
         ),
         scope=Scope.settings,
         default=None,
+        enforce_type=True,
     )
 
     show_title = Boolean(
@@ -96,6 +99,7 @@ class DragAndDropBlock(
         help=_("Display the title to the learner?"),
         scope=Scope.settings,
         default=True,
+        enforce_type=True,
     )
 
     question_text = String(
@@ -103,6 +107,7 @@ class DragAndDropBlock(
         help=_("The description of the problem or instructions shown to the learner."),
         scope=Scope.settings,
         default="",
+        enforce_type=True,
     )
 
     show_question_header = Boolean(
@@ -110,6 +115,7 @@ class DragAndDropBlock(
         help=_('Display the heading "Problem" above the problem text?'),
         scope=Scope.settings,
         default=True,
+        enforce_type=True,
     )
 
     weight = Float(
@@ -117,6 +123,7 @@ class DragAndDropBlock(
         help=_("Defines the number of points the problem is worth."),
         scope=Scope.settings,
         default=1,
+        enforce_type=True,
     )
 
     item_background_color = String(
@@ -124,6 +131,7 @@ class DragAndDropBlock(
         help=_("The background color of draggable items in the problem (example: 'blue' or '#0000ff')."),
         scope=Scope.settings,
         default="",
+        enforce_type=True,
     )
 
     item_text_color = String(
@@ -131,13 +139,15 @@ class DragAndDropBlock(
         help=_("Text color to use for draggable items (example: 'white' or '#ffffff')."),
         scope=Scope.settings,
         default="",
+        enforce_type=True,
     )
 
     max_items_per_zone = Integer(
         display_name=_("Maximum items per zone"),
         help=_("This setting limits the number of items that can be dropped into a single zone."),
         scope=Scope.settings,
-        default=None
+        default=None,
+        enforce_type=True,
     )
 
     data = Dict(
@@ -149,24 +159,28 @@ class DragAndDropBlock(
         ),
         scope=Scope.content,
         default=DEFAULT_DATA,
+        enforce_type=True,
     )
 
     item_state = Dict(
         help=_("Information about current positions of items that a learner has dropped on the target image."),
         scope=Scope.user_state,
         default={},
+        enforce_type=True,
     )
 
     attempts = Integer(
         help=_("Number of attempts learner used"),
         scope=Scope.user_state,
-        default=0
+        default=0,
+        enforce_type=True,
     )
 
     completed = Boolean(
         help=_("Indicates whether a learner has completed the problem at least once"),
         scope=Scope.user_state,
         default=False,
+        enforce_type=True,
     )
 
     grade = Float(
@@ -178,7 +192,8 @@ class DragAndDropBlock(
     raw_earned = Float(
         help=_("Keeps maximum score achieved by student as a raw value between 0 and 1."),
         scope=Scope.user_state,
-        default=0
+        default=0,
+        enforce_type=True,
     )
 
     block_settings_key = 'drag-and-drop-v2'
