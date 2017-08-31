@@ -351,6 +351,7 @@ class DragAndDropBlock(
             'fields': self.fields,
             'self': self,
             'data': urllib.quote(json.dumps(self.data)),
+            'i18n_service': self.runtime.service(self, "i18n"),
         }
 
         fragment = Fragment()
