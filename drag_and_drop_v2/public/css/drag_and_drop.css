@@ -67,6 +67,7 @@
     width: auto;
     padding: 1%;
     background-color: #ebf0f2;
+    position: relative;
 }
 
 /*** DRAGGABLE ITEMS ***/
