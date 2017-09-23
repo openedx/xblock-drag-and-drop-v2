@@ -586,6 +586,19 @@
     }
 }
 
+@media screen and (max-width: 480px) {
+   /* Horizontal scroll for item bank on mobile */
+    .xblock--drag-and-drop .drag-container .item-bank .option {
+        flex-shrink: 0;
+    }
+
+    .xblock--drag-and-drop .item-bank {
+        -ms-flex-flow: row nowrap;
+        flex-flow: row nowrap;
+        overflow-x: auto;
+    }
+}
+
 .xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper {
     border-collapse: collapse;
     padding: 0 5px;
