@@ -188,7 +188,6 @@ class TestDragAndDropRender(BaseIntegrationTest):
             self.assertEqual(zone.get_attribute('aria-dropeffect'), 'move')
             self.assertEqual(zone.get_attribute('data-uid'), 'Zone {}'.format(zone_number))
             self.assertEqual(zone.get_attribute('data-zone_align'), 'center')
-            self.assertIn('ui-droppable', self.get_element_classes(zone))
             zone_box_percentages = box_percentages[index]
             self._assert_box_percentages(  # pylint: disable=star-args
                 '#-Zone_{}'.format(zone_number), **zone_box_percentages

@@ -67,6 +67,7 @@
     width: auto;
     padding: 1%;
     background-color: #ebf0f2;
+    position: relative;
 }
 
 /*** DRAGGABLE ITEMS ***/
@@ -724,4 +725,13 @@
     width: 1px;
     background-color: #ffffff;
     color: #000000;
+}
+
+
+/* Prevent mobile browsers from emulating hover effects on item tap, which can be confusing. */
+@media (hover: none) {
+    .xblock--drag-and-drop .drag-container .option[draggable='true']:hover {
+        outline: none;
+        box-shadow: none;
+    }
 }

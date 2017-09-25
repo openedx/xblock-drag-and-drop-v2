@@ -262,12 +262,9 @@ class DragAndDropBlock(
         fragment = Fragment()
         fragment.add_content(loader.render_template('/templates/html/drag_and_drop.html'))
         css_urls = (
-            'public/css/vendor/jquery-ui-1.10.4.custom.min.css',
-            'public/css/drag_and_drop.css'
+            'public/css/drag_and_drop.css',
         )
         js_urls = (
-            'public/js/vendor/jquery-ui-1.10.4.custom.min.js',
-            'public/js/vendor/jquery-ui-touch-punch-0.2.3.min.js',  # Makes it work on touch devices
             'public/js/vendor/virtual-dom-1.3.0.min.js',
             'public/js/drag_and_drop.js',
         )
@@ -357,11 +354,9 @@ class DragAndDropBlock(
         fragment.add_content(loader.render_template('/templates/html/drag_and_drop_edit.html', context))
 
         css_urls = (
-            'public/css/vendor/jquery-ui-1.10.4.custom.min.css',
-            'public/css/drag_and_drop_edit.css'
+            'public/css/drag_and_drop_edit.css',
         )
         js_urls = (
-            'public/js/vendor/jquery-ui-1.10.4.custom.min.js',
             'public/js/vendor/handlebars-v1.1.2.js',
             'public/js/drag_and_drop_edit.js',
         )
