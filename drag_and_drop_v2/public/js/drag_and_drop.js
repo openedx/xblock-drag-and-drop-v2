@@ -427,11 +427,19 @@ function DragAndDropTemplates(configuration) {
                     return h("li", {innerHTML: message.message});
                 }))
             ];
-            popup_content = h("div.popup-content", {}, have_messages ? content_items : []);
+            popup_content = h(
+                ctx.last_action_correct ? "div.popup-content" : "div.popup-content.popup-content-incorrect",
+                {},
+                have_messages ? content_items : []
+            );
         } else {
-            popup_content = h("div.popup-content", {}, msgs.map(function(message) {
-                return h("p", {innerHTML: message.message});
-            }))
+            popup_content = h(
+                ctx.last_action_correct ? "div.popup-content" : "div.popup-content.popup-content-incorrect",
+                {},
+                msgs.map(function(message) {
+                    return h("p", {innerHTML: message.message});
+                })
+            );
         }
 
         return h(
@@ -441,7 +449,7 @@ function DragAndDropTemplates(configuration) {
             },
             [
                 h(
-                    'button.unbutton.close-feedback-popup-button',
+                    'button.unbutton.close-feedback-popup-button.close-feedback-popup-desktop-button',
                     {},
                     [
                         h(
@@ -460,7 +468,37 @@ function DragAndDropTemplates(configuration) {
                         )
                     ]
                 ),
-                popup_content
+                h(
+                    ctx.last_action_correct ? 'div.popup-header-icon' : 'div.popup-header-icon.popup-header-icon-incorrect',
+                    {},
+                    [
+                        h(
+                            ctx.last_action_correct ? 'span.icon.fa.fa-check-circle' : 'span.icon.fa.fa-exclamation-circle',
+                            {
+                                attributes: {
+                                    'aria-hidden': true
+                                }
+                            }
+                        )
+                    ]
+                ),
+                h(
+                    'div.popup-header-text',
+                    {},
+                    ctx.last_action_correct ? gettext("Correct") : gettext("Incorrect")
+                ),
+                popup_content,
+                h(
+                    'button.unbutton.close-feedback-popup-button.close-feedback-popup-mobile-button',
+                    {},
+                    [
+                        h(
+                            'span',
+                            {},
+                            gettext("Close")
+                        )
+                    ]
+                )
             ]
         )
     };
@@ -1092,7 +1130,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     var focusItemFeedbackPopup = function() {
         var popup = $root.find('.item-feedback-popup');
         if (popup.length && popup.is(":visible")) {
-            popup.find('.close-feedback-popup-button').focus();
+            popup.find('.close-feedback-popup-button:visible').focus();
             return true;
         }
         return false;
