@@ -643,8 +643,8 @@ function DragAndDropTemplates(configuration) {
                         itemFeedbackPopupTemplate(ctx),
                         h('div.target-img-wrapper', [
                             h('img.target-img', {src: ctx.target_img_src, alt: ctx.target_img_description}),
+                            renderCollection(zoneTemplate, ctx.zones, ctx)
                         ]),
-                        renderCollection(zoneTemplate, ctx.zones, ctx)
                     ]),
                     h('div.dragged-items', renderCollection(itemTemplate, items_dragged, ctx)),
                 ]),

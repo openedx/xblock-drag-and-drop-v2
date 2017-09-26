@@ -249,6 +249,23 @@
     height: auto;
 }
 
+@media screen and (max-width: 480px) {
+    .xblock--drag-and-drop .target {
+        overflow: auto;
+        display: block;
+    }
+
+    .xblock--drag-and-drop .target-img {
+        max-width: none;
+        width: auto;
+    }
+
+    .xblock--drag-and-drop .target-img-wrapper {
+        display: inline-block;
+        position: relative;
+    }
+}
+
 .xblock--drag-and-drop .zone {
     position: absolute;
 
