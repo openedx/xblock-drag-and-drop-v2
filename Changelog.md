@@ -1,3 +1,9 @@
+Version 2.1.1 (2017-09-26)
+---------------------------
+
+* Enforce XBlock variable types (PR #104)
+* Improvements for mobile (PRs #132, #133, #134)
+
 Version 2.0.14 (2017-01-17)
 ---------------------------
 
