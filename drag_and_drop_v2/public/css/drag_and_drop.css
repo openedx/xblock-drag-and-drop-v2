@@ -286,13 +286,20 @@
 }
 
 .xblock--drag-and-drop .drag-container .target .zone p {
-    width: 100%;
     font-family: Arial;
     font-size: 16px;
     font-weight: bold;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding: 10px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    margin-top: auto;
-    margin-bottom: auto;
 }
 
 /*** FEEDBACK ***/

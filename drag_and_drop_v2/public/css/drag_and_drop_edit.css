@@ -93,7 +93,16 @@
     margin: 10px 0 0 0;
 }
 
-.xblock--drag-and-drop--editor .target-image-form input {
+.xblock--drag-and-drop--editor .target-image-form .background-image-type {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.xblock--drag-and-drop--editor .target-image-form .background-auto {
+    margin-top: 20px;
+}
+
+.xblock--drag-and-drop--editor .target-image-form input[type="text"] {
     width: 50%;
 }
 .xblock--drag-and-drop--editor .target-image-form textarea {
@@ -102,6 +111,11 @@
 
 .xblock--drag-and-drop--editor .target-image-form textarea {
     display: block;
+}
+
+.xblock--drag-and-drop--editor .target-image-form .background-auto .autozone-layout,
+.xblock--drag-and-drop--editor .target-image-form .background-auto .autozone-size {
+    width: 4em;
 }
 
 .xblock--drag-and-drop--editor input,
