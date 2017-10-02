@@ -627,7 +627,12 @@ function DragAndDropTemplates(configuration) {
           }
         });
         bank_children = bank_children.concat(renderCollection(itemPlaceholderTemplate, items_placed, ctx));
-
+        var drag_container_style = {
+            display: ctx.hide_drag_container ? 'none' : 'block'
+        };
+        if (ctx.drag_container_max_width) {
+            drag_container_style.maxWidth = ctx.drag_container_max_width + 'px';
+        }
         return (
             h('div.themed-xblock.xblock--drag-and-drop', main_element_properties, [
                 problemTitle,
@@ -637,7 +642,7 @@ function DragAndDropTemplates(configuration) {
                     problemHeader,
                     h('p', {innerHTML: ctx.problem_html}),
                 ]),
-                h('div.drag-container', {}, [
+                h('div.drag-container', {style: drag_container_style}, [
                     h('div.item-bank', item_bank_properties, bank_children),
                     h('div.target', {attributes: {'role': 'group', 'arial-label': gettext('Drop Targets')}}, [
                         itemFeedbackPopupTemplate(ctx),
@@ -692,7 +697,8 @@ function DragAndDropBlock(runtime, element, configuration) {
     var root = $root[0];
 
     var state = undefined;
-    var bgImgNaturalWidth = undefined; // pixel width of the background image (when not scaled)
+    var bgImgNaturalWidth = undefined;  // pixel width of the background image (when not scaled)
+    var containerMaxWidth = null;  // measured and set after first render
     var __vdom = virtualDom.h();  // blank virtual DOM
 
     // Event string size limit.
@@ -773,10 +779,14 @@ function DragAndDropBlock(runtime, element, configuration) {
             // to watch for load events on any child element, since load events do not bubble.
             element.addEventListener('load', webkitFix, true);
 
+            // Re-render when window size changes.
+            $(window).on('resize', measureWidthAndRender);
+
             // Remove the spinner and create a blank slate for virtualDom to take over.
             $root.empty();
 
-            applyState();
+            measureWidthAndRender();
+
             initDraggable();
             initDroppable();
 
@@ -785,6 +795,17 @@ function DragAndDropBlock(runtime, element, configuration) {
         }).fail(function() {
             $root.text(gettext("An error occurred. Unable to load drag and drop problem."));
         });
+    };
+
+    var measureWidthAndRender = function() {
+        // First set containerMaxWidth to null to hide the container.
+        containerMaxWidth = null;
+        // Render with container hidden to be able to measure max available width.
+        applyState();
+        // Mesure available width.
+        containerMaxWidth = $('.xblock--drag-and-drop', element).width();
+        // Re-render now that correct max-width is known.
+        applyState();
     };
 
     var runOnKey = function(evt, key, handler) {
@@ -1731,6 +1752,8 @@ function DragAndDropBlock(runtime, element, configuration) {
                 configuration.mode === DragAndDropBlock.ASSESSMENT_MODE;
 
         var context = {
+            hide_drag_container: containerMaxWidth === null,
+            drag_container_max_width: containerMaxWidth,
             // configuration - parts that never change:
             bg_image_width: bgImgNaturalWidth, // Not stored in configuration since it's unknown on the server side
             title_html: configuration.title,
