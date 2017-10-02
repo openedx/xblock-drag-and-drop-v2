@@ -1,3 +1,8 @@
+Version 2.1.2 (2017-10-02)
+---------------------------
+
+* Ability to generate zones and background image automatically (PR #136)
+
 Version 2.1.1 (2017-09-26)
 ---------------------------
 
