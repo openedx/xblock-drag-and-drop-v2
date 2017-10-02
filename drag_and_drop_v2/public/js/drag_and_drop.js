@@ -2,6 +2,10 @@ function DragAndDropTemplates(configuration) {
     "use strict";
     var h = virtualDom.h;
 
+    var isMobileScreen = function() {
+        return window.matchMedia('screen and (max-width: 480px)').matches;
+    };
+
     var itemSpinnerTemplate = function(item) {
         if (!item.xhr_active) {
             return null;
@@ -33,12 +37,12 @@ function DragAndDropTemplates(configuration) {
         if (item.widthPercent) {
             // The item bank container is often wider than the background image, and the
             // widthPercent is specified relative to the background image so we have to
-            // convert it to pixels. But if the browser window / mobile screen is not as
-            // wide as the image, then the background image will be scaled down and this
-            // pixel value would be too large, so we also specify it as a max-width
-            // percentage.
+            // convert it to pixels. But if the browser window is not as wide as the image,
+            // then the background image will be scaled down and this pixel value would be too large,
+            // so we also specify it as a max-width percentage.
+            // On mobile, the image is never scaled down, so we don't specify the max-width.
             style.width = (item.widthPercent / 100 * ctx.bg_image_width) + "px";
-            style.maxWidth = item.widthPercent + "%";
+            style.maxWidth = isMobileScreen() ? 'none' : item.widthPercent + "%";
         }
         return style;
     };
@@ -627,9 +631,21 @@ function DragAndDropTemplates(configuration) {
           }
         });
         bank_children = bank_children.concat(renderCollection(itemPlaceholderTemplate, items_placed, ctx));
-
+        var drag_container_style = {};
+        var target_img_style = {};
+        // If drag_container_max_width is null, we are going to render the container width after this render.
+        // To be able to accurately measure the natural container width, we have to set max-width of the target
+        // image to 100%, so that it doesn't expand the container.
+        if (ctx.drag_container_max_width === null) {
+            target_img_style.maxWidth = '100%';
+        } else {
+            drag_container_style.maxWidth = ctx.drag_container_max_width + 'px';
+        }
         return (
             h('div.themed-xblock.xblock--drag-and-drop', main_element_properties, [
+                h('object.resize-detector', {
+                    attributes: {type: 'text/html', tabindex: -1, data: 'about:blank'}
+                }),
                 problemTitle,
                 problemProgress,
                 h('div', [forwardKeyboardHelpButtonTemplate(ctx)]),
@@ -637,12 +653,16 @@ function DragAndDropTemplates(configuration) {
                     problemHeader,
                     h('p', {innerHTML: ctx.problem_html}),
                 ]),
-                h('div.drag-container', {}, [
+                h('div.drag-container', {style: drag_container_style}, [
                     h('div.item-bank', item_bank_properties, bank_children),
                     h('div.target', {attributes: {'role': 'group', 'arial-label': gettext('Drop Targets')}}, [
                         itemFeedbackPopupTemplate(ctx),
                         h('div.target-img-wrapper', [
-                            h('img.target-img', {src: ctx.target_img_src, alt: ctx.target_img_description}),
+                            h('img.target-img', {
+                                src: ctx.target_img_src,
+                                alt: ctx.target_img_description,
+                                style: target_img_style
+                            }),
                             renderCollection(zoneTemplate, ctx.zones, ctx)
                         ]),
                     ]),
@@ -692,7 +712,8 @@ function DragAndDropBlock(runtime, element, configuration) {
     var root = $root[0];
 
     var state = undefined;
-    var bgImgNaturalWidth = undefined; // pixel width of the background image (when not scaled)
+    var bgImgNaturalWidth = undefined;  // pixel width of the background image (when not scaled)
+    var containerMaxWidth = null;  // measured and set after first render
     var __vdom = virtualDom.h();  // blank virtual DOM
 
     // Event string size limit.
@@ -772,11 +793,17 @@ function DragAndDropBlock(runtime, element, configuration) {
             // For the next one, we need to use addEventListener with useCapture 'true' in order
             // to watch for load events on any child element, since load events do not bubble.
             element.addEventListener('load', webkitFix, true);
+            // Whenever the container div resizes, re-render to take new available width into account.
+            element.addEventListener('load', bindContainerResize, true);
+
+            // Re-render when window size changes.
+            $(window).on('resize', measureWidthAndRender);
 
             // Remove the spinner and create a blank slate for virtualDom to take over.
             $root.empty();
 
-            applyState();
+            measureWidthAndRender();
+
             initDraggable();
             initDroppable();
 
@@ -785,6 +812,43 @@ function DragAndDropBlock(runtime, element, configuration) {
         }).fail(function() {
             $root.text(gettext("An error occurred. Unable to load drag and drop problem."));
         });
+    };
+
+    // Listens to the 'resize' event of the object element, which is absolutely positioned
+    // and fit to the edges of the container, so that its size always equals the container size.
+    // This hack is needed because not all browsers support native 'resize' events on arbitrary
+    // DOM elements.
+    var bindContainerResize = function(evt) {
+        var object = evt.target;
+        var $object = $(object);
+        if ($object.is('.resize-detector')) {
+            var last_width = $object.width();
+            var last_height = $object.height();
+            var raf_id = null;
+            object.contentDocument.defaultView.addEventListener('resize', function() {
+                cancelAnimationFrame(raf_id);
+                raf_id = requestAnimationFrame(function() {
+                    var new_width = $object.width();
+                    var new_height = $object.height();
+                    if (last_width !== new_width || last_height !== new_height) {
+                        last_width = new_width;
+                        last_height = new_height;
+                        measureWidthAndRender();
+                    }
+                });
+            });
+        }
+    };
+
+    var measureWidthAndRender = function() {
+        // First set containerMaxWidth to null to hide the container.
+        containerMaxWidth = null;
+        // Render with container hidden to be able to measure max available width.
+        applyState();
+        // Mesure available width.
+        containerMaxWidth = $root.width();
+        // Re-render now that correct max-width is known.
+        applyState();
     };
 
     var runOnKey = function(evt, key, handler) {
@@ -1058,13 +1122,13 @@ function DragAndDropBlock(runtime, element, configuration) {
 
         state.screen_reader_messages = paragraphs.join('');
 
-        // Remove the text on next redraw. This will make screen readers read the message again,
+        // Remove the text after a short time. This will make screen readers read the message again,
         // next time the user performs an action, even if next feedback message did not change from
         // last attempt (for example: if user drops the same item on two wrong zones one after another,
         // the negative feedback should be read out twice, not only on first drop).
         sr_clear_timeout = setTimeout(function() {
             state.screen_reader_messages = '';
-        }, 0);
+        }, 250);
     };
 
     var publishEvent = function(data) {
@@ -1731,6 +1795,8 @@ function DragAndDropBlock(runtime, element, configuration) {
                 configuration.mode === DragAndDropBlock.ASSESSMENT_MODE;
 
         var context = {
+            hide_drag_container: containerMaxWidth === null,
+            drag_container_max_width: containerMaxWidth,
             // configuration - parts that never change:
             bg_image_width: bgImgNaturalWidth, // Not stored in configuration since it's unknown on the server side
             title_html: configuration.title,
