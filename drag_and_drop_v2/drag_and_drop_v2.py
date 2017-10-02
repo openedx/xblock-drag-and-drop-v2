@@ -335,12 +335,12 @@ class DragAndDropBlock(
         """
 
         js_templates = loader.load_unicode('/templates/html/js_templates.html')
-        # Get a 'html_id' string that is unique for this block.
+        # Get an 'id_suffix' string that is unique for this block.
         # We append it to HTML element ID attributes to ensure multiple instances of the DnDv2 block
         # on the same page don't share the same ID value.
         # We avoid using ID attributes in preference to classes, but sometimes we still need IDs to
         # connect 'for' and 'aria-describedby' attributes to the associated elements.
-        id_suffix = self.location.html_id()  # pylint: disable=no-member
+        id_suffix = self._get_block_id()
         js_templates = js_templates.replace('{{id_suffix}}', id_suffix)
         context = {
             'js_templates': js_templates,
@@ -406,6 +406,18 @@ class DragAndDropBlock(
         return {
             'result': 'success',
         }
+
+    def _get_block_id(self):
+        """
+        Return unique ID of this block. Useful for HTML ID attributes.
+        Works both in LMS/Studio and workbench runtimes:
+        - In LMS/Studio, use the location.html_id method.
+        - In the workbench, use the usage_id.
+        """
+        if hasattr(self, 'location'):
+            return self.location.html_id()  # pylint: disable=no-member
+        else:
+            return unicode(self.scope_ids.usage_id)
 
     @staticmethod
     def _get_max_items_per_zone(submissions):

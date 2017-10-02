@@ -91,18 +91,76 @@
             </header>
             <div class="tab-content">
                 <form class="target-image-form">
-                    <label class="h4" for="background-url-{{id_suffix}}">
-                        <span>{% trans "Background URL" %}</span>
-                    </label>
-                    <input class="background-url"
-                           id="background-url-{{id_suffix}}"
-                           type="text"
-                           aria-describedby="background-url-{{id_suffix}}" />
-                    </label>
-                    <button type="button" class="btn">{% trans "Change background" %}</button>
-                    <div id="background-url-description-{{id_suffix}}" class="form-help">
-                        {% trans "For example, 'http://example.com/background.png' or '/static/background.png'." %}
-                    </div>
+                    <fieldset>
+                        <legend class="h4">{% trans "Background Image" %}</legend>
+                        <label class="background-image-type">
+                            <input type="radio" name="background-image-type-{{id_suffix}}" value="manual" />
+                            {% trans "Provide custom image" %}
+                        </label>
+                        <label class="background-image-type">
+                            <input type="radio" name="background-image-type-{{id_suffix}}" value="auto" />
+                            {% trans "Generate image automatically" %}
+                        </label>
+                    </fieldset>
+                    <fieldset class="background-manual">
+                        <label class="h4" for="background-url-{{id_suffix}}">
+                            <span>{% trans "Background URL" %}</span>
+                        </label>
+                        <input class="background-url"
+                              id="background-url-{{id_suffix}}"
+                              type="text"
+                              aria-describedby="background-url-description-{{id_suffix}}" />
+                        </label>
+                        <button type="button" class="btn">{% trans "Change background" %}</button>
+                        <div id="background-url-description-{{id_suffix}}" class="form-help">
+                            {% trans "For example, 'http://example.com/background.png' or '/static/background.png'." %}
+                        </div>
+                    </fieldset>
+                    <fieldset class="background-auto">
+                        <fieldset>
+                            <legend class="h4">{% trans "Zone Layout" %}</legend>
+                            <label class="sr" for="autozone-cols-{{id_suffix}}">
+                                {% trans "Number of columns" %}
+                            </label>
+                            <input id="autozone-cols-{{id_suffix}}"
+                                   class="autozone-layout autozone-layout-cols"
+                                   type="text"
+                                   aria-describedby="autozone-layout-description-{{id_suffix}}" />
+                            <span>&times;</span>
+                            <label class="sr" for="autozone-rows-{{id_suffix}}">
+                                {% trans "Number of rows" %}
+                            </label>
+                            <input id="autozone-rows-{{id_suffix}}"
+                                   class="autozone-layout autozone-layout-rows"
+                                   type="text"
+                                   aria-describedby="autozone-layout-description-{{id_suffix}}" />
+                            <div id="autozone-layout-description-{{id_suffix}}" class="form-help">
+                                {% trans "Number of columns and rows." %}
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend class="h4">{% trans "Zone Size" %}</legend>
+                            <label class="sr" for="autozone-zone-width-{{id_suffix}}">
+                                {% trans "Zone width" %}
+                            </label>
+                            <input id="autozone-zone-width-{{id_suffix}}"
+                                   class="autozone-size autozone-size-width"
+                                   type="text"
+                                   aria-describedby="autozone-size-description-{{id_suffix}}" />
+                            <span>&times;</span>
+                            <label class="sr" for="autozone-zone-height-{{id_suffix}}">
+                                {% trans "Zone height" %}
+                            </label>
+                            <input id="autozone-zone-height-{{id_suffix}}"
+                                   class="autozone-size autozone-size-height"
+                                   type="text"
+                                   aria-describedby="autozone-size-description-{{id_suffix}}" />
+                            <div id="autozone-size-description-{{id_suffix}}" class="form-help">
+                                {% trans "Size of a single zone in pixels." %}
+                            </div>
+                        </fieldset>
+                        <button type="button" class="btn">{% trans "Generate image and zones" %}</button>
+                    </fieldset>
                     <label class="h4">
                         <span>{% trans "Background description" %}</span>
                         <textarea required class="background-description"
