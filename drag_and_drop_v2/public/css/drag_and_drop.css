@@ -64,6 +64,7 @@
 /* drag-container holds the .items and the .target image */
 
 .xblock--drag-and-drop .drag-container {
+    box-sizing: border-box;
     width: auto;
     padding: 1%;
     background-color: #ebf0f2;
