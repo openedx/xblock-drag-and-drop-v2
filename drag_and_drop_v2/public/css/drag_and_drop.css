@@ -3,6 +3,18 @@
     max-width: 770px;
     margin: 0;
     padding: 0;
+    position: relative;
+}
+
+.xblock--drag-and-drop .resize-detector {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -1;
 }
 
 .xblock--drag-and-drop .initial-load-spinner {
@@ -64,6 +76,7 @@
 /* drag-container holds the .items and the .target image */
 
 .xblock--drag-and-drop .drag-container {
+    box-sizing: border-box;
     width: auto;
     padding: 1%;
     background-color: #ebf0f2;
@@ -122,6 +135,8 @@
 
     .xblock--drag-and-drop .drag-container .item-bank .option {
         flex-shrink: 0;
+        flex-grow: 0;
+        max-width: 80%;
     }
 }
 
@@ -247,6 +262,23 @@
     width: 100%;
     max-width: 100%;
     height: auto;
+}
+
+@media screen and (max-width: 480px) {
+    .xblock--drag-and-drop .target {
+        overflow: auto;
+        display: block;
+    }
+
+    .xblock--drag-and-drop .target-img {
+        max-width: none;
+        width: auto;
+    }
+
+    .xblock--drag-and-drop .target-img-wrapper {
+        display: inline-block;
+        position: relative;
+    }
 }
 
 .xblock--drag-and-drop .zone {
