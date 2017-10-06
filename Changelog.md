@@ -1,3 +1,8 @@
+Version 2.1.3 (2017-10-05)
+---------------------------
+
+* Prevent target image from shrinking in mobile, and make it scrollable (PR #135)
+
 Version 2.1.2 (2017-10-02)
 ---------------------------
 
