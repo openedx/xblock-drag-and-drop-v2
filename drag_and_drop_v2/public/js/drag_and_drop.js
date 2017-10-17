@@ -1384,7 +1384,6 @@ function DragAndDropBlock(runtime, element, configuration) {
             var item_id = $item.data('value');
             var item = getItemById(item_id);
             var $document = $(document);
-            grabItem($item, 'mouse');
             publishEvent({
                 event_type: 'edx.drag_and_drop_v2.item.picked_up',
                 item_id: item_id
@@ -1392,7 +1391,6 @@ function DragAndDropBlock(runtime, element, configuration) {
 
             var max_left = $container.innerWidth() - $item.outerWidth();
             var max_top = $container.innerHeight() - $item.outerHeight();
-            var item_size = {width: $item.width(), height: $item.height()};
             // We need to get the item position relative to the $container.
             var item_offset = $item.offset();
             var container_offset = $container.offset();
@@ -1400,8 +1398,9 @@ function DragAndDropBlock(runtime, element, configuration) {
                 left: item_offset.left - container_offset.left,
                 top: item_offset.top - container_offset.top
             };
+
             item.drag_position = original_position;
-            applyState();
+            grabItem($item, 'mouse');
 
             // Animate the item back to its original position in the bank.
             var revertDrag = function() {
