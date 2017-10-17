@@ -633,7 +633,7 @@ function DragAndDropTemplates(configuration) {
         bank_children = bank_children.concat(renderCollection(itemPlaceholderTemplate, items_placed, ctx));
         var drag_container_style = {};
         var target_img_style = {};
-        // If drag_container_max_width is null, we are going to render the container width after this render.
+        // If drag_container_max_width is null, we are going to measure the container width after this render.
         // To be able to accurately measure the natural container width, we have to set max-width of the target
         // image to 100%, so that it doesn't expand the container.
         if (ctx.drag_container_max_width === null) {
@@ -1537,6 +1537,11 @@ function DragAndDropBlock(runtime, element, configuration) {
             }, TOUCH_DRAG_DELAY);
         });
 
+        // Prevent long tap on draggable items from causing the context menu to pop up on android.
+        $container.on('contextmenu', '.option[draggable=true]', function(evt) {
+            evt.preventDefault();
+        });
+
         // Prevent touchmove events fired on the dragged item causing scroll.
         $container.on('touchmove', '.dragged-items .options[draggable=true]', function(evt) {
             evt.preventDefault();
@@ -1795,7 +1800,6 @@ function DragAndDropBlock(runtime, element, configuration) {
                 configuration.mode === DragAndDropBlock.ASSESSMENT_MODE;
 
         var context = {
-            hide_drag_container: containerMaxWidth === null,
             drag_container_max_width: containerMaxWidth,
             // configuration - parts that never change:
             bg_image_width: bgImgNaturalWidth, // Not stored in configuration since it's unknown on the server side
