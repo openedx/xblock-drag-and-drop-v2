@@ -15,6 +15,7 @@
     overflow: hidden;
     pointer-events: none;
     z-index: -1;
+    visibility: hidden;
 }
 
 .xblock--drag-and-drop .initial-load-spinner {
