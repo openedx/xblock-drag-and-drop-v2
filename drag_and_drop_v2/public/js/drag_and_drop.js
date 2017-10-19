@@ -633,7 +633,7 @@ function DragAndDropTemplates(configuration) {
         bank_children = bank_children.concat(renderCollection(itemPlaceholderTemplate, items_placed, ctx));
         var drag_container_style = {};
         var target_img_style = {};
-        // If drag_container_max_width is null, we are going to render the container width after this render.
+        // If drag_container_max_width is null, we are going to measure the container width after this render.
         // To be able to accurately measure the natural container width, we have to set max-width of the target
         // image to 100%, so that it doesn't expand the container.
         if (ctx.drag_container_max_width === null) {
@@ -1384,7 +1384,6 @@ function DragAndDropBlock(runtime, element, configuration) {
             var item_id = $item.data('value');
             var item = getItemById(item_id);
             var $document = $(document);
-            grabItem($item, 'mouse');
             publishEvent({
                 event_type: 'edx.drag_and_drop_v2.item.picked_up',
                 item_id: item_id
@@ -1392,7 +1391,6 @@ function DragAndDropBlock(runtime, element, configuration) {
 
             var max_left = $container.innerWidth() - $item.outerWidth();
             var max_top = $container.innerHeight() - $item.outerHeight();
-            var item_size = {width: $item.width(), height: $item.height()};
             // We need to get the item position relative to the $container.
             var item_offset = $item.offset();
             var container_offset = $container.offset();
@@ -1400,8 +1398,9 @@ function DragAndDropBlock(runtime, element, configuration) {
                 left: item_offset.left - container_offset.left,
                 top: item_offset.top - container_offset.top
             };
+
             item.drag_position = original_position;
-            applyState();
+            grabItem($item, 'mouse');
 
             // Animate the item back to its original position in the bank.
             var revertDrag = function() {
@@ -1535,6 +1534,11 @@ function DragAndDropBlock(runtime, element, configuration) {
                 $item.off('touchmove touchend touchcancel', cancelDrag);
                 onDragStart('touch', $item, drag_origin);
             }, TOUCH_DRAG_DELAY);
+        });
+
+        // Prevent long tap on draggable items from causing the context menu to pop up on android.
+        $container.on('contextmenu', '.option[draggable=true]', function(evt) {
+            evt.preventDefault();
         });
 
         // Prevent touchmove events fired on the dragged item causing scroll.
@@ -1795,7 +1799,6 @@ function DragAndDropBlock(runtime, element, configuration) {
                 configuration.mode === DragAndDropBlock.ASSESSMENT_MODE;
 
         var context = {
-            hide_drag_container: containerMaxWidth === null,
             drag_container_max_width: containerMaxWidth,
             // configuration - parts that never change:
             bg_image_width: bgImgNaturalWidth, // Not stored in configuration since it's unknown on the server side
