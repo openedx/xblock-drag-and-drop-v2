@@ -978,6 +978,14 @@ function DragAndDropBlock(runtime, element, configuration) {
         var promise = $.Deferred();
         var img = new Image();
         img.addEventListener("load", function() {
+            if (img.width == 0 || img.height == 0) {
+                // Workaround for IE11 issue with SVG images
+                document.body.appendChild(img);
+                var width = img.offsetWidth;
+                var height = img.offsetHeight;
+                document.body.removeChild(img);
+                img.width = width, img.height = height;
+            }
             if (img.width > 0 && img.height > 0) {
                 promise.resolve(img);
             } else {
