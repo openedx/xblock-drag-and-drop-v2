@@ -638,6 +638,7 @@ function DragAndDropTemplates(configuration) {
         // image to 100%, so that it doesn't expand the container.
         if (ctx.drag_container_max_width === null) {
             target_img_style.maxWidth = '100%';
+            item_bank_properties.style = {display: 'none'};
         } else {
             drag_container_style.maxWidth = ctx.drag_container_max_width + 'px';
         }
