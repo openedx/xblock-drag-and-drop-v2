@@ -446,10 +446,15 @@ function DragAndDropTemplates(configuration) {
             );
         }
 
+        var popup_style = {};
+        if (!have_messages) {
+            popup_style.display = 'none';
+        }
+
         return h(
             popupSelector,
             {
-                style: {display: have_messages ? 'block' : 'none'}
+                style: popup_style
             },
             [
                 h(
@@ -493,13 +498,18 @@ function DragAndDropTemplates(configuration) {
                 ),
                 popup_content,
                 h(
-                    'button.unbutton.close-feedback-popup-button.close-feedback-popup-mobile-button',
-                    {},
+                    'div',
                     [
                         h(
-                            'span',
+                            'button.unbutton.close-feedback-popup-button.close-feedback-popup-mobile-button',
                             {},
-                            gettext("Close")
+                            [
+                                h(
+                                    'span',
+                                    {},
+                                    gettext("Close")
+                                )
+                            ]
                         )
                     ]
                 )
