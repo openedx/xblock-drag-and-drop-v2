@@ -123,6 +123,7 @@
     outline-style: none;
     /* Some versions of the drag and drop library try to fiddle with this */
     z-index: 10 !important;
+    -webkit-touch-callout: none;
 }
 
 @media screen and (max-width: 480px) {
