@@ -773,6 +773,9 @@ class DragAndDropBlock(
             self.raw_earned = current_raw_earned
             self._publish_grade(Score(self.raw_earned, self.max_score()))
 
+        # and no matter what - emit progress event for current user
+        self.runtime.publish(self, "progress", {})
+
     def _publish_item_dropped_event(self, attempt, is_correct):
         """
         Publishes item dropped event.

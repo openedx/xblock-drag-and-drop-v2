@@ -44,6 +44,10 @@ class EventsFiredTest(DefaultDataTestMixin, ParameterizedTestsMixin, BaseEventsT
             'data': {'max_value': 1, 'value': (2.0 / 5), 'only_if_higher': None},
         },
         {
+            'name': 'progress',
+            'data': {}
+        },
+        {
             'name': 'edx.drag_and_drop_v2.item.dropped',
             'data': {
                 'is_correct': True,
@@ -122,6 +126,10 @@ class AssessmentEventsFiredTest(
         {
             'name': 'grade',
             'data': {'max_value': 1, 'value': (1.0 / 5), 'only_if_higher': None},
+        },
+        {
+            'name': 'progress',
+            'data': {}
         },
         {
             'name': 'edx.drag_and_drop_v2.feedback.opened',
