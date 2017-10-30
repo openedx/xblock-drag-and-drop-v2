@@ -178,6 +178,9 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
         self.browser.execute_script('$(".wrapper-workbench").css("margin-right", "-{}px")'.format(40 + scrollbar_width))
         # And reduce the wasted space around our XBlock in the workbench:
         self.browser.execute_script('return $(".workbench .preview").css("margin", "0")')
+        # Dynamically adjusting styles causes available screen width to change, but does not always emit
+        # resize events consistently, so emit resize manually to make sure the block adapts to the new size.
+        self.browser.execute_script('$(window).resize()')
 
     def _check_mobile_container_size(self):
         """ Verify that the drag-container tightly fits into the available space. """
