@@ -87,6 +87,9 @@ Settings.
 2. Check for the `Advanced Module List` policy key, and add
    `"drag-and-drop-v2"` to the policy value list.
 3. Click the "Save changes" button.
+4. You should see the new block `Drag and Drop` in the
+   `"Add New Component"` box. Click the green `Problem` button,
+   choose the the `Advanced` tab and choose `Drag and Drop`.
 
 Usage
 -----
