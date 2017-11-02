@@ -79,17 +79,11 @@ potentially diverse audiences.
 Enabling in Studio
 ------------------
 
-You can enable the Drag and Drop XBlock in Studio through the Advanced
-Settings.
+Drag and Drop v2 XBlock is already included in Open edX.
 
-1. From the main page of a specific course, navigate to `Settings ->
-   Advanced Settings` from the top menu.
-2. Check for the `Advanced Module List` policy key, and add
-   `"drag-and-drop-v2"` to the policy value list.
-3. Click the "Save changes" button.
-4. You should see the new block `Drag and Drop` in the
-   `"Add New Component"` box. Click the green `Problem` button,
-   choose the the `Advanced` tab and choose `Drag and Drop`.
+You will find it in `"Add New Component"` box in Studio:
+click the green `Problem` button, choose the the `Advanced` tab
+and choose `Drag and Drop`.
 
 Usage
 -----
