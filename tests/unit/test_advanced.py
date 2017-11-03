@@ -405,13 +405,18 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
             res = self.call_handler(self.DO_ATTEMPT_HANDLER, data={})
 
             self.assertTrue(self.block.completed)
-            patched_publish.assert_called_once_with(self.block, 'grade', {
-                'value': 1,
-                'max_value': 1,
-                'only_if_higher': None,
-            })
             self.assertTrue(res['correct'])
             self.assertEqual(res['grade'], self.block.weight)
+
+            expected_calls = [
+                mock.call(self.block, 'grade', {
+                    'value': 1,
+                    'max_value': 1,
+                    'only_if_higher': None,
+                }),
+                mock.call(self.block, 'progress', {})
+            ]
+            self.assertEqual(patched_publish.mock_calls, expected_calls)
 
     @ddt.data(*[random.randint(1, 50) for _ in xrange(5)])  # pylint: disable=star-args
     def test_do_attempt_incorrect_publish_grade(self, weight):
@@ -423,13 +428,18 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
             res = self.call_handler(self.DO_ATTEMPT_HANDLER, data={})
 
             self.assertFalse(self.block.completed)
-            patched_publish.assert_called_once_with(self.block, 'grade', {
-                'value': correctness,
-                'max_value': 1,
-                'only_if_higher': None,
-            })
             self.assertFalse(res['correct'])
             self.assertEqual(res['grade'], correctness * self.block.weight)
+
+            expected_calls = [
+                mock.call(self.block, 'grade', {
+                    'value': correctness,
+                    'max_value': 1,
+                    'only_if_higher': None,
+                }),
+                mock.call(self.block, 'progress', {})
+            ]
+            self.assertEqual(patched_publish.mock_calls, expected_calls)
 
     @ddt.data(*[random.randint(1, 50) for _ in xrange(5)])  # pylint: disable=star-args
     def test_do_attempt_post_correct_no_publish_grade(self, weight):
@@ -444,7 +454,7 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
 
             self.assertTrue(self.block.completed)
             self.assertEqual(self.block.raw_earned, 1)
-            self.assertFalse(patched_publish.called)
+            self.assertEqual(patched_publish.mock_calls, [mock.call(self.block, 'progress', {})])
 
     def test_get_user_state_finished_after_final_attempt(self):
         self._set_final_attempt()
@@ -469,11 +479,6 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
             res = self.call_handler(self.DO_ATTEMPT_HANDLER, data={})
 
             self.assertTrue(self.block.completed)
-            patched_publish.assert_called_once_with(self.block, 'grade', {
-                'value': expected_raw_grade,
-                'max_value': 1,
-                'only_if_higher': None,
-            })
 
             expected_grade_feedback = self._make_feedback_message(
                 FeedbackMessages.FINAL_ATTEMPT_TPL.format(score=expected_weighted_grade),
@@ -481,6 +486,16 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
             )
             self.assertIn(expected_grade_feedback, res[self.OVERALL_FEEDBACK_KEY])
             self.assertEqual(res['grade'], expected_weighted_grade)
+
+            expected_calls = [
+                mock.call(self.block, 'grade', {
+                    'value': expected_raw_grade,
+                    'max_value': 1,
+                    'only_if_higher': None,
+                }),
+                mock.call(self.block, 'progress', {})
+            ]
+            self.assertEqual(patched_publish.mock_calls, expected_calls)
 
     @ddt.data(*[random.randint(1, 50) for _ in xrange(5)])  # pylint: disable=star-args
     def test_do_attempt_incorrect_final_attempt_after_correct(self, weight):
@@ -505,9 +520,9 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
                 FeedbackMessages.FINAL_ATTEMPT_TPL.format(score=float(weight)),
                 FeedbackMessages.MessageClasses.PARTIAL_SOLUTION
             )
-            self.assertFalse(patched_publish.called)
             self.assertIn(expected_grade_feedback, res[self.OVERALL_FEEDBACK_KEY])
             self.assertEqual(self.block.raw_earned, 1)
+            self.assertEqual(patched_publish.mock_calls, [mock.call(self.block, 'progress', {})])
 
     def test_do_attempt_misplaced_ids(self):
         misplaced_ids = self._submit_incorrect_solution()
