@@ -1,3 +1,8 @@
+Version 2.1.4 (2017-11-06)
+---------------------------
+
+* Make XBlock always emit `progress` event explicitly when it is marked as complete.  
+
 Version 2.1.3 (2017-10-05)
 ---------------------------
 
