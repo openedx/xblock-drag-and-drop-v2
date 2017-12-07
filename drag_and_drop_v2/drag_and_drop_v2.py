@@ -718,7 +718,7 @@ class DragAndDropBlock(
         item = self._get_item_definition(item_attempt['val'])
         is_correct = self._is_attempt_correct(item_attempt)
         if item_attempt['zone'] is None:
-            del self.item_state[str(item['id'])]
+            self.item_state.pop(str(item['id']), None)
             self._publish_item_to_bank_event(item['id'], is_correct)
         else:
             # State is always updated in assessment mode to store intermediate item positions
