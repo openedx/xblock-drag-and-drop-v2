@@ -209,17 +209,17 @@ function DragAndDropTemplates(configuration) {
         var items_in_zone = $.grep(ctx.items, is_item_in_zone);
         var zone_description_id = zone.prefixed_uid + '-description';
         if (items_in_zone.length == 0) {
-          var zone_description = h(
-            'div',
-            { id: zone_description_id, className: 'sr'},
-            gettext("No items placed here")
-          );
+            var zone_description = h(
+                'div',
+                { id: zone_description_id, className: 'sr'},
+                gettext("No items placed here")
+            );
         } else {
-          var zone_description = h(
-            'div',
-            { id: zone_description_id, className: 'sr'},
-            gettext('Items placed here: ') + items_in_zone.map(function (item) { return item.displayName; }).join(", ")
-          );
+            var zone_description = h(
+                'div',
+                { id: zone_description_id, className: 'sr'},
+                gettext('Items placed here: ') + items_in_zone.map(function (item) { return item.displayName; }).join(", ")
+            );
         }
 
         return (
@@ -542,14 +542,14 @@ function DragAndDropTemplates(configuration) {
         if (ctx.grade !== null && ctx.weighted_max_score > 0) {
             if (is_graded) {
                 progress_template = ngettext(
-                      // Translators: {earned} is the number of points earned. {possible} is the total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of points will always be at least 1. We pluralize based on the total number of points (example: 0/1 point; 1/2 points).
+                    // Translators: {earned} is the number of points earned. {possible} is the total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of points will always be at least 1. We pluralize based on the total number of points (example: 0/1 point; 1/2 points).
                     '{earned}/{possible} point (graded)',
                     '{earned}/{possible} points (graded)',
                     ctx.weighted_max_score
                 );
             } else {
                 progress_template = ngettext(
-                      // Translators: {earned} is the number of points earned. {possible} is the total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of points will always be at least 1. We pluralize based on the total number of points (example: 0/1 point; 1/2 points).
+                    // Translators: {earned} is the number of points earned. {possible} is the total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of points will always be at least 1. We pluralize based on the total number of points (example: 0/1 point; 1/2 points).
                     '{earned}/{possible} point (ungraded)',
                     '{earned}/{possible} points (ungraded)',
                     ctx.weighted_max_score
@@ -634,11 +634,11 @@ function DragAndDropTemplates(configuration) {
         // placedholders (as the last content in the bank) to maintain original bank dimensions.
         var bank_children = [];
         items_in_bank.forEach(function(item) {
-          if (item.is_dragged) {
-              bank_children.push(itemPlaceholderTemplate(item, ctx));
-          } else {
-              bank_children.push(itemTemplate(item, ctx));
-          }
+            if (item.is_dragged) {
+                bank_children.push(itemPlaceholderTemplate(item, ctx));
+            } else {
+                bank_children.push(itemTemplate(item, ctx));
+            }
         });
         bank_children = bank_children.concat(renderCollection(itemPlaceholderTemplate, items_placed, ctx));
         var drag_container_style = {};
@@ -716,8 +716,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     var renderView = DragAndDropTemplates(configuration);
 
     var $element = $(element);
-    element = $element[0]; // TODO: This line can be removed when we no longer support Dogwood.
-                           // It works around this Studio bug: https://github.com/edx/edx-platform/pull/11433
+
     // root: root node managed by the virtual DOM
     var $root = $element.find('.xblock--drag-and-drop');
     var root = $root[0];
@@ -725,6 +724,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     var state = undefined;
     var bgImgNaturalWidth = undefined;  // pixel width of the background image (when not scaled)
     var containerMaxWidth = null;  // measured and set after first render
+    var fixedHeaderHeight = 0; // measured in checkForFixedHeader
     var __vdom = virtualDom.h();  // blank virtual DOM
 
     // Event string size limit.
@@ -815,6 +815,8 @@ function DragAndDropBlock(runtime, element, configuration) {
 
             measureWidthAndRender();
 
+            checkForFixedHeader();
+
             initDraggable();
             initDroppable();
 
@@ -861,6 +863,24 @@ function DragAndDropBlock(runtime, element, configuration) {
         // Re-render now that correct max-width is known.
         applyState();
     };
+
+    var checkForFixedHeader = function() {
+        // There might be a fixed header covering the upper part of the screen,
+        // which needs to be taken into account when scrolling while dragging.
+        var windowHeight = $(window).height();
+
+        var topElement = $(document.elementFromPoint(0, 0));
+        if (topElement) {
+            var topElementParents = topElement.parents();
+            for (var i = 0; i < topElementParents.length; i++) {
+                var parent = $(topElementParents[i]);
+                if (parent.css('position') === 'fixed') {
+                    fixedHeaderHeight = parent.height();
+                    break;
+                }
+            }
+        }
+    }
 
     var runOnKey = function(evt, key, handler) {
         if (evt.which === key) {
@@ -933,16 +953,16 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var preventFauxPopupCloseButtonClick = function(evt) {
-      if (_popup_close_button_keydown_received) {
-          // The close button received a keydown event prior to this keyup,
-          // so this event is genuine.
-          _popup_close_button_keydown_received = false;
-      } else {
-          // There was no keydown prior to this keyup, so the keydown must have happend *before*
-          // the popup was displayed and focused and the keypress is still in progress.
-          // Make the browser ignore this keyup event.
-          evt.preventDefault();
-      }
+        if (_popup_close_button_keydown_received) {
+            // The close button received a keydown event prior to this keyup,
+            // so this event is genuine.
+            _popup_close_button_keydown_received = false;
+        } else {
+            // There was no keydown prior to this keyup, so the keydown must have happend *before*
+            // the popup was displayed and focused and the keypress is still in progress.
+            // Make the browser ignore this keyup event.
+            evt.preventDefault();
+        }
     };
 
     var focusModalButton = function() {
@@ -1388,7 +1408,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             $dragged_items_container.hide();
             var element = document.elementFromPoint(x, y);
             while (element) {
-              if (isValidDropTarget(element)) {
+                if (isValidDropTarget(element)) {
                     $zone = $(element);
                     break;
                 } else {
@@ -1453,8 +1473,46 @@ function DragAndDropBlock(runtime, element, configuration) {
                     cancelAnimationFrame(raf_id);
                 }
                 raf_id = requestAnimationFrame(function() {
-                    var dx = pageX(evt) - drag_origin.x;
-                    var dy = pageY(evt) - drag_origin.y;
+                    var x = pageX(evt);
+                    var y = pageY(evt);
+
+                    var thresholdWidth = 50;
+
+                    var $target = $container.find('.target');
+                    var targetRect = $target.get(0).getBoundingClientRect();
+                    var top = targetRect.top + window.scrollY;
+                    var bottom = targetRect.bottom + window.scrollY;
+                    var left = targetRect.left + window.scrollX - thresholdWidth;
+                    var right = targetRect.right + window.scrollX + thresholdWidth;
+
+                    if (top <= y && bottom >= y && left <= x && right >= x) {
+                        var viewportTop = window.scrollY + fixedHeaderHeight;
+                        var viewportBottom = window.scrollY + $(window).height();
+                        var viewportLeft = window.scrollX;
+                        var viewportRight = window.scrollX + $(window).width();
+
+                        var scrollAmount = 50;
+
+                        if (x < (viewportLeft + thresholdWidth)) {
+                            $target.scrollLeft($target.scrollLeft() - scrollAmount);
+                        }
+
+                        if (x > (viewportRight - thresholdWidth)) {
+                            $target.scrollLeft($target.scrollLeft() + scrollAmount);
+                        }
+
+                        if (y > (viewportBottom - thresholdWidth)) {
+                            $document.scrollTop($document.scrollTop() + scrollAmount);
+                        }
+
+                        if (top < viewportTop + thresholdWidth && y < (viewportTop + thresholdWidth)) {
+                            $document.scrollTop($document.scrollTop() - scrollAmount);
+                        }
+                    }
+
+                    var dx = x - drag_origin.x;
+                    var dy = y - drag_origin.y;
+
                     var left = original_position.left + dx;
                     var top = original_position.top + dy;
                     left = Math.max(0, Math.min(max_left, left));
@@ -1467,7 +1525,7 @@ function DragAndDropBlock(runtime, element, configuration) {
 
             var onDragEnd = function(evt) {
                 if (raf_id) {
-                  cancelAnimationFrame(raf_id);
+                    cancelAnimationFrame(raf_id);
                 }
                 if (evt.type === 'mouseup') {
                     $document.off('mousemove', onDragMove);
@@ -1815,7 +1873,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         // In assessment mode, it is possible to move items back to the bank, so the bank should be able to
         // gain focus while keyboard placement is in progress.
         var item_bank_focusable = (state.keyboard_placement_mode || state.showing_answer) &&
-                configuration.mode === DragAndDropBlock.ASSESSMENT_MODE;
+            configuration.mode === DragAndDropBlock.ASSESSMENT_MODE;
 
         var context = {
             drag_container_max_width: containerMaxWidth,
