@@ -698,3 +698,41 @@ class TestMaxItemsPerZone(InteractionTestBase, BaseIntegrationTest):
         self.assert_placed_item(6, zone_id, assessment_mode=self.assessment_mode)
         self.assert_placed_item(7, zone_id, assessment_mode=self.assessment_mode)
         self.assert_reverted_item(8)
+
+
+class DragScrollingTest(InteractionTestBase, BaseIntegrationTest):
+    """Tests that drop targets are scrolled into view while dragging."""
+
+    PAGE_TITLE = 'Drag and Drop v2'
+    PAGE_ID = 'drag_and_drop_v2'
+
+    def setUp(self):
+        super(DragScrollingTest, self).setUp()
+        self.browser.set_window_size(320, 480)
+
+    def _get_scenario_xml(self):
+        return self._get_custom_scenario_xml("data/test_html_data.json")
+
+    def test_scrolling_during_placement(self):
+        item1_id = 0
+        zone1_id = "zone-1"
+
+        zone2_id = "zone-2"
+
+        zone1 = self._get_zone_by_id(zone1_id)
+        zone2 = self._get_zone_by_id(zone2_id)
+
+        # zone2 is at 0, 0 in the target container, so initially
+        # visible, even with the page header
+        self.assertTrue(self.is_element_in_viewport(zone2))
+
+        # zone 1 is at 100, 200 in its container, so with the page
+        # header, it's initially below the viewport
+        self.assertFalse(self.is_element_in_viewport(zone1))
+
+        # when placing the item in zone1, zone1 will scroll into view
+        self.place_item(item1_id, zone1_id)
+        self.assertTrue(self.is_element_in_viewport(zone1))
+
+        # and now zone2 is out of view
+        self.assertFalse(self.is_element_in_viewport(zone2))

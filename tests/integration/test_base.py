@@ -148,6 +148,28 @@ class BaseIntegrationTest(SeleniumBaseTest):
     def scroll_down(self, pixels=50):
         self.browser.execute_script("$(window).scrollTop({})".format(pixels))
 
+    def is_element_in_viewport(self, element):
+        """Determines if the element lies at least partially in the viewport."""
+        viewport = self.browser.execute_script(
+            "return {"
+            "top: window.scrollY,"
+            "left: window.scrollX,"
+            "bottom: window.scrollY + window.outerHeight,"
+            "right: window.scrollX + window.outerWidth"
+            "};"
+        )
+
+        return all([
+            any([
+                viewport["top"] <= element.rect["y"] <= viewport["bottom"],
+                viewport["top"] <= element.rect["y"] + element.rect["height"] <= viewport["bottom"]
+            ]),
+            any([
+                viewport["left"] <= element.rect["x"] <= viewport["right"],
+                viewport["left"] <= element.rect["x"] + element.rect["width"] <= viewport["right"]
+            ])
+        ])
+
     def _get_style(self, selector, style, computed=True):
         if computed:
             query = 'return getComputedStyle($("{selector}").get(0)).{style}'
