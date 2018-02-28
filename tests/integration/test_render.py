@@ -298,6 +298,23 @@ class TestDragAndDropRender(BaseIntegrationTest):
             zone_name = zone.find_element_by_css_selector('p.zone-name')
             self.assertNotIn('sr', zone_name.get_attribute('class'))
 
+    def test_element_as_jquery_does_not_break_load_event_listeners(self):
+        """
+        DragAndDropBlock.init should accept a jQuery object or a DOM element.
+
+        Some XBlock initialization routes supply the element argument as a plain DOM element, others pass in a jQuery
+        object. DragAndDropBlock.init should cope with either, instead of throwing a TypeError when trying to call
+        addEventListener on jQuery objects, which would cause an infinite "loading" message when adding the block to a
+        unit in Studio.
+        """
+        self.load_scenario()
+
+        for entry in self.browser.get_log('browser'):
+            self.assertNotEqual(
+                'TypeError: element.addEventListener is not a function',
+                entry['message']
+            )
+
 
 @ddt
 class TestDragAndDropRenderZoneAlign(BaseIntegrationTest):
