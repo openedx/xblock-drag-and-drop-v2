@@ -803,9 +803,9 @@ function DragAndDropBlock(runtime, element, configuration) {
 
             // For the next one, we need to use addEventListener with useCapture 'true' in order
             // to watch for load events on any child element, since load events do not bubble.
-            element.addEventListener('load', webkitFix, true);
+            $element.get(0).addEventListener('load', webkitFix, true);
             // Whenever the container div resizes, re-render to take new available width into account.
-            element.addEventListener('load', bindContainerResize, true);
+            $element.get(0).addEventListener('load', bindContainerResize, true);
 
             // Re-render when window size changes.
             $(window).on('resize', measureWidthAndRender);
