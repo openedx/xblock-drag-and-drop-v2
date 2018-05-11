@@ -90,6 +90,7 @@ STATIC_URL = '/static/'
 # http://django-statici18n.readthedocs.io/en/latest/settings.html
 
 STATICI18N_DOMAIN = 'text'
+STATICI18N_NAMESPACE = 'DragAndDrop'
 STATICI18N_PACKAGES = ( 
     'drag_and_drop_v2.translations',
 )

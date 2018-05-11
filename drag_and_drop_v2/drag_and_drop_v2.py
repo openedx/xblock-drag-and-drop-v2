@@ -9,7 +9,7 @@ import json
 import logging
 import urllib
 import webob
-
+from django.utils import translation
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 from xblock.fields import Scope, String, Dict, Float, Boolean, Integer
@@ -334,7 +334,6 @@ class DragAndDropBlock(
         """
         Editing view in Studio
         """
-
         js_templates = loader.load_unicode('/templates/html/js_templates.html')
         # Get an 'id_suffix' string that is unique for this block.
         # We append it to HTML element ID attributes to ensure multiple instances of the DnDv2 block
@@ -366,6 +365,11 @@ class DragAndDropBlock(
             fragment.add_css_url(self.runtime.local_resource_url(self, css_url))
         for js_url in js_urls:
             fragment.add_javascript_url(self.runtime.local_resource_url(self, js_url))
+
+        lang_code = translation.get_language()
+        if lang_code:
+            statici18n_js_url = 'public/js/translations/{lang_code}/text.js'.format(lang_code=lang_code)
+            fragment.add_javascript_url(self.runtime.local_resource_url(self, statici18n_js_url))
 
         # Do a bit of manipulation so we get the appearance of a list of zone options on
         # items that still have just a single zone stored

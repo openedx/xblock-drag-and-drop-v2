@@ -1,9 +1,7 @@
 function DragAndDropEditBlock(runtime, element, params) {
 
-    // Set up gettext in case it isn't available in the client runtime:
-    if (typeof gettext == "undefined") {
-        window.gettext = function gettext_stub(string) { return string; };
-    }
+    window.DragAndDropI18n.init();
+    var gettext = window.DragAndDropI18n.gettext;
 
     // Make gettext available in Handlebars templates
     Handlebars.registerHelper('i18n', function(str) { return gettext(str); });
@@ -90,8 +88,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                     });
                     if (! success) {
                         runtime.notify('error', {
-                            'title': window.gettext("There was an error with your form."),
-                            'message': window.gettext("Please check over your submission.")
+                            'title': gettext("There was an error with your form."),
+                            'message': gettext("Please check over your submission.")
                         });
                     }
                     return success
@@ -476,8 +474,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                             });
                             if (!success) {
                                 runtime.notify('error', {
-                                    'title': window.gettext("There was an error with your form."),
-                                    'message': window.gettext("Please check the values you entered.")
+                                    'title': gettext("There was an error with your form."),
+                                    'message': gettext("Please check the values you entered.")
                                 });
                             }
                             return success;
@@ -702,7 +700,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                             } else {
                                 var message = response.messages.join(", ");
                                 runtime.notify('error', {
-                                    'title': window.gettext("There was an error with your form."),
+                                    'title': gettext("There was an error with your form."),
                                     'message': message
                                 });
                             }
