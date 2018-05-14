@@ -84,7 +84,7 @@ STATIC_URL = '/static/'
 
 STATICI18N_DOMAIN = 'text'
 STATICI18N_NAMESPACE = 'DragAndDrop'
-STATICI18N_PACKAGES = ( 
+STATICI18N_PACKAGES = (
     'drag_and_drop_v2.translations',
 )
 STATICI18N_ROOT = 'drag_and_drop_v2/public/js'
