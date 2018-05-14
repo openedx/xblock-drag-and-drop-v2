@@ -38,13 +38,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # Uncomment the next line to enable the admin:
-    #'django.contrib.admin',
-
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
-
     'statici18n',
     'drag_and_drop_v2',
 )
