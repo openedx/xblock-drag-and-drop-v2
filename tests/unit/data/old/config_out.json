@@ -1,5 +1,9 @@
 {
     "title": "Drag and Drop",
+    "mode": "standard",
+    "max_attempts": null,
+    "graded": false,
+    "weighted_max_score": 1,
     "show_title": true,
     "problem_text": "",
     "show_problem_header": true,
@@ -7,10 +11,10 @@
     "target_img_description": "This describes the target image",
     "item_background_color": null,
     "item_text_color": null,
-    "initial_feedback": "Intro Feed",
     "display_zone_borders": false,
     "display_zone_labels": false,
     "url_name": "",
+    "max_items_per_zone": null,
 
     "zones": [
         {
@@ -19,7 +23,8 @@
           "y": "200",
           "width": 200,
           "height": 100,
-          "uid": "Zone 1"
+          "uid": "Zone 1",
+          "align": "center"
         },
         {
           "title": "Zone 2",
@@ -27,7 +32,8 @@
           "y": 0,
           "width": 200,
           "height": 100,
-          "uid": "Zone 2"
+          "uid": "Zone 2",
+          "align": "center"
         }
     ],
 
@@ -37,7 +43,6 @@
           "imageURL": "",
           "expandedImageURL": "",
           "id": 0,
-          "inputOptions": false,
           "size": {"height": "auto", "width": "190px"}
         },
         {
@@ -45,7 +50,6 @@
           "imageURL": "",
           "expandedImageURL": "",
           "id": 1,
-          "inputOptions": true,
           "size": {"height": "auto", "width": "190px"}
         },
         {
@@ -53,7 +57,6 @@
           "imageURL": "",
           "expandedImageURL": "",
           "id": 2,
-          "inputOptions": false,
           "size": {"height": "100px", "width": "100px"}
         },
         {
@@ -61,7 +64,6 @@
           "imageURL": "http://i1.kym-cdn.com/entries/icons/square/000/006/151/tumblr_lltzgnHi5F1qzib3wo1_400.jpg",
           "expandedImageURL": "http://i1.kym-cdn.com/entries/icons/square/000/006/151/tumblr_lltzgnHi5F1qzib3wo1_400.jpg",
           "id": 3,
-          "inputOptions": false,
           "size": {"height": "auto", "width": "190px"}
         }
     ]

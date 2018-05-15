@@ -1,5 +1,9 @@
 {
     "title": "DnDv2 XBlock with HTML instructions",
+    "mode": "standard",
+    "max_attempts": 0,
+    "graded": false,
+    "weighted_max_score": 1,
     "show_title": false,
     "problem_text": "Solve this <strong>drag-and-drop</strong> problem.",
     "show_problem_header": false,
@@ -7,10 +11,10 @@
     "target_img_description": "This describes the target image",
     "item_background_color": "white",
     "item_text_color": "#000080",
-    "initial_feedback": "HTML <strong>Intro</strong> Feed",
     "display_zone_borders": false,
     "display_zone_labels": false,
     "url_name": "unique_name",
+    "max_items_per_zone": null,
 
     "zones": [
         {
@@ -19,7 +23,8 @@
           "y": 200,
           "width": 200,
           "height": 100,
-          "uid": "Zone <i>1</i>"
+          "uid": "Zone <i>1</i>",
+          "align": "right"
         },
         {
           "title": "Zone <b>2</b>",
@@ -27,7 +32,8 @@
           "y": 0,
           "width": 200,
           "height": 100,
-          "uid": "Zone <b>2</b>"
+          "uid": "Zone <b>2</b>",
+          "align": "center"
         }
     ],
 
@@ -36,29 +42,25 @@
           "displayName": "<b>1</b>",
           "imageURL": "",
           "expandedImageURL": "",
-          "id": 0,
-          "inputOptions": false
+          "id": 0
         },
         {
           "displayName": "<i>2</i>",
           "imageURL": "",
           "expandedImageURL": "",
-          "id": 1,
-          "inputOptions": true
+          "id": 1
         },
         {
           "displayName": "X",
           "imageURL": "",
           "expandedImageURL": "",
-          "id": 2,
-          "inputOptions": false
+          "id": 2
         },
         {
           "displayName": "",
           "imageURL": "http://placehold.it/100x300",
           "expandedImageURL": "http://placehold.it/100x300",
-          "id": 3,
-          "inputOptions": false
+          "id": 3
         }
     ]
 }

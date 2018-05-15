@@ -3,21 +3,23 @@ reports=no
 
 [FORMAT]
 max-line-length=120
+max-module-lines=1500
 
 [MESSAGES CONTROL]
 disable=
-    attribute-defined-outside-init,
     locally-disabled,
-    missing-docstring,
     too-many-ancestors,
-    too-many-arguments,
-    too-many-branches,
     too-many-instance-attributes,
     too-few-public-methods,
     too-many-public-methods,
-    unused-argument,
-    invalid-name,
-    no-member
+    unused-argument
 
 [SIMILARITIES]
-min-similarity-lines=8
+min-similarity-lines=4
+
+[OPTIONS]
+good-names=_,__,logger,loader
+method-rgx=_?[a-z_][a-z0-9_]{2,40}$
+function-rgx=_?[a-z_][a-z0-9_]{2,40}$
+method-name-hint=_?[a-z_][a-z0-9_]{2,40}$
+function-name-hint=_?[a-z_][a-z0-9_]{2,40}$

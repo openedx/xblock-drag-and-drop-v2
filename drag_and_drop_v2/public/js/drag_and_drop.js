@@ -1,33 +1,21 @@
-function DragNDropTemplates(url_name) {
+function DragAndDropTemplates(configuration) {
     "use strict";
     var h = virtualDom.h;
-    // Set up a mock for gettext if it isn't available in the client runtime:
-    if (!window.gettext) { window.gettext = function gettext_stub(string) { return string; }; }
 
-    var FocusHook = function() {
-        if (!(this instanceof FocusHook)) {
-            return new FocusHook();
-        }
+    var isMobileScreen = function() {
+        return window.matchMedia('screen and (max-width: 480px)').matches;
     };
 
-    FocusHook.prototype.hook = function(node, prop, prev) {
-        setTimeout(function() {
-            if (document.activeElement !== node) {
-                node.focus();
-            }
-        }, 0);
-    };
-
-    var itemSpinnerTemplate = function(xhr_active) {
-        if (!xhr_active) {
+    var itemSpinnerTemplate = function(item) {
+        if (!item.xhr_active) {
             return null;
         }
-        return (h(
-            "div.spinner-wrapper",
-            [
-                h("i.fa.fa-spin.fa-spinner")
-            ]
-        ));
+        return (
+            h("div.spinner-wrapper", {key: item.value + '-spinner'}, [
+                h("span.fa.fa-spin.fa-spinner", {attributes: {'aria-hidden': true}}),
+                h("span.sr", gettext('Submitting'))
+            ])
+        );
     };
 
     var renderCollection = function(template, collection, ctx) {
@@ -36,28 +24,36 @@ function DragNDropTemplates(url_name) {
         });
     };
 
-    var itemInputTemplate = function(input) {
-        if (!input) {
-            return null;
-        }
-        var focus_hook = input.has_value ? undefined : FocusHook();
-        return (
-            h('div.numerical-input', {className: input.class_name,
-                style: {display: input.is_visible ? 'block' : 'none'}}, [
-                h('input.input', {type: 'text', value: input.value, disabled: input.has_value,
-                    focusHook: focus_hook}),
-                itemSpinnerTemplate(input.xhr_active),
-                h('button.submit-input', {disabled: input.has_value}, gettext('ok'))
-            ])
-        );
-    };
-
     var getZone = function(zoneUID, ctx) {
         for (var i = 0; i < ctx.zones.length; i++) {
             if (ctx.zones[i].uid === zoneUID) {
                 return ctx.zones[i];
             }
         }
+    };
+
+    var bankItemWidthStyles = function(item, ctx) {
+        var style = {};
+        if (item.widthPercent) {
+            // The item bank container is often wider than the background image, and the
+            // widthPercent is specified relative to the background image so we have to
+            // convert it to pixels. But if the browser window is not as wide as the image,
+            // then the background image will be scaled down and this pixel value would be too large,
+            // so we also specify it as a max-width percentage.
+            // On mobile, the image is never scaled down, so we don't specify the max-width.
+            style.width = (item.widthPercent / 100 * ctx.bg_image_width) + "px";
+            style.maxWidth = isMobileScreen() ? 'none' : item.widthPercent + "%";
+        }
+        return style;
+    };
+
+    var itemContentTemplate = function(item) {
+        var item_content_html = item.displayName;
+        if (item.imageURL) {
+            item_content_html = '<img src="' + item.imageURL + '" alt="' + item.imageDescription + '" />';
+        }
+        var key = item.value + '-content';
+        return h('div', { key: key, innerHTML: item_content_html, className: "item-content" });
     };
 
     var itemTemplate = function(item, ctx) {
@@ -70,12 +66,16 @@ function DragNDropTemplates(url_name) {
         if (item.widthPercent) {
             className += " specified-width";  // The author has specified a width for this item.
         }
+        if (item.grabbed_with) {
+            className += " grabbed-with-" + item.grabbed_with;
+        }
         var attributes = {
             'role': 'button',
             'draggable': !item.drag_disabled,
             'aria-grabbed': item.grabbed,
             'data-value': item.value,
-            'data-drag-disabled': item.drag_disabled
+            'tabindex': item.focusable ? 0 : undefined,
+            'aria-live': 'polite'
         };
         var style = {};
         if (item.background_color) {
@@ -87,28 +87,17 @@ function DragNDropTemplates(url_name) {
             // matches contrast between text color and background color:
             style['outline-color'] = item.color;
         }
+        if (item.is_dragged) {
+            style.position = 'absolute';
+            style.left = item.drag_position.left + 'px';
+            style.top = item.drag_position.top + 'px';
+        }
         if (item.is_placed) {
-            if (item.zone_align === 'none') {
-                // This is not an "aligned" zone, so the item gets positioned where the learner dropped it.
-                style.left = item.x_percent + "%";
-                style.top = item.y_percent + "%";
-                if (item.widthPercent) {  // This item has an author-defined explicit width
-                    style.width = item.widthPercent + "%";
-                    style.maxWidth = item.widthPercent + "%"; // default maxWidth is ~30%
-                }
-            } else {
-                // This is an "aligned" zone, so the item position within the zone is calculated by the browser.
-                // Allow for the input + button width for aligned items
-                if (item.input) {
-                    style.marginRight = '190px';
-                }
-                // Make up for the fact we're in a wrapper container by calculating percentage differences.
-                var maxWidth = (item.widthPercent || 30) / 100;
-                var widthPercent = zone.width_percent / 100;
-                style.maxWidth = ((1 / (widthPercent / maxWidth)) * 100) + '%';
-                if (item.widthPercent) {
-                    style.width = style.maxWidth;
-                }
+            var maxWidth = (item.widthPercent || 30) / 100;
+            var widthPercent = zone.width_percent / 100;
+            style.maxWidth = ((1 / (widthPercent / maxWidth)) * 100) + '%';
+            if (item.widthPercent) {
+                style.width = style.maxWidth;
             }
             // Finally, if the item is using automatic sizing and contains an image, we
             // always prefer the natural width of the image (subject to the max-width):
@@ -117,49 +106,60 @@ function DragNDropTemplates(url_name) {
                 // ^ Hack to detect image width at runtime and make webkit consistent with Firefox
             }
         } else {
-            // If an item has not been placed it must be possible to move focus to it using the keyboard:
-            attributes.tabindex = 0;
-            if (item.widthPercent) {
-                // The item bank container is often wider than the background image, and the
-                // widthPercent is specified relative to the background image so we have to
-                // convert it to pixels. But if the browser window / mobile screen is not as
-                // wide as the image, then the background image will be scaled down and this
-                // pixel value would be too large, so we also specify it as a max-width
-                // percentage.
-                style.width = (item.widthPercent / 100 * ctx.bg_image_width) + "px";
-                style.maxWidth = item.widthPercent + "%";
-            }
+            $.extend(style, bankItemWidthStyles(item, ctx));
         }
         // Define children
-        var children = [
-            itemSpinnerTemplate(item.xhr_active),
-            itemInputTemplate(item.input)
-        ];
-        var item_content_html = item.displayName;
-        if (item.imageURL) {
-            item_content_html = '<img src="' + item.imageURL + '" alt="' + item.imageDescription + '" />';
-        }
-        var item_content = h('div', { innerHTML: item_content_html, className: "item-content" });
+
+        var item_content = itemContentTemplate(item);
+        var item_description = null;
+        // Insert information about zone in which this item has been placed
+
         if (item.is_placed) {
-            // Insert information about zone in which this item has been placed
-            var item_description_id = url_name + '-item-' + item.value + '-description';
-            item_content.properties.attributes = { 'aria-describedby': item_description_id };
             var zone_title = (zone.title || "Unknown Zone");  // This "Unknown" text should never be seen, so does not need i18n
-            var item_description = h(
-                'div',
-                { id: item_description_id, className: 'sr' },
-                gettext('Correctly placed in: ') + zone_title
+            var description_content;
+            if (configuration.mode === DragAndDropBlock.ASSESSMENT_MODE && !ctx.showing_answer) {
+                // In assessment mode placed items will "stick" even when not in correct zone.
+                description_content = gettext('Placed in: {zone_title}').replace('{zone_title}', zone_title);
+            } else {
+                // In standard mode item is immediately returned back to the bank if dropped on a wrong zone,
+                // so all placed items are always in the correct zone.
+                description_content = gettext('Correctly placed in: {zone_title}').replace('{zone_title}', zone_title);
+            }
+            var item_description_id = configuration.url_name + '-item-' + item.value + '-description';
+            item_content.properties.attributes = { 'aria-describedby': item_description_id };
+            item_description = h(
+                'div.sr.description',
+                { key: item_description_id, id: item_description_id},
+                description_content
             );
-            children.splice(1, 0, item_description);
         }
-        children.splice(1, 0, item_content);
+        var itemSRNote = h(
+            'span.sr.draggable',
+            (item.grabbed) ? gettext(", draggable, grabbed") : gettext(", draggable")
+        );
+
+        var children = [
+            itemSpinnerTemplate(item), item_content, itemSRNote, item_description
+        ];
+
+        // Unique key for virtual dom change tracking. Key must be different for
+        // Placed vs Dragged vs Unplaced, or weird bugs can occur.
+        var key = item.value;
+        if (item.is_placed && item.is_dragged) {
+            key += '-pd';
+        } else if (item.is_placed) {
+            key += '-p';
+        } else if (item.is_dragged) {
+            key += '-d';
+        } else {
+            key += '-u';
+        }
+
         return (
             h(
                 'div.option',
                 {
-                    // Unique key for virtual dom change tracking. Key must be different for
-                    // Placed vs Unplaced, or weird bugs can occur.
-                    key: item.value + (item.is_placed ? "-p" : "-u"),
+                    key: key,
                     className: className,
                     attributes: attributes,
                     style: style
@@ -169,33 +169,73 @@ function DragNDropTemplates(url_name) {
         );
     };
 
+    // When an item is dragged out of the bank, a hidden placeholder of the same width and height as
+    // the original item is rendered in the bank. The function of the placeholder is to take up the
+    // same amount of space as the original item so that the bank does not collapse when you've dragged
+    // all items out.
+    var itemPlaceholderTemplate = function(item, ctx) {
+        var className = "";
+        if (item.has_image) {
+            className += " " + "option-with-image";
+        }
+        if (item.widthPercent) {
+            className += " specified-width";  // The author has specified a width for this item.
+        }
+        var style = bankItemWidthStyles(item, ctx);
+        // Placeholder should never be visible.
+        style.visibility = 'hidden';
+        return (
+            h(
+                'div.option',
+                {
+                    key: 'placeholder-' + item.value,
+                    className: className,
+                    attributes: {draggable: false},
+                    style: style
+                },
+                itemContentTemplate(item)
+            )
+        );
+    };
+
     var zoneTemplate = function(zone, ctx) {
         var className = ctx.display_zone_labels ? 'zone-name' : 'zone-name sr';
         var selector = ctx.display_zone_borders ? 'div.zone.zone-with-borders' : 'div.zone';
-
-        // If zone is aligned, mark its item alignment
-        // and render its placed items as children
-        var item_wrapper = 'div.item-wrapper';
-        var items_in_zone = [];
-        if (zone.align !== 'none') {
-            item_wrapper += '.item-align.item-align-' + zone.align;
-            var is_item_in_zone = function(i) { return i.is_placed && (i.zone === zone.uid); };
-            items_in_zone = $.grep(ctx.items, is_item_in_zone);
+        // Mark item alignment and render its placed items as children
+        var item_wrapper = 'div.item-wrapper.item-align.item-align-' + zone.align;
+        // In assessment mode already placed items can be dragged out of their current zone.
+        // Only render placed items that are not currently being dragged out of the zone.
+        var is_item_in_zone = function(i) { return i.is_placed && !i.is_dragged && (i.zone === zone.uid); };
+        var items_in_zone = $.grep(ctx.items, is_item_in_zone);
+        var zone_description_id = zone.prefixed_uid + '-description';
+        if (items_in_zone.length == 0) {
+            var zone_description = h(
+                'div',
+                { id: zone_description_id, className: 'sr'},
+                gettext("No items placed here")
+            );
+        } else {
+            var zone_description = h(
+                'div',
+                { id: zone_description_id, className: 'sr'},
+                gettext('Items placed here: ') + items_in_zone.map(function (item) { return item.displayName; }).join(", ")
+            );
         }
 
         return (
             h(
                 selector,
                 {
+                    key: zone.prefixed_uid,
                     id: zone.prefixed_uid,
                     attributes: {
                         'tabindex': 0,
                         'dropzone': 'move',
                         'aria-dropeffect': 'move',
                         'data-uid': zone.uid,
-                        'data-zone_id': zone.id,
                         'data-zone_align': zone.align,
                         'role': 'button',
+                        'aria-describedby': zone_description_id,
                     },
                     style: {
                         top: zone.y_percent + '%', left: zone.x_percent + "%",
@@ -203,54 +243,70 @@ function DragNDropTemplates(url_name) {
                     }
                 },
                 [
-                    h('p', { className: className }, zone.title),
-                    h('p', { className: 'zone-description sr' }, zone.description),
-                    h(item_wrapper, renderCollection(itemTemplate, items_in_zone, ctx))
+                    h(
+                        'p',
+                        { className: className },
+                        [
+                            zone.title,
+                            h('span.sr', gettext(', dropzone'))
+                        ]
+                    ),
+                    h('p', { className: 'zone-description sr' }, zone.description || gettext('droppable')),
+                    h(item_wrapper, renderCollection(itemTemplate, items_in_zone, ctx)),
+                    zone_description
                 ]
             )
         );
     };
 
     var feedbackTemplate = function(ctx) {
-        var feedback_display = ctx.feedback_html ? 'block' : 'none';
-        var reset_button_display = ctx.display_reset_button ? 'block' : 'none';
-        var properties = { attributes: { 'aria-live': 'polite' } };
+        var messages = ctx.overall_feedback_messages || [];
+        var feedback_display = messages.length > 0 ? 'block' : 'none';
+        var feedback_messages = messages.map(function(message) {
+            var selector = "p.message";
+            if (message.message_class) {
+                selector += "."+message.message_class;
+            }
+            return h(selector, {innerHTML: message.message}, []);
+        });
+
         return (
-            h('section.feedback', properties, [
+            h('div.feedback', {attributes: {'role': 'group', 'aria-label': gettext('Feedback')}}, [
                 h(
-                    'button.reset-button.unbutton.link-button',
-                    { style: { display: reset_button_display }, attributes: { tabindex: 0 }, 'aria-live': 'off'},
-                    gettext('Reset problem')
-                ),
-                h('h3.title1', { style: { display: feedback_display } }, gettext('Feedback')),
-                h('p.message', { style: { display: feedback_display }, innerHTML: ctx.feedback_html })
+                    "div.feedback-content",
+                    {},
+                    [
+                        h('h3.title1', { style: { display: feedback_display } }, gettext('Feedback')),
+                        h('div.messages', { style: { display: feedback_display } }, feedback_messages),
+                    ]
+                )
             ])
         );
     };
 
-    var keyboardHelpTemplate = function(ctx) {
-        var dialog_attributes = { role: 'dialog', 'aria-labelledby': 'modal-window-title' };
-        var dialog_style = {};
+    var keyboardHelpPopupTemplate = function(ctx) {
+        var labelledby_id = 'modal-window-title-'+configuration.url_name;
         return (
-            h('section.keyboard-help', [
-                h('button.keyboard-help-button.unbutton.link-button', { attributes: { tabindex: 0 } }, gettext('Keyboard Help')),
-                h('div.keyboard-help-dialog', [
-                    h('div.modal-window-overlay'),
-                    h('div.modal-window', { attributes: dialog_attributes, style: dialog_style }, [
-                        h('div.modal-header', [
-                            h('h2.modal-window-title', gettext('Keyboard Help'))
-                        ]),
-                        h('div.modal-content', [
-                            h('p', gettext('You can complete this problem using only your keyboard.')),
-                            h('ul', [
-                                h('li', gettext('Use "Tab" and "Shift-Tab" to navigate between items and zones.')),
-                                h('li', gettext('Press "Enter", "Space", "Ctrl-m", or "⌘-m" on an item to select it for dropping, then navigate to the zone you want to drop it on.')),
-                                h('li', gettext('Press "Enter", "Space", "Ctrl-m", or "⌘-m" to drop the item on the current zone.')),
-                                h('li', gettext('Press "Esc" if you want to cancel the drop operation (for example, to select a different item).')),
-                            ])
-                        ]),
-                        h('div.modal-actions', [
-                            h('button.modal-dismiss-button', gettext("OK"))
+            h('div.keyboard-help-dialog', [
+                h('div.modal-window-overlay'),
+                h('div.modal-window', {attributes: {role: 'dialog', 'aria-labelledby': labelledby_id, tabindex: -1}}, [
+                    h('button.modal-dismiss-button.unbutton', [
+                        h('span.fa.fa-remove', {attributes: {'aria-hidden': true}}),
+                        h('span.sr', gettext('Close'))
+                    ]),
+                    h('div.modal-header', [
+                        h('h2.modal-window-title', {id: labelledby_id}, gettext('Keyboard Help'))
+                    ]),
+                    h('div.modal-content', [
+                        h('p.sr', gettext('This is a screen reader-friendly problem.')),
+                        h('p.sr', gettext('Drag and Drop problems consist of draggable items and dropzones. Users should select a draggable item with their keyboard and then navigate to an appropriate dropzone to drop it.')),
+                        h('p', gettext('You can complete this problem using only your keyboard by following the guidance below:')),
+                        h('ul', [
+                            h('li', gettext('Use only TAB and SHIFT+TAB to navigate between draggable items and drop zones.')),
+                            h('li', gettext('Press CTRL+M to select a draggable item (effectively picking it up).')),
+                            h('li', gettext('Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press CTRL+M once more to drop it here.')),
+                            h('li', gettext('Press ESC if you want to cancel the drop operation (for example, to select a different item).')),
+                            h('li', gettext('TAB back to the list of draggable items and repeat this process until all of the draggable items have been placed on their respective dropzones.')),
                         ])
                     ])
                 ])
@@ -258,90 +314,428 @@ function DragNDropTemplates(url_name) {
         );
     };
 
-    var mainTemplate = function(ctx) {
-        var problemTitle = ctx.show_title ? h('h2.problem-title', {innerHTML: ctx.title_html}) : null;
-        var problemHeader = ctx.show_problem_header ? h('h3.title1', gettext('Problem')) : null;
-        var popupSelector = 'div.popup';
-        if (ctx.popup_html && !ctx.last_action_correct) {
-            popupSelector += '.popup-incorrect';
+    var submitAnswerTemplate = function(ctx) {
+        var submitButtonProperties = {
+            disabled: ctx.disable_submit_button || ctx.submit_spinner,
+            attributes: {}
+        };
+
+        var attemptsUsedInfo = null;
+        if (ctx.max_attempts && ctx.max_attempts > 0) {
+            var attemptsUsedId = "attempts-used-" + configuration.url_name;
+            submitButtonProperties.attributes["aria-describedby"] = attemptsUsedId;
+            var attemptsUsedTemplate = gettext("You have used {used} of {total} attempts.");
+            var attemptsUsedText = attemptsUsedTemplate.
+                replace("{used}", ctx.attempts).replace("{total}", ctx.max_attempts);
+            attemptsUsedInfo = h("span.attempts-used", {id: attemptsUsedId}, attemptsUsedText);
         }
-        // Render only items_in_bank and items_placed_unaligned here;
-        // items placed in aligned zones will be rendered by zoneTemplate.
-        var is_item_placed = function(i) { return i.is_placed; };
-        var items_placed = $.grep(ctx.items, is_item_placed);
-        var items_in_bank = $.grep(ctx.items, is_item_placed, true);
-        var is_item_placed_unaligned = function(i) { return i.zone_align === 'none'; };
-        var items_placed_unaligned = $.grep(items_placed, is_item_placed_unaligned);
+
+        var submitSpinner = null;
+        if (ctx.submit_spinner) {
+            submitSpinner = h('span', [
+                h('span.fa.fa-spin.fa-spinner', {attributes: {'aria-hidden': true}}),
+                h('span.sr', gettext('Submitting'))
+            ]);
+        }
+
         return (
-            h('section.themed-xblock.xblock--drag-and-drop', [
-                problemTitle,
-                h('section.problem', [
-                    problemHeader,
-                    h('p', {innerHTML: ctx.problem_html}),
-                ]),
-                h('section.drag-container', { attributes: { role: 'application' } }, [
-                    h(
-                        'div.item-bank',
-                        renderCollection(itemTemplate, items_in_bank, ctx)
-                    ),
-                    h('div.target',
-                        {
-                            attributes: {
-                                'aria-live': 'polite',
-                                'aria-atomic': 'true',
-                                'aria-relevant': 'additions',
-                            },
-                        },
-                        [
-                            h(
-                                popupSelector,
-                                {
-                                    style: {display: ctx.popup_html ? 'block' : 'none'},
-                                },
-                                [
-                                    h('div.close.icon-remove-sign.fa-times-circle'),
-                                    h('p.popup-content', {innerHTML: ctx.popup_html}),
-                                ]
-                            ),
-                            h('div.target-img-wrapper', [
-                                h('img.target-img', {src: ctx.target_img_src, alt: ctx.target_img_description}),
-                            ]
-                        ),
-                        renderCollection(zoneTemplate, ctx.zones, ctx),
-                        renderCollection(itemTemplate, items_placed_unaligned, ctx)
+            h("div.action-toolbar-item.submit-answer", {}, [
+                h(
+                    "button.btn-brand.submit-answer-button",
+                    submitButtonProperties,
+                    [
+                        submitSpinner,
+                        ' ',  // whitespace between spinner icon and text
+                        gettext("Submit")
                     ]
-                    ),
-                ]),
-                keyboardHelpTemplate(ctx),
-                feedbackTemplate(ctx),
+                ),
+                attemptsUsedInfo
             ])
         );
     };
 
-    DragAndDropBlock.renderView = mainTemplate;
+    var sidebarButtonTemplate = function(buttonClass, iconClass, buttonText, options) {
+        options = options || {};
+        if (options.spinner) {
+            iconClass = 'fa-spin.fa-spinner';
+        }
+        return (
+            h('span.sidebar-button-wrapper', {}, [
+                h(
+                    'button.unbutton.btn-default.btn-small',
+                    {
+                        className: buttonClass,
+                        disabled: options.disabled || options.spinner || false
+                    },
+                    [
+                        h("span.btn-icon.fa", {className: iconClass, attributes: {"aria-hidden": true}}),
+                        buttonText
+                    ]
+                )
+            ])
+        );
+    };
 
+    var sidebarTemplate = function(ctx) {
+        var showAnswerButton = null;
+        if (ctx.show_show_answer) {
+            var options = {
+                disabled: ctx.showing_answer ? true : ctx.disable_show_answer_button,
+                spinner: ctx.show_answer_spinner
+            };
+            showAnswerButton = sidebarButtonTemplate(
+                "show-answer-button",
+                "fa-info-circle",
+                gettext('Show Answer'),
+                options
+            );
+        }
+        var go_to_beginning_button_class = 'go-to-beginning-button';
+        if (!ctx.show_go_to_beginning_button) {
+            go_to_beginning_button_class += ' sr';
+        }
+        return(
+            h("div.action-toolbar-item.sidebar-buttons", {}, [
+                sidebarButtonTemplate(
+                    go_to_beginning_button_class,
+                    "fa-arrow-up",
+                    gettext("Go to Beginning"),
+                    {disabled: ctx.disable_go_to_beginning_button}
+                ),
+                sidebarButtonTemplate(
+                    "reset-button",
+                    "fa-refresh",
+                    gettext('Reset'),
+                    {disabled: ctx.disable_reset_button}
+                ),
+                showAnswerButton,
+            ])
+        )
+    };
+
+    var itemFeedbackPopupTemplate = function(ctx) {
+        var popupSelector = 'div.popup.item-feedback-popup.popup-wrapper';
+        var msgs = ctx.feedback_messages || [];
+        var have_messages = msgs.length > 0;
+        var popup_content;
+
+        if (msgs.length > 0 && !ctx.last_action_correct) {
+            popupSelector += '.popup-incorrect';
+        }
+
+        if (ctx.mode == DragAndDropBlock.ASSESSMENT_MODE) {
+            var content_items = [
+                (!ctx.last_action_correct) ? h("p", {}, gettext("Some of your answers were not correct.")) : null,
+                h("p", {}, gettext("Hints:")),
+                h("ul", {}, msgs.map(function(message) {
+                    return h("li", {innerHTML: message.message});
+                }))
+            ];
+            popup_content = h(
+                ctx.last_action_correct ? "div.popup-content" : "div.popup-content.popup-content-incorrect",
+                {},
+                have_messages ? content_items : []
+            );
+        } else {
+            popup_content = h(
+                ctx.last_action_correct ? "div.popup-content" : "div.popup-content.popup-content-incorrect",
+                {},
+                msgs.map(function(message) {
+                    return h("p", {innerHTML: message.message});
+                })
+            );
+        }
+
+        var popup_style = {};
+        if (!have_messages) {
+            popup_style.display = 'none';
+        }
+
+        return h(
+            popupSelector,
+            {
+                style: popup_style
+            },
+            [
+                h(
+                    'button.unbutton.close-feedback-popup-button.close-feedback-popup-desktop-button',
+                    {},
+                    [
+                        h(
+                            'span.sr',
+                            {
+                                innerHTML: gettext("Close")
+                            }
+                        ),
+                        h(
+                            'span.icon.fa.fa-times-circle',
+                            {
+                                attributes: {
+                                    'aria-hidden': true
+                                }
+                            }
+                        )
+                    ]
+                ),
+                h(
+                    ctx.last_action_correct ? 'div.popup-header-icon' : 'div.popup-header-icon.popup-header-icon-incorrect',
+                    {},
+                    [
+                        h(
+                            ctx.last_action_correct ? 'span.icon.fa.fa-check-circle' : 'span.icon.fa.fa-exclamation-circle',
+                            {
+                                attributes: {
+                                    'aria-hidden': true
+                                }
+                            }
+                        )
+                    ]
+                ),
+                h(
+                    'div.popup-header-text',
+                    {},
+                    ctx.last_action_correct ? gettext("Correct") : gettext("Incorrect")
+                ),
+                popup_content,
+                h(
+                    'div',
+                    [
+                        h(
+                            'button.unbutton.close-feedback-popup-button.close-feedback-popup-mobile-button',
+                            {},
+                            [
+                                h(
+                                    'span',
+                                    {},
+                                    gettext("Close")
+                                )
+                            ]
+                        )
+                    ]
+                )
+            ]
+        )
+    };
+
+    var forwardKeyboardHelpButtonTemplate = function(ctx) {
+        return h(
+            'button.unbutton.btn-link.keyboard-help-button',
+            [
+                h(
+                    "span.btn-icon.fa.fa-keyboard-o",
+                    {attributes: {"aria-hidden": true}}
+                ),
+                // appending space is the simplest way to avoid sticking text to the button, but also to have
+                // them underlined together on hover. When margin was used there was a gap in underlining
+                " ",
+                gettext('Keyboard Help')
+            ]
+        );
+    };
+
+    var progressTemplate = function(ctx) {
+        // Formats a number to 4 decimals without trailing zeros
+        // (1.00 -> '1'; 1.50 -> '1.5'; 1.333333333 -> '1.3333').
+        var formatNumber = function(n) { return n.toFixed(4).replace(/\.?0+$/, ''); };
+        var is_graded = ctx.graded && ctx.weighted_max_score > 0;
+        var progress_template;
+        if (ctx.grade !== null && ctx.weighted_max_score > 0) {
+            if (is_graded) {
+                progress_template = ngettext(
+                    // Translators: {earned} is the number of points earned. {possible} is the total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of points will always be at least 1. We pluralize based on the total number of points (example: 0/1 point; 1/2 points).
+                    '{earned}/{possible} point (graded)',
+                    '{earned}/{possible} points (graded)',
+                    ctx.weighted_max_score
+                );
+            } else {
+                progress_template = ngettext(
+                    // Translators: {earned} is the number of points earned. {possible} is the total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of points will always be at least 1. We pluralize based on the total number of points (example: 0/1 point; 1/2 points).
+                    '{earned}/{possible} point (ungraded)',
+                    '{earned}/{possible} points (ungraded)',
+                    ctx.weighted_max_score
+                );
+            }
+            progress_template = progress_template.replace('{earned}', formatNumber(ctx.grade));
+        } else {
+            if (is_graded) {
+                progress_template = ngettext(
+                    // Translators: {possible} is the number of points possible (examples: 1, 3, 10).
+                    '{possible} point possible (graded)',
+                    '{possible} points possible (graded)',
+                    ctx.weighted_max_score
+                );
+            } else {
+                progress_template = ngettext(
+                    // Translators: {possible} is the number of points possible (examples: 1, 3, 10).
+                    '{possible} point possible (ungraded)',
+                    '{possible} points possible (ungraded)',
+                    ctx.weighted_max_score
+                );
+            }
+        }
+        var progress_text = progress_template.replace('{possible}', formatNumber(ctx.weighted_max_score));
+        return h('div.problem-progress', {
+            id: configuration.url_name + '-problem-progress',
+            attributes: {role: 'status'}
+        }, progress_text);
+    };
+
+    var mainTemplate = function(ctx) {
+        var main_element_properties = {attributes: {role: 'group'}};
+        var problemProgress = progressTemplate(ctx);
+        var problemTitle = null;
+        if (ctx.show_title) {
+            var problem_title_id = configuration.url_name + '-problem-title';
+            problemTitle = h('h3.problem-title', {
+                id: problem_title_id,
+                innerHTML: ctx.title_html,
+                attributes: {'aria-describedby': problemProgress.properties.id}
+            });
+            main_element_properties.attributes['arial-labelledby'] = problem_title_id;
+        } else {
+            main_element_properties.attributes['aria-label'] = gettext('Drag and Drop Problem');
+        }
+        var problemHeader = ctx.show_problem_header ? h('h4.title1', gettext('Problem')) : null;
+        // Render only items in the bank here, including placeholders.  Placed
+        // items will be rendered by zoneTemplate.
+        var items_in_bank = [];
+        var items_dragged = [];
+        var items_placed = [];
+        ctx.items.forEach(function(item) {
+            if (item.is_dragged) {
+                items_dragged.push(item);
+                // Dragged items require a placeholder in the bank.
+                // In assessment mode, already placed items can be dragged.
+                if (item.is_placed) {
+                    items_placed.push(item)
+                } else {
+                    items_in_bank.push(item);
+                }
+            } else if (item.is_placed) {
+                items_placed.push(item);
+            } else {
+                items_in_bank.push(item);
+            }
+        });
+        var item_bank_properties = {
+            attributes: {
+                'role': 'group',
+                'aria-label': gettext('Item Bank')
+            }
+        };
+        if (ctx.item_bank_focusable) {
+            item_bank_properties.attributes['tabindex'] = 0;
+            item_bank_properties.attributes['dropzone'] = 'move';
+            item_bank_properties.attributes['aria-dropeffect'] = 'move';
+            item_bank_properties.attributes['role'] = 'button';
+        }
+        // Render items in the bank. If the item is currently being dragged, it should be
+        // rendered as a placeholder. All already placed items should also be rendered as
+        // placedholders (as the last content in the bank) to maintain original bank dimensions.
+        var bank_children = [];
+        items_in_bank.forEach(function(item) {
+            if (item.is_dragged) {
+                bank_children.push(itemPlaceholderTemplate(item, ctx));
+            } else {
+                bank_children.push(itemTemplate(item, ctx));
+            }
+        });
+        bank_children = bank_children.concat(renderCollection(itemPlaceholderTemplate, items_placed, ctx));
+        var drag_container_style = {};
+        var target_img_style = {};
+        // If drag_container_max_width is null, we are going to measure the container width after this render.
+        // To be able to accurately measure the natural container width, we have to set max-width of the target
+        // image to 100%, so that it doesn't expand the container.
+        if (ctx.drag_container_max_width === null) {
+            target_img_style.maxWidth = '100%';
+            item_bank_properties.style = {display: 'none'};
+        } else {
+            drag_container_style.maxWidth = ctx.drag_container_max_width + 'px';
+        }
+        return (
+            h('div.themed-xblock.xblock--drag-and-drop', main_element_properties, [
+                h('object.resize-detector', {
+                    attributes: {type: 'text/html', tabindex: -1, data: 'about:blank'}
+                }),
+                problemTitle,
+                problemProgress,
+                h('div', [forwardKeyboardHelpButtonTemplate(ctx)]),
+                h('div.problem', [
+                    problemHeader,
+                    h('p', {innerHTML: ctx.problem_html}),
+                ]),
+                h('div.drag-container', {style: drag_container_style}, [
+                    h('div.item-bank', item_bank_properties, bank_children),
+                    h('div.target', {attributes: {'role': 'group', 'arial-label': gettext('Drop Targets')}}, [
+                        itemFeedbackPopupTemplate(ctx),
+                        h('div.target-img-wrapper', [
+                            h('img.target-img', {
+                                src: ctx.target_img_src,
+                                alt: ctx.target_img_description,
+                                style: target_img_style
+                            }),
+                            renderCollection(zoneTemplate, ctx.zones, ctx)
+                        ]),
+                    ]),
+                    h('div.dragged-items', renderCollection(itemTemplate, items_dragged, ctx)),
+                ]),
+                h("div.actions-toolbar", {attributes: {'role': 'group', 'aria-label': gettext('Actions')}}, [
+                    (ctx.show_submit_answer ? submitAnswerTemplate(ctx) : null),
+                    sidebarTemplate(ctx),
+                ]),
+                keyboardHelpPopupTemplate(ctx),
+                feedbackTemplate(ctx),
+                h('div.sr.reader-feedback-area', {
+                    attributes: {'aria-live': 'polite', 'aria-atomic': true},
+                    innerHTML: ctx.screen_reader_messages
+                }),
+            ])
+        );
+    };
+
+    return mainTemplate;
 }
 
 function DragAndDropBlock(runtime, element, configuration) {
     "use strict";
 
-    DragNDropTemplates(configuration.url_name);
     // Set up a mock for gettext if it isn't available in the client runtime:
-    if (!window.gettext) { window.gettext = function gettext_stub(string) { return string; }; }
+    if (!window.gettext) {
+        window.gettext = function gettext_stub(string) { return string; };
+        window.ngettext = function ngettext_stub(strA, strB, n) { return n == 1 ? strA : strB; };
+    }
+
+    DragAndDropBlock.STANDARD_MODE = 'standard';
+    DragAndDropBlock.ASSESSMENT_MODE = 'assessment';
+
+    var Selector = {
+        popup_box: '.popup',
+        close_button: '.popup .close-feedback-popup-button'
+    };
+
+    var renderView = DragAndDropTemplates(configuration);
 
     var $element = $(element);
-    element = $element[0]; // TODO: This line can be removed when we no longer support Dogwood.
-                           // It works around this Studio bug: https://github.com/edx/edx-platform/pull/11433
+
     // root: root node managed by the virtual DOM
     var $root = $element.find('.xblock--drag-and-drop');
     var root = $root[0];
 
     var state = undefined;
-    var bgImgNaturalWidth = undefined; // pixel width of the background image (when not scaled)
+    var bgImgNaturalWidth = undefined;  // pixel width of the background image (when not scaled)
+    var containerMaxWidth = null;  // measured and set after first render
+    var fixedHeaderHeight = 0; // measured in checkForFixedHeader
     var __vdom = virtualDom.h();  // blank virtual DOM
 
     // Event string size limit.
     var MAX_LENGTH = 255;
+
+    var DEFAULT_ZONE_ALIGN = 'center';
+
+    // Number of miliseconds the user has to keep their finger on the item
+    // without moving for drag to begin.
+    // This allows user to scroll the container without accidentally dragging the items.
+    var TOUCH_DRAG_DELAY = 500;
 
     // Keyboard accessibility
     var ESC = 27;
@@ -350,9 +744,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     var TAB = 9;
     var M = 77;
 
-    var placementMode = false;
     var $selectedItem;
-    var $focusedElement;
 
     var init = function() {
         // Load the current user state, and load the image, then render the block.
@@ -371,13 +763,17 @@ function DragAndDropBlock(runtime, element, configuration) {
             });
             state = stateResult[0]; // stateResult is an array of [data, statusText, jqXHR]
             migrateConfiguration(bgImg.width);
-            migrateState(bgImg.width, bgImg.height);
+            migrateState();
             markItemZoneAlign();
             bgImgNaturalWidth = bgImg.width;
 
             // Set up event handlers:
 
-            $(document).on('keydown mousedown touchstart', closePopup);
+            $element.on('click', '.item-feedback-popup .close-feedback-popup-button', closePopupEventHandler);
+            $element.on('keydown', '.item-feedback-popup .close-feedback-popup-button', closePopupKeydownHandler);
+            $element.on('keyup', '.item-feedback-popup .close-feedback-popup-button', preventFauxPopupCloseButtonClick);
+
+            $element.on('click', '.submit-answer-button', doAttempt);
             $element.on('click', '.keyboard-help-button', showKeyboardHelp);
             $element.on('keydown', '.keyboard-help-button', function(evt) {
                 runOnKey(evt, RET, showKeyboardHelp);
@@ -386,13 +782,42 @@ function DragAndDropBlock(runtime, element, configuration) {
             $element.on('keydown', '.reset-button', function(evt) {
                 runOnKey(evt, RET, resetProblem);
             });
-            $element.on('click', '.submit-input', submitInput);
+            $element.on('click', '.show-answer-button', showAnswer);
+            $element.on('keydown', '.show-answer-button', function(evt) {
+                runOnKey(evt, RET, showAnswer);
+            });
+
+            // We need to register both mousedown and click event handlers because in some browsers the blur
+            // event is emitted right after mousedown, hiding our button and preventing the click event from
+            // being emitted.
+            // We still need the click handler to catch keydown events (other than RET which is handled below),
+            // since in some browser/OS combinations some other keyboard button presses (for example space bar)
+            // are also treated as clicks,
+            $element.on('mousedown click', '.go-to-beginning-button', onGoToBeginningButtonClick);
+            $element.on('keydown', '.go-to-beginning-button', function(evt) {
+                runOnKey(evt, RET, onGoToBeginningButtonClick);
+            });
+            // Go to Beginning button should only be visible when it has focus.
+            $element.on('focus', '.go-to-beginning-button', showGoToBeginningButton);
+            $element.on('blur', '.go-to-beginning-button', hideGoToBeginningButton);
 
             // For the next one, we need to use addEventListener with useCapture 'true' in order
             // to watch for load events on any child element, since load events do not bubble.
-            element.addEventListener('load', webkitFix, true);
+            $element.get(0).addEventListener('load', webkitFix, true);
+            // Whenever the container div resizes, re-render to take new available width into account.
+            $element.get(0).addEventListener('load', bindContainerResize, true);
 
-            applyState();
+            // Re-render when window size changes.
+            $(window).on('resize', measureWidthAndRender);
+
+            // Remove the spinner and create a blank slate for virtualDom to take over.
+            $root.empty();
+
+            measureWidthAndRender();
+
+            checkForFixedHeader();
+
+            initDraggable();
             initDroppable();
 
             // Indicate that problem is done loading
@@ -402,17 +827,72 @@ function DragAndDropBlock(runtime, element, configuration) {
         });
     };
 
+    // Listens to the 'resize' event of the object element, which is absolutely positioned
+    // and fit to the edges of the container, so that its size always equals the container size.
+    // This hack is needed because not all browsers support native 'resize' events on arbitrary
+    // DOM elements.
+    var bindContainerResize = function(evt) {
+        var object = evt.target;
+        var $object = $(object);
+        if ($object.is('.resize-detector')) {
+            var last_width = $object.width();
+            var last_height = $object.height();
+            var raf_id = null;
+            object.contentDocument.defaultView.addEventListener('resize', function() {
+                cancelAnimationFrame(raf_id);
+                raf_id = requestAnimationFrame(function() {
+                    var new_width = $object.width();
+                    var new_height = $object.height();
+                    if (last_width !== new_width || last_height !== new_height) {
+                        last_width = new_width;
+                        last_height = new_height;
+                        measureWidthAndRender();
+                    }
+                });
+            });
+        }
+    };
+
+    var measureWidthAndRender = function() {
+        // First set containerMaxWidth to null to hide the container.
+        containerMaxWidth = null;
+        // Render with container hidden to be able to measure max available width.
+        applyState();
+        // Mesure available width.
+        containerMaxWidth = $root.width();
+        // Re-render now that correct max-width is known.
+        applyState();
+    };
+
+    var checkForFixedHeader = function() {
+        // There might be a fixed header covering the upper part of the screen,
+        // which needs to be taken into account when scrolling while dragging.
+        var windowHeight = $(window).height();
+
+        var topElement = $(document.elementFromPoint(0, 0));
+        if (topElement) {
+            var topElementParents = topElement.parents();
+            for (var i = 0; i < topElementParents.length; i++) {
+                var parent = $(topElementParents[i]);
+                if (parent.css('position') === 'fixed') {
+                    fixedHeaderHeight = parent.height();
+                    break;
+                }
+            }
+        }
+    }
+
     var runOnKey = function(evt, key, handler) {
         if (evt.which === key) {
             handler(evt);
         }
     };
 
-    var keyboardEventDispatcher = function(evt) {
+    var keyboardEventDispatcher = function(evt, focusId) {
         if (evt.which === TAB) {
             trapFocus(evt);
         } else if (evt.which === ESC) {
-            hideKeyboardHelp(evt);
+            hideKeyboardHelp(evt, focusId);
         }
     };
 
@@ -432,28 +912,83 @@ function DragAndDropBlock(runtime, element, configuration) {
         }
     };
 
+    var onGoToBeginningButtonClick = function(evt) {
+        evt.preventDefault();
+        // In theory the blur event handler should hide the button,
+        // but the blur event does not fire consistently in all browsers,
+        // so invoke hideGoToBeginningButton now to make sure it gets hidden.
+        // Invoking hideGoToBeginningButton multiple times is harmless.
+        hideGoToBeginningButton();
+        focusFirstDraggable();
+    };
+
+    var showGoToBeginningButton = function() {
+        if (!state.go_to_beginning_button_visible) {
+            state.go_to_beginning_button_visible = true;
+            applyState();
+        }
+    };
+
+    var hideGoToBeginningButton = function() {
+        if (state.go_to_beginning_button_visible) {
+            state.go_to_beginning_button_visible = false;
+            applyState();
+        }
+    };
+
+    // Browsers will emulate click events on keyboard keyup events.
+    // The feedback popup is shown very quickly after the user drops the item on the board.
+    // If the user uses the keyboard to drop the item, and the popup gets displayed and focused
+    // *before* the user releases the key, most browsers will emit an emulated click event on the
+    // close popup button. We prevent these from happenning by only letting the browser emulate
+    // a click event on keyup if the close button received a keydown event prior to the keyup.
+    var _popup_close_button_keydown_received = false;
+
+    var closePopupKeydownHandler = function(evt) {
+        _popup_close_button_keydown_received = true;
+        // Don't let user tab out of the button until the feedback is closed.
+        if (evt.which === TAB) {
+            evt.preventDefault();
+        }
+    };
+
+    var preventFauxPopupCloseButtonClick = function(evt) {
+        if (_popup_close_button_keydown_received) {
+            // The close button received a keydown event prior to this keyup,
+            // so this event is genuine.
+            _popup_close_button_keydown_received = false;
+        } else {
+            // There was no keydown prior to this keyup, so the keydown must have happend *before*
+            // the popup was displayed and focused and the keypress is still in progress.
+            // Make the browser ignore this keyup event.
+            evt.preventDefault();
+        }
+    };
+
     var focusModalButton = function() {
-        $root.find('.keyboard-help-dialog .modal-dismiss-button ').focus();
+        $root.find('.keyboard-help-dialog .modal-dismiss-button').focus();
     };
 
     var showKeyboardHelp = function(evt) {
+        var focusId = document.activeElement;
         evt.preventDefault();
 
         // Show dialog
         var $keyboardHelpDialog = $root.find('.keyboard-help-dialog');
         $keyboardHelpDialog.find('.modal-window-overlay').show();
-        $keyboardHelpDialog.find('.modal-window').show();
-
-        // Handle focus
-        $focusedElement = $(':focus');
-        focusModalButton();
+        $keyboardHelpDialog.find('.modal-window').show().focus();
 
         // Set up event handlers
-        $(document).on('keydown', keyboardEventDispatcher);
-        $keyboardHelpDialog.find('.modal-dismiss-button').on('click', hideKeyboardHelp);
+        $(document).on('keydown.keyboard-help', function(evt) {
+            keyboardEventDispatcher(evt, focusId);
+        });
+
+        $keyboardHelpDialog.find('.modal-dismiss-button').on('click', function(evt) {
+            hideKeyboardHelp(evt, focusId)
+        });
     };
 
-    var hideKeyboardHelp = function(evt) {
+    var hideKeyboardHelp = function(evt, focusId) {
         evt.preventDefault();
 
         // Hide dialog
@@ -461,12 +996,12 @@ function DragAndDropBlock(runtime, element, configuration) {
         $keyboardHelpDialog.find('.modal-window-overlay').hide();
         $keyboardHelpDialog.find('.modal-window').hide();
 
-        // Handle focus
-        $focusedElement.focus();
-
         // Remove event handlers
-        $(document).off('keydown', keyboardEventDispatcher);
+        $(document).off('keydown.keyboard-help');
         $keyboardHelpDialog.find('.modal-dismiss-button').off();
+
+        // Handle focus
+        $(focusId).focus();
     };
 
     /** Asynchronously load the main background image used for this block. */
@@ -474,6 +1009,14 @@ function DragAndDropBlock(runtime, element, configuration) {
         var promise = $.Deferred();
         var img = new Image();
         img.addEventListener("load", function() {
+            if (img.width == 0 || img.height == 0) {
+                // Workaround for IE11 issue with SVG images
+                document.body.appendChild(img);
+                var width = img.offsetWidth;
+                var height = img.offsetHeight;
+                document.body.removeChild(img);
+                img.width = width, img.height = height;
+            }
             if (img.width > 0 && img.height > 0) {
                 promise.resolve(img);
             } else {
@@ -542,11 +1085,16 @@ function DragAndDropBlock(runtime, element, configuration) {
      * Update the DOM to reflect 'state'.
      */
     var applyState = function() {
+        sendFeedbackPopupEvents();
+        updateDOM();
+    };
+
+    var sendFeedbackPopupEvents = function() {
         // Has the feedback popup been closed?
         if (state.closing) {
             var data = {
                 event_type: 'edx.drag_and_drop_v2.feedback.closed',
-                content: previousFeedback || state.feedback,
+                content: concatenateFeedback(previousFeedback || state.feedback),
                 manually: state.manually_closed,
             };
             truncateField(data, 'content');
@@ -558,25 +1106,68 @@ function DragAndDropBlock(runtime, element, configuration) {
         if (state.feedback) {
             var data = {
                 event_type: 'edx.drag_and_drop_v2.feedback.opened',
-                content: state.feedback,
+                content: concatenateFeedback(state.feedback),
             };
             truncateField(data, 'content');
             publishEvent(data);
         }
-
-        updateDOM();
-        destroyDraggable();
-        if (!state.finished) {
-            initDraggable();
-        }
     };
 
-    var updateDOM = function(state) {
+    var concatenateFeedback = function (feedback_msgs_list) {
+        return feedback_msgs_list.map(function(message) { return message.message; }).join('\n');
+    };
+
+    var updateDOM = function() {
         var new_vdom = render(state);
         var patches = virtualDom.diff(__vdom, new_vdom);
         root = virtualDom.patch(root, patches);
         $root = $(root);
         __vdom = new_vdom;
+    };
+
+    var sr_clear_timeout = null;
+
+    var setScreenReaderMessages = function() {
+        clearTimeout(sr_clear_timeout);
+
+        var pluckMessages = function(feedback_items) {
+            return feedback_items.map(function(item) {
+                return item.message;
+            });
+        };
+        var messages = [];
+        // In standard mode, it makes more sense to read the per-item feedback before overall feedback.
+        if (state.feedback && configuration.mode === DragAndDropBlock.STANDARD_MODE) {
+            messages = messages.concat(pluckMessages(state.feedback));
+        }
+        if (state.overall_feedback) {
+            messages = messages.concat(pluckMessages(state.overall_feedback));
+        }
+        // In assessment mode overall feedback comes first then multiple per-item feedbacks.
+        if (state.feedback && configuration.mode === DragAndDropBlock.ASSESSMENT_MODE) {
+            if (state.feedback.length > 0) {
+                if (!state.last_action_correct) {
+                    messages.push(gettext("Some of your answers were not correct."));
+                }
+                messages = messages.concat(
+                    gettext("Hints:"),
+                    pluckMessages(state.feedback)
+                );
+            }
+        }
+        var paragraphs = messages.map(function(msg) {
+            return '<p>' + msg + '</p>';
+        });
+
+        state.screen_reader_messages = paragraphs.join('');
+
+        // Remove the text after a short time. This will make screen readers read the message again,
+        // next time the user performs an action, even if next feedback message did not change from
+        // last attempt (for example: if user drops the same item on two wrong zones one after another,
+        // the negative feedback should be read out twice, not only on first drop).
+        sr_clear_timeout = setTimeout(function() {
+            state.screen_reader_messages = '';
+        }, 250);
     };
 
     var publishEvent = function(data) {
@@ -596,206 +1187,502 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var isActionKey = function(evt) {
+        return evt.which == RET || (evt.ctrlKey && evt.which == M);
+    };
+
+    var isSpaceKey = function(evt) {
         var key = evt.which;
-        if (evt.ctrlKey || evt.metaKey) {
-            return key === M;
-        }
-        return key === RET || key === SPC;
+        return key === SPC;
+    };
+
+    var isTabKey = function(evt) {
+        var key = evt.which;
+        return key === TAB;
     };
 
     var focusNextZone = function(evt, $currentZone) {
+        var zones = $root.find('.target .zone').toArray();
+        // In assessment mode, item bank is a valid drop zone
+        if (configuration.mode === DragAndDropBlock.ASSESSMENT_MODE) {
+            zones.push($root.find('.item-bank')[0]);
+        }
+        var idx = zones.indexOf($currentZone[0]);
         if (evt.shiftKey) {  // Going backward
-            var isFirstZone = $currentZone.prev('.zone').length === 0;
-            if (isFirstZone) {
-                evt.preventDefault();
-                $root.find('.target .zone').last().focus();
+            idx--;
+            if (idx < 0) {
+                idx = zones.length - 1;
             }
         } else {  // Going forward
-            var isLastZone = $currentZone.next('.zone').length === 0;
-            if (isLastZone) {
-                evt.preventDefault();
-                $root.find('.target .zone').first().focus();
+            idx++;
+            if (idx > zones.length - 1) {
+                idx = 0;
             }
         }
+        evt.preventDefault();
+        zones[idx].focus();
     };
 
-    var placeItem = function($zone, $item) {
-        var item_id;
-        var $anchor;
-        if ($item !== undefined) {
-            item_id = $item.data('value');
-            // Element was placed using the mouse,
-            // so use relevant properties of *item* when calculating new position below.
-            $anchor = $item;
-        } else {
-            item_id = $selectedItem.data('value');
-            // Element was placed using the keyboard,
-            // so use relevant properties of *zone* when calculating new position below.
-            $anchor = $zone;
-        }
-        var zone = String($zone.data('uid'));
-        var zone_id = $zone.data('zone_id');
-        var zone_align = $zone.data('zone_align');
-        var $target_img = $root.find('.target-img');
+    var focusGoToBeginningButton = function() {
+        $root.find('.go-to-beginning-button').focus();
+    };
 
-        // Calculate the position of the item to place relative to the image.
-        var x_pos = $anchor.offset().left + ($anchor.outerWidth()/2) - $target_img.offset().left;
-        var y_pos = $anchor.offset().top + ($anchor.outerHeight()/2) - $target_img.offset().top;
-        var x_pos_percent = x_pos / $target_img.width() * 100;
-        var y_pos_percent = y_pos / $target_img.height() * 100;
+    var focusFirstDraggable = function() {
+        $root.find('.item-bank .option').first().focus();
+    };
+
+    var focusItemFeedbackPopup = function() {
+        var popup = $root.find('.item-feedback-popup');
+        if (popup.length && popup.is(":visible")) {
+            popup.find('.close-feedback-popup-button:visible').focus();
+            return true;
+        }
+        return false;
+    };
+
+    var returnItemToBank = function(item_id) {
+        if (!state.items[item_id]) {
+            // Nothing to do here, item is already in the bank.
+            return;
+        }
+        delete state.items[item_id];
+        applyState();
+        var url = runtime.handlerUrl(element, 'drop_item');
+        var data = {val: item_id, zone: null};
+        $.post(url, JSON.stringify(data), 'json');
+    };
+
+    var placeGrabbedItem = function($zone) {
+        var zone = String($zone.data('uid'));
+        var zone_align = $zone.data('zone_align');
+        var items = configuration.items;
+
+        var item_id;
+        for (var i = 0; i < items.length; i++) {
+            if (items[i].grabbed) {
+                item_id = items[i].id;
+                break;
+            }
+        }
+
+        if (state.items[item_id] && state.items[item_id].zone === zone) {
+            // Nothing to do here, item already in zone.
+            return;
+        }
+
+        var items_in_zone_count = countItemsInZone(zone, [item_id.toString()]);
+        if (configuration.max_items_per_zone && configuration.max_items_per_zone <= items_in_zone_count) {
+            state.last_action_correct = false;
+            state.feedback = [{message: gettext("You cannot add any more items to this zone."), message_class: null}];
+            applyState();
+            return;
+        }
 
         state.items[item_id] = {
             zone: zone,
             zone_align: zone_align,
-            x_percent: x_pos_percent,
-            y_percent: y_pos_percent,
             submitting_location: true,
         };
-        // Wrap in setTimeout to let the droppable event finish.
-        setTimeout(function() {
-            applyState();
-            submitLocation(item_id, zone, x_pos_percent, y_pos_percent);
-        }, 0);
+
+        applyState();
+        submitLocation(item_id, zone);
+    };
+
+    var countItemsInZone = function(zone, exclude_ids) {
+        var ids_to_exclude = exclude_ids ? exclude_ids : [];
+        return Object.keys(state.items).filter(function(item_id) {
+            return state.items[item_id].zone === zone && $.inArray(item_id, ids_to_exclude) === -1;
+        }).length;
+    };
+
+    var canGoToBeginning = function() {
+        var all_items_placed = configuration.items.length === Object.keys(state.items).length;
+        return !all_items_placed && !state.finished;
     };
 
     var initDroppable = function() {
         // Set up zones for keyboard interaction
-        $root.find('.zone').each(function() {
+        $root.on('keydown', '.zone, .item-bank', function(evt) {
             var $zone = $(this);
-            $zone.on('keydown', function(evt) {
-                if (placementMode) {
-                    if (isCycleKey(evt)) {
-                        focusNextZone(evt, $zone);
-                    } else if (isCancelKey(evt)) {
-                        evt.preventDefault();
-                        placementMode = false;
-                        releaseItem($selectedItem);
-                    } else if (isActionKey(evt)) {
-                        evt.preventDefault();
-                        placementMode = false;
-                        placeItem($zone);
-                        releaseItem($selectedItem);
+            if (state.keyboard_placement_mode) {
+                if (isCycleKey(evt)) {
+                    focusNextZone(evt, $zone);
+                } else if (isCancelKey(evt)) {
+                    evt.preventDefault();
+                    state.keyboard_placement_mode = false;
+                    releaseGrabbedItems();
+                } else if (isActionKey(evt)) {
+                    evt.preventDefault();
+                    evt.stopPropagation();
+                    state.keyboard_placement_mode = false;
+                    if ($zone.is('.item-bank')) {
+                        delete state.items[$selectedItem.data('value')];
+                    } else {
+                        placeGrabbedItem($zone);
                     }
+                    releaseGrabbedItems();
                 }
-            });
-        });
-
-        // Make zone accept items that are dropped using the mouse
-        $root.find('.zone').droppable({
-            accept: '.item-bank .option',
-            tolerance: 'pointer',
-            drop: function(evt, ui) {
-                var $zone = $(this);
-                var $item = ui.helper;
-                placeItem($zone, $item);
+            } else if (isTabKey(evt) && !evt.shiftKey) {
+                // If the user just dropped an item to this zone, next TAB keypress
+                // should move focus to "Go to Beginning" button.
+                if (state.tab_to_go_to_beginning_button && canGoToBeginning()) {
+                    evt.preventDefault();
+                    focusGoToBeginningButton();
+                }
+            } else if (isSpaceKey(evt)) {
+                // Pressing the space bar moves the page down by default in most browsers.
+                // That can be distracting while moving items with the keyboard, so prevent
+                // the default scroll from happening while a zone is focused.
+                evt.preventDefault();
             }
         });
+
+        $root.on('blur', '.zone, .item-bank', function(evt) {
+            delete state.tab_to_go_to_beginning_button;
+        });
+    };
+
+    var getItemById = function(item_id) {
+        for (var i = 0; i < configuration.items.length; i++) {
+            if (configuration.items[i].id === item_id) {
+                return configuration.items[i];
+            }
+        }
     };
 
     var initDraggable = function() {
-        $root.find('.item-bank .option').not('[data-drag-disabled=true]').each(function() {
-            var $item = $(this);
+        var $container = $root.find('.drag-container');
 
-            // Allow item to be "picked up" using the keyboard
-            $item.on('keydown', function(evt) {
-                if (isActionKey(evt)) {
-                    evt.preventDefault();
-                    placementMode = true;
-                    grabItem($item);
-                    $selectedItem = $item;
-                    $root.find('.target .zone').first().focus();
+        // Allow items to be "picked up" using the keyboard
+        $container.on('keydown', '.option[draggable=true]', function(evt) {
+            if (isActionKey(evt)) {
+                var $item = $(this);
+                evt.preventDefault();
+                evt.stopPropagation();
+                state.keyboard_placement_mode = true;
+                grabItem($item, 'keyboard');
+                $selectedItem = $item;
+                $root.find('.target .zone').first().focus();
+            }
+        });
+
+        // Helper functions that return pageX/pageY from either touch or mouse events.
+        var pageX = function(evt) {
+            if (evt.type === 'touchstart' || evt.type === 'touchmove') {
+                return evt.originalEvent.targetTouches[0].pageX;
+            } else {
+                return evt.pageX;
+            }
+        };
+
+        var pageY = function(evt) {
+            if (evt.type === 'touchstart' || evt.type === 'touchmove') {
+                return evt.originalEvent.targetTouches[0].pageY;
+            } else {
+                return evt.pageY;
+            }
+        };
+
+        var isValidDropTarget = function(element) {
+            var valid = element.classList.contains('zone');
+            if (!valid && configuration.mode === DragAndDropBlock.ASSESSMENT_MODE) {
+                // In assessment mode, items can be dropped back into the item bank.
+                valid = element.classList.contains('item-bank');
+            }
+            return valid;
+        };
+
+        // If the drag ended on a valid target zone, returns the zone, otherwise returns null;
+        var getTargetZone = function(evt) {
+            var $zone = null;
+            var x, y;
+            if (evt.type === 'mouseup') {
+                x = evt.clientX;
+                y = evt.clientY;
+            } else {
+                x = evt.originalEvent.changedTouches[0].clientX;
+                y = evt.originalEvent.changedTouches[0].clientY;
+            }
+            // We have to temporarily hide the dragged item so that we can get the
+            // to the element below it.
+            var $dragged_items_container = $container.find('.dragged-items');
+            $dragged_items_container.hide();
+            var element = document.elementFromPoint(x, y);
+            while (element) {
+                if (isValidDropTarget(element)) {
+                    $zone = $(element);
+                    break;
+                } else {
+                    element = element.parentElement;
                 }
+            }
+            $dragged_items_container.show();
+            return $zone;
+        };
+
+        var onDragStart = function(interaction_type, $item, drag_origin) {
+            var item_id = $item.data('value');
+            var item = getItemById(item_id);
+            var $document = $(document);
+            publishEvent({
+                event_type: 'edx.drag_and_drop_v2.item.picked_up',
+                item_id: item_id
             });
 
-            // Make item draggable using the mouse
-            try {
-                $item.draggable({
-                    containment: $root.find('.drag-container'),
-                    cursor: 'move',
-                    stack: $root.find('.item-bank .option'),
-                    revert: 'invalid',
-                    revertDuration: 150,
-                    start: function(evt, ui) {
-                        var $item = $(this);
-                        grabItem($item);
-                        publishEvent({
-                            event_type: 'edx.drag_and_drop_v2.item.picked_up',
-                            item_id: $item.data('value'),
-                        });
-                    },
-                    stop: function(evt, ui) {
-                        releaseItem($(this));
+            var max_left = $container.innerWidth() - $item.outerWidth();
+            var max_top = $container.innerHeight() - $item.outerHeight();
+            // We need to get the item position relative to the $container.
+            var item_offset = $item.offset();
+            var container_offset = $container.offset();
+            var original_position = {
+                left: item_offset.left - container_offset.left,
+                top: item_offset.top - container_offset.top
+            };
+
+            item.drag_position = original_position;
+            grabItem($item, 'mouse');
+
+            // Animate the item back to its original position in the bank.
+            var revertDrag = function() {
+                var revert_duration = 150;
+                var start_position = item.drag_position;
+                var start_ts = null;
+                var step = function(ts) {
+                    if (!start_ts) {
+                        start_ts = ts;
                     }
+                    var progress = Math.min(1, (ts - start_ts) / revert_duration);
+                    item.drag_position = {
+                        left: start_position.left + (progress * (original_position.left - start_position.left)),
+                        top: start_position.top + (progress * (original_position.top - start_position.top)),
+                    };
+                    if (progress === 1) {
+                        delete item.drag_position;
+                        releaseGrabbedItems();
+                    } else {
+                        applyState();
+                        requestAnimationFrame(step);
+                    }
+                }
+                requestAnimationFrame(step);
+            };
+
+            var raf_id = null;
+            var onDragMove = function(evt) {
+                evt.preventDefault();
+                if (raf_id) {
+                    cancelAnimationFrame(raf_id);
+                }
+                raf_id = requestAnimationFrame(function() {
+                    var x = pageX(evt);
+                    var y = pageY(evt);
+
+                    var thresholdWidth = 50;
+
+                    var $target = $container.find('.target');
+                    var targetRect = $target.get(0).getBoundingClientRect();
+                    var top = targetRect.top + window.scrollY;
+                    var bottom = targetRect.bottom + window.scrollY;
+                    var left = targetRect.left + window.scrollX - thresholdWidth;
+                    var right = targetRect.right + window.scrollX + thresholdWidth;
+
+                    if (top <= y && bottom >= y && left <= x && right >= x) {
+                        var viewportTop = window.scrollY + fixedHeaderHeight;
+                        var viewportBottom = window.scrollY + $(window).height();
+                        var viewportLeft = window.scrollX;
+                        var viewportRight = window.scrollX + $(window).width();
+
+                        var scrollAmount = 50;
+
+                        if (x < (viewportLeft + thresholdWidth)) {
+                            $target.scrollLeft($target.scrollLeft() - scrollAmount);
+                        }
+
+                        if (x > (viewportRight - thresholdWidth)) {
+                            $target.scrollLeft($target.scrollLeft() + scrollAmount);
+                        }
+
+                        if (y > (viewportBottom - thresholdWidth)) {
+                            $document.scrollTop($document.scrollTop() + scrollAmount);
+                        }
+
+                        if (top < viewportTop + thresholdWidth && y < (viewportTop + thresholdWidth)) {
+                            $document.scrollTop($document.scrollTop() - scrollAmount);
+                        }
+                    }
+
+                    var dx = x - drag_origin.x;
+                    var dy = y - drag_origin.y;
+
+                    var left = original_position.left + dx;
+                    var top = original_position.top + dy;
+                    left = Math.max(0, Math.min(max_left, left));
+                    top = Math.max(0, Math.min(max_top, top));
+                    item.drag_position = {left: left, top: top};
+                    applyState();
+                    raf_id = null;
                 });
-            } catch (e) {
-                // Initializing the draggable will fail if draggable was already
-                // initialized. That's expected, ignore the exception.
+            };
+
+            var onDragEnd = function(evt) {
+                if (raf_id) {
+                    cancelAnimationFrame(raf_id);
+                }
+                if (evt.type === 'mouseup') {
+                    $document.off('mousemove', onDragMove);
+                    $document.off('mouseup', onDragEnd);
+                } else {
+                    $item.off('touchmove', onDragMove);
+                    $item.off('touchend touchcancel', onDragEnd);
+                }
+                if (evt.type === 'touchcancel') {
+                    revertDrag();
+                    return;
+                }
+                var $zone = getTargetZone(evt);
+                if ($zone) {
+                    delete item.drag_position;
+                    if ($zone.is('.item-bank')) {
+                        returnItemToBank(item_id);
+                    } else {
+                        placeGrabbedItem($zone);
+                    }
+                    releaseGrabbedItems();
+                } else {
+                    revertDrag();
+                }
+            };
+
+            if (interaction_type === 'mouse') {
+                // Mouse events have to be bound to the document or they won't fire after
+                // the item is removed from the bank.
+                $document.on('mousemove', onDragMove);
+                $document.on('mouseup', onDragEnd);
+            } else {
+                // Touch events behave in the opposite way - they have to be bound to the item
+                // where the touchstart event was fired, or touchmove will not fire if the item
+                // gets removed from the DOM; see: https://stackoverflow.com/a/45760014/51397
+                $item.on('touchmove', onDragMove);
+                $item.on('touchend touchcancel', onDragEnd);
+            }
+        };
+
+
+        // Touch devices emulate mousedown events after touchstart, which would cause our drag
+        // start event to be handled twice.
+        // One way to prevent that would be to call evt.preventDefault() in the touchstart handler,
+        // but that would also prevent scrolling, which we do not want.
+        // Instead of preventing the default, we use the handled_by_touch flag, which we set to true
+        // in the touchstart handler (and set it back to false after the event is processed).
+        // If the mousedown handler sees the flag set to true, it will simply ignore the event.
+        var handled_by_touch = false;
+
+        // Mousedown events should start the drag immediately.
+        $container.on('mousedown', '.option[draggable=true]', function(evt) {
+            if (!handled_by_touch) {
+                evt.preventDefault();
+                var $item = $(this);
+                var drag_origin = {x: pageX(evt), y: pageY(evt)};
+                onDragStart('mouse', $(this), drag_origin);
             }
         });
-    };
 
-    var grabItem = function($item) {
-        var item_id = $item.data('value');
-        setGrabbedState(item_id, true);
-        updateDOM();
-    };
-
-    var releaseItem = function($item) {
-        var item_id = $item.data('value');
-        setGrabbedState(item_id, false);
-        updateDOM();
-    };
-
-    var setGrabbedState = function(item_id, grabbed) {
-        for (var i = 0; i < configuration.items.length; i++) {
-            if (configuration.items[i].id === item_id) {
-                configuration.items[i].grabbed = grabbed;
-            }
-        }
-    };
-
-    var destroyDraggable = function() {
-        $root.find('.item-bank .option[data-drag-disabled=true]').each(function() {
+        // Touchstart events should start the event after a timeout.
+        // If the user starts moving the finger during the timeout, the drag should be cancelled.
+        // This allows users to scroll the item bank with their finger without accidentally starting
+        // to drag items.
+        $container.on('touchstart', '.option[draggable=true]', function(evt) {
+            handled_by_touch = true;
             var $item = $(this);
+            var drag_origin = {x: pageX(evt), y: pageY(evt)};
+            var timeout_id = null;
+            var cancelDrag = function() {
+                clearTimeout(timeout_id);
+                // We need to reset the handled_by_touch in a timeout,
+                // so that it happens after the potentially emulated mousedown event.
+                setTimeout(function() {
+                    handled_by_touch = false;
+                }, 0);
+            };
 
-            $item.off();
+            $item.one('touchmove touchend touchcancel', cancelDrag);
 
-            try {
-                $item.draggable('destroy');
-            } catch (e) {
-                // Destroying the draggable will fail if draggable was
-                // not initialized in the first place. Ignore the exception.
-            }
+            timeout_id = setTimeout(function() {
+                handled_by_touch = false;
+                $item.off('touchmove touchend touchcancel', cancelDrag);
+                onDragStart('touch', $item, drag_origin);
+            }, TOUCH_DRAG_DELAY);
+        });
+
+        // Prevent long tap on draggable items from causing the context menu to pop up on android.
+        $container.on('contextmenu', '.option[draggable=true]', function(evt) {
+            evt.preventDefault();
+        });
+
+        // Prevent touchmove events fired on the dragged item causing scroll.
+        $container.on('touchmove', '.dragged-items .options[draggable=true]', function(evt) {
+            evt.preventDefault();
         });
     };
 
-    var submitLocation = function(item_id, zone, x_percent, y_percent) {
+    var grabItem = function($item, interaction_type) {
+        var item_id = $item.data('value');
+        configuration.items.forEach(function(item) {
+            if (item.id === item_id) {
+                item.grabbed = true;
+                item.grabbed_with = interaction_type;
+            } else {
+                item.grabbed = false;
+                delete item.grabbed_with;
+            }
+        });
+        closePopup(false);
+        applyState();
+    };
+
+    var releaseGrabbedItems = function() {
+        configuration.items.forEach(function(item) {
+            item.grabbed = false;
+            delete item.grabbed_with;
+        });
+        applyState();
+    };
+
+    var submitLocation = function(item_id, zone) {
         if (!zone) {
             return;
         }
-        var url = runtime.handlerUrl(element, 'do_attempt');
+        var url = runtime.handlerUrl(element, 'drop_item');
         var data = {
             val: item_id,
-            zone: zone,
-            x_percent: x_percent,
-            y_percent: y_percent,
+            zone: zone
         };
 
         $.post(url, JSON.stringify(data), 'json')
             .done(function(data){
-                state.last_action_correct = data.correct_location;
-                if (data.correct_location) {
-                    state.items[item_id].correct_input = Boolean(data.correct);
-                    state.items[item_id].submitting_location = false;
-                } else {
-                    delete state.items[item_id];
-                }
-                state.feedback = data.feedback;
-                if (data.finished) {
-                    state.finished = true;
-                    state.overall_feedback = data.overall_feedback;
+                state.items[item_id].submitting_location = false;
+                // In standard mode we immediately return item to the bank if dropped on wrong zone.
+                // In assessment mode we leave it in the chosen zone until explicit answer submission.
+                if (configuration.mode === DragAndDropBlock.STANDARD_MODE) {
+                    state.last_action_correct = data.correct;
+                    state.feedback = data.feedback;
+                    state.grade = data.grade;
+                    if (!data.correct) {
+                        delete state.items[item_id];
+                    }
+                    if (data.finished) {
+                        state.finished = true;
+                        state.overall_feedback = data.overall_feedback;
+                    }
+                    setScreenReaderMessages();
                 }
                 applyState();
+                if (state.feedback && state.feedback.length > 0) {
+                    // Move focus the the close button of the feedback popup.
+                    focusItemFeedbackPopup();
+                } else {
+                    // Next tab press should take us to the "Go to Beginning" button.
+                    state.tab_to_go_to_beginning_button = true;
+                }
             })
             .fail(function (data) {
                 delete state.items[item_id];
@@ -803,68 +1690,36 @@ function DragAndDropBlock(runtime, element, configuration) {
             });
     };
 
-    var submitInput = function(evt) {
-        var item = $(evt.target).closest('.option');
-        var input_div = item.find('.numerical-input');
-        var input = input_div.find('.input');
-        var input_value = input.val();
-        var item_id = item.data('value');
-
-        if (!input_value) {
-            // Don't submit if the user didn't enter anything yet.
-            return;
-        }
-
-        state.items[item_id].input = input_value;
-        state.items[item_id].submitting_input = true;
-        applyState();
-
-        var url = runtime.handlerUrl(element, 'do_attempt');
-        var data = {val: item_id, input: input_value};
-        $.post(url, JSON.stringify(data), 'json')
-            .done(function(data) {
-                state.last_action_correct = data.correct;
-                state.items[item_id].submitting_input = false;
-                state.items[item_id].correct_input = data.correct;
-                state.feedback = data.feedback;
-                if (data.finished) {
-                    state.finished = true;
-                    state.overall_feedback = data.overall_feedback;
-                }
-                applyState();
-            })
-            .fail(function(data) {
-                state.items[item_id].submitting_input = false;
-                applyState();
-            });
-    };
-
-    var closePopup = function(evt) {
+    var closePopupEventHandler = function(evt) {
         if (!state.feedback) {
             return;
         }
 
         var target = $(evt.target);
-        var popup_box = '.xblock--drag-and-drop .popup';
-        var close_button = '.xblock--drag-and-drop .popup .close';
-        var submit_input_button = '.xblock--drag-and-drop .submit-input';
 
-        if (target.is(popup_box) || target.is(submit_input_button)) {
+        if (target.is(Selector.popup_box)) {
             return;
         }
-        if (target.parents(popup_box).length && !target.is(close_button)) {
+        if (target.parents(Selector.popup_box).length && !target.parent().is(Selector.close_button) && !target.is(Selector.close_button)) {
             return;
         }
 
-        state.closing = true;
-        previousFeedback = state.feedback;
-        if (target.is(close_button)) {
-            state.manually_closed = true;
-        } else {
-            state.manually_closed = false;
-        }
-
+        var manually_closed = target.is(Selector.close_button) || target.parent().is(Selector.close_button);
+        closePopup(manually_closed);
         applyState();
+
+        if (manually_closed) {
+            focusFirstDraggable();
+        }
+    };
+
+    var closePopup = function(manually_closed) {
+        // do not apply state here - callers are responsible to call it when other appropriate state changes are applied
+        if ($root.find(Selector.popup_box).is(":visible")) {
+            state.closing = true;
+            previousFeedback = state.feedback;
+            state.manually_closed = manually_closed;
+        }
     };
 
     var resetProblem = function(evt) {
@@ -873,56 +1728,138 @@ function DragAndDropBlock(runtime, element, configuration) {
             type: 'POST',
             url: runtime.handlerUrl(element, 'reset'),
             data: '{}',
+        }).done(function(data) {
+            state = data;
+            applyState();
+            focusFirstDraggable();
         });
-        state = {
-            'items': [],
-            'finished': false,
-            'overall_feedback': configuration.initial_feedback,
-        };
-        applyState();
     };
+
+    var showAnswer = function(evt) {
+        evt.preventDefault();
+        state.show_answer_spinner = true;
+        applyState();
+
+        $.ajax({
+            type: 'POST',
+            url: runtime.handlerUrl(element, 'show_answer'),
+            data: '{}',
+        }).done(function(data) {
+            state.items = data.items;
+            state.showing_answer = true;
+            delete state.feedback;
+        }).always(function() {
+            state.show_answer_spinner = false;
+            applyState();
+            $root.find('.item-bank').focus();
+        });
+    };
+
+    var doAttempt = function(evt) {
+        evt.preventDefault();
+        state.submit_spinner = true;
+        applyState();
+
+        $.ajax({
+            type: 'POST',
+            url: runtime.handlerUrl(element, "do_attempt"),
+            data: '{}'
+        }).done(function(data){
+            state.attempts = data.attempts;
+            state.grade = data.grade;
+            state.feedback = data.feedback;
+            state.overall_feedback = data.overall_feedback;
+            state.last_action_correct = data.correct;
+
+            if (attemptsRemain()) {
+                data.misplaced_items.forEach(function(misplaced_item_id) {
+                    delete state.items[misplaced_item_id]
+                });
+            } else {
+                state.finished = true;
+            }
+            setScreenReaderMessages();
+        }).always(function() {
+            state.submit_spinner = false;
+            applyState();
+            focusItemFeedbackPopup() || focusFirstDraggable();
+        });
+    };
+
+    var canSubmitAttempt = function() {
+        return Object.keys(state.items).length > 0 && attemptsRemain() && !submittingLocation();
+    };
+
+    var canReset = function() {
+        var any_items_placed = false;
+        // Now set any_items_placed to true if any items have been successfully placed on the board.
+        // Exclude just-dropped items that are making an AJAX call to the server, or else screen readers
+        // will read out "Reset problem" instead of the contents of the correct popup.
+        for (var key in state.items) {
+            if (state.items.hasOwnProperty(key)) {
+                if (!state.items[key].submitting_location) {
+                    any_items_placed = true;
+                    break;
+                }
+            }
+        }
+        return any_items_placed && (configuration.mode !== DragAndDropBlock.ASSESSMENT_MODE || attemptsRemain());
+    };
+
+    var canShowAnswer = function() {
+        return configuration.mode === DragAndDropBlock.ASSESSMENT_MODE && !attemptsRemain();
+    };
+
+    var attemptsRemain = function() {
+        return !configuration.max_attempts || configuration.max_attempts > state.attempts;
+    };
+
+    var submittingLocation = function() {
+        var result = false;
+        Object.keys(state.items).forEach(function(item_id) {
+            var item = state.items[item_id];
+            result = result || item.submitting_location;
+        });
+        return result;
+    }
 
     var render = function() {
         var items = configuration.items.map(function(item) {
-            var input = null;
             var item_user_state = state.items[item.id];
-            if (item.inputOptions) {
-                input = {
-                    is_visible: item_user_state && !item_user_state.submitting_location,
-                    has_value: Boolean(item_user_state && 'input' in item_user_state),
-                    value : (item_user_state && item_user_state.input) || '',
-                    class_name: undefined,
-                    xhr_active: (item_user_state && item_user_state.submitting_input)
-                };
-                if (input.has_value && !item_user_state.submitting_input) {
-                    input.class_name = item_user_state.correct_input ? 'correct' : 'incorrect';
-                }
-            }
             var grabbed = false;
             if (item.grabbed !== undefined) {
                 grabbed = item.grabbed;
             }
-            var placed = item_user_state && ('input' in item_user_state || item_user_state.correct_input);
+            var drag_disabled;
+            // In standard mode items placed in correct zone are no longer draggable.
+            // In assessment mode items are draggable and can be moved between zones
+            // until user explicitly submits the problem.
+            if (configuration.mode === DragAndDropBlock.STANDARD_MODE) {
+                drag_disabled = Boolean(state.finished || item_user_state);
+            } else {
+                drag_disabled = Boolean(state.finished);
+            }
             var itemProperties = {
                 value: item.id,
-                drag_disabled: Boolean(item_user_state || state.finished),
-                class_name: placed || state.finished ? 'fade' : undefined,
+                drag_disabled: drag_disabled,
+                focusable: !drag_disabled,
+                class_name: drag_disabled ? 'fade' : undefined,
                 xhr_active: (item_user_state && item_user_state.submitting_location),
-                input: input,
                 displayName: item.displayName,
                 imageURL: item.expandedImageURL,
                 imageDescription: item.imageDescription,
                 has_image: !!item.expandedImageURL,
                 grabbed: grabbed,
+                grabbed_with: item.grabbed_with,
+                is_dragged: Boolean(item.drag_position),
+                drag_position: item.drag_position,
+                is_placed: Boolean(item_user_state),
                 widthPercent: item.widthPercent, // widthPercent may be undefined (auto width)
                 imgNaturalWidth: item.imgNaturalWidth,
             };
             if (item_user_state) {
-                itemProperties.is_placed = true;
                 itemProperties.zone = item_user_state.zone;
                 itemProperties.zone_align = item_user_state.zone_align;
-                itemProperties.x_percent = item_user_state.x_percent;
-                itemProperties.y_percent = item_user_state.y_percent;
             }
             if (configuration.item_background_color) {
                 itemProperties.background_color = configuration.item_background_color;
@@ -933,13 +1870,25 @@ function DragAndDropBlock(runtime, element, configuration) {
             return itemProperties;
         });
 
+        // In assessment mode, it is possible to move items back to the bank, so the bank should be able to
+        // gain focus while keyboard placement is in progress.
+        var item_bank_focusable = (state.keyboard_placement_mode || state.showing_answer) &&
+            configuration.mode === DragAndDropBlock.ASSESSMENT_MODE;
+
         var context = {
+            drag_container_max_width: containerMaxWidth,
             // configuration - parts that never change:
             bg_image_width: bgImgNaturalWidth, // Not stored in configuration since it's unknown on the server side
             title_html: configuration.title,
             show_title: configuration.show_title,
+            mode: configuration.mode,
+            max_attempts: configuration.max_attempts,
+            graded: configuration.graded,
+            weighted_max_score: configuration.weighted_max_score,
             problem_html: configuration.problem_text,
             show_problem_header: configuration.show_problem_header,
+            show_submit_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
+            show_show_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
             target_img_src: configuration.target_img_expanded_url,
             target_img_description: configuration.target_img_description,
             display_zone_labels: configuration.display_zone_labels,
@@ -947,13 +1896,24 @@ function DragAndDropBlock(runtime, element, configuration) {
             zones: configuration.zones,
             items: items,
             // state - parts that can change:
+            attempts: state.attempts,
+            grade: state.grade,
             last_action_correct: state.last_action_correct,
-            popup_html: state.feedback || '',
-            feedback_html: $.trim(state.overall_feedback),
-            display_reset_button: Object.keys(state.items).length > 0,
+            item_bank_focusable: item_bank_focusable,
+            feedback_messages: state.feedback,
+            overall_feedback_messages: state.overall_feedback,
+            disable_reset_button: !canReset(),
+            disable_show_answer_button: !canShowAnswer(),
+            disable_submit_button: !canSubmitAttempt(),
+            submit_spinner: state.submit_spinner,
+            showing_answer: state.showing_answer,
+            show_answer_spinner: state.show_answer_spinner,
+            disable_go_to_beginning_button: !canGoToBeginning(),
+            show_go_to_beginning_button: state.go_to_beginning_button_visible,
+            screen_reader_messages: (state.screen_reader_messages || '')
         };
 
-        return DragAndDropBlock.renderView(context);
+        return renderView(context);
     };
 
     /**
@@ -974,35 +1934,12 @@ function DragAndDropBlock(runtime, element, configuration) {
     /**
      * migrateState: Apply any changes necessary to support the 'state' format used by older
      * versions of this XBlock.
-     * We have to do this in JS, not python, since some migrations depend on the image size,
+     * Most migrations are applied in python, but migrations may depend on the image size,
      * which is not known in Python-land.
      */
-    var migrateState = function(bg_image_width, bg_image_height) {
-        Object.keys(state.items).forEach(function(item_id) {
-            var item = state.items[item_id];
-            if (item.x_percent === undefined) {
-                // Find the matching item in the configuration
-                var width = 190;
-                var height = 44;
-                for (var i in configuration.items) {
-                    if (configuration.items[i].id === +item_id) {
-                        var size = configuration.items[i].size;
-                        // size is an object like '{width: "50px", height: "auto"}'
-                        if (parseInt(size.width ) > 0) {  width = parseInt(size.width); }
-                        if (parseInt(size.height) > 0) { height = parseInt(size.height); }
-                        break;
-                    }
-                }
-                // Update the user's item state to use centered relative coordinates
-                var left_px = parseFloat(item.left) - 220; // 220 px for the items container that used to be on the left
-                var top_px = parseFloat(item.top);
-                item.x_percent = (left_px + width/2) / bg_image_width * 100;
-                item.y_percent = (top_px + height/2) / bg_image_height * 100;
-                delete item.left;
-                delete item.top;
-                delete item.absolute;
-            }
-        });
+    var migrateState = function() {
+        // JS migrations were squashed down to "do nothing", but decided to keep the method
+        // to give a hint to future developers that migrations can be applied in JS
     };
 
     /**
@@ -1013,12 +1950,12 @@ function DragAndDropBlock(runtime, element, configuration) {
     var markItemZoneAlign = function() {
         var zone_alignments = {};
         configuration.zones.forEach(function(zone) {
-            if (!zone.align) zone.align = 'none';
+            if (!zone.align) zone.align = DEFAULT_ZONE_ALIGN;
             zone_alignments[zone.uid] = zone.align;
         });
         Object.keys(state.items).forEach(function(item_id) {
             var item = state.items[item_id];
-            item.zone_align = zone_alignments[item.zone] || 'none';
+            item.zone_align = zone_alignments[item.zone] || DEFAULT_ZONE_ALIGN;
         });
     };
 

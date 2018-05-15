@@ -1,0 +1,49 @@
+{
+  "zones": [
+    {
+      "width": 200,
+      "title": "Zone 1",
+      "height": 100,
+      "y": "200",
+      "x": "100",
+      "uid": "zone-1"
+    },
+    {
+      "width": 200,
+      "title": "Zone 2",
+      "height": 100,
+      "y": 0,
+      "x": 0,
+      "uid": "zone-2"
+    }
+  ],
+  "items": [
+    {
+      "displayName": "Has name",
+      "feedback": {
+        "incorrect": "No",
+        "correct": "Yes"
+      },
+      "zones": [
+        "zone-1"
+      ],
+      "imageURL": "",
+      "id": 0
+    },
+    {
+      "displayName": "",
+      "feedback": {
+        "incorrect": "No",
+        "correct": "Yes"
+      },
+      "zone": "zone-2",
+      "imageURL": "https://placehold.it/100x100",
+      "id": 1
+    }
+  ],
+  "feedback": {
+    "start": "Start feedback",
+    "finish": "Finish feedback"
+  }
+}
+

@@ -11,9 +11,8 @@ The editor is fully guided. Features include:
 * custom zone labels
 * ability to show or hide zone borders
 * custom text and background colors for items
-* optional auto-alignment for items (left, right, center)
+* auto-alignment for items: left, right, center
 * image items
-* items prompting for additional (numerical) input after being dropped
 * decoy items that don't have a zone
 * feedback popups for both correct and incorrect attempts
 * introductory and final feedback
@@ -24,12 +23,12 @@ refreshes. All checking and record keeping is done on the server side.
 The following screenshot shows the Drag and Drop XBlock rendered
 inside the edX LMS before the user starts solving the problem:
 
-![Student view start](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/c955a38dc3a1aaf609c586d293ce19b282e11ffd/doc/img/student-view-start.png)
+![Student view start](/doc/img/student-view-start.png)
 
 This screenshot shows the XBlock after the learner successfully
 completed the Drag and Drop problem:
 
-![Student view finish](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/c955a38dc3a1aaf609c586d293ce19b282e11ffd/doc/img/student-view-finish.png)
+![Student view finish](/doc/img/student-view-finish.png)
 
 Installation
 ------------
@@ -80,14 +79,11 @@ potentially diverse audiences.
 Enabling in Studio
 ------------------
 
-You can enable the Drag and Drop XBlock in Studio through the Advanced
-Settings.
+Drag and Drop v2 XBlock is already included in Open edX.
 
-1. From the main page of a specific course, navigate to `Settings ->
-   Advanced Settings` from the top menu.
-2. Check for the `Advanced Module List` policy key, and add
-   `"drag-and-drop-v2"` to the policy value list.
-3. Click the "Save changes" button.
+You will find it in `"Add New Component"` box in Studio:
+click the green `Problem` button, choose the the `Advanced` tab
+and choose `Drag and Drop`.
 
 Usage
 -----
@@ -95,15 +91,24 @@ Usage
 The Drag and Drop XBlock features an interactive editor. Add the Drag
 and Drop component to a lesson, then click the `EDIT` button.
 
-![Edit view](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/c955a38dc3a1aaf609c586d293ce19b282e11ffd/doc/img/edit-view.png)
+![Edit view](/doc/img/edit-view.png)
 
-In the first step, you can set some basic properties of the component,
-such as the title, the maximum score, the problem text to render
-above the background image, the introductory feedback (shown
-initially), and the final feedback (shown after the learner
-successfully completes the drag and drop problem).
+In the first step, you can set some basic properties of the component, such as
+the title, the problem mode, the maximum number of attempts, the maximum score,
+the problem text to render above the background image, the introductory feedback
+(shown initially), and the final feedback (shown after the learner successfully
+completes the drag and drop problem, or when the learner runs out of attempts).
 
-![Drop zone edit](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/ebd0b52d971bbf93b9c3873f310bd72d336d865b/doc/img/edit-view-zones.png)
+There are two problem modes available:
+
+* **Standard**: In this mode, the learner gets immediate feedback on each
+  attempt to place an item, and the number of attempts is not limited.
+* **Assessment**: In this mode, the learner places all items on the board and
+  then clicks a "Submit" button to get feedback.  The number of attempts can be
+  limited.  When all attempts are used, the learner can click a "Show Answer"
+  button to temporarily place items on their correct drop zones.
+
+![Drop zone edit](/doc/img/edit-view-zones.png)
 
 In the next step, you set the URL and description for the background
 image and define the properties of the drop zones. For each zone you
@@ -115,43 +120,68 @@ whether or not to display borders outlining the zones. It is possible
 to define an arbitrary number of drop zones as long as their labels
 are unique.
 
-Additionally, you can specify the alignment for items once they are dropped in
-the zone.  No alignment is the default, and causes items to stay where the
-learner drops them.  Left alignment causes dropped items to be placed from left
+You can specify the alignment for items once they are dropped in
+the zone. Centered alignment is the default, and places items from top to bottom
+along the center of the zone. Left alignment causes dropped items to be placed from left
 to right across the zone. Right alignment causes the items to be placed from
-right to left across the zone. Center alignment places items from top to bottom
-along the center of the zone. If left, right, or center alignment is chosen,
-items dropped in a zone will not overlap, but if the zone is not made large
-enough for all its items, they will overflow the bottom of the zone, and
-potentially, overlap the zones below.
+right to left across the zone. Items dropped in a zone will not overlap,
+but if the zone is not made large enough for all its items, they will overflow the bottom
+of the zone, and potentially overlap the zones below.
 
-![Drag item edit](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/c955a38dc3a1aaf609c586d293ce19b282e11ffd/doc/img/edit-view-items.png)
+![Drag item edit](/doc/img/edit-view-items.png)
 
-In the final step, you define the background and text color for drag
-items, as well as the drag items themselves. A drag item can contain
-either text or an image. You can define custom success and error
-feedback for each item. The feedback text is displayed in a popup
-after the learner drops the item on a zone - the success feedback is
-shown if the item is dropped on the correct zone, while the error
-feedback is shown when dropping the item on an incorrect drop zone.
+In the final step, you define the background and text color for drag items, as
+well as the drag items themselves. A drag item can contain either text or an
+image. You can define custom success and error feedback for each item. In
+standard mode, the feedback text is displayed in a popup after the learner drops
+the item on a zone - the success feedback is shown if the item is dropped on a
+correct zone, while the error feedback is shown when dropping the item on an
+incorrect drop zone.  In assessment mode, the success feedback texts
+are not used, while error feedback texts are shown when learner submits a solution.
 
-Additionally, items can have a numerical value (and an optional error
-margin) associated with them. When a learner drops an item that has a
-numerical value on the correct zone, an input field for entering a
-value is shown next to the item. The value that the learner submits is
-checked against the expected value for the item. If you also specify a
-margin, the value entered by the learner will be considered correct if
-it does not differ from the expected value by more than that margin
-(and incorrect otherwise).
+You can select any number of zones for an item to belong to using
+the checkboxes; all zones defined in the previous step are available.
+You can leave all of the checkboxes unchecked in order to create a
+"decoy" item that doesn't belong to any zone.
 
-![Zone dropdown](https://raw.githubusercontent.com/edx-solutions/xblock-drag-and-drop-v2/c955a38dc3a1aaf609c586d293ce19b282e11ffd/doc/img/edit-view-zone-dropdown.png)
+You can define an arbitrary number of drag items, each of which may
+be attached to any number of zones.
 
-The zone that an item belongs to is selected from a dropdown that
-includes all drop zones defined in the previous step and a `none`
-option that can be used for "decoy" items - items that don't belong to
-any zone.
+"Maximum items per Zone" setting controls how many items can be dropped into a
+single zone, allowing some degree of control over items overlapping zones below.
 
-You can define an arbitrary number of drag items.
+Scoring
+-------
+
+Student assessment scores for the Drag and Drop XBlock are calculated according
+to the following formula:
+
+    score = (C + D) / T
+
+Where *C* is the number of correctly placed regular items, *D* is the number of
+decoy items that were correctly left unplaced, and *T* is the total number of
+items available.
+
+Example: consider a Drag and Drop instance configured with a total of four
+items, of which three are regular items and one is a decoy.  If a learner
+places two of the normal items correctly and one incorrectly (`C = 2`), and
+wrongly places the decoy item onto a drop zone (`D = 0`), that learner's score
+will be `50%`, as given by:
+
+    score = (2 + 0) / 4
+
+If the learner were to then move the decoy item back to the bank (`D = 1`) and
+move the wrongly placed regular item to the correct dropzone (`C = 3`), their
+score would be `100%`:
+
+    score = (3 + 1) / 4
+
+Demo Course
+-----------
+
+Export of a demo course that showcases various Drag and Drop v2
+features is available at
+[github.com/open-craft/demo-courses/archive/drag-and-drop-v2.tar.gz](https://github.com/open-craft/demo-courses/archive/drag-and-drop-v2.tar.gz).
 
 Analytics Events
 ----------------
@@ -261,11 +291,11 @@ Example ("common" fields that are not interesting in this context have been left
 {
 ...
     "event": {
-      "input": null,
-      "is_correct": true,                                  --  False if there is an input in the draggable item, and the learner provided the wrong answer. Otherwise true.
-      "is_correct_location": true,                         --  Whether the draggable item has been placed in the correct location.
+      "is_correct": true,                                  --  Whether the draggable item has been placed in the correct location.
+      "item": "Goes to the top",                           --  Name, or in the absence thereof, image URL of the draggable item.
       "item_id": 0,                                        --  ID of the draggable item.
       "location": "The Top Zone",                          --  Name of the location the item was dragged to.
+      "location_id": 1,                                    --  ID of the location the item was dragged to.
     },
     "event_source": "server",                              --  Common field, contains event source.
     "event_type": "edx.drag_and_drop_v2.dropped",          --  Common field, contains event name.
@@ -284,11 +314,11 @@ Real event example (taken from a devstack):
     "referer": "http://example.com/courses/course-v1:DnD+DnD+DnD/courseware/ec546c58d2f447b7a9223c57b5de7344/756071f8de7f47c3b0ae726586ebbe16/1?activate_block_id=block-v1%3ADnD%2BDnD%2BDnD%2Btype%40vertical%2Bblock%40d2fc47476ca14c55816c4a1264a27280",
     "accept_language": "en;q=1.0, en;q=0.5",
     "event": {
-        "is_correct_location": true,
         "is_correct": true,
         "location": "The Top Zone",
+        "location_id": 1,
+        "item": "Goes to the top",
         "item_id": 0,
-        "input": null
     },
     "event_source": "server",
     "context": {
@@ -437,3 +467,91 @@ Similarly, you can run the integration test suite via
 ```bash
 $ python run_tests.py tests/integration/
 ```
+
+
+i18n compatibility
+==================
+
+According to [edX docs on XBlock i18n][edx-docs-i18n], LMS runtime is capable of supporting XBlock i18n and l10n.
+To comply with l10n requirements, XBlock is supposed to provide translations in
+`xblock_package_root/translations/locale_code/LC_MESSAGES/text.po` folder in GNU Gettext Portable Object file format.
+
+[edx-docs-i18n]: http://edx.readthedocs.io/projects/xblock-tutorial/en/latest/edx_platform/edx_lms.html#internationalization-support
+
+Drag and Drop v2 XBlock aims to comply with i18n requirements for Open edX platform, including a stricter set of
+requirements for `edx.org` itself, thus providing the required files. So far only two translations are available:
+
+* Default English translation
+* Fake "Esperanto" translation used to test i18n/l10n.
+
+Updates to translated strings are supposed to be propagated to `text.po` files. Unfortunately, the process is mostly
+manual. EdX [i18n_tools][edx-i18n-tools] might be helpful, but they are too tied to edx-platform, so as of Aug 2016
+do not provide any benefits over manual approach.
+
+[edx-i18n-tools]: https://github.com/edx/i18n-tools
+
+In lieu of automated solution (i.e. edX i18n-tools supporting XBlock use case), one can use GNU Gettext toolkit
+to simplify manual updating `text.po` files.
+
+This command scrapes all the strings in all `*.py` files in `drag_and_drop_v2` folder and outputs `messages.po` file
+ in `drag_and_drop_v2` folder:
+
+```
+~/xblock-drag-and-drop-v2/drag_and_drop_v2$ find . -name "*.py" | xargs xgettext --language=python --add-comments="Translators:"
+```
+
+Javascript command is a little bit more verbose:
+
+```
+~/xblock-drag-and-drop-v2/drag_and_drop_v2$ find . -name "*.js" -o  -path ./public/js/vendor -prune -a -type f | xargs xgettext --language=javascript --from-code=utf-8 --add-comments="Translators:"
+```
+
+Note that both commands generate partial `messages.po` file - JS or python only, while `text.po` is supposed to contain
+all translatable strings. Both commands can be modified to append to *existing* `messages.po` file by adding
+`--join-existing` key.
+
+To check if `text.po` is correct, one can run `msgfmt` to build a `text.mo` file:
+
+```
+~/xblock-drag-and-drop-v2/drag_and_drop_v2$ msgfmt translations/en/LC_MESSAGES/text.po -o translations/en/LC_MESSAGES/text.mo
+```
+
+If everything is correct, it will silently exit and create `translations/en/LC_MESSAGES/text.mo` file.
+
+Building fake "Esperanto" translation
+-------------------------------------
+
+As previously said, this fake translation mainly exists for testing reasons. For edX platform it is built using Dummy
+translator from edX i18n-tools. Luckily, it is possible to use "translation" generation feature without the rest of
+i18n-tools.
+
+To do so, in any virtualenv, install i18n-tools, i.e.
+
+    (virtualenv)$ pip install -e git+https://github.com/edx/i18n-tools.git
+
+Then start python interpreter, import `Dummy` translator and follow instructions on `Dummy` docstring:
+
+    (virtualenv)$ python
+    >>> from i18n.dummy import Dummy
+    >>> help(Dummy)
+
+    # or just do
+    >>> conv = Dummy()
+    >>> print conv.convert("String to translate")
+
+Then copy output and paste it into `translations/eo/LC_MESSAGES/text.po`.
+
+Downloading translations from Transifex
+-------------------------------------
+
+If you want to download translations from Transifex install [Transifex client][transifex-client] and run this command while inside project root directory
+
+```bash
+$ tx pull -f --mode=reviewed -l en,ar,es_419,fr,he,hi,ko_KR,pt_BR,ru,zh_CN
+```
+
+[transifex-client]: https://docs.transifex.com/client/installing-the-client
+
+Releasing
+-------------------------------------
+To release a new version, update .travis.yml and setup.py to point to your new intended version number and create a new release with that version tag via Github.

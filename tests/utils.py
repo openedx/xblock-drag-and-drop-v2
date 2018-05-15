@@ -1,4 +1,5 @@
 import json
+import random
 import re
 
 from mock import patch
@@ -31,9 +32,23 @@ def make_block():
     return drag_and_drop_v2.DragAndDropBlock(runtime, field_data, scope_ids=scope_ids)
 
 
+def generate_max_and_attempts(count=100):
+    for _ in xrange(count):
+        max_attempts = random.randint(1, 100)
+        attempts = random.randint(0, 100)
+        expect_validation_error = max_attempts <= attempts
+        yield max_attempts, attempts, expect_validation_error
+
+
 class TestCaseMixin(object):
     """ Helpful mixins for unittest TestCase subclasses """
     maxDiff = None
+
+    DROP_ITEM_HANDLER = 'drop_item'
+    DO_ATTEMPT_HANDLER = 'do_attempt'
+    RESET_HANDLER = 'reset'
+    SHOW_ANSWER_HANDLER = 'show_answer'
+    USER_STATE_HANDLER = 'get_user_state'
 
     def patch_workbench(self):
         self.apply_patch(

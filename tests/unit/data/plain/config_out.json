@@ -1,5 +1,9 @@
 {
     "title": "DnDv2 XBlock with plain text instructions",
+    "mode": "standard",
+    "max_attempts": 0,
+    "graded": false,
+    "weighted_max_score": 1,
     "show_title": true,
     "problem_text": "Can you solve this drag-and-drop problem?",
     "show_problem_header": true,
@@ -7,10 +11,10 @@
     "target_img_description": "This describes the target image",
     "item_background_color": null,
     "item_text_color": null,
-    "initial_feedback": "This is the initial feedback.",
     "display_zone_borders": false,
     "display_zone_labels": false,
     "url_name": "test",
+    "max_items_per_zone": 4,
 
     "zones": [
         {
@@ -19,7 +23,8 @@
           "x": 234,
           "width": 345,
           "height": 456,
-          "uid": "zone-1"
+          "uid": "zone-1",
+          "align": "left"
         },
         {
           "title": "Zone 2",
@@ -27,7 +32,8 @@
           "x": 10,
           "width": 30,
           "height": 40,
-          "uid": "zone-2"
+          "uid": "zone-2",
+          "align": "center"
         }
     ],
 
@@ -36,29 +42,25 @@
           "displayName": "1",
           "imageURL": "",
           "expandedImageURL": "",
-          "id": 0,
-          "inputOptions": false
+          "id": 0
         },
         {
           "displayName": "2",
           "imageURL": "",
           "expandedImageURL": "",
-          "id": 1,
-          "inputOptions": true
+          "id": 1
         },
         {
           "displayName": "X",
           "imageURL": "/static/test_url_expansion",
           "expandedImageURL": "/course/test-course/assets/test_url_expansion",
-          "id": 2,
-          "inputOptions": false
+          "id": 2
         },
         {
           "displayName": "",
           "imageURL": "http://placehold.it/200x100",
           "expandedImageURL": "http://placehold.it/200x100",
-          "id": 3,
-          "inputOptions": false
+          "id": 3
         }
     ]
 }

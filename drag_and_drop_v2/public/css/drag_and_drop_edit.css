@@ -61,36 +61,31 @@
     position: relative;
 }
 
-.xblock--drag-and-drop--editor .tab::after,
-.xblock--drag-and-drop--editor .tab-footer::after {
+.xblock--drag-and-drop--editor .tab::after {
   content: "";
   display: table;
   clear: both;
 }
 
-.xblock--drag-and-drop--editor .tab h3,
-.xblock--drag-and-drop--editor .tab .h3 {
+.xblock--drag-and-drop--editor .tab h3 {
+    font-size: 18px;
+}
+
+.xblock--drag-and-drop--editor .tab h4,
+.xblock--drag-and-drop--editor .tab .h4 {
+    display: block;
+    font-size: 16px;
     margin: 20px 0 8px 0;
 }
 
-.xblock--drag-and-drop--editor .tab .h3 {
-    display: block;
-    font: inherit;
-    font-size: 100%;
+.xblock--drag-and-drop--editor .tab .items-form .item .row:first-of-type .h4 {
+    margin-top: 0;
 }
 
 .xblock--drag-and-drop--editor .tab-header,
-.xblock--drag-and-drop--editor .tab-content,
-.xblock--drag-and-drop--editor .tab-footer {
+.xblock--drag-and-drop--editor .tab-content {
     width: 96%;
     margin: 2%;
-}
-
-.xblock--drag-and-drop--editor .tab-footer {
-    height: 25px;
-    position: relative;
-    display: block;
-    float: left;
 }
 
 .xblock--drag-and-drop--editor .items {
@@ -98,9 +93,59 @@
     margin: 10px 0 0 0;
 }
 
-.xblock--drag-and-drop--editor .target-image-form input,
-.xblock--drag-and-drop--editor .target-image-form textarea {
+.xblock--drag-and-drop--editor .target-image-form .background-image-type {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.xblock--drag-and-drop--editor .target-image-form .background-auto {
+    margin-top: 20px;
+}
+
+.xblock--drag-and-drop--editor .target-image-form input[type="text"] {
     width: 50%;
+}
+.xblock--drag-and-drop--editor .target-image-form textarea {
+    width: 97%;
+}
+
+.xblock--drag-and-drop--editor .target-image-form textarea {
+    display: block;
+}
+
+.xblock--drag-and-drop--editor .target-image-form .background-auto .autozone-layout,
+.xblock--drag-and-drop--editor .target-image-form .background-auto .autozone-size {
+    width: 4em;
+}
+
+.xblock--drag-and-drop--editor input,
+.xblock--drag-and-drop--editor textarea {
+    box-sizing: border-box;
+    font-size: 14px;
+    background: #fff;
+    box-shadow: none;
+    padding: 6px 8px;
+    border: 1px solid #b2b2b2;
+    color: #4c4c4c;
+}
+
+.xblock--drag-and-drop--editor label > span {
+    display: inline-block;
+    margin-bottom: 0.25em;
+}
+
+.xblock--drag-and-drop--editor label.checkbox-label {
+    font-size: 14px;
+}
+
+/* Main Tab */
+.xblock--drag-and-drop--editor .feedback-tab input,
+.xblock--drag-and-drop--editor .feedback-tab select {
+    display: block;
+}
+
+.xblock--drag-and-drop--editor .feedback-tab input[type=checkbox] {
+    display: inline-block;
 }
 
 /* Zones Tab */
@@ -117,7 +162,6 @@
   width: 40%;
   max-width: 50%;
   min-width: 330px;
-  margin-right: 15px;
 }
 
 .xblock--drag-and-drop--editor .zones-tab .tab-content .target {
@@ -132,16 +176,42 @@
   max-width: 100%;
 }
 
-.xblock--drag-and-drop--editor .zones-form .zone-row label {
-    display: inline-block;
-    width: 18%;
+.xblock--drag-and-drop--editor .zones-form .zone-row {
+    background-color: #b1d9f1;
+    padding: 1rem;
+    margin-bottom: 2rem;
 }
 
-.xblock--drag-and-drop--editor .zones-form .zone-row > input {
-    width: 60%;
+.xblock--drag-and-drop--editor .zones-form .zone-row label {
+    display: block;
+}
+
+.xblock--drag-and-drop--editor .zones-form .zone-row label > span {
+    display: inline-block;
+    font-size: 14px;
+    min-width: 8rem;
+}
+
+.xblock--drag-and-drop--editor .zones-form .zone-row label > input {
+    width: 63%;
     margin: 0 0 5px;
     line-height: 2.664rem;  /* .title gets line-height from a Studio rule that does not apply to .description;
                                here we make sure that both input fields get the same value for line-height */
+}
+
+.xblock--drag-and-drop--editor .zones-form .zone-row .layout {
+    margin: 2rem 0;
+}
+
+.xblock--drag-and-drop--editor .zones-form .zone-row .layout label {
+    display: inline-block;
+    width: 45%;
+}
+
+.xblock--drag-and-drop--editor .zones-form .zone-row .layout .zone-size,
+.xblock--drag-and-drop--editor .zones-form .zone-row .layout .zone-coord {
+    width: 35%;
+    line-height: inherit;
 }
 
 .xblock--drag-and-drop--editor .zones-form .zone-row .alignment {
@@ -149,22 +219,14 @@
 }
 
 
-.xblock--drag-and-drop--editor .zones-form .zone-row .layout .size,
-.xblock--drag-and-drop--editor .zones-form .zone-row .layout .coord {
-    width: 15%;
-    margin: 0 19px 5px 0;
-}
-
 .xblock--drag-and-drop--editor .feedback-form textarea {
     width: 99%;
     height: 128px;
 }
 
-.xblock--drag-and-drop--editor .zones-form .zones-form-help,
-.xblock--drag-and-drop--editor .target-image-form .target-image-form-help,
-.xblock--drag-and-drop--editor .item-styles-form .item-styles-form-help {
-    margin-top: 5px;
-    font-size: small;
+.xblock--drag-and-drop--editor .form-help {
+    margin: 0.5rem 0 1rem;
+    font-size: 12px;
 }
 
 .xblock--drag-and-drop--editor .item-styles-form,
@@ -173,49 +235,56 @@
 }
 
 .xblock--drag-and-drop--editor .items-form .item {
-    background-color: #8fcaec;
-    padding: 10px 0 1px;
-    margin: 15px 0;
+    background-color: #b1d9f1;
+    padding: 2rem;
+    margin-bottom: 2rem;
 }
 
-.xblock--drag-and-drop--editor .items-form label {
-    margin: 0 1%;
-}
-
-.xblock--drag-and-drop--editor .items-form input,
 .xblock--drag-and-drop--editor .items-form select {
     width: 35%;
 }
 
+.xblock--drag-and-drop--editor .items-form .zone-checkbox {
+    width: initial;
+}
+
+.xblock--drag-and-drop--editor .items-form .item-text,
 .xblock--drag-and-drop--editor .items-form .item-image-url {
-    width: 81%;
-    margin: 0 1%;
+    width: 50%;
 }
 
 .xblock--drag-and-drop--editor .items-form .item-width {
     width: 50px;
 }
 
-.xblock--drag-and-drop--editor .items-form .item-numerical-value,
-.xblock--drag-and-drop--editor .items-form .item-numerical-margin {
-    margin: 0 1%;
-    width: 50%;
-}
-
 .xblock--drag-and-drop--editor .items-form textarea {
     width: 97%;
-    margin: 0 1%;
 }
 
-.xblock--drag-and-drop--editor .items-form .row {
-    margin-bottom: 20px;
-}
 .xblock--drag-and-drop--editor .items-form .row.advanced {
     display: none;
 }
 .xblock--drag-and-drop--editor .items-form .row.advanced-link {
-    padding-left: 1em;
-    font-size: 80%;
+    font-size: 12px;
+    margin-top: 2em;
+}
+.xblock--drag-and-drop--editor .items-form .row.advanced-link button {
+    background: none;
+    border: none;
+    color: #4c4c4c;
+}
+.xblock--drag-and-drop--editor .items-form .row.advanced-link button:before {
+    content: '\25B6';
+    margin-right: 0.5em;
+}
+.rtl .xblock--drag-and-drop--editor .items-form .row.advanced-link button:before {
+    content: '\25C0';
+    margin-left: 0.5em;
+    margin-right: 0;
+}
+
+.xblock--drag-and-drop-editor .items-form .zone-checkbox-row {
+    margin-bottom: 0px;
 }
 
 /** Buttons **/
@@ -227,47 +296,33 @@
     padding: 5px 10px;
 }
 
-.xblock--drag-and-drop--editor .btn:hover {
-    opacity: 0.8;
-    cursor: pointer;
-}
-
+.xblock--drag-and-drop--editor .btn:hover,
 .xblock--drag-and-drop--editor .btn:focus {
-    outline: none;
-    opacity: 0.5;
+    background-color: #296ba5;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.5);
 }
 
-.xblock--drag-and-drop--editor .add-element {
-    text-decoration: none;
-    color: #1d5280;
-}
-
-.xblock--drag-and-drop--editor .remove-zone {
-    float: right;
-    margin-top: 2px;
-    margin-right: 16px;
-}
-
+.xblock--drag-and-drop--editor .remove-zone,
 .xblock--drag-and-drop--editor .remove-item {
-    display: inline-block;
-    margin-left: 95px;
+    float: right;
+    padding: 3px;
+    border-radius: 12px;
+}
+.rtl .xblock--drag-and-drop--editor .remove-zone,
+.rtl .xblock--drag-and-drop--editor .remove-item {
+    float: left;
 }
 
 .xblock--drag-and-drop--editor .icon {
     width: 14px;
     height: 14px;
     border-radius: 7px;
-    background-color: #1d5280;
-    position: relative;
-    float: left;
-    margin: 0 5px 0 0;
+    display: inline-block;
 }
 
-.xblock--drag-and-drop--editor .add-zone:hover,
-.xblock--drag-and-drop--editor .add-zone:hover .icon,
-.xblock--drag-and-drop--editor .remove-zone:hover,
-.xblock--drag-and-drop--editor .remove-zone:hover .icon {
-    opacity: 0.7;
+.xblock--drag-and-drop--editor .remove-zone .icon,
+.xblock--drag-and-drop--editor .remove-item .icon {
+    display: block;
 }
 
 .xblock--drag-and-drop--editor .tab .field-error {
@@ -329,13 +384,4 @@
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
-}
-
-.xblock--drag-and-drop--editor .remove-item .icon.remove {
-    background-color: #fff;
-    color: #0072a7;  /* Override default color from Studio to ensure contrast is large enough */
-}
-.xblock--drag-and-drop--editor .remove-item .icon.remove:before,
-.xblock--drag-and-drop--editor .remove-item .icon.remove:after {
-    background-color: #1d5280;
 }

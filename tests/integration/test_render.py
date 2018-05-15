@@ -2,6 +2,7 @@
 
 from ddt import ddt, unpack, data
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.keys import Keys
 
 from xblockutils.resources import ResourceLoader
 
@@ -146,12 +147,12 @@ class TestDragAndDropRender(BaseIntegrationTest):
             self.assertEqual(item.get_attribute('draggable'), 'true')
             self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
             self.assertEqual(item.get_attribute('data-value'), str(index))
-            self.assertIn('ui-draggable', self.get_element_classes(item))
             self._test_item_style(item, color_settings)
             try:
                 background_image = item.find_element_by_css_selector('img')
             except NoSuchElementException:
-                self.assertEqual(item.text, self.ITEM_PROPERTIES[index]['text'])
+                item_content = item.find_element_by_css_selector('.item-content')
+                self.assertEqual(item_content.text, self.ITEM_PROPERTIES[index]['text'])
             else:
                 self.assertEqual(
                     background_image.get_attribute('alt'),
@@ -160,8 +161,13 @@ class TestDragAndDropRender(BaseIntegrationTest):
 
     def test_drag_container(self):
         self.load_scenario()
-        item_bank = self._page.find_element_by_css_selector('.drag-container')
-        self.assertEqual(item_bank.get_attribute('role'), 'application')
+        drag_container = self._page.find_element_by_css_selector('.drag-container')
+        self.assertIsNone(drag_container.get_attribute('role'))
+
+    def test_item_bank(self):
+        self.load_scenario()
+        item_bank = self._page.find_element_by_css_selector('.item-bank')
+        self.assertEqual(item_bank.get_attribute("aria-label"), 'Item Bank')
 
     def test_zones(self):
         self.load_scenario()
@@ -181,14 +187,13 @@ class TestDragAndDropRender(BaseIntegrationTest):
             self.assertEqual(zone.get_attribute('dropzone'), 'move')
             self.assertEqual(zone.get_attribute('aria-dropeffect'), 'move')
             self.assertEqual(zone.get_attribute('data-uid'), 'Zone {}'.format(zone_number))
-            self.assertEqual(zone.get_attribute('data-zone_align'), 'none')
-            self.assertIn('ui-droppable', self.get_element_classes(zone))
+            self.assertEqual(zone.get_attribute('data-zone_align'), 'center')
             zone_box_percentages = box_percentages[index]
             self._assert_box_percentages(  # pylint: disable=star-args
                 '#-Zone_{}'.format(zone_number), **zone_box_percentages
             )
             zone_name = zone.find_element_by_css_selector('p.zone-name')
-            self.assertEqual(zone_name.text, 'Zone {}'.format(zone_number))
+            self.assertEqual(zone_name.text, 'Zone {}\n, dropzone'.format(zone_number))
             zone_description = zone.find_element_by_css_selector('p.zone-description')
             self.assertEqual(zone_description.text, 'This describes zone {}'.format(zone_number))
             # Zone description should only be visible to screen readers:
@@ -200,30 +205,56 @@ class TestDragAndDropRender(BaseIntegrationTest):
         popup = self._get_popup()
         popup_content = self._get_popup_content()
         self.assertFalse(popup.is_displayed())
-        self.assertEqual(popup.get_attribute('class'), 'popup')
+        self.assertIn('popup', popup.get_attribute('class'))
         self.assertEqual(popup_content.text, "")
+
+    @data(None, Keys.RETURN)
+    def test_go_to_beginning_button(self, action_key):
+        self.load_scenario()
+        self.scroll_down(250)
+
+        button = self._get_go_to_beginning_button()
+        # Button is only visible to screen reader users by default.
+        self.assertIn('sr', button.get_attribute('class').split())
+        # Set focus to the element. We have to use execute_script here because while TAB-ing
+        # to the button to make it the active element works in selenium, the focus event is not
+        # emitted unless the Firefox window controlled by selenium is the focused window, which
+        # usually is not the case when running integration tests.
+        # See: https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/7346
+        self.browser.execute_script('$("button.go-to-beginning-button").focus()')
+
+        # For unknown reasons the element only becomes visible when focus() is called twice.
+        # See: https://openedx.atlassian.net/browse/TNL-6736
+        self.browser.execute_script('$("button.go-to-beginning-button").focus()')
+        self.assertFocused(button)
+        # Button should be visible when focused.
+        self.assertNotIn('sr', button.get_attribute('class').split())
+        # Click/activate the button to move focus to the top.
+        if action_key:
+            button.send_keys(action_key)
+        else:
+            button.click()
+        first_focusable_item = self._get_items()[0]
+        self.assertFocused(first_focusable_item)
+        # Button should only be visible to screen readers again.
+        self.assertIn('sr', button.get_attribute('class').split())
 
     def test_keyboard_help(self):
         self.load_scenario()
 
-        self._get_keyboard_help()
-        keyboard_help_button = self._get_keyboard_help_button()
         keyboard_help_dialog = self._get_keyboard_help_dialog()
         dialog_modal_overlay = keyboard_help_dialog.find_element_by_css_selector('.modal-window-overlay')
         dialog_modal = keyboard_help_dialog.find_element_by_css_selector('.modal-window')
 
-        self.assertEqual(keyboard_help_button.get_attribute('tabindex'), '0')
         self.assertFalse(dialog_modal_overlay.is_displayed())
         self.assertFalse(dialog_modal.is_displayed())
         self.assertEqual(dialog_modal.get_attribute('role'), 'dialog')
-        self.assertEqual(dialog_modal.get_attribute('aria-labelledby'), 'modal-window-title')
+        self.assertEqual(dialog_modal.get_attribute('aria-labelledby'), 'modal-window-title-')
 
     def test_feedback(self):
         self.load_scenario()
 
-        feedback = self._get_feedback()
         feedback_message = self._get_feedback_message()
-        self.assertEqual(feedback.get_attribute('aria-live'), 'polite')
         self.assertEqual(feedback_message.text, START_FEEDBACK)
 
     def test_background_image(self):
@@ -267,6 +298,23 @@ class TestDragAndDropRender(BaseIntegrationTest):
             zone_name = zone.find_element_by_css_selector('p.zone-name')
             self.assertNotIn('sr', zone_name.get_attribute('class'))
 
+    def test_element_as_jquery_does_not_break_load_event_listeners(self):
+        """
+        DragAndDropBlock.init should accept a jQuery object or a DOM element.
+
+        Some XBlock initialization routes supply the element argument as a plain DOM element, others pass in a jQuery
+        object. DragAndDropBlock.init should cope with either, instead of throwing a TypeError when trying to call
+        addEventListener on jQuery objects, which would cause an infinite "loading" message when adding the block to a
+        unit in Studio.
+        """
+        self.load_scenario()
+
+        for entry in self.browser.get_log('browser'):
+            self.assertNotEqual(
+                'TypeError: element.addEventListener is not a function',
+                entry['message']
+            )
+
 
 @ddt
 class TestDragAndDropRenderZoneAlign(BaseIntegrationTest):
@@ -284,8 +332,8 @@ class TestDragAndDropRenderZoneAlign(BaseIntegrationTest):
 
     def test_zone_align(self):
         expected_alignments = {
-            "#-Zone_No_Align": "start",
-            "#-Zone_Invalid_Align": "start",
+            "#-Zone_No_Align": "center",
+            "#-Zone_Invalid_Align": "center",
             "#-Zone_Left_Align": "left",
             "#-Zone_Right_Align": "right",
             "#-Zone_Center_Align": "center"

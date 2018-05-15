@@ -1,10 +1,12 @@
 {
     "display_name": "DnDv2 XBlock with plain text instructions",
+    "max_attempts": 0,
     "show_title": true,
     "question_text": "Can you solve this drag-and-drop problem?",
     "show_question_header": true,
     "weight": 1,
     "item_background_color": "",
     "item_text_color": "",
-    "url_name": "test"
+    "url_name": "test",
+    "max_items_per_zone": 4
 }

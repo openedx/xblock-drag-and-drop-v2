@@ -19,6 +19,14 @@ msgid ""
 msgstr ""
 
 #: default_data.py
+msgid "Of course it goes here! It goes anywhere!"
+msgstr ""
+
+#: default_data.py
+msgid "Goes anywhere"
+msgstr ""
+
+#: default_data.py
 msgid "The Top Zone"
 msgstr ""
 
@@ -82,6 +90,11 @@ msgid "I don't belong anywhere"
 msgstr ""
 
 #: drag_and_drop_v2.py
+#: msgid "This setting limits the number of items that can be dropped into a single zone."
+#: msgstr ""
+
+#: drag_and_drop_v2.py
+#: templates/html/js_templates.html
 msgid "Title"
 msgstr ""
 
@@ -92,6 +105,34 @@ msgstr ""
 
 #: drag_and_drop_v2.py
 msgid "Drag and Drop"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid "Mode"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid ""
+"Standard mode: the problem provides immediate feedback each time a learner drops an item on a target zone. "
+"Assessment mode: the problem provides feedback only after a learner drops all available items on target zones."
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid "Standard"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid "Assessment"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid "Maximum attempts"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid ""
+"Defines the number of times a student can try to answer this problem. "
+"If the value is not set, infinite attempts are allowed."
 msgstr ""
 
 #: drag_and_drop_v2.py
@@ -107,7 +148,7 @@ msgid "Problem text"
 msgstr ""
 
 #: drag_and_drop_v2.py
-msgid "The description of the problem or instructions shown to the learner"
+msgid "The description of the problem or instructions shown to the learner."
 msgstr ""
 
 #: drag_and_drop_v2.py
@@ -119,11 +160,11 @@ msgid "Display the heading \"Problem\" above the problem text?"
 msgstr ""
 
 #: drag_and_drop_v2.py
-msgid "Weight"
+msgid "Problem Weight"
 msgstr ""
 
 #: drag_and_drop_v2.py
-msgid "The maximum score the learner can receive for the problem"
+msgid "Defines the number of points the problem is worth."
 msgstr ""
 
 #: drag_and_drop_v2.py
@@ -131,7 +172,7 @@ msgid "Item background color"
 msgstr ""
 
 #: drag_and_drop_v2.py
-msgid "The background color of draggable items in the problem."
+msgid "The background color of draggable items in the problem (example: 'blue' or '#0000ff')."
 msgstr ""
 
 #: drag_and_drop_v2.py
@@ -139,7 +180,7 @@ msgid "Item text color"
 msgstr ""
 
 #: drag_and_drop_v2.py
-msgid "Text color to use for draggable items."
+msgid "Text color to use for draggable items (example: 'white' or '#ffffff')."
 msgstr ""
 
 #: drag_and_drop_v2.py
@@ -160,7 +201,48 @@ msgid ""
 msgstr ""
 
 #: drag_and_drop_v2.py
+msgid "Number of attempts learner used"
+msgstr ""
+
+#: drag_and_drop_v2.py
 msgid "Indicates whether a learner has completed the problem at least once"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid "do_attempt handler should only be called for assessment mode"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid "Max number of attempts reached"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid "show_answer handler should only be called for assessment mode"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid "There are attempts remaining"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid "Unknown DnDv2 mode {mode} - course is misconfigured"
+msgstr ""
+
+#: templates/html/js_templates.html
+msgid "Remove zone"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid "Keeps maximum score achieved by student"
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid "Failed to parse \"Maximum items per zone\""
+msgstr ""
+
+#: drag_and_drop_v2.py
+msgid ""
+"\"Maximum items per zone\" should be positive integer, got {max_items_per_zone}"
 msgstr ""
 
 #: templates/html/js_templates.html
@@ -172,7 +254,7 @@ msgid "Description"
 msgstr ""
 
 #: templates/html/js_templates.html
-msgid "Describe this zone to non-visual users"
+msgid "Describe this zone to non-visual users."
 msgstr ""
 
 #: templates/html/js_templates.html
@@ -204,9 +286,11 @@ msgid "right"
 msgstr ""
 
 #: templates/html/js_templates.html
-msgid ""
-"Align dropped items to the left, center, or right.  Default is no alignment "
-"(items stay exactly where the user drops them)."
+msgid "Align dropped items to the left, center, or right."
+msgstr ""
+
+#: templates/html/js_templates.html
+msgid "Remove item"
 msgstr ""
 
 #: templates/html/js_templates.html
@@ -218,7 +302,7 @@ msgid "Image URL (alternative to the text)"
 msgstr ""
 
 #: templates/html/js_templates.html
-msgid "For example, http://example.com/image.png or /static/image.png"
+msgid "For example, 'http://example.com/image.png' or '/static/image.png'."
 msgstr ""
 
 #: templates/html/js_templates.html
@@ -228,11 +312,11 @@ msgid ""
 msgstr ""
 
 #: templates/html/js_templates.html
-msgid "Success Feedback"
+msgid "Success feedback"
 msgstr ""
 
 #: templates/html/js_templates.html
-msgid "Error Feedback"
+msgid "Error feedback"
 msgstr ""
 
 #: templates/html/js_templates.html
@@ -240,22 +324,17 @@ msgid "Show advanced settings"
 msgstr ""
 
 #: templates/html/js_templates.html
-msgid ""
-"Preferred width as a percentage of the background image width (or blank for "
-"automatic width):"
+msgid "Preferred width"
 msgstr ""
 
 #: templates/html/js_templates.html
 msgid ""
-"Optional numerical value (if you set this, learners will be prompted for "
-"this value after dropping this item)"
+"Specify preferred width as percentage of the background image width. "
+"Leave blank for automatic width."
 msgstr ""
 
 #: templates/html/js_templates.html
-msgid ""
-"Margin ± (when a numerical value is required, values entered by learners "
-"must not differ from the expected value by more than this margin; default "
-"is zero)"
+msgid "Use text that is clear and descriptive of the item to be placed."
 msgstr ""
 
 #: templates/html/drag_and_drop.html
@@ -269,34 +348,15 @@ msgid ""
 msgstr ""
 
 #: templates/html/drag_and_drop_edit.html
-msgid "Problem title"
+msgid "Introductory feedback"
 msgstr ""
 
 #: templates/html/drag_and_drop_edit.html
-msgid "Show title"
+msgid "Final feedback"
 msgstr ""
 
 #: templates/html/drag_and_drop_edit.html
-msgid "Maximum score"
-msgstr ""
-
-#: templates/html/drag_and_drop_edit.html
-msgid "Problem text"
-msgstr ""
-
-#: templates/html/drag_and_drop_edit.html
-msgid "Show \"Problem\" heading"
-msgstr ""
-
-#: templates/html/drag_and_drop_edit.html
-msgid "Introductory Feedback"
-msgstr ""
-
-#: templates/html/drag_and_drop_edit.html
-msgid "Final Feedback"
-msgstr ""
-
-#: templates/html/drag_and_drop_edit.html
+#: templates/html/js_templates.html
 msgid "Zones"
 msgstr ""
 
@@ -306,7 +366,7 @@ msgstr ""
 
 #: templates/html/drag_and_drop_edit.html
 msgid ""
-"For example, http://example.com/background.png or /static/background.png"
+"For example, 'http://example.com/background.png' or '/static/background.png'."
 msgstr ""
 
 #: templates/html/drag_and_drop_edit.html
@@ -327,6 +387,10 @@ msgid ""
 "                            to solve the problem even without seeing the "
 "image.\n"
 "                        "
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Zone definitions"
 msgstr ""
 
 #: templates/html/drag_and_drop_edit.html
@@ -354,14 +418,6 @@ msgid "Items"
 msgstr ""
 
 #: templates/html/drag_and_drop_edit.html
-msgid "Background color"
-msgstr ""
-
-#: templates/html/drag_and_drop_edit.html
-msgid "Text color"
-msgstr ""
-
-#: templates/html/drag_and_drop_edit.html
 msgid "Add an item"
 msgstr ""
 
@@ -382,11 +438,39 @@ msgid "ok"
 msgstr ""
 
 #: public/js/drag_and_drop.js
-msgid "Correctly placed in: "
+msgid "Item Bank"
 msgstr ""
 
 #: public/js/drag_and_drop.js
-msgid "Reset problem"
+msgid "Placed in: {zone_title}"
+msgstr ""
+
+#: public/js/drag_and_drop.js
+msgid "Correctly placed in: {zone_title}"
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:137
+msgid ", draggable, grabbed"
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:137
+msgid ", draggable"
+msgstr ""
+
+#: public/js/drag_and_drop.js
+msgid "Reset"
+msgstr ""
+
+#: public/js/drag_and_drop.js
+msgid "Show Answer"
+msgstr ""
+
+#: public/js/drag_and_drop.js
+msgid "Hide Answer"
+msgstr ""
+
+#: public/js/drag_and_drop.js
+msgid "Submit"
 msgstr ""
 
 #: public/js/drag_and_drop.js
@@ -397,34 +481,57 @@ msgstr ""
 msgid "Keyboard Help"
 msgstr ""
 
-#: public/js/drag_and_drop.js
-msgid "You can complete this problem using only your keyboard."
+#: drag_and_drop_v2/public/js/drag_and_drop.js:305
+msgid "This is a screen reader-friendly problem"
 msgstr ""
 
-#: public/js/drag_and_drop.js
-msgid "Use \"Tab\" and \"Shift-Tab\" to navigate between items and zones."
-msgstr ""
-
-#: public/js/drag_and_drop.js
+#: drag_and_drop_v2/public/js/drag_and_drop.js:306
 msgid ""
-"Press \"Enter\", \"Space\", \"Ctrl-m\", or \"⌘-m\" on an item to select it "
-"for dropping, then navigate to the zone you want to drop it on."
+"You can complete this problem using only your keyboard by following the "
+"guidance below:"
 msgstr ""
 
-#: public/js/drag_and_drop.js
+#: drag_and_drop_v2/public/js/drag_and_drop.js:307
 msgid ""
-"Press \"Enter\", \"Space\", \"Ctrl-m\", or \"⌘-m\" to drop the item on the "
-"current zone."
+"Drag and Drop problems consist of draggable items and dropzones. Users "
+"should select a draggable item with their keyboard and then navigate to an "
+"appropriate dropzone to drop it."
 msgstr ""
 
-#: public/js/drag_and_drop.js
+#: drag_and_drop_v2/public/js/drag_and_drop.js:309
 msgid ""
-"Press \"Esc\" if you want to cancel the drop operation (for example, to "
+"Use only TAB and SHIFT+TAB to navigate between draggable items and drop "
+"zones."
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:310
+msgid "Press CTRL+M to select a draggable item (effectively picking it up)."
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:311
+msgid ""
+"Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press CTRL"
+"+M once more to drop it here."
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:312
+msgid ""
+"Press ESC if you want to cancel the drop operation (for example, to "
 "select a different item)."
 msgstr ""
 
+#: drag_and_drop_v2/public/js/drag_and_drop.js:313
+msgid ""
+"TAB back to the list of draggable items and repeat this process until all of "
+"the draggable items have been placed on their respective dropzones."
+msgstr ""
+
 #: public/js/drag_and_drop.js
-msgid "OK"
+msgid "Close"
+msgstr ""
+
+#: public/js/drag_and_drop.js
+msgid "Go to Beginning"
 msgstr ""
 
 #: public/js/drag_and_drop.js
@@ -433,6 +540,14 @@ msgstr ""
 
 #: public/js/drag_and_drop.js
 msgid "An error occurred. Unable to load drag and drop problem."
+msgstr ""
+
+#: public/js/drag_and_drop.js
+msgid "You have used {used} of {total} attempts."
+msgstr ""
+
+#: public/js/drag_and_drop.js
+msgid "Some of your answers were not correct."
 msgstr ""
 
 #: public/js/drag_and_drop_edit.js
@@ -447,6 +562,87 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: public/js/drag_and_drop_edit.js
-msgid "Error: "
+# Translators: {earned} is the number of points earned. {possible} is the total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of points will always be at least 1. We pluralize based on the total number of points (example: 0/1 point; 1/2 points).
+#: public/js/drag_and_drop.js:453
+msgid "{earned}/{possible} point (graded)"
+msgid_plural "{earned}/{possible} points (graded)"
+msgstr[0] ""
+msgstr[1] ""
+
+# Translators: {earned} is the number of points earned. {possible} is the total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of points will always be at least 1. We pluralize based on the total number of points (example: 0/1 point; 1/2 points).
+#: public/js/drag_and_drop.js:459
+msgid "{earned}/{possible} point (ungraded)"
+msgid_plural "{earned}/{possible} points (ungraded)"
+msgstr[0] ""
+msgstr[1] ""
+
+# Translators: {possible} is the number of points possible (examples: 1, 3, 10).
+#: public/js/drag_and_drop.js:468
+msgid "{possible} point possible (graded)"
+msgid_plural "{possible} points possible (graded)"
+msgstr[0] ""
+msgstr[1] ""
+
+# Translators: {possible} is the number of points possible (examples: 1, 3, 10).
+#: public/js/drag_and_drop.js:474
+msgid "{possible} point possible (ungraded)"
+msgid_plural "{possible} points possible (ungraded)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:374
+#: drag_and_drop_v2/public/js/drag_and_drop.js:839
+msgid "Hints:"
 msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:224
+msgid ", dropzone"
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:479
+msgid "Drag and Drop Problem"
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:509
+msgid "Drop Targets"
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:517
+msgid "Actions"
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:12
+msgid "Submitting"
+msgstr ""
+
+#: utils.py:44
+msgid "Your highest score is {score}"
+msgstr ""
+
+#: utils.py:45
+msgid "Final attempt was used, highest score is {score}"
+msgstr ""
+
+#: utils.py:24
+msgid "Correctly placed {correct_count} item."
+msgid_plural "Correctly placed {correct_count} items."
+msgstr[0] ""
+msgstr[1] ""
+
+#: utils.py:62
+msgid "Misplaced {misplaced_count} item."
+msgid_plural "Misplaced {misplaced_count} items."
+msgstr[0] ""
+msgstr[1] ""
+
+#: utils.py:73
+msgid "Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
+msgid_plural "Misplaced {misplaced_count} items. Misplaced items were returned to item bank."
+msgstr[0] ""
+msgstr[1] ""
+
+#: utils.py:40
+msgid "Did not place {missing_count} required item."
+msgid_plural "Did not place {missing_count} required items."
+msgstr[0] ""
+msgstr[1] ""

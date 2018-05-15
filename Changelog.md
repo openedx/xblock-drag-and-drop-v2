@@ -1,3 +1,89 @@
+Version 2.1.4 (2017-11-06)
+---------------------------
+
+* Make XBlock always emit `progress` event explicitly when it is marked as complete.  
+
+Version 2.1.3 (2017-10-05)
+---------------------------
+
+* Prevent target image from shrinking in mobile, and make it scrollable (PR #135)
+
+Version 2.1.2 (2017-10-02)
+---------------------------
+
+* Ability to generate zones and background image automatically (PR #136)
+
+Version 2.1.1 (2017-09-26)
+---------------------------
+
+* Enforce XBlock variable types (PR #104)
+* Improvements for mobile (PRs #132, #133, #134)
+
+Version 2.0.14 (2017-01-17)
+---------------------------
+
+* Various accessibility improvements (PRs #110, #111, #112)
+
+Version 2.0.13 (2017-01-02)
+---------------------------
+
+* i18n improvements (PR #113)
+
+Version 2.0.12 (2016-11-08)
+---------------------------
+
+* ([#108](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/108)) Grading updates:
+    * [SOL-2030][sol-2030] Grade information is now displayed beneath the display name of the problem (similar to CAPA)
+    * [SOL-2094][sol-2094] Fixed problem preventing DnDv2 blocks from being scored or graded.
+    * Highest grade achieved is now displayed in feedback area
+    * Renamed "Maximum score" field to "Problem Weight" to be in line with CAPA problems and avoid confusion.
+    
+[sol-2030]: https://openedx.atlassian.net/browse/SOL-2030
+[sol-2094]: https://openedx.atlassian.net/browse/SOL-2094
+
+Version 2.0.11 (2016-10-03)
+---------------------------
+
+* ([#106](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/106)) Don't delete misplaced items on final attempt
+
+Version 2.0.10 (2016-09-22)
+---------------------------
+
+* ([#97](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/97)) Added "item" field to item.dropped event
+* ([#101](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/101)) Implement "show answer" button
+* ([#103](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/103)) Miscellaneous UI fixes
+* ([#105](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/105)) Correct an issue with background image selection
+
+Version 2.0.9 (2016-09-01)
+--------------------------
+
+* ([#88](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/88)) Cleaned up studio editor template: styling, help texts, accessibility attributes, classes instead of IDs, etc.
+* ([#95](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/95)) Fixed flaky selenium tests
+* ([#85](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/85)) Accessibility improvements for item feedback popup
+* ([#73](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/73)) Accessibility improvements for item, zone and background image when using keyboard mode
+* ([#96](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/96)) Decoy items are properly accounted for in grade calculation and problem completion condition
+* ([#98](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/98)) Support for legacy item state
+* ([#92](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/92)) Prevented overlapping item placement: option to keep dropped item where learner dropped it was removed; items always use automatic layouts (left/center/right)
+* ([#93](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/93)) Per-item error feedback is shown in assessment mode when an attempt is submitted
+
+Version 2.0.8 (2016-08-15)
+--------------------------
+
+* Numerical input feature removed
+* Multiple drop zones per item
+* Assessment mode - first version
+
+
+Version 2.0.7 (2016-06-10)
+--------------------------
+
+* Translation fix: removed duplicate entries in translation files
+
+Version 2.0.6 (2016-05-20)
+--------------------------
+
+* Accessibility fix: Removes role="application"
+
 Version 2.0.5 (2016-03-30)
 --------------------------
 
