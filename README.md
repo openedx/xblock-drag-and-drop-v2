@@ -518,10 +518,6 @@ To check if `text.po` is correct, one can run `msgfmt` to build a `text.mo` file
 
 If everything is correct, it will silently exit and create `translations/en/LC_MESSAGES/text.mo` file.
 
-**Note:** As of 2016-08-04, XBlock translation feature was (partially?) broken, so switching to other locale did not
-cause Drag and Drop v2 to be fully translated - only some strings that happen to exist in edx-platform translation
-files are translated. There's an ongoing effort to fix this problem: https://openedx.atlassian.net/browse/WL-230.
-
 Building fake "Esperanto" translation
 -------------------------------------
 
