@@ -118,8 +118,8 @@ msgid "Title"
 msgstr "Tïtlé Ⱡ'σяєм ιρѕ#"
 
 #: drag_and_drop_v2.py
-#: msgid "This setting limits the number of items that can be dropped into a single zone."
-#: msgstr "Thïs séttïng lïmïts thé nümßér öf ïtéms thät çän ßé dröppéd ïntö ä sïnglé zöné."
+msgid "This setting limits the number of items that can be dropped into a single zone."
+msgstr "Thïs séttïng lïmïts thé nümßér öf ïtéms thät çän ßé dröppéd ïntö ä sïnglé zöné."
 
 #: drag_and_drop_v2.py
 msgid ""

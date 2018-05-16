@@ -12,7 +12,7 @@ install:
     - "pip install selenium==2.53.0"
     - "pip uninstall -y xblock-drag-and-drop-v2"
     - "python setup.py sdist"
-    - "pip install dist/xblock-drag-and-drop-v2-2.1.6.tar.gz"
+    - "pip install dist/xblock-drag-and-drop-v2-2.1.7.tar.gz"
 script:
     - pep8 drag_and_drop_v2 tests --max-line-length=120
     - pylint drag_and_drop_v2
