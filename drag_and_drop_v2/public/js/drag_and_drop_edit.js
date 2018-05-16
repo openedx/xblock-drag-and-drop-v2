@@ -1,12 +1,20 @@
 function DragAndDropEditBlock(runtime, element, params) {
 
-    // Set up gettext in case it isn't available in the client runtime:
+    var gettext;
+    if ('DragAndDropI18N' in window) {
+        // Use DnDv2's local translations
+        gettext = window.DragAndDropI18N.gettext;
+    } else if ('gettext' in window) {
+        // Use edxapp's global translations
+        gettext = window.gettext;
+    }
     if (typeof gettext == "undefined") {
-        window.gettext = function gettext_stub(string) { return string; };
+        // No translations -- used by test environment
+        gettext = function(string) { return string; };
     }
 
     // Make gettext available in Handlebars templates
-    Handlebars.registerHelper('i18n', function(str) { return gettext(str); });
+    Handlebars.registerHelper('i18n', gettext);
     // Numeric rounding in Handlebars templates
     Handlebars.registerHelper('singleDecimalFloat', function(value) {
         if (value === "" || isNaN(Number(value))) {
@@ -90,8 +98,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                     });
                     if (! success) {
                         runtime.notify('error', {
-                            'title': window.gettext("There was an error with your form."),
-                            'message': window.gettext("Please check over your submission.")
+                            'title': gettext("There was an error with your form."),
+                            'message': gettext("Please check over your submission.")
                         });
                     }
                     return success
@@ -326,8 +334,8 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                             // Update zone obj
                             var zoneObj = {
-                                title: oldZone.title || 'Zone ' + num,
-                                description: oldZone.description,
+                                title: gettext(oldZone.title) || gettext('Zone {num}').replace('{num}', num),
+                                description: gettext(oldZone.description),
                                 // uid: unique ID for this zone. For backwards compatibility,
                                 // this field cannot be called "id" and must inherit the "title"
                                 // property if no 'uid' value is present, since old versions of
@@ -407,8 +415,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                                 _fn.build.$el.zonesPreview.append(
                                     _fn.tpl.zoneElement({
                                         uid: zoneObj.uid,
-                                        title: zoneObj.title,
-                                        description: zoneObj.description,
+                                        title: gettext(zoneObj.title),
+                                        description: gettext(zoneObj.description),
                                         x_percent: (+zoneObj.x) / imgWidth * 100,
                                         y_percent: (+zoneObj.y) / imgHeight * 100,
                                         width_percent: (+zoneObj.width) / imgWidth * 100,
@@ -476,8 +484,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                             });
                             if (!success) {
                                 runtime.notify('error', {
-                                    'title': window.gettext("There was an error with your form."),
-                                    'message': window.gettext("Please check the values you entered.")
+                                    'title': gettext("There was an error with your form."),
+                                    'message': gettext("Please check the values you entered.")
                                 });
                             }
                             return success;
@@ -562,7 +570,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                         zoneObjects.forEach(function(zoneObj) {
                             checkboxes.push(template({
                                 zoneUid: zoneObj.uid,
-                                title: zoneObj.title,
+                                title: gettext(zoneObj.title),
                                 checked: $.inArray(zoneObj.uid, selectedZones) !== -1 ? 'checked' : '',
                             }));
                         });
@@ -702,7 +710,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                             } else {
                                 var message = response.messages.join(", ");
                                 runtime.notify('error', {
-                                    'title': window.gettext("There was an error with your form."),
+                                    'title': gettext("There was an error with your form."),
                                     'message': message
                                 });
                             }
