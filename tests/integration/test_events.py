@@ -5,9 +5,8 @@ from selenium.webdriver.common.keys import Keys
 from workbench.runtime import WorkbenchRuntime
 
 from drag_and_drop_v2.default_data import (
-    TOP_ZONE_TITLE, TOP_ZONE_ID, MIDDLE_ZONE_TITLE, MIDDLE_ZONE_ID, BOTTOM_ZONE_ID,
-    ITEM_CORRECT_FEEDBACK, ITEM_INCORRECT_FEEDBACK,
-    ITEM_TOP_ZONE_NAME, ITEM_MIDDLE_ZONE_NAME,
+    TOP_ZONE_TITLE, TOP_ZONE_ID, MIDDLE_ZONE_TITLE, MIDDLE_ZONE_ID, BOTTOM_ZONE_ID, ITEM_CORRECT_FEEDBACK_TOP,
+    ITEM_INCORRECT_FEEDBACK, ITEM_TOP_ZONE_NAME, ITEM_MIDDLE_ZONE_NAME,
 )
 from tests.integration.test_base import BaseIntegrationTest, DefaultDataTestMixin, InteractionTestBase, ItemDefinition
 from tests.integration.test_interaction import DefaultDataTestMixin, ParameterizedTestsMixin
@@ -60,7 +59,7 @@ class EventsFiredTest(DefaultDataTestMixin, ParameterizedTestsMixin, BaseEventsT
         {
             'name': 'edx.drag_and_drop_v2.feedback.opened',
             'data': {
-                'content': ITEM_CORRECT_FEEDBACK.format(zone=TOP_ZONE_TITLE),
+                'content': ITEM_CORRECT_FEEDBACK_TOP,
                 'truncated': False,
             },
         },
@@ -68,7 +67,7 @@ class EventsFiredTest(DefaultDataTestMixin, ParameterizedTestsMixin, BaseEventsT
             'name': 'edx.drag_and_drop_v2.feedback.closed',
             'data': {
                 'manually': True,
-                'content': ITEM_CORRECT_FEEDBACK.format(zone=TOP_ZONE_TITLE),
+                'content': ITEM_CORRECT_FEEDBACK_TOP,
                 'truncated': False,
             },
         },

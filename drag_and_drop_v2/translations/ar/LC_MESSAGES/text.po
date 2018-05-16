@@ -95,8 +95,10 @@ msgstr "ينتقل إلى النطاق السفلي"
 msgid "I don't belong anywhere"
 msgstr "أنا لا أنتمي إلى أي مكان"
 
-#: drag_and_drop_v2.py msgid "This setting limits the number of items that can
-#: be dropped into a single zone." msgstr "" drag_and_drop_v2.py
+#: drag_and_drop_v2.py
+msgid "This setting limits the number of items that can be dropped into a single zone."
+msgstr ""
+
 #: templates/html/js_templates.html
 msgid "Title"
 msgstr "العنوان"

@@ -90,8 +90,8 @@ msgid "I don't belong anywhere"
 msgstr ""
 
 #: drag_and_drop_v2.py
-#: msgid "This setting limits the number of items that can be dropped into a single zone."
-#: msgstr ""
+msgid "This setting limits the number of items that can be dropped into a single zone."
+msgstr ""
 
 #: drag_and_drop_v2.py
 #: templates/html/js_templates.html
