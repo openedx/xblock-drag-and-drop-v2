@@ -1,5 +1,22 @@
 function DragAndDropTemplates(configuration) {
     "use strict";
+
+    var gettext;
+    var ngettext;
+    if ('DragAndDropI18N' in window) {
+        // Use DnDv2's local translations
+        gettext = window.DragAndDropI18N.gettext;
+        ngettext = window.DragAndDropI18N.ngettext;
+    } else if ('gettext' in window) {
+        // Use edxapp's global translations
+        gettext = window.gettext;
+        ngettext = window.ngettext;
+    }
+    if (typeof gettext == "undefined") {
+        // No translations -- used by test environment
+        gettext = function(string) { return string; };
+        ngettext = function(strA, strB, n) { return n == 1 ? strA : strB; };
+    }
     var h = virtualDom.h;
 
     var isMobileScreen = function() {
@@ -48,7 +65,7 @@ function DragAndDropTemplates(configuration) {
     };
 
     var itemContentTemplate = function(item) {
-        var item_content_html = item.displayName;
+        var item_content_html = gettext(item.displayName);
         if (item.imageURL) {
             item_content_html = '<img src="' + item.imageURL + '" alt="' + item.imageDescription + '" />';
         }
@@ -115,7 +132,7 @@ function DragAndDropTemplates(configuration) {
         // Insert information about zone in which this item has been placed
 
         if (item.is_placed) {
-            var zone_title = (zone.title || "Unknown Zone");  // This "Unknown" text should never be seen, so does not need i18n
+            var zone_title = (gettext(zone.title) || gettext("Unknown Zone"));  // This "Unknown" text should never be seen, so does not need i18n
             var description_content;
             if (configuration.mode === DragAndDropBlock.ASSESSMENT_MODE && !ctx.showing_answer) {
                 // In assessment mode placed items will "stick" even when not in correct zone.
@@ -247,13 +264,13 @@ function DragAndDropTemplates(configuration) {
                         'p',
                         { className: className },
                         [
-                            zone.title,
+                            gettext(zone.title),
                             h('span.sr', gettext(', dropzone'))
                         ]
                     ),
-                    h('p', { className: 'zone-description sr' }, zone.description || gettext('droppable')),
+                    h('p', { className: 'zone-description sr' }, gettext(zone.description) || gettext('droppable')),
                     h(item_wrapper, renderCollection(itemTemplate, items_in_zone, ctx)),
-                    zone_description
+                    gettext(zone_description)
                 ]
             )
         );
@@ -267,7 +284,7 @@ function DragAndDropTemplates(configuration) {
             if (message.message_class) {
                 selector += "."+message.message_class;
             }
-            return h(selector, {innerHTML: message.message}, []);
+            return h(selector, {innerHTML: gettext(message.message)}, []);
         });
 
         return (
@@ -277,7 +294,7 @@ function DragAndDropTemplates(configuration) {
                     {},
                     [
                         h('h3.title1', { style: { display: feedback_display } }, gettext('Feedback')),
-                        h('div.messages', { style: { display: feedback_display } }, feedback_messages),
+                        h('div.messages', { style: { display: feedback_display } }, gettext(feedback_messages)),
                     ]
                 )
             ])
@@ -428,7 +445,7 @@ function DragAndDropTemplates(configuration) {
                 (!ctx.last_action_correct) ? h("p", {}, gettext("Some of your answers were not correct.")) : null,
                 h("p", {}, gettext("Hints:")),
                 h("ul", {}, msgs.map(function(message) {
-                    return h("li", {innerHTML: message.message});
+                    return h("li", {innerHTML: gettext(message.message)});
                 }))
             ];
             popup_content = h(
@@ -441,7 +458,7 @@ function DragAndDropTemplates(configuration) {
                 ctx.last_action_correct ? "div.popup-content" : "div.popup-content.popup-content-incorrect",
                 {},
                 msgs.map(function(message) {
-                    return h("p", {innerHTML: message.message});
+                    return h("p", {innerHTML: gettext(message.message)});
                 })
             );
         }
@@ -588,7 +605,7 @@ function DragAndDropTemplates(configuration) {
             var problem_title_id = configuration.url_name + '-problem-title';
             problemTitle = h('h3.problem-title', {
                 id: problem_title_id,
-                innerHTML: ctx.title_html,
+                innerHTML: gettext(ctx.title_html),
                 attributes: {'aria-describedby': problemProgress.properties.id}
             });
             main_element_properties.attributes['arial-labelledby'] = problem_title_id;
@@ -657,8 +674,8 @@ function DragAndDropTemplates(configuration) {
                 h('object.resize-detector', {
                     attributes: {type: 'text/html', tabindex: -1, data: 'about:blank'}
                 }),
-                problemTitle,
-                problemProgress,
+                gettext(problemTitle),
+                gettext(problemProgress),
                 h('div', [forwardKeyboardHelpButtonTemplate(ctx)]),
                 h('div.problem', [
                     problemHeader,
@@ -699,12 +716,6 @@ function DragAndDropTemplates(configuration) {
 function DragAndDropBlock(runtime, element, configuration) {
     "use strict";
 
-    // Set up a mock for gettext if it isn't available in the client runtime:
-    if (!window.gettext) {
-        window.gettext = function gettext_stub(string) { return string; };
-        window.ngettext = function ngettext_stub(strA, strB, n) { return n == 1 ? strA : strB; };
-    }
-
     DragAndDropBlock.STANDARD_MODE = 'standard';
     DragAndDropBlock.ASSESSMENT_MODE = 'assessment';
 
@@ -712,6 +723,18 @@ function DragAndDropBlock(runtime, element, configuration) {
         popup_box: '.popup',
         close_button: '.popup .close-feedback-popup-button'
     };
+    var gettext;
+    if ('DragAndDropI18N' in window) {
+        // Use DnDv2's local translations
+        gettext = window.DragAndDropI18N.gettext;
+    } else if ('gettext' in window) {
+        // Use edxapp's global translations
+        gettext = window.gettext;
+    }
+    if (typeof gettext == "undefined") {
+        // No translations -- used by test environment
+        gettext = function(string) { return string; };
+    }
 
     var renderView = DragAndDropTemplates(configuration);
 

@@ -552,6 +552,17 @@ $ tx pull -f --mode=reviewed -l en,ar,es_419,fr,he,hi,ko_KR,pt_BR,ru,zh_CN
 
 [transifex-client]: https://docs.transifex.com/client/installing-the-client
 
+Javascript translations
+-----------------------
+
+The `text.mo` files created above are used to generate the `text.js` files used
+to display translated Javascript text.
+
+To generate these `text.js` files, run in virtualenv created for Testing:
+```
+$ python manage.py compilejsi18n
+```
+
 Releasing
 -------------------------------------
 To release a new version, update .travis.yml and setup.py to point to your new intended version number and create a new release with that version tag via Github.
