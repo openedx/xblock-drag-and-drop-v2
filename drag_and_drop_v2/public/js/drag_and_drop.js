@@ -777,7 +777,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         // would re-initialize with the old state. To avoid that, we always fetch the state
         // using AJAX during initialization.
         $.when(
-            $.ajax(runtime.handlerUrl(element, 'get_user_state'), {dataType: 'json'}),
+            $.ajax(runtime.handlerUrl(element, 'student_view_user_state'), {dataType: 'json'}),
             loadBackgroundImage()
         ).done(function(stateResult, bgImg){
             // Render problem

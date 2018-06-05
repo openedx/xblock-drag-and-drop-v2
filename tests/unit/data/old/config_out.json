@@ -1,4 +1,8 @@
 {
+    "block_id": "test-show-title-parameter.drag_and_drop_v2.d199.u0",
+    "display_name": "Drag and Drop",
+    "type": "drag-and-drop-v2",
+    "weight": 1,
     "title": "Drag and Drop",
     "mode": "standard",
     "max_attempts": null,
