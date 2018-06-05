@@ -529,6 +529,13 @@ Translations can be pushed to Transifex with:
 $ make push_translations
 ```
 
+Native API
+----------
+
+Further information on the API for native mobile applications can be found [here][native-api-doc].
+
+[native-api-doc]: ./Native_API.md
+
 Releasing
 -------------------------------------
 To release a new version, update .travis.yml and setup.py to point to your new intended version number and create a new release with that version tag via Github.
