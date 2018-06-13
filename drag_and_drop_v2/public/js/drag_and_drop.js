@@ -41,6 +41,21 @@ function DragAndDropTemplates(configuration) {
         });
     };
 
+    var divideDragablesInTwoRows = function(dragables, itemsOrder) {
+        var dividedDragables = [];
+        var orderedDragables = [];
+        for (var i=0; i<itemsOrder.length; i++)
+        {
+            orderedDragables[itemsOrder[i]] = dragables[i];
+        }
+        for (var i = 0; i < orderedDragables.length; i=i+8) {
+            var first_row = h("div.row", orderedDragables.slice(i, i+4));
+            var second_row = h("div.row", orderedDragables.slice(i+4, i+8));
+            dividedDragables.push(h("div.slide", [first_row, second_row]));
+        }
+        return dividedDragables;
+    };
+
     var getZone = function(zoneUID, ctx) {
         for (var i = 0; i < ctx.zones.length; i++) {
             if (ctx.zones[i].uid === zoneUID) {
@@ -199,8 +214,7 @@ function DragAndDropTemplates(configuration) {
             className += " specified-width";  // The author has specified a width for this item.
         }
         var style = bankItemWidthStyles(item, ctx);
-        // Placeholder should never be visible.
-        style.visibility = 'hidden';
+        style.background = 'gray';
         return (
             h(
                 'div.option',
@@ -618,21 +632,24 @@ function DragAndDropTemplates(configuration) {
         var items_in_bank = [];
         var items_dragged = [];
         var items_placed = [];
+        var index = 0;
+        var placedItemsOrder = [];
+        var inBankItemsOrder = [];
         ctx.items.forEach(function(item) {
             if (item.is_dragged) {
                 items_dragged.push(item);
                 // Dragged items require a placeholder in the bank.
                 // In assessment mode, already placed items can be dragged.
-                if (item.is_placed) {
-                    items_placed.push(item)
-                } else {
-                    items_in_bank.push(item);
-                }
-            } else if (item.is_placed) {
+            }
+
+            if (item.is_placed) {
                 items_placed.push(item);
+                placedItemsOrder.push(index);
             } else {
+                inBankItemsOrder.push(index);
                 items_in_bank.push(item);
             }
+            index++;
         });
         var item_bank_properties = {
             attributes: {
@@ -658,6 +675,9 @@ function DragAndDropTemplates(configuration) {
             }
         });
         bank_children = bank_children.concat(renderCollection(itemPlaceholderTemplate, items_placed, ctx));
+        var itemsOrder = inBankItemsOrder.concat(placedItemsOrder);
+
+        bank_children = divideDragablesInTwoRows(bank_children, itemsOrder);
         var drag_container_style = {};
         var target_img_style = {};
         // If drag_container_max_width is null, we are going to measure the container width after this render.
@@ -842,7 +862,7 @@ function DragAndDropBlock(runtime, element, configuration) {
 
             initDraggable();
             initDroppable();
-
+            initializeSlider();
             // Indicate that problem is done loading
             publishEvent({event_type: 'edx.drag_and_drop_v2.loaded'});
         }).fail(function() {
@@ -904,6 +924,13 @@ function DragAndDropBlock(runtime, element, configuration) {
             }
         }
     }
+
+    var initializeSlider = function() {
+        $('.item-bank').bxSlider({
+            pager: false,
+            touchEnabled: false,
+        });
+    };
 
     var runOnKey = function(evt, key, handler) {
         if (evt.which === key) {
@@ -1250,7 +1277,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var focusFirstDraggable = function() {
-        $root.find('.item-bank .option').first().focus();
+        $root.find('.item-bank  .option').first().focus();
     };
 
     var focusItemFeedbackPopup = function() {
