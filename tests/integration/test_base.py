@@ -129,6 +129,27 @@ class BaseIntegrationTest(SeleniumBaseTest):
     def _get_reset_button(self):
         return self._page.find_element_by_css_selector('.reset-button')
 
+    def _go_to_first_slide(self):
+        previous_slide = self._get_previous_slide_button()
+        while not self._is_first_slide_visible():
+            previous_slide.click()
+
+    def _get_previous_slide_button(self):
+        return self._page.find_element_by_css_selector('.bx-prev')
+
+    def _is_first_slide_visible(self):
+        css = '.item-bank .slide:first-of-type[aria-hidden=false]'
+        return self._page.find_element_by_css_selector(css)
+
+    def _load_current_slide_by_item_id(self, item_id):
+        self._go_to_first_slide()
+        next_slide = self._get_next_slide_button()
+        for i in range(item_id/8):
+            next_slide.click()
+
+    def _get_next_slide_button(self):
+        return self._page.find_element_by_css_selector('.bx-next')
+
     def _get_show_answer_button(self):
         return self._page.find_element_by_css_selector('.show-answer-button')
 
@@ -193,7 +214,7 @@ class BaseIntegrationTest(SeleniumBaseTest):
         return element.get_attribute('class').split()
 
     def wait_until_html_in(self, html, elem):
-        wait = WebDriverWait(elem, 2)
+        wait = WebDriverWait(elem, 4)
         wait.until(lambda e: html in e.get_attribute('innerHTML'),
                    u"{} should be in {}".format(html, elem.get_attribute('innerHTML')))
 
@@ -202,6 +223,13 @@ class BaseIntegrationTest(SeleniumBaseTest):
         wait = WebDriverWait(elem, 2)
         wait.until(lambda e: class_name in e.get_attribute('class').split(),
                    u"Class name {} not in {}".format(class_name, elem.get_attribute('class')))
+
+    @staticmethod
+    def wait_until_has_attribute_value(attribute, attribute_value, elem):
+        wait = WebDriverWait(elem, 4)
+        wait.until(lambda e: attribute_value == e.get_attribute(attribute),
+                   u"attribute {} is {} instead of {}".format(
+                       attribute, elem.get_attribute(attribute), attribute_value))
 
     def wait_for_ajax(self, timeout=15):
         """
@@ -313,8 +341,8 @@ class InteractionTestBase(object):
         return items_container.find_elements_by_xpath(".//div[@data-value='{item_id}']".format(item_id=item_value))[0]
 
     def _get_placed_item_by_value(self, item_value):
-        items_container = self._page.find_element_by_css_selector('.target')
-        return items_container.find_elements_by_xpath(".//div[@data-value='{item_id}']".format(item_id=item_value))[0]
+        css = ".target div[data-value='{item_id}']".format(item_id=item_value)
+        return self._page.find_element_by_css_selector(css)
 
     def _get_zone_by_id(self, zone_id):
         zones_container = self._page.find_element_by_css_selector('.target')
@@ -373,6 +401,7 @@ class InteractionTestBase(object):
         zone_id=None means place item back to the item bank.
         action_key=None means simulate mouse drag/drop instead of placing the item with keyboard.
         """
+        self._load_current_slide_by_item_id(item_value)
         if action_key is None:
             self.drag_item_to_zone(item_value, zone_id)
         else:
@@ -402,6 +431,7 @@ class InteractionTestBase(object):
         item = self._get_item_by_value(item_value)
         item.send_keys("")
         item.send_keys(action_key)
+        self.wait_until_has_attribute_value('aria-grabbed', 'true', item)
         # Focus is on first *zone* now
         self.assert_item_grabbed(item)
         # Get desired zone and figure out how many times we have to press Tab to focus the zone.

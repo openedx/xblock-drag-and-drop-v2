@@ -215,13 +215,18 @@ function DragAndDropTemplates(configuration) {
         }
         var style = bankItemWidthStyles(item, ctx);
         style.background = 'gray';
+        var attributes = {
+            'draggable': false,
+            'data-value': item.value
+        };
+
         return (
             h(
                 'div.option',
                 {
                     key: 'placeholder-' + item.value,
                     className: className,
-                    attributes: {draggable: false},
+                    attributes: attributes,
                     style: style
                 },
                 itemContentTemplate(item)
@@ -689,6 +694,7 @@ function DragAndDropTemplates(configuration) {
         } else {
             drag_container_style.maxWidth = ctx.drag_container_max_width + 'px';
         }
+
         return (
             h('div.themed-xblock.xblock--drag-and-drop', main_element_properties, [
                 h('object.resize-detector', {
@@ -769,7 +775,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     var containerMaxWidth = null;  // measured and set after first render
     var fixedHeaderHeight = 0; // measured in checkForFixedHeader
     var __vdom = virtualDom.h();  // blank virtual DOM
-
+    var itemSlider;
     // Event string size limit.
     var MAX_LENGTH = 255;
 
@@ -926,10 +932,10 @@ function DragAndDropBlock(runtime, element, configuration) {
     }
 
     var initializeSlider = function() {
-        $('.item-bank').bxSlider({
+        itemSlider = $('.item-bank').bxSlider({
             pager: false,
             touchEnabled: false,
-            infiniteLoop: false
+            infiniteLoop: false,
         });
     };
 
@@ -1171,9 +1177,16 @@ function DragAndDropBlock(runtime, element, configuration) {
     var updateDOM = function() {
         var new_vdom = render(state);
         var patches = virtualDom.diff(__vdom, new_vdom);
+        if (itemSlider){
+            itemSlider.destroySlider();
+        }
         root = virtualDom.patch(root, patches);
         $root = $(root);
         __vdom = new_vdom;
+
+        if (itemSlider){
+            initializeSlider();
+        }
     };
 
     var sr_clear_timeout = null;
@@ -1278,7 +1291,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var focusFirstDraggable = function() {
-        $root.find('.item-bank  .option').first().focus();
+        $root.find('.item-bank .option[draggable=true]').first().focus();
     };
 
     var focusItemFeedbackPopup = function() {
@@ -1876,7 +1889,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             result = result || item.submitting_location;
         });
         return result;
-    }
+    };
 
     var render = function() {
         var items = configuration.items.map(function(item) {
@@ -1965,7 +1978,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             show_answer_spinner: state.show_answer_spinner,
             disable_go_to_beginning_button: !canGoToBeginning(),
             show_go_to_beginning_button: state.go_to_beginning_button_visible,
-            screen_reader_messages: (state.screen_reader_messages || '')
+            screen_reader_messages: (state.screen_reader_messages || ''),
         };
 
         return renderView(context);
