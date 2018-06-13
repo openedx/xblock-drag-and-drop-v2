@@ -419,7 +419,6 @@ class InteractionTestBase(object):
         action_key=None means simulate mouse drag/drop instead of placing the item with keyboard.
         """
         self._load_current_slide_by_item_id(item_value)
-
         if action_key is None:
             self.drag_item_to_zone(item_value, zone_id)
         else:

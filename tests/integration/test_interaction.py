@@ -218,6 +218,7 @@ class ParameterizedTestsMixin(object):
 
         for item_key, definition in items.items():
             self.place_item(definition.item_id, definition.zone_ids[0], action_key)
+
             self.assert_placed_item(definition.item_id, definition.zone_title, assessment_mode=assessment_mode)
 
         if assessment_mode:
