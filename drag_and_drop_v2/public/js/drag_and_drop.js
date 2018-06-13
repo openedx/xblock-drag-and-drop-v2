@@ -929,6 +929,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         $('.item-bank').bxSlider({
             pager: false,
             touchEnabled: false,
+            infiniteLoop: false
         });
     };
 
