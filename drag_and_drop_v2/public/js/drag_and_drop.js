@@ -943,6 +943,13 @@ function DragAndDropBlock(runtime, element, configuration) {
         }
     };
 
+    var initializeSlider = function() {
+        $('.item-bank').bxSlider({
+            pager: false,
+            touchEnabled: false,
+        });
+    };
+
     var runOnKey = function(evt, key, handler) {
         if (evt.which === key) {
             handler(evt);
