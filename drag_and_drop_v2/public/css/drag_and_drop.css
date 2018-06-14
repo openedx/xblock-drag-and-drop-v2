@@ -250,7 +250,7 @@
        can use it as a 'position: relative' anchor for the placed elements. */
     height: auto;
     position: relative;
-    margin-top: 1%;
+    margin-bottom: 1%;
     background-color: #fff;
 }
 

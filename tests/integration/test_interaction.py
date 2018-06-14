@@ -726,9 +726,9 @@ class DragScrollingTest(InteractionTestBase, BaseIntegrationTest):
         # visible, even with the page header
         self.assertTrue(self.is_element_in_viewport(zone2))
 
-        # zone 1 is at 100, 200 in its container, so with the page
-        # header, it's initially below the viewport
-        self.assertFalse(self.is_element_in_viewport(zone1))
+        # zone 1 is at 100, 200 in the target container, so with the
+        # drag items below target container, it's initially visible
+        self.assertTrue(self.is_element_in_viewport(zone1))
 
         # when placing the item in zone1, zone1 will scroll into view
         self.place_item(item1_id, zone1_id)
