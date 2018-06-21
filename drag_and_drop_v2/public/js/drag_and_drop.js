@@ -1343,6 +1343,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                         placeGrabbedItem($zone);
                     }
                     releaseGrabbedItems();
+                    $root.find('.drag-container').removeClass('dragging');
                 }
             } else if (isTabKey(evt) && !evt.shiftKey) {
                 // If the user just dropped an item to this zone, next TAB keypress
@@ -1384,6 +1385,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 state.keyboard_placement_mode = true;
                 grabItem($item, 'keyboard');
                 $selectedItem = $item;
+                $container.addClass('dragging');
                 $root.find('.target .zone').first().focus();
             }
         });
@@ -1460,9 +1462,9 @@ function DragAndDropBlock(runtime, element, configuration) {
                 left: item_offset.left - container_offset.left,
                 top: item_offset.top - container_offset.top
             };
-
             item.drag_position = original_position;
             grabItem($item, 'mouse');
+            $container.addClass('dragging');
 
             // Animate the item back to its original position in the bank.
             var revertDrag = function() {
@@ -1573,6 +1575,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 } else {
                     revertDrag();
                 }
+                $container.removeClass('dragging');
             };
 
             if (interaction_type === 'mouse') {
