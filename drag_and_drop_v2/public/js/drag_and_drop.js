@@ -1686,15 +1686,13 @@ function DragAndDropBlock(runtime, element, configuration) {
         $.post(url, JSON.stringify(data), 'json')
             .done(function(data){
                 state.items[item_id].submitting_location = false;
-                // In standard mode we immediately return item to the bank if dropped on wrong zone.
+                // In standard mode we return wrongly dropped item to the bank when feedback popup is closed.
                 // In assessment mode we leave it in the chosen zone until explicit answer submission.
                 if (configuration.mode === DragAndDropBlock.STANDARD_MODE) {
                     state.last_action_correct = data.correct;
+                    state.last_dragged_item_id = item_id;
                     state.feedback = data.feedback;
                     state.grade = data.grade;
-                    if (!data.correct) {
-                        delete state.items[item_id];
-                    }
                     if (data.finished) {
                         state.finished = true;
                         state.overall_feedback = data.overall_feedback;
@@ -1745,6 +1743,9 @@ function DragAndDropBlock(runtime, element, configuration) {
             state.closing = true;
             previousFeedback = state.feedback;
             state.manually_closed = manually_closed;
+            if (!state.last_action_correct) {
+                delete state.items[state.last_dragged_item_id];
+            }
         }
     };
 
