@@ -775,7 +775,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     var containerMaxWidth = null;  // measured and set after first render
     var fixedHeaderHeight = 0; // measured in checkForFixedHeader
     var __vdom = virtualDom.h();  // blank virtual DOM
-    var itemSlider;
+    var itemSlider = [];
     // Event string size limit.
     var MAX_LENGTH = 255;
 
@@ -868,7 +868,6 @@ function DragAndDropBlock(runtime, element, configuration) {
 
             initDraggable();
             initDroppable();
-            initializeSlider();
             // Indicate that problem is done loading
             publishEvent({event_type: 'edx.drag_and_drop_v2.loaded'});
         }).fail(function() {
@@ -929,13 +928,16 @@ function DragAndDropBlock(runtime, element, configuration) {
                 }
             }
         }
-    }
+    };
 
     var initializeSlider = function() {
-        itemSlider = $('.item-bank').bxSlider({
-            pager: false,
-            touchEnabled: false,
-            infiniteLoop: false,
+        $('.item-bank').each(function(){
+            var slider = $(this).bxSlider({
+                pager: false,
+                touchEnabled: false,
+                infiniteLoop: false
+            });
+            if(slider){itemSlider.push();}
         });
     };
 
@@ -1177,19 +1179,21 @@ function DragAndDropBlock(runtime, element, configuration) {
     var updateDOM = function() {
         var new_vdom = render(state);
         var patches = virtualDom.diff(__vdom, new_vdom);
-        if (itemSlider){
-            itemSlider.destroySlider();
-        }
+        destroyItemSlider();
         root = virtualDom.patch(root, patches);
         $root = $(root);
         __vdom = new_vdom;
+        initializeSlider();
 
-        if (itemSlider){
-            initializeSlider();
-        }
     };
 
     var sr_clear_timeout = null;
+
+    var destroyItemSlider = function() {
+       while(itemSlider.length > 0) {
+           itemSlider.pop().destroySlider();
+       }
+    };
 
     var setScreenReaderMessages = function() {
         clearTimeout(sr_clear_timeout);
