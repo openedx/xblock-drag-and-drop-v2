@@ -931,14 +931,17 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var initializeSlider = function() {
-        $('.item-bank').each(function(){
-            var slider = $(this).bxSlider({
-                pager: false,
-                touchEnabled: false,
-                infiniteLoop: false
+        if ($('.item-bank').length > 0){
+            $('.item-bank').each(function(){
+                var slider = $(this).bxSlider({
+                    pager: false,
+                    touchEnabled: false,
+                    infiniteLoop: false
+                });
+                itemSlider.push(slider);
             });
-            if(slider){itemSlider.push();}
-        });
+    }
+
     };
 
     var runOnKey = function(evt, key, handler) {
