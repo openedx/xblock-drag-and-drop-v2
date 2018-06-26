@@ -186,9 +186,9 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
 
     def _check_mobile_container_size(self):
         """ Verify that the drag-container tightly fits into the available space. """
-        # drag_container = self._page.find_element_by_css_selector('.drag-container')
-        # horizontal_padding = 20
-        # todo V4 pass this test after styling
+        drag_container = self._page.find_element_by_css_selector('.drag-container')
+        horizontal_padding = 20
+        # TODO V4 pass this test after styling
         # self.assertEqual(drag_container.size['width'], MOBILE_WINDOW_WIDTH - 2*horizontal_padding)
 
     def test_wide_image_mobile(self):
@@ -266,7 +266,7 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
         else:
             window_width = self.browser.get_window_size()["width"]
             self.assertLessEqual(window_width, 400)
-            # todo V4 pass this test after styling
+            # TODO V4 pass this test after styling
             # self.assertEqual(page_width, window_width - 40)
 
         # The item bank and other elements are inside a wrapper with 'padding: 1%', so we expect
@@ -361,7 +361,7 @@ class SizingBackwardsCompatibilityTests(InteractionTestBase, BaseIntegrationTest
 
     def test_draggable_sizes(self):
         """ Test the fixed pixel widths set in old versions of the block """
-        # todo V4 pass this test after styling
+        # TODO V4 pass this test after styling
         # self._expect_width_px(item_id=0, width_px=190, zone_id="Zone 1")
         self._expect_width_px(item_id=1, width_px=190, zone_id="Zone 2")
         self._expect_width_px(item_id=2, width_px=100, zone_id="Zone 1")
@@ -371,5 +371,5 @@ class SizingBackwardsCompatibilityTests(InteractionTestBase, BaseIntegrationTest
         self.assertEqual(item.size["width"], width_px)
         self.place_item(item_id, zone_id)
         item = self._get_placed_item_by_value(item_id)
-        # todo V4 pass this test after styling
+        # TODO V4 pass this test after styling
         # self.assertEqual(item.size["width"], width_px)
