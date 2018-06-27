@@ -129,23 +129,28 @@ class BaseIntegrationTest(SeleniumBaseTest):
     def _get_reset_button(self):
         return self._page.find_element_by_css_selector('.reset-button')
 
+    def _load_current_slide_by_item_id(self, item_id):
+        self._go_to_first_slide()
+
+        for _ in range(item_id/8):
+            next_slide = self._get_next_slide_button()
+            self.browser.execute_script("arguments[0].scrollIntoView(0);", next_slide)
+            self.wait_until_visible(next_slide)
+            next_slide.click()
+
     def _go_to_first_slide(self):
         previous_slide = self._get_previous_slide_button()
+
         while not self._is_first_slide_visible():
-            previous_slide.click()
+            actions = ActionChains(self.browser)
+            actions.move_to_element(previous_slide).click(previous_slide).perform()
 
     def _get_previous_slide_button(self):
         return self._page.find_element_by_css_selector('.bx-prev')
 
     def _is_first_slide_visible(self):
         css = '.item-bank .slide:first-of-type[aria-hidden=false]'
-        return self._page.find_element_by_css_selector(css)
-
-    def _load_current_slide_by_item_id(self, item_id):
-        self._go_to_first_slide()
-        next_slide = self._get_next_slide_button()
-        for i in range(item_id/8):
-            next_slide.click()
+        return self._page.find_elements_by_css_selector(css)
 
     def _get_next_slide_button(self):
         return self._page.find_element_by_css_selector('.bx-next')
@@ -402,6 +407,7 @@ class InteractionTestBase(object):
         action_key=None means simulate mouse drag/drop instead of placing the item with keyboard.
         """
         self._load_current_slide_by_item_id(item_value)
+
         if action_key is None:
             self.drag_item_to_zone(item_value, zone_id)
         else:
