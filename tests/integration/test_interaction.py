@@ -51,7 +51,7 @@ class ParameterizedTestsMixin(object):
         self.assertFocused(go_to_beginning_button)
 
     def parameterized_item_positive_feedback_on_good_move_standard(
-            self, items_map, scroll_down=200, action_key=None, feedback=None
+            self, items_map, scroll_down=100, action_key=None, feedback=None
     ):
         if feedback is None:
             feedback = self.feedback
@@ -82,7 +82,7 @@ class ParameterizedTestsMixin(object):
             self._test_popup_focus_and_close(popup, action_key)
 
     def parameterized_item_positive_feedback_on_good_move_assessment(
-            self, items_map, scroll_down=200, action_key=None, feedback=None
+            self, items_map, scroll_down=100, action_key=None, feedback=None
     ):
         if feedback is None:
             feedback = self.feedback
@@ -107,7 +107,7 @@ class ParameterizedTestsMixin(object):
                 self._test_next_tab_goes_to_go_to_beginning_button()
 
     def parameterized_item_negative_feedback_on_bad_move_standard(
-            self, items_map, all_zones, scroll_down=200, action_key=None, feedback=None
+            self, items_map, all_zones, scroll_down=100, action_key=None, feedback=None
     ):
         if feedback is None:
             feedback = self.feedback
@@ -132,7 +132,7 @@ class ParameterizedTestsMixin(object):
                 self.assert_reverted_item(definition.item_id)
 
     def parameterized_item_negative_feedback_on_bad_move_assessment(
-            self, items_map, all_zones, scroll_down=200, action_key=None, feedback=None
+            self, items_map, all_zones, scroll_down=100, action_key=None, feedback=None
     ):
         if feedback is None:
             feedback = self.feedback
@@ -156,7 +156,7 @@ class ParameterizedTestsMixin(object):
                 if action_key:
                     self._test_next_tab_goes_to_go_to_beginning_button()
 
-    def parameterized_move_items_between_zones(self, items_map, all_zones, scroll_down=200, action_key=None):
+    def parameterized_move_items_between_zones(self, items_map, all_zones, scroll_down=100, action_key=None):
         # Scroll drop zones into view to make sure Selenium can successfully drop items
         self.scroll_down(pixels=scroll_down)
 
@@ -171,7 +171,7 @@ class ParameterizedTestsMixin(object):
             self.place_item(item_key, None, action_key)
             self.assert_reverted_item(item_key)
 
-    def parameterized_cannot_move_items_between_zones(self, items_map, all_zones, scroll_down=200, action_key=None):
+    def parameterized_cannot_move_items_between_zones(self, items_map, all_zones, scroll_down=100, action_key=None):
         # Scroll drop zones into view to make sure Selenium can successfully drop items
         self.scroll_down(pixels=scroll_down)
 
@@ -201,7 +201,7 @@ class ParameterizedTestsMixin(object):
                         self.assert_placed_item(definition.item_id, definition.zone_title, assessment_mode=False)
 
     def parameterized_final_feedback_and_reset(
-            self, items_map, feedback, scroll_down=200, action_key=None, assessment_mode=False
+            self, items_map, feedback, scroll_down=100, action_key=None, assessment_mode=False
     ):
         feedback_message = self._get_feedback_message()
         self.assertEqual(self.get_element_html(feedback_message), feedback['intro'])  # precondition check
@@ -247,7 +247,7 @@ class ParameterizedTestsMixin(object):
             self.assertDictEqual(locations_after_reset[item_key], initial_locations[item_key])
             self.assert_reverted_item(item_key)
 
-    def interact_with_keyboard_help(self, scroll_down=200, use_keyboard=False):
+    def interact_with_keyboard_help(self, scroll_down=100, use_keyboard=False):
         keyboard_help_button = self._get_keyboard_help_button()
         keyboard_help_dialog = self._get_keyboard_help_dialog()
         dialog_modal_overlay, dialog_modal = self._get_dialog_components(keyboard_help_dialog)
