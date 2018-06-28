@@ -422,16 +422,10 @@ class InteractionTestBase(object):
         zone.send_keys(action_key)
 
     def assert_item_grabbed(self, item):
-        drag_container = item.find_element_by_xpath(
-            "./ancestor::div[contains(concat(' ', @class, ' '), ' drag-container ')][1]"
-        )
         self.assertIn("dragging", drag_container.get_attribute('class').split(' '))
         self.assertEqual(item.get_attribute('aria-grabbed'), 'true')
 
     def assert_item_not_grabbed(self, item):
-        drag_container = item.find_element_by_xpath(
-            "./ancestor::div[contains(concat(' ', @class, ' '), ' drag-container ')][1]"
-        )
         self.assertNotIn("dragging", drag_container.get_attribute('class').split(' '))
         self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
 
