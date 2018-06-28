@@ -506,6 +506,7 @@ class InteractionTestBase(object):
 
     def assert_reverted_item(self, item_value):
         item = self._get_item_by_value(item_value)
+        self._load_current_slide_by_item_id(item_value)
         self.wait_until_visible(item)
         self.wait_until_ondrop_xhr_finished(item)
         item_content = item.find_element_by_css_selector('.item-content')
