@@ -402,7 +402,7 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
             drag_container = item.find_element_by_xpath(  # get item parent drag container
                 "./ancestor::div[contains(concat(' ', @class, ' '), ' drag-container ')][1]"
             )
-            if 'fade' not in item.get_attribute('class').split(' '): # if item is draggable
+            if 'fade' not in item.get_attribute('class').split(' '):  # if item is draggable
                 item.send_keys(action_key)
                 self.assertIn("dragging", drag_container.get_attribute('class').split(' '))
 
