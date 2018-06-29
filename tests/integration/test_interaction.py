@@ -201,7 +201,7 @@ class ParameterizedTestsMixin(object):
                         self.assert_placed_item(definition.item_id, definition.zone_title, assessment_mode=False)
 
     def parameterized_final_feedback_and_reset(
-            self, items_map, feedback, scroll_down=100, action_key=None, assessment_mode=False
+            self, items_map, feedback, scroll_down=200, action_key=None, assessment_mode=False
     ):
         feedback_message = self._get_feedback_message()
         self.assertEqual(self.get_element_html(feedback_message), feedback['intro'])  # precondition check
@@ -218,7 +218,6 @@ class ParameterizedTestsMixin(object):
 
         for item_key, definition in items.items():
             self.place_item(definition.item_id, definition.zone_ids[0], action_key)
-
             self.assert_placed_item(definition.item_id, definition.zone_title, assessment_mode=assessment_mode)
 
         if assessment_mode:
@@ -606,7 +605,7 @@ class MultipleBlocksDataInteraction(ParameterizedTestsMixin, InteractionTestBase
         self._switch_to_block(0)
         self.parameterized_final_feedback_and_reset(self.item_maps['block1'], self.feedback['block1'])
         self._switch_to_block(1)
-        self.parameterized_final_feedback_and_reset(self.item_maps['block2'], self.feedback['block2'], scroll_down=1000)
+        self.parameterized_final_feedback_and_reset(self.item_maps['block2'], self.feedback['block2'], scroll_down=1200)
 
     def test_keyboard_help(self):
         self._switch_to_block(0)
