@@ -131,27 +131,31 @@ class BaseIntegrationTest(SeleniumBaseTest):
 
     def _load_current_slide_by_item_id(self, item_id):
         self._go_to_first_slide()
+        item = self._get_item_by_value(item_id)
+        current_slide = self._get_current_slide()
         next_slide = self._get_next_slide_button()
         reset = self._page.find_element_by_css_selector('.actions-toolbar')
-        item = self._get_item_by_value(item_id)
 
         while not item.is_displayed():
             self.browser.execute_script("arguments[0].scrollIntoView(0);", reset)
-            next_slide.click()
+            ActionChains(self.browser).click(next_slide).perform()
+            self.wait_until_hidden(current_slide)
 
     def _go_to_first_slide(self):
+        current_slide = self._get_current_slide()
         previous_slide = self._get_previous_slide_button()
         reset = self._page.find_element_by_css_selector('.actions-toolbar')
 
         while not self._is_first_slide_visible():
             self.browser.execute_script("arguments[0].scrollIntoView(0);", reset)
-            previous_slide.click()
+            ActionChains(self.browser).click(previous_slide).perform()
+            self.wait_until_hidden(current_slide)
 
     def _get_previous_slide_button(self):
         return self._page.find_element_by_css_selector('.bx-prev')
 
     def _get_current_slide(self):
-        css = '.item-bank .slide[aria-hidden=false]'
+        css = '.item-bank .slide[aria-hidden=false] .option'
         return self._page.find_element_by_css_selector(css)
 
     def _is_first_slide_visible(self):
