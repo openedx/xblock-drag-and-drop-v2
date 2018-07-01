@@ -77,7 +77,7 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
             "img_wide_url": _svg_to_data_uri('dnd-bg-wide.svg'),
             "img_square_url": _svg_to_data_uri('dnd-bg-square.svg'),
             "img_400x300_url": _svg_to_data_uri('400x300.svg'),
-            # TODO V4 pass this test after styling
+            # todo V4 pass this test after styling
             # "img_200x200_url": _svg_to_data_uri('200x200.svg'),
             "img_60x60_url": _svg_to_data_uri('60x60.svg'),
         }
@@ -210,7 +210,7 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
         that range.
         """
         pass
-        # TODO V4 pass this test after styling
+        # todo V4 pass this test after styling
 
         # width_pixels = item.size["width"]
         # width_percent = width_pixels / container_width * 100
@@ -266,13 +266,13 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
         else:
             window_width = self.browser.get_window_size()["width"]
             self.assertLessEqual(window_width, 400)
-            # TODO V4 pass this test after styling
+            # todo V4 pass this test after styling
             # self.assertEqual(page_width, window_width - 40)
 
         # The item bank and other elements are inside a wrapper with 'padding: 1%', so we expect
         # their width to be 98% of item_bank_width in general
         self.assertAlmostEqual(target_img_width, expected_img_width or (page_width * 0.98), delta=1)
-        # TODO V4 pass this test after styling
+        # todo V4 pass this test after styling
         # self.assertAlmostEqual(item_bank_width, page_width * 0.98, delta=1)
 
         # Test each element, before it is placed (while it is in the item bank).
@@ -361,7 +361,7 @@ class SizingBackwardsCompatibilityTests(InteractionTestBase, BaseIntegrationTest
 
     def test_draggable_sizes(self):
         """ Test the fixed pixel widths set in old versions of the block """
-        # TODO V4 pass this test after styling
+        # todo V4 pass this test after styling
         # self._expect_width_px(item_id=0, width_px=190, zone_id="Zone 1")
         self._expect_width_px(item_id=1, width_px=190, zone_id="Zone 2")
         self._expect_width_px(item_id=2, width_px=100, zone_id="Zone 1")
@@ -371,5 +371,5 @@ class SizingBackwardsCompatibilityTests(InteractionTestBase, BaseIntegrationTest
         self.assertEqual(item.size["width"], width_px)
         self.place_item(item_id, zone_id)
         item = self._get_placed_item_by_value(item_id)
-        # TODO V4 pass this test after styling
+        # todo V4 pass this test after styling
         # self.assertEqual(item.size["width"], width_px)
