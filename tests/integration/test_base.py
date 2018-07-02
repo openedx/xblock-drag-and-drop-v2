@@ -433,8 +433,6 @@ class InteractionTestBase(object):
         element = self._get_item_by_value(item_value)
         if zone_id is None:
             target = self._get_item_bank()
-            # todo V4 remove this test after styling
-            self.browser.execute_script("arguments[0].style.width='100%';", target)
 
         else:
             target = self._get_zone_by_id(zone_id)
