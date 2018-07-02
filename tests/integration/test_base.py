@@ -134,6 +134,7 @@ class BaseIntegrationTest(SeleniumBaseTest):
         item = self._get_item_by_value(item_id)
         current_slide = self._get_current_slide()
         next_slide = self._get_next_slide_button()
+        # scrolling on reset(right below prev-next) avoids overlapping by browser url loading stripe
         reset = self._page.find_element_by_css_selector('.actions-toolbar')
 
         while not item.is_displayed():
