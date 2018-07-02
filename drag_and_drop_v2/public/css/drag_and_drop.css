@@ -902,6 +902,10 @@
     color: #000000;
 }
 
+.item-bank {
+    width: 100% !important;
+}
+
 
 /* Prevent mobile browsers from emulating hover effects on item tap, which can be confusing. */
 @media (hover: none) {
