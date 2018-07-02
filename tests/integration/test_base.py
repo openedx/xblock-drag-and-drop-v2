@@ -437,8 +437,8 @@ class InteractionTestBase(object):
         else:
             target = self._get_zone_by_id(zone_id)
 
-        action_chains = ActionChains(self.browser)
-        action_chains.drag_and_drop(element, target).perform()
+        self.browser.execute_script("arguments[0].scrollIntoView(0);", element)
+        ActionChains(self.browser).drag_and_drop(element, target).perform()
 
     def move_item_to_zone(self, item_value, zone_id, action_key):
         """
