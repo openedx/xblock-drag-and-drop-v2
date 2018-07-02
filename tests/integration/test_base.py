@@ -432,7 +432,7 @@ class InteractionTestBase(object):
         """
         element = self._get_item_by_value(item_value)
         if zone_id is None:
-            target = self._get_item_bank()
+            target = self._get_current_slide()
 
         else:
             target = self._get_zone_by_id(zone_id)
