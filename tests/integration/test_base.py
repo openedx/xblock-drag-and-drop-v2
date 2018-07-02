@@ -432,13 +432,15 @@ class InteractionTestBase(object):
         """
         element = self._get_item_by_value(item_value)
         if zone_id is None:
-            target = self._get_current_slide()
+            target = self._get_item_bank()
+            # todo V4 remove this test after styling
+            self.browser.execute_script("arguments[0].style.width='100%';", target)
 
         else:
             target = self._get_zone_by_id(zone_id)
 
-        self.browser.execute_script("arguments[0].scrollIntoView(0);", element)
-        ActionChains(self.browser).drag_and_drop(element, target).perform()
+        action_chains = ActionChains(self.browser)
+        action_chains.drag_and_drop(element, target).perform()
 
     def move_item_to_zone(self, item_value, zone_id, action_key):
         """
