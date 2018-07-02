@@ -148,6 +148,7 @@ class BaseIntegrationTest(SeleniumBaseTest):
 
         while not self._is_first_slide_visible():
             self.browser.execute_script("arguments[0].scrollIntoView(0);", reset)
+            self.wait_until_visible(previous_slide)
             ActionChains(self.browser).click(previous_slide).perform()
             self.wait_until_hidden(current_slide)
 
