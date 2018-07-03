@@ -131,26 +131,25 @@ class BaseIntegrationTest(SeleniumBaseTest):
 
     def _load_current_slide_by_item_id(self, item_id):
         self._go_to_first_slide()
-        item = self._get_item_by_value(item_id)
-        current_slide = self._get_current_slide()
-        next_slide = self._get_next_slide_button()
-        # scrolling on reset(right below prev-next) avoids overlapping by browser url loading stripe
-        reset = self._page.find_element_by_css_selector('.actions-toolbar')
-
-        while not item.is_displayed():
-            self.browser.execute_script("arguments[0].scrollIntoView(0);", reset)
-            ActionChains(self.browser).click(next_slide).perform()
-            self.wait_until_hidden(current_slide)
+        self._load_slide_with_item(item_id)
 
     def _go_to_first_slide(self):
         current_slide = self._get_current_slide()
-        previous_slide = self._get_previous_slide_button()
-        reset = self._page.find_element_by_css_selector('.actions-toolbar')
+        previous_slide_button = self._get_previous_slide_button()
 
         while not self._is_first_slide_visible():
-            self.browser.execute_script("arguments[0].scrollIntoView(0);", reset)
-            self.wait_until_visible(previous_slide)
-            ActionChains(self.browser).click(previous_slide).perform()
+            self._scroll_to_reset_button()
+            ActionChains(self.browser).click(previous_slide_button).perform()
+            self.wait_until_hidden(current_slide)
+
+    def _load_slide_with_item(self, item_id):
+        item = self._get_item_by_value(item_id)
+        current_slide = self._get_current_slide()
+        next_slide_button = self._get_next_slide_button()
+
+        while not item.is_displayed():
+            self._scroll_to_reset_button()
+            ActionChains(self.browser).click(next_slide_button).perform()
             self.wait_until_hidden(current_slide)
 
     def _get_previous_slide_button(self):
@@ -166,6 +165,11 @@ class BaseIntegrationTest(SeleniumBaseTest):
 
     def _get_next_slide_button(self):
         return self._page.find_element_by_css_selector('.bx-next')
+
+    def _scroll_to_reset_button(self):
+        reset = self._page.find_element_by_css_selector('.actions-toolbar')
+        self.browser.execute_script("arguments[0].scrollIntoView(0);", reset)
+        self.wait_until_visible(reset)
 
     def _get_show_answer_button(self):
         return self._page.find_element_by_css_selector('.show-answer-button')
