@@ -423,18 +423,19 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
         self.scroll_down(pixels=300)
         for _, definition in self.items_map.items():
             item = self._get_item_by_value(definition.item_id)
-            drag_container = self._page.find_element_by_css_selector('.drag-container')
-            if 'fade' not in item.get_attribute('class').split(' '):  # if item is draggable
+            if 'fade' not in item.get_attribute('class'):  # if item is draggable
                 if not definition.zone_ids or definition.zone_ids[0] is None:  # moving back to the bank
-                    target = self._get_item_bank()
+                    target = self._get_current_slide()
                 else:
                     target = self._get_zone_by_id(definition.zone_ids[0])
+
                 # as we start dragging green outline is visible around all zones
                 ActionChains(self.browser).click_and_hold(item).perform()
-                self.assertIn("dragging", drag_container.get_attribute('class').split(' '))
+                drag_container = self._page.find_element_by_css_selector('.drag-container')
+                self.wait_until_has_attribute_value('class', 'drag-container dragging', drag_container)
                 # on drag release green outline around zones is hidden
                 ActionChains(self.browser).release(target).perform()
-                self.assertNotIn("dragging", drag_container.get_attribute('class').split(' '))
+                self.wait_until_has_attribute_value('class', 'drag-container', drag_container)
 
 
 class MultipleValidOptionsInteractionTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):
