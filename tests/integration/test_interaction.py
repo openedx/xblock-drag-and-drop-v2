@@ -408,7 +408,7 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
                 self.assertIn("dragging", drag_container.get_attribute('class').split(' '))
 
                 # Get desired zone and figure out how many times we have to press Tab to focus the zone.
-                if definition.zone_ids[0] is None:  # moving back to the bank
+                if not definition.zone_ids or definition.zone_ids[0] is None:  # moving back to the bank
                     zone = self._get_item_bank()
                     tab_press_count = len(self.all_zones)
                 else:
