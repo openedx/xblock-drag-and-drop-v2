@@ -423,9 +423,7 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
         self.scroll_down(pixels=300)
         for _, definition in self.items_map.items():
             item = self._get_item_by_value(definition.item_id)
-            drag_container = item.find_element_by_xpath(  # get item parent drag container
-                "./ancestor::div[contains(concat(' ', @class, ' '), ' drag-container ')][1]"
-            )
+            drag_container = self._page.find_element_by_css_selector('.drag-container')
             if 'fade' not in item.get_attribute('class').split(' '):  # if item is draggable
                 if not definition.zone_ids or definition.zone_ids[0] is None:  # moving back to the bank
                     target = self._get_item_bank()
