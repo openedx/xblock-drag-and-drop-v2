@@ -400,12 +400,10 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
         action_key = Keys.CONTROL+'m'
         for _, definition in self.items_map.items():
             item = self._get_item_by_value(definition.item_id)
-            drag_container = item.find_element_by_xpath(  # get item parent drag container
-                "./ancestor::div[contains(concat(' ', @class, ' '), ' drag-container ')][1]"
-            )
             if 'fade' not in item.get_attribute('class').split(' '):  # if item is draggable
                 item.send_keys(action_key)
-                self.assertIn("dragging", drag_container.get_attribute('class').split(' '))
+                drag_container = self._page.find_element_by_css_selector('.drag-container')
+                self.assertIn("dragging", drag_container.get_attribute('class'))
 
                 # Get desired zone and figure out how many times we have to press Tab to focus the zone.
                 if not definition.zone_ids or definition.zone_ids[0] is None:  # moving back to the bank
@@ -417,6 +415,7 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
                 for _ in range(tab_press_count):
                     ActionChains(self.browser).send_keys(Keys.TAB).perform()
                 zone.send_keys(action_key)
+                drag_container = self._page.find_element_by_css_selector('.drag-container')
                 self.assertNotIn("dragging", drag_container.get_attribute('class').split(' '))
 
     def test_mouse_drag_zones_outline(self):
@@ -435,6 +434,7 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
                 self.wait_until_has_attribute_value('class', 'drag-container dragging', drag_container)
                 # on drag release green outline around zones is hidden
                 ActionChains(self.browser).release(target).perform()
+                drag_container = self._page.find_element_by_css_selector('.drag-container')
                 self.wait_until_has_attribute_value('class', 'drag-container', drag_container)
 
 
