@@ -134,23 +134,25 @@ class BaseIntegrationTest(SeleniumBaseTest):
         self._load_slide_with_item(item_id)
 
     def _go_to_first_slide(self):
-        current_slide = self._get_current_slide()
-        previous_slide_button = self._get_previous_slide_button()
 
         while not self._is_first_slide_visible():
+            current_slide = self._get_current_slide()
+            previous_slide_button = self._get_previous_slide_button()
             self._scroll_to_reset_button()
+
             ActionChains(self.browser).click(previous_slide_button).perform()
             self.wait_until_hidden(current_slide)
 
     def _load_slide_with_item(self, item_id):
         item = self._get_item_by_value(item_id)
-        current_slide = self._get_current_slide()
-        next_slide_button = self._get_next_slide_button()
 
         while not item.is_displayed():
+            current_slide = self._get_current_slide()
+            next_slide_button = self._get_next_slide_button()
             self._scroll_to_reset_button()
+
             ActionChains(self.browser).click(next_slide_button).perform()
-            self.wait_until_hidden(current_slide)
+            self.wait_until_visible(current_slide)
 
     def _get_previous_slide_button(self):
         return self._page.find_element_by_css_selector('.bx-prev')
