@@ -476,7 +476,8 @@ class InteractionTestBase(object):
         zone.send_keys(action_key)
 
     def assert_item_grabbed(self, item):
-        self.wait_until_has_attribute_value('aria-grabbed', 'true', item, timeout=10)
+        drag_container = self._page.find_element_by_css_selector('.drag-container')
+        self.wait_until_has_attribute_value('class', 'drag-container dragging', drag_container, timeout=10)
 
     def assert_item_not_grabbed(self, item):
         self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
