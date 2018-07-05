@@ -403,7 +403,7 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
             if 'fade' not in item.get_attribute('class').split(' '):  # if item is draggable
                 item.send_keys(action_key)
                 drag_container = self._page.find_element_by_css_selector('.drag-container')
-                self.assertIn("dragging", drag_container.get_attribute('class'))
+                self.wait_until_has_attribute_value('class', 'drag-container dragging', drag_container, timeout=10)
 
                 # Get desired zone and figure out how many times we have to press Tab to focus the zone.
                 if not definition.zone_ids or definition.zone_ids[0] is None:  # moving back to the bank
@@ -416,7 +416,7 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
                     ActionChains(self.browser).send_keys(Keys.TAB).perform()
                 zone.send_keys(action_key)
                 drag_container = self._page.find_element_by_css_selector('.drag-container')
-                self.assertNotIn("dragging", drag_container.get_attribute('class').split(' '))
+                self.wait_until_has_attribute_value('class', 'drag-container', drag_container, timeout=10)
 
     def test_mouse_drag_zones_outline(self):
         self.scroll_down(pixels=300)
