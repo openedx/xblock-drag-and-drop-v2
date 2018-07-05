@@ -400,8 +400,9 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
         action_key = Keys.CONTROL+'m'
         for _, definition in self.items_map.items():
             item = self._get_item_by_value(definition.item_id)
+            self.wait_until_visible(item)
+
             if 'fade' not in item.get_attribute('class').split(' '):  # if item is draggable
-                self.wait_until_visible(item)
                 item.send_keys(action_key)
                 drag_container = self._page.find_element_by_css_selector('.drag-container')
                 self.wait_until_has_attribute_value('class', 'drag-container dragging', drag_container, timeout=10)
@@ -423,6 +424,8 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
         self.scroll_down(pixels=200)
         for _, definition in self.items_map.items():
             item = self._get_item_by_value(definition.item_id)
+            self.wait_until_visible(item)
+
             if 'fade' not in item.get_attribute('class'):  # if item is draggable
                 if not definition.zone_ids or definition.zone_ids[0] is None:  # moving back to the bank
                     target = self._get_current_slide()
@@ -430,7 +433,6 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
                     target = self._get_zone_by_id(definition.zone_ids[0])
 
                 # as we start dragging green outline is visible around all zones
-                self.wait_until_visible(item)
                 ActionChains(self.browser).click_and_hold(item).perform()
                 drag_container = self._page.find_element_by_css_selector('.drag-container')
                 self.wait_until_has_attribute_value('class', 'drag-container dragging', drag_container, timeout=10)
