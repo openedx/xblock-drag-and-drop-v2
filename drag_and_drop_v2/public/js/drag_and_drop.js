@@ -938,7 +938,6 @@ function DragAndDropBlock(runtime, element, configuration) {
         if (pageLoaded) {
             itemSlider = $root.find('.item-bank').bxSlider({
                 pager: false,
-                touchEnabled: false,
                 infiniteLoop: false,
                 startSlide: currentSlideIndex,
                 speed: 0
