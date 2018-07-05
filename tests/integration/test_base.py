@@ -430,6 +430,10 @@ class InteractionTestBase(object):
             self.drag_item_to_zone(item_value, zone_id)
         else:
             self.move_item_to_zone(item_value, zone_id, action_key)
+
+        # for slowing down code, and to focus on the start place
+        self._scroll_to_reset_button(self)
+
         if wait:
             self.wait_for_ajax()
 

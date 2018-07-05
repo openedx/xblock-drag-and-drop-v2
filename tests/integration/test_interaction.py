@@ -420,7 +420,7 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
                 self.wait_until_has_attribute_value('class', 'drag-container', drag_container, timeout=10)
 
     def test_mouse_drag_zones_outline(self):
-        self.scroll_down(pixels=300)
+        self.scroll_down(pixels=200)
         for _, definition in self.items_map.items():
             item = self._get_item_by_value(definition.item_id)
             if 'fade' not in item.get_attribute('class'):  # if item is draggable
