@@ -431,8 +431,8 @@ class InteractionTestBase(object):
         else:
             self.move_item_to_zone(item_value, zone_id, action_key)
 
-        # for slowing down code, and to focus on the start place
-        self._scroll_to_reset_button()
+        item = self._get_item_by_value(item_value)
+        self.wait_until_visible(item)
 
         if wait:
             self.wait_for_ajax()
