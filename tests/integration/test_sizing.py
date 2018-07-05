@@ -77,8 +77,7 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
             "img_wide_url": _svg_to_data_uri('dnd-bg-wide.svg'),
             "img_square_url": _svg_to_data_uri('dnd-bg-square.svg'),
             "img_400x300_url": _svg_to_data_uri('400x300.svg'),
-            # todo V4 pass this test after styling
-            # "img_200x200_url": _svg_to_data_uri('200x200.svg'),
+            "img_200x200_url": _svg_to_data_uri('200x200.svg'),
             "img_60x60_url": _svg_to_data_uri('60x60.svg'),
         }
         upper_block = "<drag-and-drop-v2 data='{data}'/>".format(

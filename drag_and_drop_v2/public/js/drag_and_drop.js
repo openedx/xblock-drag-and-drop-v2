@@ -776,6 +776,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     var fixedHeaderHeight = 0; // measured in checkForFixedHeader
     var __vdom = virtualDom.h();  // blank virtual DOM
     var itemSlider;
+    var currentSlideIndex = 0;
     var pageLoaded = false;
     // Event string size limit.
     var MAX_LENGTH = 255;
@@ -938,11 +939,20 @@ function DragAndDropBlock(runtime, element, configuration) {
             itemSlider = $root.find('.item-bank').bxSlider({
                 pager: false,
                 touchEnabled: false,
-                infiniteLoop: false
+                infiniteLoop: false,
+                startSlide: currentSlideIndex,
+                speed: 100
             });
         }
     };
 
+    var destroySlider = function() {
+        if (itemSlider){
+            currentSlideIndex = itemSlider.getCurrentSlide();
+            itemSlider.destroySlider();
+        }
+
+    }
     var runOnKey = function(evt, key, handler) {
         if (evt.which === key) {
             handler(evt);
@@ -1181,7 +1191,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     var updateDOM = function() {
         var new_vdom = render(state);
         var patches = virtualDom.diff(__vdom, new_vdom);
-        if (itemSlider){itemSlider.destroySlider();}
+        destroySlider();
         root = virtualDom.patch(root, patches);
         $root = $(root);
         initializeSlider();
