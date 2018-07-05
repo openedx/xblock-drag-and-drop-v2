@@ -248,8 +248,8 @@ class BaseIntegrationTest(SeleniumBaseTest):
                    u"Class name {} not in {}".format(class_name, elem.get_attribute('class')))
 
     @staticmethod
-    def wait_until_has_attribute_value(attribute, attribute_value, elem):
-        wait = WebDriverWait(elem, 4)
+    def wait_until_has_attribute_value(attribute, attribute_value, elem, timeout=4):
+        wait = WebDriverWait(elem, timeout)
         wait.until(lambda e: attribute_value == e.get_attribute(attribute),
                    u"attribute {} is {} instead of {}".format(
                        attribute, elem.get_attribute(attribute), attribute_value))
@@ -456,7 +456,7 @@ class InteractionTestBase(object):
         item = self._get_item_by_value(item_value)
         item.send_keys("")
         item.send_keys(action_key)
-        self.wait_until_has_attribute_value('aria-grabbed', 'true', item)
+        self.wait_until_has_attribute_value('aria-grabbed', 'true', item, timeout=10)
         # Focus is on first *zone* now
         self.assert_item_grabbed(item)
         # Get desired zone and figure out how many times we have to press Tab to focus the zone.
