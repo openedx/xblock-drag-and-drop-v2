@@ -134,12 +134,11 @@ class BaseIntegrationTest(SeleniumBaseTest):
         self._load_slide_with_item(item_id)
 
     def _go_to_first_slide(self):
-
         while not self._is_first_slide_visible():
             current_slide = self._get_current_slide()
             previous_slide_button = self._get_previous_slide_button()
-
             self._scroll_to_reset_button()
+
             ActionChains(self.browser).click(previous_slide_button).perform()
             self.wait_until_hidden(current_slide)
 
@@ -151,6 +150,7 @@ class BaseIntegrationTest(SeleniumBaseTest):
             current_slide = self._get_current_slide()
             next_slide_button = self._get_next_slide_button()
             self._scroll_to_reset_button()
+
             ActionChains(self.browser).click(next_slide_button).perform()
             self.wait_until_hidden(current_slide)
 
@@ -476,7 +476,7 @@ class InteractionTestBase(object):
         zone.send_keys(action_key)
 
     def assert_item_grabbed(self, item):
-        self.wait_until_has_attribute_value('aria-grabbed', 'true', item, timeout=10)
+        self.assertEqual(item.get_attribute('aria-grabbed'), 'true')
 
     def assert_item_not_grabbed(self, item):
         self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
