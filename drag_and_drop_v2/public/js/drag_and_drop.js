@@ -941,7 +941,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 touchEnabled: false,
                 infiniteLoop: false,
                 startSlide: currentSlideIndex,
-                speed: 100
+                speed: 0
             });
         }
     };
