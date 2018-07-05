@@ -431,11 +431,11 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
                 # as we start dragging green outline is visible around all zones
                 ActionChains(self.browser).click_and_hold(item).perform()
                 drag_container = self._page.find_element_by_css_selector('.drag-container')
-                self.wait_until_has_attribute_value('class', 'drag-container dragging', drag_container)
+                self.wait_until_has_attribute_value('class', 'drag-container dragging', drag_container, timeout=10)
                 # on drag release green outline around zones is hidden
                 ActionChains(self.browser).release(target).perform()
                 drag_container = self._page.find_element_by_css_selector('.drag-container')
-                self.wait_until_has_attribute_value('class', 'drag-container', drag_container)
+                self.wait_until_has_attribute_value('class', 'drag-container', drag_container, timeout=10)
 
 
 class MultipleValidOptionsInteractionTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):
