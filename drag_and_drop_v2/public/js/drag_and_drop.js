@@ -3,6 +3,8 @@ function DragAndDropTemplates(configuration) {
 
     var gettext;
     var ngettext;
+    var items_per_slide = 8;
+
     if ('DragAndDropI18N' in window) {
         // Use DnDv2's local translations
         gettext = window.DragAndDropI18N.gettext;
@@ -48,9 +50,9 @@ function DragAndDropTemplates(configuration) {
         {
             orderedDragables[itemsOrder[i]] = dragables[i];
         }
-        for (var i = 0; i < orderedDragables.length; i=i+8) {
-            var first_row = h("div.row", orderedDragables.slice(i, i+4));
-            var second_row = h("div.row", orderedDragables.slice(i+4, i+8));
+        for (var i = 0; i < orderedDragables.length; i=i+items_per_slide) {
+            var first_row = h("div.row", orderedDragables.slice(i, i+(items_per_slide/2)));
+            var second_row = h("div.row", orderedDragables.slice(i+(items_per_slide/2), i+items_per_slide));
             dividedDragables.push(h("div.slide", [first_row, second_row]));
         }
         return dividedDragables;
@@ -777,7 +779,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     var __vdom = virtualDom.h();  // blank virtual DOM
     var itemSlider;
     var currentSlideIndex = 0;
-    var pageLoaded = false;
+    var initializeSlider = function(){};
     // Event string size limit.
     var MAX_LENGTH = 255;
 
@@ -870,8 +872,8 @@ function DragAndDropBlock(runtime, element, configuration) {
 
             initDraggable();
             initDroppable();
-            pageLoaded = true
-            initializeSlider();
+            initializeSlider = sliderInitializer;
+            sliderInitializer();
             // Indicate that problem is done loading
             publishEvent({event_type: 'edx.drag_and_drop_v2.loaded'});
         }).fail(function() {
@@ -934,15 +936,13 @@ function DragAndDropBlock(runtime, element, configuration) {
         }
     };
 
-    var initializeSlider = function() {
-        if (pageLoaded) {
-            itemSlider = $root.find('.item-bank').bxSlider({
-                pager: false,
-                infiniteLoop: false,
-                startSlide: currentSlideIndex,
-                speed: 0
-            });
-        }
+    var sliderInitializer = function() {
+        itemSlider = $root.find('.item-bank').bxSlider({
+            pager: false,
+            infiniteLoop: false,
+            startSlide: currentSlideIndex,
+            speed: 0
+        });
     };
 
     var destroySlider = function() {
@@ -951,7 +951,8 @@ function DragAndDropBlock(runtime, element, configuration) {
             itemSlider.destroySlider();
         }
 
-    }
+    };
+
     var runOnKey = function(evt, key, handler) {
         if (evt.which === key) {
             handler(evt);

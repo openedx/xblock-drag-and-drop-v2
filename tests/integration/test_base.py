@@ -364,7 +364,7 @@ class InteractionTestBase(object):
         return items_container.find_elements_by_xpath(".//div[@data-value='{item_id}']".format(item_id=item_value))[0]
 
     def _get_placed_item_by_value(self, item_value):
-        css = ".target div[data-value='{item_id}']".format(item_id=item_value)
+        css = ".target div[data-value='{item_value}']".format(item_value=item_value)
         return self._page.find_element_by_css_selector(css)
 
     def _get_zone_by_id(self, zone_id):
