@@ -532,7 +532,7 @@ class CustomHtmlDataInteractionTest(StandardInteractionTest):
         2: ItemDefinition(2, "Item 2", "", [], None, "", "No Zone for <i>X</i>")
     }
 
-    all_zones = [('zone-1', 'Zone 1'), ('zone-2', 'Zone 2')]
+    all_zones = [('zone-1', 'Zone <i>1</i>'), ('zone-2', 'Zone <b>2</b>')]
 
     feedback = {
         "intro": "Intro <i>Feed</i>",
