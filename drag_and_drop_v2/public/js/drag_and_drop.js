@@ -3,7 +3,8 @@ function DragAndDropTemplates(configuration) {
 
     var gettext;
     var ngettext;
-    var items_per_slide = 8;
+    var colsPerSlide = 4;
+    var rowsPerSlide = 2;
 
     if ('DragAndDropI18N' in window) {
         // Use DnDv2's local translations
@@ -43,17 +44,21 @@ function DragAndDropTemplates(configuration) {
         });
     };
 
-    var divideDragablesInTwoRows = function(dragables, itemsOrder) {
+    var divideDragablesInToRows = function(dragables, itemsOrder) {
         var dividedDragables = [];
         var orderedDragables = [];
         for (var i=0; i<itemsOrder.length; i++)
         {
             orderedDragables[itemsOrder[i]] = dragables[i];
         }
-        for (var i = 0; i < orderedDragables.length; i=i+items_per_slide) {
-            var first_row = h("div.row", orderedDragables.slice(i, i+(items_per_slide/2)));
-            var second_row = h("div.row", orderedDragables.slice(i+(items_per_slide/2), i+items_per_slide));
-            dividedDragables.push(h("div.slide", [first_row, second_row]));
+        var i = 0;
+        while (i < orderedDragables.length) {
+            var rows = [];
+            for (var j = 0; j < rowsPerSlide; j=j+1) {
+                rows[j] = h("div.row", orderedDragables.slice(i, i+colsPerSlide));
+                i += colsPerSlide;
+            }
+            dividedDragables.push(h("div.slide", rows));
         }
         return dividedDragables;
     };
@@ -216,6 +221,7 @@ function DragAndDropTemplates(configuration) {
             className += " specified-width";  // The author has specified a width for this item.
         }
         var style = bankItemWidthStyles(item, ctx);
+        // todo V4 remove this line after styling
         style.background = 'gray';
         var attributes = {
             'draggable': false,
@@ -684,7 +690,7 @@ function DragAndDropTemplates(configuration) {
         bank_children = bank_children.concat(renderCollection(itemPlaceholderTemplate, items_placed, ctx));
         var itemsOrder = inBankItemsOrder.concat(placedItemsOrder);
 
-        bank_children = divideDragablesInTwoRows(bank_children, itemsOrder);
+        bank_children = divideDragablesInToRows(bank_children, itemsOrder);
         var drag_container_style = {};
         var target_img_style = {};
         // If drag_container_max_width is null, we are going to measure the container width after this render.
@@ -949,6 +955,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         if (itemSlider){
             currentSlideIndex = itemSlider.getCurrentSlide();
             itemSlider.destroySlider();
+            itemSlider = undefined;
         }
 
     };
