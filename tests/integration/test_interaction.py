@@ -119,16 +119,17 @@ class ParameterizedTestsMixin(object):
         self.scroll_down(pixels=scroll_down)
 
         for definition in items_map.values():
-            zone_id, _ = self._get_incorrect_zone_for_item(definition, all_zones)
+            zone_id, zone_title = self._get_incorrect_zone_for_item(definition, all_zones)
             if zone_id is not None:  # Some items may be placed in any zone, ignore those.
                 self.place_item(definition.item_id, zone_id, action_key)
                 self.wait_until_html_in(definition.feedback_negative, feedback_popup_content)
                 self.assert_popup_incorrect(popup)
                 self.assertTrue(popup.is_displayed())
-                self.assert_reverted_item(definition.item_id)
+                self.assert_placed_item(definition.item_id, zone_title, assessment_mode=False)
                 expected_sr_texts = [definition.feedback_negative, feedback['intro']]
                 self.assert_reader_feedback_messages(expected_sr_texts)
                 self._test_popup_focus_and_close(popup, action_key)
+                self.assert_reverted_item(definition.item_id)
 
     def parameterized_item_negative_feedback_on_bad_move_assessment(
             self, items_map, all_zones, scroll_down=100, action_key=None, feedback=None
@@ -419,14 +420,14 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
                 self.assertNotIn("dragging", drag_container.get_attribute('class').split(' '))
 
     def test_mouse_drag_zones_outline(self):
-        self.scroll_down(pixels=200)
+        self.scroll_down(pixels=300)
         for _, definition in self.items_map.items():
             item = self._get_item_by_value(definition.item_id)
             drag_container = item.find_element_by_xpath(  # get item parent drag container
                 "./ancestor::div[contains(concat(' ', @class, ' '), ' drag-container ')][1]"
             )
             if 'fade' not in item.get_attribute('class').split(' '):  # if item is draggable
-                if definition.zone_ids[0] is None:  # moving back to the bank
+                if not definition.zone_ids or definition.zone_ids[0] is None:  # moving back to the bank
                     target = self._get_item_bank()
                 else:
                     target = self._get_zone_by_id(definition.zone_ids[0])
@@ -531,7 +532,7 @@ class CustomHtmlDataInteractionTest(StandardInteractionTest):
         2: ItemDefinition(2, "Item 2", "", [], None, "", "No Zone for <i>X</i>")
     }
 
-    all_zones = [('zone-1', 'Zone 1'), ('zone-2', 'Zone 2')]
+    all_zones = [('zone-1', 'Zone <i>1</i>'), ('zone-2', 'Zone <b>2</b>')]
 
     feedback = {
         "intro": "Intro <i>Feed</i>",
