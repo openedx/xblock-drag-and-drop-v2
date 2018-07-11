@@ -785,7 +785,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     var __vdom = virtualDom.h();  // blank virtual DOM
     var itemSlider;
     var currentSlideIndex = 0;
-    var initializeSlider = function(){};
+    var pageLoaded = false;
     // Event string size limit.
     var MAX_LENGTH = 255;
 
@@ -878,8 +878,8 @@ function DragAndDropBlock(runtime, element, configuration) {
 
             initDraggable();
             initDroppable();
-            initializeSlider = sliderInitializer;
-            sliderInitializer();
+            pageLoaded = true
+            initializeSlider();
             // Indicate that problem is done loading
             publishEvent({event_type: 'edx.drag_and_drop_v2.loaded'});
         }).fail(function() {
@@ -942,13 +942,15 @@ function DragAndDropBlock(runtime, element, configuration) {
         }
     };
 
-    var sliderInitializer = function() {
-        itemSlider = $root.find('.item-bank').bxSlider({
-            pager: false,
-            infiniteLoop: false,
-            startSlide: currentSlideIndex,
-            speed: 0
-        });
+    var initializeSlider = function() {
+        if (pageLoaded) {
+            itemSlider = $root.find('.item-bank').bxSlider({
+               pager: false,
+                infiniteLoop: false,
+                startSlide: currentSlideIndex,
+                speed: 0
+            });
+        }
     };
 
     var destroySlider = function() {
