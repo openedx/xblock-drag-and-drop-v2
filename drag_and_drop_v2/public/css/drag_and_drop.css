@@ -370,6 +370,7 @@
     position: relative;
     margin-bottom: 1%;
     background-color: #fff;
+    width: 100%;
 }
 
 .xblock--drag-and-drop .target-img-wrapper {
@@ -379,7 +380,6 @@
 
 .xblock--drag-and-drop .target-img {
     display: table-cell;
-    width: 100%;
     max-width: 100%;
     height: auto;
     margin: auto;
