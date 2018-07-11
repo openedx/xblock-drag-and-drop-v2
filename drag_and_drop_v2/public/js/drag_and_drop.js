@@ -213,7 +213,7 @@ function DragAndDropTemplates(configuration) {
     // same amount of space as the original item so that the bank does not collapse when you've dragged
     // all items out.
     var itemPlaceholderTemplate = function(item, ctx) {
-        var className = "";
+        var className = "dropped";
         if (item.has_image) {
             className += " " + "option-with-image";
         }
@@ -222,7 +222,6 @@ function DragAndDropTemplates(configuration) {
         }
         var style = bankItemWidthStyles(item, ctx);
         // todo V4 remove this line after styling
-        style.background = 'gray';
         var attributes = {
             'draggable': false,
             'data-value': item.value
@@ -947,7 +946,10 @@ function DragAndDropBlock(runtime, element, configuration) {
             pager: false,
             infiniteLoop: false,
             startSlide: currentSlideIndex,
-            speed: 0
+            speed: 400,
+            hideControlOnEnd: true,
+            nextText: '<i class="fa fa-angle-right"></i>',
+            prevText: '<i class="fa fa-angle-left"></i>'
         });
     };
 

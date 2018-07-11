@@ -100,20 +100,20 @@
     align-items: center;
 
     position: relative;
-    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 3px;
     padding: 0; /* padding: 5px looks better but makes some blocks to change in size when dropped onto the target; */
 }
 
 .xblock--drag-and-drop .drag-container .option {
     display: inline-block;
-    width: auto;
+    width: 150px;
+    height: 55px;
     min-width: 4em;
     max-width: 30%;
     border: 1px solid transparent;
-    border-radius: 3px;
+    border-radius: 2px;
     box-sizing: border-box;
-    margin: 5px;
+    margin: 5px 5px 0;
     padding: 10px;
     text-align: center;
     background-color: #1d5280;
@@ -125,6 +125,41 @@
     /* Some versions of the drag and drop library try to fiddle with this */
     z-index: 10 !important;
     -webkit-touch-callout: none;
+    position: relative;
+}
+
+/*Item bank slider*/
+
+.bx-wrapper{
+    background: #fff;
+    padding: 0 55px;
+    position: relative;
+}
+
+.item-bank .slide{
+    padding: 10px 0;
+    text-align: center;
+}
+
+.bx-controls .bx-controls-direction > a{
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-15px);
+}
+
+.bx-controls .bx-controls-direction > a .fa{
+    font-size: 50px;
+    line-height: 30px;
+    color: #1d5280;
+}
+.bx-controls .bx-controls-direction > a.bx-next{
+    right: 18px;
+    left: auto;
+}
+
+.bx-controls .bx-controls-direction > a.disabled .fa{
+    color: #e3e8f0;
 }
 
 @media screen and (max-width: 480px) {
@@ -168,6 +203,11 @@
                  /* (this can happen if item displays image whose width exceeds computed max-width of item) */
     overflow-wrap: break-word;
     word-wrap: break-word;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
 }
 
 /* Placed option */
@@ -255,6 +295,7 @@
     position: relative;
     margin-bottom: 1%;
     background-color: #fff;
+    width: 100%;
 }
 
 .xblock--drag-and-drop .target-img-wrapper {
@@ -264,9 +305,9 @@
 
 .xblock--drag-and-drop .target-img {
     display: table-cell;
-    width: 100%;
     max-width: 100%;
     height: auto;
+    margin: auto;
 }
 
 /*To highlight ZONES while user is dragging an item*/
