@@ -13,9 +13,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from xblockutils.resources import ResourceLoader
 
 from tests.integration.test_base import (
-    DefaultDataTestMixin, InteractionTestBase, ItemDefinition
+    DefaultDataTestMixin, InteractionTestBase, ItemDefinition, FreeSizingInteractionTestBase
 )
 from .test_base import BaseIntegrationTest
+from drag_and_drop_v2.utils import Constants
 
 # Globals ###########################################################
 
@@ -174,12 +175,11 @@ class ParameterizedTestsMixin(object):
     def parameterized_cannot_move_items_between_zones(self, items_map, all_zones, scroll_down=100, action_key=None):
         # Scroll drop zones into view to make sure Selenium can successfully drop items
         self.scroll_down(pixels=scroll_down)
-
         # Take each item an assigned zone, place it into the correct zone, then ensure it cannot be moved to other.
         # zones or back to the bank.
         for item_key, definition in items_map.items():
             if definition.zone_ids:  # skip decoy items
-                self.place_item(definition.item_id, definition.zone_ids[0], action_key)
+                self.place_item_and_close_popup(definition.item_id, definition.zone_ids[0], action_key)
                 self.assert_placed_item(definition.item_id, definition.zone_title, assessment_mode=False)
                 if action_key:
                     item = self._get_item_by_value(definition.item_id)
@@ -218,6 +218,9 @@ class ParameterizedTestsMixin(object):
 
         for item_key, definition in items.items():
             self.place_item(definition.item_id, definition.zone_ids[0], action_key)
+            if not assessment_mode:
+                self.close_feedback_popup()
+
             self.assert_placed_item(definition.item_id, definition.zone_title, assessment_mode=assessment_mode)
 
         if assessment_mode:
@@ -231,11 +234,12 @@ class ParameterizedTestsMixin(object):
         self.assert_decoy_items(items_map, assessment_mode=assessment_mode)
 
         # Scroll "Reset problem" button into view to make sure Selenium can successfully click it
-        self.scroll_down(pixels=scroll_down+150)
+        self._scroll_to_reset_button()
 
         reset = self._get_reset_button()
         if action_key is not None:  # Using keyboard to interact with block
             reset.send_keys(Keys.RETURN)
+
         else:
             reset.click()
 
@@ -290,6 +294,8 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
     All interactions are tested using mouse (action_key=None) and four different keyboard action keys.
     If default data changes this will break.
     """
+    item_sizing = Constants.FIXED_SIZING
+
     @data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_item_positive_feedback_on_good_move(self, action_key):
         self.parameterized_item_positive_feedback_on_good_move_standard(self.items_map, action_key=action_key)
@@ -331,7 +337,7 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
 
         # Place all items in zones where they belong
         for definition in self._get_items_with_zone(self.items_map).values():
-            self.place_item(definition.item_id, definition.zone_ids[0])
+            self.place_item_and_close_popup(definition.item_id, definition.zone_ids[0])
 
         # Check if alt text appears for that item when the user tabs over the zone
         for zone_id, items_dict in self._get_items_by_zone(self.items_map).items():
@@ -366,7 +372,7 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
 
         # Place items into correct zones one by one:
         for idx, item in enumerate(items_with_zones):
-            self.place_item(item.item_id, item.zone_ids[0])
+            self.place_item_and_close_popup(item.item_id, item.zone_ids[0])
             # The number of items in correct positions currently equals:
             # the number of items already placed + any decoy items which should stay in the bank.
             grade = (idx + 1 + len(items_without_zones)) / float(total_items)
@@ -423,6 +429,7 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
     def test_mouse_drag_zones_outline(self):
         self.scroll_down(pixels=200)
         for _, definition in self.items_map.items():
+            self._scroll_to_item_bank()
             item = self._get_item_by_value(definition.item_id)
             self.wait_until_visible(item)
 
@@ -440,10 +447,17 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
                 ActionChains(self.browser).release(target).perform()
                 drag_container = self._page.find_element_by_css_selector('.drag-container')
                 self.wait_until_has_attribute_value('class', 'drag-container', drag_container, timeout=10)
+                self.close_feedback_popup()
+
+
+@ddt
+class FreeSizingStandardInteractionTest(StandardInteractionTest, FreeSizingInteractionTestBase):
+    item_sizing = Constants.FREE_SIZING
 
 
 class MultipleValidOptionsInteractionTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):
 
+    item_sizing = Constants.FIXED_SIZING
     items_map = {
         0: ItemDefinition(
             0,
@@ -468,11 +482,16 @@ class MultipleValidOptionsInteractionTest(DefaultDataTestMixin, InteractionTestB
                 self.wait_until_html_in(item.feedback_positive[i], feedback_popup_content)
                 self.assert_popup_correct(popup)
                 self.assert_placed_item(item.item_id, item.zone_title[i])
+                self._scroll_to_reset_button()
                 reset.click()
                 self.wait_until_disabled(reset)
 
     def _get_scenario_xml(self):
         return self._get_custom_scenario_xml("data/test_multiple_options_data.json")
+
+
+class FreeSizingMultipleValidOptionsInteractionTest(MultipleValidOptionsInteractionTest, FreeSizingInteractionTestBase):
+    item_sizing = Constants.FREE_SIZING
 
 
 class PreventSpaceBarScrollTest(DefaultDataTestMixin, InteractionTestBase, BaseIntegrationTest):
@@ -528,6 +547,10 @@ class CustomDataInteractionTest(StandardInteractionTest):
         return self._get_custom_scenario_xml("data/test_data.json")
 
 
+class FreeSizingCustomDataInteractionTest(CustomDataInteractionTest, FreeSizingInteractionTestBase):
+    item_sizing = Constants.FREE_SIZING
+
+
 class CustomHtmlDataInteractionTest(StandardInteractionTest):
     items_map = {
         0: ItemDefinition(0, "Item 0", "", ['zone-1'], 'Zone <i>1</i>', "Yes <b>1</b>", "No <b>1</b>"),
@@ -544,6 +567,10 @@ class CustomHtmlDataInteractionTest(StandardInteractionTest):
 
     def _get_scenario_xml(self):
         return self._get_custom_scenario_xml("data/test_html_data.json")
+
+
+class FreeSizingCustomHtmlDataInteractionTest(CustomHtmlDataInteractionTest, FreeSizingInteractionTestBase):
+    item_sizing = Constants.FREE_SIZING
 
 
 class MultipleBlocksDataInteraction(ParameterizedTestsMixin, InteractionTestBase, BaseIntegrationTest):
@@ -575,10 +602,12 @@ class MultipleBlocksDataInteraction(ParameterizedTestsMixin, InteractionTestBase
         'block1': {"intro": "Some Intro Feed", "final": "Some Final Feed"},
         'block2': {"intro": "Other Intro Feed", "final": "Other Final Feed"},
     }
+    item_sizing = Constants.FIXED_SIZING
 
     def _get_scenario_xml(self):
         blocks_xml = "\n".join([
-            "<drag-and-drop-v2 data='{data}'/>".format(data=loader.load_unicode(filename))
+            "<drag-and-drop-v2 item_sizing='{item_sizing}' data='{data}'/>".format(data=loader.load_unicode(filename),
+                                                                                   item_sizing=self.item_sizing)
             for filename in (self.BLOCK1_DATA_FILE, self.BLOCK2_DATA_FILE)
         ])
 
@@ -622,6 +651,10 @@ class MultipleBlocksDataInteraction(ParameterizedTestsMixin, InteractionTestBase
         self.interact_with_keyboard_help(scroll_down=0, use_keyboard=True)
 
 
+class FreeSizingMultipleBlocksDataInteraction(MultipleBlocksDataInteraction, FreeSizingInteractionTestBase):
+    item_sizing = Constants.FREE_SIZING
+
+
 @ddt
 class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
     """
@@ -630,6 +663,7 @@ class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
     PAGE_TITLE = 'Drag and Drop v2'
     PAGE_ID = 'drag_and_drop_v2'
     ACTION_KEYS = ITEM_DRAG_KEYBOARD_KEYS
+    item_sizing = Constants.FIXED_SIZING
 
     def setUp(self):
         super(ZoneAlignInteractionTest, self).setUp()
@@ -680,10 +714,15 @@ class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
             for action_key in self.ACTION_KEYS:
                 self._assert_zone_align_item(item, zone, alignment, action_key)
                 # Reset exercise
-                self.scroll_down(pixels=200)
+                self._scroll_to_reset_button()
                 reset.click()
                 self.scroll_down(pixels=0)
                 self.wait_until_disabled(reset)
+
+
+@ddt
+class FreeSizingZoneAlignInteractionTest(ZoneAlignInteractionTest, FreeSizingInteractionTestBase):
+    item_sizing = Constants.FREE_SIZING
 
 
 class TestMaxItemsPerZone(InteractionTestBase, BaseIntegrationTest):
@@ -694,18 +733,24 @@ class TestMaxItemsPerZone(InteractionTestBase, BaseIntegrationTest):
     PAGE_ID = 'drag_and_drop_v2'
 
     assessment_mode = False
+    item_sizing = Constants.FIXED_SIZING
 
     def _get_scenario_xml(self):
         scenario_data = loader.load_unicode("data/test_zone_align.json")
         return self._make_scenario_xml(data=scenario_data, max_items_per_zone=2)
+
+    def _place_tile(self, item_id, zone_id):
+        self.place_item(item_id, zone_id)
+        if not self.assessment_mode:
+            self.close_feedback_popup()
 
     def test_item_returned_to_bank(self):
         """
         Tests that an item is returned to bank if max items per zone reached
         """
         zone_id = "Zone No Align"
-        self.place_item(0, zone_id)
-        self.place_item(1, zone_id)
+        self._place_tile(0, zone_id)
+        self._place_tile(1, zone_id)
 
         # precondition check - max items placed into zone
         self.assert_placed_item(0, zone_id, assessment_mode=self.assessment_mode)
@@ -728,15 +773,15 @@ class TestMaxItemsPerZone(InteractionTestBase, BaseIntegrationTest):
         Tests that an item returned to the bank stays there after page refresh
         """
         zone_id = "Zone Left Align"
-        self.place_item(6, zone_id)
-        self.place_item(7, zone_id)
+        self._place_tile(6, zone_id)
+        self._place_tile(7, zone_id)
 
         # precondition check - max items placed into zone
         self.assert_placed_item(6, zone_id, assessment_mode=self.assessment_mode)
         self.assert_placed_item(7, zone_id, assessment_mode=self.assessment_mode)
 
-        self.place_item(8, zone_id)
-
+        # there would be a popup in max item case regardless of current mode
+        self.place_item_and_close_popup(8, zone_id)
         self.assert_reverted_item(8)
 
         self._page = self.go_to_page(self.PAGE_TITLE)  # refresh the page
@@ -751,6 +796,7 @@ class DragScrollingTest(InteractionTestBase, BaseIntegrationTest):
 
     PAGE_TITLE = 'Drag and Drop v2'
     PAGE_ID = 'drag_and_drop_v2'
+    item_sizing = Constants.FIXED_SIZING
 
     def setUp(self):
         super(DragScrollingTest, self).setUp()

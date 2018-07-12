@@ -8,9 +8,11 @@ from drag_and_drop_v2.default_data import (
     TOP_ZONE_TITLE, TOP_ZONE_ID, MIDDLE_ZONE_TITLE, MIDDLE_ZONE_ID, BOTTOM_ZONE_ID, ITEM_CORRECT_FEEDBACK_TOP,
     ITEM_INCORRECT_FEEDBACK, ITEM_TOP_ZONE_NAME, ITEM_MIDDLE_ZONE_NAME,
 )
-from tests.integration.test_base import BaseIntegrationTest, DefaultDataTestMixin, InteractionTestBase, ItemDefinition
+from tests.integration.test_base import (BaseIntegrationTest, InteractionTestBase, ItemDefinition,
+                                         FreeSizingInteractionTestBase)
 from tests.integration.test_interaction import DefaultDataTestMixin, ParameterizedTestsMixin
 from tests.integration.test_interaction_assessment import DefaultAssessmentDataTestMixin, AssessmentTestMixin
+from drag_and_drop_v2.utils import Constants
 
 
 class BaseEventsTests(InteractionTestBase, BaseIntegrationTest):
@@ -29,6 +31,7 @@ class EventsFiredTest(DefaultDataTestMixin, ParameterizedTestsMixin, BaseEventsT
     Tests that the analytics events are fired and in the proper order.
     """
     # These events must be fired in this order.
+    item_sizing = Constants.FIXED_SIZING
     scenarios = (
         {
             'name': 'edx.drag_and_drop_v2.loaded',
@@ -74,7 +77,8 @@ class EventsFiredTest(DefaultDataTestMixin, ParameterizedTestsMixin, BaseEventsT
     )
 
     def _get_scenario_xml(self):  # pylint: disable=no-self-use
-        return "<vertical_demo><drag-and-drop-v2/></vertical_demo>"
+        return "<vertical_demo><drag-and-drop-v2 item_sizing='{item_sizing}' /></vertical_demo>"\
+            .format(item_sizing=self.item_sizing)
 
     @data(*enumerate(scenarios))  # pylint: disable=star-args
     @unpack
@@ -86,9 +90,15 @@ class EventsFiredTest(DefaultDataTestMixin, ParameterizedTestsMixin, BaseEventsT
 
 
 @ddt
+class FreeSizingEventsFiredTest(EventsFiredTest, FreeSizingInteractionTestBase):
+    item_sizing = Constants.FREE_SIZING
+
+
+@ddt
 class AssessmentEventsFiredTest(
     DefaultAssessmentDataTestMixin, AssessmentTestMixin, BaseEventsTests
 ):
+    item_sizing = Constants.FIXED_SIZING
     scenarios = (
         {
             'name': 'edx.drag_and_drop_v2.loaded',
@@ -170,11 +180,20 @@ class AssessmentEventsFiredTest(
 
 
 @ddt
+class FreeSizingAssessmentEventsFiredTest(
+    AssessmentEventsFiredTest, FreeSizingInteractionTestBase
+):
+
+    item_sizing = Constants.FREE_SIZING
+
+
+@ddt
 class ItemDroppedEventTest(DefaultDataTestMixin, BaseEventsTests):
     """
     Test that the item.dropped event behaves properly.
 
     """
+    item_sizing = Constants.FIXED_SIZING
     items_map = {
         0: ItemDefinition(0, "Has name", "", 'zone-1', "Zone 1", "Yes", "No"),
         1: ItemDefinition(1, "", "https://placehold.it/100x100", 'zone-2', "Zone 2", "Yes", "No"),
@@ -234,3 +253,8 @@ class ItemDroppedEventTest(DefaultDataTestMixin, BaseEventsTests):
         event_name = 'edx.drag_and_drop_v2.item.dropped'
         published_events = [event[0][2] for event in events if event[0][1] == event_name]
         self.assertEqual(published_events, expected_events)
+
+
+@ddt
+class FreeSizingItemDroppedEventTest(ItemDroppedEventTest, FreeSizingInteractionTestBase):
+    item_sizing = Constants.FREE_SIZING

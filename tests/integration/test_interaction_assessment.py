@@ -36,11 +36,13 @@ class DefaultAssessmentDataTestMixin(DefaultDataTestMixin):
     Provides a test scenario with default options in assessment mode.
     """
     MAX_ATTEMPTS = 5
+    item_sizing = Constants.FREE_SIZING
 
     def _get_scenario_xml(self):  # pylint: disable=no-self-use
         return """
-            <vertical_demo><drag-and-drop-v2 mode='{mode}' max_attempts='{max_attempts}'/></vertical_demo>
-        """.format(mode=Constants.ASSESSMENT_MODE, max_attempts=self.MAX_ATTEMPTS)
+            <vertical_demo><drag-and-drop-v2 mode='{mode}'
+             item_sizing='{item_sizing}' max_attempts='{max_attempts}'/></vertical_demo>
+        """.format(mode=Constants.ASSESSMENT_MODE, max_attempts=self.MAX_ATTEMPTS, item_sizing=self.item_sizing)
 
 
 class AssessmentTestMixin(object):
@@ -79,6 +81,9 @@ class AssessmentInteractionTest(
     All interactions are tested using mouse (action_key=None) and four different keyboard action keys.
     If default data changes this will break.
     """
+
+    item_sizing = Constants.FIXED_SIZING
+
     @data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_item_no_feedback_on_good_move(self, action_key):
         self.parameterized_item_positive_feedback_on_good_move_assessment(self.items_map, action_key=action_key)

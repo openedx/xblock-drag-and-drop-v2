@@ -44,18 +44,22 @@ function DragAndDropTemplates(configuration) {
         });
     };
 
-    var divideDragablesInToRows = function(dragables, itemsOrder) {
-        var dividedDragables = [];
+    var orderDragables = function(dragables, itemsOrder){
         var orderedDragables = [];
         for (var i=0; i<itemsOrder.length; i++)
         {
             orderedDragables[itemsOrder[i]] = dragables[i];
         }
+        return orderedDragables;
+    };
+
+    var divideDragablesInToRows = function(dragables) {
+        var dividedDragables = [];
         var i = 0;
-        while (i < orderedDragables.length) {
+        while (i < dragables.length) {
             var rows = [];
             for (var j = 0; j < rowsPerSlide; j=j+1) {
-                rows[j] = h("div.row", orderedDragables.slice(i, i+colsPerSlide));
+                rows[j] = h("div.row", dragables.slice(i, i+colsPerSlide));
                 i += colsPerSlide;
             }
             dividedDragables.push(h("div.slide", rows));
@@ -73,7 +77,7 @@ function DragAndDropTemplates(configuration) {
 
     var bankItemWidthStyles = function(item, ctx) {
         var style = {};
-        if (item.widthPercent) {
+        if (item.widthPercent && configuration.item_sizing == DragAndDropBlock.FREE_SIZING) {
             // The item bank container is often wider than the background image, and the
             // widthPercent is specified relative to the background image so we have to
             // convert it to pixels. But if the browser window is not as wide as the image,
@@ -102,7 +106,7 @@ function DragAndDropTemplates(configuration) {
         if (item.has_image) {
             className += " " + "option-with-image";
         }
-        if (item.widthPercent) {
+        if (item.widthPercent && configuration.item_sizing == DragAndDropBlock.FREE_SIZING) {
             className += " specified-width";  // The author has specified a width for this item.
         }
         if (item.grabbed_with) {
@@ -132,15 +136,16 @@ function DragAndDropTemplates(configuration) {
             style.top = item.drag_position.top + 'px';
         }
         if (item.is_placed) {
-            var maxWidth = (item.widthPercent || 30) / 100;
+            var maxWidth = DragAndDropBlock.FREE_SIZING == configuration.item_sizing ? item.widthPercent || 30 : 30;
+            maxWidth = maxWidth / 100;
             var widthPercent = zone.width_percent / 100;
             style.maxWidth = ((1 / (widthPercent / maxWidth)) * 100) + '%';
-            if (item.widthPercent) {
+            if (item.widthPercent && configuration.item_sizing == DragAndDropBlock.FREE_SIZING) {
                 style.width = style.maxWidth;
             }
             // Finally, if the item is using automatic sizing and contains an image, we
             // always prefer the natural width of the image (subject to the max-width):
-            if (item.imgNaturalWidth && !item.widthPercent) {
+            if (item.imgNaturalWidth && !item.widthPercent && configuration.item_sizing == DragAndDropBlock.FREE_SIZING) {
                 style.width = (item.imgNaturalWidth + 22) + "px"; // 22px is for 10px padding + 1px border each side
                 // ^ Hack to detect image width at runtime and make webkit consistent with Firefox
             }
@@ -213,16 +218,14 @@ function DragAndDropTemplates(configuration) {
     // same amount of space as the original item so that the bank does not collapse when you've dragged
     // all items out.
     var itemPlaceholderTemplate = function(item, ctx) {
-        var className = "";
+        var className = "dropped";
         if (item.has_image) {
             className += " " + "option-with-image";
         }
-        if (item.widthPercent) {
+        if (item.widthPercent && configuration.item_sizing == DragAndDropBlock.FREE_SIZING) {
             className += " specified-width";  // The author has specified a width for this item.
         }
         var style = bankItemWidthStyles(item, ctx);
-        // todo V4 remove this line after styling
-        style.background = 'gray';
         var attributes = {
             'draggable': false,
             'data-value': item.value
@@ -507,6 +510,26 @@ function DragAndDropTemplates(configuration) {
             },
             [
                 h(
+                    ctx.last_action_correct ? 'div.popup-header-icon' : 'div.popup-header-icon.popup-header-icon-incorrect',
+                    {},
+                    [
+                        h(
+                            ctx.last_action_correct ? 'span.icon.fa.fa-check' : 'span.icon.fa.fa-times',
+                            {
+                                attributes: {
+                                    'aria-hidden': true
+                                }
+                            }
+                        ),
+                        h(
+                            'div.popup-header-text',
+                            {},
+                            ctx.last_action_correct ? gettext("Correct!") : gettext("Wrong!")
+                        )
+                    ]
+                ),
+                popup_content,
+                h(
                     'button.unbutton.close-feedback-popup-button.close-feedback-popup-desktop-button',
                     {},
                     [
@@ -517,8 +540,9 @@ function DragAndDropTemplates(configuration) {
                             }
                         ),
                         h(
-                            'span.icon.fa.fa-times-circle',
+                            'span.text',
                             {
+                                innerHTML: ctx.last_action_correct ? gettext("Select Another Item") : gettext("Try Again"),
                                 attributes: {
                                     'aria-hidden': true
                                 }
@@ -526,26 +550,6 @@ function DragAndDropTemplates(configuration) {
                         )
                     ]
                 ),
-                h(
-                    ctx.last_action_correct ? 'div.popup-header-icon' : 'div.popup-header-icon.popup-header-icon-incorrect',
-                    {},
-                    [
-                        h(
-                            ctx.last_action_correct ? 'span.icon.fa.fa-check-circle' : 'span.icon.fa.fa-exclamation-circle',
-                            {
-                                attributes: {
-                                    'aria-hidden': true
-                                }
-                            }
-                        )
-                    ]
-                ),
-                h(
-                    'div.popup-header-text',
-                    {},
-                    ctx.last_action_correct ? gettext("Correct") : gettext("Incorrect")
-                ),
-                popup_content,
                 h(
                     'div',
                     [
@@ -695,7 +699,11 @@ function DragAndDropTemplates(configuration) {
         bank_children = bank_children.concat(renderCollection(itemPlaceholderTemplate, items_placed, ctx));
         var itemsOrder = inBankItemsOrder.concat(placedItemsOrder);
 
-        bank_children = divideDragablesInToRows(bank_children, itemsOrder);
+        bank_children = orderDragables(bank_children, itemsOrder);
+        if (configuration.item_sizing == DragAndDropBlock.FIXED_SIZING)
+        {
+            bank_children = divideDragablesInToRows(bank_children);
+        }
         var drag_container_style = {};
         var target_img_style = {};
         // If drag_container_max_width is null, we are going to measure the container width after this render.
@@ -722,7 +730,6 @@ function DragAndDropTemplates(configuration) {
                 ]),
                 h('div.drag-container', {style: drag_container_style}, [
                     h('div.target', {attributes: {'role': 'group', 'arial-label': gettext('Drop Targets')}}, [
-                        itemFeedbackPopupTemplate(ctx),
                         h('div.target-img-wrapper', [
                             h('img.target-img', {
                                 src: ctx.target_img_src,
@@ -733,6 +740,7 @@ function DragAndDropTemplates(configuration) {
                         ]),
                     ]),
                     h('div.item-bank', item_bank_properties, bank_children),
+                    itemFeedbackPopupTemplate(ctx),
                     h('div.dragged-items', renderCollection(itemTemplate, items_dragged, ctx)),
                 ]),
                 h("div.actions-toolbar", { attributes: {'role': 'group', 'aria-label': gettext('Actions')}}, 
@@ -755,8 +763,8 @@ function DragAndDropBlock(runtime, element, configuration) {
 
     DragAndDropBlock.STANDARD_MODE = 'standard';
     DragAndDropBlock.ASSESSMENT_MODE = 'assessment';
-    DragAndDropBlock.FIXED_SIZING = "fixed_sizing"
-    DragAndDropBlock.FREE_SIZING = "free_sizing"
+    DragAndDropBlock.FIXED_SIZING = "fixed_sizing";
+    DragAndDropBlock.FREE_SIZING = "free_sizing";
 
 
     var Selector = {
@@ -884,8 +892,12 @@ function DragAndDropBlock(runtime, element, configuration) {
 
             initDraggable();
             initDroppable();
-            pageLoaded = true
-            initializeSlider();
+            if (configuration.item_sizing == DragAndDropBlock.FIXED_SIZING)
+            {
+                pageLoaded = true;
+                initializeSlider();
+            }
+
             // Indicate that problem is done loading
             publishEvent({event_type: 'edx.drag_and_drop_v2.loaded'});
         }).fail(function() {
@@ -953,10 +965,14 @@ function DragAndDropBlock(runtime, element, configuration) {
         // so that images contained in the droppable items are loaded properly.
         if (pageLoaded) {
             itemSlider = $root.find('.item-bank').bxSlider({
-                speed: 0,
+                speed: 400,
                 pager: false,
                 infiniteLoop: false,
+                hideControlOnEnd: true,
                 startSlide: currentSlideIndex,
+                nextText: '<i class="fa fa-angle-right"></i>',
+                prevText: '<i class="fa fa-angle-left"></i>',
+
                 // Workaround: mobile touch drag and drop behavior is broken,
                 // but disabling touch allows click events to come through.
                 touchEnabled: false

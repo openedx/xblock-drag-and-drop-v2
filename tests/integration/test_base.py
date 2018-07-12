@@ -48,6 +48,7 @@ ItemDefinition = namedtuple(  # pylint: disable=invalid-name
 
 class BaseIntegrationTest(SeleniumBaseTest):
     default_css_selector = '.themed-xblock.xblock--drag-and-drop'
+    item_sizing = Constants.FIXED_SIZING
     module_name = __name__
 
     _additional_escapes = {
@@ -75,6 +76,7 @@ class BaseIntegrationTest(SeleniumBaseTest):
                     max_items_per_zone='{max_items_per_zone}'
                     mode='{mode}'
                     data='{data}'
+                    item_sizing='{item_sizing}'
                 />
             </vertical_demo>
         """.format(
@@ -85,13 +87,14 @@ class BaseIntegrationTest(SeleniumBaseTest):
             completed=completed,
             max_items_per_zone=max_items_per_zone,
             mode=mode,
-            data=escape(data, cls._additional_escapes)
+            data=escape(data, cls._additional_escapes),
+            item_sizing=cls.item_sizing
         )
 
     def _get_custom_scenario_xml(self, filename):
         data = loader.load_unicode(filename)
-        return "<vertical_demo><drag-and-drop-v2 data='{data}'/></vertical_demo>".format(
-            data=escape(data, self._additional_escapes)
+        return "<vertical_demo><drag-and-drop-v2 data='{data}' item_sizing='{item_sizing}' /></vertical_demo>".format(
+            data=escape(data, self._additional_escapes), item_sizing=self.item_sizing
         )
 
     def _add_scenario(self, identifier, title, xml):
@@ -172,6 +175,10 @@ class BaseIntegrationTest(SeleniumBaseTest):
         reset = self._page.find_element_by_css_selector('.actions-toolbar')
         self.browser.execute_script("arguments[0].scrollIntoView(0);", reset)
         self.wait_until_visible(reset)
+
+    def _scroll_to_item_bank(self):
+        item_bank = self._page.find_element_by_css_selector('.item-bank')
+        self.browser.execute_script("arguments[0].scrollIntoView(0);", item_bank)
 
     def _get_show_answer_button(self):
         return self._page.find_element_by_css_selector('.show-answer-button')
@@ -303,9 +310,11 @@ class DefaultDataTestMixin(object):
         "intro": START_FEEDBACK,
         "final": FINISH_FEEDBACK,
     }
+    item_sizing = Constants.FREE_SIZING
 
     def _get_scenario_xml(self):  # pylint: disable=no-self-use
-        return "<vertical_demo><drag-and-drop-v2/></vertical_demo>"
+        return "<vertical_demo><drag-and-drop-v2 item_sizing='{item_sizing}' /></vertical_demo>"\
+            .format(item_sizing=self.item_sizing)
 
 
 class InteractionTestBase(object):
@@ -446,6 +455,7 @@ class InteractionTestBase(object):
             target = self._get_zone_by_id(zone_id)
 
         self.browser.execute_script("arguments[0].scrollIntoView(0);", element)
+
         ActionChains(self.browser).drag_and_drop(element, target).perform()
 
     def move_item_to_zone(self, item_value, zone_id, action_key):
@@ -475,6 +485,16 @@ class InteractionTestBase(object):
         for _ in range(tab_press_count):
             ActionChains(self.browser).send_keys(Keys.TAB).perform()
         zone.send_keys(action_key)
+
+    def close_feedback_popup(self):
+        css = '.close-feedback-popup-button'
+        popup = self._page.find_element_by_css_selector(css)
+        self.wait_until_visible(popup)
+        popup.click()
+
+    def place_item_and_close_popup(self, item_value, zone_id, action_key=None, wait=True):
+        self.place_item(item_value, zone_id, action_key, wait)
+        self.close_feedback_popup()
 
     def assert_item_grabbed(self, item):
         self.assertEqual(item.get_attribute('aria-grabbed'), 'true')
@@ -574,3 +594,13 @@ class InteractionTestBase(object):
         feedback_area = self._page.find_element_by_css_selector('.reader-feedback-area')
         actual_html = feedback_area.get_attribute('innerHTML')
         self.assertEqual(actual_html, expected_html)
+
+
+class FreeSizingInteractionTestBase(InteractionTestBase):
+
+    def _load_current_slide_by_item_id(self, item_id):
+        pass
+
+    def _get_current_slide(self):
+        css = '.item-bank .option'
+        return self._page.find_element_by_css_selector(css)
