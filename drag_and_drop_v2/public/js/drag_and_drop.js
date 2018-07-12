@@ -501,6 +501,26 @@ function DragAndDropTemplates(configuration) {
             },
             [
                 h(
+                    ctx.last_action_correct ? 'div.popup-header-icon' : 'div.popup-header-icon.popup-header-icon-incorrect',
+                    {},
+                    [
+                        h(
+                            ctx.last_action_correct ? 'span.icon.fa.fa-check' : 'span.icon.fa.fa-times',
+                            {
+                                attributes: {
+                                    'aria-hidden': true
+                                }
+                            }
+                        ),
+                        h(
+                            'div.popup-header-text',
+                            {},
+                            ctx.last_action_correct ? gettext("Correct!") : gettext("Wrong!")
+                        )
+                    ]
+                ),
+                popup_content,
+                h(
                     'button.unbutton.close-feedback-popup-button.close-feedback-popup-desktop-button',
                     {},
                     [
@@ -511,8 +531,9 @@ function DragAndDropTemplates(configuration) {
                             }
                         ),
                         h(
-                            'span.icon.fa.fa-times-circle',
+                            'span.text',
                             {
+                                innerHTML: gettext("Some text"),
                                 attributes: {
                                     'aria-hidden': true
                                 }
@@ -520,26 +541,6 @@ function DragAndDropTemplates(configuration) {
                         )
                     ]
                 ),
-                h(
-                    ctx.last_action_correct ? 'div.popup-header-icon' : 'div.popup-header-icon.popup-header-icon-incorrect',
-                    {},
-                    [
-                        h(
-                            ctx.last_action_correct ? 'span.icon.fa.fa-check-circle' : 'span.icon.fa.fa-exclamation-circle',
-                            {
-                                attributes: {
-                                    'aria-hidden': true
-                                }
-                            }
-                        )
-                    ]
-                ),
-                h(
-                    'div.popup-header-text',
-                    {},
-                    ctx.last_action_correct ? gettext("Correct") : gettext("Incorrect")
-                ),
-                popup_content,
                 h(
                     'div',
                     [
@@ -716,7 +717,6 @@ function DragAndDropTemplates(configuration) {
                 ]),
                 h('div.drag-container', {style: drag_container_style}, [
                     h('div.target', {attributes: {'role': 'group', 'arial-label': gettext('Drop Targets')}}, [
-                        itemFeedbackPopupTemplate(ctx),
                         h('div.target-img-wrapper', [
                             h('img.target-img', {
                                 src: ctx.target_img_src,
@@ -727,6 +727,7 @@ function DragAndDropTemplates(configuration) {
                         ]),
                     ]),
                     h('div.item-bank', item_bank_properties, bank_children),
+                    itemFeedbackPopupTemplate(ctx),
                     h('div.dragged-items', renderCollection(itemTemplate, items_dragged, ctx)),
                 ]),
                 h("div.actions-toolbar", {attributes: {'role': 'group', 'aria-label': gettext('Actions')}}, [

@@ -498,26 +498,33 @@
 
 .xblock--drag-and-drop .popup {
     position: absolute;
-    top: 5%;
-    right: 5%;
-    border: 1px solid #fff;
-    background-color: rgba(0, 0, 0, 0.8);
-    width: 500px;
-    max-width: 90%;
-    min-height: 50px;
-    max-height: 90%;
-    overflow-y: auto;
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+    background-color: rgba(0, 0, 0, 1);
     z-index: 100;
+    height: 149px;
 }
 
 .xblock--drag-and-drop .popup.popup-incorrect {
-    background-color: rgba(173, 13, 13, 0.8);
+    background-color: rgba(173, 13, 13, 1);
 }
 
 .xblock--drag-and-drop .popup .popup-content {
     color: #ffffff;
-    margin: 35px 15px 15px 15px;
+    padding: 0 15px;
     font-size: 14px;
+    width: 45%;
+    display: inline-block;
+    height: 148px;
+    position: relative;
+}
+
+.xblock--drag-and-drop .popup .popup-content p{
+    position: absolute;
+    margin: 0;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .xblock--drag-and-drop .popup .popup-content img {
@@ -530,6 +537,30 @@
     color: #ffffff;
     font-family: "fontawesome";
     font-size: 18pt;
+    width: 29%;
+    display: inline-block;
+    height: 148px;
+    vertical-align: top;
+    margin: 0;
+}
+
+.xblock--drag-and-drop .popup .close-feedback-popup-desktop-button span.text{
+    font-size: 14px;
+    padding: 12px 14px;
+    text-align: left;
+    border: 1px solid #fff;
+    min-width: 135px;
+    display: inline-block;
+    border-radius: 3px;
+    position: relative;
+}
+
+.xblock--drag-and-drop .popup .close-feedback-popup-desktop-button span.text:after{
+    content: "\f105";
+    position: absolute;
+    right: 8px;
+    font-size: 22px;
+    top: 8px;
 }
 
 .xblock--drag-and-drop .popup .close-feedback-popup-mobile-button {
@@ -537,11 +568,27 @@
 }
 
 .xblock--drag-and-drop .popup .popup-header-icon {
-    display: none;
+    display: inline-block;
+    width: 22%;
+    text-align: center;
+    vertical-align: top;
+    padding-top: 38px;
+}
+
+.xblock--drag-and-drop .popup .popup-header-icon .fa{
+    font-size: 20px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 100%;
+    background-color: white;
+    color: black;
 }
 
 .xblock--drag-and-drop .popup .popup-header-text {
-    display: none;
+    margin-top: 10px;
+    color: white;
+    font-weight: bold;
 }
 
 .xblock--drag-and-drop .popup .popup-header-icon.popup-header-icon-incorrect {
@@ -595,7 +642,6 @@
 
     .xblock--drag-and-drop .popup .popup-header-icon {
         display: inline-block;
-        margin-top: 10px;
         color: #629a2c;
         font-size: 20pt;
     }
@@ -612,7 +658,7 @@
 
     .xblock--drag-and-drop .popup .popup-content {
         color: #629a2c;
-        margin: 10px 0px 0px 0px;
+        margin: 10px 0 0 0;
         font-size: 14px;
         background-color: #f4ffe7;
         padding: 20px;
