@@ -943,12 +943,17 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var initializeSlider = function() {
+        // Need to wait for the full page load before loading the bxSlider,
+        // so that images contained in the droppable items are loaded properly.
         if (pageLoaded) {
             itemSlider = $root.find('.item-bank').bxSlider({
-               pager: false,
+                speed: 0,
+                pager: false,
                 infiniteLoop: false,
                 startSlide: currentSlideIndex,
-                speed: 0
+                // Workaround: mobile touch drag and drop behavior is broken,
+                // but disabling touch allows click events to come through.
+                touchEnabled: false
             });
         }
     };
