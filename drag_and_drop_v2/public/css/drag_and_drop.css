@@ -106,8 +106,13 @@
 
 .xblock--drag-and-drop .drag-container .bx-wrapper .option {
     width: 150px;
-    height: 55px;
+}
 
+.xblock--drag-and-drop .drag-container .col {
+    width: 150px;
+    display: inline-block;
+    margin: 5px 5px 0;
+    vertical-align: top;
 }
 
 .xblock--drag-and-drop .drag-container .option {
@@ -117,11 +122,11 @@
     border: 1px solid transparent;
     border-radius: 2px;
     box-sizing: border-box;
-    margin: 5px 5px 0;
+    margin: 0 5px 5px 0;
     padding: 10px;
     text-align: center;
     background-color: #1d5280;
-    font-size: 14px;
+    font-size: 11px;
     color: #fff;
     opacity: 1;
     outline-color: #fff;
@@ -131,6 +136,103 @@
     -webkit-touch-callout: none;
     position: relative;
     line-height: normal;
+}
+
+.xblock--drag-and-drop .drag-container .dropped {
+    background-color: gray;
+    color: gray;
+}
+
+.xblock--drag-and-drop .drag-container .rectangle-option {
+    width: 150px;
+    height: 55px;
+    max-width: NONE;
+}
+
+.xblock--drag-and-drop .drag-container .square-option {
+    width: 150px;
+    height: 120px;
+    max-width: NONE;
+
+}
+
+.xblock--drag-and-drop .drag-container .square-option .show-item-detail-popup{
+    width: 90%;
+    position: absolute;
+    bottom: 7px;
+    left: 7px;
+    right: 5px;
+    border-radius: 2px;
+    border: 0;
+    font-weight: bold;
+    background-color: rgba(255,255,255,0.2);
+    color: white;
+    padding: 5px;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.xblock--drag-and-drop .drag-container .square-option .show-item-detail-popup .fa{
+    position: absolute;
+    left: 7px;
+    top: 6px;
+}
+
+.xblock--drag-and-drop .item-detail-popup p{
+    margin: 0;
+    font-size: 14px;
+    max-height: 180px;
+    overflow: auto;
+}
+.xblock--drag-and-drop .item-detail-popup:after{
+    content: "";
+    height: 100px;
+    position: absolute;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.3);
+    width: 100%;
+    left: 0;
+    background: linear-gradient(transparent, #1d5280) no-repeat center;
+}
+.xblock--drag-and-drop .item-detail-popup .fa{
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+}
+
+.drag-container.item-detail-popup-visible:before {
+    content: "";
+    left: 0;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    right: 0;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.item-detail-popup-visible > .target,
+.item-detail-popup-visible > .bx-wrapper,
+.item-detail-popup-visible > .popup{
+    -webkit-filter: blur(10px);
+    -moz-filter: blur(10px);
+    -o-filter: blur(10px);
+    -ms-filter: blur(10px);
+    filter: blur(10px);
+}
+.xblock--drag-and-drop .item-detail-popup {
+    display: none;
+    position: absolute;
+    width: 390px;
+    left: 50%;
+    top: 50%;
+    z-index: 2;
+    background-color: #1d5280;
+    padding: 45px 20px 30px 45px;
+    border-radius: 5px;
+    color: white;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
 }
 
 .xblock--drag-and-drop .drag-container .dropped {
@@ -148,7 +250,6 @@
 
 .item-bank .slide{
     padding: 10px 0;
-    text-align: center;
 }
 
 .bx-controls .bx-controls-direction > a{
@@ -247,8 +348,12 @@
     .xblock--drag-and-drop .drag-container .item-bank .option {
         flex-shrink: 0;
         flex-grow: 0;
+    }
+
+    .xblock--drag-and-drop .drag-container .item-bank > .option {
         max-width: 80%;
     }
+
 }
 
 .xblock--drag-and-drop .drag-container .option.specified-width img {
@@ -290,6 +395,10 @@
     position: absolute;
     margin: 0;
     transform: translate(-50%, -50%); /* These blocks are to be centered on their absolute x,y position */
+}
+/* Hide Read All button for placed option */
+.xblock--drag-and-drop .drag-container .target .option .show-item-detail-popup {
+    display: none;
 }
 /* Dragging placed option to a different zone in assessment mode */
 .xblock--drag-and-drop .drag-container .target .option.grabbed-with-mouse {
@@ -370,7 +479,6 @@
     position: relative;
     margin-bottom: 1%;
     background-color: #fff;
-    width: 100%;
 }
 
 .xblock--drag-and-drop .target-img-wrapper {
@@ -380,6 +488,7 @@
 
 .xblock--drag-and-drop .target-img {
     display: table-cell;
+    width: 100%;
     max-width: 100%;
     height: auto;
     margin: auto;

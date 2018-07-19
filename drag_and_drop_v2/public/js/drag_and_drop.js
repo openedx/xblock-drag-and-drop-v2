@@ -4,7 +4,10 @@ function DragAndDropTemplates(configuration) {
     var gettext;
     var ngettext;
     var colsPerSlide = 4;
-    var rowsPerSlide = 2;
+    var rectangle_item_character_limit = 50;
+    var square_item_character_limit = 120;
+    var rectanglesPerCol = 2;
+    var squaresPerCol = 1;
 
     if ('DragAndDropI18N' in window) {
         // Use DnDv2's local translations
@@ -46,6 +49,7 @@ function DragAndDropTemplates(configuration) {
 
     var orderDragables = function(dragables, itemsOrder){
         var orderedDragables = [];
+        // order dragables according to their original order
         for (var i=0; i<itemsOrder.length; i++)
         {
             orderedDragables[itemsOrder[i]] = dragables[i];
@@ -54,17 +58,51 @@ function DragAndDropTemplates(configuration) {
     };
 
     var divideDragablesInToRows = function(dragables) {
-        var dividedDragables = [];
+        var dividedDragables = separateSquareAndRectangles(dragables);
+        var rectanglesCount = dividedDragables.rectangles.length;
+        var slides = [];
         var i = 0;
         while (i < dragables.length) {
-            var rows = [];
-            for (var j = 0; j < rowsPerSlide; j=j+1) {
-                rows[j] = h("div.row", dragables.slice(i, i+colsPerSlide));
-                i += colsPerSlide;
+            var cols = [];
+            for (var j = 0; j < colsPerSlide && i < dragables.length; j=j+1) {
+                if (i < rectanglesCount)
+                {
+                    var lastIndex = i + rectanglesPerCol;
+                    var isOverflow = lastIndex > rectanglesCount;
+                    var rectanglesThisCol = isOverflow? rectanglesPerCol - (lastIndex%rectanglesCount): rectanglesPerCol;
+                    cols[j] = h("div.col", dividedDragables.rectangles.slice(i, i+rectanglesThisCol));
+                    i += rectanglesThisCol;
+                }
+                else
+                {
+                    cols[j] = h("div.col", dividedDragables.squares.slice(i-rectanglesCount, i+squaresPerCol-rectanglesCount));
+                    i += squaresPerCol;
+                }
             }
-            dividedDragables.push(h("div.slide", rows));
+            slides.push(h("div.slide", cols));
         }
-        return dividedDragables;
+        return slides;
+    };
+
+    var separateSquareAndRectangles = function(dragables) {
+        var squareTiles = [];
+        var rectangleTiles = [];
+        dragables.forEach(function(dragable){
+            var className = dragable.properties.className;
+            if (className.match('square'))
+            {
+                squareTiles.push(dragable);
+            }
+            else
+            {
+                rectangleTiles.push(dragable);
+            }
+        });
+
+        return {
+            'squares': squareTiles,
+            'rectangles': rectangleTiles
+        };
     };
 
     var getZone = function(zoneUID, ctx) {
@@ -73,6 +111,14 @@ function DragAndDropTemplates(configuration) {
                 return ctx.zones[i];
             }
         }
+    };
+
+    var getItemShapeClass = function(item) {
+        var item_content_html = gettext(item.displayName);
+        if (item.has_image || item_content_html.length > rectangle_item_character_limit) {
+            return " square-option";
+        }
+        return " rectangle-option";
     };
 
     var bankItemWidthStyles = function(item, ctx) {
@@ -106,12 +152,25 @@ function DragAndDropTemplates(configuration) {
     };
 
     var itemContentTemplate = function(item) {
-        var item_content_html = gettext(item.displayName);
+        var item_content_html, truncated_item_content_html;
+        item_content_html = truncated_item_content_html = gettext(item.displayName);
+
         if (item.imageURL) {
             item_content_html = '<img src="' + item.imageURL + '" alt="' + item.imageDescription + '" />';
+            truncated_item_content_html = item_content_html;
         }
+        else if (configuration.item_sizing == DragAndDropBlock.FIXED_SIZING &&
+            item_content_html.length > square_item_character_limit) {
+            truncated_item_content_html = item_content_html.substring( 0, square_item_character_limit) + '...';
+        }
+
         var key = item.value + '-content';
-        return h('div', { key: key, innerHTML: item_content_html, className: "item-content" });
+        return h('div', {
+            key: key,
+            innerHTML: truncated_item_content_html,
+            attributes: { 'data-content': item_content_html },
+            className: "item-content"
+        });
     };
 
     var itemTemplate = function(item, ctx) {
@@ -126,6 +185,16 @@ function DragAndDropTemplates(configuration) {
         }
         if (item.grabbed_with) {
             className += " grabbed-with-" + item.grabbed_with;
+        }
+        if (configuration.item_sizing == DragAndDropBlock.FIXED_SIZING) {
+            var item_content_html = gettext(item.displayName);
+            var read_more_button;
+            className += getItemShapeClass(item);
+            if (item_content_html.length > square_item_character_limit) {
+                read_more_button = h('button.show-item-detail-popup', {innerHTML: gettext("Read All")}, [
+                    h('span.fa.fa-arrows-alt')
+                ]);
+            }
         }
         var attributes = {
             'role': 'button',
@@ -198,7 +267,7 @@ function DragAndDropTemplates(configuration) {
         );
 
         var children = [
-            itemSpinnerTemplate(item), item_content, itemSRNote, item_description
+            itemSpinnerTemplate(item), item_content, itemSRNote, item_description, read_more_button
         ];
 
         // Unique key for virtual dom change tracking. Key must be different for
@@ -239,6 +308,9 @@ function DragAndDropTemplates(configuration) {
         }
         if (item.widthPercent && configuration.item_sizing == DragAndDropBlock.FREE_SIZING) {
             className += " specified-width";  // The author has specified a width for this item.
+        }
+        if (configuration.item_sizing == DragAndDropBlock.FIXED_SIZING) {
+            className += getItemShapeClass(item);
         }
         var style = bankItemWidthStyles(item, ctx);
         var attributes = {
@@ -858,6 +930,10 @@ function DragAndDropTemplates(configuration) {
                             }),
                             renderCollection(zoneTemplate, ctx.zones, ctx)
                         ]),
+                    ]),
+                    h('div.item-detail-popup', [
+                        h('a.close-item-detail-popup.fa.fa-times'),
+                        h('p.item-detail-popup-content')
                     ]),
                     h('div.item-bank', item_bank_properties, bank_children),
                     ctx.show_feedback_bar ? itemFeedbackPopupTemplate(ctx) : null,
@@ -1604,6 +1680,16 @@ function DragAndDropBlock(runtime, element, configuration) {
     var initDraggable = function() {
         var $container = $root.find('.drag-container');
 
+        // Apply custom scrollbar to draggable item detail popup
+        $container.find('.item-detail-popup-content').niceScroll({
+            cursorwidth: 5,
+            cursoropacitymin: 0.4,
+            cursorcolor: '#ffffff',
+            cursorborder: 'none',
+            cursorborderradius: 10,
+            autohidemode: 'leave'
+        });
+
         // Allow items to be "picked up" using the keyboard
         $container.on('keydown', '.option[draggable=true]', function(evt) {
             if (isActionKey(evt)) {
@@ -1832,7 +1918,7 @@ function DragAndDropBlock(runtime, element, configuration) {
 
         // Mousedown events should start the drag immediately.
         $container.on('mousedown', '.option[draggable=true]', function(evt) {
-            if (!handled_by_touch) {
+            if (!handled_by_touch && !$(evt.target).hasClass('show-item-detail-popup')) {
                 evt.preventDefault();
                 var $item = $(this);
                 var drag_origin = {x: pageX(evt), y: pageY(evt)};
@@ -1875,6 +1961,19 @@ function DragAndDropBlock(runtime, element, configuration) {
         // Prevent touchmove events fired on the dragged item causing scroll.
         $container.on('touchmove', '.dragged-items .options[draggable=true]', function(evt) {
             evt.preventDefault();
+        });
+
+        $container.on('click', '.show-item-detail-popup', function(evt) {
+            $container.addClass('item-detail-popup-visible');
+            var item_content_html = $(this).siblings('.item-content').data('content');
+            $('.item-detail-popup-content').html(item_content_html);
+            $('.item-detail-popup').show();
+        });
+
+        $container.on('click', '.close-item-detail-popup', function(evt) {
+            $container.removeClass('item-detail-popup-visible');
+            $('.item-detail-popup-content').html('');
+            $('.item-detail-popup').hide();
         });
     };
 
