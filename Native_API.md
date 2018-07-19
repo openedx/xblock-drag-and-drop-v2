@@ -85,7 +85,7 @@ Contains feedback shown to the user
 #### `drop_item`
 
 This JSON handler is used to handle dropping an item in a zone. The arguments are
-- `val`: (string) The number of the item.
+- `val`: (int) The number of the item.
 - `zone`: (string) The uid of the zone.
 
 In assessment mode will return an empty object, while in standard mode it returns the following:
