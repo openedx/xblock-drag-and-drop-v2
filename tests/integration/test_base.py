@@ -559,12 +559,12 @@ class InteractionTestBase(object):
         self.assertEqual(item_description.get_attribute('id'), item_description_id)
         if assessment_mode:
             self.assertDraggable(item_value)
-            self.assertEqual(item.get_attribute('class'), 'option')
+            self.assertNotIn('fade', item.get_attribute('class'))
             self.assertEqual(item.get_attribute('tabindex'), '0')
             description = 'Placed in: {}'
         else:
             self.assertNotDraggable(item_value)
-            self.assertEqual(item.get_attribute('class'), 'option fade')
+            self.assertIn('option fade', item.get_attribute('class'))
             self.assertIsNone(item.get_attribute('tabindex'))
             description = 'Correctly placed in: {}'
 
@@ -585,7 +585,7 @@ class InteractionTestBase(object):
         item_content = item.find_element_by_css_selector('.item-content')
 
         self.assertDraggable(item_value)
-        self.assertEqual(item.get_attribute('class'), 'option')
+        self.assertNotIn('fade', item.get_attribute('class'))
         self.assertEqual(item.get_attribute('tabindex'), '0')
         self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
         self.assertEqual(item_content.get_attribute('aria-describedby'), None)
@@ -611,10 +611,10 @@ class InteractionTestBase(object):
             self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
             if assessment_mode:
                 self.assertDraggable(item_key)
-                self.assertEqual(item.get_attribute('class'), 'option')
+                self.assertNotIn('fade', item.get_attribute('class'))
             else:
                 self.assertNotDraggable(item_key)
-                self.assertEqual(item.get_attribute('class'), 'option fade')
+                self.assertIn('option fade', item.get_attribute('class'))
 
     def _switch_to_block(self, idx):
         """ Only needed if there are multiple blocks on the page. """

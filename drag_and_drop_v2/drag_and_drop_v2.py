@@ -321,6 +321,7 @@ class DragAndDropBlock(
         js_urls = [
             'public/js/vendor/virtual-dom-1.3.0.min.js',
             'public/js/vendor/jquery.bxslider.min.js',
+            'public/js/vendor/jquery.nicescroll.min.js',
             'public/js/drag_and_drop.js',
         ]
 
