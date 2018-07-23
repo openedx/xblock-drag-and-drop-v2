@@ -376,9 +376,6 @@
     align-items: center; /* align vertical */
 }
 
-.xblock--drag-and-drop .drag-container .dropped * {
-    display: none !important;
-}
 .xblock--drag-and-drop .drag-container .option .item-content {
     display: inline-block;
     width: 100%; /* Make sure size of content never exceeds size of item */
