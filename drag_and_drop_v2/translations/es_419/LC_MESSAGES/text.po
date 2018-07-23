@@ -1,11 +1,15 @@
 # 
 # Translators:
+# Albeiro Gonzalez <albeiro.gonzalez@edunext.co>, 2018
+# Jorge Mora Henao <georgemusic30@hotmail.com>, 2018
+# Juan Camilo Montoya Franco <juan.montoya@edunext.co>, 2017
+# Yovany Alexander Álvarez Correa <yalvarez@innovapues.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: XBlocks\n"
 "POT-Creation-Date: 2016-03-30 16:54+0500\n"
-"PO-Revision-Date: 2016-11-09 10:11+0000\n"
-"Last-Translator: Eric Fischer <efischer@edx.org>\n"
+"PO-Revision-Date: 2018-02-16 21:19+0000\n"
+"Last-Translator: Albeiro Gonzalez <albeiro.gonzalez@edunext.co>\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/open-edx/xblocks/language/es_419/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
