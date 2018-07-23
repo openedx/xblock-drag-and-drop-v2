@@ -137,6 +137,18 @@
     position: relative;
     line-height: normal;
 }
+.xblock--drag-and-drop .drag-container .rectangle-option {
+    width: 150px;
+    height: 55px;
+}
+.xblock--drag-and-drop .drag-container .square-option {
+    width: 150px;
+    height: 110px;
+}
+
+.xblock--drag-and-drop .item-detail-popup {
+    display: none;
+}
 
 .xblock--drag-and-drop .drag-container .dropped {
     background-color: gray;
