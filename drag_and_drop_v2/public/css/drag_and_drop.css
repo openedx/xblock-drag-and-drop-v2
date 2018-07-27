@@ -137,17 +137,94 @@
     position: relative;
     line-height: normal;
 }
+
 .xblock--drag-and-drop .drag-container .rectangle-option {
     width: 150px;
     height: 55px;
 }
+
 .xblock--drag-and-drop .drag-container .square-option {
     width: 150px;
-    height: 110px;
+    height: 120px;
 }
 
+.xblock--drag-and-drop .drag-container .square-option .show-item-detail-popup{
+    width: 90%;
+    position: absolute;
+    bottom: 7px;
+    left: 7px;
+    right: 5px;
+    border-radius: 2px;
+    border: 0;
+    font-weight: bold;
+    background-color: rgba(255,255,255,0.2);
+    color: white;
+    padding: 5px;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.xblock--drag-and-drop .drag-container .square-option .show-item-detail-popup .fa{
+    position: absolute;
+    left: 7px;
+    top: 6px;
+}
+
+.xblock--drag-and-drop .item-detail-popup p{
+    margin: 0;
+    font-size: 14px;
+    max-height: 180px;
+    overflow: auto;
+}
+.xblock--drag-and-drop .item-detail-popup:after{
+    content: "";
+    height: 100px;
+    position: absolute;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.3);
+    width: 100%;
+    left: 0;
+    background: linear-gradient(transparent, #1d5280) no-repeat center;
+}
+.xblock--drag-and-drop .item-detail-popup .fa{
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+}
+
+.drag-container.item-detail-popup-visible:before {
+    content: "";
+    left: 0;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    right: 0;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.item-detail-popup-visible > .target,
+.item-detail-popup-visible > .bx-wrapper,
+.item-detail-popup-visible > .popup{
+    -webkit-filter: blur(10px);
+    -moz-filter: blur(10px);
+    -o-filter: blur(10px);
+    -ms-filter: blur(10px);
+    filter: blur(10px);
+}
 .xblock--drag-and-drop .item-detail-popup {
     display: none;
+    position: absolute;
+    width: 390px;
+    left: 50%;
+    top: 50%;
+    z-index: 2;
+    background-color: #1d5280;
+    padding: 45px 20px 30px 45px;
+    border-radius: 5px;
+    color: white;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
 }
 
 .xblock--drag-and-drop .drag-container .dropped {

@@ -918,11 +918,6 @@ function DragAndDropTemplates(configuration) {
                 ]),
                 h('div.drag-container', {style: drag_container_style, className: ctx.show_instructions ? 'instructions-visible' : ''}, [
                     instructionsPopupTemplate(ctx),
-                    assessmentNotificationTemplate(ctx),
-                    h('div.item-detail-popup', [
-                        h('a.close-item-detail-popup', { innerHTML: 'x' }),
-                        h('p.item-detail-popup-content')
-                    ]),
                     h('div.target', {attributes: {'role': 'group', 'arial-label': gettext('Drop Targets')}}, [
                         h('div.target-img-wrapper', [
                             h('img.target-img', {
