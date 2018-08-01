@@ -386,7 +386,7 @@
 }
 
 /*To highlight ZONES while user is dragging an item*/
-.xblock--drag-and-drop .drag-container.dragging .zone{
+.xblock--drag-and-drop .drag-container.dragging .zone, .green-zone{
     border: 5px solid #13ed8d;
     box-sizing: border-box;
     border-radius: 2px;
@@ -405,6 +405,7 @@
     color: #fff;
     border-radius: 50%;
     transform: translate(-50%, -50%);
+    z-index: 15;
 }
 
 @media screen and (max-width: 480px) {
