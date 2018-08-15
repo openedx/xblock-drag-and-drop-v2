@@ -1090,6 +1090,10 @@ function DragAndDropBlock(runtime, element, configuration) {
 
             measureWidthAndRender();
 
+            $('.zone', $root).each(function() {
+                fitTilesInZone($(this));
+            });
+
             checkForFixedHeader();
 
             initDraggable();
@@ -1608,7 +1612,29 @@ function DragAndDropBlock(runtime, element, configuration) {
         };
 
         applyState();
+        fitTilesInZone($zone);
         submitLocation(item_id, zone);
+    };
+
+    var fitTilesInZone = function(zone) {
+        while(zoneHasOverflowingItem(zone)) {
+            $('.option', zone).each(function(){
+                $(this).css({
+                    width: $(this).outerWidth(true) * 0.9, height: $(this).outerHeight(true) * 0.9
+                });
+                $(this).fitText();
+            });
+        }
+    };
+
+    var zoneHasOverflowingItem = function(zone) {
+        var item_wrapper = zone.find('.item-wrapper')[0];
+        if (item_wrapper.offsetHeight < item_wrapper.scrollHeight ||
+            item_wrapper.offsetWidth < item_wrapper.scrollWidth) {
+            return true;
+        }
+
+        return false;
     };
 
     var countItemsInZone = function(zone, exclude_ids) {
