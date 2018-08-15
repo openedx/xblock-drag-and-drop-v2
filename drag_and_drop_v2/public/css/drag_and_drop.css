@@ -719,6 +719,19 @@
     margin: 10px 0;
 }
 
+.xblock--drag-and-drop .actions-toolbar .submit-answer{
+    background-color: #1d5280;
+    display: block;
+    margin-top: 0;
+    height: 62px;
+    padding: 10px 20px;
+    box-sizing: border-box;
+}
+
+.xblock--drag-and-drop .actions-toolbar .submit-answer .submit-answer-button{
+    float: right;
+}
+
 .xblock--drag-and-drop .attempts-used {
     font-size: 0.875em;
     color: #666;
