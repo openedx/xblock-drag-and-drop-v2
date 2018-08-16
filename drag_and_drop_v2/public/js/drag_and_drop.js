@@ -1046,7 +1046,8 @@ function DragAndDropBlock(runtime, element, configuration) {
                 promise.reject();
             }
         }, false);
-        img.addEventListener("error", function() { promise.reject(); });
+        /* ToDo: To fix, temporarily commenting out to prevent chrome/safari error on borken images */
+        /* img.addEventListener("error", function() { promise.reject(); }); */
         img.src = configuration.target_img_expanded_url;
         img.alt = configuration.target_img_description;
         return promise;
