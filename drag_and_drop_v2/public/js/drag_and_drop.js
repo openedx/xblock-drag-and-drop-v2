@@ -393,6 +393,12 @@ function DragAndDropTemplates(configuration) {
                         gettext("Submit")
                     ]
                 ),
+                sidebarButtonTemplate(
+                    "reset-button",
+                    "fa-refresh",
+                    gettext('Reset'),
+                    {disabled: ctx.disable_reset_button}
+                ),
                 attemptsUsedInfo
             ])
         );
@@ -445,12 +451,6 @@ function DragAndDropTemplates(configuration) {
                     "fa-arrow-up",
                     gettext("Go to Beginning"),
                     {disabled: ctx.disable_go_to_beginning_button}
-                ),
-                sidebarButtonTemplate(
-                    "reset-button",
-                    "fa-refresh",
-                    gettext('Reset'),
-                    {disabled: ctx.disable_reset_button}
                 ),
                 showAnswerButton,
             ])
@@ -1980,7 +1980,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             problem_html: configuration.problem_text,
             show_problem_header: configuration.show_problem_header,
             show_submit_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
-            show_show_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
+            show_show_answer: false,
             target_img_src: configuration.target_img_expanded_url,
             target_img_description: configuration.target_img_description,
             display_zone_labels: configuration.display_zone_labels,
