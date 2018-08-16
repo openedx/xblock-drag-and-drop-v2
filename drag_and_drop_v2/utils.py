@@ -106,6 +106,9 @@ class Constants(object):
     STANDARD_MODE = "standard"
     ASSESSMENT_MODE = "assessment"
 
+    STANDARD_SIZE = "standard_size"
+    FIT_TO_SIZE = "fit_to_size"
+
 
 class StateMigration(object):
     """
