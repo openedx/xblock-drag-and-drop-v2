@@ -368,10 +368,10 @@ function DragAndDropTemplates(configuration) {
         if (ctx.max_attempts && ctx.max_attempts > 0) {
             var attemptsUsedId = "attempts-used-" + configuration.url_name;
             submitButtonProperties.attributes["aria-describedby"] = attemptsUsedId;
-            var attemptsUsedTemplate = gettext("You have used {used} of {total} attempts.");
+            var attemptsUsedTemplate = gettext("{used} / {total}");
             var attemptsUsedText = attemptsUsedTemplate.
                 replace("{used}", ctx.attempts).replace("{total}", ctx.max_attempts);
-            attemptsUsedInfo = h("span.attempts-used", {id: attemptsUsedId}, attemptsUsedText);
+            attemptsUsedInfo = h("div.attempts-used", {id: attemptsUsedId}, [h("span",attemptsUsedText), h('span.text', "Attempts")]);
         }
 
         var submitSpinner = null;
@@ -381,8 +381,11 @@ function DragAndDropTemplates(configuration) {
                 h('span.sr', gettext('Submitting'))
             ]);
         }
-
-        return (
+        var go_to_beginning_button_class = 'go-to-beginning-button';
+        if (!ctx.show_go_to_beginning_button) {
+            go_to_beginning_button_class += ' sr';
+        }
+        return(
             h("div.action-toolbar-item.submit-answer", {}, [
                 h(
                     "button.btn-brand.submit-answer-button",
@@ -398,6 +401,13 @@ function DragAndDropTemplates(configuration) {
                     "fa-refresh",
                     gettext('Reset'),
                     {disabled: ctx.disable_reset_button}
+                    ),
+
+                sidebarButtonTemplate(
+                    go_to_beginning_button_class,
+                    "fa-arrow-up",
+                    gettext("Go to Beginning"),
+                    {disabled: ctx.disable_go_to_beginning_button}
                 ),
                 attemptsUsedInfo
             ])
@@ -418,7 +428,6 @@ function DragAndDropTemplates(configuration) {
                         disabled: options.disabled || options.spinner || false
                     },
                     [
-                        h("span.btn-icon.fa", {className: iconClass, attributes: {"aria-hidden": true}}),
                         buttonText
                     ]
                 )
@@ -440,21 +449,6 @@ function DragAndDropTemplates(configuration) {
                 options
             );
         }
-        var go_to_beginning_button_class = 'go-to-beginning-button';
-        if (!ctx.show_go_to_beginning_button) {
-            go_to_beginning_button_class += ' sr';
-        }
-        return(
-            h("div.action-toolbar-item.sidebar-buttons", {}, [
-                sidebarButtonTemplate(
-                    go_to_beginning_button_class,
-                    "fa-arrow-up",
-                    gettext("Go to Beginning"),
-                    {disabled: ctx.disable_go_to_beginning_button}
-                ),
-                showAnswerButton,
-            ])
-        )
     };
 
     var itemFeedbackPopupTemplate = function(ctx) {
