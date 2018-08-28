@@ -297,7 +297,7 @@ class TestStudio(StudioEditableBaseTest):
         self.assertFalse(item_advanced_settings.is_displayed())
 
         # For free sizing option advanced settings for each items should be visible
-        item_sizing_dropdown = Select(
+        Select(
             item_style_form.find_element_by_css_selector('.problem-item-sizing')
         ).select_by_value(Constants.FREE_SIZING)
         self.assertTrue(item_advanced_settings.is_displayed())

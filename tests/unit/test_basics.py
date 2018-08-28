@@ -63,7 +63,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             "type": "drag-and-drop-v2",
             "weight": 1,
             "mode": Constants.STANDARD_MODE,
-            "item_sizing": Constants.STANDARD_SIZING,
+            "item_sizing": '',
             "max_attempts": None,
             "graded": False,
             "weighted_max_score": 1,

@@ -143,7 +143,7 @@ class DragAndDropBlock(
             {"display_name": _("Standard sizing"), "value": Constants.STANDARD_SIZING},
             {"display_name": _("Free sizing"), "value": Constants.FREE_SIZING},
         ],
-        default=Constants.STANDARD_SIZING,
+        default="",
         enforce_type=True,
     )
 
