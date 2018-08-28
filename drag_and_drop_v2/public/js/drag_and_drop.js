@@ -752,8 +752,9 @@ function DragAndDropBlock(runtime, element, configuration) {
 
     DragAndDropBlock.STANDARD_MODE = 'standard';
     DragAndDropBlock.ASSESSMENT_MODE = 'assessment';
-    DragAndDropBlock.STANDARD_SIZE = 'standard_size';
-    DragAndDropBlock.FIT_TO_SIZE = 'fit_to_size';
+    DragAndDropBlock.STANDARD_SIZING = "standard_sizing"
+    DragAndDropBlock.FREE_SIZING = "free_sizing"
+
 
     var Selector = {
         popup_box: '.popup',

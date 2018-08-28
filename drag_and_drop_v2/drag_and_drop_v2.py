@@ -129,20 +129,21 @@ class DragAndDropBlock(
         enforce_type=True,
     )
 
-    item_size = String(
-        display_name=_("Item size"),
+    item_sizing = String(
+        display_name=_("Item sizing"),
         help=_(
-            "Standard size: makes items square or rectangular based on "
-            "the number of characters in an item. "
-            "Fit to size: makes items fit to text content of an item, also "
-            "supports custom width option for item sizing."
+            "Standard sizing: The item will snap to a rectangular size for "
+            "items with a small amount of text, or double in size to a square "
+            "for items containing an image or large amounts of text. "
+            "Free sizing: The item size will fit the specified maximum width, "
+            "or freely expand with the size of the content."
         ),
         scope=Scope.settings,
         values=[
-            {"display_name": _("Standard size"), "value": Constants.STANDARD_SIZE},
-            {"display_name": _("Fit to size"), "value": Constants.FIT_TO_SIZE},
+            {"display_name": _("Standard sizing"), "value": Constants.STANDARD_SIZING},
+            {"display_name": _("Free sizing"), "value": Constants.FREE_SIZING},
         ],
-        default=Constants.STANDARD_SIZE,
+        default=Constants.STANDARD_SIZING,
         enforce_type=True,
     )
 
@@ -355,7 +356,7 @@ class DragAndDropBlock(
             "type": self.CATEGORY,
             "weight": self.weight,
             "mode": self.mode,
-            "item_size": self.item_size,
+            "item_sizing": self.item_sizing,
             "zones": self.zones,
             "max_attempts": self.max_attempts,
             "graded": getattr(self, 'graded', False),
@@ -446,7 +447,7 @@ class DragAndDropBlock(
         """
         self.display_name = submissions['display_name']
         self.mode = submissions['mode']
-        self.item_size = submissions['item_size']
+        self.item_sizing = submissions['item_sizing']
         self.max_attempts = submissions['max_attempts']
         self.show_title = submissions['show_title']
         self.question_text = submissions['problem_text']
