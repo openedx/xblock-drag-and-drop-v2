@@ -709,60 +709,53 @@
 /*** ACTIONS TOOLBAR ***/
 
 .xblock--drag-and-drop .actions-toolbar {
-    min-height: 3.75em;
-    width: auto;
     position: relative;
+    background-color: #1d5280;
+    margin-top: 0;
+    height: 62px;
+    padding: 9px 20px;
+    box-sizing: border-box;
+
 }
 
 .xblock--drag-and-drop .actions-toolbar .action-toolbar-item {
     display: inline-block;
     margin: 10px 0;
-    background-color: #1d5280;
 }
 
-.xblock--drag-and-drop .actions-toolbar .submit-answer .submit-answer-button{
+.xblock--drag-and-drop .actions-toolbar .submit-answer-button{
     padding: 0.625em 2.45em;
     border: 0;
     color: #ffffff;
 }
 
-.xblock--drag-and-drop .actions-toolbar .submit-answer .submit-answer-button[disabled]{
+.xblock--drag-and-drop .actions-toolbar .submit-answer-button[disabled]{
     background-color: #566a85;
     color: #8094af;
 }
 
-.xblock--drag-and-drop .actions-toolbar .submit-answer{
-    background-color: #1d5280;
-    display: block;
-    margin-top: 0;
-    height: 62px;
-    padding: 9px 20px;
-    box-sizing: border-box;
-}
-
-.xblock--drag-and-drop .actions-toolbar .submit-answer button{
+.xblock--drag-and-drop .actions-toolbar button{
     min-height: 44px;
     cursor: pointer;
 }
 
-.xblock--drag-and-drop .actions-toolbar .submit-answer .sidebar-button-wrapper{
+.xblock--drag-and-drop .actions-toolbar .sidebar-button-wrapper,
+.xblock--drag-and-drop .actions-toolbar button,
+.xblock--drag-and-drop .actions-toolbar .sidebar-buttons{
     float: right;
 }
 
-.xblock--drag-and-drop .actions-toolbar .submit-answer .sidebar-button-wrapper button[disabled]{
+.xblock--drag-and-drop .actions-toolbar .sidebar-button-wrapper button[disabled]{
     background-color: #566a85;
     color: #8094af;
 }
-.xblock--drag-and-drop .actions-toolbar .submit-answer .sidebar-button-wrapper button{
+.xblock--drag-and-drop .actions-toolbar .sidebar-button-wrapper button{
     margin-right: 10px;
     border-radius: 3px;
     border: 1px solid transparent;
     background-color: #ffffff;
     padding: 0.625em 1.625em;
     font-size: 16px;
-}
-.xblock--drag-and-drop .actions-toolbar .submit-answer .submit-answer-button{
-    float: right;
 }
 
 .xblock--drag-and-drop .attempts-used {
@@ -820,7 +813,6 @@
 
 .xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper {
     border-collapse: collapse;
-    padding: 0 5px;
     display: inline-block;
     height: 100%;
 }

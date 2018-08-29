@@ -447,13 +447,13 @@ function DragAndDropTemplates(configuration) {
             h("div.action-toolbar-item.sidebar-buttons", {}, [
                 sidebarButtonTemplate(
                     "reset-button",
-                    "fa-refresh",
+                    "",
                     gettext('Reset'),
                     {disabled: ctx.disable_reset_button}
                 ),
                 sidebarButtonTemplate(
                     go_to_beginning_button_class,
-                    "fa-arrow-up",
+                    "",
                     gettext("Go to Beginning"),
                     {disabled: ctx.disable_go_to_beginning_button}
                 ),
