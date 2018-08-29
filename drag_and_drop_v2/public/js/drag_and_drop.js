@@ -358,7 +358,7 @@ function DragAndDropTemplates(configuration) {
         );
     };
 
-    var submitAnswerTemplate = function(ctx) {
+    var actionButtonsTemplate = function(ctx) {
         var submitButtonProperties = {
             disabled: ctx.disable_submit_button || ctx.submit_spinner,
             attributes: {}
@@ -381,36 +381,25 @@ function DragAndDropTemplates(configuration) {
                 h('span.sr', gettext('Submitting'))
             ]);
         }
-        var go_to_beginning_button_class = 'go-to-beginning-button';
-        if (!ctx.show_go_to_beginning_button) {
-            go_to_beginning_button_class += ' sr';
+        var submitButton = null;
+        if(ctx.show_submit_answer) {
+            submitButton = h(
+                "button.btn-brand.submit-answer-button",
+                submitButtonProperties,
+                [
+                    submitSpinner,
+                    ' ',  // whitespace between spinner icon and text
+                    gettext("Submit")
+                ]
+            )
         }
-        return(
-            h("div.action-toolbar-item.submit-answer", {}, [
-                h(
-                    "button.btn-brand.submit-answer-button",
-                    submitButtonProperties,
-                    [
-                        submitSpinner,
-                        ' ',  // whitespace between spinner icon and text
-                        gettext("Submit")
-                    ]
-                ),
-                sidebarButtonTemplate(
-                    "reset-button",
-                    "fa-refresh",
-                    gettext('Reset'),
-                    {disabled: ctx.disable_reset_button}
-                    ),
 
-                sidebarButtonTemplate(
-                    go_to_beginning_button_class,
-                    "fa-arrow-up",
-                    gettext("Go to Beginning"),
-                    {disabled: ctx.disable_go_to_beginning_button}
-                ),
-                attemptsUsedInfo
-            ])
+        return (
+            [
+                attemptsUsedInfo,
+                submitButton,
+                sidebarTemplate(ctx)
+            ]
         );
     };
 
@@ -428,6 +417,7 @@ function DragAndDropTemplates(configuration) {
                         disabled: options.disabled || options.spinner || false
                     },
                     [
+                        h("span.btn-icon.fa", {className: iconClass, attributes: {"aria-hidden": true}}),
                         buttonText
                     ]
                 )
@@ -449,6 +439,27 @@ function DragAndDropTemplates(configuration) {
                 options
             );
         }
+        var go_to_beginning_button_class = 'go-to-beginning-button';
+        if (!ctx.show_go_to_beginning_button) {
+            go_to_beginning_button_class += ' sr';
+        }
+        return(
+            h("div.action-toolbar-item.sidebar-buttons", {}, [
+                sidebarButtonTemplate(
+                    "reset-button",
+                    "fa-refresh",
+                    gettext('Reset'),
+                    {disabled: ctx.disable_reset_button}
+                ),
+                sidebarButtonTemplate(
+                    go_to_beginning_button_class,
+                    "fa-arrow-up",
+                    gettext("Go to Beginning"),
+                    {disabled: ctx.disable_go_to_beginning_button}
+                ),
+                showAnswerButton,
+            ])
+        )
     };
 
     var itemFeedbackPopupTemplate = function(ctx) {
@@ -724,10 +735,8 @@ function DragAndDropTemplates(configuration) {
                     h('div.item-bank', item_bank_properties, bank_children),
                     h('div.dragged-items', renderCollection(itemTemplate, items_dragged, ctx)),
                 ]),
-                h("div.actions-toolbar", {attributes: {'role': 'group', 'aria-label': gettext('Actions')}}, [
-                    (ctx.show_submit_answer ? submitAnswerTemplate(ctx) : null),
-                    sidebarTemplate(ctx),
-                ]),
+                h("div.actions-toolbar", { attributes: {'role': 'group', 'aria-label': gettext('Actions')}}, 
+                actionButtonsTemplate(ctx)),
                 keyboardHelpPopupTemplate(ctx),
                 feedbackTemplate(ctx),
                 h('div.sr.reader-feedback-area', {
@@ -1974,7 +1983,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             problem_html: configuration.problem_text,
             show_problem_header: configuration.show_problem_header,
             show_submit_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
-            show_show_answer: false,
+            show_show_answer: configuration.mode == false,
             target_img_src: configuration.target_img_expanded_url,
             target_img_description: configuration.target_img_description,
             display_zone_labels: configuration.display_zone_labels,
