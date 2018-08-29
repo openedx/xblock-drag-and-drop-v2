@@ -664,9 +664,9 @@ function DragAndDropEditBlock(runtime, element, params) {
                                 $itemsForm  = _fn.build.$el.items.form,
                                 $sizingSettings = $itemsForm.find('.advanced-settings');
                             if ($sizingSetting.val() === 'free_sizing') {
-                                $sizingSettings.removeClass('hidden');
+                                $sizingSettings.show();
                             } else {
-                                $sizingSettings.addClass('hidden');
+                                $sizingSettings.hide();
                             }
                         }
                     },

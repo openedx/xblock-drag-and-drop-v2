@@ -106,7 +106,7 @@ class Constants(object):
     STANDARD_MODE = "standard"
     ASSESSMENT_MODE = "assessment"
 
-    STANDARD_SIZING = "standard_sizing"
+    FIXED_SIZING = "fixed_sizing"
     FREE_SIZING = "free_sizing"
 
 

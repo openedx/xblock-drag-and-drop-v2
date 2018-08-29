@@ -290,14 +290,14 @@ class TestStudio(StudioEditableBaseTest):
         self.assertTrue(self.items_tab.is_displayed())
 
         item_style_form = self.items_tab.find_element_by_css_selector('.item-styles-form')
-        items_form = self.items_tab.find_element_by_css_selector('.items-form')
-        item_advanced_settings = items_form.find_element_by_css_selector('.advanced-settings')
+        item_advanced_settings = self.items_tab.find_element_by_css_selector(
+            '.items-form .advanced-settings'
+        )
+        # By default free sizing is selected, so advanced settings for items should be visible
+        self.assertTrue(item_advanced_settings.is_displayed())
 
-        # By default standard sizing is selected, so advanced settings for items should be hidden
-        self.assertFalse(item_advanced_settings.is_displayed())
-
-        # For free sizing option advanced settings for each items should be visible
+        # For fixed sizing option advanced settings for each items should be hidden
         Select(
             item_style_form.find_element_by_css_selector('.problem-item-sizing')
-        ).select_by_value(Constants.FREE_SIZING)
-        self.assertTrue(item_advanced_settings.is_displayed())
+        ).select_by_value(Constants.FIXED_SIZING)
+        self.assertFalse(item_advanced_settings.is_displayed())

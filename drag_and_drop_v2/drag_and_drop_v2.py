@@ -132,18 +132,18 @@ class DragAndDropBlock(
     item_sizing = String(
         display_name=_("Item sizing"),
         help=_(
-            "Standard sizing: The item will snap to a rectangular size for "
-            "items with a small amount of text, or double in size to a square "
-            "for items containing an image or large amounts of text. "
             "Free sizing: The item size will fit the specified maximum width, "
-            "or freely expand with the size of the content."
+            "or freely expand with the size of the content. "
+            "Fixed sizing: The item will snap to a rectangular size for "
+            "items with a small amount of text, or double in size to a square "
+            "for items containing an image or large amounts of text."
         ),
         scope=Scope.settings,
         values=[
-            {"display_name": _("Standard sizing"), "value": Constants.STANDARD_SIZING},
             {"display_name": _("Free sizing"), "value": Constants.FREE_SIZING},
+            {"display_name": _("Fixed sizing"), "value": Constants.FIXED_SIZING},
         ],
-        default="",
+        default=Constants.FREE_SIZING,
         enforce_type=True,
     )
 

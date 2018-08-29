@@ -25,7 +25,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         submission = {
             'display_name': "Test Drag & Drop",
             'mode': Constants.STANDARD_MODE,
-            'item_sizing': Constants.STANDARD_SIZING,
+            'item_sizing': Constants.FREE_SIZING,
             'max_attempts': 1,
             'show_title': False,
             'problem_text': "Problem Drag & Drop",
@@ -63,7 +63,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             "type": "drag-and-drop-v2",
             "weight": 1,
             "mode": Constants.STANDARD_MODE,
-            "item_sizing": '',
+            "item_sizing": Constants.FREE_SIZING,
             "max_attempts": None,
             "graded": False,
             "weighted_max_score": 1,
@@ -194,7 +194,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
 
         self.assertEqual(self.block.show_title, False)
         self.assertEqual(self.block.mode, Constants.STANDARD_MODE)
-        self.assertEqual(self.block.item_sizing, Constants.STANDARD_SIZING)
+        self.assertEqual(self.block.item_sizing, Constants.FREE_SIZING)
         self.assertEqual(self.block.max_attempts, 1)
         self.assertEqual(self.block.display_name, "Test Drag & Drop")
         self.assertEqual(self.block.question_text, "Problem Drag & Drop")
@@ -223,7 +223,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
 
         self.assertEqual(self.block.show_title, True)
         self.assertEqual(self.block.mode, Constants.ASSESSMENT_MODE)
-        self.assertEqual(self.block.item_sizing, Constants.STANDARD_SIZING)
+        self.assertEqual(self.block.item_sizing, Constants.FREE_SIZING)
         self.assertEqual(self.block.max_attempts, 12)
         self.assertEqual(self.block.display_name, "Test Drag & Drop")
         self.assertEqual(self.block.question_text, "Problem Drag & Drop")
