@@ -5,6 +5,7 @@
     "weight": 5,
     "title": "DnDv2 XBlock with plain text instructions",
     "mode": "assessment",
+    "item_sizing": "free_sizing",
     "max_attempts": 10,
     "graded": false,
     "weighted_max_score": 5,

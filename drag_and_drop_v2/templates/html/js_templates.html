@@ -152,23 +152,25 @@
                 <textarea class="error-feedback">{{i18n feedback.incorrect}}</textarea>
             </label>
         </div>
-        <div class="row advanced-link">
-            <button type="button">{{i18n "Show advanced settings" }}</button>
-        </div>
-        <div class="row advanced">
-            <label class="h4">
-                <span>{{i18n "Preferred width"}}</span>
-                <input type="number"
-                       class="item-width"
-                       value="{{ singleDecimalFloat widthPercent }}"
-                       aria-describedby="item-width-description-{{index}}-{{id_suffix}}"
-                       step="0.1"
-                       min="1"
-                       max="99" />%
-            </label>
-            <div id="item-width-description-{{index}}-{{id_suffix}}" class="form-help">
-                {{i18n "Specify preferred width as percentage of the background image width. Leave blank for automatic width."}}
-            </div>
+        <div class='advanced-settings'>
+          <div class="row advanced-link">
+              <button type="button">{{i18n "Show advanced settings" }}</button>
+          </div>
+          <div class="row advanced">
+              <label class="h4">
+                  <span>{{i18n "Preferred width"}}</span>
+                  <input type="number"
+                         class="item-width"
+                         value="{{ singleDecimalFloat widthPercent }}"
+                         aria-describedby="item-width-description-{{index}}-{{id_suffix}}"
+                         step="0.1"
+                         min="1"
+                         max="99" />%
+              </label>
+              <div id="item-width-description-{{index}}-{{id_suffix}}" class="form-help">
+                  {{i18n "Specify preferred width as percentage of the background image width. Leave blank for automatic width."}}
+              </div>
+          </div>
         </div>
     </fieldset>
 </script>

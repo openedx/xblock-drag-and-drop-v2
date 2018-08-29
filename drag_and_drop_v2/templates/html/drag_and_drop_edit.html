@@ -217,6 +217,19 @@
             <div class="tab-content">
                 <form class="item-styles-form">
                     <label class="h4">
+                        <span>{% trans fields.item_sizing.display_name %}</span>
+                        <select class="problem-item-sizing" aria-describedby="problem-item-sizing-description-{{id_suffix}}">
+                            {% for field_value in fields.item_sizing.values %}
+                                <option value="{{ field_value.value }}" {% if self.item_sizing == field_value.value %}selected{% endif %}>
+                                    {% trans field_value.display_name %}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                    <div id="problem-item-sizing-description-{{id_suffix}}" class="form-help">
+                      {% trans fields.item_sizing.help %}
+                    </div>
+                    <label class="h4">
                         <span>{% trans fields.item_background_color.display_name %}</span>
                         <input class="item-background-color"
                                value="{{ self.item_background_color }}"

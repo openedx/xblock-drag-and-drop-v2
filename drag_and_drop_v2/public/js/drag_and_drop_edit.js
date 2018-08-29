@@ -58,7 +58,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                     },
                     items: {
                         form: $('.drag-builder .items-form', element),
-                        tab: $('.drag-builder .items-tab', element)
+                        tab: $('.drag-builder .items-tab', element),
+                        stylesForm: $('.drag-builder .item-styles-form', element)
                     },
                     targetImage: $('.drag-builder .target .target-img', element),
                     zonesPreview: $('.drag-builder .target .zones-preview', element),
@@ -219,6 +220,9 @@ function DragAndDropEditBlock(runtime, element, params) {
                                 _fn.build.form.item.add();
                             }
 
+                            // Show or hide custom width settings based on item sizing option
+                            _fn.build.$el.items.stylesForm.find('.problem-item-sizing').trigger('change');
+
                             $zoneTab.addClass('hidden');
                             $itemTab.removeClass('hidden');
                             self.scrollToTop();
@@ -286,12 +290,15 @@ function DragAndDropEditBlock(runtime, element, params) {
                     $itemTab
                         .on('click', '.add-item', function(e) {
                             _fn.build.form.item.add();
+                            // Show or hide custom width settings based on item sizing option
+                            _fn.build.$el.items.stylesForm.find('.problem-item-sizing').trigger('change');
                             // Set focus to first field of the new item.
                             $('.items-form .item:last input[type=text]:first', element).select();
                         })
                         .on('click', '.remove-item', _fn.build.form.item.remove)
                         .on('click', '.advanced-link button', _fn.build.form.item.showAdvancedSettings)
-                        .on('input', '.item-image-url', _fn.build.form.item.imageURLChanged);
+                        .on('input', '.item-image-url', _fn.build.form.item.imageURLChanged)
+                        .on('change', '.problem-item-sizing', _fn.build.form.item.toggleSizingSettings);
                 },
                 form: {
                     problem: {
@@ -651,6 +658,17 @@ function DragAndDropEditBlock(runtime, element, params) {
                             $el.find('.row.advanced').show();
                             $el.find('.row.advanced-link').hide();
                         },
+                        toggleSizingSettings: function(e) {
+                            e.preventDefault();
+                            var $sizingSetting = $(e.currentTarget),
+                                $itemsForm  = _fn.build.$el.items.form,
+                                $sizingSettings = $itemsForm.find('.advanced-settings');
+                            if ($sizingSetting.val() === 'free_sizing') {
+                                $sizingSettings.show();
+                            } else {
+                                $sizingSettings.hide();
+                            }
+                        }
                     },
                     submit: function() {
                         var items = [],
@@ -691,6 +709,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                         var data = {
                             'display_name': $element.find('.display-name').val(),
                             'mode': $element.find(".problem-mode").val(),
+                            'item_sizing': $element.find(".problem-item-sizing").val(),
                             'max_attempts': $element.find(".max-attempts").val(),
                             'show_title': $element.find('.show-title').is(':checked'),
                             'weight': $element.find('.weight').val(),

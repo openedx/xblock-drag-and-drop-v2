@@ -1,4 +1,7 @@
+from selenium.webdriver.support.ui import Select
 from xblockutils.studio_editable_test import StudioEditableBaseTest
+
+from drag_and_drop_v2.utils import Constants
 
 
 class TestStudio(StudioEditableBaseTest):
@@ -274,3 +277,27 @@ class TestStudio(StudioEditableBaseTest):
         self.assertFalse('field-error' in self.autozone_rows_field.get_attribute('class'))
         self.assertFalse('field-error' in self.autozone_width_field.get_attribute('class'))
         self.assertFalse('field-error' in self.autozone_height_field.get_attribute('class'))
+
+    def test_item_sizing_dropdown(self):
+        """
+        Test to verify that advanced settings for items toggle on changing item_sizing.
+        """
+        self.load_scenario()
+        # We start on the feedback tab.
+        self.click_continue()
+        # And finally to the items tab.
+        self.click_continue()
+        self.assertTrue(self.items_tab.is_displayed())
+
+        item_style_form = self.items_tab.find_element_by_css_selector('.item-styles-form')
+        item_advanced_settings = self.items_tab.find_element_by_css_selector(
+            '.items-form .advanced-settings'
+        )
+        # By default free sizing is selected, so advanced settings for items should be visible
+        self.assertTrue(item_advanced_settings.is_displayed())
+
+        # For fixed sizing option advanced settings for each items should be hidden
+        Select(
+            item_style_form.find_element_by_css_selector('.problem-item-sizing')
+        ).select_by_value(Constants.FIXED_SIZING)
+        self.assertFalse(item_advanced_settings.is_displayed())

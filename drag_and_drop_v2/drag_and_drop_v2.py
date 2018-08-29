@@ -129,6 +129,24 @@ class DragAndDropBlock(
         enforce_type=True,
     )
 
+    item_sizing = String(
+        display_name=_("Item sizing"),
+        help=_(
+            "Free sizing: The item size will fit the specified maximum width, "
+            "or freely expand with the size of the content. "
+            "Fixed sizing: The item will snap to a rectangular size for "
+            "items with a small amount of text, or double in size to a square "
+            "for items containing an image or large amounts of text."
+        ),
+        scope=Scope.settings,
+        values=[
+            {"display_name": _("Free sizing"), "value": Constants.FREE_SIZING},
+            {"display_name": _("Fixed sizing"), "value": Constants.FIXED_SIZING},
+        ],
+        default=Constants.FREE_SIZING,
+        enforce_type=True,
+    )
+
     item_background_color = String(
         display_name=_("Item background color"),
         help=_("The background color of draggable items in the problem (example: 'blue' or '#0000ff')."),
@@ -338,6 +356,7 @@ class DragAndDropBlock(
             "type": self.CATEGORY,
             "weight": self.weight,
             "mode": self.mode,
+            "item_sizing": self.item_sizing,
             "zones": self.zones,
             "max_attempts": self.max_attempts,
             "graded": getattr(self, 'graded', False),
@@ -428,6 +447,7 @@ class DragAndDropBlock(
         """
         self.display_name = submissions['display_name']
         self.mode = submissions['mode']
+        self.item_sizing = submissions['item_sizing']
         self.max_attempts = submissions['max_attempts']
         self.show_title = submissions['show_title']
         self.question_text = submissions['problem_text']
