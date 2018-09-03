@@ -19,7 +19,9 @@ TOP_ZONE_DESCRIPTION = _("Use this zone to associate an item with the top layer 
 MIDDLE_ZONE_DESCRIPTION = _("Use this zone to associate an item with the middle layer of the triangle.")
 BOTTOM_ZONE_DESCRIPTION = _("Use this zone to associate an item with the bottom layer of the triangle.")
 
-ITEM_CORRECT_FEEDBACK = _("Correct! This one belongs to {zone}.")
+ITEM_CORRECT_FEEDBACK_TOP = _("Correct! This one belongs to The Top Zone.")
+ITEM_CORRECT_FEEDBACK_MIDDLE = _("Correct! This one belongs to The Middle Zone.")
+ITEM_CORRECT_FEEDBACK_BOTTOM = _("Correct! This one belongs to The Bottom Zone.")
 ITEM_INCORRECT_FEEDBACK = _("No, this item does not belong here. Try again.")
 ITEM_NO_ZONE_FEEDBACK = _("You silly, there are no zones for this one.")
 ITEM_ANY_ZONE_FEEDBACK = _("Of course it goes here! It goes anywhere!")
@@ -72,7 +74,7 @@ DEFAULT_DATA = {
             "displayName": ITEM_TOP_ZONE_NAME,
             "feedback": {
                 "incorrect": ITEM_INCORRECT_FEEDBACK,
-                "correct": ITEM_CORRECT_FEEDBACK.format(zone=TOP_ZONE_TITLE)
+                "correct": ITEM_CORRECT_FEEDBACK_TOP
             },
             "zones": [
                 TOP_ZONE_ID
@@ -84,7 +86,7 @@ DEFAULT_DATA = {
             "displayName": ITEM_MIDDLE_ZONE_NAME,
             "feedback": {
                 "incorrect": ITEM_INCORRECT_FEEDBACK,
-                "correct": ITEM_CORRECT_FEEDBACK.format(zone=MIDDLE_ZONE_TITLE)
+                "correct": ITEM_CORRECT_FEEDBACK_MIDDLE
             },
             "zones": [
                 MIDDLE_ZONE_ID
@@ -96,7 +98,7 @@ DEFAULT_DATA = {
             "displayName": ITEM_BOTTOM_ZONE_NAME,
             "feedback": {
                 "incorrect": ITEM_INCORRECT_FEEDBACK,
-                "correct": ITEM_CORRECT_FEEDBACK.format(zone=BOTTOM_ZONE_TITLE)
+                "correct": ITEM_CORRECT_FEEDBACK_BOTTOM
             },
             "zones": [
                 BOTTOM_ZONE_ID
