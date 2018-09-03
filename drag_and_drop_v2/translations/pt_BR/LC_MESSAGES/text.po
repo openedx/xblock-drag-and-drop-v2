@@ -28,11 +28,11 @@ msgstr "Um triângulo isósceles com três camadas de alturas semelhantes está 
 
 #: default_data.py
 msgid "Of course it goes here! It goes anywhere!"
-msgstr ""
+msgstr "Claro que cabe aqui! Cabe em qualquer lugar!"
 
 #: default_data.py
 msgid "Goes anywhere"
-msgstr ""
+msgstr "Cabe em qualquer lugar"
 
 #: default_data.py
 msgid "The Top Zone"
@@ -95,7 +95,7 @@ msgstr "Vai para a zona inferior"
 
 #: default_data.py
 msgid "I don't belong anywhere"
-msgstr ""
+msgstr "Eu não caibo em nenhum lugar"
 
 #: drag_and_drop_v2.py
 msgid "This setting limits the number of items that can be dropped into a single zone."
@@ -232,7 +232,7 @@ msgstr "A ferramenta show_answer deve somente ser executada no modo de avaliaç�
 
 #: drag_and_drop_v2.py
 msgid "There are attempts remaining"
-msgstr ""
+msgstr "Há tentativas restantes"
 
 #: drag_and_drop_v2.py
 msgid "Unknown DnDv2 mode {mode} - course is misconfigured"
@@ -266,7 +266,7 @@ msgstr "Descrição"
 
 #: templates/html/js_templates.html
 msgid "Describe this zone to non-visual users."
-msgstr ""
+msgstr "Descreva esta zona para usuários não-visuais."
 
 #: templates/html/js_templates.html
 msgid "width"
@@ -324,11 +324,11 @@ msgstr "Descrição da imagem (deve fornecer informação suficiente para que se
 
 #: templates/html/js_templates.html
 msgid "Success feedback"
-msgstr ""
+msgstr "Comentário de êxito"
 
 #: templates/html/js_templates.html
 msgid "Error feedback"
-msgstr ""
+msgstr "Comentário de erro"
 
 #: templates/html/js_templates.html
 msgid "Show advanced settings"
@@ -336,13 +336,13 @@ msgstr "Exibir configurações avançadas"
 
 #: templates/html/js_templates.html
 msgid "Preferred width"
-msgstr ""
+msgstr "Largura preferida"
 
 #: templates/html/js_templates.html
 msgid ""
 "Specify preferred width as percentage of the background image width. Leave "
 "blank for automatic width."
-msgstr ""
+msgstr "Especifique a largura preferível como porcentagem da largura da imagem de plano de fundo. Para largura automática, deixe o campo em branco."
 
 #: templates/html/js_templates.html
 msgid "Use text that is clear and descriptive of the item to be placed."
@@ -395,7 +395,7 @@ msgid ""
 "                            The description should provide sufficient information to allow anyone\n"
 "                            to solve the problem even without seeing the image.\n"
 "                        "
-msgstr ""
+msgstr "\nForneça uma descrição da imagem para usuários não-visuais.\nA descrição deve ter informação suficiente para permitir que qualquer pessoa\nresolva o problema mesmo sem visualizar a imagem."
 
 #: templates/html/drag_and_drop_edit.html
 msgid "Zone definitions"
@@ -585,7 +585,7 @@ msgstr "Sua pontuação mais alta é {score}"
 
 #: utils.py:45
 msgid "Final attempt was used, highest score is {score}"
-msgstr ""
+msgstr "Tentativa final. Sua pontuação mais alta é {score}"
 
 #: utils.py:24
 msgid "Correctly placed {correct_count} item."
