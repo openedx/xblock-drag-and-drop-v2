@@ -130,6 +130,7 @@
     z-index: 10 !important;
     -webkit-touch-callout: none;
     position: relative;
+    line-height: normal;
 }
 
 .xblock--drag-and-drop .drag-container .dropped {
@@ -504,6 +505,170 @@
     border: 2px solid #b20610;
 }
 
+
+/*fixed-sizing-feedback*/
+
+.fixed-sizing-feedback{
+    background-color: #1d5280;
+    position: absolute;
+    color: #ffffff;
+    text-align: center;
+    padding: 30px;
+    left: 5vw;
+    right: 5vw;
+    top: 5vw;
+    bottom: 5vw;
+    z-index: 999;
+}
+.fixed-sizing-feedback .feedback-detail{
+    display: inline-block;
+    width: 100%;
+    margin-top: 10vh;
+}
+.fixed-sizing-feedback .feedback-detail .icon{
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    line-height: 56px;
+    margin: 10px auto;
+    background-color: #ffffff;
+    position: relative;
+    overflow: hidden;
+}
+.fixed-sizing-feedback.partial .feedback-detail .icon{
+    background-color: rgba(255,255,255,0.3);
+}
+.fixed-sizing-feedback.partial .feedback-detail .icon .fa{
+    opacity: 0.7;
+}
+.fixed-sizing-feedback.partial .feedback-detail .icon .fa:after{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20%;
+    background-color: green;
+}
+.fixed-sizing-feedback.incorrect .feedback-detail .icon .fa:before{
+     content: "";
+     position: absolute;
+     height: 30px;
+     width: 3px;
+     background-color: #ffffff;
+     transform-origin: -3px 6px;
+     transform: rotateZ(224deg);
+}
+.fixed-sizing-feedback.partial .feedback-detail p:before,
+.fixed-sizing-feedback.incorrect .feedback-detail p:before{
+    content: "";
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    border-radius: 50%;
+    background-color: #c2387d;
+    left: -30px;
+    top: 0;
+}
+.fixed-sizing-feedback.partial .feedback-detail p:after,
+.fixed-sizing-feedback.incorrect .feedback-detail p:after{
+    content: "";
+    width: 1px;
+    height: 10px;
+    background-color: #ffffff;
+    position: absolute;
+    transform-origin: 0 0;
+    transform: rotateZ(230deg);
+    top: 13px;
+    left: -25px;
+
+}
+.fixed-sizing-feedback .feedback-detail .icon .fa{
+    color: white;
+    font-size: 30px;
+    line-height: 60px;
+}
+.fixed-sizing-feedback.correct .feedback-detail .icon{
+    background-color: #080;
+}
+
+.fixed-sizing-feedback.incorrect .feedback-detail .icon{
+    background-color: #c2387d;
+}
+.fixed-sizing-feedback .feedback-detail h3{
+    font-size: 20px !important;
+    font-weight: bold !important;
+    margin: 20px 10px 30px;
+    color: #ffffff;
+    text-align: center !important;
+}
+.fixed-sizing-feedback .feedback-detail P{
+    font-size: 14px;
+    max-width: 220px;
+    margin: 20px auto 40px;
+    position: relative;
+    line-height: normal;
+    text-align: center !important;
+}
+.fixed-sizing-feedback .feedback-detail .attempts{
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+.fixed-sizing-feedback .feedback-detail small{
+    display: block;
+    font-weight: normal;
+    color: rgba(255,255,255,0.6);
+    margin-top: 5px;
+    font-size: 70%;
+}
+.fixed-sizing-feedback .feedback-detail button{
+    padding: 17px 30px;
+    border: 0;
+    border-radius: 4px;
+    background-color: #ffffff;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.fixed-sizing-feedback .hint-detail{
+    display: none;
+    width: 40%;
+    border-left: 1px solid rgba(255,255,255,0.1);
+    box-sizing: border-box;
+    text-align: left;
+    padding-left: 20px;
+    min-height: 100%;
+    vertical-align: top;
+}
+.fixed-sizing-feedback .hint-detail ol{
+    padding: 0;
+    margin-top: 15px;
+}
+.fixed-sizing-feedback .hint-detail ol li{
+    font-size: 12px;
+    margin-bottom: 20px;
+    list-style-position: inside;
+    list-style-type: decimal;
+    line-height: normal;
+}
+.fixed-sizing-feedback .hint-detail h5{
+    font-size: 15px;
+    margin-top: 20px;
+    color: #ffffff;
+    font-weight: bold;
+}
+.fixed-sizing-feedback.show-hints .feedback-detail{
+    width: 60%;
+}
+.fixed-sizing-feedback.show-hints .hint-detail{
+    display: inline-block;
+}
+
+.feedback-popup-visible .drag-container,
+.feedback-popup-visible .actions-toolbar{
+    filter: blur(1.25rem);
+}
 
 /* Font Awesome icons have different width - margin-right tries to compensate it */
 .ltr .xblock--drag-and-drop .feedback p:before,
@@ -965,7 +1130,6 @@
     .ltr .xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
         float: right;
         padding-right: -5px;
-        padding-top: 5px;
     }
 
     .rtl .xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
@@ -980,13 +1144,6 @@
     height: 100%;
 }
 
-.ltr .xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper {
-    border-right: 1px solid #ddd;
-}
-
-.rtl .xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper {
-    border-left: 1px solid #ddd;
-}
 
 .ltr .xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper:first-child {
     padding-left: 0;

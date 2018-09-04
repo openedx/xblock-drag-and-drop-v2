@@ -198,6 +198,21 @@ class BaseIntegrationTest(SeleniumBaseTest):
     def _get_instructions_popup(self):
         return self._page.find_element_by_css_selector(".instructions-wrapper")
 
+    def _get_fixed_sizing_feedback_popup(self):
+        return self._page.find_element_by_css_selector('.fixed-sizing-feedback')
+
+    def _get_fixed_sizing_feedback_popup_heading_text(self):
+        return self._page.find_element_by_css_selector('.fixed-sizing-feedback h3').text
+
+    def _get_fixed_sizing_feedback_try_button(self):
+        return self._page.find_element_by_css_selector('.try-again-button')
+
+    def _get_fixed_sizing_feedback_correct_answers_button(self):
+        return self._page.find_element_by_css_selector('.see-correct-answers-button')
+
+    def _get_fixed_sizing_feedback_finish_button(self):
+        return self._page.find_element_by_css_selector('.finish-button')
+
     def scroll_down(self, pixels=50):
         self.browser.execute_script("$(window).scrollTop({})".format(pixels))
 
