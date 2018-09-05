@@ -358,7 +358,7 @@ function DragAndDropTemplates(configuration) {
         );
     };
 
-    var submitAnswerTemplate = function(ctx) {
+    var actionButtonsTemplate = function(ctx) {
         var submitButtonProperties = {
             disabled: ctx.disable_submit_button || ctx.submit_spinner,
             attributes: {}
@@ -368,10 +368,10 @@ function DragAndDropTemplates(configuration) {
         if (ctx.max_attempts && ctx.max_attempts > 0) {
             var attemptsUsedId = "attempts-used-" + configuration.url_name;
             submitButtonProperties.attributes["aria-describedby"] = attemptsUsedId;
-            var attemptsUsedTemplate = gettext("You have used {used} of {total} attempts.");
+            var attemptsUsedTemplate = gettext("{used} / {total}");
             var attemptsUsedText = attemptsUsedTemplate.
                 replace("{used}", ctx.attempts).replace("{total}", ctx.max_attempts);
-            attemptsUsedInfo = h("span.attempts-used", {id: attemptsUsedId}, attemptsUsedText);
+            attemptsUsedInfo = h("div.attempts-used", {id: attemptsUsedId}, [h("span",attemptsUsedText), h('span.text', "Attempts")]);
         }
 
         var submitSpinner = null;
@@ -381,20 +381,25 @@ function DragAndDropTemplates(configuration) {
                 h('span.sr', gettext('Submitting'))
             ]);
         }
+        var submitButton = null;
+        if(ctx.show_submit_answer) {
+            submitButton = h(
+                "button.btn-brand.submit-answer-button",
+                submitButtonProperties,
+                [
+                    submitSpinner,
+                    ' ',  // whitespace between spinner icon and text
+                    gettext("Submit")
+                ]
+            )
+        }
 
         return (
-            h("div.action-toolbar-item.submit-answer", {}, [
-                h(
-                    "button.btn-brand.submit-answer-button",
-                    submitButtonProperties,
-                    [
-                        submitSpinner,
-                        ' ',  // whitespace between spinner icon and text
-                        gettext("Submit")
-                    ]
-                ),
-                attemptsUsedInfo
-            ])
+            [
+                attemptsUsedInfo,
+                submitButton,
+                sidebarTemplate(ctx)
+            ]
         );
     };
 
@@ -441,16 +446,16 @@ function DragAndDropTemplates(configuration) {
         return(
             h("div.action-toolbar-item.sidebar-buttons", {}, [
                 sidebarButtonTemplate(
-                    go_to_beginning_button_class,
-                    "fa-arrow-up",
-                    gettext("Go to Beginning"),
-                    {disabled: ctx.disable_go_to_beginning_button}
-                ),
-                sidebarButtonTemplate(
                     "reset-button",
-                    "fa-refresh",
+                    "",
                     gettext('Reset'),
                     {disabled: ctx.disable_reset_button}
+                ),
+                sidebarButtonTemplate(
+                    go_to_beginning_button_class,
+                    "",
+                    gettext("Go to Beginning"),
+                    {disabled: ctx.disable_go_to_beginning_button}
                 ),
                 showAnswerButton,
             ])
@@ -730,10 +735,8 @@ function DragAndDropTemplates(configuration) {
                     h('div.item-bank', item_bank_properties, bank_children),
                     h('div.dragged-items', renderCollection(itemTemplate, items_dragged, ctx)),
                 ]),
-                h("div.actions-toolbar", {attributes: {'role': 'group', 'aria-label': gettext('Actions')}}, [
-                    (ctx.show_submit_answer ? submitAnswerTemplate(ctx) : null),
-                    sidebarTemplate(ctx),
-                ]),
+                h("div.actions-toolbar", { attributes: {'role': 'group', 'aria-label': gettext('Actions')}}, 
+                actionButtonsTemplate(ctx)),
                 keyboardHelpPopupTemplate(ctx),
                 feedbackTemplate(ctx),
                 h('div.sr.reader-feedback-area', {
@@ -1983,7 +1986,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             problem_html: configuration.problem_text,
             show_problem_header: configuration.show_problem_header,
             show_submit_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
-            show_show_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
+            show_show_answer: configuration.mode == false,
             target_img_src: configuration.target_img_expanded_url,
             target_img_description: configuration.target_img_description,
             display_zone_labels: configuration.display_zone_labels,
