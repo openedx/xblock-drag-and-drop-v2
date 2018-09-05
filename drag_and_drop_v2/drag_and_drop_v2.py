@@ -257,7 +257,8 @@ class DragAndDropBlock(
     @staticmethod
     def _get_statici18n_js_url():
         """
-        Returns the Javascript translation file for the currently selected language, if any.
+        Returns the Javascript translation file for the currently selected language, if any found by
+        `pkg_resources`
         """
         statici18n_js_url = None
         lang_code = translation.get_language()

@@ -132,7 +132,7 @@ function DragAndDropTemplates(configuration) {
         // Insert information about zone in which this item has been placed
 
         if (item.is_placed) {
-            var zone_title = (gettext(zone.title) || gettext("Unknown Zone"));  // This "Unknown" text should never be seen, so does not need i18n
+            var zone_title = (gettext(zone.title) || gettext("Unknown Zone"));
             var description_content;
             if (configuration.mode === DragAndDropBlock.ASSESSMENT_MODE && !ctx.showing_answer) {
                 // In assessment mode placed items will "stick" even when not in correct zone.
