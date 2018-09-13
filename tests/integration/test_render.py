@@ -212,6 +212,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
     def test_go_to_beginning_button(self, action_key):
         self.load_scenario()
         self.scroll_down(250)
+        self.start_exercise()
 
         button = self._get_go_to_beginning_button()
         # Button is only visible to screen reader users by default.

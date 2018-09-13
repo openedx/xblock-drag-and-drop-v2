@@ -195,8 +195,22 @@ class BaseIntegrationTest(SeleniumBaseTest):
     def _get_feedback_message(self):
         return self._page.find_element_by_css_selector(".feedback .message")
 
+    def _get_instructions_popup(self):
+        return self._page.find_element_by_css_selector(".instructions-wrapper")
+
     def scroll_down(self, pixels=50):
         self.browser.execute_script("$(window).scrollTop({})".format(pixels))
+
+    def start_exercise(self):
+        """Start DnD exercise by closing instructions popup"""
+        try:
+            start_exercise_btn = self._page.find_element_by_css_selector(".start-exercise-button")
+        except NoSuchElementException:
+            return None
+
+        if start_exercise_btn.is_displayed():
+            self.browser.execute_script("arguments[0].scrollIntoView(0);", start_exercise_btn)
+            start_exercise_btn.click()
 
     def is_element_in_viewport(self, element):
         """Determines if the element lies at least partially in the viewport."""
@@ -329,6 +343,7 @@ class InteractionTestBase(object):
         # Resize window so that the entire drag container is visible.
         # Selenium has issues when dragging to an area that is off screen.
         self.browser.set_window_size(1024, 1024)
+        self.start_exercise()
 
     @staticmethod
     def _get_items_with_zone(items_map):
@@ -577,6 +592,7 @@ class InteractionTestBase(object):
     def _switch_to_block(self, idx):
         """ Only needed if there are multiple blocks on the page. """
         self._page = self.browser.find_elements_by_css_selector(self.default_css_selector)[idx]
+        self.start_exercise()
         self.scroll_down(0)
 
     def assert_popup_correct(self, popup):

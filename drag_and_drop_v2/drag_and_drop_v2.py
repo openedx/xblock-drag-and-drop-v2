@@ -121,6 +121,22 @@ class DragAndDropBlock(
         enforce_type=True,
     )
 
+    instructions_text = String(
+        display_name=_("Instructions text"),
+        help=_("Instructions text to be displayed with drag and drop instructions video."),
+        scope=Scope.settings,
+        default=_("Match items to empty boxes"),
+        enforce_type=True,
+    )
+
+    show_instructions = Boolean(
+        display_name=_("Show instructions"),
+        help=_("Display the instructions to the learner?"),
+        scope=Scope.settings,
+        default=True,
+        enforce_type=True,
+    )
+
     weight = Float(
         display_name=_("Problem Weight"),
         help=_("Defines the number of points the problem is worth."),
@@ -353,6 +369,8 @@ class DragAndDropBlock(
         return {
             "block_id": unicode(self.scope_ids.usage_id),
             "display_name": self.display_name,
+            "instructions_text": self.instructions_text,
+            "show_instructions": self.show_instructions,
             "type": self.CATEGORY,
             "weight": self.weight,
             "mode": self.mode,
@@ -450,6 +468,8 @@ class DragAndDropBlock(
         self.item_sizing = submissions['item_sizing']
         self.max_attempts = submissions['max_attempts']
         self.show_title = submissions['show_title']
+        self.show_instructions = submissions['show_instructions']
+        self.instructions_text = submissions['instructions_text']
         self.question_text = submissions['problem_text']
         self.show_question_header = submissions['show_problem_header']
         self.weight = float(submissions['weight'])

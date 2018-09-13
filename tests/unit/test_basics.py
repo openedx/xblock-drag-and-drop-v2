@@ -24,6 +24,8 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
 
         submission = {
             'display_name': "Test Drag & Drop",
+            'instructions_text': 'Test instructions',
+            'show_instructions': True,
             'mode': Constants.STANDARD_MODE,
             'item_sizing': Constants.FREE_SIZING,
             'max_attempts': 1,
@@ -60,6 +62,8 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         self.assertEqual(config, {
             "block_id": config['block_id'],  # Block ids aren't stable
             "display_name": "Drag and Drop",
+            "instructions_text": "Match items to empty boxes",
+            "show_instructions": True,
             "type": "drag-and-drop-v2",
             "weight": 1,
             "mode": Constants.STANDARD_MODE,

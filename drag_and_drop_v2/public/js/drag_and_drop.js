@@ -90,6 +90,21 @@ function DragAndDropTemplates(configuration) {
         return style;
     };
 
+    var instructionsPopupTemplate = function(ctx) {
+        if (!ctx.show_instructions) {
+            return null;
+        }
+
+        return h('div.instructions-wrapper', [
+            h('div.instructions-container', [
+                h('h3', gettext('Instructions')),
+                h('p', { innerHTML: gettext(ctx.instructions_text) }),
+                h('div.instructions-video'),
+                h('button.start-exercise-button', gettext('Start Exercise')),
+            ])
+        ])
+    };
+
     var itemContentTemplate = function(item) {
         var item_content_html = gettext(item.displayName);
         if (item.imageURL) {
@@ -728,7 +743,7 @@ function DragAndDropTemplates(configuration) {
                     problemHeader,
                     h('p', {innerHTML: ctx.problem_html}),
                 ]),
-                h('div.drag-container', {style: drag_container_style}, [
+                h('div.drag-container', {style: drag_container_style, className: ctx.show_instructions ? 'instructions-visible' : ''}, [
                     h('div.target', {attributes: {'role': 'group', 'arial-label': gettext('Drop Targets')}}, [
                         h('div.target-img-wrapper', [
                             h('img.target-img', {
@@ -742,6 +757,7 @@ function DragAndDropTemplates(configuration) {
                     h('div.item-bank', item_bank_properties, bank_children),
                     itemFeedbackPopupTemplate(ctx),
                     h('div.dragged-items', renderCollection(itemTemplate, items_dragged, ctx)),
+                    instructionsPopupTemplate(ctx),
                 ]),
                 h("div.actions-toolbar", { attributes: {'role': 'group', 'aria-label': gettext('Actions')}}, 
                 actionButtonsTemplate(ctx)),
@@ -859,6 +875,8 @@ function DragAndDropBlock(runtime, element, configuration) {
             $element.on('keydown', '.show-answer-button', function(evt) {
                 runOnKey(evt, RET, showAnswer);
             });
+
+            $element.on('click', '.start-exercise-button', closeInstructionsPopupHandler);
 
             // We need to register both mousedown and click event handlers because in some browsers the blur
             // event is emitted right after mousedown, hiding our button and preventing the click event from
@@ -1836,6 +1854,12 @@ function DragAndDropBlock(runtime, element, configuration) {
         }
     };
 
+    var closeInstructionsPopupHandler = function(evt) {
+        evt.preventDefault();
+        $root.find('.instructions-wrapper').hide();
+        $root.find('.drag-container').removeClass('instructions-visible');
+    };
+
     var resetProblem = function(evt) {
         evt.preventDefault();
         $.ajax({
@@ -1995,6 +2019,8 @@ function DragAndDropBlock(runtime, element, configuration) {
             bg_image_width: bgImgNaturalWidth, // Not stored in configuration since it's unknown on the server side
             title_html: configuration.title,
             show_title: configuration.show_title,
+            instructions_text: configuration.instructions_text,
+            show_instructions: configuration.show_instructions,
             mode: configuration.mode,
             max_attempts: configuration.max_attempts,
             graded: configuration.graded,

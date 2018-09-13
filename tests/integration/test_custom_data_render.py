@@ -12,6 +12,7 @@ class TestCustomDataDragAndDropRendering(BaseIntegrationTest):
         self._add_scenario(self.PAGE_ID, self.PAGE_TITLE, scenario_xml)
 
         self._page = self.go_to_page(self.PAGE_TITLE)
+        self.start_exercise()
 
         header1 = self.browser.find_element_by_css_selector('h1')
         self.assertEqual(header1.text, 'XBlock: ' + self.PAGE_TITLE)
