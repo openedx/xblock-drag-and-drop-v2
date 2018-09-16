@@ -146,6 +146,7 @@
 .xblock--drag-and-drop .drag-container .square-option {
     width: 150px;
     height: 120px;
+    overflow: hidden;
 }
 
 .xblock--drag-and-drop .drag-container .square-option .show-item-detail-popup{
