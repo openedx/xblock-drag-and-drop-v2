@@ -744,6 +744,7 @@ function DragAndDropTemplates(configuration) {
                     h('p', {innerHTML: ctx.problem_html}),
                 ]),
                 h('div.drag-container', {style: drag_container_style, className: ctx.show_instructions ? 'instructions-visible' : ''}, [
+                    instructionsPopupTemplate(ctx),
                     h('div.target', {attributes: {'role': 'group', 'arial-label': gettext('Drop Targets')}}, [
                         h('div.target-img-wrapper', [
                             h('img.target-img', {
@@ -757,7 +758,6 @@ function DragAndDropTemplates(configuration) {
                     h('div.item-bank', item_bank_properties, bank_children),
                     itemFeedbackPopupTemplate(ctx),
                     h('div.dragged-items', renderCollection(itemTemplate, items_dragged, ctx)),
-                    instructionsPopupTemplate(ctx),
                 ]),
                 h("div.actions-toolbar", { attributes: {'role': 'group', 'aria-label': gettext('Actions')}}, 
                 actionButtonsTemplate(ctx)),

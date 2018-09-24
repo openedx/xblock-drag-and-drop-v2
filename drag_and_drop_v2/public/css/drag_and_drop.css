@@ -203,6 +203,10 @@
     display: none;
 }
 
+.xblock--drag-and-drop .drag-container.instructions-visible {
+    min-height: 500px;
+}
+
 .xblock--drag-and-drop .instructions-wrapper .instructions-container .instructions-video{
     width: 130px;
     height: 130px;
