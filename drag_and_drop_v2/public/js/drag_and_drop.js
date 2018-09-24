@@ -1476,7 +1476,6 @@ function DragAndDropBlock(runtime, element, configuration) {
 
         applyState();
         submitLocation(item_id, zone);
-        $zone.addClass("green-zone");
     };
 
     var countItemsInZone = function(zone, exclude_ids) {
@@ -1872,6 +1871,11 @@ function DragAndDropBlock(runtime, element, configuration) {
                 if (state.feedback && state.feedback.length > 0) {
                     // Move focus the the close button of the feedback popup.
                     focusFeedbackPopup('.item-feedback-popup', '.close-feedback-popup-button:visible');
+                    if (configuration.mode == DragAndDropBlock.STANDARD_MODE){
+                        var zone_selector = ".zone[data-uid='" + zone + "']";
+                        $root.find(zone_selector).addClass("green-zone");
+
+                    }
                 } else {
                     // Next tab press should take us to the "Go to Beginning" button.
                     state.tab_to_go_to_beginning_button = true;
