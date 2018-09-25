@@ -23,6 +23,21 @@
                     </label>
 
                     <label class="h4">
+                        <span>{% trans fields.instructions_text.display_name %}</span>
+                        <input class="instructions-text" value="{{ self.instructions_text }}" />
+                    </label>
+                    <label class="checkbox-label">
+                      <input class="show-instructions"
+                             type="checkbox"
+                             aria-describedby="show-instructions-description-{{id_suffix}}"
+                        {% if self.show_instructions %}checked="checked"{% endif %}>
+                      {% trans fields.show_instructions.display_name %}
+                    </label>
+                    <div id="show-instructions-description-{{id_suffix}}" class="form-help">
+                      {% trans fields.show_instructions.help %}
+                    </div>
+
+                    <label class="h4">
                         <span>{% trans fields.mode.display_name %}</span>
                         <select class="problem-mode" aria-describedby="problem-mode-description-{{id_suffix}}">
                             {% for field_value in fields.mode.values %}

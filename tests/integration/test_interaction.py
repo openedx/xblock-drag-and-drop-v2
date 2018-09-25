@@ -785,7 +785,7 @@ class TestMaxItemsPerZone(InteractionTestBase, BaseIntegrationTest):
         self.assert_reverted_item(8)
 
         self._page = self.go_to_page(self.PAGE_TITLE)  # refresh the page
-
+        self.start_exercise()
         self.assert_placed_item(6, zone_id, assessment_mode=self.assessment_mode)
         self.assert_placed_item(7, zone_id, assessment_mode=self.assessment_mode)
         self.assert_reverted_item(8)
@@ -828,3 +828,22 @@ class DragScrollingTest(InteractionTestBase, BaseIntegrationTest):
 
         # and now zone2 is out of view
         self.assertFalse(self.is_element_in_viewport(zone2))
+
+
+class InstructionsPopupInteractionTest(DefaultDataTestMixin, BaseIntegrationTest):
+    """Tests for instructions popup"""
+    def setUp(self):
+        super(InstructionsPopupInteractionTest, self).setUp()
+
+        scenario_xml = self._get_scenario_xml()
+        self._add_scenario(self.PAGE_ID, self.PAGE_TITLE, scenario_xml)
+        self._page = self.go_to_page(self.PAGE_TITLE)
+        # Resize window so that the entire drag container is visible.
+        # Selenium has issues when dragging to an area that is off screen.
+        self.browser.set_window_size(1024, 1024)
+
+    def test_instuction_popup(self):
+        instructions_popup = self._get_instructions_popup()
+        self.assertTrue(instructions_popup.is_displayed())
+        self.start_exercise()
+        self.assertFalse(instructions_popup.is_displayed())

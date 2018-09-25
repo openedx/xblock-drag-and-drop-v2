@@ -171,6 +171,70 @@
     color: #e3e8f0;
 }
 
+/* Instructions popup css */
+
+.xblock--drag-and-drop .instructions-wrapper{
+    position: absolute;
+    z-index: 11;
+    padding: 20px 20px 10px;
+    width: 80%;
+    max-width: 390px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    text-align: center;
+    border-radius: 4px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 15px #333333;
+}
+
+.xblock--drag-and-drop .instructions-visible:after{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    content: "";
+    background-color: #1d5280;
+    z-index: 10;
+}
+.xblock--drag-and-drop .instructions-visible + .actions-toolbar{
+    display: none;
+}
+
+.xblock--drag-and-drop .drag-container.instructions-visible {
+    min-height: 500px;
+}
+
+.xblock--drag-and-drop .instructions-wrapper .instructions-container .instructions-video{
+    width: 130px;
+    height: 130px;
+    background: url('../img/DD_Instruction_Anim.gif') no-repeat center center;
+    background-size: 100%;
+    margin: 0 auto 20px;
+}
+
+.xblock--drag-and-drop .instructions-wrapper .instructions-container h3{
+    color: #1d5280;
+    font-size: 14px;
+}
+
+.xblock--drag-and-drop .instructions-wrapper .instructions-container p{
+    color: #a5a5a5;
+    font-size: 13px;
+}
+.xblock--drag-and-drop .instructions-wrapper .instructions-container button{
+    padding: 20px;
+    border: 0;
+    color: #1d5280;
+    border-top:1px solid #dddddd;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: transparent;
+    font-size: 13px;
+}
+
 @media screen and (max-width: 480px) {
    /* Horizontal scroll for item bank on mobile */
     .xblock--drag-and-drop .item-bank {

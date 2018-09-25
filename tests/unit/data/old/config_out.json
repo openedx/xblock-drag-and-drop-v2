@@ -4,6 +4,8 @@
     "type": "drag-and-drop-v2",
     "weight": 1,
     "title": "Drag and Drop",
+    "instructions_text": "Match items to empty boxes",
+    "show_instructions": true,
     "mode": "standard",
     "item_sizing": "free_sizing",
     "max_attempts": null,

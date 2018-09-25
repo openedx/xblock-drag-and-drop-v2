@@ -4,6 +4,8 @@
     "type": "drag-and-drop-v2",
     "weight": 5,
     "title": "DnDv2 XBlock with plain text instructions",
+    "instructions_text": "Match items to empty boxes",
+    "show_instructions": true,
     "mode": "assessment",
     "item_sizing": "free_sizing",
     "max_attempts": 10,
