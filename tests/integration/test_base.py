@@ -213,6 +213,11 @@ class BaseIntegrationTest(SeleniumBaseTest):
     def _get_fixed_sizing_feedback_finish_button(self):
         return self._page.find_element_by_css_selector('.finish-button')
 
+    def close_assessment_notification(self):
+        button = self._page.find_element_by_css_selector('.close-assessment-notification')
+        self.browser.execute_script("arguments[0].scrollIntoView(0);", button)
+        button.click()
+
     def scroll_down(self, pixels=50):
         self.browser.execute_script("$(window).scrollTop({})".format(pixels))
 

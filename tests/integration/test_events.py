@@ -149,6 +149,11 @@ class AssessmentEventsFiredTest(
         },
     )
 
+    def setUp(self):
+        super(AssessmentEventsFiredTest, self).setUp()
+        if self.item_sizing == Constants.FIXED_SIZING:
+            self.close_assessment_notification()
+
     def test_event(self):
         self.scroll_down(pixels=100)
 

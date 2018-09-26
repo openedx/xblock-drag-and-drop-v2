@@ -104,6 +104,14 @@ class AssessmentInteractionTest(
     All interactions are tested using mouse (action_key=None) and four different keyboard action keys.
     If default data changes this will break.
     """
+
+    item_sizing = Constants.FIXED_SIZING
+
+    def setUp(self):
+        super(AssessmentInteractionTest, self).setUp()
+        if self.item_sizing == Constants.FIXED_SIZING:
+            self.close_assessment_notification()
+
     @data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_item_no_feedback_on_good_move(self, action_key):
         self.parameterized_item_positive_feedback_on_good_move_assessment(self.items_map, action_key=action_key)
@@ -352,6 +360,11 @@ class AssessmentInteractionTest(
 
 class TestMaxItemsPerZoneAssessment(TestFreeSizingMaxItemsPerZone):
     assessment_mode = True
+
+    def setUp(self):
+        super(TestMaxItemsPerZoneAssessment, self).setUp()
+        if self.item_sizing == Constants.FIXED_SIZING:
+            self.close_assessment_notification()
 
     def _get_scenario_xml(self):
         scenario_data = loader.load_unicode("data/test_zone_align.json")

@@ -321,6 +321,26 @@ function DragAndDropTemplates(configuration) {
         );
     };
 
+    var assessmentNotificationTemplate = function (ctx) {
+        if (configuration.mode === DragAndDropBlock.STANDARD_MODE) {
+            return
+        }
+        var icon = h('div.icon' , h('i.fa.fa-exclamation'));
+        var button = h('div.action', h('button.close-assessment-notification', gettext("Continue")));
+         var attemptText = h('p',
+            gettext(
+                "You can review answers / resubmit {max_attempts} times"
+            ).replace("{max_attempts}", ctx.max_attempts)
+        );
+         var text = h('ol', [
+            h('li', gettext("Place all items in the correct zone")),
+            h('li', gettext("Press submit")),
+            h('li', gettext("See your results"))]);
+         var content = h('div.instructions', [text, attemptText]);
+        var style = {display: "none"};
+        return h("div.assessment-notification", {style: style}, [icon, content, button]);
+     };
+
     var feedbackTemplate = function(ctx) {
         var messages = ctx.overall_feedback_messages || [];
         var feedback_display = messages.length > 0 ? 'block' : 'none';
@@ -812,6 +832,7 @@ function DragAndDropTemplates(configuration) {
                     h('div.item-bank', item_bank_properties, bank_children),
                     ctx.show_feedback_bar ? itemFeedbackPopupTemplate(ctx) : null,
                     h('div.dragged-items', renderCollection(itemTemplate, items_dragged, ctx)),
+                    assessmentNotificationTemplate(ctx),
                 ]),
                 h("div.actions-toolbar", { attributes: {'role': 'group', 'aria-label': gettext('Actions')}}, 
                 actionButtonsTemplate(ctx)),
@@ -971,8 +992,13 @@ function DragAndDropBlock(runtime, element, configuration) {
             initDroppable();
             if (configuration.item_sizing == DragAndDropBlock.FIXED_SIZING)
             {
+                // slider wouldn't work properly if image and js files are not loaded
                 pageLoaded = true;
                 initializeSlider();
+
+                if (configuration.mode === DragAndDropBlock.ASSESSMENT_MODE){
+                   showAssessmentNotification();
+               }
             }
 
             // Indicate that problem is done loading
@@ -1064,6 +1090,13 @@ function DragAndDropBlock(runtime, element, configuration) {
             itemSlider = undefined;
         }
 
+    };
+
+    var showAssessmentNotification = function() {
+        $root.find('.assessment-notification').show();
+        $root.find(".close-assessment-notification").click(function() {
+            $root.find('.assessment-notification').hide();
+        });
     };
 
     var runOnKey = function(evt, key, handler) {
