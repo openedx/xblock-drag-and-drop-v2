@@ -563,7 +563,7 @@ class DragAndDropBlock(
         # incorrect order of invocation causes issues:
         self._mark_complete_and_publish_grade()  # must happen before _get_feedback - sets grade
         correct = self._is_answer_correct()  # must happen before manipulating item_state - reads item_state
-
+        answer_correctness = self._answer_correctness()
         overall_feedback_msgs, misplaced_ids = self._get_feedback(include_item_feedback=True)
 
         misplaced_items = []
@@ -576,6 +576,7 @@ class DragAndDropBlock(
         feedback_msgs = [FeedbackMessage(item['feedback']['incorrect'], None) for item in misplaced_items]
         return {
             'correct': correct,
+            'answer_correctness': answer_correctness,
             'attempts': self.attempts,
             'grade': self._get_weighted_earned_if_set(),
             'misplaced_items': list(misplaced_ids),
@@ -937,7 +938,8 @@ class DragAndDropBlock(
             'finished': is_finished,
             'attempts': self.attempts,
             'grade': self._get_weighted_earned_if_set(),
-            'overall_feedback': self._present_feedback(overall_feedback_msgs)
+            'overall_feedback': self._present_feedback(overall_feedback_msgs),
+            'answer_correctness': self._answer_correctness()
         }
 
     def _get_correct_state(self):

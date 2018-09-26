@@ -791,6 +791,13 @@ class TestMaxItemsPerZone(InteractionTestBase, BaseIntegrationTest):
         self.assert_reverted_item(8)
 
 
+class TestFreeSizingMaxItemsPerZone(TestMaxItemsPerZone, FreeSizingInteractionTestBase):
+    """
+    Tests for max items per dropzone feature with free item sizing
+    """
+    item_sizing = Constants.FREE_SIZING
+
+
 class DragScrollingTest(InteractionTestBase, BaseIntegrationTest):
     """Tests that drop targets are scrolled into view while dragging."""
 

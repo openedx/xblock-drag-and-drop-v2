@@ -121,7 +121,8 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
                 'items': {},
                 'finished': False,
                 "attempts": 0,
-                'overall_feedback': [{"message": START_FEEDBACK, "message_class": None}]
+                'overall_feedback': [{"message": START_FEEDBACK, "message_class": None}],
+                'answer_correctness': 'partial'
             })
         assert_user_state_empty()
 
@@ -154,6 +155,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             "attempts": 0,
             "grade": 1,
             'overall_feedback': [{"message": FINISH_FEEDBACK, "message_class": None}],
+            'answer_correctness': 'correct'
         })
 
         # Reset to initial conditions

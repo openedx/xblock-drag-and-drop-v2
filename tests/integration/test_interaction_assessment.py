@@ -18,9 +18,10 @@ from drag_and_drop_v2.default_data import (
     TOP_ZONE_TITLE, START_FEEDBACK, FINISH_FEEDBACK
 )
 from drag_and_drop_v2.utils import FeedbackMessages, Constants
-from .test_base import BaseIntegrationTest
+from .test_base import BaseIntegrationTest, FreeSizingInteractionTestBase
 from .test_interaction import (
-    InteractionTestBase, DefaultDataTestMixin, ParameterizedTestsMixin, TestMaxItemsPerZone, ITEM_DRAG_KEYBOARD_KEYS
+    InteractionTestBase, DefaultDataTestMixin, ParameterizedTestsMixin, TestFreeSizingMaxItemsPerZone,
+    ITEM_DRAG_KEYBOARD_KEYS
 )
 
 
@@ -70,20 +71,39 @@ class AssessmentTestMixin(object):
         show_answer_button.click()
         self.wait_for_ajax()
 
+    def _assert_show_answer_item_placement(self):
+        zones = dict(self.all_zones)
+        for item in self._get_items_with_zone(self.items_map).values():
+            zone_titles = [zones[zone_id] for zone_id in item.zone_ids]
+            # When showing answers, correct items are placed as if assessment_mode=False
+            self.assert_placed_item(item.item_id, zone_titles, assessment_mode=False)
+
+        for item_definition in self._get_items_without_zone(self.items_map).values():
+            self.assertNotDraggable(item_definition.item_id)
+            item = self._get_item_by_value(item_definition.item_id)
+            self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
+            self.assertEqual(item.get_attribute('class'), 'option fade')
+
+            item_content = item.find_element_by_css_selector('.item-content')
+            self.assertEqual(item_content.get_attribute('aria-describedby'), None)
+
+            try:
+                item.find_element_by_css_selector('.sr.description')
+                self.fail("Description element should not be present")
+            except NoSuchElementException:
+                pass
+
 
 @ddt
 class AssessmentInteractionTest(
     DefaultAssessmentDataTestMixin, AssessmentTestMixin, ParameterizedTestsMixin,
-    InteractionTestBase, BaseIntegrationTest
+    FreeSizingInteractionTestBase, BaseIntegrationTest
 ):
     """
     Testing interactions with Drag and Drop XBlock against default data in assessment mode.
     All interactions are tested using mouse (action_key=None) and four different keyboard action keys.
     If default data changes this will break.
     """
-
-    item_sizing = Constants.FIXED_SIZING
-
     @data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_item_no_feedback_on_good_move(self, action_key):
         self.parameterized_item_positive_feedback_on_good_move_assessment(self.items_map, action_key=action_key)
@@ -195,28 +215,6 @@ class AssessmentInteractionTest(
 
         self.assertEqual(submit_button.get_attribute('disabled'), 'true')
         self.assertEqual(reset_button.get_attribute('disabled'), 'true')
-
-    def _assert_show_answer_item_placement(self):
-        zones = dict(self.all_zones)
-        for item in self._get_items_with_zone(self.items_map).values():
-            zone_titles = [zones[zone_id] for zone_id in item.zone_ids]
-            # When showing answers, correct items are placed as if assessment_mode=False
-            self.assert_placed_item(item.item_id, zone_titles, assessment_mode=False)
-
-        for item_definition in self._get_items_without_zone(self.items_map).values():
-            self.assertNotDraggable(item_definition.item_id)
-            item = self._get_item_by_value(item_definition.item_id)
-            self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
-            self.assertEqual(item.get_attribute('class'), 'option fade')
-
-            item_content = item.find_element_by_css_selector('.item-content')
-            self.assertEqual(item_content.get_attribute('aria-describedby'), None)
-
-            try:
-                item.find_element_by_css_selector('.sr.description')
-                self.fail("Description element should not be present")
-            except NoSuchElementException:
-                pass
 
     def test_do_attempt_feedback_is_updated(self):
         """
@@ -352,7 +350,7 @@ class AssessmentInteractionTest(
         self.assertEqual(progress.text, '1/1 point (ungraded)')
 
 
-class TestMaxItemsPerZoneAssessment(TestMaxItemsPerZone):
+class TestMaxItemsPerZoneAssessment(TestFreeSizingMaxItemsPerZone):
     assessment_mode = True
 
     def _get_scenario_xml(self):
@@ -378,3 +376,80 @@ class TestMaxItemsPerZoneAssessment(TestMaxItemsPerZone):
 
         self.place_item(7, zone_id, Keys.RETURN)
         self.assertFalse(popup.is_displayed())
+
+
+class FixedSizingAssessmentInteractionTest(
+    DefaultAssessmentDataTestMixin, AssessmentTestMixin, InteractionTestBase, BaseIntegrationTest
+):
+    """
+    Testing interactions with Drag and Drop XBlock against fixed item sizing in assessment mode.
+    """
+    item_sizing = Constants.FIXED_SIZING
+
+    def test_partialy_correct_answers_feedback(self):
+        correct_items = {0: TOP_ZONE_ID}
+        misplaced_items = {1: BOTTOM_ZONE_ID, 2: MIDDLE_ZONE_ID}
+
+        for item_id, zone_id in correct_items.iteritems():
+            self.place_item(item_id, zone_id)
+
+        for item_id, zone_id in misplaced_items.iteritems():
+            self.place_item(item_id, zone_id)
+
+        self.click_submit()
+
+        fixed_sizing_feedback_popup = self._get_fixed_sizing_feedback_popup()
+        self.assertTrue(fixed_sizing_feedback_popup.is_displayed())
+        self.assertIn('show-hints', fixed_sizing_feedback_popup.get_attribute('class'))
+        self.assertEqual(self._get_fixed_sizing_feedback_popup_heading_text(), 'Partially Correct!')
+
+        # On clicking try again button popup should be closed
+        self._get_fixed_sizing_feedback_try_button().click()
+        self.assertFalse(fixed_sizing_feedback_popup.is_displayed())
+
+    def test_all_correct_answers_feedback(self):
+        items_with_zones = self._get_items_with_zone(self.items_map).values()
+        for definition in items_with_zones:
+            self.place_item(definition.item_id, definition.zone_ids[0])
+
+        self.click_submit()
+
+        fixed_sizing_feedback_popup = self._get_fixed_sizing_feedback_popup()
+        self.assertTrue(fixed_sizing_feedback_popup.is_displayed())
+        self.assertNotIn('show-hints', fixed_sizing_feedback_popup.get_attribute('class'))
+        self.assertEqual(self._get_fixed_sizing_feedback_popup_heading_text(), 'Congratulations!')
+
+        # On clicking see correct answers button popup is closed and correct answers displayed
+        self._get_fixed_sizing_feedback_finish_button().click()
+        self.assertFalse(fixed_sizing_feedback_popup.is_displayed())
+
+    def test_all_incorrect_answers_feedback(self):
+        misplaced_items = {0: BOTTOM_ZONE_ID, 1: BOTTOM_ZONE_ID, 2: MIDDLE_ZONE_ID, 4: MIDDLE_ZONE_ID}
+
+        for item_id, zone_id in misplaced_items.iteritems():
+            self.place_item(item_id, zone_id)
+
+        self.click_submit()
+
+        fixed_sizing_feedback_popup = self._get_fixed_sizing_feedback_popup()
+        self.assertTrue(fixed_sizing_feedback_popup.is_displayed())
+        self.assertIn('show-hints', fixed_sizing_feedback_popup.get_attribute('class'))
+        self.assertEqual(self._get_fixed_sizing_feedback_popup_heading_text(), 'Incorrect Answers')
+
+        # On clicking try again button popup should be closed
+        self._get_fixed_sizing_feedback_try_button().click()
+        self.assertFalse(fixed_sizing_feedback_popup.is_displayed())
+
+    def test_all_attempts_used_feedback(self):
+        for attempt in xrange(self.MAX_ATTEMPTS):
+            self.place_item(1, BOTTOM_ZONE_ID)
+            self.click_submit()
+            fixed_sizing_feedback_popup = self._get_fixed_sizing_feedback_popup()
+            self.assertTrue(fixed_sizing_feedback_popup.is_displayed())
+            if (attempt + 1) != self.MAX_ATTEMPTS:
+                self._get_fixed_sizing_feedback_try_button().click()
+                self.assertFalse(fixed_sizing_feedback_popup.is_displayed())
+            else:
+                self._get_fixed_sizing_feedback_correct_answers_button().click()
+                self.assertFalse(fixed_sizing_feedback_popup.is_displayed())
+                self._assert_show_answer_item_placement()

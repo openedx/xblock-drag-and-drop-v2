@@ -252,6 +252,7 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
             "attempts": 0,
             "grade": expected_grade,
             'overall_feedback': [self._make_feedback_message(message=self.INITIAL_FEEDBACK)],
+            'answer_correctness': 'partial',
         }
         self.assertEqual(expected_state, self.call_handler('student_view_user_state', method="GET"))
 
@@ -275,6 +276,7 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
             "attempts": 0,
             "grade": expected_grade,
             'overall_feedback': [self._make_feedback_message(self.FINAL_FEEDBACK)],
+            'answer_correctness': 'correct',
         }
         self.assertEqual(expected_state, self.call_handler('student_view_user_state', method="GET"))
 
