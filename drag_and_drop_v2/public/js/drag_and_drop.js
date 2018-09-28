@@ -1622,7 +1622,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 $(this).css({
                     width: $(this).outerWidth(true) * 0.9, height: $(this).outerHeight(true) * 0.9
                 });
-                $(this).fitText();
+                $(this).fitText(1.3);
             });
         }
     };
