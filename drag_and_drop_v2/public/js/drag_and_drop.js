@@ -327,16 +327,23 @@ function DragAndDropTemplates(configuration) {
         }
         var icon = h('div.icon' , h('i.fa.fa-exclamation'));
         var button = h('div.action', h('button.close-assessment-notification', gettext("Continue")));
-         var attemptText = h('p',
-            gettext(
-                "You can review answers / resubmit {max_attempts} times"
-            ).replace("{max_attempts}", ctx.max_attempts)
-        );
-         var text = h('ol', [
+
+        if (!ctx.max_attempts){
+            var attemptText = h('p', gettext("You can review answers / resubmit as many times as you want"));
+        }
+        else{
+            var attemptText = h('p',
+                gettext(
+                    "You can review answers / resubmit {max_attempts} times"
+                ).replace("{max_attempts}", ctx.max_attempts)
+            );
+        }
+
+        var text = h('ol', [
             h('li', gettext("Place all items in the correct zone")),
             h('li', gettext("Press submit")),
             h('li', gettext("See your results"))]);
-         var content = h('div.instructions', [text, attemptText]);
+        var content = h('div.instructions', [text, attemptText]);
         var style = {display: "none"};
         return h("div.assessment-notification", {style: style}, [icon, content, button]);
      };
@@ -1954,6 +1961,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         evt.preventDefault();
         $root.find('.instructions-wrapper').hide();
         $root.find('.drag-container').removeClass('instructions-visible');
+        focusFeedbackPopup('.assessment-notification', '.close-assessment-notification');
     };
 
     var closeFixedSizingFeedbackPopupHandler = function(evt) {

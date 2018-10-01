@@ -1041,9 +1041,9 @@
     background-color: #1d5280;
     position: absolute;
     left: 0;
-    bottom: 0;
+    bottom: -60px;
     right: 0;
-    height: 200px;
+    height: 230px;
     color: #ffffff;
     box-shadow: 0 -2px 10px #999;
     z-index: 10;
@@ -1052,7 +1052,7 @@
 .assessment-notification > div{
     display: table-cell;
     vertical-align: middle;
-    height: 200px;
+    height: 230px;
     text-align: center;
 }
 
@@ -1076,7 +1076,7 @@
 .assessment-notification > .instructions{
     width: calc(100% - 210px - 180px);
     text-align: left;
-    max-height: 200px;
+    max-height: 230px;
     overflow: auto;
 }
 
