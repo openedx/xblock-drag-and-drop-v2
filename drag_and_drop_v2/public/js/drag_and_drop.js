@@ -1871,10 +1871,11 @@ function DragAndDropBlock(runtime, element, configuration) {
                 if (state.feedback && state.feedback.length > 0) {
                     // Move focus the the close button of the feedback popup.
                     focusFeedbackPopup('.item-feedback-popup', '.close-feedback-popup-button:visible');
-                    if (configuration.mode == DragAndDropBlock.STANDARD_MODE){
+
+                    // In standard mode apply green border to the zone in which item was dropped
+                    if (configuration.mode == DragAndDropBlock.STANDARD_MODE) {
                         var zone_selector = ".zone[data-uid='" + zone + "']";
                         $root.find(zone_selector).addClass("green-zone");
-
                     }
                 } else {
                     // Next tab press should take us to the "Go to Beginning" button.
@@ -1913,7 +1914,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     var closePopup = function(manually_closed) {
         // do not apply state here - callers are responsible to call it when other appropriate state changes are applied
         if ($root.find(Selector.popup_box).is(":visible")) {
-            $root.find(".zone").removeClass('green-zone')
+            $root.find(".zone").removeClass('green-zone');
             state.closing = true;
             previousFeedback = state.feedback;
             state.manually_closed = manually_closed;
@@ -1945,8 +1946,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             state = data;
             applyState();
             focusFirstDraggable();
-            $root.find(".zone").removeClass('green-zone')
-
+            $root.find(".zone").removeClass('green-zone');
         });
     };
 

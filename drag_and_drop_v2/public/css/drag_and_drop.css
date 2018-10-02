@@ -392,7 +392,7 @@
 /*To highlight ZONES while user is dragging an item*/
 .xblock--drag-and-drop .drag-container.dragging .zone,
 .green-zone,
-.zone-with-borders.green-zone{
+.zone-with-borders.green-zone {
     border: 5px solid #13ed8d;
     box-sizing: border-box;
     border-radius: 2px;
