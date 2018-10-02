@@ -1945,6 +1945,8 @@ function DragAndDropBlock(runtime, element, configuration) {
             state = data;
             applyState();
             focusFirstDraggable();
+            $root.find(".zone").removeClass('green-zone')
+
         });
     };
 
