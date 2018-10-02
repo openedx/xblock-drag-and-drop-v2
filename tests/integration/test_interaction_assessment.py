@@ -105,7 +105,7 @@ class AssessmentInteractionTest(
     If default data changes this will break.
     """
 
-    item_sizing = Constants.FIXED_SIZING
+    item_sizing = Constants.FREE_SIZING
 
     def setUp(self):
         super(AssessmentInteractionTest, self).setUp()
