@@ -399,7 +399,6 @@ class FixedSizingAssessmentInteractionTest(
         if self.item_sizing == Constants.FIXED_SIZING:
             self.close_assessment_notification()
 
-
     def test_partialy_correct_answers_feedback(self):
         correct_items = {0: TOP_ZONE_ID}
         misplaced_items = {1: BOTTOM_ZONE_ID, 2: MIDDLE_ZONE_ID}

@@ -221,7 +221,6 @@ class BaseIntegrationTest(SeleniumBaseTest):
     def scroll_to_element(self, element):
         self.browser.execute_script("arguments[0].scrollIntoView(0);", element)
 
-
     def scroll_down(self, pixels=50):
         self.browser.execute_script("$(window).scrollTop({})".format(pixels))
 
