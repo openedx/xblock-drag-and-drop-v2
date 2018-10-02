@@ -107,11 +107,6 @@ class AssessmentInteractionTest(
 
     item_sizing = Constants.FREE_SIZING
 
-    def setUp(self):
-        super(AssessmentInteractionTest, self).setUp()
-        if self.item_sizing == Constants.FIXED_SIZING:
-            self.close_assessment_notification()
-
     @data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_item_no_feedback_on_good_move(self, action_key):
         self.parameterized_item_positive_feedback_on_good_move_assessment(self.items_map, action_key=action_key)
@@ -398,6 +393,12 @@ class FixedSizingAssessmentInteractionTest(
     Testing interactions with Drag and Drop XBlock against fixed item sizing in assessment mode.
     """
     item_sizing = Constants.FIXED_SIZING
+
+    def setUp(self):
+        super(FixedSizingAssessmentInteractionTest, self).setUp()
+        if self.item_sizing == Constants.FIXED_SIZING:
+            self.close_assessment_notification()
+
 
     def test_partialy_correct_answers_feedback(self):
         correct_items = {0: TOP_ZONE_ID}
