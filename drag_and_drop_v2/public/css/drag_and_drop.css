@@ -385,8 +385,14 @@
     margin: auto;
 }
 
+.xblock--drag-and-drop .zone-with-borders {
+    border: 1px dotted #565656;
+}
+
 /*To highlight ZONES while user is dragging an item*/
-.xblock--drag-and-drop .drag-container.dragging .zone{
+.xblock--drag-and-drop .drag-container.dragging .zone,
+.green-zone,
+.zone-with-borders.green-zone {
     border: 5px solid #13ed8d;
     box-sizing: border-box;
     border-radius: 2px;
@@ -398,13 +404,14 @@
     height: 45px;
     left: 50%;
     top: 50%;
-    font-size: 44px;
+    font-size: 30px;
     background: #13ed8d;
     text-align: center;
-    line-height: 45px;
+    line-height: 42px;
     color: #fff;
     border-radius: 50%;
     transform: translate(-50%, -50%);
+    z-index: 15;
 }
 
 @media screen and (max-width: 480px) {
@@ -448,10 +455,6 @@
     /* W3C */
     box-pack:center;
     box-align:center;
-}
-
-.xblock--drag-and-drop .zone-with-borders {
-    border: 1px dotted #565656;
 }
 
 /* Focused zone */
