@@ -1007,12 +1007,23 @@ function DragAndDropBlock(runtime, element, configuration) {
                    showAssessmentNotification();
                }
             }
+            focusOnPageLoad();
 
             // Indicate that problem is done loading
             publishEvent({event_type: 'edx.drag_and_drop_v2.loaded'});
         }).fail(function() {
             $root.text(gettext("An error occurred. Unable to load drag and drop problem."));
         });
+    };
+
+    // On page load put focus on the start or continue
+    var focusOnPageLoad = function() {
+        if (configuration.show_instructions) {
+            focusFeedbackPopup('.instructions-container', '.start-exercise-button');
+        }
+        else if (configuration.mode === DragAndDropBlock.ASSESSMENT_MODE) {
+            focusFeedbackPopup('.assessment-notification', '.close-assessment-notification');
+        }
     };
 
     // Listens to the 'resize' event of the object element, which is absolutely positioned
