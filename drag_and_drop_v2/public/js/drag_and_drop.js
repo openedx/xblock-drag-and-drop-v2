@@ -826,6 +826,7 @@ function DragAndDropTemplates(configuration) {
                 ]),
                 h('div.drag-container', {style: drag_container_style, className: ctx.show_instructions ? 'instructions-visible' : ''}, [
                     instructionsPopupTemplate(ctx),
+                    assessmentNotificationTemplate(ctx),
                     h('div.target', {attributes: {'role': 'group', 'arial-label': gettext('Drop Targets')}}, [
                         h('div.target-img-wrapper', [
                             h('img.target-img', {
@@ -839,7 +840,6 @@ function DragAndDropTemplates(configuration) {
                     h('div.item-bank', item_bank_properties, bank_children),
                     ctx.show_feedback_bar ? itemFeedbackPopupTemplate(ctx) : null,
                     h('div.dragged-items', renderCollection(itemTemplate, items_dragged, ctx)),
-                    assessmentNotificationTemplate(ctx),
                 ]),
                 h("div.actions-toolbar", { attributes: {'role': 'group', 'aria-label': gettext('Actions')}}, 
                 actionButtonsTemplate(ctx)),
@@ -1007,23 +1007,12 @@ function DragAndDropBlock(runtime, element, configuration) {
                    showAssessmentNotification();
                }
             }
-            focusOnPageLoad();
 
             // Indicate that problem is done loading
             publishEvent({event_type: 'edx.drag_and_drop_v2.loaded'});
         }).fail(function() {
             $root.text(gettext("An error occurred. Unable to load drag and drop problem."));
         });
-    };
-
-    // On page load put focus on the start or continue
-    var focusOnPageLoad = function() {
-        if (configuration.show_instructions) {
-            focusFeedbackPopup('.instructions-container', '.start-exercise-button');
-        }
-        else if (configuration.mode === DragAndDropBlock.ASSESSMENT_MODE) {
-            focusFeedbackPopup('.assessment-notification', '.close-assessment-notification');
-        }
     };
 
     // Listens to the 'resize' event of the object element, which is absolutely positioned
