@@ -150,6 +150,13 @@ function DragAndDropTemplates(configuration) {
         ])
     };
 
+    var itemDetailPopupTemplate = function() {
+        return h('div.item-detail-popup', [
+            h('a.close-item-detail-popup.fa.fa-times'),
+            h('p.item-detail-popup-content')
+        ]);
+    };
+
     var itemContentTemplate = function(item) {
         var item_content_html, truncated_item_content_html;
         item_content_html = truncated_item_content_html = gettext(item.displayName);
@@ -928,10 +935,7 @@ function DragAndDropTemplates(configuration) {
                             renderCollection(zoneTemplate, ctx.zones, ctx)
                         ]),
                     ]),
-                    h('div.item-detail-popup', [
-                        h('a.close-item-detail-popup.fa.fa-times'),
-                        h('p.item-detail-popup-content')
-                    ]),
+                    itemDetailPopupTemplate(),
                     h('div.item-bank', item_bank_properties, bank_children),
                     ctx.show_feedback_bar ? itemFeedbackPopupTemplate(ctx) : null,
                     h('div.dragged-items', renderCollection(itemTemplate, items_dragged, ctx)),
@@ -1633,7 +1637,6 @@ function DragAndDropBlock(runtime, element, configuration) {
             item_wrapper.offsetWidth < item_wrapper.scrollWidth) {
             return true;
         }
-
         return false;
     };
 

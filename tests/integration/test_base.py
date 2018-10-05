@@ -266,6 +266,11 @@ class BaseIntegrationTest(SeleniumBaseTest):
         """Determines if item sizing fixed"""
         return self.item_sizing == Constants.FIXED_SIZING
 
+    def is_square_item(self, item):
+        item_content = item.find_element_by_css_selector('.item-content')
+        return len(item_content.get_attribute('innerHTML')) >= Constants.RECTANGLE_ITEM_CHARACTER_LIMIT
+
+
     def _get_style(self, selector, style, computed=True):
         if computed:
             query = 'return getComputedStyle($("{selector}").get(0)).{style}'
