@@ -562,6 +562,24 @@
      transform-origin: -3px 6px;
      transform: rotateZ(224deg);
 }
+.fixed-sizing-feedback .feedback-detail.completed .icon{
+    background-color: transparent;
+    border-radius: 0;
+}
+.fixed-sizing-feedback .feedback-detail.completed .icon .fa{
+    width: 46px;
+    height: 55px;
+    background-color: transparent;
+}
+.fixed-sizing-feedback .feedback-detail.completed .icon .icon-shield:before{
+    background: url("../img/completed-icon.png") no-repeat;
+    width: 46px;
+    height: 55px;
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+}
 .fixed-sizing-feedback.partial .feedback-detail p:before,
 .fixed-sizing-feedback.incorrect .feedback-detail p:before{
     content: "";
@@ -585,6 +603,13 @@
     top: 13px;
     left: -25px;
 
+}
+.fixed-sizing-feedback .feedback-detail.completed p{
+    margin-bottom: 80px;
+}
+.fixed-sizing-feedback .feedback-detail.completed p:before,
+.fixed-sizing-feedback .feedback-detail.completed p:after{
+    display: none;
 }
 .fixed-sizing-feedback .feedback-detail .icon .fa{
     color: white;
@@ -746,6 +771,72 @@
     background-color: rgba(0, 0, 0, 1);
     z-index: 100;
     height: 149px;
+}
+
+.xblock--drag-and-drop .popup.free-sizing{
+    top: 5%;
+    right: 5%;
+    left: 5%;
+    bottom: auto;
+    border: 1px solid #ffffff;
+    background-color: rgba(0,0,0,0.8);
+    width: 500px;
+    max-width: 90%;
+    min-height: 50px;
+    max-height: 90%;
+    overflow: auto;
+    height: auto;
+}
+
+.xblock--drag-and-drop .popup.free-sizing .popup-content{
+    height: auto;
+    width: auto;
+    display: block;
+    margin: 35px 15px 15px 15px;
+}
+
+.xblock--drag-and-drop .popup.free-sizing .popup-header-icon{
+    display: none;
+}
+
+.xblock--drag-and-drop .popup.free-sizing .popup-content p{
+    position: relative;
+    transform: none;
+    top: auto;
+    max-height: none;
+}
+
+.xblock--drag-and-drop .popup.free-sizing .close-feedback-popup-desktop-button{
+    margin: 0;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    font-size: 0;
+    background: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.xblock--drag-and-drop .popup.free-sizing .close-feedback-popup-desktop-button span.text{
+    font-size: 0;
+    padding: 0;
+    text-align: center;
+    border: none;
+    min-width: auto;
+    border-radius: 50%;
+    font-family: FontAwesome;
+}
+
+.xblock--drag-and-drop .popup.free-sizing .close-feedback-popup-desktop-button span.text:after{
+    content: "\f00d";
+    font-size: 12px;
+    position: relative;
+    line-height: 20px;
+    color: black;
+    right: auto;
+    top: auto;
+    opacity: 0.7;
 }
 
 .xblock--drag-and-drop .popup.popup-incorrect {

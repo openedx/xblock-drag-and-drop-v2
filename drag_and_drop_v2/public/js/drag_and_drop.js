@@ -346,7 +346,7 @@ function DragAndDropTemplates(configuration) {
         );
     };
 
-    var getAssessmentModeFixedSizingFeedbackDetailTemplate = function(ctx) {
+    var getAssessmentModeFixedSizingFeedbackDetail = function(ctx) {
         var message = ctx.max_attempts
             ? gettext('{used} / {total}').replace('{used}', ctx.attempts).replace('{total}', ctx.max_attempts)
             : ctx.attempts.toString();
@@ -361,23 +361,45 @@ function DragAndDropTemplates(configuration) {
         );
         var see_answers_button_html = h('button.see-correct-answers-button', gettext('See Correct Answers'));
         var try_gain_button_html = h('button.try-again-button', gettext('Try Again'));
-
+        var assessment_fixed_sizing_feedback = null;
         if (ctx.answer_correctness == DragAndDropBlock.SOLUTION_CORRECT) {
-            return [
+            assessment_fixed_sizing_feedback = [
                 h('div.icon', [h('i.fa.fa-check')]),
                 h('h3', gettext('Congratulations!')),
                 h('p', gettext('You have placed all the items in the correct drop zones')),
                 attempts_used_html,
                 h('button.finish-button', gettext('Finish'))
             ];
-        } 
+        } else {
+            assessment_fixed_sizing_feedback = [
+                h('div.icon', [h('i.fa.fa-check')]),
+                h('h3', ctx.answer_correctness == DragAndDropBlock.SOLUTION_INCORRECT ? gettext('Incorrect Answers') : gettext('Partially Correct!')),
+                misplaced_items_html,
+                attempts_used_html,
+                ctx.attempts == ctx.max_attempts ? see_answers_button_html : try_gain_button_html
+            ];
+        }
 
+        var hints = ctx.feedback_messages || [];
         return [
-            h('div.icon', [h('i.fa.fa-check')]),
-            h('h3', ctx.answer_correctness == DragAndDropBlock.SOLUTION_INCORRECT ? gettext('Incorrect Answers') : gettext('Partially Correct!')),
-            misplaced_items_html,
-            attempts_used_html,
-            ctx.attempts == ctx.max_attempts ? see_answers_button_html : try_gain_button_html
+            h('div.feedback-detail', assessment_fixed_sizing_feedback),
+            h('div.hint-detail', [
+                h('h5', gettext('Hints')),
+                h("ol", {}, hints.map(function(hint) {
+                    return h("li", {innerHTML: gettext(hint.message)});
+                }))
+            ])
+        ];
+    };
+
+    var getStandardModeFixedSizingFeedbackDetail = function() {
+        return [
+                h('div.feedback-detail.completed', [
+                h('div.icon', [h('i.icon-shield')]),
+                h('h3', gettext('Completed!')),
+                h('p', gettext('You have placed all the items in the correct drop zones')),
+                h('button.finish-button', gettext('See Correct Answers'))
+            ])
         ];
     };
 
@@ -387,13 +409,9 @@ function DragAndDropTemplates(configuration) {
         feedbackClass += ctx.answer_correctness;
         
         return h('div.fixed-sizing-feedback', { className: feedbackClass, style: {display: ctx.show_fixed_sizing_feedback ? 'block' : 'none'}}, [
-            h('div.feedback-detail', getAssessmentModeFixedSizingFeedbackDetailTemplate(ctx)),
-            h('div.hint-detail', [
-                h('h5', gettext('Hints')),
-                h("ol", {}, hints.map(function(hint) {
-                    return h("li", {innerHTML: gettext(hint.message)});
-                }))
-            ])
+            configuration.mode === DragAndDropBlock.ASSESSMENT_MODE
+            ? getAssessmentModeFixedSizingFeedbackDetail(ctx)
+            : getStandardModeFixedSizingFeedbackDetail()
         ]);
     };
 
@@ -541,6 +559,10 @@ function DragAndDropTemplates(configuration) {
             popupSelector += '.popup-incorrect';
         }
 
+        if (!DragAndDropBlock.isItemSizingFixed()) {
+            popupSelector += '.free-sizing';
+        }
+
         if (ctx.mode == DragAndDropBlock.ASSESSMENT_MODE) {
             var content_items = [
                 (!ctx.last_action_correct) ? h("p", {}, gettext("Some of your answers were not correct.")) : null,
@@ -608,7 +630,7 @@ function DragAndDropTemplates(configuration) {
                         h(
                             'span.text',
                             {
-                                innerHTML: ctx.last_action_correct ? gettext("Select Another Item") : gettext("Try Again"),
+                                innerHTML: ctx.is_finished ? gettext("Finish"): ctx.last_action_correct ? gettext("Select Another Item") : gettext("Try Again"),
                                 attributes: {
                                     'aria-hidden': true
                                 }
@@ -816,7 +838,7 @@ function DragAndDropTemplates(configuration) {
                 h("div.actions-toolbar", { attributes: {'role': 'group', 'aria-label': gettext('Actions')}}, 
                 actionButtonsTemplate(ctx)),
                 keyboardHelpPopupTemplate(ctx),
-                ctx.show_feedback_bar ? feedbackTemplate(ctx) : fixedSizingFeedbackTemplate(ctx),
+                DragAndDropBlock.isItemSizingFixed() ? fixedSizingFeedbackTemplate(ctx) : feedbackTemplate(ctx),
                 h('div.sr.reader-feedback-area', {
                     attributes: {'aria-live': 'polite', 'aria-atomic': true},
                     innerHTML: ctx.screen_reader_messages
@@ -838,6 +860,9 @@ function DragAndDropBlock(runtime, element, configuration) {
     DragAndDropBlock.SOLUTION_CORRECT = "correct";
     DragAndDropBlock.SOLUTION_INCORRECT = "incorrect";
     DragAndDropBlock.SOLUTION_PARTIAL = "partial";
+    DragAndDropBlock.isItemSizingFixed = function() {
+        return configuration.item_sizing == DragAndDropBlock.FIXED_SIZING;
+    };
 
     var Selector = {
         popup_box: '.popup',
@@ -934,8 +959,7 @@ function DragAndDropBlock(runtime, element, configuration) {
 
             $element.on('click', '.start-exercise-button', closeInstructionsPopupHandler);
             $element.on('click', '.see-correct-answers-button', seeCorrectAnswerHandler);
-            $element.on('click', '.try-again-button', closeFixedSizingFeedbackPopupHandler);
-            $element.on('click', '.finish-button', closeFixedSizingFeedbackPopupHandler);
+            $element.on('click', '.try-again-button, .finish-button', closeFixedSizingFeedbackPopupHandler);
 
             // We need to register both mousedown and click event handlers because in some browsers the blur
             // event is emitted right after mousedown, hiding our button and preventing the click event from
@@ -1385,10 +1409,6 @@ function DragAndDropBlock(runtime, element, configuration) {
     var isTabKey = function(evt) {
         var key = evt.which;
         return key === TAB;
-    };
-
-    var isItemSizingFixed = function(configuration) {
-        return configuration.item_sizing == DragAndDropBlock.FIXED_SIZING;
     };
 
     var focusNextZone = function(evt, $currentZone) {
@@ -1889,6 +1909,10 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var closePopupEventHandler = function(evt) {
+        if (state.finished && DragAndDropBlock.isItemSizingFixed()) {
+            state.show_fixed_sizing_feedback = true;
+        }
+
         if (!state.feedback) {
             return;
         }
@@ -1993,7 +2017,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             state.answer_correctness = data.answer_correctness;
             state.misplaced_items_count = data.misplaced_items.length;
 
-            if (isItemSizingFixed(configuration)) {
+            if (DragAndDropBlock.isItemSizingFixed()) {
                 state.show_fixed_sizing_feedback = true;
             }
             if (attemptsRemain()) {
@@ -2038,7 +2062,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var canShowFeedbackBar = function() {
-        return !(configuration.mode == DragAndDropBlock.ASSESSMENT_MODE && isItemSizingFixed(configuration));
+        return !(configuration.mode == DragAndDropBlock.ASSESSMENT_MODE && DragAndDropBlock.isItemSizingFixed());
     };
 
     var attemptsRemain = function() {
@@ -2134,6 +2158,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             attempts: state.attempts,
             grade: state.grade,
             last_action_correct: state.last_action_correct,
+            is_finished: (state.finished || false),
             answer_correctness: state.answer_correctness,
             item_bank_focusable: item_bank_focusable,
             feedback_messages: state.feedback,

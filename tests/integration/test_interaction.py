@@ -6,7 +6,7 @@
 from ddt import ddt, data, unpack
 import re
 
-from selenium.common.exceptions import WebDriverException
+from selenium.common.exceptions import WebDriverException, NoSuchElementException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -203,8 +203,12 @@ class ParameterizedTestsMixin(object):
     def parameterized_final_feedback_and_reset(
             self, items_map, feedback, scroll_down=100, action_key=None, assessment_mode=False
     ):
-        feedback_message = self._get_feedback_message()
-        self.assertEqual(self.get_element_html(feedback_message), feedback['intro'])  # precondition check
+        if self.is_item_sizing_fixed():
+            with self.assertRaises(NoSuchElementException):
+                self._get_feedback_message()
+        else:
+            feedback_message = self._get_feedback_message()
+            self.assertEqual(self.get_element_html(feedback_message), feedback['intro'])  # precondition check
 
         items = self._get_items_with_zone(items_map)
 
@@ -228,7 +232,10 @@ class ParameterizedTestsMixin(object):
             # to make sure they are correctly reverted back to the bank on problem reset.
             self.place_decoy_items(items_map, action_key)
         else:
-            self.wait_until_html_in(feedback['final'], self._get_feedback_message())
+            if self.is_item_sizing_fixed():
+                self._get_fixed_sizing_feedback_finish_button().click()
+            else:
+                self.wait_until_html_in(feedback['final'], self._get_feedback_message())
 
         # Check decoy items
         self.assert_decoy_items(items_map, assessment_mode=assessment_mode)
@@ -239,11 +246,12 @@ class ParameterizedTestsMixin(object):
         reset = self._get_reset_button()
         if action_key is not None:  # Using keyboard to interact with block
             reset.send_keys(Keys.RETURN)
-
         else:
             reset.click()
+        self.wait_for_ajax()
 
-        self.wait_until_html_in(feedback['intro'], self._get_feedback_message())
+        if not self.is_item_sizing_fixed():
+            self.wait_until_html_in(feedback['intro'], self._get_feedback_message())
 
         locations_after_reset = get_locations()
         for item_key in items.keys():
@@ -647,7 +655,7 @@ class MultipleBlocksDataInteraction(ParameterizedTestsMixin, InteractionTestBase
 
         self._switch_to_block(1)
         # Test mouse and keyboard interaction
-        self.interact_with_keyboard_help(scroll_down=1000)
+        self.interact_with_keyboard_help(scroll_down=800)
         self.interact_with_keyboard_help(scroll_down=0, use_keyboard=True)
 
 

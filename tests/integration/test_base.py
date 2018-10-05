@@ -249,6 +249,10 @@ class BaseIntegrationTest(SeleniumBaseTest):
             ])
         ])
 
+    def is_item_sizing_fixed(self):
+        """Determines if item sizing fixed"""
+        return self.item_sizing == Constants.FIXED_SIZING
+
     def _get_style(self, selector, style, computed=True):
         if computed:
             query = 'return getComputedStyle($("{selector}").get(0)).{style}'
