@@ -601,7 +601,13 @@ class InteractionTestBase(object):
         item_content = item.find_element_by_css_selector('.item-content')
 
         self.assertDraggable(item_value)
-        self.assertNotIn('fade', item.get_attribute('class'))
+        item_class = 'option'
+        if self.is_item_sizing_fixed():
+            if self.is_square_item(item):
+                item_class += ' square-option'
+            else:
+                item_class += ' rectangle-option'
+        self.assertEqual(item.get_attribute('class'), item_class)
         self.assertEqual(item.get_attribute('tabindex'), '0')
         self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
         self.assertEqual(item_content.get_attribute('aria-describedby'), None)
@@ -630,7 +636,13 @@ class InteractionTestBase(object):
                 self.assertNotIn('fade', item.get_attribute('class'))
             else:
                 self.assertNotDraggable(item_key)
-                self.assertIn('option fade', item.get_attribute('class'))
+                item_class = 'option fade'
+                if self.is_item_sizing_fixed():
+                    if self.is_square_item(item):
+                        item_class += ' square-option'
+                    else:
+                        item_class += ' rectangle-option'
+                self.assertEqual(item.get_attribute('class'), item_class)
 
     def _switch_to_block(self, idx):
         """ Only needed if there are multiple blocks on the page. """
