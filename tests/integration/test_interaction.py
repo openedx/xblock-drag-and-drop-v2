@@ -794,6 +794,9 @@ class TestMaxItemsPerZone(InteractionTestBase, BaseIntegrationTest):
 
         self._page = self.go_to_page(self.PAGE_TITLE)  # refresh the page
         self.start_exercise()
+        if self.assessment_mode and self.item_sizing == Constants.FIXED_SIZING:
+            self.close_assessment_notification()
+
         self.assert_placed_item(6, zone_id, assessment_mode=self.assessment_mode)
         self.assert_placed_item(7, zone_id, assessment_mode=self.assessment_mode)
         self.assert_reverted_item(8)

@@ -1128,6 +1128,95 @@
     color: #676666
 }
 
+/*** Assessment window notification ***/
+.assessment-notification {
+    display: table;
+    width: 100%;
+    background-color: #1d5280;
+    position: absolute;
+    left: 0;
+    bottom: -60px;
+    right: 0;
+    height: 230px;
+    color: #ffffff;
+    box-shadow: 0 -2px 10px #999;
+    z-index: 10;
+}
+
+.assessment-notification > div{
+    display: table-cell;
+    vertical-align: middle;
+    height: 230px;
+    text-align: center;
+}
+
+.assessment-notification > .icon{
+    width: 210px;
+}
+
+.assessment-notification > .icon .fa{
+    width: 52px;
+    height: 52px;
+    line-height: 52px;
+    background-color: #ffffff;
+    border-radius: 50%;
+}
+
+.assessment-notification > .icon .fa:before{
+    color: #000000;
+    font-size: 24px;
+}
+
+.assessment-notification > .instructions{
+    width: calc(100% - 210px - 180px);
+    text-align: left;
+    max-height: 230px;
+    overflow: auto;
+}
+
+.assessment-notification > .instructions ol{
+    padding-left: 20px;
+}
+
+.assessment-notification > .instructions ol li{
+    padding: 3px 0;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.assessment-notification > .instructions p{
+    font-style: italic;
+    font-size: 14px;
+}
+
+.assessment-notification > .action button{
+    font-size: 12px;
+    padding: 17px 20px;
+    text-align: left;
+    border: 1px solid #fff;
+    min-width: 125px;
+    background-color: transparent;
+    border-radius: 3px;
+    position: relative;
+    cursor: pointer;
+    color: #ffffff;
+    line-height: 1;
+    font-weight: bold;
+}
+
+.assessment-notification > .action button:before{
+    content: "\f105";
+    font-family: 'FontAwesome';
+    position: absolute;
+    right: 16px;
+    font-size: 36px;
+    top: 5px;
+    font-weight: normal;
+}
+
+.assessment-notification > .action{
+    width: 180px;
+}
 
 /*** ACTIONS TOOLBAR ***/
 
@@ -1138,7 +1227,7 @@
     height: 62px;
     padding: 9px 20px;
     box-sizing: border-box;
-
+    border-top: 1px solid #27649a;
 }
 
 .xblock--drag-and-drop .actions-toolbar .action-toolbar-item {

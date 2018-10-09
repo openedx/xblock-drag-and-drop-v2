@@ -173,12 +173,12 @@ class BaseIntegrationTest(SeleniumBaseTest):
 
     def _scroll_to_reset_button(self):
         reset = self._page.find_element_by_css_selector('.actions-toolbar')
-        self.browser.execute_script("arguments[0].scrollIntoView(0);", reset)
+        self.scroll_to_element(reset)
         self.wait_until_visible(reset)
 
     def _scroll_to_item_bank(self):
         item_bank = self._page.find_element_by_css_selector('.item-bank')
-        self.browser.execute_script("arguments[0].scrollIntoView(0);", item_bank)
+        self.scroll_to_element(item_bank)
 
     def _get_show_answer_button(self):
         return self._page.find_element_by_css_selector('.show-answer-button')
@@ -212,6 +212,14 @@ class BaseIntegrationTest(SeleniumBaseTest):
 
     def _get_fixed_sizing_feedback_finish_button(self):
         return self._page.find_element_by_css_selector('.finish-button')
+
+    def close_assessment_notification(self):
+        button = self._page.find_element_by_css_selector('.close-assessment-notification')
+        self.scroll_to_element(button)
+        button.click()
+
+    def scroll_to_element(self, element):
+        self.browser.execute_script("arguments[0].scrollIntoView(0);", element)
 
     def scroll_down(self, pixels=50):
         self.browser.execute_script("$(window).scrollTop({})".format(pixels))

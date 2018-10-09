@@ -104,6 +104,9 @@ class AssessmentInteractionTest(
     All interactions are tested using mouse (action_key=None) and four different keyboard action keys.
     If default data changes this will break.
     """
+
+    item_sizing = Constants.FREE_SIZING
+
     @data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_item_no_feedback_on_good_move(self, action_key):
         self.parameterized_item_positive_feedback_on_good_move_assessment(self.items_map, action_key=action_key)
@@ -353,6 +356,11 @@ class AssessmentInteractionTest(
 class TestMaxItemsPerZoneAssessment(TestFreeSizingMaxItemsPerZone):
     assessment_mode = True
 
+    def setUp(self):
+        super(TestMaxItemsPerZoneAssessment, self).setUp()
+        if self.item_sizing == Constants.FIXED_SIZING:
+            self.close_assessment_notification()
+
     def _get_scenario_xml(self):
         scenario_data = loader.load_unicode("data/test_zone_align.json")
         return self._make_scenario_xml(data=scenario_data, max_items_per_zone=2, mode=Constants.ASSESSMENT_MODE)
@@ -385,6 +393,11 @@ class FixedSizingAssessmentInteractionTest(
     Testing interactions with Drag and Drop XBlock against fixed item sizing in assessment mode.
     """
     item_sizing = Constants.FIXED_SIZING
+
+    def setUp(self):
+        super(FixedSizingAssessmentInteractionTest, self).setUp()
+        if self.item_sizing == Constants.FIXED_SIZING:
+            self.close_assessment_notification()
 
     def test_partialy_correct_answers_feedback(self):
         correct_items = {0: TOP_ZONE_ID}
@@ -453,3 +466,31 @@ class FixedSizingAssessmentInteractionTest(
                 self._get_fixed_sizing_feedback_correct_answers_button().click()
                 self.assertFalse(fixed_sizing_feedback_popup.is_displayed())
                 self._assert_show_answer_item_placement()
+
+
+class AssessmentNotificationTests(
+    DefaultAssessmentDataTestMixin, AssessmentTestMixin, InteractionTestBase, BaseIntegrationTest
+):
+
+    item_sizing = Constants.FIXED_SIZING
+
+    def test_popup_visibility(self):
+        popup = self._page.find_element_by_css_selector('.assessment-notification')
+        self.assertTrue(popup.is_displayed)
+
+        continue_button = popup.find_element_by_css_selector('.close-assessment-notification')
+        self.assertTrue(continue_button.is_displayed)
+        self.assertFocused(continue_button)
+
+    def test_popup_content(self):
+        popup_content = self._page.find_element_by_css_selector('.instructions p:last-child')
+        self.assertEqual("You can review answers / resubmit 5 times", popup_content.text)
+
+
+class AssessmentNotificationInfinityMaxAttemptsTests(AssessmentNotificationTests):
+
+    MAX_ATTEMPTS = 0
+
+    def test_popup_content(self):
+        popup_content = self._page.find_element_by_css_selector('.instructions p:last-child')
+        self.assertEqual("You can review answers / resubmit as many times as you want", popup_content.text)
