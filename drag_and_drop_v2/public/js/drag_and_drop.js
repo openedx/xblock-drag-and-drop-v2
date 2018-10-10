@@ -67,11 +67,10 @@ function DragAndDropTemplates(configuration) {
             for (var j = 0; j < colsPerSlide && i < dragables.length; j=j+1) {
                 if (i < rectanglesCount)
                 {
-                    var lastIndex = i + rectanglesPerCol;
-                    var isOverflow = lastIndex > rectanglesCount;
-                    var rectanglesThisCol = isOverflow? rectanglesPerCol - (lastIndex%rectanglesCount): rectanglesPerCol;
-                    cols[j] = h("div.col", dividedDragables.rectangles.slice(i, i+rectanglesThisCol));
-                    i += rectanglesThisCol;
+                    var endIndex = i + rectanglesPerCol;
+                    endIndex = endIndex > rectanglesCount? rectanglesCount: endIndex;
+                    cols[j] = h("div.col", dividedDragables.rectangles.slice(i, endIndex));
+                    i += endIndex - i;
                 }
                 else
                 {

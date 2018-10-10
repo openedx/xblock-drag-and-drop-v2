@@ -204,11 +204,16 @@ class BaseIntegrationTest(SeleniumBaseTest):
     def _get_fixed_sizing_feedback_popup_heading_text(self):
         return self._page.find_element_by_css_selector('.fixed-sizing-feedback h3').text
 
-    def _get_fixed_sizing_feedback_try_button(self):
-        return self._page.find_element_by_css_selector('.try-again-button')
+    def _scroll_and_click_button(self, css_selector):
+        button = self._page.find_element_by_css_selector(css_selector)
+        self.scroll_to_element(button)
+        button.click()
 
-    def _get_fixed_sizing_feedback_correct_answers_button(self):
-        return self._page.find_element_by_css_selector('.see-correct-answers-button')
+    def _close_fixed_sizing_feedback_try_button(self):
+        self._scroll_and_click_button('.try-again-button')
+
+    def _close_fixed_sizing_feedback_correct_answers_button(self):
+        self._scroll_and_click_button('.see-correct-answers-button')
 
     def _get_fixed_sizing_feedback_finish_button(self):
         return self._page.find_element_by_css_selector('.finish-button')
@@ -275,6 +280,11 @@ class BaseIntegrationTest(SeleniumBaseTest):
     def assertNotFocused(self, element):
         focused_element = self.browser.switch_to.active_element
         self.assertTrue(element != focused_element, 'expected element to not have focus')
+
+    @staticmethod
+    def is_square_item(item):
+        item_content = item.find_element_by_css_selector('.item-content')
+        return len(item_content.get_attribute('innerHTML')) >= Constants.RECTANGLE_ITEM_CHARACTER_LIMIT
 
     @staticmethod
     def get_element_html(element):
