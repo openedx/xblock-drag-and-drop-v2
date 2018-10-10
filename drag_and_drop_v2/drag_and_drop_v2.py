@@ -734,8 +734,9 @@ class DragAndDropBlock(
         self._publish_item_dropped_event(item_attempt, is_correct)
 
         item_feedback_key = 'correct' if is_correct else 'incorrect'
-        item_feedback = FeedbackMessage(item['feedback'][item_feedback_key], None)
+        item_feedback = FeedbackMessage(self._expand_static_url(item['feedback'][item_feedback_key]), None)
         overall_feedback, __ = self._get_feedback()
+
         return {
             'correct': is_correct,
             'grade': self._get_weighted_earned_if_set(),
