@@ -82,7 +82,14 @@ class AssessmentTestMixin(object):
             self.assertNotDraggable(item_definition.item_id)
             item = self._get_item_by_value(item_definition.item_id)
             self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
-            self.assertEqual(item.get_attribute('class'), 'option fade')
+            item_class = 'option fade'
+            if self.is_item_sizing_fixed():
+                if self.is_square_item(item):
+                    item_class += ' square-option'
+                else:
+                    item_class += ' rectangle-option'
+
+            self.assertEqual(item.get_attribute('class'), item_class)
 
             item_content = item.find_element_by_css_selector('.item-content')
             self.assertEqual(item_content.get_attribute('aria-describedby'), None)
@@ -451,7 +458,7 @@ class FixedSizingAssessmentInteractionTest(
         self.assertEqual(self._get_fixed_sizing_feedback_popup_heading_text(), 'Partially Correct!')
 
         # On clicking try again button popup should be closed
-        self._get_fixed_sizing_feedback_try_button().click()
+        self._close_fixed_sizing_feedback_try_button()
         self.assertFalse(fixed_sizing_feedback_popup.is_displayed())
 
     def test_all_correct_answers_feedback(self):
@@ -484,7 +491,7 @@ class FixedSizingAssessmentInteractionTest(
         self.assertEqual(self._get_fixed_sizing_feedback_popup_heading_text(), 'Incorrect Answers')
 
         # On clicking try again button popup should be closed
-        self._get_fixed_sizing_feedback_try_button().click()
+        self._close_fixed_sizing_feedback_try_button()
         self.assertFalse(fixed_sizing_feedback_popup.is_displayed())
 
     def test_all_attempts_used_feedback(self):
@@ -494,10 +501,10 @@ class FixedSizingAssessmentInteractionTest(
             fixed_sizing_feedback_popup = self._get_fixed_sizing_feedback_popup()
             self.assertTrue(fixed_sizing_feedback_popup.is_displayed())
             if (attempt + 1) != self.MAX_ATTEMPTS:
-                self._get_fixed_sizing_feedback_try_button().click()
+                self._close_fixed_sizing_feedback_try_button()
                 self.assertFalse(fixed_sizing_feedback_popup.is_displayed())
             else:
-                self._get_fixed_sizing_feedback_correct_answers_button().click()
+                self._close_fixed_sizing_feedback_correct_answers_button()
                 self.assertFalse(fixed_sizing_feedback_popup.is_displayed())
                 self._assert_show_answer_item_placement()
 

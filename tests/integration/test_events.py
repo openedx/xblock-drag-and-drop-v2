@@ -253,6 +253,8 @@ class ItemDroppedEventTest(DefaultDataTestMixin, BaseEventsTests):
     def test_item_dropped_event(self, placement, expected_events):
         for i, zone in enumerate(placement):
             self.place_item(i, zone, Keys.RETURN)
+            if self.is_item_sizing_fixed():
+                self.close_feedback_popup()
 
         events = self.publish.call_args_list
         event_name = 'edx.drag_and_drop_v2.item.dropped'
