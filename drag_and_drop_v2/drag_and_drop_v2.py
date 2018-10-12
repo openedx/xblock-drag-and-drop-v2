@@ -896,7 +896,8 @@ class DragAndDropBlock(
             'finished': is_finished,
             'attempts': self.attempts,
             'grade': self._get_weighted_earned_if_set(),
-            'overall_feedback': self._present_feedback(overall_feedback_msgs)
+            'overall_feedback': self._present_feedback(overall_feedback_msgs),
+            'answer_correctness': self._answer_correctness()
         }
 
     def _get_correct_state(self):
