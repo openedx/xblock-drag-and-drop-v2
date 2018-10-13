@@ -219,6 +219,60 @@ class AssessmentInteractionTest(
         self.assertEqual(submit_button.get_attribute('disabled'), 'true')
         self.assertEqual(reset_button.get_attribute('disabled'), 'true')
 
+    def _assert_show_answer_item_placement(self):
+        zones = dict(self.all_zones)
+        for item in self._get_items_with_zone(self.items_map).values():
+            zone_titles = [zones[zone_id] for zone_id in item.zone_ids]
+            # When showing answers, correct items are placed as if assessment_mode=False
+            self.assert_placed_item(item.item_id, zone_titles, assessment_mode=False)
+
+        for item_definition in self._get_items_without_zone(self.items_map).values():
+            self.assertNotDraggable(item_definition.item_id)
+            item = self._get_item_by_value(item_definition.item_id)
+            self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
+            self.assertEqual(item.get_attribute('class'), 'option fade')
+
+            item_content = item.find_element_by_css_selector('.item-content')
+            self.assertEqual(item_content.get_attribute('aria-describedby'), None)
+
+            try:
+                item.find_element_by_css_selector('.sr.description')
+                self.fail("Description element should not be present")
+            except NoSuchElementException:
+                pass
+
+    def test_show_answer(self):
+        """
+        Test "Show Answer" button is shown in assessment mode only when no more
+        attempts are remaining, hidden otherwise. It is disabled and displays
+        correct answers when clicked
+        """
+        show_answer_button = self._get_show_answer_button()
+        self.assertIsNone(show_answer_button)
+
+        self.place_item(0, TOP_ZONE_ID, Keys.RETURN)
+        for _ in xrange(self.MAX_ATTEMPTS-1):
+            self.assertIsNone(show_answer_button)
+            self.click_submit()
+
+        # Place an incorrect item on the final attempt.
+        self.place_item(1, TOP_ZONE_ID, Keys.RETURN)
+        self.click_submit()
+
+        # A feedback popup should open upon final submission.
+        popup = self._get_popup()
+        self.assertTrue(popup.is_displayed())
+
+        self.assertIsNotNone(show_answer_button)
+        self.assertIsNone(show_answer_button.get_attribute('disabled'))
+        self.click_show_answer()
+
+         # The popup should be closed upon clicking Show Answer.
+        self.assertFalse(popup.is_displayed())
+
+        self.assertEqual(show_answer_button.get_attribute('disabled'), 'true')
+        self._assert_show_answer_item_placement()
+
     def test_do_attempt_feedback_is_updated(self):
         """
         Test updating overall feedback after submitting solution in assessment mode
