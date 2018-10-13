@@ -215,16 +215,16 @@ class AssessmentInteractionTest(
 
     def test_show_answer(self):
         """
-        Test "Show Answer" button is shown in assessment mode, enabled when no
-        more attempts remaining, is disabled and displays correct answers when
-        clicked.
+        Test "Show Answer" button is shown in assessment mode only when no more
+        attempts are remaining, hidden otherwise. It is disabled and displays
+        correct answers when clicked
         """
         show_answer_button = self._get_show_answer_button()
-        self.assertTrue(show_answer_button.is_displayed())
+        self.assertIsNone(show_answer_button)
 
         self.place_item(0, TOP_ZONE_ID, Keys.RETURN)
         for _ in xrange(self.MAX_ATTEMPTS-1):
-            self.assertEqual(show_answer_button.get_attribute('disabled'), 'true')
+            self.assertIsNone(show_answer_button)
             self.click_submit()
 
         # Place an incorrect item on the final attempt.
@@ -235,10 +235,11 @@ class AssessmentInteractionTest(
         popup = self._get_popup()
         self.assertTrue(popup.is_displayed())
 
+        self.assertIsNotNone(show_answer_button)
         self.assertIsNone(show_answer_button.get_attribute('disabled'))
         self.click_show_answer()
 
-        # The popup should be closed upon clicking Show Answer.
+         # The popup should be closed upon clicking Show Answer.
         self.assertFalse(popup.is_displayed())
 
         self.assertEqual(show_answer_button.get_attribute('disabled'), 'true')
