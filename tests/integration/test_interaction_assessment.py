@@ -219,12 +219,11 @@ class AssessmentInteractionTest(
         attempts are remaining, hidden otherwise. It is disabled and displays
         correct answers when clicked
         """
-        show_answer_button = self._get_show_answer_button()
-        self.assertIsNone(show_answer_button)
+        self.assertRaises(self._get_show_answer_button())
 
         self.place_item(0, TOP_ZONE_ID, Keys.RETURN)
         for _ in xrange(self.MAX_ATTEMPTS-1):
-            self.assertIsNone(show_answer_button)
+            self.assertRaises(self._get_show_answer_button())
             self.click_submit()
 
         # Place an incorrect item on the final attempt.
@@ -235,6 +234,7 @@ class AssessmentInteractionTest(
         popup = self._get_popup()
         self.assertTrue(popup.is_displayed())
 
+        show_answer_button = self._get_show_answer_button()
         self.assertIsNotNone(show_answer_button)
         self.assertIsNone(show_answer_button.get_attribute('disabled'))
         self.click_show_answer()
