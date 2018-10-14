@@ -377,7 +377,9 @@ function DragAndDropTemplates(configuration) {
     };
 
     var sidebarTemplate = function(ctx) {
-        var showAnswerButton = null;
+        var showAnswerButton = sidebarButtonTemplate(
+                "show-answer-button sr"
+            );
         if (ctx.show_show_answer && !ctx.disable_show_answer_button) {
             var options = {
                 disabled: ctx.showing_answer ? true : ctx.disable_show_answer_button,
