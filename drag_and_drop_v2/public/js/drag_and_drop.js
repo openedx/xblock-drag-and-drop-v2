@@ -2186,8 +2186,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             problem_html: configuration.problem_text,
             show_problem_header: configuration.show_problem_header,
             show_submit_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
-            show_show_answer: (configuration.mode == DragAndDropBlock.ASSESSMENT_MODE && 
-                configuration.item_sizing == DragAndDropBlock.FREE_SIZING),
+            show_show_answer: (configuration.mode == DragAndDropBlock.ASSESSMENT_MODE ),
             show_feedback_bar: canShowFeedbackBar(),
             target_img_src: configuration.target_img_expanded_url,
             target_img_description: configuration.target_img_description,
