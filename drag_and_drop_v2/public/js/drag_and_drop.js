@@ -343,7 +343,7 @@ function DragAndDropTemplates(configuration) {
             h('li', gettext("Place all items in the correct zone")),
             h('li', gettext("Press submit")),
             h('li', gettext("See your results"))]);
-        var content = h('div.instructions', [text, attemptText]);
+        var content = h('div.instructions', [text]);
         var style = {display: "none"};
         return h("div.assessment-notification", {style: style}, [icon, content, button]);
      };
