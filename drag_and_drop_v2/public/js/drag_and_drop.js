@@ -394,7 +394,6 @@ function DragAndDropTemplates(configuration) {
                 h('div.icon', [h('i.fa.fa-check')]),
                 h('h3', gettext('Congratulations!')),
                 h('p', gettext('You have placed all the items in the correct drop zones')),
-                attempts_used_html,
                 h('button.finish-button', gettext('Finish'))
             ];
         } else {
@@ -402,7 +401,6 @@ function DragAndDropTemplates(configuration) {
                 h('div.icon', [h('i.fa.fa-check')]),
                 h('h3', ctx.answer_correctness == DragAndDropBlock.SOLUTION_INCORRECT ? gettext('Incorrect Answers') : gettext('Partially Correct!')),
                 misplaced_items_html,
-                attempts_used_html,
                 ctx.attempts == ctx.max_attempts ? see_answers_button_html : try_gain_button_html
             ];
         }
