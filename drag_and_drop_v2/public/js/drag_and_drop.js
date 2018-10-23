@@ -541,9 +541,9 @@ function DragAndDropTemplates(configuration) {
 
     var sidebarTemplate = function(ctx) {
         var showAnswerButton = null;
-        if (ctx.show_show_answer) {
+        if (ctx.show_show_answer && !ctx.disable_show_answer_button) {
             var options = {
-                disabled: ctx.showing_answer ? true : ctx.disable_show_answer_button,
+                disabled: ctx.showing_answer,
                 spinner: ctx.show_answer_spinner
             };
             showAnswerButton = sidebarButtonTemplate(
@@ -2186,8 +2186,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             problem_html: configuration.problem_text,
             show_problem_header: configuration.show_problem_header,
             show_submit_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
-            show_show_answer: (configuration.mode == DragAndDropBlock.ASSESSMENT_MODE && 
-                configuration.item_sizing == DragAndDropBlock.FREE_SIZING),
+            show_show_answer: (configuration.mode == DragAndDropBlock.ASSESSMENT_MODE),
             show_feedback_bar: canShowFeedbackBar(),
             target_img_src: configuration.target_img_expanded_url,
             target_img_description: configuration.target_img_description,

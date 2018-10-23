@@ -219,6 +219,40 @@ class AssessmentInteractionTest(
         self.assertEqual(submit_button.get_attribute('disabled'), 'true')
         self.assertEqual(reset_button.get_attribute('disabled'), 'true')
 
+    def test_show_answer(self):
+        """
+        Test "Show Answer" button is shown in assessment mode when no more
+        attempts are remaining. It is disabled and displays correct
+        answers when clicked
+        """
+        # Answer button is not found with attempts still remaining
+        self.assertRaises(NoSuchElementException, self._get_show_answer_button)
+
+        self.place_item(0, TOP_ZONE_ID, Keys.RETURN)
+        for _ in xrange(self.MAX_ATTEMPTS-1):
+            self.assertRaises(NoSuchElementException, self._get_show_answer_button)
+            self.click_submit()
+
+        # Place an incorrect item on the final attempt.
+        self.place_item(1, TOP_ZONE_ID, Keys.RETURN)
+        self.click_submit()
+
+        # A feedback popup should open upon final submission.
+        popup = self._get_popup()
+        self.assertTrue(popup.is_displayed())
+
+        show_answer_button = self._get_show_answer_button()
+
+        # The button should be enabled when shown
+        self.assertIsNone(show_answer_button.get_attribute('disabled'))
+        self.click_show_answer()
+
+        # The popup should be closed upon clicking Show Answer.
+        self.assertFalse(popup.is_displayed())
+
+        self.assertEqual(show_answer_button.get_attribute('disabled'), 'true')
+        self._assert_show_answer_item_placement()
+
     def test_do_attempt_feedback_is_updated(self):
         """
         Test updating overall feedback after submitting solution in assessment mode
