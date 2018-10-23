@@ -557,6 +557,11 @@
     opacity: 0.80;
 }
 
+.xblock--drag-and-drop .drag-container .close-item-detail-popup {
+    z-index:10;
+}
+
+
 /*** DROP TARGET ***/
 
 .xblock--drag-and-drop .target {

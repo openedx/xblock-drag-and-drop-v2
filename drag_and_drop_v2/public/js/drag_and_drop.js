@@ -61,21 +61,21 @@ function DragAndDropTemplates(configuration) {
         var dividedDragables = separateSquareAndRectangles(dragables);
         var rectanglesCount = dividedDragables.rectangles.length;
         var slides = [];
-        var i = 0;
-        while (i < dragables.length) {
+        var index = 0;
+
+
+        while (index < dragables.length) {
             var cols = [];
-            for (var j = 0; j < colsPerSlide && i < dragables.length; j=j+1) {
-                if (i < rectanglesCount)
-                {
-                    var endIndex = i + rectanglesPerCol;
-                    endIndex = endIndex > rectanglesCount? rectanglesCount: endIndex;
-                    cols[j] = h("div.col", dividedDragables.rectangles.slice(i, endIndex));
-                    i += endIndex - i;
+            for (var colIndex = 0; colIndex < colsPerSlide && index < dragables.length; ++colIndex) {
+                if (index < rectanglesCount) {
+                    var endIndex = index + rectanglesPerCol;
+                    endIndex = Math.min(endIndex, rectanglesCount);
+                    cols[colIndex] = h("div.col", dividedDragables.rectangles.slice(index, endIndex));
+                    index = endIndex;
                 }
-                else
-                {
-                    cols[j] = h("div.col", dividedDragables.squares.slice(i-rectanglesCount, i+squaresPerCol-rectanglesCount));
-                    i += squaresPerCol;
+                else {
+                    cols[colIndex] = h("div.col", dividedDragables.squares.slice(index-rectanglesCount, index+squaresPerCol-rectanglesCount));
+                    index += squaresPerCol;
                 }
             }
             slides.push(h("div.slide", cols));
@@ -88,12 +88,10 @@ function DragAndDropTemplates(configuration) {
         var rectangleTiles = [];
         dragables.forEach(function(dragable){
             var className = dragable.properties.className;
-            if (className.match('square'))
-            {
+            if (className.match('square')) {
                 squareTiles.push(dragable);
             }
-            else
-            {
+            else {
                 rectangleTiles.push(dragable);
             }
         });
@@ -195,7 +193,7 @@ function DragAndDropTemplates(configuration) {
             var item_content_html = gettext(item.displayName);
             var read_more_button;
             className += getItemShapeClass(item);
-            if (item_content_html.length > square_item_character_limit) {
+            if (!item.has_image && item_content_html.length > square_item_character_limit) {
                 read_more_button = h('button.show-item-detail-popup', {innerHTML: gettext("Read All")}, [
                     h('span.fa.fa-arrows-alt')
                 ]);
@@ -925,6 +923,7 @@ function DragAndDropTemplates(configuration) {
                 ]),
                 h('div.drag-container', {style: drag_container_style, className: ctx.show_instructions ? 'instructions-visible' : ''}, [
                     instructionsPopupTemplate(ctx),
+                    assessmentNotificationTemplate(ctx),
                     h('div.target', {attributes: {'role': 'group', 'arial-label': gettext('Drop Targets')}}, [
                         h('div.target-img-wrapper', [
                             h('img.target-img', {
@@ -1996,11 +1995,14 @@ function DragAndDropBlock(runtime, element, configuration) {
             $('.item-detail-popup').show();
         });
 
-        $container.on('click', '.close-item-detail-popup', function(evt) {
-            $container.removeClass('item-detail-popup-visible');
-            $('.item-detail-popup-content').html('');
-            $('.item-detail-popup').hide();
-        });
+        $container.on('click', '.close-item-detail-popup', closeItemDetailPopup);
+    };
+
+    var closeItemDetailPopup = function() {
+        var $container = $root.find('.drag-container');
+        $container.removeClass('item-detail-popup-visible');
+        $('.item-detail-popup-content').html('');
+        $('.item-detail-popup').hide();
     };
 
     var grabItem = function($item, interaction_type) {
@@ -2126,6 +2128,11 @@ function DragAndDropBlock(runtime, element, configuration) {
         applyState();
     };
 
+    var cleanProblem = function() {
+        $root.find(".zone").removeClass('green-zone');
+        closeItemDetailPopup();
+    };
+
     var resetProblem = function(evt) {
         evt.preventDefault();
         $.ajax({
@@ -2136,7 +2143,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             state = data;
             applyState();
             focusFirstDraggable();
-            $root.find(".zone").removeClass('green-zone');
+            cleanProblem();
         });
     };
 
