@@ -226,11 +226,11 @@ class AssessmentInteractionTest(
         answers when clicked
         """
         # Answer button is not found with attempts still remaining
-        self.assertRaises(NoSuchElementException, self._get_show_answer_button())
+        self.assertRaises(NoSuchElementException, self._get_show_answer_button)
 
         self.place_item(0, TOP_ZONE_ID, Keys.RETURN)
         for _ in xrange(self.MAX_ATTEMPTS-1):
-            self.assertRaises(NoSuchElementException, self._get_show_answer_button())
+            self.assertRaises(NoSuchElementException, self._get_show_answer_button)
             self.click_submit()
 
         # Place an incorrect item on the final attempt.
