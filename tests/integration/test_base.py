@@ -604,9 +604,9 @@ class InteractionTestBase(object):
         item_class = 'option'
         if self.is_item_sizing_fixed():
             if self.is_square_item(item):
-                item_class += ' square-option'
+                item_class += '  square-option'
             else:
-                item_class += ' rectangle-option'
+                item_class += '  rectangle-option'
         self.assertEqual(item.get_attribute('class'), item_class)
         self.assertEqual(item.get_attribute('tabindex'), '0')
         self.assertEqual(item.get_attribute('aria-grabbed'), 'false')
