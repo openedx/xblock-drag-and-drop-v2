@@ -5,7 +5,7 @@ function DragAndDropTemplates(configuration) {
     var ngettext;
     var colsPerSlide = 4;
     var rectangle_item_character_limit = 50;
-    var square_item_character_limit = 120;
+    var square_item_character_limit = 90;
     var rectanglesPerCol = 2;
     var squaresPerCol = 1;
 
@@ -1620,6 +1620,10 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var fitTilesInZone = function(zone) {
+        if (!DragAndDropBlock.isItemSizingFixed()) {
+            return;
+        }
+
         while(zoneHasOverflowingItem(zone)) {
             $('.option', zone).each(function(){
                 $(this).css({

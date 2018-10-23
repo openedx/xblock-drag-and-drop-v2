@@ -110,7 +110,7 @@ class Constants(object):
     FREE_SIZING = "free_sizing"
 
     RECTANGLE_ITEM_CHARACTER_LIMIT = 50
-    SQUARE_ITEM_CHARACTER_LIMIT = 110
+    SQUARE_ITEM_CHARACTER_LIMIT = 90
 
 
 class StateMigration(object):
