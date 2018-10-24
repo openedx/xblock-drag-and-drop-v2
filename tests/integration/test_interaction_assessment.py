@@ -517,8 +517,9 @@ class AssessmentNotificationTests(
         self.assertFocused(continue_button)
 
     def test_popup_content(self):
-        popup_content = self._page.find_element_by_css_selector('.instructions p:last-child')
-        self.assertEqual("You can review answers / resubmit 5 times", popup_content.text)
+        self.assertRaises(NoSuchElementException,
+                          self._page.find_element_by_css_selector,
+                          '.instructions p:last-child')
 
 
 class AssessmentNotificationInfinityMaxAttemptsTests(AssessmentNotificationTests):
@@ -526,5 +527,6 @@ class AssessmentNotificationInfinityMaxAttemptsTests(AssessmentNotificationTests
     MAX_ATTEMPTS = 0
 
     def test_popup_content(self):
-        popup_content = self._page.find_element_by_css_selector('.instructions p:last-child')
-        self.assertEqual("You can review answers / resubmit as many times as you want", popup_content.text)
+        self.assertRaises(NoSuchElementException,
+                          self._page.find_element_by_css_selector,
+                          '.instructions p:last-child')
