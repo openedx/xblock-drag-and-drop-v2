@@ -47,7 +47,7 @@ function DragAndDropTemplates(configuration) {
         });
     };
 
-    var orderDragables = function(dragables, itemsOrder){
+    var orderDragables = function(dragables, itemsOrder) {
         var orderedDragables = [];
         // order dragables according to their original order
         for (var i=0; i<itemsOrder.length; i++)
@@ -1204,6 +1204,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var showAssessmentNotification = function() {
+        $root.find(".drag-container").addClass("classname")
         $root.find('.assessment-notification').show();
         $root.find(".close-assessment-notification").click(function() {
             $root.find('.assessment-notification').hide();
