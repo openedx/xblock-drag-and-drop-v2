@@ -998,6 +998,9 @@ function DragAndDropBlock(runtime, element, configuration) {
             $element.on('mousedown click', '.go-to-beginning-button', onGoToBeginningButtonClick);
             $element.on('keydown', '.go-to-beginning-button', function(evt) {
                 runOnKey(evt, RET, onGoToBeginningButtonClick);
+                if (isBrowsingBackwardsInAccessibility(evt) && DragAndDropBlock.isItemSizingFixed()) {
+                    focusLastDraggable()
+                }
             });
             // Go to Beginning button should only be visible when it has focus.
             $element.on('focus', '.go-to-beginning-button', showGoToBeginningButton);
@@ -1167,6 +1170,9 @@ function DragAndDropBlock(runtime, element, configuration) {
         // so invoke hideGoToBeginningButton now to make sure it gets hidden.
         // Invoking hideGoToBeginningButton multiple times is harmless.
         hideGoToBeginningButton();
+        if (DragAndDropBlock.isItemSizingFixed()) {
+            itemSlider.goToSlide(0);
+        }
         focusFirstDraggable();
     };
 
@@ -1451,6 +1457,16 @@ function DragAndDropBlock(runtime, element, configuration) {
         return key === TAB;
     };
 
+    var isBrowsingBackwardsInAccessibility = function(evt) {
+        var key = evt.which;
+        return evt.shiftKey && key === TAB;
+    }
+
+    var isBrowsingForwardsInAccessibility = function(evt) {
+        var key = evt.which;
+        return !evt.shiftKey && key === TAB;
+    }
+
     var focusNextZone = function(evt, $currentZone) {
         var zones = $root.find('.target .zone').toArray();
         // In assessment mode, item bank is a valid drop zone
@@ -1489,6 +1505,27 @@ function DragAndDropBlock(runtime, element, configuration) {
         }
         return false;
     };
+
+    var focusNextDraggable = function(currentItemNumber) {
+        var $container = $root.find('.drag-container');
+        const query = '.option[draggable=true][data-value=' + (parseInt(currentItemNumber)+1).toString() + ']';
+        setTimeout(function(){
+            $container.find(query).focus();
+        }, 50);
+    }
+
+    var focusPreviousDraggable = function(currentItemNumber) {
+        var $container = $root.find('.drag-container');
+        const query = '.option[draggable=true][data-value=' + (parseInt(currentItemNumber)-1).toString() + ']';
+        $container.find(query).focus();
+    }
+
+    var focusLastDraggable = function() {
+        var $container = $root.find('.drag-container');
+        var maxItems = $container.find('.option[draggable=true]').length;
+        const query = '.option[draggable=true][data-value=' + (maxItems-1).toString() + ']';
+        $container.find(query).focus();
+    }
 
     var returnItemToBank = function(item_id) {
         if (!state.items[item_id]) {
@@ -1615,6 +1652,32 @@ function DragAndDropBlock(runtime, element, configuration) {
                 $selectedItem = $item;
                 $container.addClass('dragging');
                 $root.find('.target .zone').first().focus();
+            }
+
+            // Enable sliding in accessibility mode
+            if (DragAndDropBlock.isItemSizingFixed()) {
+                var $item = $(this);
+                var itemNumber = $item[0].attributes['data-value'].value;
+                var maxItems = $container.find('.option[draggable=true]').length;
+
+                if (isBrowsingForwardsInAccessibility(evt)) {
+                    if (itemNumber>1 && itemNumber%8 === 7) {
+                        evt.preventDefault();
+                        itemSlider.goToNextSlide();
+                        focusNextDraggable(itemNumber)
+                    }
+                    else if (itemNumber==maxItems-1) {
+                        evt.preventDefault();
+                        focusGoToBeginningButton();
+                    }
+                }
+                else if (isBrowsingBackwardsInAccessibility(evt)) {
+                    if (itemNumber > 0 && itemNumber%8 === 0) {
+                        evt.preventDefault();
+                        itemSlider.goToPrevSlide()
+                        focusPreviousDraggable(itemNumber)
+                    }
+                }
             }
         });
 
