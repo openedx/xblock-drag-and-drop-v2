@@ -325,7 +325,7 @@ function DragAndDropTemplates(configuration) {
         if (configuration.mode === DragAndDropBlock.STANDARD_MODE) {
             return
         }
-        var icon = h('div.icon' , h('i.fa.fa-exclamation'));
+        var heading = h('div.header-icon' , gettext("!"));
         var button = h('div.action', h('button.close-assessment-notification', gettext("Continue")));
 
         if (!ctx.max_attempts){
@@ -345,7 +345,7 @@ function DragAndDropTemplates(configuration) {
             h('li', gettext("See your results"))]);
         var content = h('div.instructions', [text, attemptText]);
         var style = {display: "none"};
-        return h("div.assessment-notification", {style: style}, [icon, content, button]);
+        return h("div.assessment-notification", {style: style}, [heading, content, button]);
      };
 
     var feedbackTemplate = function(ctx) {
@@ -863,7 +863,7 @@ function DragAndDropTemplates(configuration) {
                     ctx.show_feedback_bar ? itemFeedbackPopupTemplate(ctx) : null,
                     h('div.dragged-items', renderCollection(itemTemplate, items_dragged, ctx)),
                 ]),
-                h("div.actions-toolbar", { attributes: {'role': 'group', 'aria-label': gettext('Actions')}}, 
+                h("div.actions-toolbar", { attributes: {'role': 'group', 'aria-label': gettext('Actions')}},
                 actionButtonsTemplate(ctx)),
                 keyboardHelpPopupTemplate(ctx),
                 DragAndDropBlock.isItemSizingFixed() ? fixedSizingFeedbackTemplate(ctx) : feedbackTemplate(ctx),
@@ -1124,9 +1124,11 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var showAssessmentNotification = function() {
+        $root.find(".drag-container").addClass("assessment-notification-visible");
         $root.find('.assessment-notification').show();
         $root.find(".close-assessment-notification").click(function() {
             $root.find('.assessment-notification').hide();
+            $root.find(".drag-container").removeClass("assessment-notification-visible");
         });
     };
 
