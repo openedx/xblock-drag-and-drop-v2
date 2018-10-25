@@ -70,7 +70,9 @@ LANGUAGES = [
     ('ko_KR', 'Korean (Korea)'),
     ('pt_BR', 'Portuguese (Brazil)'),
     ('ru', 'Russian'),
-    ('zh_CN', 'Chinese (China)')
+    ('zh_CN', 'Chinese (China)'),
+    ('de', 'German'),
+    ('ja', 'Japanese'),
 ]
 
 STATICI18N_DOMAIN = 'text'
