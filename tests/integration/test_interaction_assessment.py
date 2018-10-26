@@ -517,7 +517,7 @@ class AssessmentNotificationTests(
         self.assertFocused(continue_button)
 
     def test_popup_content(self):
-        if (self.MAX_ATTEMPTS && self.MAX_ATTEMPTS > 0) {
+        if (self.MAX_ATTEMPTS and self.MAX_ATTEMPTS > 0) {
             popup_content = self._page.find_element_by_css_selector('.instructions p:last-child')
             self.assertEqual("You can review answers / resubmit 5 times", popup_content.text)
         }
