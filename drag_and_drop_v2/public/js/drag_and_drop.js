@@ -328,22 +328,21 @@ function DragAndDropTemplates(configuration) {
         var icon = h('div.icon' , h('i.fa.fa-exclamation'));
         var button = h('div.action', h('button.close-assessment-notification', gettext("Continue")));
 
-        if (!ctx.max_attempts){
-            var attemptText = h('p', gettext("You can review answers / resubmit as many times as you want"));
-        }
-        else{
-            var attemptText = h('p',
-                gettext(
-                    "You can review answers / resubmit {max_attempts} times"
-                ).replace("{max_attempts}", ctx.max_attempts)
-            );
-        }
-
         var text = h('ol', [
             h('li', gettext("Place all items in the correct zone")),
             h('li', gettext("Press submit")),
             h('li', gettext("See your results"))]);
         var content = h('div.instructions', [text]);
+
+        if (ctx.max_attempts && ctx.max_attempts > 0){
+            var attemptText = h('p',
+                gettext(
+                    "You can review answers / resubmit {max_attempts} times"
+                ).replace("{max_attempts}", ctx.max_attempts)
+            );
+            content = h('div.instructions', [text, attemptText]);
+        }
+
         var style = {display: "none"};
         return h("div.assessment-notification", {style: style}, [icon, content, button]);
      };
@@ -390,19 +389,42 @@ function DragAndDropTemplates(configuration) {
         var try_gain_button_html = h('button.try-again-button', gettext('Try Again'));
         var assessment_fixed_sizing_feedback = null;
         if (ctx.answer_correctness == DragAndDropBlock.SOLUTION_CORRECT) {
-            assessment_fixed_sizing_feedback = [
-                h('div.icon', [h('i.fa.fa-check')]),
-                h('h3', gettext('Congratulations!')),
-                h('p', gettext('You have placed all the items in the correct drop zones')),
-                h('button.finish-button', gettext('Finish'))
-            ];
+            if (ctx.max_attempts && ctx.max_attempts > 0) {
+                assessment_fixed_sizing_feedback = [
+                    h('div.icon', [h('i.fa.fa-check')]),
+                    h('h3', gettext('Congratulations!')),
+                    h('p', gettext('You have placed all the items in the correct drop zones')),
+                    attempts_used_html,
+                    h('button.finish-button', gettext('Finish'))
+                ];
+            }
+            else {
+                assessment_fixed_sizing_feedback = [
+                    h('div.icon', [h('i.fa.fa-check')]),
+                    h('h3', gettext('Congratulations!')),
+                    h('p', gettext('You have placed all the items in the correct drop zones')),
+                    h('button.finish-button', gettext('Finish'))
+                ];
+            }
+            
         } else {
-            assessment_fixed_sizing_feedback = [
-                h('div.icon', [h('i.fa.fa-check')]),
-                h('h3', ctx.answer_correctness == DragAndDropBlock.SOLUTION_INCORRECT ? gettext('Incorrect Answers') : gettext('Partially Correct!')),
-                misplaced_items_html,
-                ctx.attempts == ctx.max_attempts ? see_answers_button_html : try_gain_button_html
-            ];
+            if (ctx.max_attempts && ctx.max_attempts > 0) {
+                assessment_fixed_sizing_feedback = [
+                    h('div.icon', [h('i.fa.fa-check')]),
+                    h('h3', ctx.answer_correctness == DragAndDropBlock.SOLUTION_INCORRECT ? gettext('Incorrect Answers') : gettext('Partially Correct!')),
+                    misplaced_items_html,
+                    attempts_used_html,
+                    ctx.attempts == ctx.max_attempts ? see_answers_button_html : try_gain_button_html
+                ];
+            }
+            else {
+                assessment_fixed_sizing_feedback = [
+                    h('div.icon', [h('i.fa.fa-check')]),
+                    h('h3', ctx.answer_correctness == DragAndDropBlock.SOLUTION_INCORRECT ? gettext('Incorrect Answers') : gettext('Partially Correct!')),
+                    misplaced_items_html,
+                    ctx.attempts == ctx.max_attempts ? see_answers_button_html : try_gain_button_html
+                ];
+            }
         }
 
         var hints = ctx.feedback_messages || [];
