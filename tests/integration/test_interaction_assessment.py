@@ -178,7 +178,7 @@ class AssessmentInteractionTest(
         self.place_item(0, TOP_ZONE_ID, action_key=Keys.RETURN)
 
         # Reach final attempt
-        for _ in xrange(self.MAX_ATTEMPTS-1):
+        for _ in xrange(self.MAX_ATTEMPTS - 1):
             self.click_submit()
 
         # Place incorrect item on final attempt
@@ -229,7 +229,7 @@ class AssessmentInteractionTest(
         self.assertRaises(NoSuchElementException, self._get_show_answer_button)
 
         self.place_item(0, TOP_ZONE_ID, Keys.RETURN)
-        for _ in xrange(self.MAX_ATTEMPTS-1):
+        for _ in xrange(self.MAX_ATTEMPTS - 1):
             self.assertRaises(NoSuchElementException, self._get_show_answer_button)
             self.click_submit()
 
@@ -301,7 +301,7 @@ class AssessmentInteractionTest(
         check_feedback(feedback_lines, ["No, this item does not belong here. Try again."])
 
         # reach final attempt
-        for _ in xrange(self.MAX_ATTEMPTS-3):
+        for _ in xrange(self.MAX_ATTEMPTS - 3):
             self.click_submit()
 
         self.place_item(1, MIDDLE_ZONE_ID, Keys.RETURN)
@@ -520,13 +520,10 @@ class AssessmentNotificationTests(
         if (self.MAX_ATTEMPTS and self.MAX_ATTEMPTS > 0):
             popup_content = self._page.find_element_by_css_selector('.instructions p:last-child')
             self.assertEqual("You can review answers / resubmit 5 times", popup_content.text)
-        
         else:
             self.assertRaises(NoSuchElementException,
-                          self._page.find_element_by_css_selector,
-                          '.instructions p:last-child')
-        
-        
+                              self._page.find_element_by_css_selector,
+                              '.instructions p:last-child')
 
 
 class AssessmentNotificationInfinityMaxAttemptsTests(AssessmentNotificationTests):

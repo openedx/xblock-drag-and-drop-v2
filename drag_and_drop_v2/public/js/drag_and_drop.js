@@ -395,7 +395,7 @@ function DragAndDropTemplates(configuration) {
                     h('h3', gettext('Congratulations!')),
                     h('p', gettext('You have placed all the items in the correct drop zones')),
                     attempts_used_html,
-                    h('button.finish-button', gettext('Finish'))
+                    h('button.finish-button', gettext('See Correct Answers'))
                 ];
             }
             else {
@@ -403,7 +403,7 @@ function DragAndDropTemplates(configuration) {
                     h('div.icon', [h('i.fa.fa-check')]),
                     h('h3', gettext('Congratulations!')),
                     h('p', gettext('You have placed all the items in the correct drop zones')),
-                    h('button.finish-button', gettext('Finish'))
+                    h('button.finish-button', gettext('See Correct Answers'))
                 ];
             }
             
