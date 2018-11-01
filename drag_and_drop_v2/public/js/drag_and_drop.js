@@ -998,7 +998,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             $element.on('mousedown click', '.go-to-beginning-button', onGoToBeginningButtonClick);
             $element.on('keydown', '.go-to-beginning-button', function(evt) {
                 runOnKey(evt, RET, onGoToBeginningButtonClick);
-                if (isBrowsingBackwardsInAccessibility(evt) && DragAndDropBlock.isItemSizingFixed()) {
+                if (isTabbingBackwards(evt) && DragAndDropBlock.isItemSizingFixed()) {
                     focusLastDraggable()
                 }
             });
@@ -1457,14 +1457,12 @@ function DragAndDropBlock(runtime, element, configuration) {
         return key === TAB;
     };
 
-    var isBrowsingBackwardsInAccessibility = function(evt) {
-        var key = evt.which;
-        return evt.shiftKey && key === TAB;
+    var isTabbingBackwards = function(evt) {
+        return evt.shiftKey && evt.which === TAB;
     }
 
-    var isBrowsingForwardsInAccessibility = function(evt) {
-        var key = evt.which;
-        return !evt.shiftKey && key === TAB;
+    var isTabbingForwards = function(evt) {
+        return !evt.shiftKey && evt.which === TAB;
     }
 
     var focusNextZone = function(evt, $currentZone) {
@@ -1508,22 +1506,22 @@ function DragAndDropBlock(runtime, element, configuration) {
 
     var focusNextDraggable = function(currentItemNumber) {
         var $container = $root.find('.drag-container');
-        const query = '.option[draggable=true][data-value=' + (parseInt(currentItemNumber)+1).toString() + ']';
+        const query = '.option[draggable=true][data-value=' + (parseInt(currentItemNumber) + 1).toString() + ']';
         setTimeout(function(){
             $container.find(query).focus();
-        }, 50);
+        }, 100);
     }
 
     var focusPreviousDraggable = function(currentItemNumber) {
         var $container = $root.find('.drag-container');
-        const query = '.option[draggable=true][data-value=' + (parseInt(currentItemNumber)-1).toString() + ']';
+        const query = '.option[draggable=true][data-value=' + (parseInt(currentItemNumber) - 1).toString() + ']';
         $container.find(query).focus();
     }
 
     var focusLastDraggable = function() {
         var $container = $root.find('.drag-container');
         var maxItems = $container.find('.option[draggable=true]').length;
-        const query = '.option[draggable=true][data-value=' + (maxItems-1).toString() + ']';
+        const query = '.option[draggable=true][data-value=' + (maxItems - 1).toString() + ']';
         $container.find(query).focus();
     }
 
@@ -1659,20 +1657,19 @@ function DragAndDropBlock(runtime, element, configuration) {
                 var $item = $(this);
                 var itemNumber = $item[0].attributes['data-value'].value;
                 var maxItems = $container.find('.option[draggable=true]').length;
-
-                if (isBrowsingForwardsInAccessibility(evt)) {
-                    if (itemNumber>1 && itemNumber%8 === 7) {
+                if (isTabbingForwards(evt)) {
+                    if (itemNumber > 1 && itemNumber % 8 === 7) {
                         evt.preventDefault();
                         itemSlider.goToNextSlide();
                         focusNextDraggable(itemNumber)
                     }
-                    else if (itemNumber==maxItems-1) {
+                    else if (itemNumber == maxItems - 1) {
                         evt.preventDefault();
                         focusGoToBeginningButton();
                     }
                 }
-                else if (isBrowsingBackwardsInAccessibility(evt)) {
-                    if (itemNumber > 0 && itemNumber%8 === 0) {
+                else if (isTabbingBackwards(evt)) {
+                    if (itemNumber > 0 && itemNumber % 8 === 0) {
                         evt.preventDefault();
                         itemSlider.goToPrevSlide()
                         focusPreviousDraggable(itemNumber)
