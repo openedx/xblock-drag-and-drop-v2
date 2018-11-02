@@ -1,3 +1,7 @@
+mako==1.0.7
+edx-i18n-tools==0.4.7
+django-statici18n==1.8.0
+transifex-client==0.13.4
 git+https://github.com/edx/xblock-utils.git@v1.1.1#egg=xblock-utils==1.1.1
 git+https://github.com/edx/XBlock.git@xblock-0.5.0#egg=XBlock==0.5.0
 -e .

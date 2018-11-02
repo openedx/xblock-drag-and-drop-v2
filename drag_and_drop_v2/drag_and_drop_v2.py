@@ -9,7 +9,8 @@ import json
 import logging
 import urllib
 import webob
-
+import pkg_resources
+from django.utils import translation
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 from xblock.fields import Scope, String, Dict, Float, Boolean, Integer
@@ -253,6 +254,22 @@ class DragAndDropBlock(
         correct_count, total_count = self._get_item_stats()
         return correct_count / float(total_count)
 
+    @staticmethod
+    def _get_statici18n_js_url():
+        """
+        Returns the Javascript translation file for the currently selected language, if any found by
+        `pkg_resources`
+        """
+        lang_code = translation.get_language()
+        if not lang_code:
+            return None
+        text_js = 'public/js/translations/{lang_code}/text.js'
+        country_code = lang_code.split('-')[0]
+        for code in (lang_code, country_code):
+            if pkg_resources.resource_exists(loader.module_name, text_js.format(lang_code=code)):
+                return text_js.format(lang_code=code)
+        return None
+
     @XBlock.supports("multi_device")  # Enable this block for use in the mobile app via webview
     def student_view(self, context):
         """
@@ -265,10 +282,15 @@ class DragAndDropBlock(
         css_urls = (
             'public/css/drag_and_drop.css',
         )
-        js_urls = (
+        js_urls = [
             'public/js/vendor/virtual-dom-1.3.0.min.js',
             'public/js/drag_and_drop.js',
-        )
+        ]
+
+        statici18n_js_url = self._get_statici18n_js_url()
+        if statici18n_js_url:
+            js_urls.append(statici18n_js_url)
+
         for css_url in css_urls:
             fragment.add_css_url(self.runtime.local_resource_url(self, css_url))
         for js_url in js_urls:
@@ -334,7 +356,6 @@ class DragAndDropBlock(
         """
         Editing view in Studio
         """
-
         js_templates = loader.load_unicode('/templates/html/js_templates.html')
         # Get an 'id_suffix' string that is unique for this block.
         # We append it to HTML element ID attributes to ensure multiple instances of the DnDv2 block
@@ -358,10 +379,15 @@ class DragAndDropBlock(
         css_urls = (
             'public/css/drag_and_drop_edit.css',
         )
-        js_urls = (
+        js_urls = [
             'public/js/vendor/handlebars-v1.1.2.js',
             'public/js/drag_and_drop_edit.js',
-        )
+        ]
+
+        statici18n_js_url = self._get_statici18n_js_url()
+        if statici18n_js_url:
+            js_urls.append(statici18n_js_url)
+
         for css_url in css_urls:
             fragment.add_css_url(self.runtime.local_resource_url(self, css_url))
         for js_url in js_urls:
@@ -669,8 +695,9 @@ class DragAndDropBlock(
             else:
                 grade_feedback_template = FeedbackMessages.FINAL_ATTEMPT_TPL
 
-            feedback_msgs.append(
-                FeedbackMessage(grade_feedback_template.format(score=self.weighted_grade()), grade_feedback_class)
+            feedback_msgs.append(FeedbackMessage(
+                self.i18n_service.gettext(grade_feedback_template).format(score=self.weighted_grade()),
+                grade_feedback_class)
             )
 
         return feedback_msgs, misplaced_ids

@@ -18,14 +18,14 @@
             <span>{{i18n "Title"}}</span>
             <input type="text"
                    class="zone-title"
-                   value="{{ zone.title }}"
+                   value="{{i18n zone.title }}"
                    required />
         </label>
         <label>
             <span>{{i18n "Description"}}</span>
             <input type="text"
                    class="zone-description"
-                   value="{{ zone.description }}"
+                   value="{{i18n zone.description}}"
                    aria-describedby="zone-description-description-{{zone.uid}}-{{id_suffix}}"
                    required />
             <div id="zone-description-description-{{zone.uid}}-{{id_suffix}}" class="form-help">
@@ -108,7 +108,7 @@
                 <input type="text"
                        aria-describedby="item-text-description-{{index}}-{{id_suffix}}"
                        class="item-text"
-                       value="{{ displayName }}" />
+                       value="{{i18n displayName}}" />
             </label>
             <div id="item-text-description-{{index}}-{{id_suffix}}" class="form-help">
                 {{i18n "Use text that is clear and descriptive of the item to be placed."}}
@@ -143,13 +143,13 @@
         <div class="row">
             <label class="h4">
                 <span>{{i18n "Success feedback"}}</span>
-                <textarea class="success-feedback">{{ feedback.correct }}</textarea>
+                <textarea class="success-feedback">{{i18n feedback.correct}}</textarea>
             </label>
         </div>
         <div class="row">
             <label class="h4">
                 <span>{{i18n "Error feedback"}}</span>
-                <textarea class="error-feedback">{{ feedback.incorrect }}</textarea>
+                <textarea class="error-feedback">{{i18n feedback.incorrect}}</textarea>
             </label>
         </div>
         <div class="row advanced-link">

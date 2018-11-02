@@ -74,12 +74,12 @@
 
                     <label class="h4">
                         <span>{% trans "Introductory feedback" %}</span>
-                        <textarea class="intro-feedback">{{ self.data.feedback.start }}</textarea>
+                        <textarea class="intro-feedback">{% trans self.data.feedback.start %}</textarea>
                     </label>
 
                     <label class="h4">
                         <span>{% trans "Final feedback" %}</span>
-                        <textarea class="final-feedback">{{ self.data.feedback.finish }}</textarea>
+                        <textarea class="final-feedback">{% trans self.data.feedback.finish %}</textarea>
                     </label>
                 </form>
             </div>
