@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-12 09:02-0300\n"
+"POT-Creation-Date: 2018-11-02 05:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -256,7 +256,7 @@ msgstr ""
 msgid "do_attempt handler should only be called for assessment mode"
 msgstr ""
 
-#: drag_and_drop_v2.py:640 drag_and_drop_v2.py:745
+#: drag_and_drop_v2.py:640 drag_and_drop_v2.py:746
 msgid "Max number of attempts reached"
 msgstr ""
 
@@ -636,25 +636,25 @@ msgstr ""
 msgid "You cannot add any more items to this zone."
 msgstr ""
 
-#: public/js/drag_and_drop_edit.js:101 public/js/drag_and_drop_edit.js:487
-#: public/js/drag_and_drop_edit.js:713
+#: public/js/drag_and_drop_edit.js:108 public/js/drag_and_drop_edit.js:494
+#: public/js/drag_and_drop_edit.js:720
 msgid "There was an error with your form."
 msgstr ""
 
-#: public/js/drag_and_drop_edit.js:102
+#: public/js/drag_and_drop_edit.js:109
 msgid "Please check over your submission."
 msgstr ""
 
-#: public/js/drag_and_drop_edit.js:337
+#: public/js/drag_and_drop_edit.js:344
 msgid "Zone {num}"
 msgid_plural "Zone {num}"
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/js/drag_and_drop_edit.js:488
+#: public/js/drag_and_drop_edit.js:495
 msgid "Please check the values you entered."
 msgstr ""
 
-#: public/js/drag_and_drop_edit.js:706
+#: public/js/drag_and_drop_edit.js:713
 msgid "Saving"
 msgstr ""

@@ -1,11 +1,16 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"POT-Creation-Date: 2016-03-30 16:54+0500\n"
-"PO-Revision-Date: 2016-03-30 16:54+0500\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-09-12 09:02-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: eo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,16 +31,6 @@ msgstr ""
 "ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη "
 "яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα "
 "ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυ#"
-
-#: default_data.py
-msgid "Of course it goes here! It goes anywhere!"
-msgstr ""
-"Öf çöürsé ït göés héré! Ìt göés änýwhéré! Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя #"
-
-#: default_data.py
-msgid "Goes anywhere"
-msgstr "Göés änýwhéré Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
 #: default_data.py
 msgid "The Top Zone"
@@ -70,10 +65,22 @@ msgstr ""
 "Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
 
 #: default_data.py
-#, python-brace-format
-msgid "Correct! This one belongs to {zone}."
+msgid "Correct! This one belongs to The Top Zone."
 msgstr ""
-"Çörréçt! Thïs öné ßélöngs tö {zone}. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+"Çörréçt! Thïs öné ßélöngs tö Thé Töp Zöné. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: default_data.py
+msgid "Correct! This one belongs to The Middle Zone."
+msgstr ""
+"Çörréçt! Thïs öné ßélöngs tö Thé Mïddlé Zöné. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: default_data.py
+msgid "Correct! This one belongs to The Bottom Zone."
+msgstr ""
+"Çörréçt! Thïs öné ßélöngs tö Thé Böttöm Zöné. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
 
 #: default_data.py
 msgid "No, this item does not belong here. Try again."
@@ -88,16 +95,10 @@ msgstr ""
 "¢σηѕє¢тєтυя #"
 
 #: default_data.py
-msgid "Drag the items onto the image above."
+msgid "Of course it goes here! It goes anywhere!"
 msgstr ""
-"Dräg thé ïtéms öntö thé ïmägé äßövé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυ#"
-
-#: default_data.py
-msgid "Good work! You have completed this drag and drop problem."
-msgstr ""
-"Gööd wörk! Ýöü hävé çömplétéd thïs dräg änd dröp prößlém. Ⱡ'σяєм ιρѕυм ∂σłσя"
-" ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+"Öf çöürsé ït göés héré! Ìt göés änýwhéré! Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
 
 #: default_data.py
 msgid "Goes to the top"
@@ -112,18 +113,26 @@ msgid "Goes to the bottom"
 msgstr "Göés tö thé ßöttöm Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
 #: default_data.py
+msgid "Goes anywhere"
+msgstr "Göés änýwhéré Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: default_data.py
 msgid "I don't belong anywhere"
 msgstr "Ì dön't ßélöng änýwhéré Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
 
-#: drag_and_drop_v2.py
-msgid ""
-"This setting limits the number of items that can be dropped into a single "
-"zone."
+#: default_data.py
+msgid "Drag the items onto the image above."
 msgstr ""
-"Thïs séttïng lïmïts thé nümßér öf ïtéms thät çän ßé dröppéd ïntö ä sïnglé "
-"zöné. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+"Dräg thé ïtéms öntö thé ïmägé äßövé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
 
-#: drag_and_drop_v2.py templates/html/js_templates.html
+#: default_data.py
+msgid "Good work! You have completed this drag and drop problem."
+msgstr ""
+"Gööd wörk! Ýöü hävé çömplétéd thïs dräg änd dröp prößlém. Ⱡ'σяєм ιρѕυм ∂σłσя"
+" ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: drag_and_drop_v2.py
 msgid "Title"
 msgstr "Tïtlé Ⱡ'σяєм ιρѕ#"
 
@@ -239,6 +248,18 @@ msgstr ""
 "Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
 #: drag_and_drop_v2.py
+msgid "Maximum items per zone"
+msgstr "Mäxïmüm ïtéms pér zöné Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: drag_and_drop_v2.py
+msgid ""
+"This setting limits the number of items that can be dropped into a single "
+"zone."
+msgstr ""
+"Thïs séttïng lïmïts thé nümßér öf ïtéms thät çän ßé dröppéd ïntö ä sïnglé "
+"zöné. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: drag_and_drop_v2.py
 msgid "Problem data"
 msgstr "Prößlém dätä Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
@@ -276,14 +297,25 @@ msgstr ""
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
 #: drag_and_drop_v2.py
-msgid "do_attempt handler should only be called for assessment mode"
+msgid ""
+"DEPRECATED. Keeps maximum score achieved by student as a weighted value."
 msgstr ""
-"dö_ättémpt händlér shöüld önlý ßé çälléd för ässéssmént mödé Ⱡ'σяєм ιρѕυм "
-"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+"DÉPRÉÇÀTÉD. Kééps mäxïmüm sçöré äçhïévéd ßý stüdént äs ä wéïghtéd välüé. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
 
 #: drag_and_drop_v2.py
-msgid "Max number of attempts reached"
-msgstr "Mäx nümßér öf ättémpts réäçhéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+msgid ""
+"Keeps maximum score achieved by student as a raw value between 0 and 1."
+msgstr ""
+"Kééps mäxïmüm sçöré äçhïévéd ßý stüdént äs ä räw välüé ßétwéén 0 änd 1. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
+
+#: drag_and_drop_v2.py
+#, python-brace-format
+msgid "Unknown DnDv2 mode {mode} - course is misconfigured"
+msgstr ""
+"Ûnknöwn DnDv2 mödé {mode} - çöürsé ïs mïsçönfïgüréd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
 
 #: drag_and_drop_v2.py
 msgid "show_answer handler should only be called for assessment mode"
@@ -296,151 +328,22 @@ msgid "There are attempts remaining"
 msgstr "Théré äré ättémpts rémäïnïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
 #: drag_and_drop_v2.py
-msgid "Unknown DnDv2 mode {mode} - course is misconfigured"
+msgid "do_attempt handler should only be called for assessment mode"
 msgstr ""
-"Ûnknöwn DnDv2 mödé {mode} - çöürsé ïs mïsçönfïgüréd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
-"αмєт, ¢σηѕє¢тєтυя α#"
+"dö_ättémpt händlér shöüld önlý ßé çälléd för ässéssmént mödé Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: templates/html/js_templates.html
-msgid "Remove zone"
-msgstr "Rémövé zöné Ⱡ'σяєм ιρѕυм ∂σłσя #"
-
-#: drag_and_drop_v2.py
-msgid "Keeps maximum score achieved by student"
-msgstr ""
-"Kééps mäxïmüm sçöré äçhïévéd ßý stüdént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя#"
-
-#: drag_and_drop_v2.py
-msgid "Failed to parse \"Maximum items per zone\""
-msgstr ""
-"Fäïléd tö pärsé \"Mäxïmüm ïtéms pér zöné\" Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя#"
-
-#: drag_and_drop_v2.py
-msgid ""
-"\"Maximum items per zone\" should be positive integer, got "
-"{max_items_per_zone}"
-msgstr ""
-"\"Mäxïmüm ïtéms pér zöné\" shöüld ßé pösïtïvé ïntégér, göt "
-"{max_items_per_zone} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
-
-#: templates/html/js_templates.html
-msgid "Text"
-msgstr "Téxt Ⱡ'σяєм ι#"
-
-#: templates/html/js_templates.html
-msgid "Description"
-msgstr "Désçrïptïön Ⱡ'σяєм ιρѕυм ∂σłσя #"
-
-#: templates/html/js_templates.html
-msgid "Describe this zone to non-visual users."
-msgstr ""
-"Désçrïßé thïs zöné tö nön-vïsüäl üsérs. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя#"
-
-#: templates/html/js_templates.html
-msgid "width"
-msgstr "wïdth Ⱡ'σяєм ιρѕ#"
-
-#: templates/html/js_templates.html
-msgid "height"
-msgstr "héïght Ⱡ'σяєм ιρѕυ#"
-
-#: templates/html/js_templates.html
-msgid "Alignment"
-msgstr "Àlïgnmént Ⱡ'σяєм ιρѕυм ∂σł#"
-
-#: templates/html/js_templates.html
-msgid "none"
-msgstr "nöné Ⱡ'σяєм ι#"
-
-#: templates/html/js_templates.html
-msgid "left"
-msgstr "léft Ⱡ'σяєм ι#"
-
-#: templates/html/js_templates.html
-msgid "center"
-msgstr "çéntér Ⱡ'σяєм ιρѕυ#"
-
-#: templates/html/js_templates.html
-msgid "right"
-msgstr "rïght Ⱡ'σяєм ιρѕ#"
-
-#: templates/html/js_templates.html
-msgid "Align dropped items to the left, center, or right."
-msgstr ""
-"Àlïgn dröppéd ïtéms tö thé léft, çéntér, ör rïght. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
-"αмєт, ¢σηѕє¢тєтυя α#"
-
-#: templates/html/js_templates.html
-msgid "Remove item"
-msgstr "Rémövé ïtém Ⱡ'σяєм ιρѕυм ∂σłσя #"
-
-#: templates/html/js_templates.html
-msgid "Zone"
-msgstr "Zöné Ⱡ'σяєм ι#"
-
-#: templates/html/js_templates.html
-msgid "Image URL (alternative to the text)"
-msgstr ""
-"Ìmägé ÛRL (ältérnätïvé tö thé téxt) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
-
-#: templates/html/js_templates.html
-msgid "For example, 'http://example.com/image.png' or '/static/image.png'."
-msgstr ""
-"För éxämplé, 'http://éxämplé.çöm/ïmägé.png' ör '/stätïç/ïmägé.png'. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
-
-#: templates/html/js_templates.html
-msgid ""
-"Image description (should provide sufficient information to place the item "
-"even if the image did not load)"
-msgstr ""
-"Ìmägé désçrïptïön (shöüld prövïdé süffïçïént ïnförmätïön tö pläçé thé ïtém "
-"évén ïf thé ïmägé dïd nöt löäd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт #"
-
-#: templates/html/js_templates.html
-msgid "Success feedback"
-msgstr "Süççéss féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
-
-#: templates/html/js_templates.html
-msgid "Error feedback"
-msgstr "Érrör féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
-
-#: templates/html/js_templates.html
-msgid "Show advanced settings"
-msgstr "Shöw ädvänçéd séttïngs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
-
-#: templates/html/js_templates.html
-msgid "Preferred width"
-msgstr "Préférréd wïdth Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
-
-#: templates/html/js_templates.html
-msgid ""
-"Specify preferred width as percentage of the background image width. Leave "
-"blank for automatic width."
-msgstr ""
-"Spéçïfý préférréd wïdth äs pérçéntägé öf thé ßäçkgröünd ïmägé wïdth. Léävé "
-"ßlänk för äütömätïç wïdth. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
-
-#: templates/html/js_templates.html
-msgid "Use text that is clear and descriptive of the item to be placed."
-msgstr ""
-"Ûsé téxt thät ïs çléär änd désçrïptïvé öf thé ïtém tö ßé pläçéd. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+#: drag_and_drop_v2.py drag_and_drop_v2.py
+msgid "Max number of attempts reached"
+msgstr "Mäx nümßér öf ättémpts réäçhéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
 #: templates/html/drag_and_drop.html
 msgid "Loading drag and drop problem."
 msgstr "Löädïng dräg änd dröp prößlém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
 #: templates/html/drag_and_drop_edit.html
-msgid ""
-"Note: do not edit the problem if students have already completed it. Delete "
-"the problem and create a new one."
-msgstr ""
-"Nöté: dö nöt édït thé prößlém ïf stüdénts hävé älréädý çömplétéd ït. Délété "
-"thé prößlém änd çréäté ä néw öné. Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+msgid "Basic Settings"
+msgstr "Bäsïç Séttïngs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 
 #: templates/html/drag_and_drop_edit.html
 msgid "Introductory feedback"
@@ -450,13 +353,29 @@ msgstr "Ìntrödüçtörý féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕ�
 msgid "Final feedback"
 msgstr "Fïnäl féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 
-#: templates/html/drag_and_drop_edit.html templates/html/js_templates.html
+#: templates/html/drag_and_drop_edit.html
 msgid "Zones"
 msgstr "Zönés Ⱡ'σяєм ιρѕ#"
 
 #: templates/html/drag_and_drop_edit.html
+msgid "Background Image"
+msgstr "Bäçkgröünd Ìmägé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Provide custom image"
+msgstr "Prövïdé çüstöm ïmägé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Generate image automatically"
+msgstr "Généräté ïmägé äütömätïçällý Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+
+#: templates/html/drag_and_drop_edit.html
 msgid "Background URL"
 msgstr "Bäçkgröünd ÛRL Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Change background"
+msgstr "Çhängé ßäçkgröünd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
 #: templates/html/drag_and_drop_edit.html
 msgid ""
@@ -467,8 +386,41 @@ msgstr ""
 "'/stätïç/ßäçkgröünd.png'. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
 #: templates/html/drag_and_drop_edit.html
-msgid "Change background"
-msgstr "Çhängé ßäçkgröünd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+msgid "Zone Layout"
+msgstr "Zöné Läýöüt Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Number of columns"
+msgstr "Nümßér öf çölümns Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Number of rows"
+msgstr "Nümßér öf röws Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Number of columns and rows."
+msgstr "Nümßér öf çölümns änd röws. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Zone Size"
+msgstr "Zöné Sïzé Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Zone width"
+msgstr "Zöné wïdth Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Zone height"
+msgstr "Zöné héïght Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Size of a single zone in pixels."
+msgstr ""
+"Sïzé öf ä sïnglé zöné ïn pïxéls. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Generate image and zones"
+msgstr "Généräté ïmägé änd zönés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
 #: templates/html/drag_and_drop_edit.html
 msgid "Background description"
@@ -489,10 +441,6 @@ msgstr ""
 "                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢#"
 
 #: templates/html/drag_and_drop_edit.html
-msgid "Zone definitions"
-msgstr "Zöné défïnïtïöns Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
-
-#: templates/html/drag_and_drop_edit.html
 msgid "Zone labels"
 msgstr "Zöné läßéls Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
@@ -511,12 +459,20 @@ msgstr ""
 "Dïspläý zöné ßördérs ön thé ïmägé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
 #: templates/html/drag_and_drop_edit.html
+msgid "Zone definitions"
+msgstr "Zöné défïnïtïöns Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: templates/html/drag_and_drop_edit.html
 msgid "Add a zone"
 msgstr "Àdd ä zöné Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
 #: templates/html/drag_and_drop_edit.html
 msgid "Items"
 msgstr "Ìtéms Ⱡ'σяєм ιρѕ#"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Item definitions"
+msgstr "Ìtém défïnïtïöns Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
 #: templates/html/drag_and_drop_edit.html
 msgid "Add an item"
@@ -534,13 +490,66 @@ msgstr "Sävé Ⱡ'σяєм ι#"
 msgid "Cancel"
 msgstr "Çänçél Ⱡ'σяєм ιρѕυ#"
 
-#: public/js/drag_and_drop.js
-msgid "ok"
-msgstr "ök Ⱡ'σя#"
+#: utils.py
+#, python-brace-format
+msgid "Your highest score is {score}"
+msgstr "Ýöür hïghést sçöré ïs {score} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: utils.py
+#, python-brace-format
+msgid "Final attempt was used, highest score is {score}"
+msgstr ""
+"Fïnäl ättémpt wäs üséd, hïghést sçöré ïs {score} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя #"
+
+#: utils.py
+#, python-brace-format
+msgid "Correctly placed {correct_count} item."
+msgid_plural "Correctly placed {correct_count} items."
+msgstr[0] ""
+"Çörréçtlý pläçéd {correct_count} ïtém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+msgstr[1] ""
+"Çörréçtlý pläçéd {correct_count} ïtéms. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
+
+#: utils.py
+#, python-brace-format
+msgid "Misplaced {misplaced_count} item."
+msgid_plural "Misplaced {misplaced_count} items."
+msgstr[0] "Mïspläçéd {misplaced_count} ïtém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
+msgstr[1] "Mïspläçéd {misplaced_count} ïtéms. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: utils.py
+#, python-brace-format
+msgid ""
+"Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
+msgid_plural ""
+"Misplaced {misplaced_count} items. Misplaced items were returned to item "
+"bank."
+msgstr[0] ""
+"Mïspläçéd {misplaced_count} ïtém. Mïspläçéd ïtém wäs rétürnéd tö ïtém ßänk. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+msgstr[1] ""
+"Mïspläçéd {misplaced_count} ïtéms. Mïspläçéd ïtéms wéré rétürnéd tö ïtém "
+"ßänk. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: utils.py
+#, python-brace-format
+msgid "Did not place {missing_count} required item."
+msgid_plural "Did not place {missing_count} required items."
+msgstr[0] ""
+"Dïd nöt pläçé {missing_count} réqüïréd ïtém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тє#"
+msgstr[1] ""
+"Dïd nöt pläçé {missing_count} réqüïréd ïtéms. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тє#"
+
+#: public/js/drag_and_drop.js public/js/drag_and_drop.js
+msgid "Submitting"
+msgstr "Süßmïttïng Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
 #: public/js/drag_and_drop.js
-msgid "Item Bank"
-msgstr "Ìtém Bänk Ⱡ'σяєм ιρѕυм ∂σł#"
+msgid "Unknown Zone"
+msgstr "Ûnknöwn Zöné Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
 #: public/js/drag_and_drop.js
 msgid "Placed in: {zone_title}"
@@ -550,53 +559,50 @@ msgstr "Pläçéd ïn: {zone_title} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 msgid "Correctly placed in: {zone_title}"
 msgstr "Çörréçtlý pläçéd ïn: {zone_title} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
-#: drag_and_drop_v2/public/js/drag_and_drop.js
+#: public/js/drag_and_drop.js
 msgid ", draggable, grabbed"
 msgstr ", dräggäßlé, gräßßéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: drag_and_drop_v2/public/js/drag_and_drop.js
+#: public/js/drag_and_drop.js
 msgid ", draggable"
 msgstr ", dräggäßlé Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
 #: public/js/drag_and_drop.js
-msgid "Reset"
-msgstr "Rését Ⱡ'σяєм ιρѕ#"
+msgid "No items placed here"
+msgstr "Nö ïtéms pläçéd héré Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
 #: public/js/drag_and_drop.js
-msgid "Show Answer"
-msgstr "Shöw Ànswér Ⱡ'σяєм ιρѕυм ∂σłσя #"
+msgid "Items placed here: "
+msgstr "Ìtéms pläçéd héré:  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
 
 #: public/js/drag_and_drop.js
-msgid "Hide Answer"
-msgstr "Hïdé Ànswér Ⱡ'σяєм ιρѕυм ∂σłσя #"
+msgid ", dropzone"
+msgstr ", dröpzöné Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
 #: public/js/drag_and_drop.js
-msgid "Submit"
-msgstr "Süßmït Ⱡ'σяєм ιρѕυ#"
+msgid "droppable"
+msgstr "dröppäßlé Ⱡ'σяєм ιρѕυм ∂σł#"
 
-#: public/js/drag_and_drop.js
+#: public/js/drag_and_drop.js public/js/drag_and_drop.js
 msgid "Feedback"
 msgstr "Féédßäçk Ⱡ'σяєм ιρѕυм ∂#"
 
+#: public/js/drag_and_drop.js public/js/drag_and_drop.js
 #: public/js/drag_and_drop.js
+msgid "Close"
+msgstr "Çlösé Ⱡ'σяєм ιρѕ#"
+
+#: public/js/drag_and_drop.js public/js/drag_and_drop.js
 msgid "Keyboard Help"
 msgstr "Kéýßöärd Hélp Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid "This is a screen reader-friendly problem"
+#: public/js/drag_and_drop.js
+msgid "This is a screen reader-friendly problem."
 msgstr ""
-"Thïs ïs ä sçréén réädér-frïéndlý prößlém Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя#"
+"Thïs ïs ä sçréén réädér-frïéndlý prößlém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
 
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid ""
-"You can complete this problem using only your keyboard by following the "
-"guidance below:"
-msgstr ""
-"Ýöü çän çömplété thïs prößlém üsïng önlý ýöür kéýßöärd ßý föllöwïng thé "
-"güïdänçé ßélöw: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
+#: public/js/drag_and_drop.js
 msgid ""
 "Drag and Drop problems consist of draggable items and dropzones. Users "
 "should select a draggable item with their keyboard and then navigate to an "
@@ -611,7 +617,15 @@ msgstr ""
 "яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα "
 "ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη #"
 
-#: drag_and_drop_v2/public/js/drag_and_drop.js
+#: public/js/drag_and_drop.js
+msgid ""
+"You can complete this problem using only your keyboard by following the "
+"guidance below:"
+msgstr ""
+"Ýöü çän çömplété thïs prößlém üsïng önlý ýöür kéýßöärd ßý föllöwïng thé "
+"güïdänçé ßélöw: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
+
+#: public/js/drag_and_drop.js
 msgid ""
 "Use only TAB and SHIFT+TAB to navigate between draggable items and drop "
 "zones."
@@ -619,13 +633,13 @@ msgstr ""
 "Ûsé önlý TÀB änd SHÌFT+TÀB tö nävïgäté ßétwéén dräggäßlé ïtéms änd dröp "
 "zönés. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: drag_and_drop_v2/public/js/drag_and_drop.js
+#: public/js/drag_and_drop.js
 msgid "Press CTRL+M to select a draggable item (effectively picking it up)."
 msgstr ""
 "Préss ÇTRL+M tö séléçt ä dräggäßlé ïtém (éfféçtïvélý pïçkïng ït üp). Ⱡ'σяєм "
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: drag_and_drop_v2/public/js/drag_and_drop.js
+#: public/js/drag_and_drop.js
 msgid ""
 "Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press "
 "CTRL+M once more to drop it here."
@@ -633,7 +647,7 @@ msgstr ""
 "Nävïgäté üsïng TÀB änd SHÌFT+TÀB tö thé äppröprïäté dröpzöné änd préss "
 "ÇTRL+M önçé möré tö dröp ït héré. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
-#: drag_and_drop_v2/public/js/drag_and_drop.js
+#: public/js/drag_and_drop.js
 msgid ""
 "Press ESC if you want to cancel the drop operation (for example, to select a"
 " different item)."
@@ -641,7 +655,7 @@ msgstr ""
 "Préss ÉSÇ ïf ýöü wänt tö çänçél thé dröp öpérätïön (för éxämplé, tö séléçt ä"
 " dïfférént ïtém). Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
 
-#: drag_and_drop_v2/public/js/drag_and_drop.js
+#: public/js/drag_and_drop.js
 msgid ""
 "TAB back to the list of draggable items and repeat this process until all of"
 " the draggable items have been placed on their respective dropzones."
@@ -656,16 +670,107 @@ msgstr ""
 "ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂ є#"
 
 #: public/js/drag_and_drop.js
-msgid "Close"
-msgstr "Çlösé Ⱡ'σяєм ιρѕ#"
+msgid "You have used {used} of {total} attempts."
+msgstr ""
+"Ýöü hävé üséd {used} öf {total} ättémpts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєт#"
+
+#: public/js/drag_and_drop.js
+msgid "Submit"
+msgstr "Süßmït Ⱡ'σяєм ιρѕυ#"
+
+#: public/js/drag_and_drop.js
+msgid "Show Answer"
+msgstr "Shöw Ànswér Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
 #: public/js/drag_and_drop.js
 msgid "Go to Beginning"
 msgstr "Gö tö Bégïnnïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
 #: public/js/drag_and_drop.js
+msgid "Reset"
+msgstr "Rését Ⱡ'σяєм ιρѕ#"
+
+#: public/js/drag_and_drop.js public/js/drag_and_drop.js
+msgid "Some of your answers were not correct."
+msgstr ""
+"Sömé öf ýöür änswérs wéré nöt çörréçt. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: public/js/drag_and_drop.js public/js/drag_and_drop.js
+msgid "Hints:"
+msgstr "Hïnts: Ⱡ'σяєм ιρѕυ#"
+
+#: public/js/drag_and_drop.js
+msgid "Correct"
+msgstr "Çörréçt Ⱡ'σяєм ιρѕυм #"
+
+#: public/js/drag_and_drop.js
+msgid "Incorrect"
+msgstr "Ìnçörréçt Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#. Translators: {earned} is the number of points earned. {possible} is the
+#. total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
+#. points will always be at least 1. We pluralize based on the total number of
+#. points (example: 0/1 point; 1/2 points).
+#: public/js/drag_and_drop.js
+msgid "{earned}/{possible} point (graded)"
+msgid_plural "{earned}/{possible} points (graded)"
+msgstr[0] "{earned}/{possible} pöïnt (grädéd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+msgstr[1] ""
+"{earned}/{possible} pöïnts (grädéd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
+
+#. Translators: {earned} is the number of points earned. {possible} is the
+#. total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
+#. points will always be at least 1. We pluralize based on the total number of
+#. points (example: 0/1 point; 1/2 points).
+#: public/js/drag_and_drop.js
+msgid "{earned}/{possible} point (ungraded)"
+msgid_plural "{earned}/{possible} points (ungraded)"
+msgstr[0] ""
+"{earned}/{possible} pöïnt (üngrädéd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
+msgstr[1] ""
+"{earned}/{possible} pöïnts (üngrädéd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#. Translators: {possible} is the number of points possible (examples: 1, 3,
+#. 10).
+#: public/js/drag_and_drop.js
+msgid "{possible} point possible (graded)"
+msgid_plural "{possible} points possible (graded)"
+msgstr[0] ""
+"{possible} pöïnt pössïßlé (grädéd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
+msgstr[1] ""
+"{possible} pöïnts pössïßlé (grädéd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+
+#. Translators: {possible} is the number of points possible (examples: 1, 3,
+#. 10).
+#: public/js/drag_and_drop.js
+msgid "{possible} point possible (ungraded)"
+msgid_plural "{possible} points possible (ungraded)"
+msgstr[0] ""
+"{possible} pöïnt pössïßlé (üngrädéd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+msgstr[1] ""
+"{possible} pöïnts pössïßlé (üngrädéd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+
+#: public/js/drag_and_drop.js
+msgid "Drag and Drop Problem"
+msgstr "Dräg änd Dröp Prößlém Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: public/js/drag_and_drop.js
 msgid "Problem"
 msgstr "Prößlém Ⱡ'σяєм ιρѕυм #"
+
+#: public/js/drag_and_drop.js
+msgid "Item Bank"
+msgstr "Ìtém Bänk Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: public/js/drag_and_drop.js
+msgid "Drop Targets"
+msgstr "Dröp Tärgéts Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: public/js/drag_and_drop.js
+msgid "Actions"
+msgstr "Àçtïöns Ⱡ'σяєм ιρѕυм #"
 
 #: public/js/drag_and_drop.js
 msgid "An error occurred. Unable to load drag and drop problem."
@@ -674,17 +779,12 @@ msgstr ""
 "ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
 #: public/js/drag_and_drop.js
-msgid "You have used {used} of {total} attempts."
+msgid "You cannot add any more items to this zone."
 msgstr ""
-"Ýöü hävé üséd {used} öf {total} ättémpts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєт#"
+"Ýöü çännöt ädd äný möré ïtéms tö thïs zöné. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
 
-#: public/js/drag_and_drop.js
-msgid "Some of your answers were not correct."
-msgstr ""
-"Sömé öf ýöür änswérs wéré nöt çörréçt. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя#"
-
+#: public/js/drag_and_drop_edit.js public/js/drag_and_drop_edit.js
 #: public/js/drag_and_drop_edit.js
 msgid "There was an error with your form."
 msgstr ""
@@ -696,120 +796,17 @@ msgstr ""
 "Pléäsé çhéçk övér ýöür süßmïssïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
 #: public/js/drag_and_drop_edit.js
-msgid "None"
-msgstr "Nöné Ⱡ'σяєм ι#"
+msgid "Zone {num}"
+msgid_plural "Zone {num}"
+msgstr[0] "Zöné {num} Ⱡ'σяєм ιρѕυм ∂#"
+msgstr[1] "Zöné {num} Ⱡ'σяєм ιρѕυм ∂#"
 
-# Translators: {earned} is the number of points earned. {possible} is the
-# total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
-# points will always be at least 1. We pluralize based on the total number of
-# points (example: 0/1 point; 1/2 points).
-#: public/js/drag_and_drop.js
-msgid "{earned}/{possible} point (graded)"
-msgid_plural "{earned}/{possible} points (graded)"
-msgstr[0] "{earned}/{possible} pöïnt (grädéd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
-msgstr[1] ""
-"{earned}/{possible} pöïnts (grädéd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
-
-# Translators: {earned} is the number of points earned. {possible} is the
-# total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
-# points will always be at least 1. We pluralize based on the total number of
-# points (example: 0/1 point; 1/2 points).
-#: public/js/drag_and_drop.js
-msgid "{earned}/{possible} point (ungraded)"
-msgid_plural "{earned}/{possible} points (ungraded)"
-msgstr[0] ""
-"{earned}/{possible} pöïnt (üngrädéd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
-msgstr[1] ""
-"{earned}/{possible} pöïnts (üngrädéd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
-
-# Translators: {possible} is the number of points possible (examples: 1, 3,
-# 10).
-#: public/js/drag_and_drop.js
-msgid "{possible} point possible (graded)"
-msgid_plural "{possible} points possible (graded)"
-msgstr[0] ""
-"{possible} pöïnt pössïßlé (grädéd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
-msgstr[1] ""
-"{possible} pöïnts pössïßlé (grädéd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
-
-# Translators: {possible} is the number of points possible (examples: 1, 3,
-# 10).
-#: public/js/drag_and_drop.js
-msgid "{possible} point possible (ungraded)"
-msgid_plural "{possible} points possible (ungraded)"
-msgstr[0] ""
-"{possible} pöïnt pössïßlé (üngrädéd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
-msgstr[1] ""
-"{possible} pöïnts pössïßlé (üngrädéd) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid "Hints:"
-msgstr "Hïnts: Ⱡ'σяєм ιρѕυ#"
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid ", dropzone"
-msgstr ", dröpzöné Ⱡ'σяєм ιρѕυм ∂σłσ#"
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid "Drag and Drop Problem"
-msgstr "Dräg änd Dröp Prößlém Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid "Drop Targets"
-msgstr "Dröp Tärgéts Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid "Actions"
-msgstr "Àçtïöns Ⱡ'σяєм ιρѕυм #"
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid "Submitting"
-msgstr "Süßmïttïng Ⱡ'σяєм ιρѕυм ∂σłσ#"
-
-#: utils.py
-msgid "Your highest score is {score}"
-msgstr "Ýöür hïghést sçöré ïs {score} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
-
-#: utils.py
-msgid "Final attempt was used, highest score is {score}"
+#: public/js/drag_and_drop_edit.js
+msgid "Please check the values you entered."
 msgstr ""
-"Fïnäl ättémpt wäs üséd, hïghést sçöré ïs {score} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
-"αмєт, ¢σηѕє¢тєтυя #"
+"Pléäsé çhéçk thé välüés ýöü éntéréd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
 
-#: utils.py
-msgid "Correctly placed {correct_count} item."
-msgid_plural "Correctly placed {correct_count} items."
-msgstr[0] ""
-"Çörréçtlý pläçéd {correct_count} ïtém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
-msgstr[1] ""
-"Çörréçtlý pläçéd {correct_count} ïtéms. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
-
-#: utils.py
-msgid "Misplaced {misplaced_count} item."
-msgid_plural "Misplaced {misplaced_count} items."
-msgstr[0] "Mïspläçéd {misplaced_count} ïtém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
-msgstr[1] "Mïspläçéd {misplaced_count} ïtéms. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
-
-#: utils.py
-msgid ""
-"Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
-msgid_plural ""
-"Misplaced {misplaced_count} items. Misplaced items were returned to item "
-"bank."
-msgstr[0] ""
-"Mïspläçéd {misplaced_count} ïtém. Mïspläçéd ïtém wäs rétürnéd tö ïtém ßänk. "
-"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
-msgstr[1] ""
-"Mïspläçéd {misplaced_count} ïtéms. Mïspläçéd ïtéms wéré rétürnéd tö ïtém "
-"ßänk. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
-
-#: utils.py
-msgid "Did not place {missing_count} required item."
-msgid_plural "Did not place {missing_count} required items."
-msgstr[0] ""
-"Dïd nöt pläçé {missing_count} réqüïréd ïtém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тє#"
-msgstr[1] ""
-"Dïd nöt pläçé {missing_count} réqüïréd ïtéms. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тє#"
+#: public/js/drag_and_drop_edit.js
+msgid "Saving"
+msgstr "Sävïng Ⱡ'σяєм ιρѕυ#"

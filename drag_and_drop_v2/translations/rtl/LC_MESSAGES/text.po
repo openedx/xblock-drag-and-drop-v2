@@ -1,11 +1,16 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"POT-Creation-Date: 2016-03-30 16:54+0500\n"
-"PO-Revision-Date: 2016-03-30 16:54+0500\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-09-12 09:02-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: rtl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,14 +26,6 @@ msgstr ""
 "Ⱥn ᴉsøsɔǝlǝs ʇɹᴉɐnƃlǝ ʍᴉʇɥ ʇɥɹǝǝ lɐʎǝɹs øɟ sᴉɯᴉlɐɹ ɥǝᴉƃɥʇ. Ɨʇ ᴉs sɥøʍn "
 "ndɹᴉƃɥʇ, sø ʇɥǝ ʍᴉdǝsʇ lɐʎǝɹ ᴉs løɔɐʇǝd ɐʇ ʇɥǝ bøʇʇøɯ, ɐnd ʇɥǝ nɐɹɹøʍǝsʇ "
 "lɐʎǝɹ ᴉs løɔɐʇǝd ɐʇ ʇɥǝ ʇød."
-
-#: default_data.py
-msgid "Of course it goes here! It goes anywhere!"
-msgstr "Øɟ ɔønɹsǝ ᴉʇ ƃøǝs ɥǝɹǝ! Ɨʇ ƃøǝs ɐnʎʍɥǝɹǝ!"
-
-#: default_data.py
-msgid "Goes anywhere"
-msgstr "Ǥøǝs ɐnʎʍɥǝɹǝ"
 
 #: default_data.py
 msgid "The Top Zone"
@@ -60,9 +57,16 @@ msgstr ""
 "Ʉsǝ ʇɥᴉs zønǝ ʇø ɐssøɔᴉɐʇǝ ɐn ᴉʇǝɯ ʍᴉʇɥ ʇɥǝ bøʇʇøɯ lɐʎǝɹ øɟ ʇɥǝ ʇɹᴉɐnƃlǝ."
 
 #: default_data.py
-#, python-brace-format
-msgid "Correct! This one belongs to {zone}."
-msgstr "Ȼøɹɹǝɔʇ! Ŧɥᴉs ønǝ bǝlønƃs ʇø {zone}."
+msgid "Correct! This one belongs to The Top Zone."
+msgstr "Ȼøɹɹǝɔʇ! Ŧɥᴉs ønǝ bǝlønƃs ʇø Ŧɥǝ Ŧød Ƶønǝ."
+
+#: default_data.py
+msgid "Correct! This one belongs to The Middle Zone."
+msgstr "Ȼøɹɹǝɔʇ! Ŧɥᴉs ønǝ bǝlønƃs ʇø Ŧɥǝ Mᴉddlǝ Ƶønǝ."
+
+#: default_data.py
+msgid "Correct! This one belongs to The Bottom Zone."
+msgstr "Ȼøɹɹǝɔʇ! Ŧɥᴉs ønǝ bǝlønƃs ʇø Ŧɥǝ Ƀøʇʇøɯ Ƶønǝ."
 
 #: default_data.py
 msgid "No, this item does not belong here. Try again."
@@ -73,12 +77,8 @@ msgid "You silly, there are no zones for this one."
 msgstr "Ɏøn sᴉllʎ, ʇɥǝɹǝ ɐɹǝ nø zønǝs ɟøɹ ʇɥᴉs ønǝ."
 
 #: default_data.py
-msgid "Drag the items onto the image above."
-msgstr "Đɹɐƃ ʇɥǝ ᴉʇǝɯs ønʇø ʇɥǝ ᴉɯɐƃǝ ɐbøʌǝ."
-
-#: default_data.py
-msgid "Good work! You have completed this drag and drop problem."
-msgstr "Ǥøød ʍøɹʞ! Ɏøn ɥɐʌǝ ɔøɯdlǝʇǝd ʇɥᴉs dɹɐƃ ɐnd dɹød dɹøblǝɯ."
+msgid "Of course it goes here! It goes anywhere!"
+msgstr "Øɟ ɔønɹsǝ ᴉʇ ƃøǝs ɥǝɹǝ! Ɨʇ ƃøǝs ɐnʎʍɥǝɹǝ!"
 
 #: default_data.py
 msgid "Goes to the top"
@@ -93,18 +93,22 @@ msgid "Goes to the bottom"
 msgstr "Ǥøǝs ʇø ʇɥǝ bøʇʇøɯ"
 
 #: default_data.py
+msgid "Goes anywhere"
+msgstr "Ǥøǝs ɐnʎʍɥǝɹǝ"
+
+#: default_data.py
 msgid "I don't belong anywhere"
 msgstr "Ɨ døn'ʇ bǝlønƃ ɐnʎʍɥǝɹǝ"
 
-#: drag_and_drop_v2.py
-msgid ""
-"This setting limits the number of items that can be dropped into a single "
-"zone."
-msgstr ""
-"Ŧɥᴉs sǝʇʇᴉnƃ lᴉɯᴉʇs ʇɥǝ nnɯbǝɹ øɟ ᴉʇǝɯs ʇɥɐʇ ɔɐn bǝ dɹøddǝd ᴉnʇø ɐ sᴉnƃlǝ "
-"zønǝ."
+#: default_data.py
+msgid "Drag the items onto the image above."
+msgstr "Đɹɐƃ ʇɥǝ ᴉʇǝɯs ønʇø ʇɥǝ ᴉɯɐƃǝ ɐbøʌǝ."
 
-#: drag_and_drop_v2.py templates/html/js_templates.html
+#: default_data.py
+msgid "Good work! You have completed this drag and drop problem."
+msgstr "Ǥøød ʍøɹʞ! Ɏøn ɥɐʌǝ ɔøɯdlǝʇǝd ʇɥᴉs dɹɐƃ ɐnd dɹød dɹøblǝɯ."
+
+#: drag_and_drop_v2.py
 msgid "Title"
 msgstr "Ŧᴉʇlǝ"
 
@@ -206,6 +210,18 @@ msgstr ""
 "Ŧǝxʇ ɔøløɹ ʇø nsǝ ɟøɹ dɹɐƃƃɐblǝ ᴉʇǝɯs (ǝxɐɯdlǝ: 'ʍɥᴉʇǝ' øɹ '#ɟɟɟɟɟɟ')."
 
 #: drag_and_drop_v2.py
+msgid "Maximum items per zone"
+msgstr "Mɐxᴉɯnɯ ᴉʇǝɯs dǝɹ zønǝ"
+
+#: drag_and_drop_v2.py
+msgid ""
+"This setting limits the number of items that can be dropped into a single "
+"zone."
+msgstr ""
+"Ŧɥᴉs sǝʇʇᴉnƃ lᴉɯᴉʇs ʇɥǝ nnɯbǝɹ øɟ ᴉʇǝɯs ʇɥɐʇ ɔɐn bǝ dɹøddǝd ᴉnʇø ɐ sᴉnƃlǝ "
+"zønǝ."
+
+#: drag_and_drop_v2.py
 msgid "Problem data"
 msgstr "Ᵽɹøblǝɯ dɐʇɐ"
 
@@ -236,12 +252,21 @@ msgid "Indicates whether a learner has completed the problem at least once"
 msgstr "Ɨndᴉɔɐʇǝs ʍɥǝʇɥǝɹ ɐ lǝɐɹnǝɹ ɥɐs ɔøɯdlǝʇǝd ʇɥǝ dɹøblǝɯ ɐʇ lǝɐsʇ ønɔǝ"
 
 #: drag_and_drop_v2.py
-msgid "do_attempt handler should only be called for assessment mode"
-msgstr "dø_ɐʇʇǝɯdʇ ɥɐndlǝɹ sɥønld ønlʎ bǝ ɔɐllǝd ɟøɹ ɐssǝssɯǝnʇ ɯødǝ"
+msgid ""
+"DEPRECATED. Keeps maximum score achieved by student as a weighted value."
+msgstr ""
+"ĐɆⱣɌɆȻȺŦɆĐ. Ꝁǝǝds ɯɐxᴉɯnɯ sɔøɹǝ ɐɔɥᴉǝʌǝd bʎ sʇndǝnʇ ɐs ɐ ʍǝᴉƃɥʇǝd ʌɐlnǝ."
 
 #: drag_and_drop_v2.py
-msgid "Max number of attempts reached"
-msgstr "Mɐx nnɯbǝɹ øɟ ɐʇʇǝɯdʇs ɹǝɐɔɥǝd"
+msgid ""
+"Keeps maximum score achieved by student as a raw value between 0 and 1."
+msgstr ""
+"Ꝁǝǝds ɯɐxᴉɯnɯ sɔøɹǝ ɐɔɥᴉǝʌǝd bʎ sʇndǝnʇ ɐs ɐ ɹɐʍ ʌɐlnǝ bǝʇʍǝǝn 0 ɐnd 1."
+
+#: drag_and_drop_v2.py
+#, python-brace-format
+msgid "Unknown DnDv2 mode {mode} - course is misconfigured"
+msgstr "Ʉnʞnøʍn ĐnĐʌ2 ɯødǝ {mode} - ɔønɹsǝ ᴉs ɯᴉsɔønɟᴉƃnɹǝd"
 
 #: drag_and_drop_v2.py
 msgid "show_answer handler should only be called for assessment mode"
@@ -252,136 +277,20 @@ msgid "There are attempts remaining"
 msgstr "Ŧɥǝɹǝ ɐɹǝ ɐʇʇǝɯdʇs ɹǝɯɐᴉnᴉnƃ"
 
 #: drag_and_drop_v2.py
-msgid "Unknown DnDv2 mode {mode} - course is misconfigured"
-msgstr "Ʉnʞnøʍn ĐnĐʌ2 ɯødǝ {mode} - ɔønɹsǝ ᴉs ɯᴉsɔønɟᴉƃnɹǝd"
+msgid "do_attempt handler should only be called for assessment mode"
+msgstr "dø_ɐʇʇǝɯdʇ ɥɐndlǝɹ sɥønld ønlʎ bǝ ɔɐllǝd ɟøɹ ɐssǝssɯǝnʇ ɯødǝ"
 
-#: templates/html/js_templates.html
-msgid "Remove zone"
-msgstr "Ɍǝɯøʌǝ zønǝ"
-
-#: drag_and_drop_v2.py
-msgid "Keeps maximum score achieved by student"
-msgstr "Ꝁǝǝds ɯɐxᴉɯnɯ sɔøɹǝ ɐɔɥᴉǝʌǝd bʎ sʇndǝnʇ"
-
-#: drag_and_drop_v2.py
-msgid "Failed to parse \"Maximum items per zone\""
-msgstr "Fɐᴉlǝd ʇø dɐɹsǝ \"Mɐxᴉɯnɯ ᴉʇǝɯs dǝɹ zønǝ\""
-
-#: drag_and_drop_v2.py
-msgid ""
-"\"Maximum items per zone\" should be positive integer, got "
-"{max_items_per_zone}"
-msgstr ""
-"\"Mɐxᴉɯnɯ ᴉʇǝɯs dǝɹ zønǝ\" sɥønld bǝ døsᴉʇᴉʌǝ ᴉnʇǝƃǝɹ, ƃøʇ "
-"{max_items_per_zone}"
-
-#: templates/html/js_templates.html
-msgid "Text"
-msgstr "Ŧǝxʇ"
-
-#: templates/html/js_templates.html
-msgid "Description"
-msgstr "Đǝsɔɹᴉdʇᴉøn"
-
-#: templates/html/js_templates.html
-msgid "Describe this zone to non-visual users."
-msgstr "Đǝsɔɹᴉbǝ ʇɥᴉs zønǝ ʇø nøn-ʌᴉsnɐl nsǝɹs."
-
-#: templates/html/js_templates.html
-msgid "width"
-msgstr "ʍᴉdʇɥ"
-
-#: templates/html/js_templates.html
-msgid "height"
-msgstr "ɥǝᴉƃɥʇ"
-
-#: templates/html/js_templates.html
-msgid "Alignment"
-msgstr "Ⱥlᴉƃnɯǝnʇ"
-
-#: templates/html/js_templates.html
-msgid "none"
-msgstr "nønǝ"
-
-#: templates/html/js_templates.html
-msgid "left"
-msgstr "lǝɟʇ"
-
-#: templates/html/js_templates.html
-msgid "center"
-msgstr "ɔǝnʇǝɹ"
-
-#: templates/html/js_templates.html
-msgid "right"
-msgstr "ɹᴉƃɥʇ"
-
-#: templates/html/js_templates.html
-msgid "Align dropped items to the left, center, or right."
-msgstr "Ⱥlᴉƃn dɹøddǝd ᴉʇǝɯs ʇø ʇɥǝ lǝɟʇ, ɔǝnʇǝɹ, øɹ ɹᴉƃɥʇ."
-
-#: templates/html/js_templates.html
-msgid "Remove item"
-msgstr "Ɍǝɯøʌǝ ᴉʇǝɯ"
-
-#: templates/html/js_templates.html
-msgid "Zone"
-msgstr "Ƶønǝ"
-
-#: templates/html/js_templates.html
-msgid "Image URL (alternative to the text)"
-msgstr "Ɨɯɐƃǝ ɄɌŁ (ɐlʇǝɹnɐʇᴉʌǝ ʇø ʇɥǝ ʇǝxʇ)"
-
-#: templates/html/js_templates.html
-msgid "For example, 'http://example.com/image.png' or '/static/image.png'."
-msgstr "Føɹ ǝxɐɯdlǝ, 'ɥʇʇd://ǝxɐɯdlǝ.ɔøɯ/ᴉɯɐƃǝ.dnƃ' øɹ '/sʇɐʇᴉɔ/ᴉɯɐƃǝ.dnƃ'."
-
-#: templates/html/js_templates.html
-msgid ""
-"Image description (should provide sufficient information to place the item "
-"even if the image did not load)"
-msgstr ""
-"Ɨɯɐƃǝ dǝsɔɹᴉdʇᴉøn (sɥønld dɹøʌᴉdǝ snɟɟᴉɔᴉǝnʇ ᴉnɟøɹɯɐʇᴉøn ʇø dlɐɔǝ ʇɥǝ ᴉʇǝɯ "
-"ǝʌǝn ᴉɟ ʇɥǝ ᴉɯɐƃǝ dᴉd nøʇ løɐd)"
-
-#: templates/html/js_templates.html
-msgid "Success feedback"
-msgstr "Snɔɔǝss ɟǝǝdbɐɔʞ"
-
-#: templates/html/js_templates.html
-msgid "Error feedback"
-msgstr "Ɇɹɹøɹ ɟǝǝdbɐɔʞ"
-
-#: templates/html/js_templates.html
-msgid "Show advanced settings"
-msgstr "Sɥøʍ ɐdʌɐnɔǝd sǝʇʇᴉnƃs"
-
-#: templates/html/js_templates.html
-msgid "Preferred width"
-msgstr "Ᵽɹǝɟǝɹɹǝd ʍᴉdʇɥ"
-
-#: templates/html/js_templates.html
-msgid ""
-"Specify preferred width as percentage of the background image width. Leave "
-"blank for automatic width."
-msgstr ""
-"Sdǝɔᴉɟʎ dɹǝɟǝɹɹǝd ʍᴉdʇɥ ɐs dǝɹɔǝnʇɐƃǝ øɟ ʇɥǝ bɐɔʞƃɹønnd ᴉɯɐƃǝ ʍᴉdʇɥ. Łǝɐʌǝ "
-"blɐnʞ ɟøɹ ɐnʇøɯɐʇᴉɔ ʍᴉdʇɥ."
-
-#: templates/html/js_templates.html
-msgid "Use text that is clear and descriptive of the item to be placed."
-msgstr "Ʉsǝ ʇǝxʇ ʇɥɐʇ ᴉs ɔlǝɐɹ ɐnd dǝsɔɹᴉdʇᴉʌǝ øɟ ʇɥǝ ᴉʇǝɯ ʇø bǝ dlɐɔǝd."
+#: drag_and_drop_v2.py drag_and_drop_v2.py
+msgid "Max number of attempts reached"
+msgstr "Mɐx nnɯbǝɹ øɟ ɐʇʇǝɯdʇs ɹǝɐɔɥǝd"
 
 #: templates/html/drag_and_drop.html
 msgid "Loading drag and drop problem."
 msgstr "Łøɐdᴉnƃ dɹɐƃ ɐnd dɹød dɹøblǝɯ."
 
 #: templates/html/drag_and_drop_edit.html
-msgid ""
-"Note: do not edit the problem if students have already completed it. Delete "
-"the problem and create a new one."
-msgstr ""
-"Nøʇǝ: dø nøʇ ǝdᴉʇ ʇɥǝ dɹøblǝɯ ᴉɟ sʇndǝnʇs ɥɐʌǝ ɐlɹǝɐdʎ ɔøɯdlǝʇǝd ᴉʇ. Đǝlǝʇǝ "
-"ʇɥǝ dɹøblǝɯ ɐnd ɔɹǝɐʇǝ ɐ nǝʍ ønǝ."
+msgid "Basic Settings"
+msgstr "Ƀɐsᴉɔ Sǝʇʇᴉnƃs"
 
 #: templates/html/drag_and_drop_edit.html
 msgid "Introductory feedback"
@@ -391,13 +300,29 @@ msgstr "Ɨnʇɹødnɔʇøɹʎ ɟǝǝdbɐɔʞ"
 msgid "Final feedback"
 msgstr "Fᴉnɐl ɟǝǝdbɐɔʞ"
 
-#: templates/html/drag_and_drop_edit.html templates/html/js_templates.html
+#: templates/html/drag_and_drop_edit.html
 msgid "Zones"
 msgstr "Ƶønǝs"
 
 #: templates/html/drag_and_drop_edit.html
+msgid "Background Image"
+msgstr "Ƀɐɔʞƃɹønnd Ɨɯɐƃǝ"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Provide custom image"
+msgstr "Ᵽɹøʌᴉdǝ ɔnsʇøɯ ᴉɯɐƃǝ"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Generate image automatically"
+msgstr "Ǥǝnǝɹɐʇǝ ᴉɯɐƃǝ ɐnʇøɯɐʇᴉɔɐllʎ"
+
+#: templates/html/drag_and_drop_edit.html
 msgid "Background URL"
 msgstr "Ƀɐɔʞƃɹønnd ɄɌŁ"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Change background"
+msgstr "Ȼɥɐnƃǝ bɐɔʞƃɹønnd"
 
 #: templates/html/drag_and_drop_edit.html
 msgid ""
@@ -408,8 +333,40 @@ msgstr ""
 "'/sʇɐʇᴉɔ/bɐɔʞƃɹønnd.dnƃ'."
 
 #: templates/html/drag_and_drop_edit.html
-msgid "Change background"
-msgstr "Ȼɥɐnƃǝ bɐɔʞƃɹønnd"
+msgid "Zone Layout"
+msgstr "Ƶønǝ Łɐʎønʇ"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Number of columns"
+msgstr "Nnɯbǝɹ øɟ ɔølnɯns"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Number of rows"
+msgstr "Nnɯbǝɹ øɟ ɹøʍs"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Number of columns and rows."
+msgstr "Nnɯbǝɹ øɟ ɔølnɯns ɐnd ɹøʍs."
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Zone Size"
+msgstr "Ƶønǝ Sᴉzǝ"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Zone width"
+msgstr "Ƶønǝ ʍᴉdʇɥ"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Zone height"
+msgstr "Ƶønǝ ɥǝᴉƃɥʇ"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Size of a single zone in pixels."
+msgstr "Sᴉzǝ øɟ ɐ sᴉnƃlǝ zønǝ ᴉn dᴉxǝls."
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Generate image and zones"
+msgstr "Ǥǝnǝɹɐʇǝ ᴉɯɐƃǝ ɐnd zønǝs"
 
 #: templates/html/drag_and_drop_edit.html
 msgid "Background description"
@@ -430,10 +387,6 @@ msgstr ""
 "                        "
 
 #: templates/html/drag_and_drop_edit.html
-msgid "Zone definitions"
-msgstr "Ƶønǝ dǝɟᴉnᴉʇᴉøns"
-
-#: templates/html/drag_and_drop_edit.html
 msgid "Zone labels"
 msgstr "Ƶønǝ lɐbǝls"
 
@@ -450,12 +403,20 @@ msgid "Display zone borders on the image"
 msgstr "Đᴉsdlɐʎ zønǝ bøɹdǝɹs øn ʇɥǝ ᴉɯɐƃǝ"
 
 #: templates/html/drag_and_drop_edit.html
+msgid "Zone definitions"
+msgstr "Ƶønǝ dǝɟᴉnᴉʇᴉøns"
+
+#: templates/html/drag_and_drop_edit.html
 msgid "Add a zone"
 msgstr "Ⱥdd ɐ zønǝ"
 
 #: templates/html/drag_and_drop_edit.html
 msgid "Items"
 msgstr "Ɨʇǝɯs"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Item definitions"
+msgstr "Ɨʇǝɯ dǝɟᴉnᴉʇᴉøns"
 
 #: templates/html/drag_and_drop_edit.html
 msgid "Add an item"
@@ -473,230 +434,32 @@ msgstr "Sɐʌǝ"
 msgid "Cancel"
 msgstr "Ȼɐnɔǝl"
 
-#: public/js/drag_and_drop.js
-msgid "ok"
-msgstr "øʞ"
-
-#: public/js/drag_and_drop.js
-msgid "Item Bank"
-msgstr "Ɨʇǝɯ Ƀɐnʞ"
-
-#: public/js/drag_and_drop.js
-msgid "Placed in: {zone_title}"
-msgstr "Ᵽlɐɔǝd ᴉn: {zone_title}"
-
-#: public/js/drag_and_drop.js
-msgid "Correctly placed in: {zone_title}"
-msgstr "Ȼøɹɹǝɔʇlʎ dlɐɔǝd ᴉn: {zone_title}"
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid ", draggable, grabbed"
-msgstr ", dɹɐƃƃɐblǝ, ƃɹɐbbǝd"
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid ", draggable"
-msgstr ", dɹɐƃƃɐblǝ"
-
-#: public/js/drag_and_drop.js
-msgid "Reset"
-msgstr "Ɍǝsǝʇ"
-
-#: public/js/drag_and_drop.js
-msgid "Show Answer"
-msgstr "Sɥøʍ Ⱥnsʍǝɹ"
-
-#: public/js/drag_and_drop.js
-msgid "Hide Answer"
-msgstr "Ħᴉdǝ Ⱥnsʍǝɹ"
-
-#: public/js/drag_and_drop.js
-msgid "Submit"
-msgstr "Snbɯᴉʇ"
-
-#: public/js/drag_and_drop.js
-msgid "Feedback"
-msgstr "Fǝǝdbɐɔʞ"
-
-#: public/js/drag_and_drop.js
-msgid "Keyboard Help"
-msgstr "Ꝁǝʎbøɐɹd Ħǝld"
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid "This is a screen reader-friendly problem"
-msgstr "Ŧɥᴉs ᴉs ɐ sɔɹǝǝn ɹǝɐdǝɹ-ɟɹᴉǝndlʎ dɹøblǝɯ"
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid ""
-"You can complete this problem using only your keyboard by following the "
-"guidance below:"
-msgstr ""
-"Ɏøn ɔɐn ɔøɯdlǝʇǝ ʇɥᴉs dɹøblǝɯ nsᴉnƃ ønlʎ ʎønɹ ʞǝʎbøɐɹd bʎ ɟølløʍᴉnƃ ʇɥǝ "
-"ƃnᴉdɐnɔǝ bǝløʍ:"
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid ""
-"Drag and Drop problems consist of draggable items and dropzones. Users "
-"should select a draggable item with their keyboard and then navigate to an "
-"appropriate dropzone to drop it."
-msgstr ""
-"Đɹɐƃ ɐnd Đɹød dɹøblǝɯs ɔønsᴉsʇ øɟ dɹɐƃƃɐblǝ ᴉʇǝɯs ɐnd dɹødzønǝs. Ʉsǝɹs "
-"sɥønld sǝlǝɔʇ ɐ dɹɐƃƃɐblǝ ᴉʇǝɯ ʍᴉʇɥ ʇɥǝᴉɹ ʞǝʎbøɐɹd ɐnd ʇɥǝn nɐʌᴉƃɐʇǝ ʇø ɐn "
-"ɐddɹødɹᴉɐʇǝ dɹødzønǝ ʇø dɹød ᴉʇ."
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid ""
-"Use only TAB and SHIFT+TAB to navigate between draggable items and drop "
-"zones."
-msgstr ""
-"Ʉsǝ ønlʎ ŦȺɃ ɐnd SĦƗFŦ+ŦȺɃ ʇø nɐʌᴉƃɐʇǝ bǝʇʍǝǝn dɹɐƃƃɐblǝ ᴉʇǝɯs ɐnd dɹød "
-"zønǝs."
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid "Press CTRL+M to select a draggable item (effectively picking it up)."
-msgstr "Ᵽɹǝss ȻŦɌŁ+M ʇø sǝlǝɔʇ ɐ dɹɐƃƃɐblǝ ᴉʇǝɯ (ǝɟɟǝɔʇᴉʌǝlʎ dᴉɔʞᴉnƃ ᴉʇ nd)."
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid ""
-"Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press "
-"CTRL+M once more to drop it here."
-msgstr ""
-"Nɐʌᴉƃɐʇǝ nsᴉnƃ ŦȺɃ ɐnd SĦƗFŦ+ŦȺɃ ʇø ʇɥǝ ɐddɹødɹᴉɐʇǝ dɹødzønǝ ɐnd dɹǝss "
-"ȻŦɌŁ+M ønɔǝ ɯøɹǝ ʇø dɹød ᴉʇ ɥǝɹǝ."
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid ""
-"Press ESC if you want to cancel the drop operation (for example, to select a"
-" different item)."
-msgstr ""
-"Ᵽɹǝss ɆSȻ ᴉɟ ʎøn ʍɐnʇ ʇø ɔɐnɔǝl ʇɥǝ dɹød ødǝɹɐʇᴉøn (ɟøɹ ǝxɐɯdlǝ, ʇø sǝlǝɔʇ ɐ"
-" dᴉɟɟǝɹǝnʇ ᴉʇǝɯ)."
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid ""
-"TAB back to the list of draggable items and repeat this process until all of"
-" the draggable items have been placed on their respective dropzones."
-msgstr ""
-"ŦȺɃ bɐɔʞ ʇø ʇɥǝ lᴉsʇ øɟ dɹɐƃƃɐblǝ ᴉʇǝɯs ɐnd ɹǝdǝɐʇ ʇɥᴉs dɹøɔǝss nnʇᴉl ɐll øɟ"
-" ʇɥǝ dɹɐƃƃɐblǝ ᴉʇǝɯs ɥɐʌǝ bǝǝn dlɐɔǝd øn ʇɥǝᴉɹ ɹǝsdǝɔʇᴉʌǝ dɹødzønǝs."
-
-#: public/js/drag_and_drop.js
-msgid "Close"
-msgstr "Ȼløsǝ"
-
-#: public/js/drag_and_drop.js
-msgid "Go to Beginning"
-msgstr "Ǥø ʇø Ƀǝƃᴉnnᴉnƃ"
-
-#: public/js/drag_and_drop.js
-msgid "Problem"
-msgstr "Ᵽɹøblǝɯ"
-
-#: public/js/drag_and_drop.js
-msgid "An error occurred. Unable to load drag and drop problem."
-msgstr "Ⱥn ǝɹɹøɹ øɔɔnɹɹǝd. Ʉnɐblǝ ʇø løɐd dɹɐƃ ɐnd dɹød dɹøblǝɯ."
-
-#: public/js/drag_and_drop.js
-msgid "You have used {used} of {total} attempts."
-msgstr "Ɏøn ɥɐʌǝ nsǝd {used} øɟ {total} ɐʇʇǝɯdʇs."
-
-#: public/js/drag_and_drop.js
-msgid "Some of your answers were not correct."
-msgstr "Søɯǝ øɟ ʎønɹ ɐnsʍǝɹs ʍǝɹǝ nøʇ ɔøɹɹǝɔʇ."
-
-#: public/js/drag_and_drop_edit.js
-msgid "There was an error with your form."
-msgstr "Ŧɥǝɹǝ ʍɐs ɐn ǝɹɹøɹ ʍᴉʇɥ ʎønɹ ɟøɹɯ."
-
-#: public/js/drag_and_drop_edit.js
-msgid "Please check over your submission."
-msgstr "Ᵽlǝɐsǝ ɔɥǝɔʞ øʌǝɹ ʎønɹ snbɯᴉssᴉøn."
-
-#: public/js/drag_and_drop_edit.js
-msgid "None"
-msgstr "Nønǝ"
-
-# Translators: {earned} is the number of points earned. {possible} is the
-# total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
-# points will always be at least 1. We pluralize based on the total number of
-# points (example: 0/1 point; 1/2 points).
-#: public/js/drag_and_drop.js
-msgid "{earned}/{possible} point (graded)"
-msgid_plural "{earned}/{possible} points (graded)"
-msgstr[0] "{earned}/{possible} døᴉnʇ (ƃɹɐdǝd)"
-msgstr[1] "{earned}/{possible} døᴉnʇs (ƃɹɐdǝd)"
-
-# Translators: {earned} is the number of points earned. {possible} is the
-# total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
-# points will always be at least 1. We pluralize based on the total number of
-# points (example: 0/1 point; 1/2 points).
-#: public/js/drag_and_drop.js
-msgid "{earned}/{possible} point (ungraded)"
-msgid_plural "{earned}/{possible} points (ungraded)"
-msgstr[0] "{earned}/{possible} døᴉnʇ (nnƃɹɐdǝd)"
-msgstr[1] "{earned}/{possible} døᴉnʇs (nnƃɹɐdǝd)"
-
-# Translators: {possible} is the number of points possible (examples: 1, 3,
-# 10).
-#: public/js/drag_and_drop.js
-msgid "{possible} point possible (graded)"
-msgid_plural "{possible} points possible (graded)"
-msgstr[0] "{possible} døᴉnʇ døssᴉblǝ (ƃɹɐdǝd)"
-msgstr[1] "{possible} døᴉnʇs døssᴉblǝ (ƃɹɐdǝd)"
-
-# Translators: {possible} is the number of points possible (examples: 1, 3,
-# 10).
-#: public/js/drag_and_drop.js
-msgid "{possible} point possible (ungraded)"
-msgid_plural "{possible} points possible (ungraded)"
-msgstr[0] "{possible} døᴉnʇ døssᴉblǝ (nnƃɹɐdǝd)"
-msgstr[1] "{possible} døᴉnʇs døssᴉblǝ (nnƃɹɐdǝd)"
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid "Hints:"
-msgstr "Ħᴉnʇs:"
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid ", dropzone"
-msgstr ", dɹødzønǝ"
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid "Drag and Drop Problem"
-msgstr "Đɹɐƃ ɐnd Đɹød Ᵽɹøblǝɯ"
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid "Drop Targets"
-msgstr "Đɹød Ŧɐɹƃǝʇs"
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid "Actions"
-msgstr "Ⱥɔʇᴉøns"
-
-#: drag_and_drop_v2/public/js/drag_and_drop.js
-msgid "Submitting"
-msgstr "Snbɯᴉʇʇᴉnƃ"
-
 #: utils.py
+#, python-brace-format
 msgid "Your highest score is {score}"
 msgstr "Ɏønɹ ɥᴉƃɥǝsʇ sɔøɹǝ ᴉs {score}"
 
 #: utils.py
+#, python-brace-format
 msgid "Final attempt was used, highest score is {score}"
 msgstr "Fᴉnɐl ɐʇʇǝɯdʇ ʍɐs nsǝd, ɥᴉƃɥǝsʇ sɔøɹǝ ᴉs {score}"
 
 #: utils.py
+#, python-brace-format
 msgid "Correctly placed {correct_count} item."
 msgid_plural "Correctly placed {correct_count} items."
 msgstr[0] "Ȼøɹɹǝɔʇlʎ dlɐɔǝd {correct_count} ᴉʇǝɯ."
 msgstr[1] "Ȼøɹɹǝɔʇlʎ dlɐɔǝd {correct_count} ᴉʇǝɯs."
 
 #: utils.py
+#, python-brace-format
 msgid "Misplaced {misplaced_count} item."
 msgid_plural "Misplaced {misplaced_count} items."
 msgstr[0] "Mᴉsdlɐɔǝd {misplaced_count} ᴉʇǝɯ."
 msgstr[1] "Mᴉsdlɐɔǝd {misplaced_count} ᴉʇǝɯs."
 
 #: utils.py
+#, python-brace-format
 msgid ""
 "Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
 msgid_plural ""
@@ -709,7 +472,242 @@ msgstr[1] ""
 "bɐnʞ."
 
 #: utils.py
+#, python-brace-format
 msgid "Did not place {missing_count} required item."
 msgid_plural "Did not place {missing_count} required items."
 msgstr[0] "Đᴉd nøʇ dlɐɔǝ {missing_count} ɹǝbnᴉɹǝd ᴉʇǝɯ."
 msgstr[1] "Đᴉd nøʇ dlɐɔǝ {missing_count} ɹǝbnᴉɹǝd ᴉʇǝɯs."
+
+#: public/js/drag_and_drop.js public/js/drag_and_drop.js
+msgid "Submitting"
+msgstr "Snbɯᴉʇʇᴉnƃ"
+
+#: public/js/drag_and_drop.js
+msgid "Unknown Zone"
+msgstr "Ʉnʞnøʍn Ƶønǝ"
+
+#: public/js/drag_and_drop.js
+msgid "Placed in: {zone_title}"
+msgstr "Ᵽlɐɔǝd ᴉn: {zone_title}"
+
+#: public/js/drag_and_drop.js
+msgid "Correctly placed in: {zone_title}"
+msgstr "Ȼøɹɹǝɔʇlʎ dlɐɔǝd ᴉn: {zone_title}"
+
+#: public/js/drag_and_drop.js
+msgid ", draggable, grabbed"
+msgstr ", dɹɐƃƃɐblǝ, ƃɹɐbbǝd"
+
+#: public/js/drag_and_drop.js
+msgid ", draggable"
+msgstr ", dɹɐƃƃɐblǝ"
+
+#: public/js/drag_and_drop.js
+msgid "No items placed here"
+msgstr "Nø ᴉʇǝɯs dlɐɔǝd ɥǝɹǝ"
+
+#: public/js/drag_and_drop.js
+msgid "Items placed here: "
+msgstr "Ɨʇǝɯs dlɐɔǝd ɥǝɹǝ: "
+
+#: public/js/drag_and_drop.js
+msgid ", dropzone"
+msgstr ", dɹødzønǝ"
+
+#: public/js/drag_and_drop.js
+msgid "droppable"
+msgstr "dɹøddɐblǝ"
+
+#: public/js/drag_and_drop.js public/js/drag_and_drop.js
+msgid "Feedback"
+msgstr "Fǝǝdbɐɔʞ"
+
+#: public/js/drag_and_drop.js public/js/drag_and_drop.js
+#: public/js/drag_and_drop.js
+msgid "Close"
+msgstr "Ȼløsǝ"
+
+#: public/js/drag_and_drop.js public/js/drag_and_drop.js
+msgid "Keyboard Help"
+msgstr "Ꝁǝʎbøɐɹd Ħǝld"
+
+#: public/js/drag_and_drop.js
+msgid "This is a screen reader-friendly problem."
+msgstr "Ŧɥᴉs ᴉs ɐ sɔɹǝǝn ɹǝɐdǝɹ-ɟɹᴉǝndlʎ dɹøblǝɯ."
+
+#: public/js/drag_and_drop.js
+msgid ""
+"Drag and Drop problems consist of draggable items and dropzones. Users "
+"should select a draggable item with their keyboard and then navigate to an "
+"appropriate dropzone to drop it."
+msgstr ""
+"Đɹɐƃ ɐnd Đɹød dɹøblǝɯs ɔønsᴉsʇ øɟ dɹɐƃƃɐblǝ ᴉʇǝɯs ɐnd dɹødzønǝs. Ʉsǝɹs "
+"sɥønld sǝlǝɔʇ ɐ dɹɐƃƃɐblǝ ᴉʇǝɯ ʍᴉʇɥ ʇɥǝᴉɹ ʞǝʎbøɐɹd ɐnd ʇɥǝn nɐʌᴉƃɐʇǝ ʇø ɐn "
+"ɐddɹødɹᴉɐʇǝ dɹødzønǝ ʇø dɹød ᴉʇ."
+
+#: public/js/drag_and_drop.js
+msgid ""
+"You can complete this problem using only your keyboard by following the "
+"guidance below:"
+msgstr ""
+"Ɏøn ɔɐn ɔøɯdlǝʇǝ ʇɥᴉs dɹøblǝɯ nsᴉnƃ ønlʎ ʎønɹ ʞǝʎbøɐɹd bʎ ɟølløʍᴉnƃ ʇɥǝ "
+"ƃnᴉdɐnɔǝ bǝløʍ:"
+
+#: public/js/drag_and_drop.js
+msgid ""
+"Use only TAB and SHIFT+TAB to navigate between draggable items and drop "
+"zones."
+msgstr ""
+"Ʉsǝ ønlʎ ŦȺɃ ɐnd SĦƗFŦ+ŦȺɃ ʇø nɐʌᴉƃɐʇǝ bǝʇʍǝǝn dɹɐƃƃɐblǝ ᴉʇǝɯs ɐnd dɹød "
+"zønǝs."
+
+#: public/js/drag_and_drop.js
+msgid "Press CTRL+M to select a draggable item (effectively picking it up)."
+msgstr "Ᵽɹǝss ȻŦɌŁ+M ʇø sǝlǝɔʇ ɐ dɹɐƃƃɐblǝ ᴉʇǝɯ (ǝɟɟǝɔʇᴉʌǝlʎ dᴉɔʞᴉnƃ ᴉʇ nd)."
+
+#: public/js/drag_and_drop.js
+msgid ""
+"Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press "
+"CTRL+M once more to drop it here."
+msgstr ""
+"Nɐʌᴉƃɐʇǝ nsᴉnƃ ŦȺɃ ɐnd SĦƗFŦ+ŦȺɃ ʇø ʇɥǝ ɐddɹødɹᴉɐʇǝ dɹødzønǝ ɐnd dɹǝss "
+"ȻŦɌŁ+M ønɔǝ ɯøɹǝ ʇø dɹød ᴉʇ ɥǝɹǝ."
+
+#: public/js/drag_and_drop.js
+msgid ""
+"Press ESC if you want to cancel the drop operation (for example, to select a"
+" different item)."
+msgstr ""
+"Ᵽɹǝss ɆSȻ ᴉɟ ʎøn ʍɐnʇ ʇø ɔɐnɔǝl ʇɥǝ dɹød ødǝɹɐʇᴉøn (ɟøɹ ǝxɐɯdlǝ, ʇø sǝlǝɔʇ ɐ"
+" dᴉɟɟǝɹǝnʇ ᴉʇǝɯ)."
+
+#: public/js/drag_and_drop.js
+msgid ""
+"TAB back to the list of draggable items and repeat this process until all of"
+" the draggable items have been placed on their respective dropzones."
+msgstr ""
+"ŦȺɃ bɐɔʞ ʇø ʇɥǝ lᴉsʇ øɟ dɹɐƃƃɐblǝ ᴉʇǝɯs ɐnd ɹǝdǝɐʇ ʇɥᴉs dɹøɔǝss nnʇᴉl ɐll øɟ"
+" ʇɥǝ dɹɐƃƃɐblǝ ᴉʇǝɯs ɥɐʌǝ bǝǝn dlɐɔǝd øn ʇɥǝᴉɹ ɹǝsdǝɔʇᴉʌǝ dɹødzønǝs."
+
+#: public/js/drag_and_drop.js
+msgid "You have used {used} of {total} attempts."
+msgstr "Ɏøn ɥɐʌǝ nsǝd {used} øɟ {total} ɐʇʇǝɯdʇs."
+
+#: public/js/drag_and_drop.js
+msgid "Submit"
+msgstr "Snbɯᴉʇ"
+
+#: public/js/drag_and_drop.js
+msgid "Show Answer"
+msgstr "Sɥøʍ Ⱥnsʍǝɹ"
+
+#: public/js/drag_and_drop.js
+msgid "Go to Beginning"
+msgstr "Ǥø ʇø Ƀǝƃᴉnnᴉnƃ"
+
+#: public/js/drag_and_drop.js
+msgid "Reset"
+msgstr "Ɍǝsǝʇ"
+
+#: public/js/drag_and_drop.js public/js/drag_and_drop.js
+msgid "Some of your answers were not correct."
+msgstr "Søɯǝ øɟ ʎønɹ ɐnsʍǝɹs ʍǝɹǝ nøʇ ɔøɹɹǝɔʇ."
+
+#: public/js/drag_and_drop.js public/js/drag_and_drop.js
+msgid "Hints:"
+msgstr "Ħᴉnʇs:"
+
+#: public/js/drag_and_drop.js
+msgid "Correct"
+msgstr "Ȼøɹɹǝɔʇ"
+
+#: public/js/drag_and_drop.js
+msgid "Incorrect"
+msgstr "Ɨnɔøɹɹǝɔʇ"
+
+#. Translators: {earned} is the number of points earned. {possible} is the
+#. total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
+#. points will always be at least 1. We pluralize based on the total number of
+#. points (example: 0/1 point; 1/2 points).
+#: public/js/drag_and_drop.js
+msgid "{earned}/{possible} point (graded)"
+msgid_plural "{earned}/{possible} points (graded)"
+msgstr[0] "{earned}/{possible} døᴉnʇ (ƃɹɐdǝd)"
+msgstr[1] "{earned}/{possible} døᴉnʇs (ƃɹɐdǝd)"
+
+#. Translators: {earned} is the number of points earned. {possible} is the
+#. total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
+#. points will always be at least 1. We pluralize based on the total number of
+#. points (example: 0/1 point; 1/2 points).
+#: public/js/drag_and_drop.js
+msgid "{earned}/{possible} point (ungraded)"
+msgid_plural "{earned}/{possible} points (ungraded)"
+msgstr[0] "{earned}/{possible} døᴉnʇ (nnƃɹɐdǝd)"
+msgstr[1] "{earned}/{possible} døᴉnʇs (nnƃɹɐdǝd)"
+
+#. Translators: {possible} is the number of points possible (examples: 1, 3,
+#. 10).
+#: public/js/drag_and_drop.js
+msgid "{possible} point possible (graded)"
+msgid_plural "{possible} points possible (graded)"
+msgstr[0] "{possible} døᴉnʇ døssᴉblǝ (ƃɹɐdǝd)"
+msgstr[1] "{possible} døᴉnʇs døssᴉblǝ (ƃɹɐdǝd)"
+
+#. Translators: {possible} is the number of points possible (examples: 1, 3,
+#. 10).
+#: public/js/drag_and_drop.js
+msgid "{possible} point possible (ungraded)"
+msgid_plural "{possible} points possible (ungraded)"
+msgstr[0] "{possible} døᴉnʇ døssᴉblǝ (nnƃɹɐdǝd)"
+msgstr[1] "{possible} døᴉnʇs døssᴉblǝ (nnƃɹɐdǝd)"
+
+#: public/js/drag_and_drop.js
+msgid "Drag and Drop Problem"
+msgstr "Đɹɐƃ ɐnd Đɹød Ᵽɹøblǝɯ"
+
+#: public/js/drag_and_drop.js
+msgid "Problem"
+msgstr "Ᵽɹøblǝɯ"
+
+#: public/js/drag_and_drop.js
+msgid "Item Bank"
+msgstr "Ɨʇǝɯ Ƀɐnʞ"
+
+#: public/js/drag_and_drop.js
+msgid "Drop Targets"
+msgstr "Đɹød Ŧɐɹƃǝʇs"
+
+#: public/js/drag_and_drop.js
+msgid "Actions"
+msgstr "Ⱥɔʇᴉøns"
+
+#: public/js/drag_and_drop.js
+msgid "An error occurred. Unable to load drag and drop problem."
+msgstr "Ⱥn ǝɹɹøɹ øɔɔnɹɹǝd. Ʉnɐblǝ ʇø løɐd dɹɐƃ ɐnd dɹød dɹøblǝɯ."
+
+#: public/js/drag_and_drop.js
+msgid "You cannot add any more items to this zone."
+msgstr "Ɏøn ɔɐnnøʇ ɐdd ɐnʎ ɯøɹǝ ᴉʇǝɯs ʇø ʇɥᴉs zønǝ."
+
+#: public/js/drag_and_drop_edit.js public/js/drag_and_drop_edit.js
+#: public/js/drag_and_drop_edit.js
+msgid "There was an error with your form."
+msgstr "Ŧɥǝɹǝ ʍɐs ɐn ǝɹɹøɹ ʍᴉʇɥ ʎønɹ ɟøɹɯ."
+
+#: public/js/drag_and_drop_edit.js
+msgid "Please check over your submission."
+msgstr "Ᵽlǝɐsǝ ɔɥǝɔʞ øʌǝɹ ʎønɹ snbɯᴉssᴉøn."
+
+#: public/js/drag_and_drop_edit.js
+msgid "Zone {num}"
+msgid_plural "Zone {num}"
+msgstr[0] "Ƶønǝ {num}"
+msgstr[1] "Ƶønǝ {num}"
+
+#: public/js/drag_and_drop_edit.js
+msgid "Please check the values you entered."
+msgstr "Ᵽlǝɐsǝ ɔɥǝɔʞ ʇɥǝ ʌɐlnǝs ʎøn ǝnʇǝɹǝd."
+
+#: public/js/drag_and_drop_edit.js
+msgid "Saving"
+msgstr "Sɐʌᴉnƃ"
