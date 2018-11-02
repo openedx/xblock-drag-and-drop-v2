@@ -3,8 +3,8 @@
 
 .DEFAULT_GOAL := help
 
-JS_TARGET := public/js/translations
 WORKING_DIR := drag_and_drop_v2
+JS_TARGET := $(WORKING_DIR)/public/js/translations
 EXTRACT_DIR := $(WORKING_DIR)/translations/en/LC_MESSAGES
 EXTRACTED_DJANGO := $(EXTRACT_DIR)/django-partial.po
 EXTRACTED_DJANGOJS := $(EXTRACT_DIR)/djangojs-partial.po
@@ -30,8 +30,8 @@ extract_translations: ## extract strings to be translated, outputting .po files
 	mv $(EXTRACTED_DJANGO) $(EXTRACTED_TEXT)
 	tail -n +20 $(EXTRACTED_DJANGOJS) >> $(EXTRACTED_TEXT)
 	rm $(EXTRACTED_DJANGOJS)
-	sed -i '' -e 's/nplurals=INTEGER/nplurals=2/' $(EXTRACTED_TEXT)
-	sed -i '' -e 's/plural=EXPRESSION/plural=\(n != 1\)/' $(EXTRACTED_TEXT)
+	sed -i'' -e 's/nplurals=INTEGER/nplurals=2/' $(EXTRACTED_TEXT)
+	sed -i'' -e 's/plural=EXPRESSION/plural=\(n != 1\)/' $(EXTRACTED_TEXT)
 
 compile_translations: ## compile translation files, outputting .mo files for each supported language
 	cd $(WORKING_DIR) && i18n_tool generate
