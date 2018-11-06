@@ -140,44 +140,45 @@
 
 /*Item bank slider*/
 
-.bx-wrapper{
+.bx-wrapper {
     background: #fff;
     padding: 0 55px;
     position: relative;
 }
 
-.item-bank .slide{
+.item-bank .slide {
     padding: 10px 0;
     text-align: center;
 }
 
-.bx-controls .bx-controls-direction > a{
+.bx-controls .bx-controls-direction > a {
     position: absolute;
     left: 18px;
     top: 50%;
     transform: translateY(-15px);
 }
 
-.bx-controls .bx-controls-direction > a .fa{
+.bx-controls .bx-controls-direction > a .fa {
     font-size: 50px;
     line-height: 30px;
     color: #1d5280;
 }
-.bx-controls .bx-controls-direction > a.bx-next{
+.bx-controls .bx-controls-direction > a.bx-next {
     right: 18px;
     left: auto;
 }
 
-.bx-controls .bx-controls-direction > a.disabled .fa{
+.bx-controls .bx-controls-direction > a.disabled .fa {
     color: #e3e8f0;
 }
 
 /* Instructions popup css */
 
-.xblock--drag-and-drop .instructions-wrapper{
+.xblock--drag-and-drop .instructions-wrapper,
+.assessment-notification {
     position: absolute;
-    z-index: 11;
-    padding: 20px 20px 10px;
+    z-index: 13;
+    padding: 20px;
     width: 80%;
     max-width: 390px;
     box-sizing: border-box;
@@ -190,7 +191,7 @@
     box-shadow: 0 0 15px #333333;
 }
 
-.xblock--drag-and-drop .instructions-visible:after{
+.xblock--drag-and-drop .instructions-visible:after {
     position: absolute;
     left: 0;
     right: 0;
@@ -200,7 +201,7 @@
     background-color: #1d5280;
     z-index: 10;
 }
-.xblock--drag-and-drop .instructions-visible + .actions-toolbar{
+.xblock--drag-and-drop .instructions-visible + .actions-toolbar {
     display: none;
 }
 
@@ -208,7 +209,7 @@
     min-height: 500px;
 }
 
-.xblock--drag-and-drop .instructions-wrapper .instructions-container .instructions-video{
+.xblock--drag-and-drop .instructions-wrapper .instructions-container .instructions-video {
     width: 130px;
     height: 130px;
     background: url('../img/DD_Instruction_Anim.gif') no-repeat center center;
@@ -216,16 +217,16 @@
     margin: 0 auto 20px;
 }
 
-.xblock--drag-and-drop .instructions-wrapper .instructions-container h3{
+.xblock--drag-and-drop .instructions-wrapper .instructions-container h3 {
     color: #1d5280;
     font-size: 14px;
 }
 
-.xblock--drag-and-drop .instructions-wrapper .instructions-container p{
+.xblock--drag-and-drop .instructions-wrapper .instructions-container p {
     color: #a5a5a5;
     font-size: 13px;
 }
-.xblock--drag-and-drop .instructions-wrapper .instructions-container button{
+.xblock--drag-and-drop .instructions-wrapper .instructions-container button {
     padding: 20px;
     border: 0;
     color: #1d5280;
@@ -335,7 +336,7 @@
     box-shadow: inset 0 0 0 2px;
 }
 
-.xblock--drag-and-drop .drag-container.dragging .option{
+.xblock--drag-and-drop .drag-container.dragging .option {
     opacity: 0.7;
 }
 .xblock--drag-and-drop .drag-container .option.grabbed-with-mouse {
@@ -511,7 +512,7 @@
 
 /*fixed-sizing-feedback*/
 
-.fixed-sizing-feedback{
+.fixed-sizing-feedback {
     background-color: #1d5280;
     position: absolute;
     color: #ffffff;
@@ -523,12 +524,12 @@
     bottom: 5vw;
     z-index: 999;
 }
-.fixed-sizing-feedback .feedback-detail{
+.fixed-sizing-feedback .feedback-detail {
     display: inline-block;
     width: 100%;
     margin-top: 10vh;
 }
-.fixed-sizing-feedback .feedback-detail .icon{
+.fixed-sizing-feedback .feedback-detail .icon {
     width: 56px;
     height: 56px;
     border-radius: 50%;
@@ -538,13 +539,13 @@
     position: relative;
     overflow: hidden;
 }
-.fixed-sizing-feedback.partial .feedback-detail .icon{
+.fixed-sizing-feedback.partial .feedback-detail .icon {
     background-color: rgba(255,255,255,0.3);
 }
-.fixed-sizing-feedback.partial .feedback-detail .icon .fa{
+.fixed-sizing-feedback.partial .feedback-detail .icon .fa {
     opacity: 0.7;
 }
-.fixed-sizing-feedback.partial .feedback-detail .icon .fa:after{
+.fixed-sizing-feedback.partial .feedback-detail .icon .fa:after {
     content: "";
     position: absolute;
     bottom: 0;
@@ -553,7 +554,7 @@
     height: 20%;
     background-color: green;
 }
-.fixed-sizing-feedback.incorrect .feedback-detail .icon .fa:before{
+.fixed-sizing-feedback.incorrect .feedback-detail .icon .fa:before {
      content: "";
      position: absolute;
      height: 30px;
@@ -562,16 +563,16 @@
      transform-origin: -3px 6px;
      transform: rotateZ(224deg);
 }
-.fixed-sizing-feedback .feedback-detail.completed .icon{
+.fixed-sizing-feedback .feedback-detail.completed .icon {
     background-color: transparent;
     border-radius: 0;
 }
-.fixed-sizing-feedback .feedback-detail.completed .icon .fa{
+.fixed-sizing-feedback .feedback-detail.completed .icon .fa {
     width: 46px;
     height: 55px;
     background-color: transparent;
 }
-.fixed-sizing-feedback .feedback-detail.completed .icon .icon-shield:before{
+.fixed-sizing-feedback .feedback-detail.completed .icon .icon-shield:before {
     background: url("../img/completed-icon.png") no-repeat;
     width: 46px;
     height: 55px;
@@ -581,7 +582,7 @@
     top: 0;
 }
 .fixed-sizing-feedback.partial .feedback-detail p:before,
-.fixed-sizing-feedback.incorrect .feedback-detail p:before{
+.fixed-sizing-feedback.incorrect .feedback-detail p:before {
     content: "";
     width: 18px;
     height: 18px;
@@ -592,7 +593,7 @@
     top: 0;
 }
 .fixed-sizing-feedback.partial .feedback-detail p:after,
-.fixed-sizing-feedback.incorrect .feedback-detail p:after{
+.fixed-sizing-feedback.incorrect .feedback-detail p:after {
     content: "";
     width: 1px;
     height: 10px;
@@ -604,33 +605,33 @@
     left: -25px;
 
 }
-.fixed-sizing-feedback .feedback-detail.completed p{
+.fixed-sizing-feedback .feedback-detail.completed p {
     margin-bottom: 80px;
 }
 .fixed-sizing-feedback .feedback-detail.completed p:before,
-.fixed-sizing-feedback .feedback-detail.completed p:after{
+.fixed-sizing-feedback .feedback-detail.completed p:after {
     display: none;
 }
-.fixed-sizing-feedback .feedback-detail .icon .fa{
+.fixed-sizing-feedback .feedback-detail .icon .fa {
     color: white;
     font-size: 30px;
     line-height: 60px;
 }
-.fixed-sizing-feedback.correct .feedback-detail .icon{
+.fixed-sizing-feedback.correct .feedback-detail .icon {
     background-color: #080;
 }
 
-.fixed-sizing-feedback.incorrect .feedback-detail .icon{
+.fixed-sizing-feedback.incorrect .feedback-detail .icon {
     background-color: #c2387d;
 }
-.fixed-sizing-feedback .feedback-detail h3{
+.fixed-sizing-feedback .feedback-detail h3 {
     font-size: 20px !important;
     font-weight: bold !important;
     margin: 20px 10px 30px;
     color: #ffffff;
     text-align: center !important;
 }
-.fixed-sizing-feedback .feedback-detail P{
+.fixed-sizing-feedback .feedback-detail P {
     font-size: 14px;
     max-width: 220px;
     margin: 20px auto 40px;
@@ -638,19 +639,19 @@
     line-height: normal;
     text-align: center !important;
 }
-.fixed-sizing-feedback .feedback-detail .attempts{
+.fixed-sizing-feedback .feedback-detail .attempts {
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 40px;
 }
-.fixed-sizing-feedback .feedback-detail small{
+.fixed-sizing-feedback .feedback-detail small {
     display: block;
     font-weight: normal;
     color: rgba(255,255,255,0.6);
     margin-top: 5px;
     font-size: 70%;
 }
-.fixed-sizing-feedback .feedback-detail button{
+.fixed-sizing-feedback .feedback-detail button {
     padding: 17px 30px;
     border: 0;
     border-radius: 4px;
@@ -659,7 +660,7 @@
     font-size: 14px;
 }
 
-.fixed-sizing-feedback .hint-detail{
+.fixed-sizing-feedback .hint-detail {
     display: none;
     width: 40%;
     border-left: 1px solid rgba(255,255,255,0.1);
@@ -669,32 +670,44 @@
     min-height: 100%;
     vertical-align: top;
 }
-.fixed-sizing-feedback .hint-detail ol{
+.fixed-sizing-feedback .hint-detail ol {
     padding: 0;
     margin-top: 15px;
 }
-.fixed-sizing-feedback .hint-detail ol li{
+.fixed-sizing-feedback .hint-detail ol li {
     font-size: 12px;
     margin-bottom: 20px;
     list-style-position: inside;
     list-style-type: decimal;
     line-height: normal;
 }
-.fixed-sizing-feedback .hint-detail h5{
+.fixed-sizing-feedback .hint-detail h5 {
     font-size: 15px;
     margin-top: 20px;
     color: #ffffff;
     font-weight: bold;
 }
-.fixed-sizing-feedback.show-hints .feedback-detail{
+.fixed-sizing-feedback.show-hints .feedback-detail {
     width: 60%;
 }
-.fixed-sizing-feedback.show-hints .hint-detail{
+.fixed-sizing-feedback.show-hints .hint-detail {
     display: inline-block;
 }
 
+/*Assessment mode guides*/
+
+.assessment-notification-visible .target,
+.assessment-notification-visible .bx-wrapper,
+.assessment-notification-visible + .actions-toolbar {
+    -webkit-filter: blur(20px);
+    -moz-filter: blur(20px);
+    -o-filter: blur(20px);
+    -ms-filter: blur(20px);
+    filter: blur(20px);
+}
+
 .feedback-popup-visible .drag-container,
-.feedback-popup-visible .actions-toolbar{
+.feedback-popup-visible .actions-toolbar {
     filter: blur(1.25rem);
 }
 
@@ -773,7 +786,7 @@
     height: 149px;
 }
 
-.xblock--drag-and-drop .popup.free-sizing{
+.xblock--drag-and-drop .popup.free-sizing {
     top: 5%;
     right: 5%;
     left: 5%;
@@ -788,25 +801,25 @@
     height: auto;
 }
 
-.xblock--drag-and-drop .popup.free-sizing .popup-content{
+.xblock--drag-and-drop .popup.free-sizing .popup-content {
     height: auto;
     width: auto;
     display: block;
     margin: 35px 15px 15px 15px;
 }
 
-.xblock--drag-and-drop .popup.free-sizing .popup-header-icon{
+.xblock--drag-and-drop .popup.free-sizing .popup-header-icon {
     display: none;
 }
 
-.xblock--drag-and-drop .popup.free-sizing .popup-content p{
+.xblock--drag-and-drop .popup.free-sizing .popup-content p {
     position: relative;
     transform: none;
     top: auto;
     max-height: none;
 }
 
-.xblock--drag-and-drop .popup.free-sizing .close-feedback-popup-desktop-button{
+.xblock--drag-and-drop .popup.free-sizing .close-feedback-popup-desktop-button {
     margin: 0;
     position: absolute;
     right: 15px;
@@ -818,7 +831,7 @@
     border-radius: 50%;
 }
 
-.xblock--drag-and-drop .popup.free-sizing .close-feedback-popup-desktop-button span.text{
+.xblock--drag-and-drop .popup.free-sizing .close-feedback-popup-desktop-button span.text {
     font-size: 0;
     padding: 0;
     text-align: center;
@@ -828,7 +841,7 @@
     font-family: FontAwesome;
 }
 
-.xblock--drag-and-drop .popup.free-sizing .close-feedback-popup-desktop-button span.text:after{
+.xblock--drag-and-drop .popup.free-sizing .close-feedback-popup-desktop-button span.text:after {
     content: "\f00d";
     font-size: 12px;
     position: relative;
@@ -853,7 +866,7 @@
     position: relative;
 }
 
-.xblock--drag-and-drop .popup .popup-content p{
+.xblock--drag-and-drop .popup .popup-content p {
     position: absolute;
     margin: 0;
     top: 50%;
@@ -878,7 +891,7 @@
     vertical-align: top;
 }
 
-.xblock--drag-and-drop .popup .close-feedback-popup-desktop-button span.text{
+.xblock--drag-and-drop .popup .close-feedback-popup-desktop-button span.text {
     font-size: 12px;
     padding: 12px 14px;
     text-align: left;
@@ -890,7 +903,7 @@
     font-family: "Open Sans", Verdana, Geneva, sans-serif;
 }
 
-.xblock--drag-and-drop .popup .close-feedback-popup-desktop-button span.text:after{
+.xblock--drag-and-drop .popup .close-feedback-popup-desktop-button span.text:after {
     content: "\f105";
     position: absolute;
     right: 8px;
@@ -911,7 +924,7 @@
     padding-top: 38px;
 }
 
-.xblock--drag-and-drop .popup .popup-header-icon .fa{
+.xblock--drag-and-drop .popup .popup-header-icon .fa {
     font-size: 20px;
     width: 40px;
     height: 40px;
@@ -1130,93 +1143,59 @@
 
 /*** Assessment window notification ***/
 .assessment-notification {
-    display: table;
-    width: 100%;
-    background-color: #1d5280;
-    position: absolute;
-    left: 0;
-    bottom: -60px;
-    right: 0;
-    height: 230px;
-    color: #ffffff;
-    box-shadow: 0 -2px 10px #999;
     z-index: 10;
 }
 
-.assessment-notification > div{
-    display: table-cell;
-    vertical-align: middle;
-    height: 230px;
-    text-align: center;
-}
-
-.assessment-notification > .icon{
-    width: 210px;
-}
-
-.assessment-notification > .icon .fa{
-    width: 52px;
-    height: 52px;
-    line-height: 52px;
-    background-color: #ffffff;
-    border-radius: 50%;
-}
-
-.assessment-notification > .icon .fa:before{
-    color: #000000;
-    font-size: 24px;
-}
-
-.assessment-notification > .instructions{
-    width: calc(100% - 210px - 180px);
-    text-align: left;
-    max-height: 230px;
-    overflow: auto;
-}
-
-.assessment-notification > .instructions ol{
-    padding-left: 20px;
-}
-
-.assessment-notification > .instructions ol li{
-    padding: 3px 0;
-    font-size: 14px;
-    font-weight: 400;
-}
-
-.assessment-notification > .instructions p{
-    font-style: italic;
-    font-size: 14px;
-}
-
-.assessment-notification > .action button{
-    font-size: 12px;
-    padding: 17px 20px;
-    text-align: left;
-    border: 1px solid #fff;
-    min-width: 125px;
-    background-color: transparent;
-    border-radius: 3px;
-    position: relative;
-    cursor: pointer;
-    color: #ffffff;
-    line-height: 1;
-    font-weight: bold;
-}
-
-.assessment-notification > .action button:before{
-    content: "\f105";
-    font-family: 'FontAwesome';
+.assessment-notification-visible:after {
+    content: "";
+    background: rgba(255,255,255,0.1);
     position: absolute;
-    right: 16px;
-    font-size: 36px;
-    top: 5px;
-    font-weight: normal;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
 }
 
-.assessment-notification > .action{
-    width: 180px;
+.assessment-notification .header-icon {
+    width: 40px;
+    height: 40px;
+    margin: 10px auto;
+    text-align: center;
+    background-color: #edbd3c;
+    border-radius: 50%;
+    font-size: 30px;
+    color: white;
+    line-height: 40px;
 }
+
+.assessment-notification .instructions {
+    font-size: 13px;
+    color: #888888;
+    padding: 20px 0 15px;
+}
+
+.assessment-notification .instructions ol {
+    text-align: left;
+}
+
+.assessment-notification .instructions p {
+    font-style: italic;
+    padding-left: 40px;
+    text-align: left;
+    min-height: 32px;
+}
+
+.assessment-notification > .action button {
+    padding: 20px 30px;
+    border: 0;
+    color: #1d5280;
+    border-top: 1px solid #dddddd;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: transparent;
+    font-size: 13px;
+}
+
 
 /*** ACTIONS TOOLBAR ***/
 
@@ -1235,32 +1214,32 @@
     margin: 10px 0;
 }
 
-.xblock--drag-and-drop .actions-toolbar .submit-answer-button{
+.xblock--drag-and-drop .actions-toolbar .submit-answer-button {
     border: 0;
     color: #ffffff;
 }
 
-.xblock--drag-and-drop .actions-toolbar .submit-answer-button[disabled]{
+.xblock--drag-and-drop .actions-toolbar .submit-answer-button[disabled] {
     background-color: #566a85;
     color: #8094af;
 }
 
-.xblock--drag-and-drop .actions-toolbar button{
+.xblock--drag-and-drop .actions-toolbar button {
     min-height: 44px;
     cursor: pointer;
 }
 
 .xblock--drag-and-drop .actions-toolbar .sidebar-button-wrapper,
 .xblock--drag-and-drop .actions-toolbar button,
-.xblock--drag-and-drop .actions-toolbar .sidebar-buttons{
+.xblock--drag-and-drop .actions-toolbar .sidebar-buttons {
     float: right;
 }
 
-.xblock--drag-and-drop .actions-toolbar .sidebar-button-wrapper button[disabled]{
+.xblock--drag-and-drop .actions-toolbar .sidebar-button-wrapper button[disabled] {
     background-color: #566a85;
     color: #8094af;
 }
-.xblock--drag-and-drop .actions-toolbar .sidebar-button-wrapper button{
+.xblock--drag-and-drop .actions-toolbar .sidebar-button-wrapper button {
     margin-right: 10px;
     border-radius: 3px;
     border: 1px solid transparent;
@@ -1278,7 +1257,7 @@
     text-align: center;
 }
 
-.xblock--drag-and-drop .attempts-used .text{
+.xblock--drag-and-drop .attempts-used .text {
     display: block;
     font-size: .75em;
     margin-top: 2px;
