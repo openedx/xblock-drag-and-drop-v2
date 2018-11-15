@@ -1,4 +1,8 @@
 {
+    "block_id": "test-show-title-parameter.drag_and_drop_v2.d151.u0",
+    "display_name": "DnDv2 XBlock with plain text instructions",
+    "type": "drag-and-drop-v2",
+    "weight": 5,
     "title": "DnDv2 XBlock with plain text instructions",
     "mode": "assessment",
     "max_attempts": 10,

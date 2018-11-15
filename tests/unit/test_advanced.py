@@ -59,11 +59,14 @@ class BaseDragAndDropAjaxFixture(TestCaseMixin):
         return json.loads(loader.load_unicode('data/{}/settings.json'.format(cls.FOLDER)))
 
     @classmethod
-    def expected_configuration(cls):
+    def expected_student_data(cls):
         return json.loads(loader.load_unicode('data/{}/config_out.json'.format(cls.FOLDER)))
 
-    def test_get_configuration(self):
-        self.assertEqual(self.block.get_configuration(), self.expected_configuration())
+    def test_student_view_data(self):
+        data = self.block.student_view_data()
+        expected = self.expected_student_data()
+        expected['block_id'] = data['block_id']  # Block ids aren't stable
+        self.assertEqual(data, expected)
 
 
 @ddt.ddt
@@ -250,7 +253,7 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
             "grade": expected_grade,
             'overall_feedback': [self._make_feedback_message(message=self.INITIAL_FEEDBACK)],
         }
-        self.assertEqual(expected_state, self.call_handler('get_user_state', method="GET"))
+        self.assertEqual(expected_state, self.call_handler('student_view_user_state', method="GET"))
 
         res = self.call_handler(self.DROP_ITEM_HANDLER, {"val": 1, "zone": self.ZONE_2})
         # All four items are in correct position, so the final raw grade is 4/4.
@@ -273,7 +276,7 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
             "grade": expected_grade,
             'overall_feedback': [self._make_feedback_message(self.FINAL_FEEDBACK)],
         }
-        self.assertEqual(expected_state, self.call_handler('get_user_state', method="GET"))
+        self.assertEqual(expected_state, self.call_handler('student_view_user_state', method="GET"))
 
     def test_do_attempt_not_available(self):
         """
@@ -912,7 +915,7 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
         self.assertEqual(1, len(published_grades))
         self.assertEqual({'value': 0, 'max_value': 1, 'only_if_higher': None}, published_grades[-1])
 
-        user_state = self.call_handler('get_user_state', method="GET")
+        user_state = self.call_handler('student_view_user_state', method="GET")
         self.assertEqual(user_state['grade'], 0)
 
     def test_do_attempt_correct_takes_decoy_into_account(self):

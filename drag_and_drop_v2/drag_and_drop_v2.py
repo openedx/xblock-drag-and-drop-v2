@@ -43,6 +43,8 @@ class DragAndDropBlock(
     XBlock that implements a friendly Drag-and-Drop problem
     """
 
+    CATEGORY = "drag-and-drop-v2"
+
     SOLUTION_CORRECT = "correct"
     SOLUTION_PARTIAL = "partial"
     SOLUTION_INCORRECT = "incorrect"
@@ -298,11 +300,11 @@ class DragAndDropBlock(
 
         self.include_theme_files(fragment)
 
-        fragment.initialize_js('DragAndDropBlock', self.get_configuration())
+        fragment.initialize_js('DragAndDropBlock', self.student_view_data())
 
         return fragment
 
-    def get_configuration(self):
+    def student_view_data(self, context=None):
         """
         Get the configuration data for the student_view.
         The configuration is all the settings defined by the author, except for correct answers
@@ -330,6 +332,10 @@ class DragAndDropBlock(
             return items
 
         return {
+            "block_id": unicode(self.scope_ids.usage_id),
+            "display_name": self.display_name,
+            "type": self.CATEGORY,
+            "weight": self.weight,
             "mode": self.mode,
             "zones": self.zones,
             "max_attempts": self.max_attempts,
@@ -619,7 +625,7 @@ class DragAndDropBlock(
         return self.max_attempts is None or self.max_attempts == 0 or self.attempts < self.max_attempts
 
     @XBlock.handler
-    def get_user_state(self, request, suffix=''):
+    def student_view_user_state(self, request, suffix=''):
         """ GET all user-specific data, and any applicable feedback """
         data = self._get_user_state()
 
@@ -925,8 +931,9 @@ class DragAndDropBlock(
         Converts to a dict if data is stored in legacy tuple form.
         """
 
-        # IMPORTANT: this method should always return a COPY of self.item_state - it is called from get_user_state
-        # handler and the data it returns is manipulated there to hide correctness of items placed.
+        # IMPORTANT: this method should always return a COPY of self.item_state - it is called from
+        # student_view_user_state handler and the data it returns is manipulated there to hide
+        # correctness of items placed.
         state = {}
         migrator = StateMigration(self)
 

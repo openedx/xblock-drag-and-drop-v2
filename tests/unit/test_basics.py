@@ -48,15 +48,19 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         self.assertIn('<div class="themed-xblock xblock--drag-and-drop">', student_fragment.content)
         self.assertIn('Loading drag and drop problem.', student_fragment.content)
 
-    def test_get_configuration(self):
+    def test_student_view_data(self):
         """
-        Test the get_configuration() method.
+        Test the student_view_data() method.
         The result of this method is passed to the block's JavaScript during initialization.
         """
-        config = self.block.get_configuration()
+        config = self.block.student_view_data()
         zones = config.pop("zones")
         items = config.pop("items")
         self.assertEqual(config, {
+            "block_id": config['block_id'],  # Block ids aren't stable
+            "display_name": "Drag and Drop",
+            "type": "drag-and-drop-v2",
+            "weight": 1,
             "mode": Constants.STANDARD_MODE,
             "max_attempts": None,
             "graded": False,
@@ -106,7 +110,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
 
         def assert_user_state_empty(grade=None):
             self.assertEqual(self.block.item_state, {})
-            self.assertEqual(self.call_handler("get_user_state"), {
+            self.assertEqual(self.call_handler("student_view_user_state"), {
                 "grade": grade,
                 'items': {},
                 'finished': False,
@@ -133,7 +137,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             '2': {'correct': True, 'zone': BOTTOM_ZONE_ID},
             '3': {'correct': True, "zone": MIDDLE_ZONE_ID},
         })
-        self.assertEqual(self.call_handler('get_user_state'), {
+        self.assertEqual(self.call_handler('student_view_user_state'), {
             'items': {
                 '0': {'correct': True, 'zone': TOP_ZONE_ID},
                 '1': {'correct': True, 'zone': MIDDLE_ZONE_ID},
@@ -157,7 +161,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         This test makes sure that legacy forms are properly converted to compatible format.
         """
         self.assertEqual(self.block.item_state, {})
-        self.assertEqual(self.call_handler('get_user_state')['items'], {})
+        self.assertEqual(self.call_handler('student_view_user_state')['items'], {})
 
         self.block.item_state = {
             # Legacy tuple (top, left) representation.
@@ -173,7 +177,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         }
         self.block.save()
 
-        self.assertEqual(self.call_handler('get_user_state')['items'], {
+        self.assertEqual(self.call_handler('student_view_user_state')['items'], {
             '0': {'correct': True, 'zone': TOP_ZONE_ID},
             '1': {'correct': True, 'zone': MIDDLE_ZONE_ID},
             '2': {'correct': True, 'zone': BOTTOM_ZONE_ID},
@@ -256,12 +260,12 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         """ Ensure that the default image and custom URLs are both expanded by the runtime """
         self.assertEqual(self.block.data.get("targetImg"), None)
         self.assertEqual(
-            self.block.get_configuration()["target_img_expanded_url"],
+            self.block.student_view_data()["target_img_expanded_url"],
             '/expanded/url/to/drag_and_drop_v2/public/img/triangle.png',
         )
 
         self.block.data["targetImg"] = "/static/foo.png"
         self.assertEqual(
-            self.block.get_configuration()["target_img_expanded_url"],
+            self.block.student_view_data()["target_img_expanded_url"],
             '/course/test-course/assets/foo.png',
         )
