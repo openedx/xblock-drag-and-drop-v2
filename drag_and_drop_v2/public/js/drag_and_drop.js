@@ -850,6 +850,23 @@ function DragAndDropBlock(runtime, element, configuration) {
         });
     };
 
+    // Handler to react when the size of this XBlock changes:
+    var last_width = 0;
+    var last_height = 0;
+    var raf_id = null;
+    var handleResizeEvent = function(watchedObject) {
+        cancelAnimationFrame(raf_id);
+        raf_id = requestAnimationFrame(function() {
+            var new_width = watchedObject.width();
+            var new_height = watchedObject.height();
+            if (last_width !== new_width || last_height !== new_height) {
+                last_width = new_width;
+                last_height = new_height;
+                measureWidthAndRender();
+            }
+        });
+    }
+
     // Listens to the 'resize' event of the object element, which is absolutely positioned
     // and fit to the edges of the container, so that its size always equals the container size.
     // This hack is needed because not all browsers support native 'resize' events on arbitrary
@@ -858,21 +875,15 @@ function DragAndDropBlock(runtime, element, configuration) {
         var object = evt.target;
         var $object = $(object);
         if ($object.is('.resize-detector')) {
-            var last_width = $object.width();
-            var last_height = $object.height();
-            var raf_id = null;
-            object.contentDocument.defaultView.addEventListener('resize', function() {
-                cancelAnimationFrame(raf_id);
-                raf_id = requestAnimationFrame(function() {
-                    var new_width = $object.width();
-                    var new_height = $object.height();
-                    if (last_width !== new_width || last_height !== new_height) {
-                        last_width = new_width;
-                        last_height = new_height;
-                        measureWidthAndRender();
-                    }
-                });
-            });
+            if (object.contentDocument) {
+                object.contentDocument.defaultView.addEventListener('resize', handleResizeEvent.bind(null, $object));
+            } else {
+                // In an IFrame, we might not have permission to access object.contentDocument
+                // so just watch for window resize events instead, which should be good enough.
+                // It would just miss the case where surrounding HTML changes affect this element's
+                // size, but that should be rare in an IFrame.
+                window.addEventListener('resize', handleResizeEvent.bind(null, $(window)));
+            }
         }
     };
 
