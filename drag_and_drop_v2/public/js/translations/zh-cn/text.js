@@ -23,6 +23,14 @@
 
   django.catalog = django.catalog || {};
   
+  var newcatalog = {
+    "Feedback": "\u53cd\u9988", 
+    "Reset": "\u91cd\u7f6e"
+  };
+  for (var key in newcatalog) {
+    django.catalog[key] = newcatalog[key];
+  }
+  
 
   if (!django.jsi18n_initialized) {
     django.gettext = function(msgid) {
