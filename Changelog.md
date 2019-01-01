@@ -1,6 +1,12 @@
 Drag and Drop XBlock changelog
 ==============================
 
+Version 2.2.2 (2019-03-22)
+---------------------------
+
+* Add translation for Reset and Feedback strings (PR #196)
+* Fix Loading message translation for Chinese & Spanish (PR #199)
+
 Version 2.2.1 (2018-11-16)
 ---------------------------
 
