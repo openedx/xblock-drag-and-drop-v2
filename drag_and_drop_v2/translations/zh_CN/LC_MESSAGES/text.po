@@ -455,7 +455,7 @@ msgstr ""
 
 #: public/js/drag_and_drop.js
 msgid "Reset"
-msgstr ""
+msgstr "重置"
 
 #: public/js/drag_and_drop.js
 msgid "Show Answer"
@@ -471,7 +471,7 @@ msgstr ""
 
 #: public/js/drag_and_drop.js
 msgid "Feedback"
-msgstr ""
+msgstr "反馈"
 
 #: public/js/drag_and_drop.js
 msgid "Keyboard Help"
