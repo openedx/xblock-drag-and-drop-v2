@@ -25,6 +25,10 @@ msgstr "Trójkąt równoramienny z trzema strefami o podobnej wysokości. Najsze
 msgid "Of course it goes here! It goes anywhere!"
 msgstr "Oczywiście! Element pasuje wszędzie!"
 
+#: drag_and_drop_v2.py
+msgid "Drag and Drop"
+msgstr "Przeciągnij i upuść"
+
 #: default_data.py
 msgid "Goes anywhere"
 msgstr "Pasuje wszędzie"
@@ -102,10 +106,6 @@ msgstr "Tytuł"
 msgid ""
 "The title of the drag and drop problem. The title is displayed to learners."
 msgstr "Tytuł tego ćwiczenia, widoczny dla studentów."
-
-#: drag_and_drop_v2.py
-msgid "Drag and Drop"
-msgstr "Przeciągnij i upuść"
 
 #: drag_and_drop_v2.py
 msgid "Mode"
