@@ -245,7 +245,9 @@ class DragAndDropBlock(
 
     block_settings_key = 'drag-and-drop-v2'
 
-    icon_class = 'problem'
+    icon_class = "problem"
+
+    self.icon_class = "problem"
 
     @property
     def score(self):
@@ -348,6 +350,8 @@ class DragAndDropBlock(
             'public/js/vendor/virtual-dom-1.3.0.min.js',
             'public/js/drag_and_drop.js',
         ]
+
+        icon_class = 'problem'
 
         statici18n_js_url = self._get_statici18n_js_url()
         if statici18n_js_url:
