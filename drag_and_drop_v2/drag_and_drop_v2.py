@@ -244,7 +244,7 @@ class DragAndDropBlock(
     )
 
     block_settings_key = 'drag-and-drop-v2'
-    
+
     icon_class = 'problem'
 
     @property
@@ -416,6 +416,7 @@ class DragAndDropBlock(
             "target_img_description": self.target_img_description,
             "item_background_color": self.item_background_color or None,
             "item_text_color": self.item_text_color or None,
+            "icon_class": self.icon_class
             "has_deadline_passed": self.has_submission_deadline_passed,
             "answer_available": self.is_answer_available,
             # final feedback (data.feedback.finish) is not included - it may give away answers.
