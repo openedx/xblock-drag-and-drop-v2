@@ -23,6 +23,18 @@
 
   django.catalog = django.catalog || {};
   
+<<<<<<< HEAD:drag_and_drop_v2/public/js/translations/zh_CN/text.js
+=======
+  var newcatalog = {
+    "Feedback": "\u53cd\u9988", 
+    "Loading drag and drop problem.": "\u52a0\u8f7d\u62d6\u653e\u3002", 
+    "Reset": "\u91cd\u7f6e"
+  };
+  for (var key in newcatalog) {
+    django.catalog[key] = newcatalog[key];
+  }
+  
+>>>>>>> 6c439ad... MCKIN-9197 Loading message translation for Chinese & Spanish (#199):drag_and_drop_v2/public/js/translations/zh-cn/text.js
 
   if (!django.jsi18n_initialized) {
     django.gettext = function(msgid) {
