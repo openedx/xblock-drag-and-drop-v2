@@ -25,6 +25,7 @@
   
   var newcatalog = {
     "Feedback": "Realimentaci\u00f3n", 
+    "Loading drag and drop problem.": "Cargando problema de arrastrar y soltar.", 
     "Reset": "Restablecer"
   };
   for (var key in newcatalog) {
