@@ -23,6 +23,14 @@
 
   django.catalog = django.catalog || {};
   
+  var newcatalog = {
+    "Feedback": "Realimentaci\u00f3n", 
+    "Loading drag and drop problem.": "Cargando problema de arrastrar y soltar.", 
+    "Reset": "Restablecer"
+  };
+  for (var key in newcatalog) {
+    django.catalog[key] = newcatalog[key];
+  }
 
   if (!django.jsi18n_initialized) {
     django.gettext = function(msgid) {
