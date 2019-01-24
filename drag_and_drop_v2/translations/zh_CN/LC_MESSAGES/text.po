@@ -1,4 +1,4 @@
-# 
+#
 # Translators:
 # Beck Gee <1113300417@hit.edu.cn>, 2016
 # Vivian Young <1720211423@qq.com>, 2016
@@ -346,7 +346,7 @@ msgstr ""
 
 #: templates/html/drag_and_drop.html
 msgid "Loading drag and drop problem."
-msgstr ""
+msgstr "加载拖放。"
 
 #: templates/html/drag_and_drop_edit.html
 msgid ""
