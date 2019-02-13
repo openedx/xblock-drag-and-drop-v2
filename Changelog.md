@@ -1,3 +1,41 @@
+Drag and Drop XBlock changelog
+==============================
+
+Version 2.2.1 (2018-11-16)
+---------------------------
+
+* Fix JavaScript error when the XBlock is in an IFrame (PR #192)
+* Revert change to travis.yml so it doesn't need to be updated with every version bump.
+
+Version 2.2.0 (2018-11-15)
+---------------------------
+
+* Extend existing APIs to support native mobile (PR #158)
+
+Version 2.1.8 (2018-11-02)
+---------------------------
+
+* Implement XBlock JavaScript i18n using i18n_tool and django-statici18n (PR #156)
+
+Version 2.1.7 (2018-10-10)
+---------------------------
+
+* Expand static URLs in FeedbackMessage (PR #190)
+
+Version 2.1.6 (2018-05-15)
+---------------------------
+
+* Use i18n runtime service to provide translations for HTML templates (PR #154)
+* Ensures URLs are utf-8 encoded (PR #150)
+* Correct load listener setup (PR #153)
+* Improve image handling on mobile (PR #152)
+* When dragging, scroll target image as needed.
+
+Version 2.1.5 (2017-11-06)
+---------------------------
+
+* Making the code more robust to handle an edge case when a dict does not contain an key (PR #149)
+
 Version 2.1.4 (2017-11-06)
 ---------------------------
 
