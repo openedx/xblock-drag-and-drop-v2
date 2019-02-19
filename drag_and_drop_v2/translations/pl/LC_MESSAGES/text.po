@@ -716,3 +716,18 @@ msgstr "Prawidłowo! Element pasuje do tej właśnie strefy."
 #: default_data.py:24
 msgid "Correct! This one belongs to The Bottom Zone."
 msgstr "Prawidłowo! Element pasuje do tej właśnie strefy."
+
+msgid "Zone Layout"
+msgstr "Layout strefy"
+
+msgid "Number of columns and rows."
+msgstr "Liczba kolumn i wierszy"
+
+msgid "Zone Size"
+msgstr "Rozmiar strefy"
+
+msgid "Size of a single zone in pixels."
+msgstr "Rozmiar pojedynczej strefy w pikselach"
+
+msgid "Generate image and zones"
+msgstr "Wygeneruj obrazek i strefy"

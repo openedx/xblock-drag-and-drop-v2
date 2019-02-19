@@ -1,11 +1,8 @@
+# -*- coding: utf-8 -*-
 """ Default data for Drag and Drop v2 XBlock """
 from .utils import _
 
-TARGET_IMG_DESCRIPTION = _(
-    "An isosceles triangle with three layers of similar height. "
-    "It is shown upright, so the widest layer is located at the bottom, "
-    "and the narrowest layer is located at the top."
-)
+TARGET_IMG_DESCRIPTION = _("Trójkąt równoramienny z trzema strefami o podobnej wysokości. Najszersza strefa znajduje się na dole, a najwęższa na górze.")
 
 TOP_ZONE_ID = "top"
 MIDDLE_ZONE_ID = "middle"
