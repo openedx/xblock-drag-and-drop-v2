@@ -1,4 +1,4 @@
-# 
+#
 # Translators:
 msgid ""
 msgstr ""
@@ -344,7 +344,7 @@ msgstr ""
 
 #: templates/html/drag_and_drop.html
 msgid "Loading drag and drop problem."
-msgstr ""
+msgstr "Cargando problema de arrastrar y soltar."
 
 #: templates/html/drag_and_drop_edit.html
 msgid ""
