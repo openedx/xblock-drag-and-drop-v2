@@ -453,7 +453,7 @@ msgstr ""
 
 #: public/js/drag_and_drop.js
 msgid "Reset"
-msgstr ""
+msgstr "Restablecer"
 
 #: public/js/drag_and_drop.js
 msgid "Show Answer"
@@ -469,7 +469,7 @@ msgstr ""
 
 #: public/js/drag_and_drop.js
 msgid "Feedback"
-msgstr ""
+msgstr "Realimentación"
 
 #: public/js/drag_and_drop.js
 msgid "Keyboard Help"

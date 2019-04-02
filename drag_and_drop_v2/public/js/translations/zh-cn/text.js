@@ -2,31 +2,27 @@
             (function(global){
                 var DragAndDropI18N = {
                   init: function() {
-                    
 
 (function(globals) {
 
   var django = globals.django || (globals.django = {});
 
-  
   django.pluralidx = function(n) {
-    var v=(n != 1);
+    var v=0;
     if (typeof(v) == 'boolean') {
       return v ? 1 : 0;
     } else {
       return v;
     }
   };
-  
 
   /* gettext library */
 
   django.catalog = django.catalog || {};
-  
   var newcatalog = {
-    "Feedback": "Realimentaci\u00f3n", 
-    "Loading drag and drop problem.": "Cargando problema de arrastrar y soltar.", 
-    "Reset": "Restablecer"
+    "Feedback": "\u53cd\u9988",
+    "Loading drag and drop problem.": "\u52a0\u8f7d\u62d6\u653e\u3002",
+    "Reset": "\u91cd\u7f6e"
   };
   for (var key in newcatalog) {
     django.catalog[key] = newcatalog[key];
@@ -81,39 +77,49 @@
     /* formatting library */
 
     django.formats = {
-    "DATETIME_FORMAT": "j \\d\\e F \\d\\e Y \\a \\l\\a\\s H:i", 
+    "DATETIME_FORMAT": "N j, Y, P",
     "DATETIME_INPUT_FORMATS": [
-      "%d/%m/%Y %H:%M:%S", 
-      "%d/%m/%Y %H:%M:%S.%f", 
-      "%d/%m/%Y %H:%M", 
-      "%d/%m/%y %H:%M:%S", 
-      "%d/%m/%y %H:%M:%S.%f", 
-      "%d/%m/%y %H:%M", 
-      "%Y-%m-%d %H:%M:%S", 
-      "%Y-%m-%d %H:%M:%S.%f", 
-      "%Y-%m-%d %H:%M", 
-      "%Y-%m-%d"
-    ], 
-    "DATE_FORMAT": "j \\d\\e F \\d\\e Y", 
+      "%Y-%m-%d %H:%M:%S",
+      "%Y-%m-%d %H:%M:%S.%f",
+      "%Y-%m-%d %H:%M",
+      "%Y-%m-%d",
+      "%m/%d/%Y %H:%M:%S",
+      "%m/%d/%Y %H:%M:%S.%f",
+      "%m/%d/%Y %H:%M",
+      "%m/%d/%Y",
+      "%m/%d/%y %H:%M:%S",
+      "%m/%d/%y %H:%M:%S.%f",
+      "%m/%d/%y %H:%M",
+      "%m/%d/%y"
+    ],
+    "DATE_FORMAT": "N j, Y",
     "DATE_INPUT_FORMATS": [
-      "%d/%m/%Y", 
-      "%d/%m/%y", 
-      "%Y-%m-%d"
-    ], 
-    "DECIMAL_SEPARATOR": ",", 
-    "FIRST_DAY_OF_WEEK": "1", 
-    "MONTH_DAY_FORMAT": "j \\d\\e F", 
-    "NUMBER_GROUPING": "3", 
-    "SHORT_DATETIME_FORMAT": "d/m/Y H:i", 
-    "SHORT_DATE_FORMAT": "d/m/Y", 
-    "THOUSAND_SEPARATOR": ".", 
-    "TIME_FORMAT": "H:i", 
+      "%Y-%m-%d",
+      "%m/%d/%Y",
+      "%m/%d/%y",
+      "%b %d %Y",
+      "%b %d, %Y",
+      "%d %b %Y",
+      "%d %b, %Y",
+      "%B %d %Y",
+      "%B %d, %Y",
+      "%d %B %Y",
+      "%d %B, %Y"
+    ],
+    "DECIMAL_SEPARATOR": ".",
+    "FIRST_DAY_OF_WEEK": "0",
+    "MONTH_DAY_FORMAT": "F j",
+    "NUMBER_GROUPING": "0",
+    "SHORT_DATETIME_FORMAT": "m/d/Y P",
+    "SHORT_DATE_FORMAT": "m/d/Y",
+    "THOUSAND_SEPARATOR": ",",
+    "TIME_FORMAT": "P",
     "TIME_INPUT_FORMATS": [
-      "%H:%M:%S", 
-      "%H:%M:%S.%f", 
+      "%H:%M:%S",
+      "%H:%M:%S.%f",
       "%H:%M"
-    ], 
-    "YEAR_MONTH_FORMAT": "F \\d\\e Y"
+    ],
+    "YEAR_MONTH_FORMAT": "F Y"
   };
 
     django.get_format = function(format_type) {
@@ -146,4 +152,3 @@
                 DragAndDropI18N.init();
                 global.DragAndDropI18N = DragAndDropI18N;
             }(this));
-        
