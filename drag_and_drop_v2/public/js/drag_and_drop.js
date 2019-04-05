@@ -1451,8 +1451,9 @@ function DragAndDropBlock(runtime, element, configuration) {
                 item_id: item_id
             });
 
-            var max_left = $container.innerWidth() - $item.outerWidth();
-            var max_top = $container.innerHeight() - $item.outerHeight();
+            var container_width = $container.innerWidth();
+            var container_height = $container.innerHeight();
+
             // We need to get the item position relative to the $container.
             var item_offset = $item.offset();
             var container_offset = $container.offset();
@@ -1536,11 +1537,16 @@ function DragAndDropBlock(runtime, element, configuration) {
                     var dx = x - drag_origin.x;
                     var dy = y - drag_origin.y;
 
+                    if (typeof item.max_left === 'undefined') {
+                        var $draggedItem = $container.find('.option[data-value=' + item_id + ']');
+                        item.max_left =  container_width - $draggedItem.outerWidth();
+                        item.max_top = container_height - $draggedItem.outerHeight();
+                    }
                     var left = original_position.left + dx;
                     var top = original_position.top + dy;
-                    left = Math.max(0, Math.min(max_left, left));
-                    top = Math.max(0, Math.min(max_top, top));
-                    item.drag_position = {left: left, top: top};
+                    left = Math.max(0, Math.min(item.max_left, left));
+                    top = Math.max(0, Math.min(item.max_top, top));
+                    item.drag_position = {left: left, top: top};;
                     applyState();
                     raf_id = null;
                 });
