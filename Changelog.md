@@ -1,6 +1,11 @@
 Drag and Drop XBlock changelog
 ==============================
 
+Version 2.2.3 (2019-04-05)
+---------------------------
+
+* Fix dragging bug in mobile (PR #204)
+
 Version 2.2.2 (2019-03-22)
 ---------------------------
 
