@@ -762,7 +762,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     // Number of miliseconds the user has to keep their finger on the item
     // without moving for drag to begin.
     // This allows user to scroll the container without accidentally dragging the items.
-    var TOUCH_DRAG_DELAY = 500;
+    var TOUCH_DRAG_DELAY = 250;
 
     // Keyboard accessibility
     var ESC = 27;
