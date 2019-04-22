@@ -92,6 +92,7 @@ function DragAndDropTemplates(configuration) {
             'aria-grabbed': item.grabbed,
             'data-value': item.value,
             'tabindex': item.focusable ? 0 : undefined,
+            'data-tooltip': 'Hold the block longer to drag it.',
             'aria-live': 'polite'
         };
         var style = {};
@@ -1643,6 +1644,11 @@ function DragAndDropBlock(runtime, element, configuration) {
                     handled_by_touch = false;
                 }, 0);
             };
+
+            $item.data('tooltip').css({
+                left: evt.pageX + 1,
+                right: evt.pageY + 1,
+            }).stop().show(100);
 
             $item.one('touchmove touchend touchcancel', cancelDrag);
 
