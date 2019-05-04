@@ -1285,14 +1285,14 @@ function DragAndDropBlock(runtime, element, configuration) {
         $.post(url, JSON.stringify(data), 'json');
     };
 
-    var placeGrabbedItem = function($zone) {
+    var placeGrabbedItem = function($zone, selected = false) {
         var zone = String($zone.data('uid'));
         var zone_align = $zone.data('zone_align');
         var items = configuration.items;
 
         var item_id;
         for (var i = 0; i < items.length; i++) {
-            if (items[i].grabbed) {
+            if ((!selected && items[i].grabbed) || (selected && items[i].is_selected)) {
                 item_id = items[i].id;
                 break;
             }
@@ -1630,27 +1630,27 @@ function DragAndDropBlock(runtime, element, configuration) {
         // If the user starts moving the finger during the timeout, the drag should be cancelled.
         // This allows users to scroll the item bank with their finger without accidentally starting
         // to drag items.
-        $container.on('touchstart', '.option[draggable=true]', function(evt) {
-            handled_by_touch = true;
-            var $item = $(this);
-            var drag_origin = {x: pageX(evt), y: pageY(evt)};
-            var timeout_id = null;
-            var cancelDrag = function() {
-                clearTimeout(timeout_id);
-                // We need to reset the handled_by_touch in a timeout,
-                // so that it happens after the potentially emulated mousedown event.
-                setTimeout(function() {
-                    handled_by_touch = false;
-                }, 0);
-            };
+        let touchmoved;
 
-            $item.one('touchmove touchend touchcancel', cancelDrag);
+        $container.on('touchend', '.option[draggable=true]', function (evt) {
+            if (touchmoved !== true) {
+                let $item = $(this);
+                let item_id = $item.data('value');
 
-            timeout_id = setTimeout(function() {
-                handled_by_touch = false;
-                $item.off('touchmove touchend touchcancel', cancelDrag);
-                onDragStart('touch', $item, drag_origin);
-            }, TOUCH_DRAG_DELAY);
+                configuration.items.forEach(function(item) {
+                    item.is_selected = item.id === item_id;
+                    item.grabbed = item.id === item_id;
+                });
+
+                applyState();
+            }
+
+            evt.stopPropagation();  // Do not propagate event to div under the item
+
+        }).on('touchmove', function (e) {
+            touchmoved = true;
+        }).on('touchstart', function () {
+            touchmoved = false;
         });
 
         // Prevent long tap on draggable items from causing the context menu to pop up on android.
@@ -1658,9 +1658,24 @@ function DragAndDropBlock(runtime, element, configuration) {
             evt.preventDefault();
         });
 
-        // Prevent touchmove events fired on the dragged item causing scroll.
-        $container.on('touchmove', '.dragged-items .options[draggable=true]', function(evt) {
-            evt.preventDefault();
+        // Handle clicks on zones.
+        $container.on('touchend', '.zone, .item-bank', function (evt) {
+            let selected_block;
+            configuration.items.forEach(function(item) {
+                if (item.is_selected) {
+                    selected_block = item;
+                }
+            });
+            if (selected_block) {
+                let $zone = getTargetZone(evt);
+                if ($zone) {
+                    placeGrabbedItem($zone, true);
+                } else {
+                    returnItemToBank(selected_block);
+                }
+                deselectSelectedtItems();
+            }
+
         });
     };
 
@@ -1682,6 +1697,14 @@ function DragAndDropBlock(runtime, element, configuration) {
     var releaseGrabbedItems = function() {
         configuration.items.forEach(function(item) {
             item.grabbed = false;
+            delete item.grabbed_with;
+        });
+        applyState();
+    };
+
+    var deselectSelectedtItems = function() {
+        configuration.items.forEach(function(item) {
+            item.is_selected = false;
             delete item.grabbed_with;
         });
         applyState();
@@ -1870,6 +1893,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             if (item.grabbed !== undefined) {
                 grabbed = item.grabbed;
             }
+            var is_selected = item.is_selected;
             var drag_disabled;
             // In standard mode items placed in correct zone are no longer draggable.
             // In assessment mode items are draggable and can be moved between zones
@@ -1896,6 +1920,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 is_placed: Boolean(item_user_state),
                 widthPercent: item.widthPercent, // widthPercent may be undefined (auto width)
                 imgNaturalWidth: item.imgNaturalWidth,
+                is_selected: is_selected,
             };
             if (item_user_state) {
                 itemProperties.zone = item_user_state.zone;
@@ -1903,6 +1928,10 @@ function DragAndDropBlock(runtime, element, configuration) {
             }
             if (configuration.item_background_color) {
                 itemProperties.background_color = configuration.item_background_color;
+            }
+            // TODO: Make it configurable.
+            if (itemProperties.is_selected) {
+                itemProperties.background_color = "red";
             }
             if (configuration.item_text_color) {
                 itemProperties.color = configuration.item_text_color;
