@@ -106,8 +106,10 @@ function DragAndDropTemplates(configuration) {
         }
         if (item.is_dragged) {
             style.position = 'absolute';
-            style.left = item.drag_position.left + 'px';
-            style.top = item.drag_position.top + 'px';
+            var left = Math.max(0, Math.min(item.max_left, item.drag_position.left));
+            var top = Math.max(0, Math.min(item.max_top, item.drag_position.top));
+            style.left = left + 'px';
+            style.top = top + 'px';
         }
         if (item.is_placed) {
             var maxWidth = (item.widthPercent || 30) / 100;
@@ -1458,12 +1460,21 @@ function DragAndDropBlock(runtime, element, configuration) {
 
             // We need to get the item position relative to the $container.
             var container_offset = $container.offset();
-            var original_position = {
-                left: drag_origin.x - container_offset.left + DragAndDropBlock.DRAG_ITEM_OFFSET,
-                top: drag_origin.y - container_offset.top + DragAndDropBlock.DRAG_ITEM_OFFSET
+
+            // We need to drag the item by its center.
+            var mid_position = {
+                x: item_offset.left + $item.innerWidth() / 2,
+                y: item_offset.top + $item.innerHeight() / 2
             };
 
-            item.drag_position = original_position;
+            var centered_position = {
+                left: item_offset.left - container_offset.left + (drag_origin.x - mid_position.x),
+                top: item_offset.top - container_offset.top + (drag_origin.y - mid_position.y)
+            };
+
+            item.max_left =  container_width - $item.outerWidth();
+            item.max_top = container_height - $item.outerHeight();
+            item.drag_position = centered_position;
             grabItem($item, 'mouse');
 
             // Animate the item back to its original position in the bank.
@@ -1477,8 +1488,8 @@ function DragAndDropBlock(runtime, element, configuration) {
                     }
                     var progress = Math.min(1, (ts - start_ts) / revert_duration);
                     item.drag_position = {
-                        left: start_position.left + (progress * (original_position.left - start_position.left)),
-                        top: start_position.top + (progress * (original_position.top - start_position.top)),
+                        left: start_position.left + (progress * (centered_position.left - start_position.left)),
+                        top: start_position.top + (progress * (centered_position.top - start_position.top)),
                     };
                     if (progress === 1) {
                         delete item.drag_position;
@@ -1537,17 +1548,11 @@ function DragAndDropBlock(runtime, element, configuration) {
 
                     var dx = x - drag_origin.x;
                     var dy = y - drag_origin.y;
-
-                    if (typeof item.max_left === 'undefined') {
-                        var $draggedItem = $container.find('.option[data-value=' + item_id + ']');
-                        item.max_left =  container_width - $draggedItem.outerWidth();
-                        item.max_top = container_height - $draggedItem.outerHeight();
-                    }
-                    var left = original_position.left + dx;
-                    var top = original_position.top + dy;
-                    left = Math.max(0, Math.min(item.max_left, left));
-                    top = Math.max(0, Math.min(item.max_top, top));
-                    item.drag_position = {left: left, top: top};;
+                    var next_left = centered_position.left + dx;
+                    var next_top = centered_position.top + dy;
+                    next_left = Math.max(0, Math.min(item.max_left, next_left));
+                    next_top = Math.max(0, Math.min(item.max_top, next_top));
+                    item.drag_position = {left: next_left, top: next_top};
                     applyState();
                     raf_id = null;
                 });
@@ -1884,6 +1889,8 @@ function DragAndDropBlock(runtime, element, configuration) {
                 grabbed_with: item.grabbed_with,
                 is_dragged: Boolean(item.drag_position),
                 drag_position: item.drag_position,
+                max_left: item.max_left,
+                max_top: item.max_top,
                 is_placed: Boolean(item_user_state),
                 widthPercent: item.widthPercent, // widthPercent may be undefined (auto width)
                 imgNaturalWidth: item.imgNaturalWidth,
