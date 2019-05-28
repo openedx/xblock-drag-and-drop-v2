@@ -135,6 +135,10 @@
         overflow-x: auto;
     }
 
+    .xblock--drag-and-drop .drag-container .option {
+        max-width: 80%;
+    }
+
     .xblock--drag-and-drop .drag-container .item-bank .option {
         flex-shrink: 0;
         flex-grow: 0;
