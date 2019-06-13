@@ -73,6 +73,7 @@ LANGUAGES = [
     ('zh_CN', 'Chinese (China)'),
     ('de_DE', 'German'),
     ('ja_JP', 'Japanese'),
+    ('pl', 'Polski'),
 ]
 
 STATICI18N_DOMAIN = 'text'
