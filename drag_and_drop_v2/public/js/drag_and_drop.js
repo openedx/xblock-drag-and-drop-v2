@@ -1827,7 +1827,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var canSubmitAttempt = function() {
-        return Object.keys(state.items).length > 0 && attemptsRemain() && !submittingLocation();
+        return Object.keys(state.items).length > 0 && problemNotDue() && attemptsRemain() && !submittingLocation();
     };
 
     var canReset = function() {
@@ -1852,6 +1852,15 @@ function DragAndDropBlock(runtime, element, configuration) {
 
     var attemptsRemain = function() {
         return !configuration.max_attempts || configuration.max_attempts > state.attempts;
+    };
+
+    var problemNotDue = function () {
+        if(configuration.self_paced || configuration.due===null){
+            return true;
+        }
+        var now = new Date();
+        var due_date = new Date(configuration.due);
+        return (now.getTime() < due_date.getTime());
     };
 
     var submittingLocation = function() {
@@ -1934,6 +1943,8 @@ function DragAndDropBlock(runtime, element, configuration) {
             display_zone_labels: configuration.display_zone_labels,
             display_zone_borders: configuration.display_zone_borders,
             zones: configuration.zones,
+            due: configuration.due,
+            self_paced: configuration.self_paced,
             items: items,
             // state - parts that can change:
             attempts: state.attempts,

@@ -355,6 +355,8 @@ class DragAndDropBlock(
             "target_img_description": self.target_img_description,
             "item_background_color": self.item_background_color or None,
             "item_text_color": self.item_text_color or None,
+            "due": self.calculate_due_date(),
+            "self_paced":self.self_paced,
             # final feedback (data.feedback.finish) is not included - it may give away answers.
         }
 
@@ -1065,6 +1067,17 @@ class DragAndDropBlock(
             bool: True if current answer is correct
         """
         return self._answer_correctness() == self.SOLUTION_CORRECT
+
+    def calculate_due_date(self):
+        """
+        Return the date submissions should be closed from.
+        """
+        due_date = self.due
+
+        if self.graceperiod is not None and due_date:
+            return due_date + self.graceperiod
+        else:
+            return due_date
 
     @staticmethod
     def workbench_scenarios():
