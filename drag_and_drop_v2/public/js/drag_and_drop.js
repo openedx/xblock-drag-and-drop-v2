@@ -685,7 +685,7 @@ function DragAndDropTemplates(configuration) {
                     h('div.item-bank', item_bank_properties, bank_children),
                     h('div.target', {attributes: {'role': 'group', 'arial-label': gettext('Drop Targets')}}, [
                         itemFeedbackPopupTemplate(ctx),
-                        h('div.target-img-wrapper', [
+                        h('div.target-img-wrapper' + (ctx.dragging ? '.dragging' : ''), [
                             h('img.target-img', {
                                 src: ctx.target_img_src,
                                 alt: ctx.target_img_description,
@@ -1443,6 +1443,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         };
 
         var onDragStart = function(interaction_type, $item, drag_origin) {
+            state.dragging = true;
             var item_id = $item.data('value');
             var item = getItemById(item_id);
             var $document = $(document);
@@ -1553,6 +1554,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             };
 
             var onDragEnd = function(evt) {
+                state.dragging = false;
                 if (raf_id) {
                     cancelAnimationFrame(raf_id);
                 }
@@ -1939,7 +1941,8 @@ function DragAndDropBlock(runtime, element, configuration) {
             show_answer_spinner: state.show_answer_spinner,
             disable_go_to_beginning_button: !canGoToBeginning(),
             show_go_to_beginning_button: state.go_to_beginning_button_visible,
-            screen_reader_messages: (state.screen_reader_messages || '')
+            screen_reader_messages: (state.screen_reader_messages || ''),
+            dragging: Boolean(state.dragging)
         };
 
         return renderView(context);
