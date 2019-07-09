@@ -1459,7 +1459,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             var item_offset = $item.offset();
             var container_offset = $container.offset();
             var original_position = {
-                left: item_offset.left - container_offset.left,
+                left: drag_origin.x - container_offset.left,
                 top: item_offset.top - container_offset.top
             };
 
