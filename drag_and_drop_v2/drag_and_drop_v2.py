@@ -356,7 +356,7 @@ class DragAndDropBlock(
             "item_background_color": self.item_background_color or None,
             "item_text_color": self.item_text_color or None,
             "due": self.calculate_due_date(),
-            "self_paced":self.self_paced,
+            "self_paced": self.is_self_paced(),
             # final feedback (data.feedback.finish) is not included - it may give away answers.
         }
 
@@ -1071,13 +1071,37 @@ class DragAndDropBlock(
     def calculate_due_date(self):
         """
         Return the date submissions should be closed from.
-        """
-        due_date = self.due
 
-        if self.graceperiod is not None and due_date:
-            return due_date + self.graceperiod
-        else:
-            return due_date
+        Calculates and return the due date after which the submissions
+        will no longer be accepted. Returns None for the AttributeError
+        which happens for pure DragAndDropXblock as due date & graceperiod
+        are not its attributes. They are present for DragAndDropXblockWithMixins
+        """
+        try:
+            due_date = self.due
+
+            if self.graceperiod is not None and due_date:
+                return due_date + self.graceperiod
+            else:
+                return due_date
+
+        except AttributeError:
+            return None
+
+    def is_self_paced(self):
+        """
+        Returns if the course is self-paced or not.
+
+        Returns the boolean indicating if the parent course is
+        self-paced or not. Returns False for the AttributeError
+        which happens for pure DragAndDropXblock. self_paced attribute is
+        present only for DragAndDropXblockWithMixins.
+        """
+        try:
+            return self.self_paced
+        except AttributeError:
+            return False
+
 
     @staticmethod
     def workbench_scenarios():
