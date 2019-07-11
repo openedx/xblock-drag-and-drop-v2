@@ -1073,19 +1073,17 @@ class DragAndDropBlock(
         Return the date submissions should be closed from.
 
         Calculates and return the due date after which the submissions
-        will no longer be accepted. Returns None for the AttributeError
-        which happens for pure DragAndDropXblock as due date & graceperiod
-        are not its attributes. They are present for DragAndDropXblockWithMixins
+        will no longer be accepted. Returns None if both due & graceperiod
+        are missing which happens for pure DragAndDropXblock as they are
+        not its attributes. They are present for DragAndDropXblockWithMixins
         """
-        try:
-            due_date = self.due
-
-            if self.graceperiod is not None and due_date:
-                return due_date + self.graceperiod
+        if hasattr(self, 'due') and hasattr(self, 'graceperiod'):
+            due_date = self.due            # pylint: disable=no-member
+            if self.graceperiod is not None and due_date:          # pylint: disable=no-member
+                return due_date + self.graceperiod                 # pylint: disable=no-member
             else:
                 return due_date
-
-        except AttributeError:
+        else:
             return None
 
     def is_self_paced(self):
@@ -1093,15 +1091,14 @@ class DragAndDropBlock(
         Returns if the course is self-paced or not.
 
         Returns the boolean indicating if the parent course is
-        self-paced or not. Returns False for the AttributeError
+        self-paced or not. Returns False if the attribute is missing
         which happens for pure DragAndDropXblock. self_paced attribute is
         present only for DragAndDropXblockWithMixins.
         """
-        try:
-            return self.self_paced
-        except AttributeError:
+        if hasattr(self, 'self_paced'):
+            return self.self_paced           # pylint: disable=no-member
+        else:
             return False
-
 
     @staticmethod
     def workbench_scenarios():
