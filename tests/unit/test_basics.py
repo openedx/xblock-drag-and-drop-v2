@@ -77,8 +77,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             "item_background_color": None,
             "item_text_color": None,
             "url_name": "",
-            "due": None,
-            "self_paced": False
+            "has_deadline_passed": False,
         })
         self.assertEqual(zones, DEFAULT_DATA["zones"])
         # Items should contain no answer data:

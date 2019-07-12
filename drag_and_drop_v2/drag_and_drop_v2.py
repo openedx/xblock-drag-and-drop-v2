@@ -10,7 +10,7 @@ import logging
 import urllib
 import webob
 import pkg_resources
-from django.utils import translation
+from django.utils import timezone, translation
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 from xblock.fields import Scope, String, Dict, Float, Boolean, Integer
@@ -355,8 +355,7 @@ class DragAndDropBlock(
             "target_img_description": self.target_img_description,
             "item_background_color": self.item_background_color or None,
             "item_text_color": self.item_text_color or None,
-            "due": self.calculate_due_date(),
-            "self_paced": self.is_self_paced(),
+            "has_deadline_passed": self.has_deadline_passed,
             # final feedback (data.feedback.finish) is not included - it may give away answers.
         }
 
@@ -626,6 +625,18 @@ class DragAndDropBlock(
         """
         return self.max_attempts is None or self.max_attempts == 0 or self.attempts < self.max_attempts
 
+    @property
+    def has_deadline_passed(self):
+        """
+        Check if the submission deadline has passed or not
+        """
+        self_paced = self.is_self_paced()
+        due_date = self.calculate_due_date()
+
+        if self_paced or due_date is None:
+            return False
+        return timezone.now() > due_date
+
     @XBlock.handler
     def student_view_user_state(self, request, suffix=''):
         """ GET all user-specific data, and any applicable feedback """
@@ -646,6 +657,11 @@ class DragAndDropBlock(
             raise JsonHandlerError(
                 409,
                 self.i18n_service.gettext("Max number of attempts reached")
+            )
+        if self.has_deadline_passed:
+            raise JsonHandlerError(
+                409,
+                self.i18n_service.gettext("Submission deadline has passed")
             )
 
     def _get_feedback(self, include_item_feedback=False):

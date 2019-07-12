@@ -1855,12 +1855,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var problemNotDue = function () {
-        if(configuration.self_paced || configuration.due===null){
-            return true;
-        }
-        var now = new Date();
-        var due_date = new Date(configuration.due);
-        return (now.getTime() < due_date.getTime());
+        return !configuration.has_deadline_passed;
     };
 
     var submittingLocation = function() {
@@ -1943,8 +1938,6 @@ function DragAndDropBlock(runtime, element, configuration) {
             display_zone_labels: configuration.display_zone_labels,
             display_zone_borders: configuration.display_zone_borders,
             zones: configuration.zones,
-            due: configuration.due,
-            self_paced: configuration.self_paced,
             items: items,
             // state - parts that can change:
             attempts: state.attempts,

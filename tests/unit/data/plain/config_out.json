@@ -19,8 +19,7 @@
     "display_zone_labels": false,
     "url_name": "test",
     "max_items_per_zone": 4,
-    "due": null,
-    "self_paced": false,
+    "has_deadline_passed": false,
 
     "zones": [
         {
