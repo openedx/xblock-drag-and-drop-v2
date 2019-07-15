@@ -718,6 +718,7 @@ function DragAndDropBlock(runtime, element, configuration) {
 
     DragAndDropBlock.STANDARD_MODE = 'standard';
     DragAndDropBlock.ASSESSMENT_MODE = 'assessment';
+    DragAndDropBlock.DRAG_ITEM_OFFSET = -50;
 
     var Selector = {
         popup_box: '.popup',
@@ -1456,11 +1457,10 @@ function DragAndDropBlock(runtime, element, configuration) {
             var container_height = $container.innerHeight();
 
             // We need to get the item position relative to the $container.
-            var item_offset = $item.offset();
             var container_offset = $container.offset();
             var original_position = {
-                left: drag_origin.x - container_offset.left,
-                top: item_offset.top - container_offset.top
+                left: drag_origin.x - container_offset.left + DragAndDropBlock.DRAG_ITEM_OFFSET,
+                top: drag_origin.y - container_offset.top + DragAndDropBlock.DRAG_ITEM_OFFSET
             };
 
             item.drag_position = original_position;
