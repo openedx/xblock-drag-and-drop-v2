@@ -2,6 +2,7 @@ import ddt
 import unittest
 import random
 
+from django.utils.timezone import now, timedelta
 from drag_and_drop_v2.utils import Constants
 from drag_and_drop_v2.default_data import (
     TARGET_IMG_DESCRIPTION, TOP_ZONE_ID, MIDDLE_ZONE_ID, BOTTOM_ZONE_ID,
@@ -41,6 +42,14 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         modify(submission)
 
         return submission
+
+    def add_submission_deadline_information(self, due_date, graceperiod, self_paced):
+        """
+        Helper function to add pacing, due date and graceperiod to DnDXblock.
+        """
+        self.block.due = due_date
+        self.block.graceperiod = graceperiod
+        self.block.self_paced = self_paced
 
     def test_template_contents(self):
         context = {}
@@ -270,3 +279,23 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             self.block.student_view_data()["target_img_expanded_url"],
             '/course/test-course/assets/foo.png',
         )
+
+    @ddt.data(
+        (False, now(), None, True),
+        (True, now(), None, False),
+        (False, now(), timedelta(days=1), False),
+        (True, now(), timedelta(days=1), False),
+        (False, now() - timedelta(hours=1), None, True),
+    )
+    @ddt.unpack
+    def test_submission_deadline(self, self_paced, due_date, graceperiod, is_submission_due):
+        """
+        Verifies the dealine passed boolean value w.r.t pacing and due date.
+
+        Given the pacing information, due date and graceperiod,
+        confirm if the submission deadline has passed or not.
+        """
+        self.add_submission_deadline_information(due_date, graceperiod, self_paced)
+        self.assertEqual(is_submission_due, self.block.student_view_data()['has_deadline_passed'])
+
+
