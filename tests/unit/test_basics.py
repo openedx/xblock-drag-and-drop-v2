@@ -297,5 +297,3 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         """
         self.add_submission_deadline_information(due_date, graceperiod, self_paced)
         self.assertEqual(is_submission_due, self.block.student_view_data()['has_deadline_passed'])
-
-
