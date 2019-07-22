@@ -1,6 +1,12 @@
 Drag and Drop XBlock changelog
 ==============================
 
+Version 2.2.4 (2019-07-30)
+---------------------------
+
+* Use InheritanceMixin for submission deadline checks (PR #219)
+* Submit button behavior will change in Assessment Mode and will now be impacted by subsection due date, grace period and course pacing
+
 Version 2.2.3 (2019-04-05)
 ---------------------------
 

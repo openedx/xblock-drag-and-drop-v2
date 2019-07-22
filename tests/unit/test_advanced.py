@@ -398,6 +398,23 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
         self.assertEqual(self.block.attempts, attempts + 1)
         self.assertEqual(res['attempts'], self.block.attempts)
 
+    @ddt.data(
+        (True, 409, True),
+        (False, 200, False),
+    )
+    @ddt.unpack
+    @mock.patch('drag_and_drop_v2.DragAndDropBlock.has_submission_deadline_passed', new_callable=mock.PropertyMock)
+    def test_do_attempt_has_deadline_passed(self, is_past_deadline, status_code, expect_error, mock_deadline_passed):
+        """
+        Scenario: If the submission is past its deadline date, the attempt is not possible and
+        409 Conflict error is thrown.
+        """
+        mock_deadline_passed.return_value = is_past_deadline
+        response = self.call_handler(self.DO_ATTEMPT_HANDLER, data={}, expect_json=False)
+        self.assertEqual(response.status_code, status_code)
+        if expect_error:
+            self.assertIn("Submission deadline has passed.", response.body)
+
     @ddt.data(*[random.randint(1, 50) for _ in xrange(5)])  # pylint: disable=star-args
     def test_do_attempt_correct_mark_complete_and_publish_grade(self, weight):
         self.block.weight = weight
