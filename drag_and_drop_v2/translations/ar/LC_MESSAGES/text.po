@@ -1,15 +1,16 @@
 # 
 # Translators:
-# AR C2 <e2f458fd4s512@outlook.com>, 2016
+# 6e68c7971a89e50e680ae9444d303c8f, 2016
 # e2f <projects@e2f.com>, 2016
 # qualityalltext <quality@alltext.co.il>, 2016
+# Sahbi BG <sahbi.g@gmail.com>, 2017
 # shefaa abu jabel <shefaa.aj@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: XBlocks\n"
 "POT-Creation-Date: 2016-03-30 16:54+0500\n"
-"PO-Revision-Date: 2016-11-09 10:11+0000\n"
-"Last-Translator: Eric Fischer <efischer@edx.org>\n"
+"PO-Revision-Date: 2017-10-22 07:01+0000\n"
+"Last-Translator: Sahbi BG <sahbi.g@gmail.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/open-edx/xblocks/language/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -95,10 +96,8 @@ msgstr "ينتقل إلى النطاق السفلي"
 msgid "I don't belong anywhere"
 msgstr "أنا لا أنتمي إلى أي مكان"
 
-#: drag_and_drop_v2.py
-msgid "This setting limits the number of items that can be dropped into a single zone."
-msgstr ""
-
+#: drag_and_drop_v2.py msgid "This setting limits the number of items that can
+#: be dropped into a single zone." msgstr "" drag_and_drop_v2.py
 #: templates/html/js_templates.html
 msgid "Title"
 msgstr "العنوان"
@@ -455,6 +454,14 @@ msgstr "وضع في: {zone_title}"
 msgid "Correctly placed in: {zone_title}"
 msgstr "وضع بشكل صحيح في: {zone_title}"
 
+#: drag_and_drop_v2/public/js/drag_and_drop.js:137
+msgid ", draggable, grabbed"
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:137
+msgid ", draggable"
+msgstr ""
+
 #: public/js/drag_and_drop.js
 msgid "Reset"
 msgstr "إعادة تعيين"
@@ -479,35 +486,58 @@ msgstr "تقييم"
 msgid "Keyboard Help"
 msgstr "دعم لوحة المفاتيح"
 
-#: public/js/drag_and_drop.js
-msgid "You can complete this problem using only your keyboard."
-msgstr "يمكنك استكمال هذه المسألة باستخدام لوحة المفاتيح الخاصة بك فقط."
+#: drag_and_drop_v2/public/js/drag_and_drop.js:305
+msgid "This is a screen reader-friendly problem"
+msgstr ""
 
-#: public/js/drag_and_drop.js
-msgid "Use \"Tab\" and \"Shift-Tab\" to navigate between items and zones."
-msgstr "استخدم \"Tab\" و \"Shift-Tab\" للتنقل بين العناصر والمناطق."
-
-#: public/js/drag_and_drop.js
+#: drag_and_drop_v2/public/js/drag_and_drop.js:306
 msgid ""
-"Press \"Enter\", \"Space\", \"Ctrl-m\", or \"⌘-m\" on an item to select it "
-"for dropping, then navigate to the zone you want to drop it on."
-msgstr "اضغط على \"Enter\"، أو \"Space\"، أو \"Ctrl-m\"، أو \"⌘-m\" على عنصر معين لاختياره للإسقاط، ثم انتقل إلى المنطقة التي ترغب في إسقاطه فيها."
+"You can complete this problem using only your keyboard by following the "
+"guidance below:"
+msgstr ""
 
-#: public/js/drag_and_drop.js
+#: drag_and_drop_v2/public/js/drag_and_drop.js:307
 msgid ""
-"Press \"Enter\", \"Space\", \"Ctrl-m\", or \"⌘-m\" to drop the item on the "
-"current zone."
-msgstr "اضغط على \"Enter\"، أو \"Space\"، أو \"Ctrl-m\"، أو \"⌘-m\" لإسقاط العنصر في المنطقة الحالية."
+"Drag and Drop problems consist of draggable items and dropzones. Users "
+"should select a draggable item with their keyboard and then navigate to an "
+"appropriate dropzone to drop it."
+msgstr ""
 
-#: public/js/drag_and_drop.js
+#: drag_and_drop_v2/public/js/drag_and_drop.js:309
 msgid ""
-"Press \"Esc\" if you want to cancel the drop operation (for example, to "
-"select a different item)."
-msgstr "اضغط على \"Esc\" إذا كنت ترغب في إلغاء عملية الإسقاط (على سبيل المثال، لاختيار عنصر مختلف)."
+"Use only TAB and SHIFT+TAB to navigate between draggable items and drop "
+"zones."
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:310
+msgid "Press CTRL+M to select a draggable item (effectively picking it up)."
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:311
+msgid ""
+"Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press "
+"CTRL+M once more to drop it here."
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:312
+msgid ""
+"Press ESC if you want to cancel the drop operation (for example, to select a"
+" different item)."
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:313
+msgid ""
+"TAB back to the list of draggable items and repeat this process until all of"
+" the draggable items have been placed on their respective dropzones."
+msgstr ""
 
 #: public/js/drag_and_drop.js
-msgid "OK"
-msgstr "موافق"
+msgid "Close"
+msgstr ""
+
+#: public/js/drag_and_drop.js
+msgid "Go to Beginning"
+msgstr ""
 
 #: public/js/drag_and_drop.js
 msgid "Problem"
@@ -536,10 +566,6 @@ msgstr "الرجاء التحقق من إرسالك."
 #: public/js/drag_and_drop_edit.js
 msgid "None"
 msgstr "لا شيء"
-
-#: public/js/drag_and_drop_edit.js
-msgid "Close item feedback popup"
-msgstr "أغلق نافذة التعليقات المنبثقة الخاصة بالعنصر"
 
 # Translators: {earned} is the number of points earned. {possible} is the
 # total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
@@ -592,6 +618,31 @@ msgstr[2] ""
 msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:374
+#: drag_and_drop_v2/public/js/drag_and_drop.js:839
+msgid "Hints:"
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:224
+msgid ", dropzone"
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:479
+msgid "Drag and Drop Problem"
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:509
+msgid "Drop Targets"
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:517
+msgid "Actions"
+msgstr ""
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:12
+msgid "Submitting"
+msgstr ""
 
 #: utils.py:44
 msgid "Your highest score is {score}"
