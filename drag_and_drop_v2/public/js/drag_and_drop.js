@@ -1827,7 +1827,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var canSubmitAttempt = function() {
-        return Object.keys(state.items).length > 0 && attemptsRemain() && !submittingLocation();
+        return Object.keys(state.items).length > 0 && isPastDue() && attemptsRemain() && !submittingLocation();
     };
 
     var canReset = function() {
@@ -1844,6 +1844,10 @@ function DragAndDropBlock(runtime, element, configuration) {
             }
         }
         return any_items_placed && (configuration.mode !== DragAndDropBlock.ASSESSMENT_MODE || attemptsRemain());
+    };
+
+    var isPastDue = function () {
+        return !configuration.has_deadline_passed;
     };
 
     var canShowAnswer = function() {

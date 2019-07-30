@@ -355,6 +355,7 @@ class DragAndDropBlock(
             "target_img_description": self.target_img_description,
             "item_background_color": self.item_background_color or None,
             "item_text_color": self.item_text_color or None,
+            "has_deadline_passed": self.has_submission_deadline_passed,
             # final feedback (data.feedback.finish) is not included - it may give away answers.
         }
 
@@ -624,6 +625,22 @@ class DragAndDropBlock(
         """
         return self.max_attempts is None or self.max_attempts == 0 or self.attempts < self.max_attempts
 
+    @property
+    def has_submission_deadline_passed(self):
+        """
+        Returns a boolean indicating if the submission is past its deadline.
+
+        Using the `has_deadline_passed` method from InheritanceMixin which gets
+        added on the LMS/Studio, return if the submission is past its due date.
+        If the method not found, which happens for pure DragAndDropXblock,
+        return False which makes sure submission checks don't affect other
+        functionality.
+        """
+        if hasattr(self, "has_deadline_passed"):
+            return self.has_deadline_passed()               # pylint: disable=no-member
+        else:
+            return False
+
     @XBlock.handler
     def student_view_user_state(self, request, suffix=''):
         """ GET all user-specific data, and any applicable feedback """
@@ -644,6 +661,11 @@ class DragAndDropBlock(
             raise JsonHandlerError(
                 409,
                 self.i18n_service.gettext("Max number of attempts reached")
+            )
+        if self.has_submission_deadline_passed:
+            raise JsonHandlerError(
+                409,
+                self.i18n_service.gettext("Submission deadline has passed.")
             )
 
     def _get_feedback(self, include_item_feedback=False):
