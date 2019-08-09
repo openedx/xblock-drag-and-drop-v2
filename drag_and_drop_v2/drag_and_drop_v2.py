@@ -22,6 +22,8 @@ from xblockutils.settings import XBlockWithSettingsMixin, ThemableXBlockMixin
 from .utils import _, DummyTranslationService, FeedbackMessage, FeedbackMessages, ItemStats, StateMigration, Constants
 from .default_data import DEFAULT_DATA
 
+from django.utils.translation import ugettext_lazy as _
+
 
 # Globals ###########################################################
 
