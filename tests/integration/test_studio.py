@@ -1,3 +1,7 @@
+from __future__ import absolute_import
+
+import six
+from six.moves import range
 from xblockutils.studio_editable_test import StudioEditableBaseTest
 
 
@@ -159,7 +163,7 @@ class TestStudio(StudioEditableBaseTest):
                     'zone-x': (zone_width * col) + (padding * (col + 1)),
                     'zone-y': (zone_height * row) + (padding * (row + 1)),
                 }
-                for name, expected_value in expected_values.iteritems():
+                for name, expected_value in six.iteritems(expected_values):
                     field = zone.find_element_by_css_selector('.' + name)
                     self.assertEqual(field.get_attribute('value'), str(expected_value))
 

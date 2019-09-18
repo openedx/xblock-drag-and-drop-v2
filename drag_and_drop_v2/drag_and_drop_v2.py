@@ -4,24 +4,29 @@
 
 # Imports ###########################################################
 
+from __future__ import absolute_import
+
 import copy
 import json
 import logging
-import urllib
+
+import pkg_resources  # pylint: disable=wrong-import-order
+import six
+import six.moves.urllib.error  # pylint: disable=import-error, wrong-import-order
+import six.moves.urllib.parse  # pylint: disable=import-error, wrong-import-order
 import webob
-import pkg_resources
 from django.utils import translation
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
-from xblock.fields import Scope, String, Dict, Float, Boolean, Integer
+from xblock.fields import Boolean, Dict, Float, Integer, Scope, String
 from xblock.fragment import Fragment
 from xblock.scorable import ScorableXBlockMixin, Score
 from xblockutils.resources import ResourceLoader
-from xblockutils.settings import XBlockWithSettingsMixin, ThemableXBlockMixin
+from xblockutils.settings import ThemableXBlockMixin, XBlockWithSettingsMixin
 
-from .utils import _, DummyTranslationService, FeedbackMessage, FeedbackMessages, ItemStats, StateMigration, Constants
 from .default_data import DEFAULT_DATA
-
+from .utils import (Constants, DummyTranslationService, FeedbackMessage,
+                    FeedbackMessages, ItemStats, StateMigration, _)
 
 # Globals ###########################################################
 
@@ -33,12 +38,7 @@ logger = logging.getLogger(__name__)
 
 @XBlock.wants('settings')
 @XBlock.needs('i18n')
-class DragAndDropBlock(
-    ScorableXBlockMixin,
-    XBlock,
-    XBlockWithSettingsMixin,
-    ThemableXBlockMixin
-):
+class DragAndDropBlock(ScorableXBlockMixin, XBlock, XBlockWithSettingsMixin, ThemableXBlockMixin):
     """
     XBlock that implements a friendly Drag-and-Drop problem
     """
@@ -332,7 +332,7 @@ class DragAndDropBlock(
             return items
 
         return {
-            "block_id": unicode(self.scope_ids.usage_id),
+            "block_id": six.text_type(self.scope_ids.usage_id),
             "display_name": self.display_name,
             "type": self.CATEGORY,
             "weight": self.weight,
@@ -376,7 +376,7 @@ class DragAndDropBlock(
             'id_suffix': id_suffix,
             'fields': self.fields,
             'self': self,
-            'data': urllib.quote(json.dumps(self.data)),
+            'data': six.moves.urllib.parse.quote(json.dumps(self.data)),
         }
 
         fragment = Fragment()
@@ -452,7 +452,7 @@ class DragAndDropBlock(
         if hasattr(self, 'location'):
             return self.location.html_id()  # pylint: disable=no-member
         else:
-            return unicode(self.scope_ids.usage_id)
+            return six.text_type(self.scope_ids.usage_id)
 
     @staticmethod
     def _get_max_items_per_zone(submissions):
@@ -723,9 +723,11 @@ class DragAndDropBlock(
             else:
                 grade_feedback_template = FeedbackMessages.FINAL_ATTEMPT_TPL
 
-            feedback_msgs.append(FeedbackMessage(
-                self.i18n_service.gettext(grade_feedback_template).format(score=self.weighted_grade()),
-                grade_feedback_class)
+            feedback_msgs.append(
+                FeedbackMessage(
+                    self.i18n_service.gettext(grade_feedback_template).format(score=self.weighted_grade()),
+                    grade_feedback_class
+                )
             )
 
         return feedback_msgs, misplaced_ids
@@ -959,7 +961,7 @@ class DragAndDropBlock(
         state = {}
         migrator = StateMigration(self)
 
-        for item_id, item in self.item_state.iteritems():
+        for item_id, item in six.iteritems(self.item_state):
             state[item_id] = migrator.apply_item_state_migrations(item_id, item)
 
         return state
@@ -1056,7 +1058,7 @@ class DragAndDropBlock(
         Returns student's grade with the problem weight applied if set, otherwise
         None.
         """
-        if self.fields['raw_earned'].is_set_on(self):
+        if self.fields['raw_earned'].is_set_on(self):  # pylint: disable=R1705
             return self.weighted_grade()
         else:
             return None
@@ -1072,7 +1074,7 @@ class DragAndDropBlock(
                 * Incorrect: None items are at their correct place.
         """
         correct_count, total_count = self._get_item_stats()
-        if correct_count == total_count:
+        if correct_count == total_count:  # pylint: disable=R1705
             return self.SOLUTION_CORRECT
         elif correct_count == 0:
             return self.SOLUTION_INCORRECT

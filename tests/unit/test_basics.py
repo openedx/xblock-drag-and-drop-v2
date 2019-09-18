@@ -1,13 +1,18 @@
-import ddt
-import unittest
-import random
+from __future__ import absolute_import
 
+import random
+import unittest
+
+import ddt
+from six.moves import range
+
+from drag_and_drop_v2.default_data import (BOTTOM_ZONE_ID, DEFAULT_DATA,
+                                           FINISH_FEEDBACK, MIDDLE_ZONE_ID,
+                                           START_FEEDBACK,
+                                           TARGET_IMG_DESCRIPTION, TOP_ZONE_ID)
 from drag_and_drop_v2.utils import Constants
-from drag_and_drop_v2.default_data import (
-    TARGET_IMG_DESCRIPTION, TOP_ZONE_ID, MIDDLE_ZONE_ID, BOTTOM_ZONE_ID,
-    START_FEEDBACK, FINISH_FEEDBACK, DEFAULT_DATA
-)
-from ..utils import make_block, TestCaseMixin
+
+from ..utils import TestCaseMixin, make_block
 
 
 @ddt.ddt
@@ -94,7 +99,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             )
         ])
 
-    @ddt.data(*[random.randint(1, 50) for _ in xrange(5)])  # pylint: disable=star-args
+    @ddt.data(*[random.randint(1, 50) for _ in range(5)])  # pylint: disable=star-args
     def test_grading_interface(self, weight):
         """
         Test that the methods required by the LMS grading interface work as expected.

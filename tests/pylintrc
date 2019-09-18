@@ -15,7 +15,13 @@ disable=
     too-many-public-methods,
     invalid-name,
     no-member,
-    star-args
+    star-args,
+    no-else-return,
+    useless-object-inheritance,
+    unsubscriptable-object,
+    bad-option-value,
+    len-as-condition,
+    useless-super-delegation
 
 [SIMILARITIES]
 min-similarity-lines=4

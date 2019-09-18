@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """ Drag and Drop v2 XBlock - Utils """
+from __future__ import absolute_import
+
 import copy
 from collections import namedtuple
 
@@ -11,7 +13,7 @@ def _(text):
 
 def ngettext_fallback(text_singular, text_plural, number):
     """ Dummy `ngettext` replacement to make string extraction tools scrape strings marked for translation """
-    if number == 1:
+    if number == 1:  # pylint: disable=R1705
         return text_singular
     else:
         return text_plural
@@ -194,7 +196,7 @@ class StateMigration(object):
         In: ('100px', '120px')
         Out: {'top': '100px', 'left': '120px'}
         """
-        if isinstance(item, dict):
+        if isinstance(item, dict):  # pylint: disable=R1705
             return item
         else:
             return {'top': item[0], 'left': item[1]}

@@ -2,27 +2,29 @@
 
 # Imports ###########################################################
 
-from ddt import ddt, data
-from mock import Mock, patch
-import time
+from __future__ import absolute_import
+
 import re
+import time
 
+import six
+from ddt import data, ddt
+from mock import Mock, patch
 from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
-
+from selenium.webdriver.support.ui import WebDriverWait
+from six.moves import range
 from xblockutils.resources import ResourceLoader
 
-from drag_and_drop_v2.default_data import (
-    TOP_ZONE_ID, MIDDLE_ZONE_ID, BOTTOM_ZONE_ID,
-    TOP_ZONE_TITLE, START_FEEDBACK, FINISH_FEEDBACK
-)
-from drag_and_drop_v2.utils import FeedbackMessages, Constants
-from .test_base import BaseIntegrationTest
-from .test_interaction import (
-    InteractionTestBase, DefaultDataTestMixin, ParameterizedTestsMixin, TestMaxItemsPerZone, ITEM_DRAG_KEYBOARD_KEYS
-)
+from drag_and_drop_v2.default_data import (BOTTOM_ZONE_ID, FINISH_FEEDBACK,
+                                           MIDDLE_ZONE_ID, START_FEEDBACK,
+                                           TOP_ZONE_ID, TOP_ZONE_TITLE)
+from drag_and_drop_v2.utils import Constants, FeedbackMessages
 
+from .test_base import BaseIntegrationTest
+from .test_interaction import (ITEM_DRAG_KEYBOARD_KEYS, DefaultDataTestMixin,
+                               InteractionTestBase, ParameterizedTestsMixin,
+                               TestMaxItemsPerZone)
 
 # Globals ###########################################################
 
@@ -69,6 +71,7 @@ class AssessmentTestMixin(object):
         self.wait_for_ajax()
 
 
+# pylint: disable=C0330
 @ddt
 class AssessmentInteractionTest(
     DefaultAssessmentDataTestMixin, AssessmentTestMixin, ParameterizedTestsMixin,
@@ -106,7 +109,7 @@ class AssessmentInteractionTest(
         self.interact_with_keyboard_help(use_keyboard=use_keyboard)
 
     def test_submit_button_shown(self):
-        first_item_definition = self._get_items_with_zone(self.items_map).values()[0]
+        first_item_definition = list(self._get_items_with_zone(self.items_map).values())[0]
 
         submit_button = self._get_submit_button()
         self.assertTrue(submit_button.is_displayed())
@@ -128,10 +131,10 @@ class AssessmentInteractionTest(
         correct_items = {0: TOP_ZONE_ID}
         misplaced_items = {1: BOTTOM_ZONE_ID, 2: MIDDLE_ZONE_ID}
 
-        for item_id, zone_id in correct_items.iteritems():
+        for item_id, zone_id in six.iteritems(correct_items):
             self.place_item(item_id, zone_id)
 
-        for item_id, zone_id in misplaced_items.iteritems():
+        for item_id, zone_id in six.iteritems(misplaced_items):
             self.place_item(item_id, zone_id)
 
         self.click_submit()
@@ -150,7 +153,7 @@ class AssessmentInteractionTest(
         self.place_item(0, TOP_ZONE_ID, action_key=Keys.RETURN)
 
         # Reach final attempt
-        for _ in xrange(self.MAX_ATTEMPTS-1):
+        for _ in range(self.MAX_ATTEMPTS-1):
             self.click_submit()
 
         # Place incorrect item on final attempt
@@ -181,7 +184,7 @@ class AssessmentInteractionTest(
 
         attempts_info = self._get_attempts_info()
 
-        for index in xrange(self.MAX_ATTEMPTS):
+        for index in range(self.MAX_ATTEMPTS):
             expected_text = "You have used {num} of {max} attempts.".format(num=index, max=self.MAX_ATTEMPTS)
             self.assertEqual(attempts_info.text, expected_text)  # precondition check
             self.assertEqual(submit_button.get_attribute('disabled'), None)
@@ -223,7 +226,7 @@ class AssessmentInteractionTest(
         self.assertTrue(show_answer_button.is_displayed())
 
         self.place_item(0, TOP_ZONE_ID, Keys.RETURN)
-        for _ in xrange(self.MAX_ATTEMPTS-1):
+        for _ in range(self.MAX_ATTEMPTS-1):
             self.assertEqual(show_answer_button.get_attribute('disabled'), 'true')
             self.click_submit()
 
@@ -292,7 +295,7 @@ class AssessmentInteractionTest(
         check_feedback(feedback_lines, ["No, this item does not belong here. Try again."])
 
         # reach final attempt
-        for _ in xrange(self.MAX_ATTEMPTS-3):
+        for _ in range(self.MAX_ATTEMPTS-3):
             self.click_submit()
 
         self.place_item(1, MIDDLE_ZONE_ID, Keys.RETURN)
@@ -353,8 +356,8 @@ class AssessmentInteractionTest(
         progress = self._page.find_element_by_css_selector('.problem-progress')
         self.assertEqual(progress.text, '1 point possible (ungraded)')
 
-        items_with_zones = self._get_items_with_zone(self.items_map).values()
-        items_without_zones = self._get_items_without_zone(self.items_map).values()
+        items_with_zones = list(self._get_items_with_zone(self.items_map).values())
+        items_without_zones = list(self._get_items_without_zone(self.items_map).values())
         total_items = len(items_with_zones) + len(items_without_zones)
 
         # Place items into correct zones one by one:

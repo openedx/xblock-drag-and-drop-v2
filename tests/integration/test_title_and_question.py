@@ -1,7 +1,9 @@
-from ddt import ddt, unpack, data
+from __future__ import absolute_import
+from ddt import data, ddt, unpack
 from selenium.common.exceptions import NoSuchElementException
-from .test_base import BaseIntegrationTest
 from workbench import scenarios
+
+from .test_base import BaseIntegrationTest
 
 
 @ddt
