@@ -4,6 +4,8 @@ python:
     - "2.7"
 before_install:
     - "export DISPLAY=:99"
+services:
+    - xvfb
 install:
     - "sh install_test_deps.sh"
     # Remove the next two lines after our test suite is compatible with selenium 3.
