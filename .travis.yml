@@ -2,19 +2,20 @@ language: python
 sudo: false
 python:
     - "2.7"
-before_install:
-    - "export DISPLAY=:99"
-    - "sh -e /etc/init.d/xvfb start"
+services:
+    - xvfb
 install:
     - "sh install_test_deps.sh"
     # Remove the next two lines after our test suite is compatible with selenium 3.
     - "pip uninstall -y selenium"
-    - "pip install selenium==2.53.0"
+    - "pip install selenium==2.53.6"
     - "pip uninstall -y xblock-drag-and-drop-v2"
     - "python setup.py sdist"
     - "pip install dist/xblock-drag-and-drop-v2-*.tar.gz"
+    - "pip uninstall -y pylint"
+    - "pip install pylint==1.7.6"
 script:
-    - pep8 drag_and_drop_v2 tests --max-line-length=120
+    - pycodestyle drag_and_drop_v2 tests --max-line-length=120
     - pylint drag_and_drop_v2
     - pylint tests --rcfile=tests/pylintrc
     - python run_tests.py

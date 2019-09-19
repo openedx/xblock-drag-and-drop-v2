@@ -31,6 +31,7 @@ logger = logging.getLogger(__name__)
 # Classes ###########################################################
 
 
+# pylint: disable=bad-continuation
 @XBlock.wants('settings')
 @XBlock.needs('i18n')
 class DragAndDropBlock(
