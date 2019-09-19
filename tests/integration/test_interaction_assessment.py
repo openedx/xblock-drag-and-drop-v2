@@ -8,12 +8,12 @@ import re
 import time
 
 import six
+from six.moves import range
 from ddt import data, ddt
 from mock import Mock, patch
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
-from six.moves import range
 from xblockutils.resources import ResourceLoader
 
 from drag_and_drop_v2.default_data import (BOTTOM_ZONE_ID, FINISH_FEEDBACK,
