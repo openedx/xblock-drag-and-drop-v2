@@ -127,9 +127,7 @@ class TestStudio(StudioEditableBaseTest):
         self.assertFalse(radio_buttons['auto'].is_selected())
         url_field = self.background_image_url_field
         self.assertEqual(url_field.get_attribute('value'), '')
-
-        self.assertIn(default_bg_img_src.split(''), self.target_preview_img.get_attribute('src'))
-
+        self.assertEqual(self.target_preview_img.get_attribute('src'), default_bg_img_src)
         url_field.send_keys(custom_bg_img_src)
         self.scroll_into_view(self.background_image_url_button)
         self.background_image_url_button.click()
