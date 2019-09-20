@@ -128,9 +128,7 @@ class TestStudio(StudioEditableBaseTest):
         url_field = self.background_image_url_field
         self.assertEqual(url_field.get_attribute('value'), '')
 
-        self.assertIn(
-            default_bg_img_src.split('http://localhost:8081/')[1], self.target_preview_img.get_attribute('src')
-        )
+        self.assertIn(default_bg_img_src.split(''), self.target_preview_img.get_attribute('src'))
 
         url_field.send_keys(custom_bg_img_src)
         self.scroll_into_view(self.background_image_url_button)
