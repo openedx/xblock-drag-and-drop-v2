@@ -9,7 +9,7 @@ from drag_and_drop_v2.default_data import (
     ITEM_INCORRECT_FEEDBACK, ITEM_TOP_ZONE_NAME, ITEM_MIDDLE_ZONE_NAME,
 )
 from tests.integration.test_base import BaseIntegrationTest, DefaultDataTestMixin, InteractionTestBase, ItemDefinition
-from tests.integration.test_interaction import DefaultDataTestMixin, ParameterizedTestsMixin
+from tests.integration.test_interaction import ParameterizedTestsMixin
 from tests.integration.test_interaction_assessment import DefaultAssessmentDataTestMixin, AssessmentTestMixin
 
 
@@ -86,9 +86,7 @@ class EventsFiredTest(DefaultDataTestMixin, ParameterizedTestsMixin, BaseEventsT
 
 
 @ddt
-class AssessmentEventsFiredTest(
-    DefaultAssessmentDataTestMixin, AssessmentTestMixin, BaseEventsTests
-):
+class AssessmentEventsFiredTest(DefaultAssessmentDataTestMixin, AssessmentTestMixin, BaseEventsTests):
     scenarios = (
         {
             'name': 'edx.drag_and_drop_v2.loaded',

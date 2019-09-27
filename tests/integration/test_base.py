@@ -56,6 +56,7 @@ class BaseIntegrationTest(SeleniumBaseTest):
     }
 
     # pylint: disable=too-many-arguments
+    # pylint: disable=bad-continuation
     @classmethod
     def _make_scenario_xml(
         cls, display_name="Test DnDv2", show_title=True, problem_text="Question", completed=False,

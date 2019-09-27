@@ -69,6 +69,7 @@ class AssessmentTestMixin(object):
         self.wait_for_ajax()
 
 
+# pylint: disable=bad-continuation
 @ddt
 class AssessmentInteractionTest(
     DefaultAssessmentDataTestMixin, AssessmentTestMixin, ParameterizedTestsMixin,
