@@ -1,14 +1,16 @@
-from __future__ import division
+from __future__ import absolute_import, division
+
 import base64
-from collections import namedtuple
 import os.path
+from collections import namedtuple
+
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
-
 from xblockutils.resources import ResourceLoader
 
-from .test_base import BaseIntegrationTest
 from tests.integration.test_base import InteractionTestBase
+
+from .test_base import BaseIntegrationTest
 
 loader = ResourceLoader(__name__)
 

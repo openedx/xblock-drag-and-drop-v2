@@ -3,18 +3,20 @@
 
 # Imports ###########################################################
 
-from ddt import ddt, data, unpack
+from __future__ import absolute_import
+
 import re
 
+from ddt import data, ddt, unpack
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from xblockutils.resources import ResourceLoader
 
-from tests.integration.test_base import (
-    DefaultDataTestMixin, InteractionTestBase, ItemDefinition
-)
+from tests.integration.test_base import (DefaultDataTestMixin,
+                                         InteractionTestBase, ItemDefinition)
+
 from .test_base import BaseIntegrationTest
 
 # Globals ###########################################################
@@ -62,7 +64,7 @@ class ParameterizedTestsMixin(object):
         # Scroll drop zones into view to make sure Selenium can successfully drop items
         self.scroll_down(pixels=scroll_down)
 
-        items_with_zones = self._get_items_with_zone(items_map).values()
+        items_with_zones = list(self._get_items_with_zone(items_map).values())
         for i, definition in enumerate(items_with_zones):
             self.place_item(definition.item_id, definition.zone_ids[0], action_key)
             self.wait_until_ondrop_xhr_finished(self._get_item_by_value(definition.item_id))
@@ -93,7 +95,7 @@ class ParameterizedTestsMixin(object):
         # Scroll drop zones into view to make sure Selenium can successfully drop items
         self.scroll_down(pixels=scroll_down)
 
-        items_with_zones = self._get_items_with_zone(items_map).values()
+        items_with_zones = list(self._get_items_with_zone(items_map).values())
         for definition in items_with_zones:
             self.place_item(definition.item_id, definition.zone_ids[0], action_key)
             self.wait_until_ondrop_xhr_finished(self._get_item_by_value(definition.item_id))
@@ -356,8 +358,8 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
         self.interact_with_keyboard_help(use_keyboard=use_keyboard)
 
     def test_grade_display(self):
-        items_with_zones = self._get_items_with_zone(self.items_map).values()
-        items_without_zones = self._get_items_without_zone(self.items_map).values()
+        items_with_zones = list(self._get_items_with_zone(self.items_map).values())
+        items_without_zones = list(self._get_items_without_zone(self.items_map).values())
         total_items = len(items_with_zones) + len(items_without_zones)
 
         progress = self._page.find_element_by_css_selector('.problem-progress')
@@ -381,7 +383,7 @@ class StandardInteractionTest(DefaultDataTestMixin, InteractionTestBase, Paramet
     @data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_cannot_select_multiple_items(self, action_key):
         if action_key:
-            all_item_ids = self.items_map.keys()
+            all_item_ids = list(self.items_map.keys())
             # Go through all items and select them all using the keyboard action key.
             for item_id in all_item_ids:
                 item = self._get_item_by_value(item_id)

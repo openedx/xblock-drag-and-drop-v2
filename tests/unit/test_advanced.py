@@ -1,17 +1,20 @@
 # Imports ###########################################################
 
-import ddt
+from __future__ import absolute_import
+
 import json
-import mock
 import random
 import unittest
 
+import ddt
+import mock
+import six
+from six.moves import range
 from xblockutils.resources import ResourceLoader
 
 from drag_and_drop_v2.utils import FeedbackMessages
 
-from ..utils import make_block, TestCaseMixin, generate_max_and_attempts
-
+from ..utils import TestCaseMixin, generate_max_and_attempts, make_block
 
 # Globals ###########################################################
 
@@ -151,7 +154,7 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
             "feedback": expected_feedback
         })
 
-    @ddt.data(*[random.randint(1, 50) for _ in xrange(5)])  # pylint: disable=star-args
+    @ddt.data(*[random.randint(1, 50) for _ in range(5)])  # pylint: disable=star-args
     def test_grading(self, weight):
         self.block.weight = weight
 
@@ -305,7 +308,7 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
         return {"val": item_id, "zone": zone_id}
 
     def _submit_solution(self, solution):
-        for item_id, zone_id in solution.iteritems():
+        for item_id, zone_id in six.iteritems(solution):
             data = self._make_submission(item_id, zone_id)
             self.call_handler(self.DROP_ITEM_HANDLER, data)
 
@@ -334,7 +337,7 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
 
     def test_multiple_drop_item(self):
         item_zone_map = {0: self.ZONE_1, 1: self.ZONE_2}
-        for item_id, zone_id in item_zone_map.iteritems():
+        for item_id, zone_id in six.iteritems(item_zone_map):
             data = self._make_submission(item_id, zone_id)
             res = self.call_handler(self.DROP_ITEM_HANDLER, data)
 
@@ -389,7 +392,7 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
         else:
             self.assertEqual(res.status_code, 200)
 
-    @ddt.data(*[random.randint(0, 100) for _ in xrange(10)])  # pylint: disable=star-args
+    @ddt.data(*[random.randint(0, 100) for _ in range(10)])  # pylint: disable=star-args
     def test_do_attempt_raises_number_of_attempts(self, attempts):
         self.block.attempts = attempts
         self.block.max_attempts = attempts + 1
@@ -415,7 +418,7 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
         if expect_error:
             self.assertIn("Submission deadline has passed.", response.body)
 
-    @ddt.data(*[random.randint(1, 50) for _ in xrange(5)])  # pylint: disable=star-args
+    @ddt.data(*[random.randint(1, 50) for _ in range(5)])  # pylint: disable=star-args
     def test_do_attempt_correct_mark_complete_and_publish_grade(self, weight):
         self.block.weight = weight
 
@@ -438,7 +441,7 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
             ]
             self.assertEqual(patched_publish.mock_calls, expected_calls)
 
-    @ddt.data(*[random.randint(1, 50) for _ in xrange(5)])  # pylint: disable=star-args
+    @ddt.data(*[random.randint(1, 50) for _ in range(5)])  # pylint: disable=star-args
     def test_do_attempt_incorrect_publish_grade(self, weight):
         self.block.weight = weight
 
@@ -461,7 +464,7 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
             ]
             self.assertEqual(patched_publish.mock_calls, expected_calls)
 
-    @ddt.data(*[random.randint(1, 50) for _ in xrange(5)])  # pylint: disable=star-args
+    @ddt.data(*[random.randint(1, 50) for _ in range(5)])  # pylint: disable=star-args
     def test_do_attempt_post_correct_no_publish_grade(self, weight):
         self.block.weight = weight
 
@@ -486,7 +489,7 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
         res = self.call_handler(self.USER_STATE_HANDLER, data={})
         self.assertTrue(res['finished'])
 
-    @ddt.data(*[random.randint(1, 50) for _ in xrange(5)])  # pylint: disable=star-args
+    @ddt.data(*[random.randint(1, 50) for _ in range(5)])  # pylint: disable=star-args
     def test_do_attempt_incorrect_final_attempt_publish_grade(self, weight):
         self.block.weight = weight
 
@@ -517,7 +520,7 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
             ]
             self.assertEqual(patched_publish.mock_calls, expected_calls)
 
-    @ddt.data(*[random.randint(1, 50) for _ in xrange(5)])  # pylint: disable=star-args
+    @ddt.data(*[random.randint(1, 50) for _ in range(5)])  # pylint: disable=star-args
     def test_do_attempt_incorrect_final_attempt_after_correct(self, weight):
         self.block.weight = weight
 
@@ -571,7 +574,7 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
         self.assertFalse(self.block.attempts_remain)  # precondition check
 
         for i in misplaced_ids:
-            self.assertIn(str(i), self.block.item_state.keys())
+            self.assertIn(str(i), list(self.block.item_state.keys()))
 
     def test_get_user_state_does_not_include_correctness(self):
         self._submit_complete_solution()
@@ -622,7 +625,7 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
 
         decoys = self._get_all_decoys()
         solution = {}
-        for item_id, item_state in res['items'].iteritems():
+        for item_id, item_state in six.iteritems(res['items']):
             self.assertIn('correct', item_state)
             self.assertIn('zone', item_state)
             self.assertNotIn(int(item_id), decoys)
