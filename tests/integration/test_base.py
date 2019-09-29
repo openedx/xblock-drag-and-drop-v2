@@ -2,28 +2,38 @@
 #
 # Imports ###########################################################
 
+from __future__ import absolute_import
+
 import json
+from collections import namedtuple
 from xml.sax.saxutils import escape
+
+from bok_choy.promise import EmptyPromise
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
-from collections import namedtuple
-
-from bok_choy.promise import EmptyPromise
+from six.moves import range
 from workbench import scenarios
+from xblockutils.base_test import SeleniumBaseTest
 from xblockutils.resources import ResourceLoader
 
-from xblockutils.base_test import SeleniumBaseTest
-
+from drag_and_drop_v2.default_data import (BOTTOM_ZONE_ID, BOTTOM_ZONE_TITLE,
+                                           DEFAULT_DATA, FINISH_FEEDBACK,
+                                           ITEM_ANY_ZONE_FEEDBACK,
+                                           ITEM_ANY_ZONE_NAME,
+                                           ITEM_BOTTOM_ZONE_NAME,
+                                           ITEM_CORRECT_FEEDBACK_BOTTOM,
+                                           ITEM_CORRECT_FEEDBACK_MIDDLE,
+                                           ITEM_CORRECT_FEEDBACK_TOP,
+                                           ITEM_INCORRECT_FEEDBACK,
+                                           ITEM_MIDDLE_ZONE_NAME,
+                                           ITEM_NO_ZONE_FEEDBACK,
+                                           ITEM_NO_ZONE_NAME,
+                                           ITEM_TOP_ZONE_NAME, MIDDLE_ZONE_ID,
+                                           MIDDLE_ZONE_TITLE, START_FEEDBACK,
+                                           TOP_ZONE_ID, TOP_ZONE_TITLE)
 from drag_and_drop_v2.utils import Constants
-
-from drag_and_drop_v2.default_data import (
-    DEFAULT_DATA, START_FEEDBACK, FINISH_FEEDBACK, TOP_ZONE_ID, TOP_ZONE_TITLE, MIDDLE_ZONE_ID, MIDDLE_ZONE_TITLE,
-    BOTTOM_ZONE_ID, BOTTOM_ZONE_TITLE, ITEM_CORRECT_FEEDBACK_TOP, ITEM_CORRECT_FEEDBACK_MIDDLE,
-    ITEM_CORRECT_FEEDBACK_BOTTOM, ITEM_INCORRECT_FEEDBACK, ITEM_ANY_ZONE_FEEDBACK, ITEM_NO_ZONE_FEEDBACK,
-    ITEM_TOP_ZONE_NAME, ITEM_MIDDLE_ZONE_NAME, ITEM_BOTTOM_ZONE_NAME, ITEM_ANY_ZONE_NAME, ITEM_NO_ZONE_NAME,
-)
 
 # Globals ###########################################################
 

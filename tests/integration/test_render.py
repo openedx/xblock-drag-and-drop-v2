@@ -1,14 +1,15 @@
 # Imports ###########################################################
 
-from ddt import ddt, unpack, data
+from __future__ import absolute_import
+
+from ddt import data, ddt, unpack
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
-
 from xblockutils.resources import ResourceLoader
 
 from drag_and_drop_v2.default_data import START_FEEDBACK
-from .test_base import BaseIntegrationTest
 
+from .test_base import BaseIntegrationTest
 
 # Globals ###########################################################
 

@@ -1,12 +1,15 @@
+from __future__ import absolute_import
+
 import json
 import random
 import re
 
 from mock import patch
+from six.moves import range
 from webob import Request
 from workbench.runtime import WorkbenchRuntime
 from xblock.fields import ScopeIds
-from xblock.runtime import KvsFieldData, DictKeyValueStore
+from xblock.runtime import DictKeyValueStore, KvsFieldData
 
 import drag_and_drop_v2
 
@@ -33,7 +36,7 @@ def make_block():
 
 
 def generate_max_and_attempts(count=100):
-    for _ in xrange(count):
+    for _ in range(count):
         max_attempts = random.randint(1, 100)
         attempts = random.randint(0, 100)
         expect_validation_error = max_attempts <= attempts

@@ -4,24 +4,32 @@
 
 # Imports ###########################################################
 
+from __future__ import absolute_import
+
 import copy
 import json
 import logging
-import urllib
-import webob
+
 import pkg_resources
+import six
+import six.moves.urllib.error  # pylint: disable=import-error
+import six.moves.urllib.parse  # pylint: disable=import-error
+import six.moves.urllib.request  # pylint: disable=import-error
+import webob
 from django.utils import translation
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
-from xblock.fields import Scope, String, Dict, Float, Boolean, Integer
+from xblock.fields import Boolean, Dict, Float, Integer, Scope, String
 from xblock.fragment import Fragment
 from xblock.scorable import ScorableXBlockMixin, Score
 from xblockutils.resources import ResourceLoader
-from xblockutils.settings import XBlockWithSettingsMixin, ThemableXBlockMixin
+from xblockutils.settings import ThemableXBlockMixin, XBlockWithSettingsMixin
 
-from .utils import _, DummyTranslationService, FeedbackMessage, FeedbackMessages, ItemStats, StateMigration, Constants
 from .default_data import DEFAULT_DATA
-
+from .utils import (
+    Constants, DummyTranslationService, FeedbackMessage,
+    FeedbackMessages, ItemStats, StateMigration, _
+)
 
 # Globals ###########################################################
 
@@ -333,7 +341,7 @@ class DragAndDropBlock(
             return items
 
         return {
-            "block_id": unicode(self.scope_ids.usage_id),
+            "block_id": six.text_type(self.scope_ids.usage_id),
             "display_name": self.display_name,
             "type": self.CATEGORY,
             "weight": self.weight,
@@ -377,7 +385,7 @@ class DragAndDropBlock(
             'id_suffix': id_suffix,
             'fields': self.fields,
             'self': self,
-            'data': urllib.quote(json.dumps(self.data)),
+            'data': six.moves.urllib.parse.quote(json.dumps(self.data)),
         }
 
         fragment = Fragment()
@@ -453,7 +461,7 @@ class DragAndDropBlock(
         if hasattr(self, 'location'):
             return self.location.html_id()  # pylint: disable=no-member
         else:
-            return unicode(self.scope_ids.usage_id)
+            return six.text_type(self.scope_ids.usage_id)
 
     @staticmethod
     def _get_max_items_per_zone(submissions):
@@ -960,7 +968,7 @@ class DragAndDropBlock(
         state = {}
         migrator = StateMigration(self)
 
-        for item_id, item in self.item_state.iteritems():
+        for item_id, item in six.iteritems(self.item_state):
             state[item_id] = migrator.apply_item_state_migrations(item_id, item)
 
         return state
