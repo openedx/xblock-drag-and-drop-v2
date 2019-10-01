@@ -18,7 +18,8 @@ def make_request(data, method='POST'):
     """ Make a webob JSON Request """
     request = Request.blank('/')
     request.method = 'POST'
-    request.body = json.dumps(data).encode('utf-8') if data is not None else ""
+    data = json.dumps(data).encode('utf-8') if data is not None else b''
+    request.body = data
     request.method = method
     return request
 
@@ -74,5 +75,5 @@ class TestCaseMixin(object):
         response = self.block.handle(handler_name, make_request(data, method=method))
         if expect_json:
             self.assertEqual(response.status_code, 200)
-            return json.loads(response.body)
+            return json.loads(response.body.decode('utf-8'))
         return response

@@ -416,7 +416,7 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
         response = self.call_handler(self.DO_ATTEMPT_HANDLER, data={}, expect_json=False)
         self.assertEqual(response.status_code, status_code)
         if expect_error:
-            self.assertIn("Submission deadline has passed.", response.body)
+            self.assertIn("Submission deadline has passed.", response.body.decode('utf-8'))
 
     @ddt.data(*[random.randint(1, 50) for _ in range(5)])  # pylint: disable=star-args
     def test_do_attempt_correct_mark_complete_and_publish_grade(self, weight):

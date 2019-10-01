@@ -90,7 +90,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
         else:
             expected_background_color = Colors.rgb(style_settings['background-color'])
         background_color = self._get_style(item_selector, 'backgroundColor')
-        self.assertEquals(background_color, expected_background_color)
+        self.assertEqual(background_color, expected_background_color)
 
         # Check text color
         color_property = 'color'
@@ -101,7 +101,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
         else:
             expected_color = Colors.rgb(style_settings['color'])
         color = self._get_style(item_selector, 'color')
-        self.assertEquals(color, expected_color)
+        self.assertEqual(color, expected_color)
 
         # Check outline color
         outline_color_property = 'outline-color'
@@ -110,7 +110,7 @@ class TestDragAndDropRender(BaseIntegrationTest):
         # Outline color should match text color to ensure it does not meld into background color:
         expected_outline_color = expected_color
         outline_color = self._get_style(item_selector, 'outlineColor')
-        self.assertEquals(outline_color, expected_outline_color)
+        self.assertEqual(outline_color, expected_outline_color)
 
     def test_items_default_colors(self):
         self.load_scenario()
@@ -341,5 +341,5 @@ class TestDragAndDropRenderZoneAlign(BaseIntegrationTest):
         }
         for zone_id, expected_alignment in expected_alignments.items():
             selector = "{zone_id} .item-wrapper".format(zone_id=zone_id)
-            self.assertEquals(self._get_style(selector, "textAlign"), expected_alignment)
-            self.assertEquals(self._get_style(selector, "textAlign", computed=True), expected_alignment)
+            self.assertEqual(self._get_style(selector, "textAlign"), expected_alignment)
+            self.assertEqual(self._get_style(selector, "textAlign", computed=True), expected_alignment)

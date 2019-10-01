@@ -20,7 +20,7 @@ def _svg_to_data_uri(path):
     data_path = os.path.dirname(__file__) + "/data/"
     with open(data_path + path, "rb") as svg_fh:
         encoded = base64.b64encode(svg_fh.read())
-    return "data:image/svg+xml;base64,{}".format(encoded)
+    return "data:image/svg+xml;base64,{}".format(encoded.decode('utf-8'))
 
 
 Expectation = namedtuple('Expectation', [

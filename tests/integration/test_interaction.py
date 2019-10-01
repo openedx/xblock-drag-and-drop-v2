@@ -600,7 +600,7 @@ class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
         """
         # parent container has the expected alignment
         item_wrapper_selector = "div[data-uid='{zone_id}'] .item-wrapper".format(zone_id=zone_id)
-        self.assertEquals(self._get_style(item_wrapper_selector, 'textAlign'), align)
+        self.assertEqual(self._get_style(item_wrapper_selector, 'textAlign'), align)
 
         # Items placed in zones with align setting are children of the zone
         zone_item_selector = '{item_wrapper_selector} .option'.format(item_wrapper_selector=item_wrapper_selector)
@@ -608,19 +608,19 @@ class ZoneAlignInteractionTest(InteractionTestBase, BaseIntegrationTest):
 
         self.place_item(item_id, zone_id, action_key)
         placed_items = self._page.find_elements_by_css_selector(zone_item_selector)
-        self.assertEquals(len(placed_items), len(prev_placed_items) + 1)
+        self.assertEqual(len(placed_items), len(prev_placed_items) + 1)
 
         # Not children of the target
         target_item = '.target > .option'
-        self.assertEquals(len(self._page.find_elements_by_css_selector(target_item)), 0)
+        self.assertEqual(len(self._page.find_elements_by_css_selector(target_item)), 0)
 
         # Aligned items are relative positioned, with no transform or top/left
-        self.assertEquals(self._get_style(zone_item_selector, 'position'), 'relative')
-        self.assertEquals(self._get_style(zone_item_selector, 'transform'), 'none')
-        self.assertEquals(self._get_style(zone_item_selector, 'left'), '0px')
-        self.assertEquals(self._get_style(zone_item_selector, 'top'), '0px')
+        self.assertEqual(self._get_style(zone_item_selector, 'position'), 'relative')
+        self.assertEqual(self._get_style(zone_item_selector, 'transform'), 'none')
+        self.assertEqual(self._get_style(zone_item_selector, 'left'), '0px')
+        self.assertEqual(self._get_style(zone_item_selector, 'top'), '0px')
 
-        self.assertEquals(self._get_style(zone_item_selector, 'display'), 'inline-block')
+        self.assertEqual(self._get_style(zone_item_selector, 'display'), 'inline-block')
 
     @data(
         ([0, 1, 2], "Zone No Align", "center"),
