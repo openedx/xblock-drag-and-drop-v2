@@ -654,8 +654,7 @@ class DragAndDropBlock(
     def student_view_user_state(self, request, suffix=''):
         """ GET all user-specific data, and any applicable feedback """
         data = self._get_user_state()
-
-        return webob.Response(body=json.dumps(data), content_type='application/json')
+        return webob.Response(body=json.dumps(data).encode('utf-8'), content_type='application/json')
 
     def _validate_do_attempt(self):
         """
@@ -836,7 +835,15 @@ class DragAndDropBlock(
         # ... and from higher grade to lower
         # if we have an old-style (i.e. unreliable) grade, override no matter what
         saved_raw_earned = self._get_raw_earned_if_set()
-        if current_raw_earned is None or current_raw_earned > saved_raw_earned:
+
+        current_raw_earned_is_greater = False
+        if current_raw_earned is None or saved_raw_earned is None:
+            current_raw_earned_is_greater = True
+
+        if current_raw_earned is not None and saved_raw_earned is not None and current_raw_earned > saved_raw_earned:
+            current_raw_earned_is_greater = True
+
+        if current_raw_earned is None or current_raw_earned_is_greater:
             self.raw_earned = current_raw_earned
             self._publish_grade(Score(self.raw_earned, self.max_score()))
 

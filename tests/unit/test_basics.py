@@ -185,7 +185,6 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             '4': {'zone': BOTTOM_ZONE_ID, 'correct': False},
         }
         self.block.save()
-
         self.assertEqual(self.call_handler('student_view_user_state')['items'], {
             '0': {'correct': True, 'zone': TOP_ZONE_ID},
             '1': {'correct': True, 'zone': MIDDLE_ZONE_ID},
