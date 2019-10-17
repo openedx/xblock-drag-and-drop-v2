@@ -1392,7 +1392,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         // Helper functions that return pageX/pageY from either touch or mouse events.
         var pageX = function(evt) {
             if (evt.type === 'touchstart' || evt.type === 'touchmove') {
-                return evt.originalEvent.targetTouches[0].pageX;
+                return evt.originalEvent.touches[0].pageX;
             } else {
                 return evt.pageX;
             }
@@ -1400,7 +1400,7 @@ function DragAndDropBlock(runtime, element, configuration) {
 
         var pageY = function(evt) {
             if (evt.type === 'touchstart' || evt.type === 'touchmove') {
-                return evt.originalEvent.targetTouches[0].pageY;
+                return evt.originalEvent.touches[0].pageY;
             } else {
                 return evt.pageY;
             }
@@ -1594,6 +1594,10 @@ function DragAndDropBlock(runtime, element, configuration) {
                 // gets removed from the DOM; see: https://stackoverflow.com/a/45760014/51397
                 $item.on('touchmove', onDragMove);
                 $item.on('touchend touchcancel', onDragEnd);
+                // On iOS 13.1.x touchmove/touchend/touchcancel events are not being triggered against $item
+                // Its a work around for above mentioned iOS versions.
+                $('.dragged-items .option').on('touchmove', onDragMove);
+                $('.dragged-items .option').on('touchend touchcancel', onDragEnd);
             }
         };
 
@@ -1613,7 +1617,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 evt.preventDefault();
                 var $item = $(this);
                 var drag_origin = {x: pageX(evt), y: pageY(evt)};
-                onDragStart('mouse', $(this), drag_origin);
+                onDragStart('mouse', $item, drag_origin);
             }
         });
 
