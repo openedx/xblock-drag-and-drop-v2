@@ -200,7 +200,7 @@ function DragAndDropTemplates(configuration) {
         }
         var style = bankItemWidthStyles(item, ctx);
         // Placeholder should never be visible.
-        style.visibility = 'hidden';
+        style.opacity = 0;
         return (
             h(
                 'div.option',
@@ -1562,6 +1562,8 @@ function DragAndDropBlock(runtime, element, configuration) {
                     $document.off('mousemove', onDragMove);
                     $document.off('mouseup', onDragEnd);
                 } else {
+                    $document.off('touchmove', onDragMove);
+                    $document.off('touchend touchcancel', onDragEnd);
                     $item.off('touchmove', onDragMove);
                     $item.off('touchend touchcancel', onDragEnd);
                 }
@@ -1596,8 +1598,8 @@ function DragAndDropBlock(runtime, element, configuration) {
                 $item.on('touchend touchcancel', onDragEnd);
                 // On iOS 13.1.x touchmove/touchend/touchcancel events are not being triggered against $item
                 // Its a work around for above mentioned iOS versions.
-                $('.dragged-items .option').on('touchmove', onDragMove);
-                $('.dragged-items .option').on('touchend touchcancel', onDragEnd);
+                $document.on('touchmove', onDragMove);
+                $document.on('touchend touchcancel', onDragEnd);
             }
         };
 

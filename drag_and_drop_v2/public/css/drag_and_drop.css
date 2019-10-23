@@ -127,6 +127,10 @@
     -webkit-touch-callout: none;
 }
 
+.xblock--drag-and-drop .drag-container .option[draggable='false'] {
+    z-index: 30 !important;
+}
+
 @media screen and (max-width: 480px) {
    /* Horizontal scroll for item bank on mobile */
     .xblock--drag-and-drop .item-bank {
