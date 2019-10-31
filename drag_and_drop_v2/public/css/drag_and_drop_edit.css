@@ -4,9 +4,10 @@
 }
 .modal-window .drag-builder  {
     width: 100%;
-    height: calc(100% - 60px);
+    height: calc(100% - 55px);
     position: absolute;
     overflow-y: scroll;
+    top: 0px;
 }
 
 /*** Drop Target ***/
