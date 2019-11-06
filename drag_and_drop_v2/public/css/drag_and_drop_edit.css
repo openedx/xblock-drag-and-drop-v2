@@ -385,3 +385,7 @@
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
 }
+
+.modal-window .modal-content .editor-with-buttons.xblock--drag-and-drop--editor {
+    margin-bottom: 0;
+}
