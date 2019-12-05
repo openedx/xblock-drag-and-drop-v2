@@ -34,7 +34,7 @@ extract_translations: ## extract strings to be translated, outputting .po files
 	sed -i'' -e 's/plural=EXPRESSION/plural=\(n != 1\)/' $(EXTRACTED_TEXT)
 
 compile_translations: ## compile translation files, outputting .mo files for each supported language
-	cd $(WORKING_DIR) && i18n_tool generate -v
+	cd $(WORKING_DIR) && i18n_tool generate
 	python manage.py compilejsi18n --namespace DragAndDropI18N --output $(JS_TARGET)
 
 detect_changed_source_translations:
@@ -48,29 +48,7 @@ build_dummy_translations: dummy_translations compile_translations ## generate an
 validate_translations: build_dummy_translations detect_changed_source_translations ## validate translations
 
 pull_translations: ## pull translations from transifex
-	tx pull -a -f --mode reviewed --minimum-perc=1
+	cd $(WORKING_DIR) && i18n_tool transifex pull_all
 
 push_translations: ## push translations to transifex
-	tx push -s
-
-check_translations_up_to_date: extract_translations compile_translations dummy_translations detect_changed_source_translations ## extract, compile, and check if translation files are up-to-date
-
-install_firefox:
-	mkdir -p test_helpers
-	cd test_helpers && wget "https://ftp.mozilla.org/pub/firefox/releases/43.0/linux-x86_64/en-US/firefox-43.0.tar.bz2" && tar -xjf firefox-43.0.tar.bz2
-
-requirements: install_firefox
-	pip install wheel
-	pip install -r xblock-sdk/requirements/base.txt -r xblock-sdk/requirements/test.txt
-	pip install -r requirements.txt
-	pip uninstall -y transifex-client
-
-test.quality: ## run quality checkers on the codebase
-	pycodestyle drag_and_drop_v2 tests --max-line-length=120
-	pylint drag_and_drop_v2
-	pylint tests --rcfile=tests/pylintrc
-
-test.unit: ## run python unit and integration tests
-	PATH=test_helpers/firefox:$$PATH xvfb-run python run_tests.py $(filter-out $@,$(MAKECMDGOALS))
-
-test: test.quality test.unit ## Run all tests
+	cd $(WORKING_DIR) && i18n_tool transifex push

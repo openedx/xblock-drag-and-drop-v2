@@ -2,6 +2,7 @@
 
 locales:
     - en  # English - Source Language
+    - en_US # English_US, for overwrite English phrases
     # - am  # Amharic
     #- ar  # Arabic
     # - az  # Azerbaijani

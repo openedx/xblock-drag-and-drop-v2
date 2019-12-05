@@ -2,7 +2,7 @@
 host = https://www.transifex.com
 lang_map = it_IT: it, pl_PL: pl, ko_KR: ko, de_DE: de, ja_JP: ja
 
-[o:open-edx:p:xblocks:r:drag-and-drop-v2]
+[navoica-xblocks.drag-and-drop-v2]
 file_filter = drag_and_drop_v2/translations/<lang>/LC_MESSAGES/text.po
 source_file = drag_and_drop_v2/translations/en/LC_MESSAGES/text.po
 source_lang = en
