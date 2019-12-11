@@ -71,7 +71,8 @@ LANGUAGES = [
     ('ko_KR', 'Korean (Korea)'),
     ('pt_BR', 'Portuguese (Brazil)'),
     ('ru', 'Russian'),
-    ('zh_CN', 'Chinese (China)')
+    ('zh_CN', 'Chinese (China)'),
+    ('pl', 'Polski'),
 ]
 
 STATICI18N_DOMAIN = 'text'

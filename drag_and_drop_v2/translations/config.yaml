@@ -58,7 +58,7 @@ locales:
     # - ne  # Nepali
     # - nl_NL  # Dutch (Netherlands)
     # - or  # Oriya
-    # - pl  # Polish
+    - pl  # Polish
     - pt_BR  # Portuguese (Brazil)
     # - pt_PT  # Portuguese (Portugal)
     # - ro  # Romanian
