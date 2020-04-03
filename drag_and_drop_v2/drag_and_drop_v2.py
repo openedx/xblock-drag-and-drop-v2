@@ -20,8 +20,8 @@ from django.utils import translation
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 from xblock.fields import Boolean, Dict, Float, Integer, Scope, String
-from xblock.fragment import Fragment
 from xblock.scorable import ScorableXBlockMixin, Score
+from web_fragments.fragment import Fragment
 from xblockutils.resources import ResourceLoader
 from xblockutils.settings import ThemableXBlockMixin, XBlockWithSettingsMixin
 
