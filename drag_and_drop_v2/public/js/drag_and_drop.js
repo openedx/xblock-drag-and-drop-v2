@@ -1139,7 +1139,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             delete state.closing;
         }
         // Has feedback been set?
-        if (state.feedback) {
+        if (state.feedback && state.feedback.length > 0) {
             var data = {
                 event_type: 'edx.drag_and_drop_v2.feedback.opened',
                 content: concatenateFeedback(state.feedback),

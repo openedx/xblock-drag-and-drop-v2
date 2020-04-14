@@ -1,6 +1,37 @@
 Drag and Drop XBlock changelog
 ==============================
 
+Version 2.2.10 (2020-04-14)
+---------------------------
+
+* Fix bug where 'edx.drag_and_drop_v2.feedback.opened' event was sent to publish_event endpoint excessively on mouse move.  (PR #238)
+
+Version 2.2.9 (2020-04-03)
+--------------------------
+
+* Updated fragment import to remove deprecation warning which was causing extra logs in Splunk etc.
+
+Version 2.2.8 (2020-01-13)
+--------------------------
+
+* Updated code to render custom zone title as HTML
+
+Version 2.2.7 (????-??-??)
+-------------------
+
+* NOTE: This version was skipped / is not documented.
+
+Version 2.2.6 (2019-10-08)
+--------------------------
+
+* Python3 compatible.
+
+Version 2.2.5 (2019-10-04)
+--------------------------
+
+* This repository is now python3 compatible.
+* Update the xblock-sdk hash which is python3 compatible also.
+
 Version 2.2.4 (2019-07-30)
 ---------------------------
 
@@ -56,7 +87,7 @@ Version 2.1.5 (2017-11-06)
 Version 2.1.4 (2017-11-06)
 ---------------------------
 
-* Make XBlock always emit `progress` event explicitly when it is marked as complete.  
+* Make XBlock always emit `progress` event explicitly when it is marked as complete.
 
 Version 2.1.3 (2017-10-05)
 ---------------------------
@@ -92,7 +123,7 @@ Version 2.0.12 (2016-11-08)
     * [SOL-2094][sol-2094] Fixed problem preventing DnDv2 blocks from being scored or graded.
     * Highest grade achieved is now displayed in feedback area
     * Renamed "Maximum score" field to "Problem Weight" to be in line with CAPA problems and avoid confusion.
-    
+
 [sol-2030]: https://openedx.atlassian.net/browse/SOL-2030
 [sol-2094]: https://openedx.atlassian.net/browse/SOL-2094
 
