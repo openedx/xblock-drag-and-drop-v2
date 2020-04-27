@@ -525,35 +525,40 @@ msgstr ""
 msgid ""
 "You can complete this problem using only your keyboard by following the "
 "guidance below:"
-msgstr ""
+msgstr "Você pode concluir esse exercício usando apenas o teclado seguindo "
+"as orientações abaixo:"
 
 #: public/js/drag_and_drop.js:322
 msgid ""
 "Use only TAB and SHIFT+TAB to navigate between draggable items and drop "
 "zones."
-msgstr ""
+msgstr "Use apenas TAB e SHIFT + TAB para navegar entre itens arrastáveis ​​e áreas "
+"a serem preenchidas."
 
 #: public/js/drag_and_drop.js:323
 msgid "Press CTRL+M to select a draggable item (effectively picking it up)."
-msgstr ""
+msgstr "Pressione CTRL + M para selecionar um item arrastável (pegando-o efetivamente)."
 
 #: public/js/drag_and_drop.js:324
 msgid ""
 "Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press "
 "CTRL+M once more to drop it here."
-msgstr ""
+msgstr "Navegue usando TAB e SHIFT + TAB para a área apropriada e pressione "
+"CTRL + M mais uma vez para soltá-lo aqui."
 
 #: public/js/drag_and_drop.js:325
 msgid ""
 "Press ESC if you want to cancel the drop operation (for example, to select a"
 " different item)."
-msgstr ""
+msgstr "Pressione ESC se desejar cancelar a operação (por exemplo, para selecionar "
+"um item diferente)."
 
 #: public/js/drag_and_drop.js:326
 msgid ""
 "TAB back to the list of draggable items and repeat this process until all of"
 " the draggable items have been placed on their respective dropzones."
-msgstr ""
+msgstr "Clique TAB novamente na lista de itens arrastáveis ​​e repita esse processo até "
+"que todos os itens arrastáveis ​​tenham sido colocados em suas respectivas regiões."
 
 #: public/js/drag_and_drop.js:344
 msgid "You have used {used} of {total} attempts."
