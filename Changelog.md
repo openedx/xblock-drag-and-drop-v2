@@ -1,6 +1,11 @@
 Drag and Drop XBlock changelog
 ==============================
 
+Version 2.2.11 (2020-04-27)
+---------------------------
+
+* Portuguese translations added for keyboard help.  (PR #239)
+
 Version 2.2.10 (2020-04-14)
 ---------------------------
 
