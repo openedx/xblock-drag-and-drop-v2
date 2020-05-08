@@ -33,7 +33,7 @@ typing==3.7.4.1           # via fs
 urllib3==1.25.9           # via requests, transifex-client
 web-fragments==0.3.2      # via xblock
 webob==1.8.6              # via xblock
-xblock-utils==1.2.2       # via -c requirements/constraints.txt, -r requirements/dev.in
+git+https://github.com/edx/xblock-utils.git@v1.2.2#egg=xblock-utils==1.2.2  # via -c requirements/constraints.txt, -r requirements/dev.in
 xblock==1.2.6             # via -c requirements/constraints.txt, -r requirements/dev.in, xblock-utils
 zipp==1.2.0               # via importlib-metadata
 
