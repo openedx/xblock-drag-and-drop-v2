@@ -52,3 +52,8 @@ pull_translations: ## pull translations from transifex
 
 push_translations: ## push translations to transifex
 	cd $(WORKING_DIR) && i18n_tool transifex push
+
+
+upgrade: ## update the requirements/*.txt files with the latest packages satisfying requirements/*.in
+	pip install -q pip-tools
+	pip-compile --upgrade -o requirements/requirements.txt requirements/dev.in

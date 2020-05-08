@@ -45,7 +45,7 @@ class DefaultAssessmentDataTestMixin(DefaultDataTestMixin):
         """.format(mode=Constants.ASSESSMENT_MODE, max_attempts=self.MAX_ATTEMPTS)
 
 
-class AssessmentTestMixin(object):
+class AssessmentTestMixin:
     """
     Provides helper methods for assessment tests
     """

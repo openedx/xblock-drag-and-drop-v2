@@ -226,7 +226,7 @@ class BaseIntegrationTest(SeleniumBaseTest):
         EmptyPromise(is_ajax_finished, "Finished waiting for ajax requests.", timeout=timeout).fulfill()
 
 
-class DefaultDataTestMixin(object):
+class DefaultDataTestMixin:
     """
     Provides a test scenario with default options.
     """
@@ -268,7 +268,7 @@ class DefaultDataTestMixin(object):
         return "<vertical_demo><drag-and-drop-v2/></vertical_demo>"
 
 
-class InteractionTestBase(object):
+class InteractionTestBase:
     POPUP_ERROR_CLASS = "popup-incorrect"
 
     def setUp(self):
@@ -297,7 +297,7 @@ class InteractionTestBase(object):
 
     @staticmethod
     def _get_items_by_zone(items_map):
-        zone_ids = set([definition.zone_ids[0] for _, definition in items_map.items() if definition.zone_ids])
+        zone_ids = {definition.zone_ids[0] for _, definition in items_map.items() if definition.zone_ids}
         return {
             zone_id: {item_key: definition for item_key, definition in items_map.items()
                       if definition.zone_ids and definition.zone_ids[0] is zone_id}

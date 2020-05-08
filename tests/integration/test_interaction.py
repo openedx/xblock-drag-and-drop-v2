@@ -28,7 +28,7 @@ loader = ResourceLoader(__name__)
 ITEM_DRAG_KEYBOARD_KEYS = (None, Keys.RETURN, Keys.CONTROL+'m')
 
 
-class ParameterizedTestsMixin(object):
+class ParameterizedTestsMixin:
     def _test_popup_focus_and_close(self, popup, action_key):
         dismiss_popup_button = popup.find_element_by_css_selector('.close-feedback-popup-button')
         self.assertFocused(dismiss_popup_button)

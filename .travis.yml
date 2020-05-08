@@ -1,8 +1,13 @@
 language: python
 sudo: false
 python:
-    - "2.7"
-    - "3.5"
+    - 3.5
+    - 3.8
+
+matrix:
+  allow_failures:
+    - python: 3.8
+
 services:
     - xvfb
 install:
@@ -13,8 +18,7 @@ install:
     - "pip uninstall -y xblock-drag-and-drop-v2"
     - "python setup.py sdist"
     - "pip install dist/xblock-drag-and-drop-v2-*.tar.gz"
-    - "pip uninstall -y pylint"
-    - "pip install pylint==1.7.6"
+    - "pip install pylint"
 script:
     - pycodestyle drag_and_drop_v2 tests --max-line-length=120
     - pylint drag_and_drop_v2

@@ -19,7 +19,7 @@ def ngettext_fallback(text_singular, text_plural, number):
         return text_plural
 
 
-class DummyTranslationService(object):
+class DummyTranslationService:
     """
     Dummy drop-in replacement for i18n XBlock service
     """
@@ -27,11 +27,11 @@ class DummyTranslationService(object):
     ngettext = ngettext_fallback
 
 
-class FeedbackMessages(object):
+class FeedbackMessages:
     """
     Feedback messages collection
     """
-    class MessageClasses(object):
+    class MessageClasses:
         """
         Namespace for message classes
         """
@@ -98,7 +98,7 @@ ItemStats = namedtuple(  # pylint: disable=invalid-name
 )
 
 
-class Constants(object):
+class Constants:
     """
     Namespace class for various constants
     """
@@ -109,7 +109,7 @@ class Constants(object):
     ASSESSMENT_MODE = "assessment"
 
 
-class StateMigration(object):
+class StateMigration:
     """
     Helper class to apply zone data and item state migrations
     """

@@ -1,0 +1,11 @@
+# Dependencies to run compile tools
+-c constraints.txt
+
+mako
+edx-i18n-tools
+pycodestyle
+django-statici18n
+transifex-client
+xblock-utils
+XBlock
+

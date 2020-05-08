@@ -10,26 +10,25 @@ import copy
 import json
 import logging
 
-import pkg_resources
-import six
-import six.moves.urllib.error  # pylint: disable=import-error
-import six.moves.urllib.parse  # pylint: disable=import-error
-import six.moves.urllib.request  # pylint: disable=import-error
+import six  # pylint: disable=wrong-import-order
+import six.moves.urllib.error  # pylint: disable=wrong-import-order
+import six.moves.urllib.parse  # pylint: disable=wrong-import-order
+import six.moves.urllib.request  # pylint: disable=wrong-import-order
 import webob
 from django.utils import translation
+from web_fragments.fragment import Fragment
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 from xblock.fields import Boolean, Dict, Float, Integer, Scope, String
 from xblock.scorable import ScorableXBlockMixin, Score
-from web_fragments.fragment import Fragment
 from xblockutils.resources import ResourceLoader
 from xblockutils.settings import ThemableXBlockMixin, XBlockWithSettingsMixin
 
+import pkg_resources
+
 from .default_data import DEFAULT_DATA
-from .utils import (
-    Constants, DummyTranslationService, FeedbackMessage,
-    FeedbackMessages, ItemStats, StateMigration, _
-)
+from .utils import (Constants, DummyTranslationService, FeedbackMessage,
+                    FeedbackMessages, ItemStats, StateMigration, _)
 
 # Globals ###########################################################
 
@@ -910,7 +909,7 @@ class DragAndDropBlock(
             # edX Studio uses a different runtime for 'studio_view' than 'student_view',
             # and the 'studio_view' runtime doesn't provide the replace_urls API.
             try:
-                from static_replace import replace_static_urls  # pylint: disable=import-error
+                from static_replace import replace_static_urls  # pylint: disable=import-outside-toplevel
                 url = replace_static_urls(u'"{}"'.format(url), None, course_id=self.runtime.course_id)[1:-1]
             except ImportError:
                 pass
@@ -1021,6 +1020,8 @@ class DragAndDropBlock(
             if zone["uid"] == uid:
                 return zone
 
+        return None
+
     def _get_item_stats(self):
         """
         Returns a tuple representing the number of correctly placed items,
@@ -1092,8 +1093,8 @@ class DragAndDropBlock(
             return self.SOLUTION_CORRECT
         elif correct_count == 0:
             return self.SOLUTION_INCORRECT
-        else:
-            return self.SOLUTION_PARTIAL
+
+        return self.SOLUTION_PARTIAL
 
     def _is_answer_correct(self):
         """

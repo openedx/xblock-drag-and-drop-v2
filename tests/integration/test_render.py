@@ -18,7 +18,7 @@ loader = ResourceLoader(__name__)
 
 # Classes ###########################################################
 
-class Colors(object):
+class Colors:
     WHITE = 'rgb(255, 255, 255)'
     BLUE = 'rgb(29, 82, 128)'
     GREY = 'rgb(237, 237, 237)'
@@ -34,6 +34,8 @@ class Colors(object):
             return 'rgb(255, 127, 80)'
         elif color == cls.CORNFLOWERBLUE:
             return 'rgb(100, 149, 237)'
+
+        return None
 
 
 @ddt

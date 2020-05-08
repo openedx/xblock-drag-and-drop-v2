@@ -44,7 +44,7 @@ def generate_max_and_attempts(count=100):
         yield max_attempts, attempts, expect_validation_error
 
 
-class TestCaseMixin(object):
+class TestCaseMixin:
     """ Helpful mixins for unittest TestCase subclasses """
     maxDiff = None
 
