@@ -1,3 +1,5 @@
+import mock
+
 import ddt
 import unittest
 import random
@@ -16,6 +18,8 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
 
     def setUp(self):
         self.block = make_block()
+        self.block.unmixed_class = mock.Mock()
+        self.block.unmixed_class.__name__ = 'dummy_block'
         self.patch_workbench()
 
     @staticmethod
