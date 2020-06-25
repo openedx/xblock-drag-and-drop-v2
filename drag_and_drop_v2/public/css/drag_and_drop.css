@@ -511,6 +511,11 @@
     font-size: 14px;
 }
 
+.xblock--drag-and-drop .popup .popup-content li {
+    color: #fff !important;
+    margin: 0 !important;
+}
+
 .xblock--drag-and-drop .popup .popup-content p {
     color: #fff !important;
     margin: 0 !important;
