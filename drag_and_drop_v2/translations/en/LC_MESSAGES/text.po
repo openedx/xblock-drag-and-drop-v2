@@ -657,3 +657,15 @@ msgstr ""
 #: public/js/drag_and_drop_edit.js:713
 msgid "Saving"
 msgstr ""
+
+#: templates/html/js_templates.html
+msgid ""
+"Specify preferred width as percentage of the background image width. Leave "
+"blank for automatic width."
+msgstr ""
+
+#: templates/html/js_templates.html
+msgid ""
+"Image description (should provide sufficient information to place the item "
+"even if the image did not load)"
+msgstr ""
