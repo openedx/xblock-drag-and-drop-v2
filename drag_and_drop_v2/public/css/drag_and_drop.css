@@ -885,3 +885,8 @@
         box-shadow: none;
     }
 }
+
+/* Fix for rtl in feedback messages*/
+.feedback-content .message::after {
+	display: inline-block;
+}
