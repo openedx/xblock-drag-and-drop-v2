@@ -167,11 +167,11 @@ msgstr "عرض عنوان \"المسألة\" فوق نص المسألة؟"
 
 #: drag_and_drop_v2.py
 msgid "Problem Weight"
-msgstr ""
+msgstr "ﻭﺰﻧ ﺎﻠﻤﺳﺄﻟﺓ"
 
 #: drag_and_drop_v2.py
 msgid "Defines the number of points the problem is worth."
-msgstr ""
+msgstr "ﻲﺣﺩﺩ ﻉﺩﺩ ﺎﻠﻨﻗﺎﻃ ﺎﻠﺘﻳ ﺖﺴﺘﺤﻘﻫﺍ ﺎﻠﻤﺳﺄﻟﺓ."
 
 #: drag_and_drop_v2.py
 msgid "Item background color"
@@ -226,11 +226,11 @@ msgstr "لقد وصلت إلى أقصى عدد من المحاولات"
 
 #: drag_and_drop_v2.py
 msgid "show_answer handler should only be called for assessment mode"
-msgstr ""
+msgstr "ﻲﺠﺑ ﺎﺴﺗﺪﻋﺍﺀ ﻢﻋﺎﻠﺟ show_answer ﻒﻘﻃ ﻝﻮﻀﻌﻳﺓ ﺎﻠﺘﻘﻴﻴﻣ"
 
 #: drag_and_drop_v2.py
 msgid "There are attempts remaining"
-msgstr ""
+msgstr "ﻪﻧﺎﻛ ﻢﺣﺍﻭﻼﺗ ﻢﺘﺒﻘﻳﺓ"
 
 #: drag_and_drop_v2.py
 msgid "Unknown DnDv2 mode {mode} - course is misconfigured"
@@ -358,11 +358,11 @@ msgstr "ملاحظة: لا تقم بتعديل المسألة إذا قام ال
 
 #: templates/html/drag_and_drop_edit.html
 msgid "Introductory feedback"
-msgstr ""
+msgstr "ﺖﻘﻴﻴﻣ ﺃﻮﻠﻳ"
 
 #: templates/html/drag_and_drop_edit.html
 msgid "Final feedback"
-msgstr ""
+msgstr "ﺖﻘﻴﻴﻣ ﻦﻫﺎﺌﻳ"
 
 #: templates/html/drag_and_drop_edit.html templates/html/js_templates.html
 msgid "Zones"
@@ -461,7 +461,7 @@ msgstr "إعادة تعيين"
 
 #: public/js/drag_and_drop.js
 msgid "Show Answer"
-msgstr ""
+msgstr "ﺄﻈﻫﺭ ﺍﻺﺟﺎﺑﺓ"
 
 #: public/js/drag_and_drop.js
 msgid "Hide Answer"
@@ -548,12 +548,12 @@ msgstr "أغلق نافذة التعليقات المنبثقة الخاصة ب�
 #: public/js/drag_and_drop.js:453
 msgid "{earned}/{possible} point (graded)"
 msgid_plural "{earned}/{possible} points (graded)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "{earned}\\{possible} ﻦﻘﻃﺓ (ﻢﻋ ﻉﻼﻣﺓ)"
+msgstr[1] "{earned}\\{possible} ﻦﻘﻃﺓ (ﻢﻋ ﻉﻼﻣﺓ)"
+msgstr[2] "{earned}\\{possible} ﻦﻘﻃﺓ (ﻢﻋ ﻉﻼﻣﺓ)"
+msgstr[3] "{earned}\\{possible} ﻦﻗﺎﻃ (ﻢﻋ ﻉﻼﻣﺓ)"
+msgstr[4] "{earned}\\{possible} ﻦﻗﺎﻃ (ﻢﻋ ﻉﻼﻣﺓ)"
+msgstr[5] "{earned}\\{possible} ﻦﻘﻃﺓ (ﻢﻋ ﻉﻼﻣﺓ)"
 
 # Translators: {earned} is the number of points earned. {possible} is the
 # total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
@@ -561,13 +561,13 @@ msgstr[5] ""
 # points (example: 0/1 point; 1/2 points).
 #: public/js/drag_and_drop.js:459
 msgid "{earned}/{possible} point (ungraded)"
-msgid_plural "{earned}/{possible} points (ungraded)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgid_plural "{earned}\\{possible} points (ungraded)"
+msgstr[0] "{earned}\\{possible} ﻦﻘﻃﺓ (ﺏﺩﻮﻧ ﻉﻼﻣﺓ)"
+msgstr[1] "{earned}\\{possible} ﻦﻘﻃﺓ (ﺏﺩﻮﻧ ﻉﻼﻣﺓ)"
+msgstr[2] "{earned}\\{possible} ﻦﻘﻃﺓ (ﺏﺩﻮﻧ ﻉﻼﻣﺓ)"
+msgstr[3] "{earned}\\{possible} ﻦﻗﺎﻃ (ﺏﺩﻮﻧ ﻉﻼﻣﺓ)"
+msgstr[4] "{earned}\\{possible} ﻦﻗﺎﻃ (ﺏﺩﻮﻧ ﻉﻼﻣﺓ)"
+msgstr[5] "{earned}\\{possible} ﻦﻘﻃﺓ (ﺏﺩﻮﻧ ﻉﻼﻣﺓ)"
 
 # Translators: {possible} is the number of points possible (examples: 1, 3,
 # 10).
