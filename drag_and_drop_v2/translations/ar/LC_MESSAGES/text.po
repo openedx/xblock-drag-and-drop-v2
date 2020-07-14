@@ -417,7 +417,7 @@ msgstr "إلغاء"
 #: utils.py:46
 #, python-brace-format
 msgid "Your highest score is {score}"
-msgstr "أعلى درجاتك هي {score}"
+msgstr "درجتك الأعلى هي {score}"
 
 #: utils.py:47
 #, python-brace-format
@@ -428,23 +428,25 @@ msgstr "تم استنفاد آخر محاولة، أعلى درجة هي {score}
 #, python-brace-format
 msgid "Correctly placed {correct_count} item."
 msgid_plural "Correctly placed {correct_count} items."
-msgstr[0] "تم وضع {correct_count} في مكانها الصحيح"
-msgstr[1] "تم وضع {correct_count} في مكانها الصحيح"
-msgstr[2] "تم وضع {correct_count} في مكانها الصحيح"
-msgstr[3] "تم وضع {correct_count} في مكانها الصحيح"
-msgstr[4] "تم وضع {correct_count} في مكانها الصحيح"
-msgstr[5] "تم وضع {correct_count} في مكانها الصحيح"
+msgstr[0] "فقرات موضوعة في المكان الصحيح {correct_count}"
+msgstr[1] "فقرات موضوعة في المكان الصحيح {correct_count}"
+msgstr[2] "فقرات موضوعة في المكان الصحيح {correct_count}"
+msgstr[3] "فقرات موضوعة في المكان الصحيح {correct_count}"
+msgstr[4] "فقرات موضوعة في المكان الصحيح {correct_count}"
+msgstr[5] "فقرات موضوعة في المكان الصحيح {correct_count}"
+
 
 #: utils.py:66
 #, python-brace-format
 msgid "Misplaced {misplaced_count} item."
 msgid_plural "Misplaced {misplaced_count} items."
-msgstr[0] "{misplaced_count} عناصر في غير محلهم."
-msgstr[1] "{misplaced_count} عنصر في غير محله ."
-msgstr[2] "{misplaced_count} عناصر في غير محلهم."
-msgstr[3] "{misplaced_count} عناصر في غير محلهم."
-msgstr[4] "{misplaced_count} عنصر في غير محله."
-msgstr[5] "{misplaced_count} عنصر في غير محله."
+msgstr[0] "فقرات في المكان الخطأ {misplaced_count}"
+msgstr[1] "فقرات في المكان الخطأ {misplaced_count}"
+msgstr[2] "فقرات في المكان الخطأ {misplaced_count}"
+msgstr[3] "فقرات في المكان الخطأ {misplaced_count}"
+msgstr[4] "فقرات في المكان الخطأ {misplaced_count}"
+msgstr[5] "فقرات في المكان الخطأ {misplaced_count}"
+
 
 #: utils.py:77
 #, python-brace-format
@@ -453,23 +455,25 @@ msgid ""
 msgid_plural ""
 "Misplaced {misplaced_count} items. Misplaced items were returned to item "
 "bank."
-msgstr[0] "تم وضع {misplaced_count} في أماكن خاطئة. العناصر التي وضعت في أماكن خاطئة أعيدت إلى بنك العناصر."
-msgstr[1] "تم وضع {misplaced_count} في أماكن خاطئة. العناصر التي وضعت في أماكن خاطئة أعيدت إلى بنك العناصر."
-msgstr[2] "تم وضع {misplaced_count} في أماكن خاطئة. العناصر التي وضعت في أماكن خاطئة أعيدت إلى بنك العناصر."
-msgstr[3] "تم وضع {misplaced_count} في أماكن خاطئة. العناصر التي وضعت في أماكن خاطئة أعيدت إلى بنك العناصر."
-msgstr[4] "تم وضع {misplaced_count} في أماكن خاطئة. العناصر التي وضعت في أماكن خاطئة أعيدت إلى بنك العناصر."
-msgstr[5] "تم وضع {misplaced_count} في أماكن خاطئة. العناصر التي وضعت في أماكن خاطئة أعيدت إلى بنك العناصر."
+msgstr[0] "فقرات ليست في المكان الصحيح {misplaced_count}"
+msgstr[1] "فقرات ليست في المكان الصحيح {misplaced_count}"
+msgstr[2] "فقرات ليست في المكان الصحيح {misplaced_count}"
+msgstr[3] "فقرات ليست في المكان الصحيح {misplaced_count}"
+msgstr[4] "فقرات ليست في المكان الصحيح {misplaced_count}"
+msgstr[5] "فقرات ليست في المكان الصحيح {misplaced_count}"
+
 
 #: utils.py:88
 #, python-brace-format
 msgid "Did not place {missing_count} required item."
 msgid_plural "Did not place {missing_count} required items."
-msgstr[0] "لم يتم وضع {missing_count} عنصر مطلوب."
-msgstr[1] "لم يتم وضع {missing_count} عنصر مطلوب."
-msgstr[2] "لم يتم وضع {missing_count} عناصر مطلوبة."
-msgstr[3] "لم يتم وضع {missing_count} عناصر مطلوبة."
-msgstr[4] "لم يتم وضع {missing_count} عناصر مطلوبة."
-msgstr[5] "لم يتم وضع {missing_count} عنصر مطلوب."
+msgstr[0] "لم يتم وضع {missing_count} فقرات مطلوبة"
+msgstr[1] "لم يتم وضع {missing_count} فقرات مطلوبة"
+msgstr[2] "لم يتم وضع {missing_count} فقرات مطلوبة"
+msgstr[3] "لم يتم وضع {missing_count} فقرات مطلوبة"
+msgstr[4] "لم يتم وضع {missing_count} فقرات مطلوبة"
+msgstr[5] "لم يتم وضع {missing_count} فقرات مطلوبة"
+
 
 #: public/js/drag_and_drop.js:33 public/js/drag_and_drop.js:354
 msgid "Submitting"
