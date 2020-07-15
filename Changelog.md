@@ -1,6 +1,12 @@
 Drag and Drop XBlock changelog
 ==============================
 
+Version 2.3 (2020-08-04)
+---------------------------
+
+* Make Drag and Drop Indexable.
+* Drop Python 2 support.
+
 Version 2.2.10 (2020-04-14)
 ---------------------------
 
