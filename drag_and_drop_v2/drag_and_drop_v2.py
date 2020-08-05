@@ -16,6 +16,7 @@ import six.moves.urllib.error  # pylint: disable=import-error
 import six.moves.urllib.parse  # pylint: disable=import-error
 import six.moves.urllib.request  # pylint: disable=import-error
 import webob
+
 from django.utils import translation
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
@@ -28,7 +29,7 @@ from xblockutils.settings import ThemableXBlockMixin, XBlockWithSettingsMixin
 from .default_data import DEFAULT_DATA
 from .utils import (
     Constants, DummyTranslationService, FeedbackMessage,
-    FeedbackMessages, ItemStats, StateMigration, _
+    FeedbackMessages, ItemStats, StateMigration, _clean_data, _
 )
 
 # Globals ###########################################################
@@ -1119,3 +1120,56 @@ class DragAndDropBlock(
                 "<vertical_demo><drag-and-drop-v2 mode='assessment' max_attempts='3'/></vertical_demo>"
             ),
         ]
+
+    def index_dictionary(self):
+        """
+        Return dictionary prepared with module content and type for indexing.
+        """
+        # return key/value fields in a Python dict object
+        # values may be numeric / string or dict
+        # default implementation is an empty dict
+
+        xblock_body = super(DragAndDropBlock, self).index_dictionary()
+
+        zones_display_names = {
+            "zone_{}_display_name".format(zone_i):
+            _clean_data(zone.get("title", ""))
+            for zone_i, zone in enumerate(self.data.get("zones", []))
+        }
+
+        zones_description = {
+            "zone_{}_description".format(zone_i):
+            _clean_data(zone.get("description", ""))
+            for zone_i, zone in enumerate(self.data.get("zones", []))
+        }
+
+        items_display_names = {
+            "item_{}_display_name".format(item_i):
+            _clean_data(item.get("displayName", ""))
+            for item_i, item in enumerate(self.data.get("items", []))
+        }
+
+        items_image_description = {
+            "item_{}_image_description".format(item_i):
+            _clean_data(item.get("imageDescription", ""))
+            for item_i, item in enumerate(self.data.get("items", []))
+        }
+
+        index_body = {
+            "display_name": self.display_name,
+            "question_text": _clean_data(self.question_text),
+            "background_image_description": self.data.get("targetImgDescription", ""),
+        }
+        index_body.update(items_display_names)
+        index_body.update(items_image_description)
+        index_body.update(zones_display_names)
+        index_body.update(zones_description)
+
+        if "content" in xblock_body:
+            xblock_body["content"].update(index_body)
+        else:
+            xblock_body["content"] = index_body
+
+        xblock_body["content_type"] = "Drag and Drop"
+
+        return xblock_body
