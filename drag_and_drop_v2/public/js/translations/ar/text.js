@@ -1,4 +1,8 @@
 
+            (function(global){
+                var DragAndDropI18N = {
+                  init: function() {
+                    
 
 (function(globals) {
 
@@ -255,3 +259,10 @@
 
 }(this));
 
+
+                  }
+                };
+                DragAndDropI18N.init();
+                global.DragAndDropI18N = DragAndDropI18N;
+            }(this));
+        
