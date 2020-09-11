@@ -1,4 +1,4 @@
-# 
+#
 # Translators:
 # AR C2 <e2f458fd4s512@outlook.com>, 2016
 # e2f <projects@e2f.com>, 2016
@@ -473,7 +473,7 @@ msgstr "إرسال"
 
 #: public/js/drag_and_drop.js
 msgid "Feedback"
-msgstr "تقييم"
+msgstr "التعليقات"
 
 #: public/js/drag_and_drop.js
 msgid "Keyboard Help"

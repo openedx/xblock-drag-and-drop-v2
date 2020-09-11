@@ -51,7 +51,7 @@
     "Drag and Drop": "\u0633\u062d\u0628 \u0648\u0625\u0633\u0642\u0627\u0637", 
     "Drag the items onto the image above.": "\u0642\u0645 \u0628\u062c\u0631 \u0647\u0630\u0647 \u0627\u0644\u0639\u0646\u0627\u0635\u0631 \u0625\u0644\u0649 \u0627\u0644\u0635\u0648\u0631\u0629 \u0623\u0639\u0644\u0627\u0647.", 
     "Failed to parse \"Maximum items per zone\"": "\u0641\u0634\u0644 \u0641\u064a \u062a\u062d\u0644\u064a\u0644 \"\u0623\u0642\u0635\u0649 \u0639\u062f\u062f \u0644\u0644\u0639\u0646\u0627\u0635\u0631 \u0641\u064a \u0643\u0644 \u0645\u0646\u0637\u0642\u0629\"", 
-    "Feedback": "\u062a\u0642\u064a\u064a\u0645", 
+    "Feedback": "\u0627\u0644\u062a\u0639\u0644\u064a\u0642\u0627\u062a", 
     "Final attempt was used, highest score is {score}": "\u062a\u0645 \u0627\u0633\u062a\u0646\u0641\u0627\u062f \u0622\u062e\u0631 \u0645\u062d\u0627\u0648\u0644\u0629\u060c \u0623\u0639\u0644\u0649 \u062f\u0631\u062c\u0629 \u0647\u064a {score}", 
     "For example, 'http://example.com/background.png' or '/static/background.png'.": "\u0639\u0644\u0649 \u0633\u0628\u064a\u0644 \u0627\u0644\u0645\u062b\u0627\u0644\u060c 'http://example.com/background.png' \u0623\u0648 '/static/background.png'.", 
     "For example, 'http://example.com/image.png' or '/static/image.png'.": "\u0639\u0644\u0649 \u0633\u0628\u064a\u0644 \u0627\u0644\u0645\u062b\u0627\u0644\u060c  'http://example.com/image.png' \u0623\u0648 '/static/image.png'.", 
