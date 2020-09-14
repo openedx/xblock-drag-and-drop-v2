@@ -484,73 +484,57 @@ requirements for `edx.org` itself, thus providing the required files. So far onl
 * Default English translation
 * Fake "Esperanto" translation used to test i18n/l10n.
 
-Updates to translated strings are supposed to be propagated to `text.po` files. Unfortunately, the process is mostly
-manual. EdX [i18n_tools][edx-i18n-tools] might be helpful, but they are too tied to edx-platform, so as of Aug 2016
-do not provide any benefits over manual approach.
+Updates to translated strings are supposed to be propagated to `text.po` files. EdX [i18n_tools][edx-i18n-tools] is used here along GNU Gettext and a Makefile for automation.
 
 [edx-i18n-tools]: https://github.com/edx/i18n-tools
 
-In lieu of automated solution (i.e. edX i18n-tools supporting XBlock use case), one can use GNU Gettext toolkit
-to simplify manual updating `text.po` files.
-
-This command scrapes all the strings in all `*.py` files in `drag_and_drop_v2` folder and outputs `messages.po` file
- in `drag_and_drop_v2` folder:
-
-```
-~/xblock-drag-and-drop-v2/drag_and_drop_v2$ find . -name "*.py" | xargs xgettext --language=python --add-comments="Translators:"
+Translatable strings
+--------------------
+```bash
+$ make extract_translations
 ```
 
-Javascript command is a little bit more verbose:
+Note that this command generates `text.po` which is supposed to contain
+all translatable strings.
 
-```
-~/xblock-drag-and-drop-v2/drag_and_drop_v2$ find . -name "*.js" -o  -path ./public/js/vendor -prune -a -type f | xargs xgettext --language=javascript --from-code=utf-8 --add-comments="Translators:"
-```
+To check if `text.po` is correct, one can run:
 
-Note that both commands generate partial `messages.po` file - JS or python only, while `text.po` is supposed to contain
-all translatable strings. Both commands can be modified to append to *existing* `messages.po` file by adding
-`--join-existing` key.
-
-To check if `text.po` is correct, one can run `msgfmt` to build a `text.mo` file:
-
-```
-~/xblock-drag-and-drop-v2/drag_and_drop_v2$ msgfmt translations/en/LC_MESSAGES/text.po -o translations/en/LC_MESSAGES/text.mo
+```bash
+$ make compile_translations
 ```
 
-If everything is correct, it will silently exit and create `translations/en/LC_MESSAGES/text.mo` file.
+If everything is correct, it will create `translations/en/LC_MESSAGES/text.mo` and `locale/en/LC_MESSAGES/text.js` files.
 
 Building fake "Esperanto" translation
 -------------------------------------
 
 As previously said, this fake translation mainly exists for testing reasons. For edX platform it is built using Dummy
-translator from edX i18n-tools. Luckily, it is possible to use "translation" generation feature without the rest of
-i18n-tools.
-
-To do so, in any virtualenv, install i18n-tools, i.e.
-
-    (virtualenv)$ pip install -e git+https://github.com/edx/i18n-tools.git
-
-Then start python interpreter, import `Dummy` translator and follow instructions on `Dummy` docstring:
-
-    (virtualenv)$ python
-    >>> from i18n.dummy import Dummy
-    >>> help(Dummy)
-
-    # or just do
-    >>> conv = Dummy()
-    >>> print conv.convert("String to translate")
-
-Then copy output and paste it into `translations/eo/LC_MESSAGES/text.po`.
-
-Downloading translations from Transifex
--------------------------------------
-
-If you want to download translations from Transifex install [Transifex client][transifex-client] and run this command while inside project root directory
+translator from edX i18n-tools.
 
 ```bash
-$ tx pull -f --mode=reviewed -l en,ar,es_419,fr,he,hi,ko_KR,pt_BR,ru,zh_CN
+$ make dummy_translations
 ```
 
-[transifex-client]: https://docs.transifex.com/client/installing-the-client
+Transifex translations
+-------------------------------------
+
+If you want to download translations from run this command while inside project root directory
+
+```bash
+$ make pull_translations
+```
+
+Translations can be pushed to Transifex with:
+```bash
+$ make push_translations
+```
+
+Native API
+----------
+
+Further information on the API for native mobile applications can be found [here][native-api-doc].
+
+[native-api-doc]: ./Native_API.md
 
 Javascript translations
 -----------------------

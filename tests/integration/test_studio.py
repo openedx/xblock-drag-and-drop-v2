@@ -1,3 +1,7 @@
+from __future__ import absolute_import
+
+import six
+from six.moves import range
 from xblockutils.studio_editable_test import StudioEditableBaseTest
 
 
@@ -114,9 +118,6 @@ class TestStudio(StudioEditableBaseTest):
         Verify user can provide a custom background image URL.
         """
         default_bg_img_src = 'http://localhost:8081/resource/drag-and-drop-v2/public/img/triangle.png'
-        # In order to use a working image and avoid load errors, we use the default image with a custom
-        # query string
-        custom_bg_img_src = '{}?my-custom-image=true'.format(default_bg_img_src)
 
         self.load_scenario()
         # Go to zones tab.
@@ -130,7 +131,9 @@ class TestStudio(StudioEditableBaseTest):
         self.assertIn(
             default_bg_img_src.split('http://localhost:8081/')[1], self.target_preview_img.get_attribute('src')
         )
+
         custom_bg_img_src = '{}?my-custom-image=true'.format(self.target_preview_img.get_attribute('src'))
+
         url_field.send_keys(custom_bg_img_src)
         self.scroll_into_view(self.background_image_url_button)
         self.background_image_url_button.click()
@@ -162,7 +165,7 @@ class TestStudio(StudioEditableBaseTest):
                     'zone-x': (zone_width * col) + (padding * (col + 1)),
                     'zone-y': (zone_height * row) + (padding * (row + 1)),
                 }
-                for name, expected_value in expected_values.iteritems():
+                for name, expected_value in six.iteritems(expected_values):
                     field = zone.find_element_by_css_selector('.' + name)
                     self.assertEqual(field.get_attribute('value'), str(expected_value))
 

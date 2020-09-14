@@ -1,16 +1,23 @@
+from __future__ import absolute_import
+
 from ddt import data, ddt, unpack
 from mock import Mock, patch
 from selenium.webdriver.common.keys import Keys
-
 from workbench.runtime import WorkbenchRuntime
 
-from drag_and_drop_v2.default_data import (
-    TOP_ZONE_TITLE, TOP_ZONE_ID, MIDDLE_ZONE_TITLE, MIDDLE_ZONE_ID, BOTTOM_ZONE_ID, ITEM_CORRECT_FEEDBACK_TOP,
-    ITEM_INCORRECT_FEEDBACK, ITEM_TOP_ZONE_NAME, ITEM_MIDDLE_ZONE_NAME,
-)
-from tests.integration.test_base import BaseIntegrationTest, DefaultDataTestMixin, InteractionTestBase, ItemDefinition
-from tests.integration.test_interaction import DefaultDataTestMixin, ParameterizedTestsMixin
-from tests.integration.test_interaction_assessment import DefaultAssessmentDataTestMixin, AssessmentTestMixin
+from drag_and_drop_v2.default_data import (BOTTOM_ZONE_ID,
+                                           ITEM_CORRECT_FEEDBACK_TOP,
+                                           ITEM_INCORRECT_FEEDBACK,
+                                           ITEM_MIDDLE_ZONE_NAME,
+                                           ITEM_TOP_ZONE_NAME, MIDDLE_ZONE_ID,
+                                           MIDDLE_ZONE_TITLE, TOP_ZONE_ID,
+                                           TOP_ZONE_TITLE)
+from tests.integration.test_base import (BaseIntegrationTest,
+                                         DefaultDataTestMixin,
+                                         InteractionTestBase, ItemDefinition)
+from tests.integration.test_interaction import ParameterizedTestsMixin
+from tests.integration.test_interaction_assessment import (
+    AssessmentTestMixin, DefaultAssessmentDataTestMixin)
 
 
 class BaseEventsTests(InteractionTestBase, BaseIntegrationTest):
@@ -86,9 +93,7 @@ class EventsFiredTest(DefaultDataTestMixin, ParameterizedTestsMixin, BaseEventsT
 
 
 @ddt
-class AssessmentEventsFiredTest(
-    DefaultAssessmentDataTestMixin, AssessmentTestMixin, BaseEventsTests
-):
+class AssessmentEventsFiredTest(DefaultAssessmentDataTestMixin, AssessmentTestMixin, BaseEventsTests):
     scenarios = (
         {
             'name': 'edx.drag_and_drop_v2.loaded',

@@ -1,14 +1,16 @@
-from __future__ import division
+from __future__ import absolute_import, division
+
 import base64
-from collections import namedtuple
 import os.path
+from collections import namedtuple
+
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
-
 from xblockutils.resources import ResourceLoader
 
-from .test_base import BaseIntegrationTest
 from tests.integration.test_base import InteractionTestBase
+
+from .test_base import BaseIntegrationTest
 
 loader = ResourceLoader(__name__)
 
@@ -18,7 +20,7 @@ def _svg_to_data_uri(path):
     data_path = os.path.dirname(__file__) + "/data/"
     with open(data_path + path, "rb") as svg_fh:
         encoded = base64.b64encode(svg_fh.read())
-    return "data:image/svg+xml;base64,{}".format(encoded)
+    return "data:image/svg+xml;base64,{}".format(encoded.decode('utf-8'))
 
 
 Expectation = namedtuple('Expectation', [

@@ -1,9 +1,11 @@
 function DragAndDropEditBlock(runtime, element, params) {
 
     var gettext;
+    var ngettext;
     if ('DragAndDropI18N' in window) {
         // Use DnDv2's local translations
         gettext = window.DragAndDropI18N.gettext;
+        ngettext = window.DragAndDropI18N.ngettext;
     } else if ('gettext' in window) {
         // Use edxapp's global translations
         gettext = window.gettext;
@@ -11,6 +13,11 @@ function DragAndDropEditBlock(runtime, element, params) {
     if (typeof gettext == "undefined") {
         // No translations -- used by test environment
         gettext = function(string) { return string; };
+    }
+
+    if (typeof ngettext == "undefined") {
+        // No translations -- used by test environment
+        ngettext = function(string, plural, num) { return num == 1 ? string : plural; };
     }
 
     // Make gettext available in Handlebars templates
@@ -334,7 +341,7 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                             // Update zone obj
                             var zoneObj = {
-                                title: gettext(oldZone.title) || gettext('Zone {num}').replace('{num}', num),
+                                title: gettext(oldZone.title) || ngettext('Zone {num}', 'Zone {num}', num).replace('{num}', num),
                                 description: gettext(oldZone.description),
                                 // uid: unique ID for this zone. For backwards compatibility,
                                 // this field cannot be called "id" and must inherit the "title"

@@ -1,0 +1,30 @@
+{
+  "zones": [
+    {
+      "width": 200,
+      "title": "Zone <sup>-11</sup>",
+      "height": 100,
+      "y": 200,
+      "x": 100,
+      "uid": "zone-1"
+    }
+  ],
+  "items": [
+    {
+      "displayName": "<b>1</b>",
+      "feedback": {
+        "incorrect": "No <b>1</b>",
+        "correct": "Yes <b>1</b>"
+      },
+      "zone": "zone-1",
+      "imageURL": "",
+      "id": 0
+    }
+  ],
+  "feedback": {
+    "start": "Intro <i>Feed</i>",
+    "finish": "Final <b>Feed</b>"
+  },
+  "targetImg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIiBzdHlsZT0iYmFja2dyb3VuZDogI2VlZjsiPjwvc3ZnPg==",
+  "targetImgDescription": "This describes the target image"
+}

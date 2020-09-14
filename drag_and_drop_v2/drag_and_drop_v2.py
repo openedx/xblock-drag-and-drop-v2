@@ -4,24 +4,33 @@
 
 # Imports ###########################################################
 
+from __future__ import absolute_import
+
 import copy
 import json
 import logging
-import urllib
-import webob
+
 import pkg_resources
+import six
+import six.moves.urllib.error  # pylint: disable=import-error
+import six.moves.urllib.parse  # pylint: disable=import-error
+import six.moves.urllib.request  # pylint: disable=import-error
+import webob
+
 from django.utils import translation
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
-from xblock.fields import Scope, String, Dict, Float, Boolean, Integer
-from xblock.fragment import Fragment
+from xblock.fields import Boolean, Dict, Float, Integer, Scope, String
 from xblock.scorable import ScorableXBlockMixin, Score
+from web_fragments.fragment import Fragment
 from xblockutils.resources import ResourceLoader
-from xblockutils.settings import XBlockWithSettingsMixin, ThemableXBlockMixin
+from xblockutils.settings import ThemableXBlockMixin, XBlockWithSettingsMixin
 
-from .utils import _, DummyTranslationService, FeedbackMessage, FeedbackMessages, ItemStats, StateMigration, Constants
 from .default_data import DEFAULT_DATA
-
+from .utils import (
+    Constants, DummyTranslationService, FeedbackMessage,
+    FeedbackMessages, ItemStats, StateMigration, _clean_data, _
+)
 
 # Globals ###########################################################
 
@@ -31,6 +40,7 @@ logger = logging.getLogger(__name__)
 # Classes ###########################################################
 
 
+# pylint: disable=bad-continuation
 @XBlock.wants('settings')
 @XBlock.needs('i18n')
 class DragAndDropBlock(
@@ -259,18 +269,18 @@ class DragAndDropBlock(
     @staticmethod
     def _get_statici18n_js_url():
         """
-        Returns the Javascript translation file for the currently selected language, if any.
+        Returns the Javascript translation file for the currently selected language, if any found by
+        `pkg_resources`
         """
-        statici18n_js_url = None
         lang_code = translation.get_language()
-        if lang_code:
-            text_js = 'public/js/translations/{lang_code}/text.js'
-            country_code = lang_code.split('-')[0]
-            for code in (lang_code, country_code):
-                if pkg_resources.resource_exists(loader.module_name, text_js.format(lang_code=code)):
-                    statici18n_js_url = text_js.format(lang_code=code)
-                    break
-        return statici18n_js_url
+        if not lang_code:
+            return None
+        text_js = 'public/js/translations/{lang_code}/text.js'
+        country_code = lang_code.split('-')[0]
+        for code in (lang_code, country_code):
+            if pkg_resources.resource_exists(loader.module_name, text_js.format(lang_code=code)):
+                return text_js.format(lang_code=code)
+        return None
 
     @XBlock.supports("multi_device")  # Enable this block for use in the mobile app via webview
     def student_view(self, context):
@@ -332,7 +342,7 @@ class DragAndDropBlock(
             return items
 
         return {
-            "block_id": unicode(self.scope_ids.usage_id),
+            "block_id": six.text_type(self.scope_ids.usage_id),
             "display_name": self.display_name,
             "type": self.CATEGORY,
             "weight": self.weight,
@@ -355,6 +365,7 @@ class DragAndDropBlock(
             "target_img_description": self.target_img_description,
             "item_background_color": self.item_background_color or None,
             "item_text_color": self.item_text_color or None,
+            "has_deadline_passed": self.has_submission_deadline_passed,
             # final feedback (data.feedback.finish) is not included - it may give away answers.
         }
 
@@ -375,7 +386,7 @@ class DragAndDropBlock(
             'id_suffix': id_suffix,
             'fields': self.fields,
             'self': self,
-            'data': urllib.quote(json.dumps(self.data)),
+            'data': six.moves.urllib.parse.quote(json.dumps(self.data)),
         }
 
         fragment = Fragment()
@@ -451,7 +462,7 @@ class DragAndDropBlock(
         if hasattr(self, 'location'):
             return self.location.html_id()  # pylint: disable=no-member
         else:
-            return unicode(self.scope_ids.usage_id)
+            return six.text_type(self.scope_ids.usage_id)
 
     @staticmethod
     def _get_max_items_per_zone(submissions):
@@ -624,12 +635,27 @@ class DragAndDropBlock(
         """
         return self.max_attempts is None or self.max_attempts == 0 or self.attempts < self.max_attempts
 
+    @property
+    def has_submission_deadline_passed(self):
+        """
+        Returns a boolean indicating if the submission is past its deadline.
+
+        Using the `has_deadline_passed` method from InheritanceMixin which gets
+        added on the LMS/Studio, return if the submission is past its due date.
+        If the method not found, which happens for pure DragAndDropXblock,
+        return False which makes sure submission checks don't affect other
+        functionality.
+        """
+        if hasattr(self, "has_deadline_passed"):
+            return self.has_deadline_passed()               # pylint: disable=no-member
+        else:
+            return False
+
     @XBlock.handler
     def student_view_user_state(self, request, suffix=''):
         """ GET all user-specific data, and any applicable feedback """
         data = self._get_user_state()
-
-        return webob.Response(body=json.dumps(data), content_type='application/json')
+        return webob.Response(body=json.dumps(data).encode('utf-8'), content_type='application/json')
 
     def _validate_do_attempt(self):
         """
@@ -644,6 +670,11 @@ class DragAndDropBlock(
             raise JsonHandlerError(
                 409,
                 self.i18n_service.gettext("Max number of attempts reached")
+            )
+        if self.has_submission_deadline_passed:
+            raise JsonHandlerError(
+                409,
+                self.i18n_service.gettext("Submission deadline has passed.")
             )
 
     def _get_feedback(self, include_item_feedback=False):
@@ -733,8 +764,9 @@ class DragAndDropBlock(
         self._publish_item_dropped_event(item_attempt, is_correct)
 
         item_feedback_key = 'correct' if is_correct else 'incorrect'
-        item_feedback = FeedbackMessage(item['feedback'][item_feedback_key], None)
+        item_feedback = FeedbackMessage(self._expand_static_url(item['feedback'][item_feedback_key]), None)
         overall_feedback, __ = self._get_feedback()
+
         return {
             'correct': is_correct,
             'grade': self._get_weighted_earned_if_set(),
@@ -804,7 +836,15 @@ class DragAndDropBlock(
         # ... and from higher grade to lower
         # if we have an old-style (i.e. unreliable) grade, override no matter what
         saved_raw_earned = self._get_raw_earned_if_set()
-        if current_raw_earned is None or current_raw_earned > saved_raw_earned:
+
+        current_raw_earned_is_greater = False
+        if current_raw_earned is None or saved_raw_earned is None:
+            current_raw_earned_is_greater = True
+
+        if current_raw_earned is not None and saved_raw_earned is not None and current_raw_earned > saved_raw_earned:
+            current_raw_earned_is_greater = True
+
+        if current_raw_earned is None or current_raw_earned_is_greater:
             self.raw_earned = current_raw_earned
             self._publish_grade(Score(self.raw_earned, self.max_score()))
 
@@ -937,7 +977,7 @@ class DragAndDropBlock(
         state = {}
         migrator = StateMigration(self)
 
-        for item_id, item in self.item_state.iteritems():
+        for item_id, item in six.iteritems(self.item_state):
             state[item_id] = migrator.apply_item_state_migrations(item_id, item)
 
         return state
@@ -1081,3 +1121,56 @@ class DragAndDropBlock(
                 "<vertical_demo><drag-and-drop-v2 mode='assessment' max_attempts='3'/></vertical_demo>"
             ),
         ]
+
+    def index_dictionary(self):
+        """
+        Return dictionary prepared with module content and type for indexing.
+        """
+        # return key/value fields in a Python dict object
+        # values may be numeric / string or dict
+        # default implementation is an empty dict
+
+        xblock_body = super(DragAndDropBlock, self).index_dictionary()
+
+        zones_display_names = {
+            "zone_{}_display_name".format(zone_i):
+            _clean_data(zone.get("title", ""))
+            for zone_i, zone in enumerate(self.data.get("zones", []))
+        }
+
+        zones_description = {
+            "zone_{}_description".format(zone_i):
+            _clean_data(zone.get("description", ""))
+            for zone_i, zone in enumerate(self.data.get("zones", []))
+        }
+
+        items_display_names = {
+            "item_{}_display_name".format(item_i):
+            _clean_data(item.get("displayName", ""))
+            for item_i, item in enumerate(self.data.get("items", []))
+        }
+
+        items_image_description = {
+            "item_{}_image_description".format(item_i):
+            _clean_data(item.get("imageDescription", ""))
+            for item_i, item in enumerate(self.data.get("items", []))
+        }
+
+        index_body = {
+            "display_name": self.display_name,
+            "question_text": _clean_data(self.question_text),
+            "background_image_description": self.data.get("targetImgDescription", ""),
+        }
+        index_body.update(items_display_names)
+        index_body.update(items_image_description)
+        index_body.update(zones_display_names)
+        index_body.update(zones_description)
+
+        if "content" in xblock_body:
+            xblock_body["content"].update(index_body)
+        else:
+            xblock_body["content"] = index_body
+
+        xblock_body["content_type"] = "Drag and Drop"
+
+        return xblock_body
