@@ -1,7 +1,99 @@
+Drag and Drop XBlock changelog
+==============================
+
+Version 2.3 (2020-08-04)
+---------------------------
+
+* Make Drag and Drop Indexable.
+* Drop Python 2 support.
+
+Version 2.2.10 (2020-04-14)
+---------------------------
+
+* Fix bug where 'edx.drag_and_drop_v2.feedback.opened' event was sent to publish_event endpoint excessively on mouse move.  (PR #238)
+
+Version 2.2.9 (2020-04-03)
+--------------------------
+
+* Updated fragment import to remove deprecation warning which was causing extra logs in Splunk etc.
+
+Version 2.2.8 (2020-01-13)
+--------------------------
+
+* Updated code to render custom zone title as HTML
+
+Version 2.2.7 (????-??-??)
+-------------------
+
+* NOTE: This version was skipped / is not documented.
+
+Version 2.2.6 (2019-10-08)
+--------------------------
+
+* Python3 compatible.
+
+Version 2.2.5 (2019-10-04)
+--------------------------
+
+* This repository is now python3 compatible.
+* Update the xblock-sdk hash which is python3 compatible also.
+
+Version 2.2.4 (2019-07-30)
+---------------------------
+
+* Use InheritanceMixin for submission deadline checks (PR #219)
+* Submit button behavior will change in Assessment Mode and will now be impacted by subsection due date, grace period and course pacing
+
+Version 2.2.3 (2019-04-05)
+---------------------------
+
+* Fix dragging bug in mobile (PR #204)
+
+Version 2.2.2 (2019-03-22)
+---------------------------
+
+* Add translation for Reset and Feedback strings (PR #196)
+* Fix Loading message translation for Chinese & Spanish (PR #199)
+
+Version 2.2.1 (2018-11-16)
+---------------------------
+
+* Fix JavaScript error when the XBlock is in an IFrame (PR #192)
+* Revert change to travis.yml so it doesn't need to be updated with every version bump.
+
+Version 2.2.0 (2018-11-15)
+---------------------------
+
+* Extend existing APIs to support native mobile (PR #158)
+
+Version 2.1.8 (2018-11-02)
+---------------------------
+
+* Implement XBlock JavaScript i18n using i18n_tool and django-statici18n (PR #156)
+
+Version 2.1.7 (2018-10-10)
+---------------------------
+
+* Expand static URLs in FeedbackMessage (PR #190)
+
+Version 2.1.6 (2018-05-15)
+---------------------------
+
+* Use i18n runtime service to provide translations for HTML templates (PR #154)
+* Ensures URLs are utf-8 encoded (PR #150)
+* Correct load listener setup (PR #153)
+* Improve image handling on mobile (PR #152)
+* When dragging, scroll target image as needed.
+
+Version 2.1.5 (2017-11-06)
+---------------------------
+
+* Making the code more robust to handle an edge case when a dict does not contain an key (PR #149)
+
 Version 2.1.4 (2017-11-06)
 ---------------------------
 
-* Make XBlock always emit `progress` event explicitly when it is marked as complete.  
+* Make XBlock always emit `progress` event explicitly when it is marked as complete.
 
 Version 2.1.3 (2017-10-05)
 ---------------------------
@@ -37,7 +129,7 @@ Version 2.0.12 (2016-11-08)
     * [SOL-2094][sol-2094] Fixed problem preventing DnDv2 blocks from being scored or graded.
     * Highest grade achieved is now displayed in feedback area
     * Renamed "Maximum score" field to "Problem Weight" to be in line with CAPA problems and avoid confusion.
-    
+
 [sol-2030]: https://openedx.atlassian.net/browse/SOL-2030
 [sol-2094]: https://openedx.atlassian.net/browse/SOL-2094
 

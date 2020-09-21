@@ -19,7 +19,7 @@
     "display_zone_labels": false,
     "url_name": "unique_name",
     "max_items_per_zone": null,
-
+    "has_deadline_passed": false,
     "zones": [
         {
           "title": "Zone <i>1</i>",

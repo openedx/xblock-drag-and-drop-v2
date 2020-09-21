@@ -262,9 +262,11 @@ function DragAndDropTemplates(configuration) {
                 [
                     h(
                         'p',
-                        { className: className },
+                        {
+                            className: className,
+                            innerHTML: gettext(zone.title)
+                        },
                         [
-                            gettext(zone.title),
                             h('span.sr', gettext(', dropzone'))
                         ]
                     ),

@@ -1,15 +1,19 @@
-import mock
+from __future__ import absolute_import
+
+import random
+import unittest
 
 import ddt
-import unittest
-import random
+import mock
+from six.moves import range
 
+from drag_and_drop_v2.default_data import (BOTTOM_ZONE_ID, DEFAULT_DATA,
+                                           FINISH_FEEDBACK, MIDDLE_ZONE_ID,
+                                           START_FEEDBACK,
+                                           TARGET_IMG_DESCRIPTION, TOP_ZONE_ID)
 from drag_and_drop_v2.utils import Constants
-from drag_and_drop_v2.default_data import (
-    TARGET_IMG_DESCRIPTION, TOP_ZONE_ID, MIDDLE_ZONE_ID, BOTTOM_ZONE_ID,
-    START_FEEDBACK, FINISH_FEEDBACK, DEFAULT_DATA
-)
-from ..utils import make_block, TestCaseMixin
+
+from ..utils import TestCaseMixin, make_block
 
 
 @ddt.ddt
@@ -81,6 +85,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             "item_background_color": None,
             "item_text_color": None,
             "url_name": "",
+            "has_deadline_passed": False,
         })
         self.assertEqual(zones, DEFAULT_DATA["zones"])
         # Items should contain no answer data:
@@ -97,7 +102,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             )
         ])
 
-    @ddt.data(*[random.randint(1, 50) for _ in xrange(5)])  # pylint: disable=star-args
+    @ddt.data(*[random.randint(1, 50) for _ in range(5)])  # pylint: disable=star-args
     def test_grading_interface(self, weight):
         """
         Test that the methods required by the LMS grading interface work as expected.
@@ -182,7 +187,6 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             '4': {'zone': BOTTOM_ZONE_ID, 'correct': False},
         }
         self.block.save()
-
         self.assertEqual(self.call_handler('student_view_user_state')['items'], {
             '0': {'correct': True, 'zone': TOP_ZONE_ID},
             '1': {'correct': True, 'zone': MIDDLE_ZONE_ID},

@@ -1,7 +1,9 @@
 .xblock--drag-and-drop--editor {
   width: 100%;
   height: 100%;
+  margin-bottom: 0 !important;  /* Remove an undesired whitespace from Studio */
 }
+
 .modal-window .drag-builder  {
     width: 100%;
     height: calc(100% - 55px);
@@ -385,4 +387,8 @@
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+}
+
+.modal-window .modal-content .editor-with-buttons.xblock--drag-and-drop--editor {
+    margin-bottom: 0;
 }

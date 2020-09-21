@@ -1,12 +1,15 @@
+from __future__ import absolute_import
+
 import json
 import random
 import re
 
 from mock import patch
+from six.moves import range
 from webob import Request
 from workbench.runtime import WorkbenchRuntime
 from xblock.fields import ScopeIds
-from xblock.runtime import KvsFieldData, DictKeyValueStore
+from xblock.runtime import DictKeyValueStore, KvsFieldData
 
 import drag_and_drop_v2
 
@@ -15,7 +18,8 @@ def make_request(data, method='POST'):
     """ Make a webob JSON Request """
     request = Request.blank('/')
     request.method = 'POST'
-    request.body = json.dumps(data).encode('utf-8') if data is not None else ""
+    data = json.dumps(data).encode('utf-8') if data is not None else b''
+    request.body = data
     request.method = method
     return request
 
@@ -33,7 +37,7 @@ def make_block():
 
 
 def generate_max_and_attempts(count=100):
-    for _ in xrange(count):
+    for _ in range(count):
         max_attempts = random.randint(1, 100)
         attempts = random.randint(0, 100)
         expect_validation_error = max_attempts <= attempts
@@ -71,5 +75,5 @@ class TestCaseMixin(object):
         response = self.block.handle(handler_name, make_request(data, method=method))
         if expect_json:
             self.assertEqual(response.status_code, 200)
-            return json.loads(response.body)
+            return json.loads(response.body.decode('utf-8'))
         return response
