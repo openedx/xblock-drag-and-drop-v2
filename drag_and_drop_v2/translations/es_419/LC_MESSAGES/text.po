@@ -473,7 +473,7 @@ msgstr "Realimentación"
 
 #: public/js/drag_and_drop.js
 msgid "Keyboard Help"
-msgstr ""
+msgstr "键盘说明"
 
 #: public/js/drag_and_drop.js
 msgid "You can complete this problem using only your keyboard."
@@ -507,7 +507,7 @@ msgstr ""
 
 #: public/js/drag_and_drop.js
 msgid "Problem"
-msgstr ""
+msgstr "Problema"
 
 #: public/js/drag_and_drop.js
 msgid "An error occurred. Unable to load drag and drop problem."
@@ -607,3 +607,31 @@ msgid "Did not place {missing_count} required item."
 msgid_plural "Did not place {missing_count} required items."
 msgstr[0] ""
 msgstr[1] ""
+
+#: public/js/drag_and_drop.js:1298
+msgid "You cannot add any more items to this zone."
+msgstr "No se pueden agregar más elementos a esta zona."
+
+#: public/js/drag_and_drop.js:320
+msgid "You can complete this problem using only your keyboard by following the guidance below:"
+msgstr "Puede completar este problema utilizando solo el teclado. Para ello, siga las indicaciones a continuación:"
+
+#: public/js/drag_and_drop.js:322
+msgid "Use only TAB and SHIFT+TAB to navigate between draggable items and drop zones."
+msgstr "Para navegar entre los elementos que se pueden arrastrar y el panel Colocar zonas, utilice solo las teclas Tab y Mayús+Tab."
+
+#: public/js/drag_and_drop.js:323
+msgid "Press CTRL+M to select a draggable item (effectively picking it up)."
+msgstr "Para seleccionar un elemento que se puede arrastrar, presione las teclas CTRL+M. (Esta es una forma efectiva de selección)."
+
+#: public/js/drag_and_drop.js:324
+msgid "Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press CTRL+M once more to drop it here."
+msgstr "Para navegar, utilice las teclas Tab y Mayús+Tab hasta el panel Colocar zonas correspondiente, y luego presione las teclas CTRL+M una vez más para soltar el elemento."
+
+#: public/js/drag_and_drop.js:325
+msgid "Press ESC if you want to cancel the drop operation (for example, to select a different item)."
+msgstr "Si desea cancelar la operación de colocar, presione la tecla Esc. (Por ejemplo, para seleccionar otro elemento)."
+
+#: public/js/drag_and_drop.js:326
+msgid "TAB back to the list of draggable items and repeat this process until all of the draggable items have been placed on their respective dropzones."
+msgstr "Presione las teclas Mayús+Tab para desplazarse hacia atrás por la lista de elementos que se pueden seleccionar; luego, repita el proceso hasta que todos los elementos que se pueden seleccionar se hayan colocado en sus respectivos paneles Colocar zonas."
