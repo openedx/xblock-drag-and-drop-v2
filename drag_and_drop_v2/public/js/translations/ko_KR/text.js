@@ -157,6 +157,7 @@
     "Use this zone to associate an item with the middle layer of the triangle.": "\uc774 \uc601\uc5ed\uc744 \uc0ac\uc6a9\ud558\uc5ec \uc544\uc774\ud15c\uc744 \uc0bc\uac01\ud615\uc758 \uc911\uac04 \ub808\uc774\uc5b4\uc640 \uc5f0\uacb0\ud569\ub2c8\ub2e4.", 
     "Use this zone to associate an item with the top layer of the triangle.": "\uc774 \uc601\uc5ed\uc744 \uc0ac\uc6a9\ud558\uc5ec \uc544\uc774\ud15c\uc744 \uc0bc\uac01\ud615\uc758 \uc0c1\ub2e8 \ub808\uc774\uc5b4\uc640 \uc5f0\uacb0\ud569\ub2c8\ub2e4.", 
     "You can complete this problem using only your keyboard by following the guidance below:": "\uc774 \ubb38\uc81c\ub294 \uc544\ub798 \uc9c0\uce68\uc5d0 \ub530\ub77c \ud0a4\ubcf4\ub4dc\ub9cc \uc0ac\uc6a9\ud558\uc5ec \uc644\ub8cc\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.", 
+    "You cannot add any more items to this zone.": "\uc774 \uc601\uc5ed\uc5d0 \ub354 \uc774\uc0c1 \uc544\uc774\ud15c\uc744 \ucd94\uac00\ud560 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4.", 
     "You have used {used} of {total} attempts.": "\ucd1d {total}\ubc88\uc758 \uc2dc\ub3c4 \ud69f\uc218 \uc911 {used}\ubc88\uc744 \uc0ac\uc6a9\ud558\uc168\uc2b5\ub2c8\ub2e4.", 
     "You silly, there are no zones for this one.": "\uc774 \uc544\uc774\ud15c\uc744 \uc704\ud55c \uc601\uc5ed\uc740 \uc5c6\uc2b5\ub2c8\ub2e4.", 
     "Your highest score is {score}": "\uadc0\ud558\uc758 \ucd5c\uace0 \uc810\uc218\ub294 {score}\uc810\uc785\ub2c8\ub2e4.", 

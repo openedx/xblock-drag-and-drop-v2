@@ -1,4 +1,4 @@
-# 
+#
 # Translators:
 msgid ""
 msgstr ""
@@ -652,3 +652,7 @@ msgid "Did not place {missing_count} required item."
 msgid_plural "Did not place {missing_count} required items."
 msgstr[0] "필수 아이템 {missing_count}개를 배치하지 않았습니다."
 msgstr[1] "필수 아이템 {missing_count}개를 배치하지 않았습니다."
+
+#: public/js/drag_and_drop.js:1298
+msgid "You cannot add any more items to this zone."
+msgstr "이 영역에 더 이상 아이템을 추가할 수 없습니다."
