@@ -473,7 +473,7 @@ msgstr "Realimentación"
 
 #: public/js/drag_and_drop.js
 msgid "Keyboard Help"
-msgstr "Ayuda del teclado"
+msgstr "键盘说明"
 
 #: public/js/drag_and_drop.js
 msgid "You can complete this problem using only your keyboard."

@@ -475,7 +475,7 @@ msgstr "反馈"
 
 #: public/js/drag_and_drop.js
 msgid "Keyboard Help"
-msgstr "键盘说明"
+msgstr "Ayuda del teclado"
 
 #: public/js/drag_and_drop.js
 msgid "You can complete this problem using only your keyboard."
