@@ -6,3 +6,4 @@ file_filter = drag_and_drop_v2/translations/<lang>/LC_MESSAGES/text.po
 source_file = drag_and_drop_v2/translations/en/LC_MESSAGES/text.po
 source_lang = en
 type = PO
+

@@ -12,7 +12,9 @@ disable=
     too-many-instance-attributes,
     too-few-public-methods,
     too-many-public-methods,
-    unused-argument
+    unused-argument,
+    unsubscriptable-object,
+    no-else-return
 
 [SIMILARITIES]
 min-similarity-lines=4
