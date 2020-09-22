@@ -25,7 +25,7 @@
   
   var newcatalog = {
     "Feedback": "\u53cd\u9988", 
-    "Keyboard Help": "Ayuda del teclado", 
+    "Keyboard Help": "\u952e\u76d8\u8bf4\u660e", 
     "Loading drag and drop problem.": "\u52a0\u8f7d\u62d6\u653e\u3002", 
     "Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press CTRL+M once more to drop it here.": "\u4f7f\u7528 Tab \u548c Shift + Tab \u5bfc\u822a\u5230\u9002\u5f53\u7684\u653e\u7f6e\u533a\uff0c\u7136\u540e\u518d\u6309\u4e00\u6b21 Ctrl + M \u5c06\u5176\u653e\u7f6e\u5728\u6b64\u5904\u3002", 
     "Press CTRL+M to select a draggable item (effectively picking it up).": "\u6309 CtrlL + M \u53ef\u9009\u62e9\u4e00\u4e2a\u53ef\u62d6\u52a8\u9879\u76ee\uff08\u76f8\u5f53\u4e8e\u9009\u53d6\u5b83\uff09\u3002", 

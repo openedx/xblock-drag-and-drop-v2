@@ -25,7 +25,7 @@
   
   var newcatalog = {
     "Feedback": "Realimentaci\u00f3n", 
-    "Keyboard Help": "\u952e\u76d8\u8bf4\u660e", 
+    "Keyboard Help": "Ayuda del teclado", 
     "Loading drag and drop problem.": "Cargando problema de arrastrar y soltar.", 
     "Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press CTRL+M once more to drop it here.": "Para navegar, utilice las teclas Tab y May\u00fas+Tab hasta el panel Colocar zonas correspondiente, y luego presione las teclas CTRL+M una vez m\u00e1s para soltar el elemento.", 
     "Press CTRL+M to select a draggable item (effectively picking it up).": "Para seleccionar un elemento que se puede arrastrar, presione las teclas CTRL+M. (Esta es una forma efectiva de selecci\u00f3n).", 
