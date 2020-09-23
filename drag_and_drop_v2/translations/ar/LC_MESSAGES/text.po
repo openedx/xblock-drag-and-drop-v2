@@ -459,6 +459,14 @@ msgstr "وضع بشكل صحيح في: {zone_title}"
 msgid "Reset"
 msgstr "إعادة تعيين"
 
+#: drag_and_drop_v2/public/js/drag_and_drop.js:514
+msgid "Correct"
+msgstr "صحيح"
+
+#: drag_and_drop_v2/public/js/drag_and_drop.js:514
+msgid "Incorrect"
+msgstr "خاطئ"
+
 #: public/js/drag_and_drop.js
 msgid "Show Answer"
 msgstr ""
@@ -474,6 +482,11 @@ msgstr "إرسال"
 #: public/js/drag_and_drop.js
 msgid "Feedback"
 msgstr "التعليقات"
+
+#: public/js/drag_and_drop.js:312 public/js/drag_and_drop.js:484
+#: public/js/drag_and_drop.js:527
+msgid "Close"
+msgstr "إغلاق "
 
 #: public/js/drag_and_drop.js
 msgid "Keyboard Help"
