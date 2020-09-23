@@ -2,13 +2,13 @@
             (function(global){
                 var DragAndDropI18N = {
                   init: function() {
-                    
+
 
 (function(globals) {
 
   var django = globals.django || (globals.django = {});
 
-  
+
   django.pluralidx = function(n) {
     var v=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;
     if (typeof(v) == 'boolean') {
@@ -17,12 +17,12 @@
       return v;
     }
   };
-  
+
 
   /* gettext library */
 
   django.catalog = django.catalog || {};
-  
+
   var newcatalog = {
     "\n                            Please provide a description of the image for non-visual users.\n                            The description should provide sufficient information to allow anyone\n                            to solve the problem even without seeing the image.\n                        ": "\n                            \u0627\u0644\u0631\u062c\u0627\u0621 \u062a\u0642\u062f\u064a\u0645 \u0634\u0631\u062d \u0644\u0644\u0635\u0648\u0631\u0629 \u0644\u0644\u0645\u0633\u062a\u062e\u062f\u0645\u064a\u0646 \u063a\u064a\u0631 \u0627\u0644\u0645\u0631\u0626\u064a\u064a\u0646.\n                            \u0645\u0646 \u0627\u0644\u0645\u0641\u062a\u0631\u0636 \u0623\u0646 \u064a\u0648\u0641\u0631 \u0627\u0644\u0634\u0631\u062d \u0645\u0639\u0644\u0648\u0645\u0627\u062a \u0643\u0627\u0641\u064a\u0629 \u0644\u0644\u0633\u0645\u0627\u062d \u0644\u0623\u064a \u0634\u062e\u0635 \n                            \u0628\u062d\u0644 \u0627\u0644\u0645\u0633\u0623\u0644\u0629 \u062d\u062a\u0649 \u0628\u062f\u0648\u0646 \u0631\u0624\u064a\u0629 \u0627\u0644\u0635\u0648\u0631\u0629.\n                        ",
     "\"Maximum items per zone\" should be positive integer, got {max_items_per_zone}": "\"\u0623\u0642\u0635\u0649 \u0639\u062f\u062f \u0644\u0644\u0639\u0646\u0627\u0635\u0631 \u0641\u064a \u0643\u0644 \u0645\u0646\u0637\u0642\u0629\" \u064a\u0646\u0628\u063a\u064a \u0623\u0646 \u064a\u0643\u0648\u0646 \u0631\u0642\u0645\u064b\u0627 \u0635\u062d\u064a\u062d\u064b\u0627 \u0645\u0648\u062c\u0628\u064b\u0627\u060c \u0627\u0644\u0639\u062f\u062f \u0627\u0644\u0646\u0627\u062a\u062c {max_items_per_zone}",
@@ -79,6 +79,7 @@
     "Max number of attempts reached": "\u0644\u0642\u062f \u0648\u0635\u0644\u062a \u0625\u0644\u0649 \u0623\u0642\u0635\u0649 \u0639\u062f\u062f \u0645\u0646 \u0627\u0644\u0645\u062d\u0627\u0648\u0644\u0627\u062a",
     "Maximum attempts": "\u0623\u0642\u0635\u0649 \u0639\u062f\u062f \u0644\u0644\u0645\u062d\u0627\u0648\u0644\u0627\u062a",
     "Mode": "\u0627\u0644\u062d\u0627\u0644\u0629",
+    "Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press CTRL+M once more to drop it here.": "\u062a\u0646\u0642\u0651\u064e\u0644 \u0628\u0627\u0633\u062a\u062e\u062f\u0627\u0645 Tab \u0648Shift+Tab \u0625\u0644\u0649 \u0645\u0646\u0637\u0642\u0629 \u0627\u0644\u0625\u0633\u0642\u0627\u0637 \u0627\u0644\u0645\u0646\u0627\u0633\u0628\u0629 \u0648\u0627\u0636\u063a\u0637 \u0639\u0644\u0649 Ctrl+M \u0645\u0631\u0629 \u0625\u0636\u0627\u0641\u064a\u0629 \u0644\u0625\u0633\u0642\u0627\u0637\u0647 \u0647\u0646\u0627.",
     "No, this item does not belong here. Try again.": "\u0644\u0627\u060c \u0647\u0630\u0627 \u0627\u0644\u0639\u0646\u0635\u0631 \u0644\u0627 \u064a\u0646\u062a\u0645\u064a \u0625\u0644\u0649 \u0647\u0630\u0647 \u0627\u0644\u0645\u0646\u0637\u0642\u0629. \u062d\u0627\u0648\u0644 \u0645\u0631\u0629 \u0623\u062e\u0631\u0649.",
     "None": "\u0644\u0627 \u0634\u064a\u0621",
     "Note: do not edit the problem if students have already completed it. Delete the problem and create a new one.": "\u0645\u0644\u0627\u062d\u0638\u0629: \u0644\u0627 \u062a\u0642\u0645 \u0628\u062a\u0639\u062f\u064a\u0644 \u0627\u0644\u0645\u0633\u0623\u0644\u0629 \u0625\u0630\u0627 \u0642\u0627\u0645 \u0627\u0644\u0637\u0644\u0627\u0628 \u0628\u0627\u0633\u062a\u0643\u0645\u0627\u0644\u0647\u0627 \u0628\u0627\u0644\u0641\u0639\u0644. \u0627\u062d\u0630\u0641 \u0627\u0644\u0645\u0633\u0623\u0644\u0629 \u0648\u0642\u0645 \u0628\u0643\u062a\u0627\u0628\u0629 \u0645\u0633\u0623\u0644\u0629 \u062c\u062f\u064a\u062f\u0629.",
@@ -91,6 +92,8 @@
     "Press \"Enter\", \"Space\", \"Ctrl-m\", or \"\u2318-m\" on an item to select it for dropping, then navigate to the zone you want to drop it on.": "\u0627\u0636\u063a\u0637 \u0639\u0644\u0649 \"Enter\"\u060c \u0623\u0648 \"Space\"\u060c \u0623\u0648 \"Ctrl-m\"\u060c \u0623\u0648 \"\u2318-m\" \u0639\u0644\u0649 \u0639\u0646\u0635\u0631 \u0645\u0639\u064a\u0646 \u0644\u0627\u062e\u062a\u064a\u0627\u0631\u0647 \u0644\u0644\u0625\u0633\u0642\u0627\u0637\u060c \u062b\u0645 \u0627\u0646\u062a\u0642\u0644 \u0625\u0644\u0649 \u0627\u0644\u0645\u0646\u0637\u0642\u0629 \u0627\u0644\u062a\u064a \u062a\u0631\u063a\u0628 \u0641\u064a \u0625\u0633\u0642\u0627\u0637\u0647 \u0641\u064a\u0647\u0627.",
     "Press \"Enter\", \"Space\", \"Ctrl-m\", or \"\u2318-m\" to drop the item on the current zone.": "\u0627\u0636\u063a\u0637 \u0639\u0644\u0649 \"Enter\"\u060c \u0623\u0648 \"Space\"\u060c \u0623\u0648 \"Ctrl-m\"\u060c \u0623\u0648 \"\u2318-m\" \u0644\u0625\u0633\u0642\u0627\u0637 \u0627\u0644\u0639\u0646\u0635\u0631 \u0641\u064a \u0627\u0644\u0645\u0646\u0637\u0642\u0629 \u0627\u0644\u062d\u0627\u0644\u064a\u0629.",
     "Press \"Esc\" if you want to cancel the drop operation (for example, to select a different item).": "\u0627\u0636\u063a\u0637 \u0639\u0644\u0649 \"Esc\" \u0625\u0630\u0627 \u0643\u0646\u062a \u062a\u0631\u063a\u0628 \u0641\u064a \u0625\u0644\u063a\u0627\u0621 \u0639\u0645\u0644\u064a\u0629 \u0627\u0644\u0625\u0633\u0642\u0627\u0637 (\u0639\u0644\u0649 \u0633\u0628\u064a\u0644 \u0627\u0644\u0645\u062b\u0627\u0644\u060c \u0644\u0627\u062e\u062a\u064a\u0627\u0631 \u0639\u0646\u0635\u0631 \u0645\u062e\u062a\u0644\u0641).",
+    "Press CTRL+M to select a draggable item (effectively picking it up).": "\u0627\u0636\u063a\u0637 \u0639\u0644\u0649 Ctrl+M \u0644\u062a\u062d\u062f\u064a\u062f \u0639\u0646\u0635\u0631 \u064a\u0645\u0643\u0646 \u0633\u062d\u0628\u0647 (\u0627\u0644\u062a\u0642\u0627\u0637\u0647 \u0628\u0634\u0643\u0644 \u0641\u0639\u0627\u0644).",
+    "Press ESC if you want to cancel the drop operation (for example, to select a different item).": "\u0627\u0636\u063a\u0637 \u0639\u0644\u0649 Esc \u0625\u0630\u0627 \u0623\u0631\u062f\u062a \u0625\u0644\u063a\u0627\u0621 \u0639\u0645\u0644\u064a\u0629 \u0627\u0644\u0625\u0633\u0642\u0627\u0637 (\u0639\u0644\u0649 \u0633\u0628\u064a\u0644 \u0627\u0644\u0645\u062b\u0627\u0644\u060c \u0644\u062a\u062d\u062f\u064a\u062f \u0639\u0646\u0635\u0631 \u0622\u062e\u0631).",
     "Problem": "\u0627\u0644\u0645\u0633\u0623\u0644\u0629",
     "Problem data": "\u0628\u064a\u0627\u0646\u0627\u062a \u0627\u0644\u0645\u0633\u0623\u0644\u0629",
     "Problem text": "\u0646\u0635 \u0627\u0644\u0645\u0633\u0623\u0644\u0629",
@@ -106,6 +109,7 @@
     "Standard": "\u0642\u064a\u0627\u0633\u064a",
     "Standard mode: the problem provides immediate feedback each time a learner drops an item on a target zone. Assessment mode: the problem provides feedback only after a learner drops all available items on target zones.": "\u0627\u0644\u062d\u0627\u0644\u0629 \u0627\u0644\u0639\u0627\u062f\u064a\u0629: \u062a\u0642\u062f\u0645 \u0627\u0644\u0645\u0633\u0623\u0644\u0629 \u0631\u062f\u0627\u064b \u0641\u0648\u0631\u064a\u0627\u064b \u0641\u064a \u0643\u0644 \u0645\u0631\u0629 \u064a\u0636\u0639 \u0641\u064a\u0647\u0627 \u0627\u0644\u0637\u0627\u0644\u0628 \u0639\u0646\u0635\u0631 \u062f\u0627\u062e\u0644 \u0645\u0646\u0637\u0642\u0629 \u0627\u0644\u0647\u062f\u0641. \u062d\u0627\u0644\u0629 \u0627\u0644\u062a\u0642\u064a\u064a\u0645: \u062a\u0642\u062f\u0645 \u0627\u0644\u0645\u0633\u0623\u0644\u0629 \u0631\u062f\u0627\u064b \u0641\u0642\u0637 \u0628\u0639\u062f \u0623\u0646 \u064a\u0636\u0639 \u0627\u0644\u0637\u0627\u0644\u0628 \u062c\u0645\u064a\u0639 \u0627\u0644\u0639\u0646\u0627\u0635\u0631 \u0627\u0644\u0645\u062a\u0627\u062d\u0629 \u062f\u0627\u062e\u0644 \u0645\u0646\u0627\u0637\u0642 \u0627\u0644\u0647\u062f\u0641.",
     "Submit": "\u0625\u0631\u0633\u0627\u0644",
+    "TAB back to the list of draggable items and repeat this process until all of the draggable items have been placed on their respective dropzones.": "\u0627\u0633\u062a\u062e\u062f\u0645 \u0627\u0644\u0645\u0641\u062a\u0627\u062d Tab \u0644\u0644\u0631\u062c\u0648\u0639 \u0625\u0644\u0649 \u0642\u0627\u0626\u0645\u0629 \u0627\u0644\u0639\u0646\u0627\u0635\u0631 \u0627\u0644\u062a\u064a \u064a\u0645\u0643\u0646 \u0633\u062d\u0628\u0647\u0627 \u0648\u0643\u0631\u0651\u0650\u0631 \u0647\u0630\u0647 \u0627\u0644\u0639\u0645\u0644\u064a\u0629 \u062d\u062a\u0649 \u064a\u062a\u0645 \u0648\u0636\u0639 \u062c\u0645\u064a\u0639 \u0627\u0644\u0639\u0646\u0627\u0635\u0631 \u0627\u0644\u062a\u064a \u064a\u0645\u0643\u0646 \u0633\u062d\u0628\u0647\u0627 \u0641\u064a \u0645\u0646\u0627\u0637\u0642 \u0627\u0644\u0625\u0633\u0642\u0627\u0637 \u0627\u0644\u062e\u0627\u0635\u0629 \u0628\u0647\u0627.",
     "Text": "\u0627\u0644\u0646\u0635",
     "Text color to use for draggable items (example: 'white' or '#ffffff').": "\u0644\u0648\u0646 \u0627\u0644\u0646\u0635 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645 \u0645\u0639 \u0627\u0644\u0639\u0646\u0627\u0635\u0631 \u0627\u0644\u0642\u0627\u0628\u0644\u0629 \u0644\u0644\u0633\u062d\u0628 (\u0639\u0644\u0649 \u0633\u0628\u064a\u0644 \u0627\u0644\u0645\u062b\u0627\u0644: \"\u0623\u0628\u064a\u0636\" \u0623\u0648 '#ffffff')",
     "The Bottom Zone": "\u0627\u0644\u0645\u0646\u0637\u0642\u0629 \u0627\u0644\u0633\u0641\u0644\u0649",
@@ -118,11 +122,14 @@
     "Title": "\u0627\u0644\u0639\u0646\u0648\u0627\u0646",
     "Unknown DnDv2 mode {mode} - course is misconfigured": "\u0648\u0636\u0639 DnDv2 \u063a\u064a\u0631 \u0645\u0639\u0631\u0648\u0641 {\u0648\u0636\u0639} - \u062e\u0637\u0623 \u0641\u064a \u062a\u0643\u0648\u064a\u0646 \u0627\u0644\u062f\u0648\u0631\u0629",
     "Use \"Tab\" and \"Shift-Tab\" to navigate between items and zones.": "\u0627\u0633\u062a\u062e\u062f\u0645 \"Tab\" \u0648 \"Shift-Tab\" \u0644\u0644\u062a\u0646\u0642\u0644 \u0628\u064a\u0646 \u0627\u0644\u0639\u0646\u0627\u0635\u0631 \u0648\u0627\u0644\u0645\u0646\u0627\u0637\u0642.",
+    "Use only TAB and SHIFT+TAB to navigate between draggable items and drop zones.": "\u0627\u0633\u062a\u062e\u062f\u0645 Tab \u0648Shift+Tab \u0644\u0644\u062a\u0646\u0642\u0644 \u0628\u064a\u0646 \u0627\u0644\u0639\u0646\u0627\u0635\u0631 \u0627\u0644\u062a\u064a \u064a\u0645\u0643\u0646 \u0633\u062d\u0628\u0647\u0627 \u0648\u0645\u0646\u0627\u0637\u0642 \u0627\u0644\u0625\u0633\u0642\u0627\u0637.",
     "Use text that is clear and descriptive of the item to be placed.": "\u0627\u0633\u062a\u062e\u062f\u0627\u0645 \u0627\u0644\u0646\u0635 \u0627\u0644\u0648\u0627\u0636\u062d \u0627\u0644\u0630\u064a \u064a\u0635\u0641 \u0627\u0644\u0639\u0646\u0635\u0631 \u0627\u0644\u0645\u0637\u0644\u0648\u0628 \u0648\u0636\u0639\u0647.",
     "Use this zone to associate an item with the bottom layer of the triangle.": "\u0627\u0633\u062a\u062e\u062f\u0645 \u0647\u0630\u0647 \u0627\u0644\u0645\u0646\u0637\u0642\u0629 \u0644\u0631\u0628\u0637 \u0639\u0646\u0635\u0631 \u0645\u0639 \u0627\u0644\u0637\u0628\u0642\u0629 \u0627\u0644\u0633\u0641\u0644\u0649 \u0641\u064a \u0627\u0644\u0645\u062b\u0644\u062b.",
     "Use this zone to associate an item with the middle layer of the triangle.": "\u0627\u0633\u062a\u062e\u062f\u0645 \u0647\u0630\u0647 \u0627\u0644\u0645\u0646\u0637\u0642\u0629 \u0644\u0631\u0628\u0637 \u0639\u0646\u0635\u0631 \u0645\u0639 \u0627\u0644\u0637\u0628\u0642\u0629 \u0627\u0644\u0648\u0633\u0637\u0649 \u0641\u064a \u0627\u0644\u0645\u062b\u0644\u062b.",
     "Use this zone to associate an item with the top layer of the triangle.": "\u0627\u0633\u062a\u062e\u062f\u0645 \u0647\u0630\u0647 \u0627\u0644\u0645\u0646\u0637\u0642\u0629 \u0644\u0631\u0628\u0637 \u0639\u0646\u0635\u0631 \u0645\u0639 \u0627\u0644\u0637\u0628\u0642\u0629 \u0627\u0644\u0639\u0644\u064a\u0627 \u0641\u064a \u0627\u0644\u0645\u062b\u0644\u062b.",
+    "You can complete this problem using only your keyboard by following the guidance below:": "\u064a\u0645\u0643\u0646\u0643 \u0625\u0643\u0645\u0627\u0644 \u0647\u0630\u0647 \u0627\u0644\u0645\u0634\u0643\u0644\u0629 \u0628\u0627\u0633\u062a\u062e\u062f\u0627\u0645 \u0644\u0648\u062d\u0629 \u0645\u0641\u0627\u062a\u064a\u062d\u0643 \u0641\u0642\u0637 \u0639\u0646 \u0637\u0631\u064a\u0642 \u0627\u062a\u0628\u0627\u0639  \u0627\u0644\u0646\u0635\u0627\u0626\u062d \u0623\u062f\u0646\u0627\u0647:",
     "You can complete this problem using only your keyboard.": "\u064a\u0645\u0643\u0646\u0643 \u0627\u0633\u062a\u0643\u0645\u0627\u0644 \u0647\u0630\u0647 \u0627\u0644\u0645\u0633\u0623\u0644\u0629 \u0628\u0627\u0633\u062a\u062e\u062f\u0627\u0645 \u0644\u0648\u062d\u0629 \u0627\u0644\u0645\u0641\u0627\u062a\u064a\u062d \u0627\u0644\u062e\u0627\u0635\u0629 \u0628\u0643 \u0641\u0642\u0637.",
+    "You cannot add any more items to this zone.": "\u0644\u0627 \u064a\u0645\u0643\u0646\u0643 \u0625\u0636\u0627\u0641\u0629 \u0623\u064a \u0639\u0646\u0627\u0635\u0631 \u0623\u062e\u0631\u0649 \u0625\u0644\u0649 \u0647\u0630\u0647 \u0627\u0644\u0645\u0646\u0637\u0642\u0629.",
     "You have used {used} of {total} attempts.": "\u0644\u0642\u062f \u0627\u0633\u062a\u062e\u062f\u0645\u062a {used} \u0645\u0646 {total} \u0645\u062d\u0627\u0648\u0644\u0627\u062a.",
     "You silly, there are no zones for this one.": "\u0623\u064a\u0647\u0627 \u0627\u0644\u0633\u0627\u0630\u062c\u060c \u0644\u0627 \u062a\u0648\u062c\u062f \u0645\u0646\u0627\u0637\u0642 \u0645\u0644\u0627\u0626\u0645\u0629 \u0644\u0647\u0630\u0627 \u0627\u0644\u0639\u0646\u0635\u0631.",
     "Zone": "\u0627\u0644\u0645\u0646\u0637\u0642\u0629",
@@ -142,7 +149,7 @@
   for (var key in newcatalog) {
     django.catalog[key] = newcatalog[key];
   }
-  
+
 
   if (!django.jsi18n_initialized) {
     django.gettext = function(msgid) {
@@ -193,48 +200,48 @@
     /* formatting library */
 
     django.formats = {
-    "DATETIME_FORMAT": "N j, Y, P", 
+    "DATETIME_FORMAT": "N j, Y, P",
     "DATETIME_INPUT_FORMATS": [
-      "%Y-%m-%d %H:%M:%S", 
-      "%Y-%m-%d %H:%M:%S.%f", 
-      "%Y-%m-%d %H:%M", 
-      "%Y-%m-%d", 
-      "%m/%d/%Y %H:%M:%S", 
-      "%m/%d/%Y %H:%M:%S.%f", 
-      "%m/%d/%Y %H:%M", 
-      "%m/%d/%Y", 
-      "%m/%d/%y %H:%M:%S", 
-      "%m/%d/%y %H:%M:%S.%f", 
-      "%m/%d/%y %H:%M", 
+      "%Y-%m-%d %H:%M:%S",
+      "%Y-%m-%d %H:%M:%S.%f",
+      "%Y-%m-%d %H:%M",
+      "%Y-%m-%d",
+      "%m/%d/%Y %H:%M:%S",
+      "%m/%d/%Y %H:%M:%S.%f",
+      "%m/%d/%Y %H:%M",
+      "%m/%d/%Y",
+      "%m/%d/%y %H:%M:%S",
+      "%m/%d/%y %H:%M:%S.%f",
+      "%m/%d/%y %H:%M",
       "%m/%d/%y"
-    ], 
-    "DATE_FORMAT": "j F\u060c Y", 
+    ],
+    "DATE_FORMAT": "j F\u060c Y",
     "DATE_INPUT_FORMATS": [
-      "%Y-%m-%d", 
-      "%m/%d/%Y", 
-      "%m/%d/%y", 
-      "%b %d %Y", 
-      "%b %d, %Y", 
-      "%d %b %Y", 
-      "%d %b, %Y", 
-      "%B %d %Y", 
-      "%B %d, %Y", 
-      "%d %B %Y", 
+      "%Y-%m-%d",
+      "%m/%d/%Y",
+      "%m/%d/%y",
+      "%b %d %Y",
+      "%b %d, %Y",
+      "%d %b %Y",
+      "%d %b, %Y",
+      "%B %d %Y",
+      "%B %d, %Y",
+      "%d %B %Y",
       "%d %B, %Y"
-    ], 
-    "DECIMAL_SEPARATOR": ",", 
-    "FIRST_DAY_OF_WEEK": "0", 
-    "MONTH_DAY_FORMAT": "j F", 
-    "NUMBER_GROUPING": "0", 
-    "SHORT_DATETIME_FORMAT": "m/d/Y P", 
-    "SHORT_DATE_FORMAT": "d\u200f/m\u200f/Y", 
-    "THOUSAND_SEPARATOR": ".", 
-    "TIME_FORMAT": "g:i A", 
+    ],
+    "DECIMAL_SEPARATOR": ",",
+    "FIRST_DAY_OF_WEEK": "0",
+    "MONTH_DAY_FORMAT": "j F",
+    "NUMBER_GROUPING": "0",
+    "SHORT_DATETIME_FORMAT": "m/d/Y P",
+    "SHORT_DATE_FORMAT": "d\u200f/m\u200f/Y",
+    "THOUSAND_SEPARATOR": ".",
+    "TIME_FORMAT": "g:i A",
     "TIME_INPUT_FORMATS": [
-      "%H:%M:%S", 
-      "%H:%M:%S.%f", 
+      "%H:%M:%S",
+      "%H:%M:%S.%f",
       "%H:%M"
-    ], 
+    ],
     "YEAR_MONTH_FORMAT": "F Y"
   };
 
