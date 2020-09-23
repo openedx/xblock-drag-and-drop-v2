@@ -650,3 +650,7 @@ msgid "Did not place {missing_count} required item."
 msgid_plural "Did not place {missing_count} required items."
 msgstr[0] "Das nötige {missing_count} Objekt wurde nicht platziert."
 msgstr[1] "Die nötigen {missing_count} Objekte wurden nicht platziert."
+
+#: public/js/drag_and_drop.js:1298
+msgid "You cannot add any more items to this zone."
+msgstr "Sie können diesem Bereich keine weiteren Objekte hinzufügen."

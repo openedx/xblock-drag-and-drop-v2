@@ -643,3 +643,31 @@ msgstr[2] ""
 msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
+
+#: public/js/drag_and_drop.js:1298
+msgid "You cannot add any more items to this zone."
+msgstr "لا يمكنك إضافة أي عناصر أخرى إلى هذه المنطقة."
+
+#: public/js/drag_and_drop.js:320
+msgid "You can complete this problem using only your keyboard by following the guidance below:"
+msgstr "يمكنك إكمال هذه المشكلة باستخدام لوحة مفاتيحك فقط عن طريق اتباع  النصائح أدناه:"
+
+#: public/js/drag_and_drop.js:322
+msgid "Use only TAB and SHIFT+TAB to navigate between draggable items and drop zones."
+msgstr "استخدم Tab وShift+Tab للتنقل بين العناصر التي يمكن سحبها ومناطق الإسقاط."
+
+#: public/js/drag_and_drop.js:323
+msgid "Press CTRL+M to select a draggable item (effectively picking it up)."
+msgstr "اضغط على Ctrl+M لتحديد عنصر يمكن سحبه (التقاطه بشكل فعال)."
+
+#: public/js/drag_and_drop.js:324
+msgid "Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press CTRL+M once more to drop it here."
+msgstr "تنقَّل باستخدام Tab وShift+Tab إلى منطقة الإسقاط المناسبة واضغط على Ctrl+M مرة إضافية لإسقاطه هنا."
+
+#: public/js/drag_and_drop.js:325
+msgid "Press ESC if you want to cancel the drop operation (for example, to select a different item)."
+msgstr "اضغط على Esc إذا أردت إلغاء عملية الإسقاط (على سبيل المثال، لتحديد عنصر آخر)."
+
+#: public/js/drag_and_drop.js:326
+msgid "TAB back to the list of draggable items and repeat this process until all of the draggable items have been placed on their respective dropzones."
+msgstr "استخدم المفتاح Tab للرجوع إلى قائمة العناصر التي يمكن سحبها وكرِّر هذه العملية حتى يتم وضع جميع العناصر التي يمكن سحبها في مناطق الإسقاط الخاصة بها."
