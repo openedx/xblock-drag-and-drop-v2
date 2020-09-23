@@ -2,13 +2,13 @@
             (function(global){
                 var DragAndDropI18N = {
                   init: function() {
-
+                    
 
 (function(globals) {
 
   var django = globals.django || (globals.django = {});
 
-
+  
   django.pluralidx = function(n) {
     var v=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;
     if (typeof(v) == 'boolean') {
@@ -17,12 +17,12 @@
       return v;
     }
   };
-
+  
 
   /* gettext library */
 
   django.catalog = django.catalog || {};
-
+  
   var newcatalog = {
     "\n                            Please provide a description of the image for non-visual users.\n                            The description should provide sufficient information to allow anyone\n                            to solve the problem even without seeing the image.\n                        ": "\n                            \u0627\u0644\u0631\u062c\u0627\u0621 \u062a\u0642\u062f\u064a\u0645 \u0634\u0631\u062d \u0644\u0644\u0635\u0648\u0631\u0629 \u0644\u0644\u0645\u0633\u062a\u062e\u062f\u0645\u064a\u0646 \u063a\u064a\u0631 \u0627\u0644\u0645\u0631\u0626\u064a\u064a\u0646.\n                            \u0645\u0646 \u0627\u0644\u0645\u0641\u062a\u0631\u0636 \u0623\u0646 \u064a\u0648\u0641\u0631 \u0627\u0644\u0634\u0631\u062d \u0645\u0639\u0644\u0648\u0645\u0627\u062a \u0643\u0627\u0641\u064a\u0629 \u0644\u0644\u0633\u0645\u0627\u062d \u0644\u0623\u064a \u0634\u062e\u0635 \n                            \u0628\u062d\u0644 \u0627\u0644\u0645\u0633\u0623\u0644\u0629 \u062d\u062a\u0649 \u0628\u062f\u0648\u0646 \u0631\u0624\u064a\u0629 \u0627\u0644\u0635\u0648\u0631\u0629.\n                        ",
     "\"Maximum items per zone\" should be positive integer, got {max_items_per_zone}": "\"\u0623\u0642\u0635\u0649 \u0639\u062f\u062f \u0644\u0644\u0639\u0646\u0627\u0635\u0631 \u0641\u064a \u0643\u0644 \u0645\u0646\u0637\u0642\u0629\" \u064a\u0646\u0628\u063a\u064a \u0623\u0646 \u064a\u0643\u0648\u0646 \u0631\u0642\u0645\u064b\u0627 \u0635\u062d\u064a\u062d\u064b\u0627 \u0645\u0648\u062c\u0628\u064b\u0627\u060c \u0627\u0644\u0639\u062f\u062f \u0627\u0644\u0646\u0627\u062a\u062c {max_items_per_zone}",
@@ -142,7 +142,7 @@
   for (var key in newcatalog) {
     django.catalog[key] = newcatalog[key];
   }
-
+  
 
   if (!django.jsi18n_initialized) {
     django.gettext = function(msgid) {
@@ -193,48 +193,48 @@
     /* formatting library */
 
     django.formats = {
-    "DATETIME_FORMAT": "N j, Y, P",
+    "DATETIME_FORMAT": "N j, Y, P", 
     "DATETIME_INPUT_FORMATS": [
-      "%Y-%m-%d %H:%M:%S",
-      "%Y-%m-%d %H:%M:%S.%f",
-      "%Y-%m-%d %H:%M",
-      "%Y-%m-%d",
-      "%m/%d/%Y %H:%M:%S",
-      "%m/%d/%Y %H:%M:%S.%f",
-      "%m/%d/%Y %H:%M",
-      "%m/%d/%Y",
-      "%m/%d/%y %H:%M:%S",
-      "%m/%d/%y %H:%M:%S.%f",
-      "%m/%d/%y %H:%M",
+      "%Y-%m-%d %H:%M:%S", 
+      "%Y-%m-%d %H:%M:%S.%f", 
+      "%Y-%m-%d %H:%M", 
+      "%Y-%m-%d", 
+      "%m/%d/%Y %H:%M:%S", 
+      "%m/%d/%Y %H:%M:%S.%f", 
+      "%m/%d/%Y %H:%M", 
+      "%m/%d/%Y", 
+      "%m/%d/%y %H:%M:%S", 
+      "%m/%d/%y %H:%M:%S.%f", 
+      "%m/%d/%y %H:%M", 
       "%m/%d/%y"
-    ],
-    "DATE_FORMAT": "j F\u060c Y",
+    ], 
+    "DATE_FORMAT": "j F\u060c Y", 
     "DATE_INPUT_FORMATS": [
-      "%Y-%m-%d",
-      "%m/%d/%Y",
-      "%m/%d/%y",
-      "%b %d %Y",
-      "%b %d, %Y",
-      "%d %b %Y",
-      "%d %b, %Y",
-      "%B %d %Y",
-      "%B %d, %Y",
-      "%d %B %Y",
+      "%Y-%m-%d", 
+      "%m/%d/%Y", 
+      "%m/%d/%y", 
+      "%b %d %Y", 
+      "%b %d, %Y", 
+      "%d %b %Y", 
+      "%d %b, %Y", 
+      "%B %d %Y", 
+      "%B %d, %Y", 
+      "%d %B %Y", 
       "%d %B, %Y"
-    ],
-    "DECIMAL_SEPARATOR": ",",
-    "FIRST_DAY_OF_WEEK": "0",
-    "MONTH_DAY_FORMAT": "j F",
-    "NUMBER_GROUPING": "0",
-    "SHORT_DATETIME_FORMAT": "m/d/Y P",
-    "SHORT_DATE_FORMAT": "d\u200f/m\u200f/Y",
-    "THOUSAND_SEPARATOR": ".",
-    "TIME_FORMAT": "g:i A",
+    ], 
+    "DECIMAL_SEPARATOR": ",", 
+    "FIRST_DAY_OF_WEEK": "0", 
+    "MONTH_DAY_FORMAT": "j F", 
+    "NUMBER_GROUPING": "0", 
+    "SHORT_DATETIME_FORMAT": "m/d/Y P", 
+    "SHORT_DATE_FORMAT": "d\u200f/m\u200f/Y", 
+    "THOUSAND_SEPARATOR": ".", 
+    "TIME_FORMAT": "g:i A", 
     "TIME_INPUT_FORMATS": [
-      "%H:%M:%S",
-      "%H:%M:%S.%f",
+      "%H:%M:%S", 
+      "%H:%M:%S.%f", 
       "%H:%M"
-    ],
+    ], 
     "YEAR_MONTH_FORMAT": "F Y"
   };
 

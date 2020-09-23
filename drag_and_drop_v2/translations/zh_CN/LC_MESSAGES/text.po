@@ -475,7 +475,7 @@ msgstr "反馈"
 
 #: public/js/drag_and_drop.js
 msgid "Keyboard Help"
-msgstr ""
+msgstr "键盘说明"
 
 #: public/js/drag_and_drop.js
 msgid "You can complete this problem using only your keyboard."
@@ -509,7 +509,7 @@ msgstr ""
 
 #: public/js/drag_and_drop.js
 msgid "Problem"
-msgstr ""
+msgstr "问题"
 
 #: public/js/drag_and_drop.js
 msgid "An error occurred. Unable to load drag and drop problem."
@@ -601,3 +601,31 @@ msgstr[0] ""
 msgid "Did not place {missing_count} required item."
 msgid_plural "Did not place {missing_count} required items."
 msgstr[0] ""
+
+#: public/js/drag_and_drop.js:1298
+msgid "You cannot add any more items to this zone."
+msgstr "不能再向此区域添加更多项目。"
+
+#: public/js/drag_and_drop.js:320
+msgid "You can complete this problem using only your keyboard by following the guidance below:"
+msgstr "您可以按照以下指导仅使用键盘来解决此问题"
+
+#: public/js/drag_and_drop.js:322
+msgid "Use only TAB and SHIFT+TAB to navigate between draggable items and drop zones."
+msgstr "仅使用 Tab 和 Shift + Tab 在可拖动项目和放置区域之间导航。"
+
+#: public/js/drag_and_drop.js:323
+msgid "Press CTRL+M to select a draggable item (effectively picking it up)."
+msgstr "按 CtrlL + M 可选择一个可拖动项目（相当于选取它）。"
+
+#: public/js/drag_and_drop.js:324
+msgid "Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press CTRL+M once more to drop it here."
+msgstr "使用 Tab 和 Shift + Tab 导航到适当的放置区，然后再按一次 Ctrl + M 将其放置在此处。"
+
+#: public/js/drag_and_drop.js:325
+msgid "Press ESC if you want to cancel the drop operation (for example, to select a different item)."
+msgstr ""
+
+#: public/js/drag_and_drop.js:326
+msgid "TAB back to the list of draggable items and repeat this process until all of the draggable items have been placed on their respective dropzones."
+msgstr "按 Tab 可返回到可拖动项目列表，然后重复此过程，直到所有可拖动项目都已放置在其各自的放置区上。"
