@@ -1,4 +1,4 @@
-# 
+#
 # Translators:
 # danielcn <deo.daniel@gmail.com>, 2016
 # Genaro Costa <genarocosta@yahoo.com>, 2016
@@ -652,3 +652,7 @@ msgid ""
 " the draggable items have been placed on their respective dropzones."
 msgstr "Clique TAB novamente na lista de itens arrastáveis ​​e repita esse processo até "
 "que todos os itens arrastáveis ​​tenham sido colocados em suas respectivas regiões."
+
+#: public/js/drag_and_drop.js:1298
+msgid "You cannot add any more items to this zone."
+msgstr "Você não pode adicionar mais itens a esta zona."

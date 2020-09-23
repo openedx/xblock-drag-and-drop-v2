@@ -157,6 +157,7 @@
     "Use this zone to associate an item with the middle layer of the triangle.": "Utilisez cette zone pour associer un \u00e9l\u00e9ment \u00e0 la couche m\u00e9diane du triangle.", 
     "Use this zone to associate an item with the top layer of the triangle.": "Utilisez cette zone pour associer un \u00e9l\u00e9ment avec la couche sup\u00e9rieure du triangle.", 
     "You can complete this problem using only your keyboard by following the guidance below:": "Vous pouvez r\u00e9soudre ce probl\u00e8me en utilisant uniquement votre clavier en suivant les recommandations ci-dessous\u00a0:", 
+    "You cannot add any more items to this zone.": "Vous ne pouvez ajouter aucun autre \u00e9l\u00e9ment \u00e0 cette zone.", 
     "You have used {used} of {total} attempts.": "Vous avez utilis\u00e9 {used} sur {total} tentatives.", 
     "You silly, there are no zones for this one.": "C'est idiot, il n'y a pas de zones pour celui-l\u00e0.", 
     "Your highest score is {score}": "Votre score le plus \u00e9lev\u00e9 est {score}", 

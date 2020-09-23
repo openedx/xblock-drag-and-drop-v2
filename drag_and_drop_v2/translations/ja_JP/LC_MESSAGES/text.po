@@ -648,3 +648,7 @@ msgid "Did not place {missing_count} required item."
 msgid_plural "Did not place {missing_count} required items."
 msgstr[0] "必須の{missing_count}項目が分類されていません。"
 msgstr[1] "必須の{missing_count}項目が分類されていません。"
+
+#: public/js/drag_and_drop.js:1298
+msgid "You cannot add any more items to this zone."
+msgstr "このゾーンにはこれ以上のアイテムを追加できません。"
