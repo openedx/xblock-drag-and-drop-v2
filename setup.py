@@ -29,7 +29,7 @@ BLOCKS = [
 
 setup(
     name='xblock-drag-and-drop-v2',
-    version='2.5.1',
+    version='2.5.2',
     description='XBlock - Drag-and-Drop v2',
     packages=['drag_and_drop_v2'],
     install_requires=[
