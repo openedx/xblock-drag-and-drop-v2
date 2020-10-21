@@ -272,12 +272,15 @@ class DragAndDropBlock(
         Returns the Javascript translation file for the currently selected language, if any found by
         `pkg_resources`
         """
-        statici18n_js_url = None
-        text_js = 'public/js/translations/{lang_code}/text.js'.format(lang_code=translation.to_locale(
-            translation.get_language()))
-        if pkg_resources.resource_exists(loader.module_name, text_js):
-            statici18n_js_url = text_js
-        return statici18n_js_url
+        lang_code = translation.get_language()
+        if not lang_code:
+            return None
+        text_js = 'public/js/translations/{lang_code}/text.js'
+        country_code = lang_code.split('-')[0]
+        for code in (lang_code, country_code):
+            if pkg_resources.resource_exists(loader.module_name, text_js.format(lang_code=code)):
+                return text_js.format(lang_code=code)
+        return None
 
     @XBlock.supports("multi_device")  # Enable this block for use in the mobile app via webview
     def student_view(self, context):
