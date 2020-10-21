@@ -501,7 +501,7 @@ msgstr ""
 msgid ""
 "Press \"Esc\" if you want to cancel the drop operation (for example, to "
 "select a different item)."
-msgstr ""
+msgstr "如果要取消放置操作（例如，要选择其他项目），请按 Esc"
 
 #: public/js/drag_and_drop.js
 msgid "OK"
