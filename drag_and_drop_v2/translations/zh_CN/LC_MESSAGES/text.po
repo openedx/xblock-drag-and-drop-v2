@@ -624,7 +624,7 @@ msgstr "使用 Tab 和 Shift + Tab 导航到适当的放置区，然后再按一
 
 #: public/js/drag_and_drop.js:325
 msgid "Press ESC if you want to cancel the drop operation (for example, to select a different item)."
-msgstr ""
+msgstr "如果要取消放置操作（例如，要选择其他项目），请按 Esc。"
 
 #: public/js/drag_and_drop.js:326
 msgid "TAB back to the list of draggable items and repeat this process until all of the draggable items have been placed on their respective dropzones."
