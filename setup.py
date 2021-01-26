@@ -36,5 +36,5 @@ setup(
     entry_points={
         'xblock.v1': 'drag-and-drop-v2 = drag_and_drop_v2:DragAndDropBlock',
     },
-    package_data=package_data("drag_and_drop_v2", ["static", "templates", "public", "translations"]),
+    package_data=package_data("drag_and_drop_v2", ["static", "templates", "public", "translations", "locale"]),
 )

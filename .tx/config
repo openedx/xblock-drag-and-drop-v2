@@ -1,5 +1,6 @@
 [main]
 host = https://www.transifex.com
+lang_map = it_IT: it
 
 [xblocks.drag-and-drop-v2]
 file_filter = drag_and_drop_v2/translations/<lang>/LC_MESSAGES/text.po

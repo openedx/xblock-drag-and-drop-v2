@@ -61,18 +61,23 @@ STATIC_URL = '/static/'
 # http://django-statici18n.readthedocs.io/en/latest/settings.html
 
 LANGUAGES = [
+    ('ar', 'Arabic'),
+    ('de', 'German'),
     ('en', 'English - Source Language'),
     ('eo', 'Esperanto'),
-    ('ar', 'Arabic'),
     ('es_419', 'Spanish (Latin America)'),
     ('fr', 'French'),
     ('he', 'Hebrew'),
     ('hi', 'Hindi'),
-    ('ko_KR', 'Korean (Korea)'),
+    ('it', 'Italian'),
+    ('ja', 'Japanese'),
+    ('ko', 'Korean (Korea)'),
+    ('nl', 'Dutch'),
+    ('pl', 'Polski'),
     ('pt_BR', 'Portuguese (Brazil)'),
     ('ru', 'Russian'),
+    ('tr', 'Turkish'),
     ('zh_CN', 'Chinese (China)'),
-    ('pl', 'Polski'),
 ]
 
 STATICI18N_DOMAIN = 'text'
