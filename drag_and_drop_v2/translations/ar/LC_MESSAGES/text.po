@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XBlocks\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-29 17:08+0300\n"
+"POT-Creation-Date: 2021-02-03 00:00-0500\n"
 "PO-Revision-Date: 2019-12-03 08:06+0000\n"
 "Last-Translator: Omar Al-Ithawi <i@omardo.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/open-edx/xblocks/language/ar/)\n"
@@ -109,165 +109,165 @@ msgstr "قم بجر هذه العناصر إلى الصورة أعلاه."
 msgid "Good work! You have completed this drag and drop problem."
 msgstr "أحسنت صنعاً! لقد استكملت حل مسألة السحب والإسقاط."
 
-#: drag_and_drop_v2.py:74
+#: drag_and_drop_v2.py:75
 msgid "Title"
 msgstr "العنوان"
 
-#: drag_and_drop_v2.py:75
+#: drag_and_drop_v2.py:76
 msgid ""
 "The title of the drag and drop problem. The title is displayed to learners."
 msgstr "عنوان مسألة السحب والإسقاط. يظهر العنوان للطلاب."
 
-#: drag_and_drop_v2.py:77
+#: drag_and_drop_v2.py:78
 msgid "Drag and Drop"
 msgstr "سحب وإسقاط"
 
-#: drag_and_drop_v2.py:82
+#: drag_and_drop_v2.py:83
 msgid "Mode"
 msgstr "الحالة"
 
-#: drag_and_drop_v2.py:84
+#: drag_and_drop_v2.py:85
 msgid ""
 "Standard mode: the problem provides immediate feedback each time a learner "
 "drops an item on a target zone. Assessment mode: the problem provides "
 "feedback only after a learner drops all available items on target zones."
 msgstr "الحالة العادية: تقدم المسألة رداً فورياً في كل مرة يضع فيها الطالب عنصر داخل منطقة الهدف. حالة التقييم: تقدم المسألة رداً فقط بعد أن يضع الطالب جميع العناصر المتاحة داخل مناطق الهدف."
 
-#: drag_and_drop_v2.py:91
+#: drag_and_drop_v2.py:92
 msgid "Standard"
 msgstr "قياسي"
 
-#: drag_and_drop_v2.py:92
+#: drag_and_drop_v2.py:93
 msgid "Assessment"
 msgstr "تقييم"
 
-#: drag_and_drop_v2.py:99
+#: drag_and_drop_v2.py:100
 msgid "Maximum attempts"
 msgstr "أقصى عدد للمحاولات"
 
-#: drag_and_drop_v2.py:101
+#: drag_and_drop_v2.py:102
 msgid ""
 "Defines the number of times a student can try to answer this problem. If the"
 " value is not set, infinite attempts are allowed."
 msgstr "يحدد عدد المرات التي يستطيع فيها الطالب محاولة الإجابة عن هذه المسألة. في حالة عدم تحديد قيمة، فإنه يُسمح بعدد لا نهائي من المحاولات."
 
-#: drag_and_drop_v2.py:110
+#: drag_and_drop_v2.py:111
 msgid "Show title"
 msgstr "عرض العنوان"
 
-#: drag_and_drop_v2.py:111
+#: drag_and_drop_v2.py:112
 msgid "Display the title to the learner?"
 msgstr "عرض العنوان للطلاب؟"
 
-#: drag_and_drop_v2.py:118
+#: drag_and_drop_v2.py:119
 msgid "Problem text"
 msgstr "نص المسألة"
 
-#: drag_and_drop_v2.py:119
+#: drag_and_drop_v2.py:120
 msgid "The description of the problem or instructions shown to the learner."
 msgstr "وصف المسألة أو التعليمات الموضحة للطالب."
 
-#: drag_and_drop_v2.py:126
+#: drag_and_drop_v2.py:127
 msgid "Show \"Problem\" heading"
 msgstr "إظهار عنوان \"المسألة\""
 
-#: drag_and_drop_v2.py:127
+#: drag_and_drop_v2.py:128
 msgid "Display the heading \"Problem\" above the problem text?"
 msgstr "عرض عنوان \"المسألة\" فوق نص المسألة؟"
 
-#: drag_and_drop_v2.py:134
+#: drag_and_drop_v2.py:135
 msgid "Problem Weight"
 msgstr "وزن المسألة"
 
-#: drag_and_drop_v2.py:135
+#: drag_and_drop_v2.py:136
 msgid "Defines the number of points the problem is worth."
 msgstr "يحدد عدد النقاط التي تستحقها المسألة."
 
-#: drag_and_drop_v2.py:142
+#: drag_and_drop_v2.py:143
 msgid "Item background color"
 msgstr "لون خلفية العنصر"
 
-#: drag_and_drop_v2.py:143
+#: drag_and_drop_v2.py:144
 msgid ""
 "The background color of draggable items in the problem (example: 'blue' or "
 "'#0000ff')."
 msgstr "لون الخلفية للعناصر القابلة للسحب في المسألة (على سبيل المثال: \"أزرق\" أو '#0000ff')."
 
-#: drag_and_drop_v2.py:150
+#: drag_and_drop_v2.py:151
 msgid "Item text color"
 msgstr "لون نص العنصر"
 
-#: drag_and_drop_v2.py:151
+#: drag_and_drop_v2.py:152
 msgid "Text color to use for draggable items (example: 'white' or '#ffffff')."
 msgstr "لون النص المستخدم مع العناصر القابلة للسحب (على سبيل المثال: \"أبيض\" أو '#ffffff')"
 
-#: drag_and_drop_v2.py:158
+#: drag_and_drop_v2.py:159
 msgid "Maximum items per zone"
 msgstr "لقد وصلت الحد الاعلى من العناصر في المنطقة الواحدة."
 
-#: drag_and_drop_v2.py:159
+#: drag_and_drop_v2.py:160
 msgid ""
 "This setting limits the number of items that can be dropped into a single "
 "zone."
 msgstr "يحدد هذا الاعداد الحد الاعلى من العناصر الذي يمكن اضافتها الى المنطقة الواحدة."
 
-#: drag_and_drop_v2.py:166
+#: drag_and_drop_v2.py:167
 msgid "Problem data"
 msgstr "بيانات المسألة"
 
-#: drag_and_drop_v2.py:168
+#: drag_and_drop_v2.py:169
 msgid ""
 "Information about zones, items, feedback, and background image for this "
 "problem. This information is derived from the input that a course author "
 "provides via the interactive editor when configuring the problem."
 msgstr "معلومات عن المناطق، العناصر، التقييم، وصورة الخلفية لهذه المسألة. هذه المعلومات مستمدة من البيانات التي يقدمها كاتب الدورة التدريبية عن طريق المحرر التفاعلي عند كتابة المسالة."
 
-#: drag_and_drop_v2.py:178
+#: drag_and_drop_v2.py:179
 msgid ""
 "Information about current positions of items that a learner has dropped on "
 "the target image."
 msgstr "المعلومات بشأن الأوضاع الحالية للعناصر التي أسقطها الطالب في الصورة المستهدفة."
 
-#: drag_and_drop_v2.py:185
+#: drag_and_drop_v2.py:186
 msgid "Number of attempts learner used"
 msgstr "عدد المحاولات التي استخدمها الطالب"
 
-#: drag_and_drop_v2.py:192
+#: drag_and_drop_v2.py:193
 msgid "Indicates whether a learner has completed the problem at least once"
 msgstr "يوضح ما إذا كان الطالب قد أنهى المسالة مرة واحدة على الأقل"
 
-#: drag_and_drop_v2.py:199
+#: drag_and_drop_v2.py:200
 msgid ""
 "DEPRECATED. Keeps maximum score achieved by student as a weighted value."
 msgstr ""
 
-#: drag_and_drop_v2.py:205
+#: drag_and_drop_v2.py:206
 msgid ""
 "Keeps maximum score achieved by student as a raw value between 0 and 1."
 msgstr "يحافظ على الدرجة القصوى التي يحققها الطالب كقيمة أولية بين ٠ و ١"
 
-#: drag_and_drop_v2.py:513
+#: drag_and_drop_v2.py:514
 #, python-brace-format
 msgid "Unknown DnDv2 mode {mode} - course is misconfigured"
 msgstr "وضع DnDv2 غير معروف {mode} - خطأ في تكوين الدورة"
 
-#: drag_and_drop_v2.py:588
+#: drag_and_drop_v2.py:589
 msgid "show_answer handler should only be called for assessment mode"
 msgstr "يجب استدعاء معالج show_answer فقط لوضعية التقييم"
 
-#: drag_and_drop_v2.py:593
+#: drag_and_drop_v2.py:594
 msgid "There are attempts remaining"
 msgstr "هناك محاولات متبقية"
 
-#: drag_and_drop_v2.py:666
+#: drag_and_drop_v2.py:667
 msgid "do_attempt handler should only be called for assessment mode"
 msgstr "يجب عدم طلب مسؤول do_attempt إلا في حالة التقييم"
 
-#: drag_and_drop_v2.py:671 drag_and_drop_v2.py:782
+#: drag_and_drop_v2.py:672 drag_and_drop_v2.py:783
 msgid "Max number of attempts reached"
 msgstr "لقد وصلت إلى أقصى عدد من المحاولات"
 
-#: drag_and_drop_v2.py:676
+#: drag_and_drop_v2.py:677
 msgid "Submission deadline has passed."
 msgstr "لقد انقضى الموعد النهائي للتقديم."
 
@@ -414,17 +414,17 @@ msgstr "حفظ"
 msgid "Cancel"
 msgstr "إلغاء"
 
-#: utils.py:46
+#: utils.py:56
 #, python-brace-format
 msgid "Your highest score is {score}"
 msgstr "أعلى درجاتك هي {score}"
 
-#: utils.py:47
+#: utils.py:57
 #, python-brace-format
 msgid "Final attempt was used, highest score is {score}"
 msgstr "تم استنفاد آخر محاولة، أعلى درجة هي {score}"
 
-#: utils.py:55
+#: utils.py:65
 #, python-brace-format
 msgid "Correctly placed {correct_count} item."
 msgid_plural "Correctly placed {correct_count} items."
@@ -435,7 +435,7 @@ msgstr[3] "تم وضع {correct_count} في مكانها الصحيح"
 msgstr[4] "تم وضع {correct_count} في مكانها الصحيح"
 msgstr[5] "تم وضع {correct_count} في مكانها الصحيح"
 
-#: utils.py:66
+#: utils.py:76
 #, python-brace-format
 msgid "Misplaced {misplaced_count} item."
 msgid_plural "Misplaced {misplaced_count} items."
@@ -446,7 +446,7 @@ msgstr[3] "{misplaced_count} عناصر في غير محلهم."
 msgstr[4] "{misplaced_count} عنصر في غير محله."
 msgstr[5] "{misplaced_count} عنصر في غير محله."
 
-#: utils.py:77
+#: utils.py:87
 #, python-brace-format
 msgid ""
 "Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
@@ -460,7 +460,7 @@ msgstr[3] "تم وضع {misplaced_count} في أماكن خاطئة. العنا�
 msgstr[4] "تم وضع {misplaced_count} في أماكن خاطئة. العناصر التي وضعت في أماكن خاطئة أعيدت إلى بنك العناصر."
 msgstr[5] "تم وضع {misplaced_count} في أماكن خاطئة. العناصر التي وضعت في أماكن خاطئة أعيدت إلى بنك العناصر."
 
-#: utils.py:88
+#: utils.py:98
 #, python-brace-format
 msgid "Did not place {missing_count} required item."
 msgid_plural "Did not place {missing_count} required items."
@@ -471,137 +471,137 @@ msgstr[3] "لم يتم وضع {missing_count} عناصر مطلوبة."
 msgstr[4] "لم يتم وضع {missing_count} عناصر مطلوبة."
 msgstr[5] "لم يتم وضع {missing_count} عنصر مطلوب."
 
-#: public/js/drag_and_drop.js:33 public/js/drag_and_drop.js:354
+#: public/js/drag_and_drop.js:33 public/js/drag_and_drop.js:358
 msgid "Submitting"
 msgstr "جاري الارسال"
 
-#: public/js/drag_and_drop.js:135
+#: public/js/drag_and_drop.js:137
 msgid "Unknown Zone"
 msgstr "منطقة غير معروفة"
 
-#: public/js/drag_and_drop.js:139
+#: public/js/drag_and_drop.js:141
 msgid "Placed in: {zone_title}"
 msgstr "وضع في: {zone_title}"
 
-#: public/js/drag_and_drop.js:143
+#: public/js/drag_and_drop.js:145
 msgid "Correctly placed in: {zone_title}"
 msgstr "وضع بشكل صحيح في: {zone_title}"
 
-#: public/js/drag_and_drop.js:155
+#: public/js/drag_and_drop.js:157
 msgid ", draggable, grabbed"
 msgstr "، قابل للسحب، ممسوك"
 
-#: public/js/drag_and_drop.js:155
+#: public/js/drag_and_drop.js:157
 msgid ", draggable"
 msgstr "، قابل للسحب"
 
-#: public/js/drag_and_drop.js:232
+#: public/js/drag_and_drop.js:234
 msgid "No items placed here"
 msgstr "لم يتم وضع أي عنصر هنا"
 
-#: public/js/drag_and_drop.js:238
+#: public/js/drag_and_drop.js:240
 msgid "Items placed here: "
 msgstr "العناصر الموضوعة هنا:"
 
-#: public/js/drag_and_drop.js:268
+#: public/js/drag_and_drop.js:272
 msgid ", dropzone"
 msgstr "، مناطق إسقاط"
 
-#: public/js/drag_and_drop.js:271
+#: public/js/drag_and_drop.js:275
 msgid "droppable"
 msgstr "قابل للاسقاط"
 
-#: public/js/drag_and_drop.js:291 public/js/drag_and_drop.js:296
+#: public/js/drag_and_drop.js:295 public/js/drag_and_drop.js:300
 msgid "Feedback"
 msgstr "تقييم"
 
-#: public/js/drag_and_drop.js:312 public/js/drag_and_drop.js:484
-#: public/js/drag_and_drop.js:527
+#: public/js/drag_and_drop.js:316 public/js/drag_and_drop.js:488
+#: public/js/drag_and_drop.js:531
 msgid "Close"
 msgstr "إغلاق "
 
-#: public/js/drag_and_drop.js:315 public/js/drag_and_drop.js:548
+#: public/js/drag_and_drop.js:319 public/js/drag_and_drop.js:552
 msgid "Keyboard Help"
 msgstr "دعم لوحة المفاتيح"
 
-#: public/js/drag_and_drop.js:318
+#: public/js/drag_and_drop.js:322
 msgid "This is a screen reader-friendly problem."
 msgstr "هذه المسالة تعمل على قارئ الشاشة \"Screen reader\"."
 
-#: public/js/drag_and_drop.js:319
+#: public/js/drag_and_drop.js:323
 msgid ""
 "Drag and Drop problems consist of draggable items and dropzones. Users "
 "should select a draggable item with their keyboard and then navigate to an "
 "appropriate dropzone to drop it."
 msgstr "المسائل من نوع سحب وإسقاط  تتكون من العناصر القابلة للسحب و مناطق إسقاط. يجب على المستخدمين إختبار عنصر قابل للسحب بإستعمال لوحة المفاتيح ثم الإنتقال إلى منطقة إسقاط مناسبة لإسقاطه."
 
-#: public/js/drag_and_drop.js:320
+#: public/js/drag_and_drop.js:324
 msgid ""
 "You can complete this problem using only your keyboard by following the "
 "guidance below:"
 msgstr "يمكنك إكمال هذه المسألة باستخدام لوحة المفاتيح فقط باتباع الإرشادات التالية:"
 
-#: public/js/drag_and_drop.js:322
+#: public/js/drag_and_drop.js:326
 msgid ""
 "Use only TAB and SHIFT+TAB to navigate between draggable items and drop "
 "zones."
 msgstr "استخدم TAB و SHIFT+TAB فقط للتنقل بين العناصر القابلة للسحب ومناطق الإسقاط."
 
-#: public/js/drag_and_drop.js:323
+#: public/js/drag_and_drop.js:327
 msgid "Press CTRL+M to select a draggable item (effectively picking it up)."
 msgstr "اضغط CTRL+M لتحديد عنصر قابل للسحب (إلتقاطه فعليا)."
 
-#: public/js/drag_and_drop.js:324
+#: public/js/drag_and_drop.js:328
 msgid ""
 "Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press "
 "CTRL+M once more to drop it here."
 msgstr "انتقل باستخدام TAB و SHIFT+TAB إلى منطقة إسقاط مناسبة واضغط CTRL+M مرة أخرى لإسقاطه هنا."
 
-#: public/js/drag_and_drop.js:325
+#: public/js/drag_and_drop.js:329
 msgid ""
 "Press ESC if you want to cancel the drop operation (for example, to select a"
 " different item)."
 msgstr "اضغط ESC إذا كنت تريد إلغاء عملية الإسقاط (على سبيل المثال، لإلتقاط عنصر مختلف)."
 
-#: public/js/drag_and_drop.js:326
+#: public/js/drag_and_drop.js:330
 msgid ""
 "TAB back to the list of draggable items and repeat this process until all of"
 " the draggable items have been placed on their respective dropzones."
 msgstr "إضغط TAB للعودة إلى قائمة العناصر القابلة للسحب وكرّر هذه العملية حتى يتم وضع كل عنصر في خانته المناسبة."
 
-#: public/js/drag_and_drop.js:344
+#: public/js/drag_and_drop.js:348
 msgid "You have used {used} of {total} attempts."
 msgstr "لقد استخدمت {used} من {total} محاولات."
 
-#: public/js/drag_and_drop.js:366
+#: public/js/drag_and_drop.js:370
 msgid "Submit"
 msgstr "إرسال"
 
-#: public/js/drag_and_drop.js:406
+#: public/js/drag_and_drop.js:410
 msgid "Show Answer"
 msgstr "أظهر الإجابة"
 
-#: public/js/drag_and_drop.js:419
+#: public/js/drag_and_drop.js:423
 msgid "Go to Beginning"
 msgstr "انتقل إلى البداية"
 
-#: public/js/drag_and_drop.js:425
+#: public/js/drag_and_drop.js:429
 msgid "Reset"
 msgstr "إعادة تعيين"
 
-#: public/js/drag_and_drop.js:445 public/js/drag_and_drop.js:1184
+#: public/js/drag_and_drop.js:449 public/js/drag_and_drop.js:1188
 msgid "Some of your answers were not correct."
 msgstr "بعض إجاباتك كانت خاطئة."
 
-#: public/js/drag_and_drop.js:446 public/js/drag_and_drop.js:1187
+#: public/js/drag_and_drop.js:450 public/js/drag_and_drop.js:1191
 msgid "Hints:"
 msgstr "تلميحات:"
 
-#: public/js/drag_and_drop.js:514
+#: public/js/drag_and_drop.js:518
 msgid "Correct"
 msgstr "صحيح"
 
-#: public/js/drag_and_drop.js:514
+#: public/js/drag_and_drop.js:518
 msgid "Incorrect"
 msgstr "خاطئ"
 
@@ -609,7 +609,7 @@ msgstr "خاطئ"
 #. total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
 #. points will always be at least 1. We pluralize based on the total number of
 #. points (example: 0/1 point; 1/2 points).
-#: public/js/drag_and_drop.js:563
+#: public/js/drag_and_drop.js:567
 msgid "{earned}/{possible} point (graded)"
 msgid_plural "{earned}/{possible} points (graded)"
 msgstr[0] "{earned}\\{possible} نقطة (مع علامة)"
@@ -623,7 +623,7 @@ msgstr[5] "{earned}\\{possible} نقطة (مع علامة)"
 #. total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
 #. points will always be at least 1. We pluralize based on the total number of
 #. points (example: 0/1 point; 1/2 points).
-#: public/js/drag_and_drop.js:570
+#: public/js/drag_and_drop.js:574
 msgid "{earned}/{possible} point (ungraded)"
 msgid_plural "{earned}/{possible} points (ungraded)"
 msgstr[0] "{earned}/{possible} نقطة (بدون علامة)"
@@ -635,7 +635,7 @@ msgstr[5] "{earned}\\{possible} نقطة (بدون علامة)"
 
 #. Translators: {possible} is the number of points possible (examples: 1, 3,
 #. 10).
-#: public/js/drag_and_drop.js:580
+#: public/js/drag_and_drop.js:584
 msgid "{possible} point possible (graded)"
 msgid_plural "{possible} points possible (graded)"
 msgstr[0] "{possible} نقطة ممكنة (مع علامة)"
@@ -647,7 +647,7 @@ msgstr[5] "{possible} نقطة ممكنة (مع علامة)"
 
 #. Translators: {possible} is the number of points possible (examples: 1, 3,
 #. 10).
-#: public/js/drag_and_drop.js:587
+#: public/js/drag_and_drop.js:591
 msgid "{possible} point possible (ungraded)"
 msgid_plural "{possible} points possible (ungraded)"
 msgstr[0] "{possible} نقطة ممكنة (بدون علامة)"
@@ -657,31 +657,31 @@ msgstr[3] "{possible} نقاط ممكنة (بدون علامة)"
 msgstr[4] "{possible} نقاط ممكنة (بدون علامة)"
 msgstr[5] "{possible} نقطة ممكنة (بدون علامة)"
 
-#: public/js/drag_and_drop.js:613
+#: public/js/drag_and_drop.js:617
 msgid "Drag and Drop Problem"
 msgstr "مسألة سحب وإسقاط"
 
-#: public/js/drag_and_drop.js:615
+#: public/js/drag_and_drop.js:619
 msgid "Problem"
 msgstr "المسألة"
 
-#: public/js/drag_and_drop.js:640
+#: public/js/drag_and_drop.js:644
 msgid "Item Bank"
 msgstr "بنك العناصر"
 
-#: public/js/drag_and_drop.js:686
+#: public/js/drag_and_drop.js:690
 msgid "Drop Targets"
 msgstr "أهداف الإسقاط"
 
-#: public/js/drag_and_drop.js:699
+#: public/js/drag_and_drop.js:703
 msgid "Actions"
 msgstr "الإجراءات"
 
-#: public/js/drag_and_drop.js:849
+#: public/js/drag_and_drop.js:853
 msgid "An error occurred. Unable to load drag and drop problem."
 msgstr "لقد حدث خطأ. تعذر تحميل مسألة السحب والإسقاط."
 
-#: public/js/drag_and_drop.js:1309
+#: public/js/drag_and_drop.js:1313
 msgid "You cannot add any more items to this zone."
 msgstr "لا يمكنك إضافة المزيد من العناصر إلى هذه المنطقة."
 

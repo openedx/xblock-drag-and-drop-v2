@@ -1,0 +1,662 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# OpenCraft LabXchange <help+labxchange@opencraft.com>, 2021
+msgid ""
+msgstr ""
+"Project-Id-Version: XBlocks\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-02-03 00:00-0500\n"
+"PO-Revision-Date: 2021-02-03 03:37+0000\n"
+"Last-Translator: OpenCraft LabXchange <help+labxchange@opencraft.com>\n"
+"Language-Team: Korean (http://www.transifex.com/open-edx/xblocks/language/ko/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ko\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: default_data.py:5
+msgid ""
+"An isosceles triangle with three layers of similar height. It is shown "
+"upright, so the widest layer is located at the bottom, and the narrowest "
+"layer is located at the top."
+msgstr ""
+
+#: default_data.py:14
+msgid "The Top Zone"
+msgstr ""
+
+#: default_data.py:15
+msgid "The Middle Zone"
+msgstr ""
+
+#: default_data.py:16
+msgid "The Bottom Zone"
+msgstr ""
+
+#: default_data.py:18
+msgid "Use this zone to associate an item with the top layer of the triangle."
+msgstr ""
+
+#: default_data.py:19
+msgid ""
+"Use this zone to associate an item with the middle layer of the triangle."
+msgstr ""
+
+#: default_data.py:20
+msgid ""
+"Use this zone to associate an item with the bottom layer of the triangle."
+msgstr ""
+
+#: default_data.py:22
+msgid "Correct! This one belongs to The Top Zone."
+msgstr ""
+
+#: default_data.py:23
+msgid "Correct! This one belongs to The Middle Zone."
+msgstr ""
+
+#: default_data.py:24
+msgid "Correct! This one belongs to The Bottom Zone."
+msgstr ""
+
+#: default_data.py:25
+msgid "No, this item does not belong here. Try again."
+msgstr ""
+
+#: default_data.py:26
+msgid "You silly, there are no zones for this one."
+msgstr ""
+
+#: default_data.py:27
+msgid "Of course it goes here! It goes anywhere!"
+msgstr ""
+
+#: default_data.py:29
+msgid "Goes to the top"
+msgstr ""
+
+#: default_data.py:30
+msgid "Goes to the middle"
+msgstr ""
+
+#: default_data.py:31
+msgid "Goes to the bottom"
+msgstr ""
+
+#: default_data.py:32
+msgid "Goes anywhere"
+msgstr ""
+
+#: default_data.py:33
+msgid "I don't belong anywhere"
+msgstr ""
+
+#: default_data.py:35
+msgid "Drag the items onto the image above."
+msgstr ""
+
+#: default_data.py:36
+msgid "Good work! You have completed this drag and drop problem."
+msgstr ""
+
+#: drag_and_drop_v2.py:75
+msgid "Title"
+msgstr ""
+
+#: drag_and_drop_v2.py:76
+msgid ""
+"The title of the drag and drop problem. The title is displayed to learners."
+msgstr ""
+
+#: drag_and_drop_v2.py:78
+msgid "Drag and Drop"
+msgstr ""
+
+#: drag_and_drop_v2.py:83
+msgid "Mode"
+msgstr ""
+
+#: drag_and_drop_v2.py:85
+msgid ""
+"Standard mode: the problem provides immediate feedback each time a learner "
+"drops an item on a target zone. Assessment mode: the problem provides "
+"feedback only after a learner drops all available items on target zones."
+msgstr ""
+
+#: drag_and_drop_v2.py:92
+msgid "Standard"
+msgstr ""
+
+#: drag_and_drop_v2.py:93
+msgid "Assessment"
+msgstr ""
+
+#: drag_and_drop_v2.py:100
+msgid "Maximum attempts"
+msgstr ""
+
+#: drag_and_drop_v2.py:102
+msgid ""
+"Defines the number of times a student can try to answer this problem. If the"
+" value is not set, infinite attempts are allowed."
+msgstr ""
+
+#: drag_and_drop_v2.py:111
+msgid "Show title"
+msgstr ""
+
+#: drag_and_drop_v2.py:112
+msgid "Display the title to the learner?"
+msgstr ""
+
+#: drag_and_drop_v2.py:119
+msgid "Problem text"
+msgstr ""
+
+#: drag_and_drop_v2.py:120
+msgid "The description of the problem or instructions shown to the learner."
+msgstr ""
+
+#: drag_and_drop_v2.py:127
+msgid "Show \"Problem\" heading"
+msgstr ""
+
+#: drag_and_drop_v2.py:128
+msgid "Display the heading \"Problem\" above the problem text?"
+msgstr ""
+
+#: drag_and_drop_v2.py:135
+msgid "Problem Weight"
+msgstr ""
+
+#: drag_and_drop_v2.py:136
+msgid "Defines the number of points the problem is worth."
+msgstr ""
+
+#: drag_and_drop_v2.py:143
+msgid "Item background color"
+msgstr ""
+
+#: drag_and_drop_v2.py:144
+msgid ""
+"The background color of draggable items in the problem (example: 'blue' or "
+"'#0000ff')."
+msgstr ""
+
+#: drag_and_drop_v2.py:151
+msgid "Item text color"
+msgstr ""
+
+#: drag_and_drop_v2.py:152
+msgid "Text color to use for draggable items (example: 'white' or '#ffffff')."
+msgstr ""
+
+#: drag_and_drop_v2.py:159
+msgid "Maximum items per zone"
+msgstr ""
+
+#: drag_and_drop_v2.py:160
+msgid ""
+"This setting limits the number of items that can be dropped into a single "
+"zone."
+msgstr ""
+
+#: drag_and_drop_v2.py:167
+msgid "Problem data"
+msgstr ""
+
+#: drag_and_drop_v2.py:169
+msgid ""
+"Information about zones, items, feedback, and background image for this "
+"problem. This information is derived from the input that a course author "
+"provides via the interactive editor when configuring the problem."
+msgstr ""
+
+#: drag_and_drop_v2.py:179
+msgid ""
+"Information about current positions of items that a learner has dropped on "
+"the target image."
+msgstr ""
+
+#: drag_and_drop_v2.py:186
+msgid "Number of attempts learner used"
+msgstr ""
+
+#: drag_and_drop_v2.py:193
+msgid "Indicates whether a learner has completed the problem at least once"
+msgstr ""
+
+#: drag_and_drop_v2.py:200
+msgid ""
+"DEPRECATED. Keeps maximum score achieved by student as a weighted value."
+msgstr ""
+
+#: drag_and_drop_v2.py:206
+msgid ""
+"Keeps maximum score achieved by student as a raw value between 0 and 1."
+msgstr ""
+
+#: drag_and_drop_v2.py:514
+#, python-brace-format
+msgid "Unknown DnDv2 mode {mode} - course is misconfigured"
+msgstr ""
+
+#: drag_and_drop_v2.py:589
+msgid "show_answer handler should only be called for assessment mode"
+msgstr ""
+
+#: drag_and_drop_v2.py:594
+msgid "There are attempts remaining"
+msgstr ""
+
+#: drag_and_drop_v2.py:667
+msgid "do_attempt handler should only be called for assessment mode"
+msgstr ""
+
+#: drag_and_drop_v2.py:672 drag_and_drop_v2.py:783
+msgid "Max number of attempts reached"
+msgstr ""
+
+#: drag_and_drop_v2.py:677
+msgid "Submission deadline has passed."
+msgstr ""
+
+#: templates/html/drag_and_drop.html:4
+msgid "Loading drag and drop problem."
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:10
+msgid "Basic Settings"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:76
+msgid "Introductory feedback"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:81
+msgid "Final feedback"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:90
+msgid "Zones"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:95
+msgid "Background Image"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:98
+msgid "Provide custom image"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:102
+msgid "Generate image automatically"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:107
+msgid "Background URL"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:114
+msgid "Change background"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:116
+msgid ""
+"For example, 'http://example.com/background.png' or "
+"'/static/background.png'."
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:121
+msgid "Zone Layout"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:123
+msgid "Number of columns"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:131
+msgid "Number of rows"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:138
+msgid "Number of columns and rows."
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:142
+msgid "Zone Size"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:144
+msgid "Zone width"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:152
+msgid "Zone height"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:159
+msgid "Size of a single zone in pixels."
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:162
+msgid "Generate image and zones"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:165
+msgid "Background description"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:170
+msgid ""
+"\n"
+"                            Please provide a description of the image for non-visual users.\n"
+"                            The description should provide sufficient information to allow anyone\n"
+"                            to solve the problem even without seeing the image.\n"
+"                        "
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:180
+msgid "Zone labels"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:183
+msgid "Display label names on the image"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:187
+msgid "Zone borders"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:190
+msgid "Display zone borders on the image"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:195
+msgid "Zone definitions"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:201
+msgid "Add a zone"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:215
+msgid "Items"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:249
+msgid "Item definitions"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:253
+msgid "Add an item"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:263
+msgid "Continue"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:267
+msgid "Save"
+msgstr ""
+
+#: templates/html/drag_and_drop_edit.html:271
+msgid "Cancel"
+msgstr "취소"
+
+#: utils.py:56
+#, python-brace-format
+msgid "Your highest score is {score}"
+msgstr "최고 점수는 {score} 입니다."
+
+#: utils.py:57
+#, python-brace-format
+msgid "Final attempt was used, highest score is {score}"
+msgstr ""
+
+#: utils.py:65
+#, python-brace-format
+msgid "Correctly placed {correct_count} item."
+msgid_plural "Correctly placed {correct_count} items."
+msgstr[0] "{correct_count} 개의 항목을 올바르게 배치했습니다."
+
+#: utils.py:76
+#, python-brace-format
+msgid "Misplaced {misplaced_count} item."
+msgid_plural "Misplaced {misplaced_count} items."
+msgstr[0] ""
+
+#: utils.py:87
+#, python-brace-format
+msgid ""
+"Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
+msgid_plural ""
+"Misplaced {misplaced_count} items. Misplaced items were returned to item "
+"bank."
+msgstr[0] "{misplaced_count} 개 항목을 잘못 배치했습니다. 잘못 배치 된 품목은 품목 은행에 반환되었습니다."
+
+#: utils.py:98
+#, python-brace-format
+msgid "Did not place {missing_count} required item."
+msgid_plural "Did not place {missing_count} required items."
+msgstr[0] ""
+
+#: public/js/drag_and_drop.js:33 public/js/drag_and_drop.js:358
+msgid "Submitting"
+msgstr ""
+
+#: public/js/drag_and_drop.js:137
+msgid "Unknown Zone"
+msgstr ""
+
+#: public/js/drag_and_drop.js:141
+msgid "Placed in: {zone_title}"
+msgstr ""
+
+#: public/js/drag_and_drop.js:145
+msgid "Correctly placed in: {zone_title}"
+msgstr ""
+
+#: public/js/drag_and_drop.js:157
+msgid ", draggable, grabbed"
+msgstr ""
+
+#: public/js/drag_and_drop.js:157
+msgid ", draggable"
+msgstr ""
+
+#: public/js/drag_and_drop.js:234
+msgid "No items placed here"
+msgstr ""
+
+#: public/js/drag_and_drop.js:240
+msgid "Items placed here: "
+msgstr ""
+
+#: public/js/drag_and_drop.js:272
+msgid ", dropzone"
+msgstr ""
+
+#: public/js/drag_and_drop.js:275
+msgid "droppable"
+msgstr ""
+
+#: public/js/drag_and_drop.js:295 public/js/drag_and_drop.js:300
+msgid "Feedback"
+msgstr "피드백"
+
+#: public/js/drag_and_drop.js:316 public/js/drag_and_drop.js:488
+#: public/js/drag_and_drop.js:531
+msgid "Close"
+msgstr ""
+
+#: public/js/drag_and_drop.js:319 public/js/drag_and_drop.js:552
+msgid "Keyboard Help"
+msgstr ""
+
+#: public/js/drag_and_drop.js:322
+msgid "This is a screen reader-friendly problem."
+msgstr ""
+
+#: public/js/drag_and_drop.js:323
+msgid ""
+"Drag and Drop problems consist of draggable items and dropzones. Users "
+"should select a draggable item with their keyboard and then navigate to an "
+"appropriate dropzone to drop it."
+msgstr ""
+
+#: public/js/drag_and_drop.js:324
+msgid ""
+"You can complete this problem using only your keyboard by following the "
+"guidance below:"
+msgstr ""
+
+#: public/js/drag_and_drop.js:326
+msgid ""
+"Use only TAB and SHIFT+TAB to navigate between draggable items and drop "
+"zones."
+msgstr ""
+
+#: public/js/drag_and_drop.js:327
+msgid "Press CTRL+M to select a draggable item (effectively picking it up)."
+msgstr ""
+
+#: public/js/drag_and_drop.js:328
+msgid ""
+"Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press "
+"CTRL+M once more to drop it here."
+msgstr ""
+
+#: public/js/drag_and_drop.js:329
+msgid ""
+"Press ESC if you want to cancel the drop operation (for example, to select a"
+" different item)."
+msgstr ""
+
+#: public/js/drag_and_drop.js:330
+msgid ""
+"TAB back to the list of draggable items and repeat this process until all of"
+" the draggable items have been placed on their respective dropzones."
+msgstr ""
+
+#: public/js/drag_and_drop.js:348
+msgid "You have used {used} of {total} attempts."
+msgstr ""
+
+#: public/js/drag_and_drop.js:370
+msgid "Submit"
+msgstr "등록"
+
+#: public/js/drag_and_drop.js:410
+msgid "Show Answer"
+msgstr ""
+
+#: public/js/drag_and_drop.js:423
+msgid "Go to Beginning"
+msgstr ""
+
+#: public/js/drag_and_drop.js:429
+msgid "Reset"
+msgstr ""
+
+#: public/js/drag_and_drop.js:449 public/js/drag_and_drop.js:1188
+msgid "Some of your answers were not correct."
+msgstr "일부 답변이 올바르지 않습니다."
+
+#: public/js/drag_and_drop.js:450 public/js/drag_and_drop.js:1191
+msgid "Hints:"
+msgstr "힌트 :"
+
+#: public/js/drag_and_drop.js:518
+msgid "Correct"
+msgstr ""
+
+#: public/js/drag_and_drop.js:518
+msgid "Incorrect"
+msgstr ""
+
+#. Translators: {earned} is the number of points earned. {possible} is the
+#. total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
+#. points will always be at least 1. We pluralize based on the total number of
+#. points (example: 0/1 point; 1/2 points).
+#: public/js/drag_and_drop.js:567
+msgid "{earned}/{possible} point (graded)"
+msgid_plural "{earned}/{possible} points (graded)"
+msgstr[0] ""
+
+#. Translators: {earned} is the number of points earned. {possible} is the
+#. total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
+#. points will always be at least 1. We pluralize based on the total number of
+#. points (example: 0/1 point; 1/2 points).
+#: public/js/drag_and_drop.js:574
+msgid "{earned}/{possible} point (ungraded)"
+msgid_plural "{earned}/{possible} points (ungraded)"
+msgstr[0] ""
+
+#. Translators: {possible} is the number of points possible (examples: 1, 3,
+#. 10).
+#: public/js/drag_and_drop.js:584
+msgid "{possible} point possible (graded)"
+msgid_plural "{possible} points possible (graded)"
+msgstr[0] ""
+
+#. Translators: {possible} is the number of points possible (examples: 1, 3,
+#. 10).
+#: public/js/drag_and_drop.js:591
+msgid "{possible} point possible (ungraded)"
+msgid_plural "{possible} points possible (ungraded)"
+msgstr[0] ""
+
+#: public/js/drag_and_drop.js:617
+msgid "Drag and Drop Problem"
+msgstr ""
+
+#: public/js/drag_and_drop.js:619
+msgid "Problem"
+msgstr ""
+
+#: public/js/drag_and_drop.js:644
+msgid "Item Bank"
+msgstr ""
+
+#: public/js/drag_and_drop.js:690
+msgid "Drop Targets"
+msgstr ""
+
+#: public/js/drag_and_drop.js:703
+msgid "Actions"
+msgstr ""
+
+#: public/js/drag_and_drop.js:853
+msgid "An error occurred. Unable to load drag and drop problem."
+msgstr ""
+
+#: public/js/drag_and_drop.js:1313
+msgid "You cannot add any more items to this zone."
+msgstr ""
+
+#: public/js/drag_and_drop_edit.js:108 public/js/drag_and_drop_edit.js:494
+#: public/js/drag_and_drop_edit.js:720
+msgid "There was an error with your form."
+msgstr ""
+
+#: public/js/drag_and_drop_edit.js:109
+msgid "Please check over your submission."
+msgstr ""
+
+#: public/js/drag_and_drop_edit.js:344
+msgid "Zone {num}"
+msgid_plural "Zone {num}"
+msgstr[0] ""
+
+#: public/js/drag_and_drop_edit.js:495
+msgid "Please check the values you entered."
+msgstr ""
+
+#: public/js/drag_and_drop_edit.js:713
+msgid "Saving"
+msgstr "저장"

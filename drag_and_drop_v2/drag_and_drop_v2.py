@@ -277,7 +277,7 @@ class DragAndDropBlock(
             return None
         text_js = 'public/js/translations/{lang_code}/text.js'
         country_code = lang_code.split('-')[0]
-        for code in (lang_code, country_code):
+        for code in (translation.to_locale(lang_code), lang_code, country_code):
             if pkg_resources.resource_exists(loader.module_name, text_js.format(lang_code=code)):
                 return text_js.format(lang_code=code)
         return None
