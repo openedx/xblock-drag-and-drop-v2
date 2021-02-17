@@ -911,7 +911,7 @@ class DragAndDropBlock(
             # edX Studio uses a different runtime for 'studio_view' than 'student_view',
             # and the 'studio_view' runtime doesn't provide the replace_urls API.
             try:
-                from static_replace import replace_static_urls  # pylint: disable=import-error
+                from common.djangoapps.static_replace import replace_static_urls  # pylint: disable=import-error
                 url = replace_static_urls(u'"{}"'.format(url), None, course_id=self.runtime.course_id)[1:-1]
             except ImportError:
                 pass
