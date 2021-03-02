@@ -12,13 +12,18 @@ from drag_and_drop_v2.default_data import (BOTTOM_ZONE_ID, DEFAULT_DATA,
                                            START_FEEDBACK,
                                            TARGET_IMG_DESCRIPTION, TOP_ZONE_ID)
 from drag_and_drop_v2.utils import Constants
-
+from xblock.scorable import Score
 from ..utils import TestCaseMixin, make_block
 
 
 @ddt.ddt
 class BasicTests(TestCaseMixin, unittest.TestCase):
     """ Basic unit tests for the Drag and Drop block, using its default settings """
+    event_data = {
+        'value': 0,
+        'max_value': 1,
+        'only_if_higher': None,
+    }
 
     def setUp(self):
         self.block = make_block()
@@ -49,6 +54,15 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         modify(submission)
 
         return submission
+
+    def assertPublishEvent(self, event):
+        """
+        Verify that publish event is fired with expected event data.
+        """
+        with mock.patch('workbench.runtime.WorkbenchRuntime.publish', mock.Mock()) as patched_publish:
+            self.block.publish_grade()
+            expected_calls = [mock.call(self.block, 'grade', event)]
+            self.assertEqual(patched_publish.mock_calls, expected_calls)
 
     def test_template_contents(self):
         context = {}
@@ -113,9 +127,102 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         self.assertEqual(self.block.max_score(), 1)
         self.assertTrue(self.block.has_score)
 
+    def test_block_score(self):
+        """
+        Verifies that score property returns expected type.
+        """
+        self.assertTrue(isinstance(self.block.score, Score))
+
+    def test_publish_grade(self):
+        """
+        Verifies that publish event is fired with expected event data.
+        """
+        self.assertPublishEvent(self.event_data)
+        self.block.set_score(Score(raw_possible=1, raw_earned=1))
+        self.event_data['value'] = 1
+        self.assertPublishEvent(self.event_data)
+
+    @ddt.data(
+        # raw possible is not valid.
+        (0, 1, None),
+        (-1, 1, None),
+        # problem weight is none.
+        (1, None, 1),
+        # Both are valid.
+        (1, 3, 3),
+    )
+    @ddt.unpack
+    def test_weighted_grade(self, raw_possible, weight, grade):
+        """
+        Tests that weighted grade returns expected expected output
+        with given input.
+        """
+        self.block.weight = weight
+        self.block.set_score(Score(raw_possible=raw_possible, raw_earned=1))
+        self.block.save()
+
+        self.assertEqual(self.block.weighted_grade(), grade)
+
+    def test_set_score(self):
+        """
+        Verify set score method updates relevant attributes of the D&D block.
+        """
+        self.assertEqual(self.block.raw_earned, 0)
+        self.assertEqual(self.block.raw_possible, 1)
+
+        possible = 0.6
+        earned_percent = 50 / 100.0  # 50% earned from the total.
+        earned_score = 0.3
+
+        self.block.set_score(Score(raw_earned=earned_score, raw_possible=possible))
+
+        self.assertEqual(self.block.raw_earned, earned_score)
+        self.assertEqual(self.block.raw_possible, possible)
+        self.assertEqual(self.block.weighted_grade(), earned_percent)
+
+    @ddt.data(
+        (random.randint(1, 10), 1),
+        (random.randint(1, 10), 0.9),
+        (random.randint(1, 10), 0.8),
+        (random.randint(1, 10), 0.7),
+        (random.randint(1, 10), 0.6),
+        (random.randint(1, 10), 0.5),
+        (random.randint(1, 10), 0.4),
+        (random.randint(1, 10), 0.3),
+        (random.randint(1, 10), 0.2),
+        (random.randint(1, 10), 0.1),
+        (random.randint(1, 10), 0),
+    )
+    @ddt.unpack
+    def test_problem_score_override(self, problem_weight, override_score):
+        """
+        Verify that it allows score override for problem weight greater than 1.
+        """
+        # Check assumptions / initial conditions:
+        self.block.weight = problem_weight
+        self.block.save()
+        self.assertEqual(self.block.raw_possible, 1)
+        self.assertEqual(self.block.raw_earned, 0)
+        self.assertFalse(self.block.completed)
+
+        expected_earned_score = round(problem_weight * override_score, 2)
+
+        # Override score
+        raw_earned = override_score / self.block.weight
+        raw_possible = self.block.max_score() / self.block.weight
+        override_score_for_learner = Score(raw_earned=raw_earned, raw_possible=raw_possible)
+        self.block.set_score(override_score_for_learner)
+        self.block.save()
+
+        self.assertEqual(self.block.score, override_score_for_learner)
+
+        weighted_grade = round(self.block.weighted_grade(), 1)
+        self.assertEqual(weighted_grade, expected_earned_score)
+
     def test_ajax_solve_and_reset(self):
         # Check assumptions / initial conditions:
         self.assertFalse(self.block.completed)
+        self.assertEqual(self.block.raw_possible, 1)
 
         def assert_user_state_empty(grade=None):
             self.assertEqual(self.block.item_state, {})
@@ -126,9 +233,10 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
                 "attempts": 0,
                 'overall_feedback': [{"message": START_FEEDBACK, "message_class": None}]
             })
+
         assert_user_state_empty()
 
-        # Drag three items into the correct spot:
+        # Drag four items into the correct spot:
         data = {"val": 0, "zone": TOP_ZONE_ID}
         self.call_handler(self.DROP_ITEM_HANDLER, data)
         data = {"val": 1, "zone": MIDDLE_ZONE_ID}

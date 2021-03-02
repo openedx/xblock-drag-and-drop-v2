@@ -37,6 +37,7 @@ from .utils import (
 loader = ResourceLoader(__name__)
 logger = logging.getLogger(__name__)
 
+
 # Classes ###########################################################
 
 
@@ -209,7 +210,21 @@ class DragAndDropBlock(
         enforce_type=True,
     )
 
+    raw_possible = Float(
+        help=_("Maximum score available of the problem as a raw value between 0 and 1."),
+        scope=Scope.user_state,
+        default=1,
+        enforce_type=True,
+    )
+
     block_settings_key = 'drag-and-drop-v2'
+
+    @property
+    def score(self):
+        """
+        Returns learners saved score.
+        """
+        return Score(self.raw_earned, self.raw_possible)
 
     def max_score(self):  # pylint: disable=no-self-use
         """
@@ -220,11 +235,11 @@ class DragAndDropBlock(
 
     def get_score(self):
         """
-        Return the problem's current score as raw values.
+        Returns user's current (saved) score for the problem as raw values.
         """
         if self._get_raw_earned_if_set() is None:
             self.raw_earned = self._learner_raw_score()
-        return Score(self.raw_earned, self.max_score())
+        return Score(self.raw_earned, self.raw_possible)
 
     def set_score(self, score):
         """
@@ -233,8 +248,8 @@ class DragAndDropBlock(
         score and possible max (for this block, we expect that this will
         always be 1).
         """
-        assert score.raw_possible == self.max_score()
         self.raw_earned = score.raw_earned
+        self.raw_possible = score.raw_possible
 
     def calculate_score(self):
         """
@@ -254,7 +269,14 @@ class DragAndDropBlock(
         Returns the block's current saved grade multiplied by the block's
         weight- the number of points earned by the learner.
         """
-        return self.raw_earned * self.weight
+        if self.raw_possible <= 0:
+            return None
+
+        if self.weight is None:
+            return self.raw_earned
+
+        weighted_earned = self.raw_earned * self.weight / self.raw_possible
+        return weighted_earned
 
     def _learner_raw_score(self):
         """
@@ -647,7 +669,7 @@ class DragAndDropBlock(
         functionality.
         """
         if hasattr(self, "has_deadline_passed"):
-            return self.has_deadline_passed()               # pylint: disable=no-member
+            return self.has_deadline_passed()  # pylint: disable=no-member
         else:
             return False
 
@@ -832,6 +854,7 @@ class DragAndDropBlock(
 
         # There's no going back from "completed" status to "incomplete"
         self.completed = self.completed or self._is_answer_correct() or not self.attempts_remain
+
         current_raw_earned = self._learner_raw_score()
         # ... and from higher grade to lower
         # if we have an old-style (i.e. unreliable) grade, override no matter what
@@ -845,8 +868,8 @@ class DragAndDropBlock(
             current_raw_earned_is_greater = True
 
         if current_raw_earned is None or current_raw_earned_is_greater:
-            self.raw_earned = current_raw_earned
-            self._publish_grade(Score(self.raw_earned, self.max_score()))
+            self.set_score(Score(current_raw_earned, self.max_score()))
+            self.publish_grade(self.score)
 
         # and no matter what - emit progress event for current user
         self.runtime.publish(self, "progress", {})
@@ -888,6 +911,15 @@ class DragAndDropBlock(
             'location_id': -1,
             'is_correct': is_correct,
         })
+
+    def publish_grade(self, score=None, only_if_higher=None):
+        """
+        Publishes the student's current grade to the system as an event
+        """
+        if not score:
+            score = self.score
+        self._publish_grade(score, only_if_higher)
+        return {'grade': self.score.raw_earned, 'max_grade': self.score.raw_possible}
 
     def _is_attempt_correct(self, attempt):
         """
@@ -1133,25 +1165,25 @@ class DragAndDropBlock(
 
         zones_display_names = {
             "zone_{}_display_name".format(zone_i):
-            _clean_data(zone.get("title", ""))
+                _clean_data(zone.get("title", ""))
             for zone_i, zone in enumerate(self.data.get("zones", []))
         }
 
         zones_description = {
             "zone_{}_description".format(zone_i):
-            _clean_data(zone.get("description", ""))
+                _clean_data(zone.get("description", ""))
             for zone_i, zone in enumerate(self.data.get("zones", []))
         }
 
         items_display_names = {
             "item_{}_display_name".format(item_i):
-            _clean_data(item.get("displayName", ""))
+                _clean_data(item.get("displayName", ""))
             for item_i, item in enumerate(self.data.get("items", []))
         }
 
         items_image_description = {
             "item_{}_image_description".format(item_i):
-            _clean_data(item.get("imageDescription", ""))
+                _clean_data(item.get("imageDescription", ""))
             for item_i, item in enumerate(self.data.get("items", []))
         }
 
