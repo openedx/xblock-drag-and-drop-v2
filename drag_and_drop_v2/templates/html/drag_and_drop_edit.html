@@ -27,7 +27,7 @@
                         <select class="problem-mode" aria-describedby="problem-mode-description-{{id_suffix}}">
                             {% for field_value in fields.mode.values %}
                                 <option value="{{ field_value.value }}" {% if self.mode == field_value.value %}selected{% endif %}>
-                                    {% trans field_value.display_name %}
+                                    {{  field_value.display_name }}
                                 </option>
                             {% endfor %}
                         </select>
