@@ -48,15 +48,15 @@
     "Correct! This one belongs to The Top Zone.": "Correto! Este pertence a \u00e1rea do topo.",
     "Correctly placed in: {zone_title}": "Corretamente posicionado em: {zone_title}",
     "Correctly placed {correct_count} item.": [
-      "Correctly placed {correct_count} item.",
-      "Correctly placed {correct_count} items."
+      "{correct_count}  item colocado corretamente.",
+      "{correct_count} itens colocados corretamente."
     ],
     "DEPRECATED. Keeps maximum score achieved by student as a weighted value.": "DEPRECIADO.Mant\u00e9m a pontua\u00e7\u00e3o m\u00e1xima alcan\u00e7ada pelo aluno como um valor pesado.",
     "Defines the number of points the problem is worth.": "Define o n\u00famero de pontos v\u00e1lidos para este problema.",
     "Defines the number of times a student can try to answer this problem. If the value is not set, infinite attempts are allowed.": "Define o n\u00famero de tentativas que os estudantes podem fazer para resolver este problema. Se o valor n\u00e3o for definido, infinitas tentativas ser\u00e3o permitidas.",
     "Did not place {missing_count} required item.": [
-      "Did not place {missing_count} required item.",
-      "Did not place {missing_count} required items."
+      "{missing_count} item obrigat\u00f3rio n\u00e3o foi posicionado.",
+      "{missing_count} itens obrigat\u00f3rios n\u00e3o foram posicionados."
     ],
     "Display label names on the image": "Exibir nomes da etiqueta na imagem",
     "Display the heading \"Problem\" above the problem text?": "Exibir o cabe\u00e7alho de \"Problema\" acima da descri\u00e7\u00e3o?",
@@ -99,12 +99,12 @@
     "Maximum attempts": "M\u00e1ximo de tentativas",
     "Maximum items per zone": "Itens m\u00e1ximos por zona",
     "Misplaced {misplaced_count} item.": [
-      "Misplaced {misplaced_count} item.",
-      "Misplaced {misplaced_count} items."
+      "Item mal posicionado: {misplaced_count}",
+      "Itens mal posicionados: {misplaced_count}"
     ],
     "Misplaced {misplaced_count} item. Misplaced item was returned to item bank.": [
-      "Misplaced {misplaced_count} item. Misplaced item was returned to item bank.",
-      "Misplaced {misplaced_count} items. Misplaced items were returned to item bank."
+      "{misplaced_count} item perdido. Os itens perdidos foram devolvidos ao banco de itens.",
+      "{misplaced_count} itens perdidos. Os itens perdidos foram devolvidos ao banco de itens."
     ],
     "Mode": "Modo",
     "Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press CTRL+M once more to drop it here.": "Navegue utilizando TAB e SHIFT+TAB para a \u00e1rea de soltura apropriada pressionando CTRL+M uma vez mais para soltar aqui.",
@@ -132,7 +132,7 @@
     "Show Answer": "Exibir resposta",
     "Show title": "Exibir t\u00edtulo",
     "Size of a single zone in pixels.": "Tamanho de uma \u00fanica zona em pixels.",
-    "Some of your answers were not correct.": "Algumas de suas respostas n\u00e3o s\u00e3o corretas.",
+    "Some of your answers were not correct.": "Algumas de suas respostas n\u00e3o estavam corretas.",
     "Standard": "Padr\u00e3o",
     "Standard mode: the problem provides immediate feedback each time a learner drops an item on a target zone. Assessment mode: the problem provides feedback only after a learner drops all available items on target zones.": "Modo padr\u00e3o: o problema fornece coment\u00e1rio imediatamente cada vez que um aluno solta um item numa zona-alvo. Modo avalia\u00e7\u00e3o: o problema fornece coment\u00e1rio somente depois que um aluno solta todos os itens nas \u00e1reas-alvo.",
     "Submission deadline has passed.": "O prazo de envio expirou.",
@@ -161,7 +161,7 @@
     "You cannot add any more items to this zone.": "Voc\u00ea n\u00e3o pode adicionar mais itens nesta \u00e1rea.",
     "You have used {used} of {total} attempts.": "Voc\u00ea fez {used} das {total} tentativas.",
     "You silly, there are no zones for this one.": "N\u00e3o h\u00e1 zonas para este item.",
-    "Your highest score is {score}": "Sua pontua\u00e7\u00e3o mais alta \u00e9 {score}",
+    "Your highest score is {score}": "Sua maior pontua\u00e7\u00e3o \u00e9 {score}",
     "Zone Layout": "Estilo da zona",
     "Zone Size": "Tamanho da zona",
     "Zone borders": "Bordas da zona",
@@ -170,28 +170,28 @@
     "Zone labels": "Etiquetas da zona",
     "Zone width": "Largura da zona",
     "Zone {num}": [
-      "Zone {num}",
-      "Zone {num}"
+      "Zona {num}",
+      "Zona {num}"
     ],
     "Zones": "Zonas",
     "do_attempt handler should only be called for assessment mode": "A ferramenta do_attempt deve ser executada somente no modo de avalia\u00e7\u00e3o",
     "droppable": "Remov\u00edvel",
     "show_answer handler should only be called for assessment mode": "A ferramenta show_answer deve somente ser executada no modo de avalia\u00e7\u00e3o",
     "{earned}/{possible} point (graded)": [
-      "{earned}/{possible} point (graded)",
-      "{earned}/{possible} points (graded)"
+      "{earned}/{possible} ponto (corrigido)",
+      "{earned}/{possible} pontos (corrigidos)"
     ],
     "{earned}/{possible} point (ungraded)": [
-      "{earned}/{possible} point (ungraded)",
-      "{earned}/{possible} points (ungraded)"
+      "{earned}/{possible} ponto (n\u00e3o corrigido)",
+      "{earned}/{possible} pontos (n\u00e3o corrigidos)"
     ],
     "{possible} point possible (graded)": [
-      "{possible} point possible (graded)",
-      "{possible} points possible (graded)"
+      "{possible} ponto poss\u00edvel (corrigido)",
+      "{possible} pontos poss\u00edveis (corrigidos)"
     ],
     "{possible} point possible (ungraded)": [
-      "{possible} point possible (ungraded)",
-      "{possible} points possible (ungraded)"
+      "{possible} ponto poss\u00edvel (n\u00e3o corrigido)",
+      "{possible} pontos poss\u00edveis (n\u00e3o corrigidos)"
     ]
   };
   for (var key in newcatalog) {

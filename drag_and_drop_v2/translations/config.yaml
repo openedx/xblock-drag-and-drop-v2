@@ -14,7 +14,7 @@ locales:
     # - cs  # Czech
     # - cy  # Welsh
     # - da  # Danish
-    # - de_DE  # German (Germany)
+    - de  # German
     # - el  # Greek
     # - en_GB  # English (United Kingdom)
     # # Don't pull these until we figure out why pages randomly display in these locales,
@@ -43,8 +43,8 @@ locales:
     # - hu  # Hungarian
     # - hy_AM  # Armenian (Armenia)
     # - id  # Indonesian
-    # - it_IT  # Italian (Italy)
-    - ja_JP  # Japanese (Japan)
+    - it_IT  # Italian
+    - ja  # Japanese
     # - kk_KZ  # Kazakh (Kazakhstan)
     # - km_KH  # Khmer (Cambodia)
     # - kn  # Kannada
@@ -56,9 +56,9 @@ locales:
     # - ms  # Malay
     # - nb  # Norwegian Bokmål
     # - ne  # Nepali
-    # - nl_NL  # Dutch (Netherlands)
+    - nl  # Dutch
     # - or  # Oriya
-    - pl  # Polish
+    - pl_PL  # Polish
     - pt_BR  # Portuguese (Brazil)
     # - pt_PT  # Portuguese (Portugal)
     # - ro  # Romanian
@@ -73,7 +73,7 @@ locales:
     # - ta  # Tamil
     # - te  # Telugu
     # - th  # Thai
-    # - tr_TR  # Turkish (Turkey)
+    - tr  # Turkish
     # - uk  # Ukranian
     # - ur  # Urdu
     # - uz  # Uzbek

@@ -1,6 +1,21 @@
 Drag and Drop XBlock changelog
 ==============================
 
+Version 2.3.5 (2021-03-09)
+---------------------------
+
+* Updates supported language translations.
+
+Version 2.3.4 (2021-03-09)
+---------------------------
+
+* Enable adding weighted problems and overriding the scores for learners. The score can be overridden in LMS using either staff debug information or Student Admin in instructor Tab.
+
+Version 2.3.3 (2021-03-09)
+---------------------------
+
+* Fixed drag and drop editor not loading in the studio due to translation issue.
+
 Version 2.3.2 (2021-02-12)
 ---------------------------
 

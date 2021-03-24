@@ -10,6 +10,7 @@
 # Genaro Costa <genarocosta@yahoo.com>, 2016
 # Heitor Oliveira <heitor.farol@gmail.com>, 2016
 # Igor Silveira da Silva <issilva2309@gmail.com>, 2021
+# OpenCraft OpenCraft <help@opencraft.com>, 2021
 # Renata Barboza, 2017
 # Renata Barboza, 2016
 # Rogério Santos Filho <rogerio.gns@gmail.com>, 2016
@@ -18,9 +19,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XBlocks\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-03 00:00-0500\n"
-"PO-Revision-Date: 2021-01-28 03:06+0000\n"
-"Last-Translator: Igor Silveira da Silva <issilva2309@gmail.com>\n"
+"POT-Creation-Date: 2021-03-24 21:55-0500\n"
+"PO-Revision-Date: 2021-03-30 14:52+0000\n"
+"Last-Translator: OpenCraft OpenCraft <help@opencraft.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/open-edx/xblocks/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -113,165 +114,169 @@ msgstr "Arraste os itens para a imagem acima."
 msgid "Good work! You have completed this drag and drop problem."
 msgstr "Bom trabalho! Você completou este problema."
 
-#: drag_and_drop_v2.py:75
+#: drag_and_drop_v2.py:76
 msgid "Title"
 msgstr "Título"
 
-#: drag_and_drop_v2.py:76
+#: drag_and_drop_v2.py:77
 msgid ""
 "The title of the drag and drop problem. The title is displayed to learners."
 msgstr "O título do problema de arraste e solte. O título é exibido aos alunos."
 
-#: drag_and_drop_v2.py:78
+#: drag_and_drop_v2.py:79
 msgid "Drag and Drop"
 msgstr "Arraste e Solte"
 
-#: drag_and_drop_v2.py:83
+#: drag_and_drop_v2.py:84
 msgid "Mode"
 msgstr "Modo"
 
-#: drag_and_drop_v2.py:85
+#: drag_and_drop_v2.py:86
 msgid ""
 "Standard mode: the problem provides immediate feedback each time a learner "
 "drops an item on a target zone. Assessment mode: the problem provides "
 "feedback only after a learner drops all available items on target zones."
 msgstr "Modo padrão: o problema fornece comentário imediatamente cada vez que um aluno solta um item numa zona-alvo. Modo avaliação: o problema fornece comentário somente depois que um aluno solta todos os itens nas áreas-alvo."
 
-#: drag_and_drop_v2.py:92
+#: drag_and_drop_v2.py:93
 msgid "Standard"
 msgstr "Padrão"
 
-#: drag_and_drop_v2.py:93
+#: drag_and_drop_v2.py:94
 msgid "Assessment"
 msgstr "Avaliação"
 
-#: drag_and_drop_v2.py:100
+#: drag_and_drop_v2.py:101
 msgid "Maximum attempts"
 msgstr "Máximo de tentativas"
 
-#: drag_and_drop_v2.py:102
+#: drag_and_drop_v2.py:103
 msgid ""
 "Defines the number of times a student can try to answer this problem. If the"
 " value is not set, infinite attempts are allowed."
 msgstr "Define o número de tentativas que os estudantes podem fazer para resolver este problema. Se o valor não for definido, infinitas tentativas serão permitidas."
 
-#: drag_and_drop_v2.py:111
+#: drag_and_drop_v2.py:112
 msgid "Show title"
 msgstr "Exibir título"
 
-#: drag_and_drop_v2.py:112
+#: drag_and_drop_v2.py:113
 msgid "Display the title to the learner?"
 msgstr "Exibir título ao aluno?"
 
-#: drag_and_drop_v2.py:119
+#: drag_and_drop_v2.py:120
 msgid "Problem text"
 msgstr "Descrição do problema"
 
-#: drag_and_drop_v2.py:120
+#: drag_and_drop_v2.py:121
 msgid "The description of the problem or instructions shown to the learner."
 msgstr "A descrição do problema ou instruções exibidas ao aluno."
 
-#: drag_and_drop_v2.py:127
+#: drag_and_drop_v2.py:128
 msgid "Show \"Problem\" heading"
 msgstr "Exibir o cabeçalho do \"Problema\""
 
-#: drag_and_drop_v2.py:128
+#: drag_and_drop_v2.py:129
 msgid "Display the heading \"Problem\" above the problem text?"
 msgstr "Exibir o cabeçalho de \"Problema\" acima da descrição?"
 
-#: drag_and_drop_v2.py:135
+#: drag_and_drop_v2.py:136
 msgid "Problem Weight"
 msgstr "Valor do problema"
 
-#: drag_and_drop_v2.py:136
+#: drag_and_drop_v2.py:137
 msgid "Defines the number of points the problem is worth."
 msgstr "Define o número de pontos válidos para este problema."
 
-#: drag_and_drop_v2.py:143
+#: drag_and_drop_v2.py:144
 msgid "Item background color"
 msgstr "Cor do plano de fundo"
 
-#: drag_and_drop_v2.py:144
+#: drag_and_drop_v2.py:145
 msgid ""
 "The background color of draggable items in the problem (example: 'blue' or "
 "'#0000ff')."
 msgstr "A cor do plano de fundo de itens que podem ser arrastados no problema (por exemplo: 'azul' ou '#0000ff')."
 
-#: drag_and_drop_v2.py:151
+#: drag_and_drop_v2.py:152
 msgid "Item text color"
 msgstr "Cor do texto"
 
-#: drag_and_drop_v2.py:152
+#: drag_and_drop_v2.py:153
 msgid "Text color to use for draggable items (example: 'white' or '#ffffff')."
 msgstr "Cor do texto para itens que podem ser arrastados (por exemplo: 'branco' ou '#ffffff')."
 
-#: drag_and_drop_v2.py:159
+#: drag_and_drop_v2.py:160
 msgid "Maximum items per zone"
 msgstr "Itens máximos por zona"
 
-#: drag_and_drop_v2.py:160
+#: drag_and_drop_v2.py:161
 msgid ""
 "This setting limits the number of items that can be dropped into a single "
 "zone."
 msgstr "Esta configuração limita o número de itens que podem ser largados de uma única zona."
 
-#: drag_and_drop_v2.py:167
+#: drag_and_drop_v2.py:168
 msgid "Problem data"
 msgstr "Dados do problema"
 
-#: drag_and_drop_v2.py:169
+#: drag_and_drop_v2.py:170
 msgid ""
 "Information about zones, items, feedback, and background image for this "
 "problem. This information is derived from the input that a course author "
 "provides via the interactive editor when configuring the problem."
 msgstr "Informações sobre zonas, itens, feedback e imagem de plano de fundo deste problema. Informação obtida dos dados inseridos pelo autor do curso através dos editor interativo durante a configuração do problema."
 
-#: drag_and_drop_v2.py:179
+#: drag_and_drop_v2.py:180
 msgid ""
 "Information about current positions of items that a learner has dropped on "
 "the target image."
 msgstr "Informações sobre as posições atuais de itens que um aluno soltou na imagem-alvo."
 
-#: drag_and_drop_v2.py:186
+#: drag_and_drop_v2.py:187
 msgid "Number of attempts learner used"
 msgstr "Numero de tentativas usadas pelo aluno"
 
-#: drag_and_drop_v2.py:193
+#: drag_and_drop_v2.py:194
 msgid "Indicates whether a learner has completed the problem at least once"
 msgstr "Indica se um aluno completou o problema pelo menos uma vez"
 
-#: drag_and_drop_v2.py:200
+#: drag_and_drop_v2.py:201
 msgid ""
 "DEPRECATED. Keeps maximum score achieved by student as a weighted value."
 msgstr "DEPRECIADO.Mantém a pontuação máxima alcançada pelo aluno como um valor pesado."
 
-#: drag_and_drop_v2.py:206
+#: drag_and_drop_v2.py:207
 msgid ""
 "Keeps maximum score achieved by student as a raw value between 0 and 1."
 msgstr "Mantém a pontuação máxima alcançada pelo estudante como um valor cru entre 0 e 1."
 
-#: drag_and_drop_v2.py:514
+#: drag_and_drop_v2.py:214
+msgid "Maximum score available of the problem as a raw value between 0 and 1."
+msgstr ""
+
+#: drag_and_drop_v2.py:536
 #, python-brace-format
 msgid "Unknown DnDv2 mode {mode} - course is misconfigured"
 msgstr "Modo {mode} DnDv2 desconhecido - o curso não está configurado corretamente"
 
-#: drag_and_drop_v2.py:589
+#: drag_and_drop_v2.py:611
 msgid "show_answer handler should only be called for assessment mode"
 msgstr "A ferramenta show_answer deve somente ser executada no modo de avaliação"
 
-#: drag_and_drop_v2.py:594
+#: drag_and_drop_v2.py:616
 msgid "There are attempts remaining"
 msgstr "Há tentativas restantes"
 
-#: drag_and_drop_v2.py:667
+#: drag_and_drop_v2.py:689
 msgid "do_attempt handler should only be called for assessment mode"
 msgstr "A ferramenta do_attempt deve ser executada somente no modo de avaliação"
 
-#: drag_and_drop_v2.py:672 drag_and_drop_v2.py:783
+#: drag_and_drop_v2.py:694 drag_and_drop_v2.py:805
 msgid "Max number of attempts reached"
 msgstr "Número máximo de tentativas alcançado"
 
-#: drag_and_drop_v2.py:677
+#: drag_and_drop_v2.py:699
 msgid "Submission deadline has passed."
 msgstr "O prazo de envio expirou."
 
@@ -421,7 +426,7 @@ msgstr "Cancelar"
 #: utils.py:56
 #, python-brace-format
 msgid "Your highest score is {score}"
-msgstr "Sua pontuação mais alta é {score}"
+msgstr "Sua maior pontuação é {score}"
 
 #: utils.py:57
 #, python-brace-format
@@ -432,8 +437,8 @@ msgstr "Tentativa final. Sua pontuação mais alta é {score}"
 #, python-brace-format
 msgid "Correctly placed {correct_count} item."
 msgid_plural "Correctly placed {correct_count} items."
-msgstr[0] "Item posicionado corretamente: {correct_count}"
-msgstr[1] "Itens posicionados corretamente: {correct_count}"
+msgstr[0] "{correct_count}  item colocado corretamente."
+msgstr[1] "{correct_count} itens colocados corretamente."
 
 #: utils.py:76
 #, python-brace-format
@@ -449,8 +454,8 @@ msgid ""
 msgid_plural ""
 "Misplaced {misplaced_count} items. Misplaced items were returned to item "
 "bank."
-msgstr[0] "Item mal posicionado: {misplaced_count}. O item mal posicionado foi devolvido ao banco de itens. "
-msgstr[1] "Itens mal posicionados: {misplaced_count}. Os itens mal posicionados foram devolvidos ao banco de itens. "
+msgstr[0] "{misplaced_count} item perdido. Os itens perdidos foram devolvidos ao banco de itens."
+msgstr[1] "{misplaced_count} itens perdidos. Os itens perdidos foram devolvidos ao banco de itens."
 
 #: utils.py:98
 #, python-brace-format
@@ -579,7 +584,7 @@ msgstr "Redefinir"
 
 #: public/js/drag_and_drop.js:449 public/js/drag_and_drop.js:1188
 msgid "Some of your answers were not correct."
-msgstr "Algumas de suas respostas não são corretas."
+msgstr "Algumas de suas respostas não estavam corretas."
 
 #: public/js/drag_and_drop.js:450 public/js/drag_and_drop.js:1191
 msgid "Hints:"
