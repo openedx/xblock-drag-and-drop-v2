@@ -1715,6 +1715,12 @@ function DragAndDropBlock(runtime, element, configuration) {
                     state.grade = data.grade;
                     if (!data.correct) {
                         delete state.items[item_id];
+                        var failure_audio = new Audio('https://pakistanx-static-assets.s3.amazonaws.com/wrong.mp3');
+                        failure_audio.play();
+                    }
+                    else{
+                        var success_audio = new Audio('https://pakistanx-static-assets.s3.amazonaws.com/correct.mp3');
+                        success_audio.play();
                     }
                     if (data.finished) {
                         state.finished = true;
