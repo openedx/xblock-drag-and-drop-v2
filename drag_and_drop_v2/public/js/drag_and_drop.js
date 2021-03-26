@@ -723,6 +723,9 @@ function DragAndDropBlock(runtime, element, configuration) {
     DragAndDropBlock.STANDARD_MODE = 'standard';
     DragAndDropBlock.ASSESSMENT_MODE = 'assessment';
 
+    var failure_audio = new Audio('https://pakistanx-static-assets.s3.amazonaws.com/wrong.mp3');
+    var success_audio = new Audio('https://pakistanx-static-assets.s3.amazonaws.com/correct.mp3');
+
     var Selector = {
         popup_box: '.popup',
         close_button: '.popup .close-feedback-popup-button'
@@ -1715,6 +1718,10 @@ function DragAndDropBlock(runtime, element, configuration) {
                     state.grade = data.grade;
                     if (!data.correct) {
                         delete state.items[item_id];
+                        failure_audio.play();
+                    }
+                    else{
+                        success_audio.play();
                     }
                     if (data.finished) {
                         state.finished = true;
