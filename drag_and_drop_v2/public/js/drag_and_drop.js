@@ -1461,6 +1461,11 @@ function DragAndDropBlock(runtime, element, configuration) {
         };
 
         var onDragStart = function(interaction_type, $item, drag_origin) {
+
+            configuration.zones.forEach(function (zone){
+                zone.classList.add("drop-zones-outline");
+            });
+
             var item_id = $item.data('value');
             var item = getItemById(item_id);
             var $document = $(document);
@@ -1574,6 +1579,11 @@ function DragAndDropBlock(runtime, element, configuration) {
             };
 
             var onDragEnd = function(evt) {
+
+                configuration.zones.forEach(function (zone){
+                    zone.classList.remove("drop-zones-outline");
+                });
+
                 if (raf_id) {
                     cancelAnimationFrame(raf_id);
                 }
@@ -1697,6 +1707,18 @@ function DragAndDropBlock(runtime, element, configuration) {
         applyState();
     };
 
+    var playSound = function (audio){
+        try{
+            audio.pause();
+            audio.currentTime = 0;
+        }
+        catch{
+            //Do Nothing
+        }
+
+        audio.play();
+    }
+
     var submitLocation = function(item_id, zone) {
         if (!zone) {
             return;
@@ -1718,11 +1740,12 @@ function DragAndDropBlock(runtime, element, configuration) {
                     state.grade = data.grade;
                     if (!data.correct) {
                         delete state.items[item_id];
-                        failure_audio.play();
+                        playSound(failure_audio);
                     }
                     else{
-                        success_audio.play();
+                        playSound(success_audio);
                     }
+                    
                     if (data.finished) {
                         state.finished = true;
                         state.overall_feedback = data.overall_feedback;
