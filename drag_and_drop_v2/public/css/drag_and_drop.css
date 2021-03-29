@@ -889,3 +889,7 @@
         box-shadow: none;
     }
 }
+
+.drop-zones-outline{
+    background: red;
+}
