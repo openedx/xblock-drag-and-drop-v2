@@ -1745,6 +1745,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                     else{
                         playSound(success_audio);
                     }
+                    
                     if (data.finished) {
                         state.finished = true;
                         state.overall_feedback = data.overall_feedback;
