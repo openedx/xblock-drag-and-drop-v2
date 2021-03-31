@@ -80,8 +80,9 @@
 .xblock--drag-and-drop .drag-container {
     box-sizing: border-box;
     width: auto;
-    padding: 1%;
-    background-color: #ebf0f2;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #E2E2E2;
     position: relative;
 }
 .xblock--drag-and-drop .drag-container:after {
@@ -107,19 +108,36 @@
     border-radius: 3px;
     box-sizing: border-box;
     margin: 5px;
-    padding: 10px;
-    text-align: center;
-    background-color: #1d5280;
+    padding: 10px 25px 10px 10px;
+    text-align: left;
+    background-color: #E2E2E2;
     font-size: 14px;
-    color: #fff;
+    color: #000;
     opacity: 1;
     outline-color: #fff;
     outline-style: none;
+    position: relative;
     /* Some versions of the drag and drop library try to fiddle with this */
     z-index: 10 !important;
     -webkit-touch-callout: none;
 }
-
+.xblock--drag-and-drop .drag-container .option:after, .xblock--drag-and-drop .drag-container .option:before {
+    font: 20px/20px FontAwesome;
+    content: "\f142";
+    position: absolute;
+    right: 23px;
+    top: 50%;
+    margin: -10px 0 0;
+}
+.xblock--drag-and-drop .drag-container .option:before {
+    right: 15px;
+}
+.xblock--drag-and-drop .drag-container .option.fade {
+    padding-right: 10px;
+}
+.xblock--drag-and-drop .drag-container .option.fade:after, .xblock--drag-and-drop .drag-container .option.fade:before {
+    display: none;
+}
 @media screen and (max-width: 480px) {
    /* Horizontal scroll for item bank on mobile */
     .xblock--drag-and-drop .item-bank {
@@ -210,11 +228,11 @@
 .xblock--drag-and-drop .drag-container .option[draggable='true']:focus,
 .xblock--drag-and-drop .drag-container .option[draggable='true']:hover,
 .xblock--drag-and-drop .drag-container .option[draggable='true'][aria-grabbed='true'] {
-    outline-width: 2px;
+    outline-width: 4px;
     outline-style: dotted;
     outline-offset: -4px;
+    outline-color: #8BC5CB;
     /* IE 11 doesn't support outline-offset, so we use a box-shadow instead. */
-    box-shadow: inset 0 0 0 2px;
 }
 
 .xblock--drag-and-drop .drag-container .option.grabbed-with-mouse {
@@ -223,6 +241,9 @@
     opacity: .65;
     z-index: 20 !important;
     margin: 0; /* Allow the draggable to touch the edges of the target image */
+}
+.xblock--drag-and-drop .drag-container .option.grabbed-with-mouse:after, .xblock--drag-and-drop .drag-container .option.grabbed-with-mouse:before {
+    display: none;
 }
 .xblock--drag-and-drop .drag-container .item-align-center .option.grabbed-with-mouse {
     margin: 0 auto; /* Revert to auto margin when dragging with mouse to not confuse jQuery UI draggable */
@@ -306,7 +327,7 @@
     box-align:center;
     border: 3px dashed transparent;
 }
-.xblock--drag-and-drop .zone:hover {
+.xblock--drag-and-drop .zone:hover, .xblock--drag-and-drop .zone.drop-zones-outline {
     border-color: #8BC5CB;
 }
 .xblock--drag-and-drop .zone-with-borders {
@@ -887,8 +908,4 @@
         outline: none;
         box-shadow: none;
     }
-}
-
-
-.drop-zones-outline {
 }

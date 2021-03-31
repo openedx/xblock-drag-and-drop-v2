@@ -1462,9 +1462,7 @@ function DragAndDropBlock(runtime, element, configuration) {
 
         var onDragStart = function(interaction_type, $item, drag_origin) {
 
-            configuration.zones.forEach(function (zone){
-                zone.classList.add("drop-zones-outline");
-            });
+            $('.zone').addClass('drop-zones-outline');
 
             var item_id = $item.data('value');
             var item = getItemById(item_id);
@@ -1579,10 +1577,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             };
 
             var onDragEnd = function(evt) {
-
-                configuration.zones.forEach(function (zone){
-                    zone.classList.remove("drop-zones-outline");
-                });
+                $('.zone').removeClass('drop-zones-outline');
 
                 if (raf_id) {
                     cancelAnimationFrame(raf_id);
