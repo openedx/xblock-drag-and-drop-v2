@@ -3,244 +3,243 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# e2f_HE c1 <e2f_HE_c1@outlook.com>, 2016
-# Omar Al-Ithawi <i@omardo.com>, 2019
-# qualityalltext <quality@alltext.co.il>, 2016
+# Keivan Farzaneh <keivan.farzaneh@edulib.org>, 2017
+# Pierre Mailhot <pierre.mailhot@gmail.com>, 2017,2020
 msgid ""
 msgstr ""
 "Project-Id-Version: XBlocks\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-24 21:55-0500\n"
-"PO-Revision-Date: 2021-03-25 03:53+0000\n"
+"PO-Revision-Date: 2021-03-24 21:14+0000\n"
 "Last-Translator: OpenCraft OpenCraft <help@opencraft.com>\n"
-"Language-Team: Hebrew (http://www.transifex.com/open-edx/xblocks/language/he/)\n"
+"Language-Team: French (Canada) (http://www.transifex.com/open-edx/xblocks/language/fr_CA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: he\n"
-"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;\n"
+"Language: fr_CA\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: default_data.py:5
 msgid ""
 "An isosceles triangle with three layers of similar height. It is shown "
 "upright, so the widest layer is located at the bottom, and the narrowest "
 "layer is located at the top."
-msgstr "משולש שווה-שוקיים בעל שלוש שכבות בגובה דומה. הוא מוצג אנכית, כך שהשכבה הרחבה ביותר נמצאת בתחתית, והשכבה הצרה ביותר נמצאת למעלה."
+msgstr "Un triangle isocèle avec trois segments de hauteur similaire. Il est représenté en position verticale, de sorte que le segment le plus large se trouve en bas et que le segment le plus étroit se trouve en haut."
 
 #: default_data.py:14
 msgid "The Top Zone"
-msgstr "האזור העליון"
+msgstr "La zone supérieure"
 
 #: default_data.py:15
 msgid "The Middle Zone"
-msgstr "האזור האמצעי"
+msgstr "La zone intermédiaire"
 
 #: default_data.py:16
 msgid "The Bottom Zone"
-msgstr "האזור התחתון"
+msgstr "La zone inférieure"
 
 #: default_data.py:18
 msgid "Use this zone to associate an item with the top layer of the triangle."
-msgstr "השתמש באזור זה על מנת לקשר פריט עם השכבה העליונה של המשולש."
+msgstr "Utilisez cette zone pour associer un élément avec le segment supérieur du triangle."
 
 #: default_data.py:19
 msgid ""
 "Use this zone to associate an item with the middle layer of the triangle."
-msgstr "השתמש באזור זה על מנת לקשר פריט עם השכבה האמצעית של המשולש."
+msgstr "Utilisez cette zone pour associer un élément avec le segment intermédiaire du triangle."
 
 #: default_data.py:20
 msgid ""
 "Use this zone to associate an item with the bottom layer of the triangle."
-msgstr "השתמש באזור זה על מנת לקשר פריט עם השכבה התחתונה של המשולש."
+msgstr "Utilisez cette zone pour associer un élément avec le segment inférieur du triangle."
 
 #: default_data.py:22
 msgid "Correct! This one belongs to The Top Zone."
-msgstr ""
+msgstr "Correct! Celui-ci appartient à la zone supérieur."
 
 #: default_data.py:23
 msgid "Correct! This one belongs to The Middle Zone."
-msgstr ""
+msgstr "Correct! Celui-ci appartient à la zone du milieu."
 
 #: default_data.py:24
 msgid "Correct! This one belongs to The Bottom Zone."
-msgstr ""
+msgstr "Correct! Celui-ci appartient à la zone inférieure."
 
 #: default_data.py:25
 msgid "No, this item does not belong here. Try again."
-msgstr "לא, פריט זה אינו שייך לכאן. יש לנסות שנית."
+msgstr "Non, cet élément ne se place pas ici. Réessayez."
 
 #: default_data.py:26
 msgid "You silly, there are no zones for this one."
-msgstr "אין אזורים עבור זה."
+msgstr "Vous êtes bête, il n'y a aucune zone pour celui-ci."
 
 #: default_data.py:27
 msgid "Of course it goes here! It goes anywhere!"
-msgstr "בוודאי שזה לשם! זה מתאים בכל מקום!"
+msgstr "Bien sûr que ça va ici! Ça va n'importe où!"
 
 #: default_data.py:29
 msgid "Goes to the top"
-msgstr "מתאים למעלה"
+msgstr "Va en haut"
 
 #: default_data.py:30
 msgid "Goes to the middle"
-msgstr "מתאים למרכז"
+msgstr "Va au milieu"
 
 #: default_data.py:31
 msgid "Goes to the bottom"
-msgstr "מתאים לתחתית"
+msgstr "Va en bas"
 
 #: default_data.py:32
 msgid "Goes anywhere"
-msgstr "בכל מקום"
+msgstr "Va n'importe où"
 
 #: default_data.py:33
 msgid "I don't belong anywhere"
-msgstr "אינני שייך לשום מקום"
+msgstr "Je n'appartiens à aucun endroit"
 
 #: default_data.py:35
 msgid "Drag the items onto the image above."
-msgstr "גרור את הפריטים אל התמונה למעלה."
+msgstr "Faites glisser les éléments sur l'image ci-dessus."
 
 #: default_data.py:36
 msgid "Good work! You have completed this drag and drop problem."
-msgstr "עבודה טובה! השלמת את בעיית הגרירה והשחרור הזו."
+msgstr "Bon travail! Vous avez complété ce problème de glisser-déposer."
 
 #: drag_and_drop_v2.py:76
 msgid "Title"
-msgstr "כותרת"
+msgstr "Titre"
 
 #: drag_and_drop_v2.py:77
 msgid ""
 "The title of the drag and drop problem. The title is displayed to learners."
-msgstr "הכותרת של בעיית הגרירה והשחרור. הכותרת מוצגת ללומדים."
+msgstr "Le titre du problème de glisser-déposer. Le titre est affiché aux apprenants."
 
 #: drag_and_drop_v2.py:79
 msgid "Drag and Drop"
-msgstr "גרירה ושחרור"
+msgstr "Glisser Déposer"
 
 #: drag_and_drop_v2.py:84
 msgid "Mode"
-msgstr "מצב"
+msgstr "Mode"
 
 #: drag_and_drop_v2.py:86
 msgid ""
 "Standard mode: the problem provides immediate feedback each time a learner "
 "drops an item on a target zone. Assessment mode: the problem provides "
 "feedback only after a learner drops all available items on target zones."
-msgstr "מצב תקני: הבעיה מספקת משוב מיידי בכל פעם שתלמיד משחרר פריט באזור יעד. מצב הערכה: הבעיה מספקת משוב רק לאחר שתלמיד משחרר את כל הפריטים הזמינים באזורי היעד."
+msgstr "Mode standard: ce problème fournit une rétroaction immédiate à chaque fois qu'un apprenant dépose un élément sur une zone cible. Mode d'évaluation: ce problème fournit une rétroaction seulement après qu'un apprenant ait déposé tous les éléments disponibles sur les zones cibles."
 
 #: drag_and_drop_v2.py:93
 msgid "Standard"
-msgstr "תקן"
+msgstr "Standard"
 
 #: drag_and_drop_v2.py:94
 msgid "Assessment"
-msgstr "הערכה"
+msgstr "Évaluation"
 
 #: drag_and_drop_v2.py:101
 msgid "Maximum attempts"
-msgstr "מספר נסיונות מרבי"
+msgstr "Nombre maximal de tentatives"
 
 #: drag_and_drop_v2.py:103
 msgid ""
 "Defines the number of times a student can try to answer this problem. If the"
 " value is not set, infinite attempts are allowed."
-msgstr "מגדיר את מספר הפעמים בהן סטודנט יכול לנסות לענות על בעיה זו. אם הערך לא נקבע, יתאפשרו אינסוף ניסיונות."
+msgstr "Définit le nombre de fois où un étudiant peut tenter de répondre à ce problème. Si cette valeur n'est pas définie, un nombre infini de tentatives est permis."
 
 #: drag_and_drop_v2.py:112
 msgid "Show title"
-msgstr "הצג כותרת"
+msgstr "Afficher le titre"
 
 #: drag_and_drop_v2.py:113
 msgid "Display the title to the learner?"
-msgstr "האם להציג את הכותרת ללומד?"
+msgstr "Afficher le titre à l'apprenant?"
 
 #: drag_and_drop_v2.py:120
 msgid "Problem text"
-msgstr "טקסט הבעיה"
+msgstr "Texte du problème"
 
 #: drag_and_drop_v2.py:121
 msgid "The description of the problem or instructions shown to the learner."
-msgstr "תיאור הבעיה או הוראות המוצגות ללומד."
+msgstr "La description du problème ou les instructions montrées à l'apprenant."
 
 #: drag_and_drop_v2.py:128
 msgid "Show \"Problem\" heading"
-msgstr "הצג כותרת \"בעיה\""
+msgstr "Montrer l'en-tête « Problème »"
 
 #: drag_and_drop_v2.py:129
 msgid "Display the heading \"Problem\" above the problem text?"
-msgstr "האם להציג את הכותרת \"בעיה\" מעל לטקסט הבעיה?"
+msgstr "Afficher l'en-tête « Problème » au-dessus du texte du problème?"
 
 #: drag_and_drop_v2.py:136
 msgid "Problem Weight"
-msgstr ""
+msgstr "Poids du problème"
 
 #: drag_and_drop_v2.py:137
 msgid "Defines the number of points the problem is worth."
-msgstr ""
+msgstr "Définit le nombre de points que le problème vaut."
 
 #: drag_and_drop_v2.py:144
 msgid "Item background color"
-msgstr "צבע הרקע של הפריט"
+msgstr "Couleur d'arrière-plan de l'élément"
 
 #: drag_and_drop_v2.py:145
 msgid ""
 "The background color of draggable items in the problem (example: 'blue' or "
 "'#0000ff')."
-msgstr "צבע הרקע של הפריטים הניתנים לגרירה בבעיה (לדוגמה: 'כחול' או '#0000ff')."
+msgstr "Couleur d'arrière-plan des éléments à glisser-déposer dans le problème (exemple: 'blue' ou '#0000ff')."
 
 #: drag_and_drop_v2.py:152
 msgid "Item text color"
-msgstr "צבע הטקסט של הפריט"
+msgstr "Couleur du texte de l'élément"
 
 #: drag_and_drop_v2.py:153
 msgid "Text color to use for draggable items (example: 'white' or '#ffffff')."
-msgstr "צבע הטקסט לשימוש עבור פריטים הניתנים לגרירה (דוגמה: 'לבן' או '#ffffff')."
+msgstr "Couleur du texte à utiliser pour les éléments à glisser-déposer (exemple: 'white' ou '#ffffff')."
 
 #: drag_and_drop_v2.py:160
 msgid "Maximum items per zone"
-msgstr ""
+msgstr "Nombre maximum d'éléments par zone"
 
 #: drag_and_drop_v2.py:161
 msgid ""
 "This setting limits the number of items that can be dropped into a single "
 "zone."
-msgstr ""
+msgstr "Ce paramètre limite le nombre d'éléments pouvant être déposés dans une seule zone."
 
 #: drag_and_drop_v2.py:168
 msgid "Problem data"
-msgstr "נתוני הבעיה"
+msgstr "Données du problème"
 
 #: drag_and_drop_v2.py:170
 msgid ""
 "Information about zones, items, feedback, and background image for this "
 "problem. This information is derived from the input that a course author "
 "provides via the interactive editor when configuring the problem."
-msgstr "מידע אודות אזורים, פריטים, משוב ותמונת רקע עבור בעיה זו. מידע זה נובע מהקלט שמספק מחבר הקורס באמצעות עורך אינטראקטיבי בזמן קביעת תצורת הבעיה."
+msgstr "Informations concernant les zones, les éléments, la rétroaction et l'image de fond pour ce problème. Cette information est dérivée de l'entrée qu'un auteur de cours fournit via l'éditeur interactif lors de la configuration du problème."
 
 #: drag_and_drop_v2.py:180
 msgid ""
 "Information about current positions of items that a learner has dropped on "
 "the target image."
-msgstr "מידע אודות מיקום נוכחי של פריטים שצריך הלומד לשחרר על תמונת המטרה."
+msgstr "Informations concernant les positions actuelles des éléments qu'un apprenant a déposés sur l'image cible."
 
 #: drag_and_drop_v2.py:187
 msgid "Number of attempts learner used"
-msgstr "מספר הנסיונות שהלומד השתמש בהם"
+msgstr "Nombre de tentatives utilisées par l'apprenant"
 
 #: drag_and_drop_v2.py:194
 msgid "Indicates whether a learner has completed the problem at least once"
-msgstr "מציין האם השלים הלומד את הבעיה לפחות פעם אחת"
+msgstr "Indique si un apprenant a complété le problème au moins une fois"
 
 #: drag_and_drop_v2.py:201
 msgid ""
 "DEPRECATED. Keeps maximum score achieved by student as a weighted value."
-msgstr ""
+msgstr "DÉCONSEILLÉ. Conserve le score maximum atteint par l'étudiant en tant que valeur pondérée."
 
 #: drag_and_drop_v2.py:207
 msgid ""
 "Keeps maximum score achieved by student as a raw value between 0 and 1."
-msgstr ""
+msgstr "Conserve le score maximum atteint par l'étudiant en tant que valeur brute entre 0 et 1."
 
 #: drag_and_drop_v2.py:214
 msgid "Maximum score available of the problem as a raw value between 0 and 1."
@@ -249,113 +248,113 @@ msgstr ""
 #: drag_and_drop_v2.py:536
 #, python-brace-format
 msgid "Unknown DnDv2 mode {mode} - course is misconfigured"
-msgstr "מצב DnDv2 לא ידוע {mode} - הקורס אינו מוגדר"
+msgstr "Mode {mode} DnDv2 inconnu - le cours est mal configuré"
 
 #: drag_and_drop_v2.py:611
 msgid "show_answer handler should only be called for assessment mode"
-msgstr "מדריך הראה_תשובה צריך להיות במצב הערכה בלבד"
+msgstr "show_answer ne doit être utilisé que pour le mode d'évaluation"
 
 #: drag_and_drop_v2.py:616
 msgid "There are attempts remaining"
-msgstr "נותרו עדיים נסיונות"
+msgstr "Il reste des tentatives"
 
 #: drag_and_drop_v2.py:689
 msgid "do_attempt handler should only be called for assessment mode"
-msgstr "יש לקרוא למבצע do_attempt רק עבור מצב הערכה"
+msgstr "do_attempt ne doit être utilisé que pour le mode d'évaluation"
 
 #: drag_and_drop_v2.py:694 drag_and_drop_v2.py:805
 msgid "Max number of attempts reached"
-msgstr "אירעה חריגה ממספר הניסיונות המרבי"
+msgstr "Nombre maximal de tentatives atteint"
 
 #: drag_and_drop_v2.py:699
 msgid "Submission deadline has passed."
-msgstr ""
+msgstr "La date limite de soumission est passée."
 
 #: templates/html/drag_and_drop.html:4
 msgid "Loading drag and drop problem."
-msgstr "העלאת בעיית גרירה ושחרור."
+msgstr "Chargement du problème de glisser-déposer."
 
 #: templates/html/drag_and_drop_edit.html:10
 msgid "Basic Settings"
-msgstr ""
+msgstr "Paramètres de base"
 
 #: templates/html/drag_and_drop_edit.html:76
 msgid "Introductory feedback"
-msgstr "משוב פתיחה"
+msgstr "Rétroaction préliminaire"
 
 #: templates/html/drag_and_drop_edit.html:81
 msgid "Final feedback"
-msgstr "משוב סופי"
+msgstr "Rétroaction finale"
 
 #: templates/html/drag_and_drop_edit.html:90
 msgid "Zones"
-msgstr "אזורים"
+msgstr "Zones"
 
 #: templates/html/drag_and_drop_edit.html:95
 msgid "Background Image"
-msgstr ""
+msgstr "Image de fond"
 
 #: templates/html/drag_and_drop_edit.html:98
 msgid "Provide custom image"
-msgstr ""
+msgstr "Fournissez une image personnalisée"
 
 #: templates/html/drag_and_drop_edit.html:102
 msgid "Generate image automatically"
-msgstr ""
+msgstr "Générer automatiquement une image"
 
 #: templates/html/drag_and_drop_edit.html:107
 msgid "Background URL"
-msgstr "כתובת URL של הרקע"
+msgstr "URL de fond"
 
 #: templates/html/drag_and_drop_edit.html:114
 msgid "Change background"
-msgstr "שינוי רקע"
+msgstr "Changer le fond"
 
 #: templates/html/drag_and_drop_edit.html:116
 msgid ""
 "For example, 'http://example.com/background.png' or "
 "'/static/background.png'."
-msgstr "לדוגמה, 'http://example.com/background.png' או '/static/background.png'."
+msgstr "Par exemple, 'http://example.com/background.png' ou '/static/background.png'."
 
 #: templates/html/drag_and_drop_edit.html:121
 msgid "Zone Layout"
-msgstr ""
+msgstr "Disposition des zones"
 
 #: templates/html/drag_and_drop_edit.html:123
 msgid "Number of columns"
-msgstr ""
+msgstr "Le nombre de colonnes"
 
 #: templates/html/drag_and_drop_edit.html:131
 msgid "Number of rows"
-msgstr ""
+msgstr "Le nombre de rangées"
 
 #: templates/html/drag_and_drop_edit.html:138
 msgid "Number of columns and rows."
-msgstr ""
+msgstr "Le nombre de colonnes et de rangées."
 
 #: templates/html/drag_and_drop_edit.html:142
 msgid "Zone Size"
-msgstr ""
+msgstr "Taille de la zone"
 
 #: templates/html/drag_and_drop_edit.html:144
 msgid "Zone width"
-msgstr ""
+msgstr "Largeur de la zone"
 
 #: templates/html/drag_and_drop_edit.html:152
 msgid "Zone height"
-msgstr ""
+msgstr "Hauteur de la zone"
 
 #: templates/html/drag_and_drop_edit.html:159
 msgid "Size of a single zone in pixels."
-msgstr ""
+msgstr "Taille d'une seule zone en pixels."
 
 #: templates/html/drag_and_drop_edit.html:162
 msgid "Generate image and zones"
-msgstr ""
+msgstr "Générer l'image et les zones"
 
 #: templates/html/drag_and_drop_edit.html:165
 msgid "Background description"
-msgstr "תיאור רקע"
+msgstr "Description du fond"
 
 #: templates/html/drag_and_drop_edit.html:170
 msgid ""
@@ -364,83 +363,79 @@ msgid ""
 "                            The description should provide sufficient information to allow anyone\n"
 "                            to solve the problem even without seeing the image.\n"
 "                        "
-msgstr "\n                            נא ספק תיאור של התמונה למשתמשים חסרי יכולת ויזואלית.\n                            התיאור חייב לספק מידע במידה מספקת ולאפשר לכל אחד\n                            לפתור את הבעיה גם מבלי לראות את התמונה.\n                        "
+msgstr "\nSVP veuillez fournir une description de l'image pour les utilisateurs non visuels. La description doit fournir suffisamment d'informations pour permettre à n'importe qui de résoudre le problème, même sans voir l'image."
 
 #: templates/html/drag_and_drop_edit.html:180
 msgid "Zone labels"
-msgstr "תוויות האזור"
+msgstr "Étiquettes des zones"
 
 #: templates/html/drag_and_drop_edit.html:183
 msgid "Display label names on the image"
-msgstr "יש להציג את שמות התווית על התמונה"
+msgstr "Afficher les noms des étiquettes sur l'image"
 
 #: templates/html/drag_and_drop_edit.html:187
 msgid "Zone borders"
-msgstr "גבולות האזור"
+msgstr "Bordures des zones"
 
 #: templates/html/drag_and_drop_edit.html:190
 msgid "Display zone borders on the image"
-msgstr "הצג את גבולות האזור על התמונה"
+msgstr "Afficher les bordures des zones sur l'image"
 
 #: templates/html/drag_and_drop_edit.html:195
 msgid "Zone definitions"
-msgstr "הפרדות אזור"
+msgstr "Définitions des zones"
 
 #: templates/html/drag_and_drop_edit.html:201
 msgid "Add a zone"
-msgstr "הוסף אזור"
+msgstr "Ajouter une zone"
 
 #: templates/html/drag_and_drop_edit.html:215
 msgid "Items"
-msgstr "פריטים"
+msgstr "Éléments"
 
 #: templates/html/drag_and_drop_edit.html:249
 msgid "Item definitions"
-msgstr ""
+msgstr "Définitions des éléments"
 
 #: templates/html/drag_and_drop_edit.html:253
 msgid "Add an item"
-msgstr "הוסף פריט"
+msgstr "Ajouter un élément"
 
 #: templates/html/drag_and_drop_edit.html:263
 msgid "Continue"
-msgstr "המשך"
+msgstr "Continuer"
 
 #: templates/html/drag_and_drop_edit.html:267
 msgid "Save"
-msgstr "שמירה"
+msgstr "Enregistrer"
 
 #: templates/html/drag_and_drop_edit.html:271
 msgid "Cancel"
-msgstr "ביטול"
+msgstr "Annuler"
 
 #: utils.py:56
 #, python-brace-format
 msgid "Your highest score is {score}"
-msgstr ""
+msgstr "Votre score le plus élevé est {score}"
 
 #: utils.py:57
 #, python-brace-format
 msgid "Final attempt was used, highest score is {score}"
-msgstr "נעשה שימוש בניסיון האחרון, הציון הגבוה ביותר הוא {score}"
+msgstr "La dernière tentative a été utilisée, le score le plus élevé est {score}"
 
 #: utils.py:65
 #, python-brace-format
 msgid "Correctly placed {correct_count} item."
 msgid_plural "Correctly placed {correct_count} items."
-msgstr[0] "פריט  {correct_count} הונח נכון."
-msgstr[1] " {correct_count} פריטים הונחו נכון."
-msgstr[2] " {correct_count} פריטים הונחו נכון."
-msgstr[3] " {correct_count} פריטים הונחו נכון."
+msgstr[0] "{correct_count} élément a été correctement placé."
+msgstr[1] "{correct_count} éléments ont été correctement placés."
 
 #: utils.py:76
 #, python-brace-format
 msgid "Misplaced {misplaced_count} item."
 msgid_plural "Misplaced {misplaced_count} items."
-msgstr[0] "פריטי {misplaced_count} שאינם במקומם."
-msgstr[1] "פריטי {misplaced_count} שאינם במקומם."
-msgstr[2] "פריטי {misplaced_count} שאינם במקומם."
-msgstr[3] "פריטי {misplaced_count} שאינם במקומם."
+msgstr[0] "{misplaced_count} élément n'a pas été correctement placé."
+msgstr[1] "{misplaced_count} éléments n'ont pas été correctement placés."
 
 #: utils.py:87
 #, python-brace-format
@@ -449,153 +444,149 @@ msgid ""
 msgid_plural ""
 "Misplaced {misplaced_count} items. Misplaced items were returned to item "
 "bank."
-msgstr[0] "פריט {misplaced_count} שהונח לא נכון. הפריט שהונח לא נכון הוחזר לבנק הפריטים."
-msgstr[1] " {misplaced_count} פריטים שהונחו לא נכון. הפריטים שהונחו לא נכון הוחזרו לבנק הפריטים."
-msgstr[2] " {misplaced_count} פריטים שהונחו לא נכון. הפריטים שהונחו לא נכון הוחזרו לבנק הפריטים."
-msgstr[3] " {misplaced_count} פריטים שהונחו לא נכון. הפריטים שהונחו לא נכון הוחזרו לבנק הפריטים."
+msgstr[0] "{misplaced_count} élément n'a pas été correctement placé. L'élément mal placé a été retourné à la banque d'éléments."
+msgstr[1] "{misplaced_count} éléments n'ont pas été correctement placés. Les éléments mal placés ont été retournés à la banque d'éléments."
 
 #: utils.py:98
 #, python-brace-format
 msgid "Did not place {missing_count} required item."
 msgid_plural "Did not place {missing_count} required items."
-msgstr[0] "לא הניח פריט דרוש {missing_count}."
-msgstr[1] "לא הניח {missing_count} פריטים דרושים."
-msgstr[2] "לא הניח {missing_count} פריטים דרושים."
-msgstr[3] "לא הניח {missing_count} פריטים דרושים."
+msgstr[0] "Vous n'avez pas placé {missing_count} élément requis."
+msgstr[1] "Vous n'avez pas placé {missing_count} éléments requis."
 
 #: public/js/drag_and_drop.js:33 public/js/drag_and_drop.js:358
 msgid "Submitting"
-msgstr ""
+msgstr "Soumission"
 
 #: public/js/drag_and_drop.js:137
 msgid "Unknown Zone"
-msgstr ""
+msgstr "Zone inconnue"
 
 #: public/js/drag_and_drop.js:141
 msgid "Placed in: {zone_title}"
-msgstr "ממוקם ב: {zone_title}"
+msgstr "Placé dans: {zone_title}"
 
 #: public/js/drag_and_drop.js:145
 msgid "Correctly placed in: {zone_title}"
-msgstr "ממוקם כהלכה ב: {zone_title}"
+msgstr "Correctement placé dans: {zone_title}"
 
 #: public/js/drag_and_drop.js:157
 msgid ", draggable, grabbed"
-msgstr ""
+msgstr ", glissable, saisi"
 
 #: public/js/drag_and_drop.js:157
 msgid ", draggable"
-msgstr ""
+msgstr ", glissable"
 
 #: public/js/drag_and_drop.js:234
 msgid "No items placed here"
-msgstr ""
+msgstr "Aucun élément placé ici"
 
 #: public/js/drag_and_drop.js:240
 msgid "Items placed here: "
-msgstr ""
+msgstr "Éléments placés ici:"
 
 #: public/js/drag_and_drop.js:272
 msgid ", dropzone"
-msgstr ""
+msgstr ", zone cible"
 
 #: public/js/drag_and_drop.js:275
 msgid "droppable"
-msgstr ""
+msgstr "déposable"
 
 #: public/js/drag_and_drop.js:295 public/js/drag_and_drop.js:300
 msgid "Feedback"
-msgstr "משוב"
+msgstr "Rétroaction"
 
 #: public/js/drag_and_drop.js:316 public/js/drag_and_drop.js:488
 #: public/js/drag_and_drop.js:531
 msgid "Close"
-msgstr "סגירה"
+msgstr "Fermer"
 
 #: public/js/drag_and_drop.js:319 public/js/drag_and_drop.js:552
 msgid "Keyboard Help"
-msgstr "מקלדת עזרה"
+msgstr "Aide clavier"
 
 #: public/js/drag_and_drop.js:322
 msgid "This is a screen reader-friendly problem."
-msgstr ""
+msgstr "Il s'agit d'un problème facile à lire à l'écran."
 
 #: public/js/drag_and_drop.js:323
 msgid ""
 "Drag and Drop problems consist of draggable items and dropzones. Users "
 "should select a draggable item with their keyboard and then navigate to an "
 "appropriate dropzone to drop it."
-msgstr ""
+msgstr "Les problèmes de glisser-déposer consistent en des éléments à glisser-déposer et des zones pour déposer ces éléments. Les utilisateurs doivent sélectionner un élément à glisser-déposer avec leur clavier, puis naviguer à un endroit approprié pour le déposer."
 
 #: public/js/drag_and_drop.js:324
 msgid ""
 "You can complete this problem using only your keyboard by following the "
 "guidance below:"
-msgstr ""
+msgstr "Vous pouvez compléter ce problème en utilisant uniquement votre clavier en suivant les conseils ci-dessous:"
 
 #: public/js/drag_and_drop.js:326
 msgid ""
 "Use only TAB and SHIFT+TAB to navigate between draggable items and drop "
 "zones."
-msgstr ""
+msgstr "Utilisez seulement TAB et SHIFT+TAB pour naviguer entre les éléments à glisser-déposer et les endroits pour les déposer."
 
 #: public/js/drag_and_drop.js:327
 msgid "Press CTRL+M to select a draggable item (effectively picking it up)."
-msgstr ""
+msgstr "Appuyez sur CTRL+M pour sélectionner un élément à glisser-déposer (pour le prendre correctement)"
 
 #: public/js/drag_and_drop.js:328
 msgid ""
 "Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press "
 "CTRL+M once more to drop it here."
-msgstr ""
+msgstr "Naviguez jusqu'à la zone de dépôt en utilisant TAB et SHIFT+TAB et appuyez sur CTRL+M une fois de plus pour déposer l'élément."
 
 #: public/js/drag_and_drop.js:329
 msgid ""
 "Press ESC if you want to cancel the drop operation (for example, to select a"
 " different item)."
-msgstr ""
+msgstr "Appuyez sur ÉCHAP pour annuler l'opération (par exemple, pour sélectionner un autre élément)."
 
 #: public/js/drag_and_drop.js:330
 msgid ""
 "TAB back to the list of draggable items and repeat this process until all of"
 " the draggable items have been placed on their respective dropzones."
-msgstr ""
+msgstr "Appuyez sur TAB pour revenir à la liste des éléments à glisser-déposer et répétez ce processus jusqu'à ce que tous les éléments aient été placés dans leurs zones respectives."
 
 #: public/js/drag_and_drop.js:348
 msgid "You have used {used} of {total} attempts."
-msgstr "השתמשת ב-{used} מתוך {total} ניסיונות."
+msgstr "Vous avez utilisé {used} essais sur {total}."
 
 #: public/js/drag_and_drop.js:370
 msgid "Submit"
-msgstr "שלח"
+msgstr "Soumettre"
 
 #: public/js/drag_and_drop.js:410
 msgid "Show Answer"
-msgstr "הצג תשובה"
+msgstr "Afficher la réponse"
 
 #: public/js/drag_and_drop.js:423
 msgid "Go to Beginning"
-msgstr ""
+msgstr "Aller au début"
 
 #: public/js/drag_and_drop.js:429
 msgid "Reset"
-msgstr "אתחל"
+msgstr "Réinitialiser"
 
 #: public/js/drag_and_drop.js:449 public/js/drag_and_drop.js:1188
 msgid "Some of your answers were not correct."
-msgstr "חלק מהתשובות שלך אינן נכונות."
+msgstr "Certaines de vos réponses étaient incorrectes."
 
 #: public/js/drag_and_drop.js:450 public/js/drag_and_drop.js:1191
 msgid "Hints:"
-msgstr ""
+msgstr "Indices : "
 
 #: public/js/drag_and_drop.js:518
 msgid "Correct"
-msgstr "נכון"
+msgstr "Correct"
 
 #: public/js/drag_and_drop.js:518
 msgid "Incorrect"
-msgstr "לא נכון"
+msgstr "Incorrect"
 
 #. Translators: {earned} is the number of points earned. {possible} is the
 #. total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
@@ -604,10 +595,8 @@ msgstr "לא נכון"
 #: public/js/drag_and_drop.js:567
 msgid "{earned}/{possible} point (graded)"
 msgid_plural "{earned}/{possible} points (graded)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "{earned}/{possible} point (noté)"
+msgstr[1] "{earned}/{possible} points (noté)"
 
 #. Translators: {earned} is the number of points earned. {possible} is the
 #. total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
@@ -616,80 +605,72 @@ msgstr[3] ""
 #: public/js/drag_and_drop.js:574
 msgid "{earned}/{possible} point (ungraded)"
 msgid_plural "{earned}/{possible} points (ungraded)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "{earned}/{possible} point (pas noté)"
+msgstr[1] "{earned}/{possible} points (pas noté)"
 
 #. Translators: {possible} is the number of points possible (examples: 1, 3,
 #. 10).
 #: public/js/drag_and_drop.js:584
 msgid "{possible} point possible (graded)"
 msgid_plural "{possible} points possible (graded)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "{possible} point possible (noté)"
+msgstr[1] "{possible} points possibles (noté)"
 
 #. Translators: {possible} is the number of points possible (examples: 1, 3,
 #. 10).
 #: public/js/drag_and_drop.js:591
 msgid "{possible} point possible (ungraded)"
 msgid_plural "{possible} points possible (ungraded)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "{possible} point possible (pas noté)"
+msgstr[1] "{possible} points possibles (pas noté)"
 
 #: public/js/drag_and_drop.js:617
 msgid "Drag and Drop Problem"
-msgstr ""
+msgstr "Exercice de Glisser Déposer"
 
 #: public/js/drag_and_drop.js:619
 msgid "Problem"
-msgstr "בעיה"
+msgstr "Exercice"
 
 #: public/js/drag_and_drop.js:644
 msgid "Item Bank"
-msgstr "בנק פריטים"
+msgstr "Banque d'éléments"
 
 #: public/js/drag_and_drop.js:690
 msgid "Drop Targets"
-msgstr ""
+msgstr "Cibles"
 
 #: public/js/drag_and_drop.js:703
 msgid "Actions"
-msgstr ""
+msgstr "Actions"
 
 #: public/js/drag_and_drop.js:853
 msgid "An error occurred. Unable to load drag and drop problem."
-msgstr "אירעה שגיאה. לא ניתן להעלות בעיית גרירה ושחרור."
+msgstr "Une erreur est survenue. Impossible de charger le problème de glisser-déposer."
 
 #: public/js/drag_and_drop.js:1313
 msgid "You cannot add any more items to this zone."
-msgstr ""
+msgstr "Vous ne pouvez plus ajouter d’éléments à cette zone."
 
 #: public/js/drag_and_drop_edit.js:108 public/js/drag_and_drop_edit.js:494
 #: public/js/drag_and_drop_edit.js:720
 msgid "There was an error with your form."
-msgstr "היתה שגיאה בטופס שלך."
+msgstr "Une erreur s'est produite avec votre formulaire."
 
 #: public/js/drag_and_drop_edit.js:109
 msgid "Please check over your submission."
-msgstr "בדוק שנית את השליחה."
+msgstr "Veuillez SVP vérifier votre soumission."
 
 #: public/js/drag_and_drop_edit.js:344
 msgid "Zone {num}"
 msgid_plural "Zone {num}"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Zone {num}"
+msgstr[1] "Zone {num}"
 
 #: public/js/drag_and_drop_edit.js:495
 msgid "Please check the values you entered."
-msgstr ""
+msgstr "Veuillez vérifier les valeurs que vous avez saisies."
 
 #: public/js/drag_and_drop_edit.js:713
 msgid "Saving"
-msgstr "שומר"
+msgstr "Sauvegarde en cours"

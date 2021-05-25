@@ -3,19 +3,21 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# OpenCraft LabXchange <help+labxchange@opencraft.com>, 2021
+# Jinsun Kim <jinsun.taylorkim@gmail.com>, 2020
+# OpenCraft OpenCraft <help@opencraft.com>, 2021
+# Seungheon Shin <gody8756@ajou.ac.kr>, 2020
 msgid ""
 msgstr ""
 "Project-Id-Version: XBlocks\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-03 00:00-0500\n"
-"PO-Revision-Date: 2021-02-03 03:37+0000\n"
-"Last-Translator: OpenCraft LabXchange <help+labxchange@opencraft.com>\n"
-"Language-Team: Korean (http://www.transifex.com/open-edx/xblocks/language/ko/)\n"
+"POT-Creation-Date: 2021-03-24 21:55-0500\n"
+"PO-Revision-Date: 2021-03-30 14:46+0000\n"
+"Last-Translator: OpenCraft OpenCraft <help@opencraft.com>\n"
+"Language-Team: Korean (Korea) (http://www.transifex.com/open-edx/xblocks/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ko\n"
+"Language: ko_KR\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: default_data.py:5
@@ -23,333 +25,337 @@ msgid ""
 "An isosceles triangle with three layers of similar height. It is shown "
 "upright, so the widest layer is located at the bottom, and the narrowest "
 "layer is located at the top."
-msgstr ""
+msgstr "비슷한 높이의 세 개의 층으로 구성된 이등변 삼각형입니다. 똑바로 서있는 형태이므로, 가장 넓은 층은 하단에 위치해있으며, 가장 좁은 층은 상단에 위치해 있습니다."
 
 #: default_data.py:14
 msgid "The Top Zone"
-msgstr ""
+msgstr "상단 영역"
 
 #: default_data.py:15
 msgid "The Middle Zone"
-msgstr ""
+msgstr "중단 영역"
 
 #: default_data.py:16
 msgid "The Bottom Zone"
-msgstr ""
+msgstr "하단 영역"
 
 #: default_data.py:18
 msgid "Use this zone to associate an item with the top layer of the triangle."
-msgstr ""
+msgstr "이 영역을 이용하여 항목을 삼각형의 상단층과 연결하세요."
 
 #: default_data.py:19
 msgid ""
 "Use this zone to associate an item with the middle layer of the triangle."
-msgstr ""
+msgstr "이 영역을 이용하여 항목을 삼각형의 중단층과 연결하세요."
 
 #: default_data.py:20
 msgid ""
 "Use this zone to associate an item with the bottom layer of the triangle."
-msgstr ""
+msgstr "이 영역을 이용하여 항목을 삼각형의 하단층과 연결하세요."
 
 #: default_data.py:22
 msgid "Correct! This one belongs to The Top Zone."
-msgstr ""
+msgstr "정답입니다! 이것은 상단 영역에 속합니다."
 
 #: default_data.py:23
 msgid "Correct! This one belongs to The Middle Zone."
-msgstr ""
+msgstr "정답입니다! 이것은 중단 영역에 속합니다."
 
 #: default_data.py:24
 msgid "Correct! This one belongs to The Bottom Zone."
-msgstr ""
+msgstr "정답입니다! 이것은 하단 영역에 속합니다."
 
 #: default_data.py:25
 msgid "No, this item does not belong here. Try again."
-msgstr ""
+msgstr "틀렸습니다, 이 항목은 이 곳에 속하지 않습니다. 다시 시도하세요."
 
 #: default_data.py:26
 msgid "You silly, there are no zones for this one."
-msgstr ""
+msgstr "어리석네요, 이것은 어느 영역에도 속하지 않습니다."
 
 #: default_data.py:27
 msgid "Of course it goes here! It goes anywhere!"
-msgstr ""
+msgstr "당연히 여기가 맞죠! 어디든 맞습니다!"
 
 #: default_data.py:29
 msgid "Goes to the top"
-msgstr ""
+msgstr "상단으로 갑니다"
 
 #: default_data.py:30
 msgid "Goes to the middle"
-msgstr ""
+msgstr "중단으로 갑니다"
 
 #: default_data.py:31
 msgid "Goes to the bottom"
-msgstr ""
+msgstr "하단으로 갑니다"
 
 #: default_data.py:32
 msgid "Goes anywhere"
-msgstr ""
+msgstr "어디든지 갑니다"
 
 #: default_data.py:33
 msgid "I don't belong anywhere"
-msgstr ""
+msgstr "난 어디에도 속하지 않습니다"
 
 #: default_data.py:35
 msgid "Drag the items onto the image above."
-msgstr ""
+msgstr "사진 위로 항목을 끌어다 놓으세요."
 
 #: default_data.py:36
 msgid "Good work! You have completed this drag and drop problem."
-msgstr ""
-
-#: drag_and_drop_v2.py:75
-msgid "Title"
-msgstr ""
+msgstr "잘했습니다! 당신은 이 끌어놓기 문제를 해결하셨습니다."
 
 #: drag_and_drop_v2.py:76
+msgid "Title"
+msgstr "제목"
+
+#: drag_and_drop_v2.py:77
 msgid ""
 "The title of the drag and drop problem. The title is displayed to learners."
-msgstr ""
+msgstr "끌어놓기 문제의 제목. 제목은 학습자에게 공개됩니다."
 
-#: drag_and_drop_v2.py:78
+#: drag_and_drop_v2.py:79
 msgid "Drag and Drop"
-msgstr ""
+msgstr "끌어놓기"
 
-#: drag_and_drop_v2.py:83
+#: drag_and_drop_v2.py:84
 msgid "Mode"
-msgstr ""
+msgstr "모드"
 
-#: drag_and_drop_v2.py:85
+#: drag_and_drop_v2.py:86
 msgid ""
 "Standard mode: the problem provides immediate feedback each time a learner "
 "drops an item on a target zone. Assessment mode: the problem provides "
 "feedback only after a learner drops all available items on target zones."
-msgstr ""
-
-#: drag_and_drop_v2.py:92
-msgid "Standard"
-msgstr ""
+msgstr "표준 모드: 학습자가 목표 영역에 각 항목을 놓을 때마다 즉각적으로 피드백을 제공합니다. 평가 모드: 학습자가 모든 이용가능한 항목을 목표 영역에 놓았을 때만 피드백을 제공합니다."
 
 #: drag_and_drop_v2.py:93
+msgid "Standard"
+msgstr "표준"
+
+#: drag_and_drop_v2.py:94
 msgid "Assessment"
-msgstr ""
+msgstr "평가"
 
-#: drag_and_drop_v2.py:100
+#: drag_and_drop_v2.py:101
 msgid "Maximum attempts"
-msgstr ""
+msgstr "최대 시도횟수"
 
-#: drag_and_drop_v2.py:102
+#: drag_and_drop_v2.py:103
 msgid ""
 "Defines the number of times a student can try to answer this problem. If the"
 " value is not set, infinite attempts are allowed."
-msgstr ""
-
-#: drag_and_drop_v2.py:111
-msgid "Show title"
-msgstr ""
+msgstr "학생이 이 문제에 대해 답할 수 있는 횟수를 지정합니다. 만약 값이 지정되지 않았다면, 무한정으로 시도할 수 있습니다."
 
 #: drag_and_drop_v2.py:112
-msgid "Display the title to the learner?"
-msgstr ""
+msgid "Show title"
+msgstr "제목 보이기"
 
-#: drag_and_drop_v2.py:119
-msgid "Problem text"
-msgstr ""
+#: drag_and_drop_v2.py:113
+msgid "Display the title to the learner?"
+msgstr "학습자에게 제목을 표시합니까?"
 
 #: drag_and_drop_v2.py:120
-msgid "The description of the problem or instructions shown to the learner."
-msgstr ""
+msgid "Problem text"
+msgstr "문제 텍스트"
 
-#: drag_and_drop_v2.py:127
-msgid "Show \"Problem\" heading"
-msgstr ""
+#: drag_and_drop_v2.py:121
+msgid "The description of the problem or instructions shown to the learner."
+msgstr "학습자에게 보여지는 문제 또는 지시사항의 내용"
 
 #: drag_and_drop_v2.py:128
-msgid "Display the heading \"Problem\" above the problem text?"
-msgstr ""
+msgid "Show \"Problem\" heading"
+msgstr "\"문제\"의 제목 보이기"
 
-#: drag_and_drop_v2.py:135
-msgid "Problem Weight"
-msgstr ""
+#: drag_and_drop_v2.py:129
+msgid "Display the heading \"Problem\" above the problem text?"
+msgstr "문제 텍스트 위에 \"문제\"의 제목을 표시합니까?"
 
 #: drag_and_drop_v2.py:136
-msgid "Defines the number of points the problem is worth."
-msgstr ""
+msgid "Problem Weight"
+msgstr "문제 중요도"
 
-#: drag_and_drop_v2.py:143
-msgid "Item background color"
-msgstr ""
+#: drag_and_drop_v2.py:137
+msgid "Defines the number of points the problem is worth."
+msgstr "문제의 중요도를 숫자로 지정합니다."
 
 #: drag_and_drop_v2.py:144
+msgid "Item background color"
+msgstr "항목 배경 색상"
+
+#: drag_and_drop_v2.py:145
 msgid ""
 "The background color of draggable items in the problem (example: 'blue' or "
 "'#0000ff')."
-msgstr ""
-
-#: drag_and_drop_v2.py:151
-msgid "Item text color"
-msgstr ""
+msgstr "문제의 끌기 가능한 항목의 배경 색상 (예시: '파랑' 또는 '#0000ff')."
 
 #: drag_and_drop_v2.py:152
-msgid "Text color to use for draggable items (example: 'white' or '#ffffff')."
-msgstr ""
+msgid "Item text color"
+msgstr "항목 텍스트 색상"
 
-#: drag_and_drop_v2.py:159
-msgid "Maximum items per zone"
-msgstr ""
+#: drag_and_drop_v2.py:153
+msgid "Text color to use for draggable items (example: 'white' or '#ffffff')."
+msgstr "끌기 가능한 항목의 텍스트 색상 (예시: '하양' 또는 '#ffffff')."
 
 #: drag_and_drop_v2.py:160
+msgid "Maximum items per zone"
+msgstr "영역 당 최대 항목 수"
+
+#: drag_and_drop_v2.py:161
 msgid ""
 "This setting limits the number of items that can be dropped into a single "
 "zone."
-msgstr ""
+msgstr "이 설정은 하나의 영역에 놓일 수 있는 항목의 최대 개수를 설정 합니다."
 
-#: drag_and_drop_v2.py:167
+#: drag_and_drop_v2.py:168
 msgid "Problem data"
-msgstr ""
+msgstr "문제 데이터"
 
-#: drag_and_drop_v2.py:169
+#: drag_and_drop_v2.py:170
 msgid ""
 "Information about zones, items, feedback, and background image for this "
 "problem. This information is derived from the input that a course author "
 "provides via the interactive editor when configuring the problem."
-msgstr ""
+msgstr "이 문제에 대한 영역, 항목, 피드백, 배경 이미지에 대한 정보. 이 정보는 강의의 저자가 반응형 에디터를 통해 문제를 구성할 때 제공하는 입력에서 비롯됩니다."
 
-#: drag_and_drop_v2.py:179
+#: drag_and_drop_v2.py:180
 msgid ""
 "Information about current positions of items that a learner has dropped on "
 "the target image."
-msgstr ""
+msgstr "학습자가 목표 이미지에 놓은 항목의 현재 위치에 대한 정보."
 
-#: drag_and_drop_v2.py:186
+#: drag_and_drop_v2.py:187
 msgid "Number of attempts learner used"
-msgstr ""
+msgstr "학습자가 시도한 횟수"
 
-#: drag_and_drop_v2.py:193
+#: drag_and_drop_v2.py:194
 msgid "Indicates whether a learner has completed the problem at least once"
-msgstr ""
+msgstr "학습자가 문제를 한 번 이상 완료했는지 표시합니다."
 
-#: drag_and_drop_v2.py:200
+#: drag_and_drop_v2.py:201
 msgid ""
 "DEPRECATED. Keeps maximum score achieved by student as a weighted value."
-msgstr ""
+msgstr "대체됩니다. 학생이 달성한 최대 점수를 가중치로 유지합니다."
 
-#: drag_and_drop_v2.py:206
+#: drag_and_drop_v2.py:207
 msgid ""
 "Keeps maximum score achieved by student as a raw value between 0 and 1."
+msgstr "학생이 달성한 최대 점수를 0과 1 사이의 원래 값으로 유지합니다."
+
+#: drag_and_drop_v2.py:214
+msgid "Maximum score available of the problem as a raw value between 0 and 1."
 msgstr ""
 
-#: drag_and_drop_v2.py:514
+#: drag_and_drop_v2.py:536
 #, python-brace-format
 msgid "Unknown DnDv2 mode {mode} - course is misconfigured"
-msgstr ""
+msgstr "알 수 없는 DnDv2 모드 {mode} - 강의가 잘못 구성되어있습니다."
 
-#: drag_and_drop_v2.py:589
+#: drag_and_drop_v2.py:611
 msgid "show_answer handler should only be called for assessment mode"
-msgstr ""
+msgstr "show_answer 핸들러는 평가 모드에서만 사용할 수 있습니다."
 
-#: drag_and_drop_v2.py:594
+#: drag_and_drop_v2.py:616
 msgid "There are attempts remaining"
-msgstr ""
+msgstr "남은 시도 횟수가 있습니다."
 
-#: drag_and_drop_v2.py:667
+#: drag_and_drop_v2.py:689
 msgid "do_attempt handler should only be called for assessment mode"
-msgstr ""
+msgstr "do_attempt 핸들러는 평가 모드에서만 사용할 수 있습니다."
 
-#: drag_and_drop_v2.py:672 drag_and_drop_v2.py:783
+#: drag_and_drop_v2.py:694 drag_and_drop_v2.py:805
 msgid "Max number of attempts reached"
-msgstr ""
+msgstr "최대 시도 횟수에 도달함"
 
-#: drag_and_drop_v2.py:677
+#: drag_and_drop_v2.py:699
 msgid "Submission deadline has passed."
-msgstr ""
+msgstr "제출 마감일이 지났습니다."
 
 #: templates/html/drag_and_drop.html:4
 msgid "Loading drag and drop problem."
-msgstr ""
+msgstr "끌어놓기 문제를 불러오는 중."
 
 #: templates/html/drag_and_drop_edit.html:10
 msgid "Basic Settings"
-msgstr ""
+msgstr "기본 설정"
 
 #: templates/html/drag_and_drop_edit.html:76
 msgid "Introductory feedback"
-msgstr ""
+msgstr "초기 피드백"
 
 #: templates/html/drag_and_drop_edit.html:81
 msgid "Final feedback"
-msgstr ""
+msgstr "최종 피드백"
 
 #: templates/html/drag_and_drop_edit.html:90
 msgid "Zones"
-msgstr ""
+msgstr "영역"
 
 #: templates/html/drag_and_drop_edit.html:95
 msgid "Background Image"
-msgstr ""
+msgstr "배경 이미지"
 
 #: templates/html/drag_and_drop_edit.html:98
 msgid "Provide custom image"
-msgstr ""
+msgstr "사용자 정의 이미지를 제공하기"
 
 #: templates/html/drag_and_drop_edit.html:102
 msgid "Generate image automatically"
-msgstr ""
+msgstr "이미지를 자동으로 생성하기"
 
 #: templates/html/drag_and_drop_edit.html:107
 msgid "Background URL"
-msgstr ""
+msgstr "배경 URL"
 
 #: templates/html/drag_and_drop_edit.html:114
 msgid "Change background"
-msgstr ""
+msgstr "배경 변경"
 
 #: templates/html/drag_and_drop_edit.html:116
 msgid ""
 "For example, 'http://example.com/background.png' or "
 "'/static/background.png'."
-msgstr ""
+msgstr "예를 들어, 'http://example.com/background.png' 또는 '/static/background.png'."
 
 #: templates/html/drag_and_drop_edit.html:121
 msgid "Zone Layout"
-msgstr ""
+msgstr "영역 레이아웃"
 
 #: templates/html/drag_and_drop_edit.html:123
 msgid "Number of columns"
-msgstr ""
+msgstr "열의 개수"
 
 #: templates/html/drag_and_drop_edit.html:131
 msgid "Number of rows"
-msgstr ""
+msgstr "행의 개수"
 
 #: templates/html/drag_and_drop_edit.html:138
 msgid "Number of columns and rows."
-msgstr ""
+msgstr "행과 열의 개수"
 
 #: templates/html/drag_and_drop_edit.html:142
 msgid "Zone Size"
-msgstr ""
+msgstr "영역 크기"
 
 #: templates/html/drag_and_drop_edit.html:144
 msgid "Zone width"
-msgstr ""
+msgstr "영역 너비"
 
 #: templates/html/drag_and_drop_edit.html:152
 msgid "Zone height"
-msgstr ""
+msgstr "영역 높이"
 
 #: templates/html/drag_and_drop_edit.html:159
 msgid "Size of a single zone in pixels."
-msgstr ""
+msgstr "픽셀 단위의 단일 영역 크기"
 
 #: templates/html/drag_and_drop_edit.html:162
 msgid "Generate image and zones"
-msgstr ""
+msgstr "이미지와 영역 생성하기"
 
 #: templates/html/drag_and_drop_edit.html:165
 msgid "Background description"
-msgstr ""
+msgstr "배경 설명"
 
 #: templates/html/drag_and_drop_edit.html:170
 msgid ""
@@ -358,51 +364,51 @@ msgid ""
 "                            The description should provide sufficient information to allow anyone\n"
 "                            to solve the problem even without seeing the image.\n"
 "                        "
-msgstr ""
+msgstr "\n                            이미지를 볼 수 없는 사용제를 위해 이미지의 설명을 제공하세요.\n                            누구나 이미지를 보지 않고도 문제를 풀 수 있도록\n                            충분한 정보를 설명해주어야 합니다.\n                        "
 
 #: templates/html/drag_and_drop_edit.html:180
 msgid "Zone labels"
-msgstr ""
+msgstr "영역 레이블"
 
 #: templates/html/drag_and_drop_edit.html:183
 msgid "Display label names on the image"
-msgstr ""
+msgstr "이미지에 레이블 이름을 표시하기"
 
 #: templates/html/drag_and_drop_edit.html:187
 msgid "Zone borders"
-msgstr ""
+msgstr "영역의 경계"
 
 #: templates/html/drag_and_drop_edit.html:190
 msgid "Display zone borders on the image"
-msgstr ""
+msgstr "이미지에 영역의 경계를 표시하기"
 
 #: templates/html/drag_and_drop_edit.html:195
 msgid "Zone definitions"
-msgstr ""
+msgstr "영역 정의"
 
 #: templates/html/drag_and_drop_edit.html:201
 msgid "Add a zone"
-msgstr ""
+msgstr "영역 추가하기"
 
 #: templates/html/drag_and_drop_edit.html:215
 msgid "Items"
-msgstr ""
+msgstr "항목"
 
 #: templates/html/drag_and_drop_edit.html:249
 msgid "Item definitions"
-msgstr ""
+msgstr "항목 정의"
 
 #: templates/html/drag_and_drop_edit.html:253
 msgid "Add an item"
-msgstr ""
+msgstr "항목 추가하기"
 
 #: templates/html/drag_and_drop_edit.html:263
 msgid "Continue"
-msgstr ""
+msgstr "계속"
 
 #: templates/html/drag_and_drop_edit.html:267
 msgid "Save"
-msgstr ""
+msgstr "저장"
 
 #: templates/html/drag_and_drop_edit.html:271
 msgid "Cancel"
@@ -416,7 +422,7 @@ msgstr "최고 점수는 {score} 입니다."
 #: utils.py:57
 #, python-brace-format
 msgid "Final attempt was used, highest score is {score}"
-msgstr ""
+msgstr "최종 시도가 사용되었으며, 최고 점수는 {score} 입니다"
 
 #: utils.py:65
 #, python-brace-format
@@ -428,7 +434,7 @@ msgstr[0] "{correct_count} 개의 항목을 올바르게 배치했습니다."
 #, python-brace-format
 msgid "Misplaced {misplaced_count} item."
 msgid_plural "Misplaced {misplaced_count} items."
-msgstr[0] ""
+msgstr[0] "{misplaced_count}개의 항목이 잘못 배치되었습니다."
 
 #: utils.py:87
 #, python-brace-format
@@ -443,47 +449,47 @@ msgstr[0] "{misplaced_count} 개 항목을 잘못 배치했습니다. 잘못 배
 #, python-brace-format
 msgid "Did not place {missing_count} required item."
 msgid_plural "Did not place {missing_count} required items."
-msgstr[0] ""
+msgstr[0] "{missing_count}개의 필요한 항목들을 배치하지 않았습니다."
 
 #: public/js/drag_and_drop.js:33 public/js/drag_and_drop.js:358
 msgid "Submitting"
-msgstr ""
+msgstr "제출 중"
 
 #: public/js/drag_and_drop.js:137
 msgid "Unknown Zone"
-msgstr ""
+msgstr "알수없는 영역"
 
 #: public/js/drag_and_drop.js:141
 msgid "Placed in: {zone_title}"
-msgstr ""
+msgstr "{zone_title}에 배치되어 있음"
 
 #: public/js/drag_and_drop.js:145
 msgid "Correctly placed in: {zone_title}"
-msgstr ""
+msgstr "{zone_title}에 알맞게 배치되어 있음"
 
 #: public/js/drag_and_drop.js:157
 msgid ", draggable, grabbed"
-msgstr ""
+msgstr ", 끌기 가능, 잡혀있음"
 
 #: public/js/drag_and_drop.js:157
 msgid ", draggable"
-msgstr ""
+msgstr ", 끌기 가능"
 
 #: public/js/drag_and_drop.js:234
 msgid "No items placed here"
-msgstr ""
+msgstr "항목이 배치되어 있지 않음"
 
 #: public/js/drag_and_drop.js:240
 msgid "Items placed here: "
-msgstr ""
+msgstr "다음의 항목들이 배치되어 있음:"
 
 #: public/js/drag_and_drop.js:272
 msgid ", dropzone"
-msgstr ""
+msgstr ", 놓기 영역"
 
 #: public/js/drag_and_drop.js:275
 msgid "droppable"
-msgstr ""
+msgstr "놓기 가능함"
 
 #: public/js/drag_and_drop.js:295 public/js/drag_and_drop.js:300
 msgid "Feedback"
@@ -492,76 +498,76 @@ msgstr "피드백"
 #: public/js/drag_and_drop.js:316 public/js/drag_and_drop.js:488
 #: public/js/drag_and_drop.js:531
 msgid "Close"
-msgstr ""
+msgstr "닫기"
 
 #: public/js/drag_and_drop.js:319 public/js/drag_and_drop.js:552
 msgid "Keyboard Help"
-msgstr ""
+msgstr "키보드 도움"
 
 #: public/js/drag_and_drop.js:322
 msgid "This is a screen reader-friendly problem."
-msgstr ""
+msgstr "이 문제는 화면 이용자에게 적합한 문제입니다."
 
 #: public/js/drag_and_drop.js:323
 msgid ""
 "Drag and Drop problems consist of draggable items and dropzones. Users "
 "should select a draggable item with their keyboard and then navigate to an "
 "appropriate dropzone to drop it."
-msgstr ""
+msgstr "끌어놓기 문제는 끌기 가능한 항목들과 놓기 영역으로 이루어져 있습니다. 사용자는 끌기 가능한 아이템을 키보드로 선택해서 적절한 놓기 영역으로 이동시켜야 합니다."
 
 #: public/js/drag_and_drop.js:324
 msgid ""
 "You can complete this problem using only your keyboard by following the "
 "guidance below:"
-msgstr ""
+msgstr "다음 가이드라인을 따르면 키보드만 사용해서 문제를 해결할 수 있습니다:"
 
 #: public/js/drag_and_drop.js:326
 msgid ""
 "Use only TAB and SHIFT+TAB to navigate between draggable items and drop "
 "zones."
-msgstr ""
+msgstr "TAB 또는 SHIFT+TAB을 사용하여 끌기 가능한 항목과 놓기 영역을 넘나드세요."
 
 #: public/js/drag_and_drop.js:327
 msgid "Press CTRL+M to select a draggable item (effectively picking it up)."
-msgstr ""
+msgstr "CTRL+M을 눌러 끌기 가능한 항목을 선택하세요 (효율적으로 집기)."
 
 #: public/js/drag_and_drop.js:328
 msgid ""
 "Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press "
 "CTRL+M once more to drop it here."
-msgstr ""
+msgstr "TAB과 SHIFT+TAB을 사용하여 적절한 놓기 영역으로 가져다 놓은 뒤 CTRL+M을 한번 더 눌러 항목을 놓으세요."
 
 #: public/js/drag_and_drop.js:329
 msgid ""
 "Press ESC if you want to cancel the drop operation (for example, to select a"
 " different item)."
-msgstr ""
+msgstr "놓기 조작을 취소하고 싶다면 ESC를 누르세요 (예를 들어, 다른 항목을  선택하기 위해)."
 
 #: public/js/drag_and_drop.js:330
 msgid ""
 "TAB back to the list of draggable items and repeat this process until all of"
 " the draggable items have been placed on their respective dropzones."
-msgstr ""
+msgstr "TAB을 하여 끌기 가능한 항목의 목록으로 돌아가고 이 과정을 모든 끌기 가능한 항목들을 각각의 놓기 영역으로 옮길 때까지 반복하세요."
 
 #: public/js/drag_and_drop.js:348
 msgid "You have used {used} of {total} attempts."
-msgstr ""
+msgstr "당신은 {total}번의 시도 중 {used}만큼 사용했습니다."
 
 #: public/js/drag_and_drop.js:370
 msgid "Submit"
-msgstr "등록"
+msgstr "제출하기"
 
 #: public/js/drag_and_drop.js:410
 msgid "Show Answer"
-msgstr ""
+msgstr "정답 보기"
 
 #: public/js/drag_and_drop.js:423
 msgid "Go to Beginning"
-msgstr ""
+msgstr "처음으로 가기"
 
 #: public/js/drag_and_drop.js:429
 msgid "Reset"
-msgstr ""
+msgstr "초기화"
 
 #: public/js/drag_and_drop.js:449 public/js/drag_and_drop.js:1188
 msgid "Some of your answers were not correct."
@@ -573,11 +579,11 @@ msgstr "힌트 :"
 
 #: public/js/drag_and_drop.js:518
 msgid "Correct"
-msgstr ""
+msgstr "정답"
 
 #: public/js/drag_and_drop.js:518
 msgid "Incorrect"
-msgstr ""
+msgstr "오답"
 
 #. Translators: {earned} is the number of points earned. {possible} is the
 #. total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
@@ -586,7 +592,7 @@ msgstr ""
 #: public/js/drag_and_drop.js:567
 msgid "{earned}/{possible} point (graded)"
 msgid_plural "{earned}/{possible} points (graded)"
-msgstr[0] ""
+msgstr[0] "{earned}/{possible}점 (채점됨)"
 
 #. Translators: {earned} is the number of points earned. {possible} is the
 #. total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
@@ -595,68 +601,68 @@ msgstr[0] ""
 #: public/js/drag_and_drop.js:574
 msgid "{earned}/{possible} point (ungraded)"
 msgid_plural "{earned}/{possible} points (ungraded)"
-msgstr[0] ""
+msgstr[0] "{earned}/{possible}점 (미채점됨)"
 
 #. Translators: {possible} is the number of points possible (examples: 1, 3,
 #. 10).
 #: public/js/drag_and_drop.js:584
 msgid "{possible} point possible (graded)"
 msgid_plural "{possible} points possible (graded)"
-msgstr[0] ""
+msgstr[0] "{possible}점 가능함 (채점됨)"
 
 #. Translators: {possible} is the number of points possible (examples: 1, 3,
 #. 10).
 #: public/js/drag_and_drop.js:591
 msgid "{possible} point possible (ungraded)"
 msgid_plural "{possible} points possible (ungraded)"
-msgstr[0] ""
+msgstr[0] "{possible}점 가능함 (미채점됨)"
 
 #: public/js/drag_and_drop.js:617
 msgid "Drag and Drop Problem"
-msgstr ""
+msgstr "끌어놓기 문제"
 
 #: public/js/drag_and_drop.js:619
 msgid "Problem"
-msgstr ""
+msgstr "문제"
 
 #: public/js/drag_and_drop.js:644
 msgid "Item Bank"
-msgstr ""
+msgstr "항목 창고"
 
 #: public/js/drag_and_drop.js:690
 msgid "Drop Targets"
-msgstr ""
+msgstr "놓기 목표"
 
 #: public/js/drag_and_drop.js:703
 msgid "Actions"
-msgstr ""
+msgstr "행동"
 
 #: public/js/drag_and_drop.js:853
 msgid "An error occurred. Unable to load drag and drop problem."
-msgstr ""
+msgstr "오류가 생겼습니다. 끌어놓기 문제를 불러올 수 없습니다."
 
 #: public/js/drag_and_drop.js:1313
 msgid "You cannot add any more items to this zone."
-msgstr ""
+msgstr "이 영역에는 더이상 항목을 추가할 수 없습니다."
 
 #: public/js/drag_and_drop_edit.js:108 public/js/drag_and_drop_edit.js:494
 #: public/js/drag_and_drop_edit.js:720
 msgid "There was an error with your form."
-msgstr ""
+msgstr "형식에 오류가 있습니다."
 
 #: public/js/drag_and_drop_edit.js:109
 msgid "Please check over your submission."
-msgstr ""
+msgstr "제출물을 확인하세요."
 
 #: public/js/drag_and_drop_edit.js:344
 msgid "Zone {num}"
 msgid_plural "Zone {num}"
-msgstr[0] ""
+msgstr[0] "{num}번 영역"
 
 #: public/js/drag_and_drop_edit.js:495
 msgid "Please check the values you entered."
-msgstr ""
+msgstr "입력한 값을 확인하세요."
 
 #: public/js/drag_and_drop_edit.js:713
 msgid "Saving"
-msgstr "저장"
+msgstr "저장 중"

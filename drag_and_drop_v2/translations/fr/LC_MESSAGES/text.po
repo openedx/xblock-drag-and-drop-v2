@@ -7,13 +7,14 @@
 # John Burke <johnb@matinee.co.uk>, 2018
 # moocit-france <contact@moocit.fr>, 2019
 # OpenCraft LabXchange <help+labxchange@opencraft.com>, 2021
+# OpenCraft OpenCraft <help@opencraft.com>, 2021
 msgid ""
 msgstr ""
 "Project-Id-Version: XBlocks\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-03 00:00-0500\n"
-"PO-Revision-Date: 2021-02-03 03:07+0000\n"
-"Last-Translator: OpenCraft LabXchange <help+labxchange@opencraft.com>\n"
+"POT-Creation-Date: 2021-03-24 21:55-0500\n"
+"PO-Revision-Date: 2021-03-30 14:29+0000\n"
+"Last-Translator: OpenCraft OpenCraft <help@opencraft.com>\n"
 "Language-Team: French (http://www.transifex.com/open-edx/xblocks/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -106,165 +107,169 @@ msgstr "Glissez cet élément sur l'image ci-dessus."
 msgid "Good work! You have completed this drag and drop problem."
 msgstr "Bon travail! Vous avez complété cet exercice de glisser-déposer."
 
-#: drag_and_drop_v2.py:75
+#: drag_and_drop_v2.py:76
 msgid "Title"
 msgstr "Titre"
 
-#: drag_and_drop_v2.py:76
+#: drag_and_drop_v2.py:77
 msgid ""
 "The title of the drag and drop problem. The title is displayed to learners."
 msgstr "Le titre de l'exercice de glisser-déplacer. Ce titre est affiché aux étudiants."
 
-#: drag_and_drop_v2.py:78
+#: drag_and_drop_v2.py:79
 msgid "Drag and Drop"
 msgstr "Glisser Déposer"
 
-#: drag_and_drop_v2.py:83
+#: drag_and_drop_v2.py:84
 msgid "Mode"
 msgstr "Mode"
 
-#: drag_and_drop_v2.py:85
+#: drag_and_drop_v2.py:86
 msgid ""
 "Standard mode: the problem provides immediate feedback each time a learner "
 "drops an item on a target zone. Assessment mode: the problem provides "
 "feedback only after a learner drops all available items on target zones."
 msgstr "Mode standard : l'exercice fait immédiatement un commentaire à chaque fois que l'étudiant déplace un élément dans une zone cible. Mode d'évaluation : l'exercice fait un commentaire une fois que l'étudiant déplace tous les éléments disponibles dans les zones cibles."
 
-#: drag_and_drop_v2.py:92
+#: drag_and_drop_v2.py:93
 msgid "Standard"
 msgstr "Standard"
 
-#: drag_and_drop_v2.py:93
+#: drag_and_drop_v2.py:94
 msgid "Assessment"
 msgstr "Évaluation"
 
-#: drag_and_drop_v2.py:100
+#: drag_and_drop_v2.py:101
 msgid "Maximum attempts"
 msgstr "Nombre d'essais maximum"
 
-#: drag_and_drop_v2.py:102
+#: drag_and_drop_v2.py:103
 msgid ""
 "Defines the number of times a student can try to answer this problem. If the"
 " value is not set, infinite attempts are allowed."
 msgstr "Définit le nombre de fois qu'un étudiant peut essayer de répondre au problème. Si aucune valeur n'est précisée, un nombre infini d'essais est autorisé."
 
-#: drag_and_drop_v2.py:111
+#: drag_and_drop_v2.py:112
 msgid "Show title"
 msgstr "Afficher le titre"
 
-#: drag_and_drop_v2.py:112
+#: drag_and_drop_v2.py:113
 msgid "Display the title to the learner?"
 msgstr "Afficher le titre aux étudiants ?"
 
-#: drag_and_drop_v2.py:119
+#: drag_and_drop_v2.py:120
 msgid "Problem text"
 msgstr "Problème écrit"
 
-#: drag_and_drop_v2.py:120
+#: drag_and_drop_v2.py:121
 msgid "The description of the problem or instructions shown to the learner."
 msgstr "La description du problème ou les instructions affichées à l'étudiant."
 
-#: drag_and_drop_v2.py:127
+#: drag_and_drop_v2.py:128
 msgid "Show \"Problem\" heading"
 msgstr "Montrer l'en-tête du « Problème »"
 
-#: drag_and_drop_v2.py:128
+#: drag_and_drop_v2.py:129
 msgid "Display the heading \"Problem\" above the problem text?"
 msgstr "Afficher l'en-tête « Problème » au dessus du texte du problème ?"
 
-#: drag_and_drop_v2.py:135
+#: drag_and_drop_v2.py:136
 msgid "Problem Weight"
 msgstr "Poids du problème"
 
-#: drag_and_drop_v2.py:136
+#: drag_and_drop_v2.py:137
 msgid "Defines the number of points the problem is worth."
 msgstr "Définir le nombre de points pour lequel ce problème compte."
 
-#: drag_and_drop_v2.py:143
+#: drag_and_drop_v2.py:144
 msgid "Item background color"
 msgstr "Élément couleur de fond"
 
-#: drag_and_drop_v2.py:144
+#: drag_and_drop_v2.py:145
 msgid ""
 "The background color of draggable items in the problem (example: 'blue' or "
 "'#0000ff')."
 msgstr "La couleur de fond des éléments glissables dans l'exercice (par exemple : 'bleu' ou '#0000ff')."
 
-#: drag_and_drop_v2.py:151
+#: drag_and_drop_v2.py:152
 msgid "Item text color"
 msgstr "Élément couleur du texte"
 
-#: drag_and_drop_v2.py:152
+#: drag_and_drop_v2.py:153
 msgid "Text color to use for draggable items (example: 'white' or '#ffffff')."
 msgstr "La couleur de texte à employer pour les éléments glissables (par exemple : 'blanc' ou '#ffffff')."
 
-#: drag_and_drop_v2.py:159
+#: drag_and_drop_v2.py:160
 msgid "Maximum items per zone"
 msgstr ""
 
-#: drag_and_drop_v2.py:160
+#: drag_and_drop_v2.py:161
 msgid ""
 "This setting limits the number of items that can be dropped into a single "
 "zone."
 msgstr ""
 
-#: drag_and_drop_v2.py:167
+#: drag_and_drop_v2.py:168
 msgid "Problem data"
 msgstr "Données du problème"
 
-#: drag_and_drop_v2.py:169
+#: drag_and_drop_v2.py:170
 msgid ""
 "Information about zones, items, feedback, and background image for this "
 "problem. This information is derived from the input that a course author "
 "provides via the interactive editor when configuring the problem."
 msgstr "Information à propos ses zones, des éléments, des commentaires et de l'image de fond pour ce problème. Cette information est le résultat de la contribution d'un auteur de cours par le biais de l'éditeur interactif lors de la configuration de ce problème."
 
-#: drag_and_drop_v2.py:179
+#: drag_and_drop_v2.py:180
 msgid ""
 "Information about current positions of items that a learner has dropped on "
 "the target image."
 msgstr "Information à propos des emplacements actuels d'éléments déposés par l'étudiant sur l'image cible."
 
-#: drag_and_drop_v2.py:186
+#: drag_and_drop_v2.py:187
 msgid "Number of attempts learner used"
 msgstr "Nombre de tentatives faites par l'étudiant"
 
-#: drag_and_drop_v2.py:193
+#: drag_and_drop_v2.py:194
 msgid "Indicates whether a learner has completed the problem at least once"
 msgstr "Indique si l'étudiant a terminé ce problème au moins une fois"
 
-#: drag_and_drop_v2.py:200
+#: drag_and_drop_v2.py:201
 msgid ""
 "DEPRECATED. Keeps maximum score achieved by student as a weighted value."
 msgstr ""
 
-#: drag_and_drop_v2.py:206
+#: drag_and_drop_v2.py:207
 msgid ""
 "Keeps maximum score achieved by student as a raw value between 0 and 1."
 msgstr ""
 
-#: drag_and_drop_v2.py:514
+#: drag_and_drop_v2.py:214
+msgid "Maximum score available of the problem as a raw value between 0 and 1."
+msgstr ""
+
+#: drag_and_drop_v2.py:536
 #, python-brace-format
 msgid "Unknown DnDv2 mode {mode} - course is misconfigured"
 msgstr "Mode {mode} DnDv2 inconnu - cours mal-configuré"
 
-#: drag_and_drop_v2.py:589
+#: drag_and_drop_v2.py:611
 msgid "show_answer handler should only be called for assessment mode"
 msgstr "responsable de réponses à montrer show_answer à contacter uniquement en mode d'évaluation"
 
-#: drag_and_drop_v2.py:594
+#: drag_and_drop_v2.py:616
 msgid "There are attempts remaining"
 msgstr "Il vous reste des tentatives"
 
-#: drag_and_drop_v2.py:667
+#: drag_and_drop_v2.py:689
 msgid "do_attempt handler should only be called for assessment mode"
 msgstr "responsable de tentatives faites do_attempt à contacter uniquement en mode d'évaluation"
 
-#: drag_and_drop_v2.py:672 drag_and_drop_v2.py:783
+#: drag_and_drop_v2.py:694 drag_and_drop_v2.py:805
 msgid "Max number of attempts reached"
 msgstr "Nombre maximum de tentatives atteint"
 
-#: drag_and_drop_v2.py:677
+#: drag_and_drop_v2.py:699
 msgid "Submission deadline has passed."
 msgstr ""
 
@@ -414,7 +419,7 @@ msgstr "Annuler"
 #: utils.py:56
 #, python-brace-format
 msgid "Your highest score is {score}"
-msgstr "Votre score le plus élevé est {score}"
+msgstr "Votre score le plus élevé est de {score}"
 
 #: utils.py:57
 #, python-brace-format
