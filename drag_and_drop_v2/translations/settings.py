@@ -75,6 +75,7 @@ LANGUAGES = [
     ('nl', 'Dutch'),
     ('pl', 'Polski'),
     ('pt_BR', 'Portuguese (Brazil)'),
+    ('pt_PT', 'Portuguese (Portugal)'),
     ('ru', 'Russian'),
     ('tr', 'Turkish'),
     ('zh_CN', 'Chinese (China)'),
