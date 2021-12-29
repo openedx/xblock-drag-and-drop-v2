@@ -22,17 +22,19 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Install Required System Packages
+      run: sudo apt-get update && sudo apt-get install libxmlsec1-dev ubuntu-restricted-extras xvfb
 
     - name: Setup Environment
       # Remove the last two lines of this step after our test suite is compatible with selenium 3.
       run: |
         export DISPLAY=:99.0
         sudo apt-get install xvfb
+        pip install wheel
         sh install_test_deps.sh
         pip uninstall -y selenium
         pip install selenium==2.53.6
-    - name: Install Required System Packages
-      run: sudo apt-get update && sudo apt-get install libxmlsec1-dev ubuntu-restricted-extras xvfb
+
     - name: Install Dependencies
       run: |
         python setup.py sdist
