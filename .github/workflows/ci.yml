@@ -23,7 +23,9 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install Required System Packages
-      run: sudo apt-get update && sudo apt-get install libxmlsec1-dev ubuntu-restricted-extras xvfb
+      run: |
+        sudo apt-get update && sudo apt-get install libxmlsec1-dev ubuntu-restricted-extras xvfb
+        sudo apt-get install libxml2-dev libxslt-dev python-dev
 
     - name: Setup Environment
       # Remove the last two lines of this step after our test suite is compatible with selenium 3.
