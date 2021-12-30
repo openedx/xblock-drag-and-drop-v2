@@ -54,5 +54,5 @@ jobs:
       run: |
         pycodestyle drag_and_drop_v2 tests --max-line-length=120
         pylint drag_and_drop_v2
-        pylint tests
+        pylint tests --rcfile=tests/pylintrc
         xvfb-run python run_tests.py
