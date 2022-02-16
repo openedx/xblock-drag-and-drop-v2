@@ -173,6 +173,23 @@
     word-wrap: break-word;
 }
 
+.xblock--drag-and-drop .drag-container .option .spinner-wrapper {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    opacity: 0.6;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.xblock--drag-and-drop .drag-container .option .spinner-wrapper + .item-content{
+    visibility: hidden;
+}
+
 /* Placed option */
 .xblock--drag-and-drop .drag-container .target .option {
     position: absolute;
