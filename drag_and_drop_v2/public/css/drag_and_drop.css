@@ -348,23 +348,7 @@
 
 .xblock--drag-and-drop .feedback p {
     margin: 2px 0;
-    padding: 0.5em;
-    border: 2px solid #999;
-}
-
-.xblock--drag-and-drop .feedback p.correct {
-    color: #166e36;
-    border: 2px solid #166e36;
-}
-
-.xblock--drag-and-drop .feedback p.partial {
-    color: #166e36;
-    border: 2px solid #166e36;
-}
-
-.xblock--drag-and-drop .feedback p.incorrect {
-    color: #b20610;
-    border: 2px solid #b20610;
+    padding: 0.25em;
 }
 
 
@@ -389,6 +373,7 @@
 .rtl .xblock--drag-and-drop .feedback p.correct:after {
     content: "\f00c";
     font-family: FontAwesome;
+    color: #166e36;
 }
 
 .ltr .xblock--drag-and-drop .feedback p.correct:before {
@@ -405,6 +390,7 @@
 .rtl .xblock--drag-and-drop .feedback p.partial:after {
     content: "\f069";
     font-family: FontAwesome;
+    color: #166e36;
 }
 
 .ltr .xblock--drag-and-drop .feedback p.partial:before {
@@ -421,6 +407,7 @@
 .rtl .xblock--drag-and-drop .feedback p.incorrect:after {
     content: "\f00d";
     font-family: FontAwesome;
+    color: #b20610;
 }
 
 .ltr .xblock--drag-and-drop .feedback p.incorrect:before {
