@@ -104,7 +104,7 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
         # A 400x300 image with automatic sizing should be constrained to the maximum width
         Expectation(item_id=5, zone_id=ZONE_50, width_percent=AUTO_MAX_WIDTH_DESKTOP),
         # A 200x200 image with automatic sizing
-        Expectation(item_id=6, zone_id=ZONE_50, width_percent=[25, 30.2]),
+        Expectation(item_id=6, zone_id=ZONE_50, width_percent=[24, 30.2]),
         # A 400x300 image with a specified width of 50%
         Expectation(item_id=7, zone_id=ZONE_50, fixed_width_percent=50),
         # A 200x200 image with a specified width of 50%
@@ -247,7 +247,6 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
 
     def _check_sizes(self, block_index, expectations, expected_img_width=None, is_desktop=True):
         """ Test the actual dimensions that each draggable has, in the bank and when placed """
-        # Check assumptions - the container wrapping this XBlock should be 770px wide
         self._switch_to_block(block_index)
         target_img = self._page.find_element_by_css_selector('.target-img')
         target_img_width = target_img.size["width"]
@@ -257,8 +256,8 @@ class SizingTests(InteractionTestBase, BaseIntegrationTest):
         page_width = self._page.size["width"]  # self._page is the .xblock--drag-and-drop div
 
         if is_desktop:
-            # If using a desktop-sized window, we can know the exact dimensions of various containers:
-            self.assertEqual(page_width, 770)  # div has max-width: 770px
+            window_width = self.browser.get_window_size()["width"]
+            self.assertLessEqual(window_width, 1024)
         else:
             window_width = self.browser.get_window_size()["width"]
             self.assertLessEqual(window_width, 400)
