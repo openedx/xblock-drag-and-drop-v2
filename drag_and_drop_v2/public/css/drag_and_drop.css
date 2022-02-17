@@ -609,7 +609,6 @@
     -moz-transition: color 0.125s ease-in-out 0s, border-color 0.125s ease-in-out 0s, background 0.125s ease-in-out 0s, box-shadow 0.125s ease-in-out 0s;
     transition: color 0.125s ease-in-out 0s, border-color 0.125s ease-in-out 0s, background 0.125s ease-in-out 0s, box-shadow 0.125s ease-in-out 0s;
     border-radius: 3px;
-    border: 1px solid #0079bc;
     padding: 0.625em 1.25em;
     font-size: 1em;
 }
@@ -617,13 +616,6 @@
 .xblock--drag-and-drop .btn-default {
     border-color: transparent;
     background: transparent;
-    color: #0074b4
-}
-
-.xblock--drag-and-drop .btn-brand {
-  border-color: #0075b4;
-  background: white;
-  color: #0075b4;
 }
 
 .xblock--drag-and-drop .btn-small {
@@ -646,137 +638,109 @@
     color: #0074b4
 }
 
-.xblock--drag-and-drop .btn-default:active,
-.xblock--drag-and-drop .btn-default.is-pressed,
-.xblock--drag-and-drop .btn-default.is-active {
-    border-color: #0074b4;
-    color: #0074b4
-}
-
-.xblock--drag-and-drop .btn-default:disabled,
-.xblock--drag-and-drop .btn-default.is-disabled {
-    color: #6b6969
-}
-
-.xblock--drag-and-drop .btn-brand {
-    border-color: #0074b4;
-    background: #0074b4;
-    color: #fcfcfc
-}
-
 .xblock--drag-and-drop .btn-brand:hover,
 .xblock--drag-and-drop .btn-brand.is-hovered,
-.xblock--drag-and-drop .btn-brand:focus,
 .xblock--drag-and-drop .btn-brand.is-focused {
-    border-color: #008bd8;
-    background-color: #008bd8;
-    color: #fcfcfc
+    background-color: #065683;
 }
 
-.xblock--drag-and-drop .btn-brand:active,
 .xblock--drag-and-drop .btn-brand.is-pressed,
 .xblock--drag-and-drop .btn-brand.is-active {
     border-color: #0074b4;
     background: #0074b4
 }
 
-.xblock--drag-and-drop .btn-brand:disabled,
-.xblock--drag-and-drop .btn-brand.is-disabled {
-    border-color: #d2d0d0;
-    background: #f2f3f3;
-    color: #676666
-}
-
-
 /*** ACTIONS TOOLBAR ***/
 
-.xblock--drag-and-drop .actions-toolbar {
+.xblock--drag-and-drop .action {
     min-height: 3.75em;
     width: auto;
     position: relative;
 }
 
-.xblock--drag-and-drop .actions-toolbar .action-toolbar-item {
+.xblock--drag-and-drop .action .problem-action-buttons-wrapper,
+.xblock--drag-and-drop .action .submit-attempt-container {
     display: inline-block;
     margin: 10px 0;
 }
 
-.xblock--drag-and-drop .attempts-used {
+.xblock--drag-and-drop .submission-feedback {
     font-size: 0.875em;
     color: #666;
+    display: inline-block;
 }
 
-.ltr .xblock--drag-and-drop .attempts-used {
+.ltr .xblock--drag-and-drop .submission-feedback {
     margin-left: 0.675em;
 }
 
-.rtl .xblock--drag-and-drop .attempts-used {
+.rtl .xblock--drag-and-drop .submission-feedback {
     margin-right: 0.675em;
 }
 
-.xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
+.xblock--drag-and-drop .action .problem-action-buttons-wrapper {
     display: block;
 }
 
-.ltr .xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
+.ltr .xblock--drag-and-drop .action .problem-action-buttons-wrapper {
     text-align: left;
 }
 
-.rtl .xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
+.rtl .xblock--drag-and-drop .action .problem-action-buttons-wrapper {
     text-align: right;
 }
 
 @media (min-width: 768px) {
-    .xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
+    .xblock--drag-and-drop .action .problem-action-buttons-wrapper {
         margin: 0;
     }
 
-    .ltr .xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
+    .ltr .xblock--drag-and-drop .action .problem-action-buttons-wrapper {
         float: right;
         padding-right: -5px;
         padding-top: 5px;
     }
 
-    .rtl .xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
+    .rtl .xblock--drag-and-drop .action .problem-action-buttons-wrapper {
         float: left;
         padding-left: -5px;
     }
 }
 
-.xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper {
+.xblock--drag-and-drop .problem-action-buttons-wrapper .problem-action-button-wrapper {
     border-collapse: collapse;
     padding: 0 5px;
     display: inline-block;
     height: 100%;
 }
 
-.ltr .xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper {
+.ltr .xblock--drag-and-drop .problem-action-buttons-wrapper .problem-action-button-wrapper {
     border-right: 1px solid #ddd;
 }
 
-.rtl .xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper {
+.rtl .xblock--drag-and-drop .problem-action-buttons-wrapper .problem-action-button-wrapper {
     border-left: 1px solid #ddd;
 }
 
-.ltr .xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper:first-child {
+.ltr .xblock--drag-and-drop .problem-action-buttons-wrapper .problem-action-button-wrapper:first-child {
     padding-left: 0;
 }
 
-.rtl .xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper:first-child {
+.rtl .xblock--drag-and-drop .problem-action-buttons-wrapper .problem-action-button-wrapper:first-child {
     padding-right: 0;
 }
 
-.ltr .xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper:last-child {
+.ltr .xblock--drag-and-drop .problem-action-buttons-wrapper .problem-action-button-wrapper:last-child {
     border-right: none;
     padding-right: 0;
 }
 
-.rtl .xblock--drag-and-drop .sidebar-buttons .sidebar-button-wrapper:last-child {
+.rtl .xblock--drag-and-drop .problem-action-buttons-wrapper .problem-action-button-wrapper:last-child {
     border-left: none;
     padding-left: 0;
 }
 
-.xblock--drag-and-drop .sidebar-buttons .btn-brand {
+.xblock--drag-and-drop .problem-action-buttons-wrapper .btn-brand {
     display: inline-block;
     padding: 3px 5px;
 }

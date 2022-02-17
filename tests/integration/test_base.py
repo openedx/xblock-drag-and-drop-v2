@@ -138,16 +138,16 @@ class BaseIntegrationTest(SeleniumBaseTest):
         return self._page.find_element_by_css_selector('.go-to-beginning-button')
 
     def _get_reset_button(self):
-        return self._page.find_element_by_css_selector('.reset-button')
+        return self._page.find_element_by_css_selector('.problem-action-button-wrapper .reset')
 
     def _get_show_answer_button(self):
-        return self._page.find_element_by_css_selector('.show-answer-button')
+        return self._page.find_element_by_css_selector('.problem-action-button-wrapper .show')
 
     def _get_submit_button(self):
-        return self._page.find_element_by_css_selector('.submit-answer-button')
+        return self._page.find_element_by_css_selector('.submit-attempt-container .submit')
 
     def _get_attempts_info(self):
-        return self._page.find_element_by_css_selector('.attempts-used')
+        return self._page.find_element_by_css_selector('.submission-feedback')
 
     def _get_feedback(self):
         return self._page.find_element_by_css_selector(".feedback-content")
