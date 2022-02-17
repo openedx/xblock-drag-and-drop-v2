@@ -114,15 +114,20 @@ function DragAndDropTemplates(configuration) {
         if (item.is_placed) {
             var maxWidth = (item.widthPercent || 30) / 100;
             var widthPercent = zone.width_percent / 100;
-            style.maxWidth = ((1 / (widthPercent / maxWidth)) * 100) + '%';
+            var possiblemaxWidth = ((1 / (widthPercent / maxWidth)) * 100);
+            style.maxWidth = (possiblemaxWidth < 100) ? possiblemaxWidth + '%' : '100%';
             if (item.widthPercent) {
                 style.width = style.maxWidth;
             }
             // Finally, if the item is using automatic sizing and contains an image, we
             // always prefer the natural width of the image (subject to the max-width):
-            if (item.imgNaturalWidth && !item.widthPercent) {
+            if (item.imgNaturalWidth && !item.widthPercent && !item.noPadding) {
                 style.width = (item.imgNaturalWidth + 22) + "px"; // 22px is for 10px padding + 1px border each side
                 // ^ Hack to detect image width at runtime and make webkit consistent with Firefox
+            }
+            if (item.noPadding) {
+                style.width = item.imgNaturalWidth + "px";
+                style.padding = '0';
             }
         } else {
             $.extend(style, bankItemWidthStyles(item, ctx));
@@ -1911,6 +1916,7 @@ function DragAndDropBlock(runtime, element, configuration) {
                 is_placed: Boolean(item_user_state),
                 widthPercent: item.widthPercent, // widthPercent may be undefined (auto width)
                 imgNaturalWidth: item.imgNaturalWidth,
+                noPadding: item.noPadding,
             };
             if (item_user_state) {
                 itemProperties.zone = item_user_state.zone;
