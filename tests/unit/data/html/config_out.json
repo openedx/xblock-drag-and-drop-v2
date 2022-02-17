@@ -16,6 +16,7 @@
     "item_background_color": "white",
     "item_text_color": "#000080",
     "display_zone_borders": false,
+    "display_zone_borders_dragging": false,
     "display_zone_labels": false,
     "url_name": "unique_name",
     "max_items_per_zone": null,

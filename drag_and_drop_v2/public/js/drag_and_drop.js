@@ -1440,7 +1440,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         var getTargetZone = function(evt) {
             var $zone = null;
             var x, y;
-            if (evt.type === 'mouseup') {
+            if (evt.type === 'mouseup' || evt.type === 'mousemove') {
                 x = evt.clientX;
                 y = evt.clientY;
             } else {
@@ -1522,8 +1522,22 @@ function DragAndDropBlock(runtime, element, configuration) {
             };
 
             var raf_id = null;
+            var $last_target_zone = null;
             var onDragMove = function(evt) {
                 evt.preventDefault();
+                var $zone = getTargetZone(evt);
+                if (configuration.display_zone_borders_dragging) {
+                    if ($zone) {
+                        if ($last_target_zone && $zone.attr('id') !== $last_target_zone.attr('id')) {
+                            $last_target_zone.removeClass('zone-border');
+                        }
+                        $zone.addClass('zone-border');
+                        $last_target_zone = $zone;
+                    } else if ($last_target_zone) {
+                        $last_target_zone.removeClass('zone-border');
+                        $last_target_zone = null;
+                    }
+                }
                 if (raf_id) {
                     cancelAnimationFrame(raf_id);
                 }
@@ -1603,6 +1617,10 @@ function DragAndDropBlock(runtime, element, configuration) {
                     releaseGrabbedItems();
                 } else {
                     revertDrag();
+                }
+                if (configuration.display_zone_borders_dragging && $last_target_zone) {
+                    $last_target_zone.removeClass('zone-border');
+                    $last_target_zone = null;
                 }
             };
 
@@ -1954,6 +1972,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             target_img_description: configuration.target_img_description,
             display_zone_labels: configuration.display_zone_labels,
             display_zone_borders: configuration.display_zone_borders,
+            display_zone_borders_dragging: configuration.display_zone_borders_dragging,
             zones: configuration.zones,
             items: items,
             // state - parts that can change:
