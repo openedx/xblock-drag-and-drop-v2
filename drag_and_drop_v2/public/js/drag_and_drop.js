@@ -348,7 +348,7 @@ function DragAndDropTemplates(configuration) {
             var attemptsUsedTemplate = gettext("You have used {used} of {total} attempts.");
             var attemptsUsedText = attemptsUsedTemplate.
                 replace("{used}", ctx.attempts).replace("{total}", ctx.max_attempts);
-            attemptsUsedInfo = h("span.attempts-used", {id: attemptsUsedId}, attemptsUsedText);
+            attemptsUsedInfo = h("div.submission-feedback", {id: attemptsUsedId}, attemptsUsedText);
         }
 
         var submitSpinner = null;
@@ -360,14 +360,16 @@ function DragAndDropTemplates(configuration) {
         }
 
         return (
-            h("div.action-toolbar-item.submit-answer", {}, [
+            h("div.submit-attempt-container", {}, [
                 h(
-                    "button.btn-brand.submit-answer-button",
+                    "button.btn-brand.submit",
                     submitButtonProperties,
                     [
-                        submitSpinner,
-                        ' ',  // whitespace between spinner icon and text
-                        gettext("Submit")
+                        h("span.submit-label", [
+                            submitSpinner,
+                            ' ',  // whitespace between spinner icon and text
+                            gettext("Submit")
+                        ])
                     ]
                 ),
                 attemptsUsedInfo
@@ -378,12 +380,12 @@ function DragAndDropTemplates(configuration) {
     var sidebarButtonTemplate = function(buttonClass, iconClass, buttonText, options) {
         options = options || {};
         if (options.spinner) {
-            iconClass = 'fa-spin.fa-spinner';
+            iconClass = 'fa-spin fa-spinner';
         }
         return (
-            h('span.sidebar-button-wrapper', {}, [
+            h('span.problem-action-button-wrapper', {}, [
                 h(
-                    'button.unbutton.btn-default.btn-small',
+                    'button.problem-action-btn.btn-default.btn-small',
                     {
                         className: buttonClass,
                         disabled: options.disabled || options.spinner || false
@@ -405,7 +407,7 @@ function DragAndDropTemplates(configuration) {
                 spinner: ctx.show_answer_spinner
             };
             showAnswerButton = sidebarButtonTemplate(
-                "show-answer-button",
+                "show",
                 "fa-info-circle",
                 gettext('Show Answer'),
                 options
@@ -416,7 +418,7 @@ function DragAndDropTemplates(configuration) {
             go_to_beginning_button_class += ' sr';
         }
         return(
-            h("div.action-toolbar-item.sidebar-buttons", {}, [
+            h("div.problem-action-buttons-wrapper", {attributes: {'role': 'group', 'aria-label': gettext('Actions')}}, [
                 sidebarButtonTemplate(
                     go_to_beginning_button_class,
                     "fa-arrow-up",
@@ -424,7 +426,7 @@ function DragAndDropTemplates(configuration) {
                     {disabled: ctx.disable_go_to_beginning_button}
                 ),
                 sidebarButtonTemplate(
-                    "reset-button",
+                    "reset",
                     "fa-refresh",
                     gettext('Reset'),
                     {disabled: ctx.disable_reset_button}
@@ -607,7 +609,7 @@ function DragAndDropTemplates(configuration) {
         var problemTitle = null;
         if (ctx.show_title) {
             var problem_title_id = configuration.url_name + '-problem-title';
-            problemTitle = h('h3.problem-title', {
+            problemTitle = h('h3.hd.hd-3.problem-header', {
                 id: problem_title_id,
                 innerHTML: gettext(ctx.title_html),
                 attributes: {'aria-describedby': problemProgress.properties.id}
@@ -684,32 +686,32 @@ function DragAndDropTemplates(configuration) {
                 h('div.problem', [
                     problemHeader,
                     h('p', {innerHTML: ctx.problem_html}),
-                ]),
-                h('div.drag-container', {style: drag_container_style}, [
-                    h('div.item-bank', item_bank_properties, bank_children),
-                    h('div.target', {attributes: {'role': 'group', 'arial-label': gettext('Drop Targets')}}, [
-                        itemFeedbackPopupTemplate(ctx),
-                        h('div.target-img-wrapper', [
-                            h('img.target-img', {
-                                src: ctx.target_img_src,
-                                alt: ctx.target_img_description,
-                                style: target_img_style
-                            }),
-                            renderCollection(zoneTemplate, ctx.zones, ctx)
+                    h('div.drag-container', {style: drag_container_style}, [
+                        h('div.item-bank', item_bank_properties, bank_children),
+                        h('div.target', {attributes: {'role': 'group', 'arial-label': gettext('Drop Targets')}}, [
+                            itemFeedbackPopupTemplate(ctx),
+                            h('div.target-img-wrapper', [
+                                h('img.target-img', {
+                                    src: ctx.target_img_src,
+                                    alt: ctx.target_img_description,
+                                    style: target_img_style
+                                }),
+                                renderCollection(zoneTemplate, ctx.zones, ctx)
+                            ]),
                         ]),
+                        h('div.dragged-items', renderCollection(itemTemplate, items_dragged, ctx)),
                     ]),
-                    h('div.dragged-items', renderCollection(itemTemplate, items_dragged, ctx)),
+                    h('div.action', [
+                        (ctx.show_submit_answer ? submitAnswerTemplate(ctx) : null),
+                        sidebarTemplate(ctx)
+                    ]),
+                    keyboardHelpPopupTemplate(ctx),
+                    feedbackTemplate(ctx),
+                    h('div.sr.reader-feedback-area', {
+                        attributes: {'aria-live': 'polite', 'aria-atomic': true},
+                        innerHTML: ctx.screen_reader_messages
+                    }),
                 ]),
-                h("div.actions-toolbar", {attributes: {'role': 'group', 'aria-label': gettext('Actions')}}, [
-                    (ctx.show_submit_answer ? submitAnswerTemplate(ctx) : null),
-                    sidebarTemplate(ctx),
-                ]),
-                keyboardHelpPopupTemplate(ctx),
-                feedbackTemplate(ctx),
-                h('div.sr.reader-feedback-area', {
-                    attributes: {'aria-live': 'polite', 'aria-atomic': true},
-                    innerHTML: ctx.screen_reader_messages
-                }),
             ])
         );
     };
@@ -800,17 +802,17 @@ function DragAndDropBlock(runtime, element, configuration) {
             $element.on('keydown', '.item-feedback-popup .close-feedback-popup-button', closePopupKeydownHandler);
             $element.on('keyup', '.item-feedback-popup .close-feedback-popup-button', preventFauxPopupCloseButtonClick);
 
-            $element.on('click', '.submit-answer-button', doAttempt);
+            $element.on('click', '.xblock--drag-and-drop .submit-attempt-container .submit', doAttempt);
             $element.on('click', '.keyboard-help-button', showKeyboardHelp);
             $element.on('keydown', '.keyboard-help-button', function(evt) {
                 runOnKey(evt, RET, showKeyboardHelp);
             });
-            $element.on('click', '.reset-button', resetProblem);
-            $element.on('keydown', '.reset-button', function(evt) {
+            $element.on('click', '.xblock--drag-and-drop .problem-action-button-wrapper .reset', resetProblem);
+            $element.on('keydown', '.xblock--drag-and-drop .problem-action-button-wrapper .reset', function(evt) {
                 runOnKey(evt, RET, resetProblem);
             });
-            $element.on('click', '.show-answer-button', showAnswer);
-            $element.on('keydown', '.show-answer-button', function(evt) {
+            $element.on('click', '.xblock--drag-and-drop .problem-action-button-wrapper .show', showAnswer);
+            $element.on('keydown', '.xblock--drag-and-drop .problem-action-button-wrapper .show', function(evt) {
                 runOnKey(evt, RET, showAnswer);
             });
 
