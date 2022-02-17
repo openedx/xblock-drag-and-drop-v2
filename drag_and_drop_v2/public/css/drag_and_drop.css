@@ -337,6 +337,17 @@
     border: 1px dotted #565656;
 }
 
+
+/* Display a border while dragging an item over the item bank. */
+.xblock--drag-and-drop .item-bank.zone-border {
+    border: 1px solid #000000;
+}
+
+/* Display a border while dragging an item over a zone. */
+.xblock--drag-and-drop .zone.zone-border {
+    border: 4px solid #000000;
+}
+
 /* Focused zone */
 .xblock--drag-and-drop .item-bank:focus,
 .xblock--drag-and-drop .zone:focus {

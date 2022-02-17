@@ -378,6 +378,7 @@ class DragAndDropBlock(
             "url_name": getattr(self, 'url_name', ''),
             "display_zone_labels": self.data.get('displayLabels', False),
             "display_zone_borders": self.data.get('displayBorders', False),
+            "display_zone_borders_dragging": self.data.get('displayBordersDragging', False),
             "items": items_without_answers(),
             "title": self.display_name,
             "show_title": self.show_title,

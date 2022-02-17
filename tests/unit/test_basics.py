@@ -88,6 +88,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             "graded": False,
             "weighted_max_score": 1,
             "display_zone_borders": False,
+            "display_zone_borders_dragging": False,
             "display_zone_labels": False,
             "title": "Drag and Drop",
             "show_title": True,

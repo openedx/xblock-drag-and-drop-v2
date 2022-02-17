@@ -16,6 +16,7 @@
     "item_background_color": null,
     "item_text_color": null,
     "display_zone_borders": false,
+    "display_zone_borders_dragging": false,
     "display_zone_labels": false,
     "url_name": "",
     "max_items_per_zone": null,

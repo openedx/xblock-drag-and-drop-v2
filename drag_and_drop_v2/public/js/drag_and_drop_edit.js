@@ -205,6 +205,10 @@ function DragAndDropEditBlock(runtime, element, params) {
                             $('.display-borders-form input', element).prop('checked', true);
                         }
 
+                        if (_fn.data.displayBordersDragging) {
+                            $('.display-borders-dragging-form input', element).prop('checked', true);
+                        }
+
                         $fbkTab.addClass('hidden');
                         $zoneTab.removeClass('hidden');
                         self.scrollToTop();
@@ -288,6 +292,9 @@ function DragAndDropEditBlock(runtime, element, params) {
                         })
                         .on('click', '.display-borders-form input', function(e) {
                             _fn.data.displayBorders = $('.display-borders-form input', element).is(':checked');
+                        })
+                        .on('click', '.display-borders-dragging-form input', function(e) {
+                            _fn.data.displayBordersDragging = $('.display-borders-dragging-form input', element).is(':checked');
                         });
 
                     $itemTab
