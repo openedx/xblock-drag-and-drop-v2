@@ -149,6 +149,10 @@
     width: 100%;  /* If the image is smaller than the specified width, make it larger */
 }
 
+.xblock--drag-and-drop .drag-container .option.option-with-image {
+    line-height: 0;  /* Eliminates extra space */
+}
+
 .xblock--drag-and-drop .drag-container .option.option-with-image .spinner-wrapper {
     position: absolute;
     float: none;

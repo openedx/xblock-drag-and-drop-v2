@@ -620,6 +620,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                                     // block, but preserve the data in case we need it again:
                                     ctx.pixelHeight = itemData.size.height.substr(0, itemData.size.height.length - 2); // Remove 'px'
                                 }
+                                ctx.noPadding = (ctx.noPadding) ? 'checked' : '';
                             }
                             ctx.checkboxes = _fn.build.form.createCheckboxes(ctx.zones);
 
@@ -668,7 +669,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                                 name = $el.find('.item-text').val(),
                                 imageURL = $el.find('.item-image-url').val(),
                                 imageDescription = $el.find('.item-image-description').val(),
-                                selectedZones = $el.find('.zone-checkbox:checked');
+                                selectedZones = $el.find('.zone-checkbox:checked'),
+                                noPadding = $el.find('.img-checkbox').is(':checked');
 
                             if (name.length > 0 || imageURL.length > 0) {
                                 var data = {
@@ -683,6 +685,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                                     },
                                     imageURL: imageURL,
                                     imageDescription: imageDescription,
+                                    noPadding: (imageURL ? noPadding : false),
                                 };
                                 // Optional preferred width as a percentage of the bg image's width:
                                 var widthPercent = $el.find('.item-width').val();
