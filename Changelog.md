@@ -1,6 +1,15 @@
 Drag and Drop XBlock changelog
 ==============================
 
+Version 2.3.8 (2022-04-12)
+---------------------------
+
+* Add item option to remove padding from images dropped on a zone.
+* Add option to show zone border when dragging an item.
+* Hides text when a draggable item is placed in a target zone and frontend wait for LMS response, this is done since the size of the item increases when the spinner is visible.
+* Change containers and css classes to match those from edx-platform. The problem div now contains the drag container, buttons and feedback, css classes from submit button; submit answer and action buttons were also changed.
+* Improve feedback styles, now only icons shows color related with feedback and text color remains the same also each feedback line doesn't show borders.
+
 Unreleased
 ---------------------------
 * Replaced `Travis` with `GitHub CI`.
