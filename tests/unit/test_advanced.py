@@ -88,12 +88,16 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
         self.call_handler(self.DROP_ITEM_HANDLER, data)
 
         res = self.call_handler(self.RESET_HANDLER, data={})
-        expected_overall_feedback = [self._make_feedback_message(message=self.INITIAL_FEEDBACK)]
+        expected_overall_feedback = [
+            self._make_feedback_message(self.INITIAL_FEEDBACK, FeedbackMessages.MessageClasses.INITIAL_FEEDBACK)
+        ]
         self.assertEqual(res[self.OVERALL_FEEDBACK_KEY], expected_overall_feedback)
 
     def test_user_state_no_item_state(self):
         res = self.call_handler(self.USER_STATE_HANDLER, data={})
-        expected_overall_feedback = [self._make_feedback_message(message=self.INITIAL_FEEDBACK)]
+        expected_overall_feedback = [
+            self._make_feedback_message(self.INITIAL_FEEDBACK, FeedbackMessages.MessageClasses.INITIAL_FEEDBACK)
+        ]
         self.assertEqual(res[self.OVERALL_FEEDBACK_KEY], expected_overall_feedback)
 
     def test_drop_item_wrong_with_feedback(self):
@@ -108,7 +112,9 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
         expected_grade = self.block.weight * 2 / 4.0
 
         self.assertEqual(res, {
-            "overall_feedback": [self._make_feedback_message(message=self.INITIAL_FEEDBACK)],
+            "overall_feedback": [
+                self._make_feedback_message(self.INITIAL_FEEDBACK, FeedbackMessages.MessageClasses.INITIAL_FEEDBACK)
+            ],
             "finished": False,
             "correct": False,
             "grade": expected_grade,
@@ -127,7 +133,9 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
         expected_grade = self.block.weight * 2 / 4.0
 
         self.assertEqual(res, {
-            "overall_feedback": [self._make_feedback_message(message=self.INITIAL_FEEDBACK)],
+            "overall_feedback": [
+                self._make_feedback_message(self.INITIAL_FEEDBACK, FeedbackMessages.MessageClasses.INITIAL_FEEDBACK)
+            ],
             "finished": False,
             "correct": False,
             "grade": expected_grade,
@@ -147,7 +155,9 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
         expected_grade = self.block.weight * 3 / 4.0
 
         self.assertEqual(res, {
-            "overall_feedback": [self._make_feedback_message(message=self.INITIAL_FEEDBACK)],
+            "overall_feedback": [
+                self._make_feedback_message(self.INITIAL_FEEDBACK, FeedbackMessages.MessageClasses.INITIAL_FEEDBACK)
+            ],
             "finished": False,
             "correct": True,
             "grade": expected_grade,
@@ -254,7 +264,9 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
             "finished": False,
             "attempts": 0,
             "grade": expected_grade,
-            'overall_feedback': [self._make_feedback_message(message=self.INITIAL_FEEDBACK)],
+            'overall_feedback': [
+                self._make_feedback_message(self.INITIAL_FEEDBACK, FeedbackMessages.MessageClasses.INITIAL_FEEDBACK)
+            ],
         }
         self.assertEqual(expected_state, self.call_handler('student_view_user_state', method="GET"))
 
@@ -262,7 +274,9 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
         # All four items are in correct position, so the final raw grade is 4/4.
         expected_grade = self.block.weight * 4 / 4.0
         self.assertEqual(res, {
-            "overall_feedback": [self._make_feedback_message(message=self.FINAL_FEEDBACK)],
+            "overall_feedback": [
+                self._make_feedback_message(self.FINAL_FEEDBACK, FeedbackMessages.MessageClasses.FINAL_FEEDBACK)
+            ],
             "finished": True,
             "correct": True,
             "grade": expected_grade,
@@ -277,7 +291,9 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
             "finished": True,
             "attempts": 0,
             "grade": expected_grade,
-            'overall_feedback': [self._make_feedback_message(self.FINAL_FEEDBACK)],
+            'overall_feedback': [
+                self._make_feedback_message(self.FINAL_FEEDBACK, FeedbackMessages.MessageClasses.FINAL_FEEDBACK)
+            ],
         }
         self.assertEqual(expected_state, self.call_handler('student_view_user_state', method="GET"))
 
@@ -357,7 +373,7 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
 
         res = self.call_handler(self.USER_STATE_HANDLER, data={})
         expected_feedback = [
-            self._make_feedback_message(self.INITIAL_FEEDBACK)
+            self._make_feedback_message(self.INITIAL_FEEDBACK, FeedbackMessages.MessageClasses.INITIAL_FEEDBACK)
         ]
         self.assertEqual(res[self.OVERALL_FEEDBACK_KEY], expected_feedback)
 
@@ -367,11 +383,11 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
         res = self.call_handler(self.RESET_HANDLER, data={})
 
         expected_overall_feedback = [
-            self._make_feedback_message(message=self.INITIAL_FEEDBACK),
             self._make_feedback_message(
                 FeedbackMessages.GRADE_FEEDBACK_TPL.format(score=self.block.raw_earned),
                 FeedbackMessages.MessageClasses.PARTIAL_SOLUTION
-            )
+            ),
+            self._make_feedback_message(self.INITIAL_FEEDBACK, FeedbackMessages.MessageClasses.INITIAL_FEEDBACK),
         ]
         self.assertEqual(res[self.OVERALL_FEEDBACK_KEY], expected_overall_feedback)
 
@@ -558,7 +574,9 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
 
         self._submit_partial_solution()
         res = self.call_handler(self.DO_ATTEMPT_HANDLER, data={})
-        expected_message = self._make_feedback_message(self.FINAL_FEEDBACK)
+        expected_message = self._make_feedback_message(
+            self.FINAL_FEEDBACK, FeedbackMessages.MessageClasses.FINAL_FEEDBACK
+        )
         self.assertIn(expected_message, res[self.OVERALL_FEEDBACK_KEY])
 
     def test_do_attempt_does_not_delete_misplaced_items_at_last_attempt(self):
@@ -735,12 +753,12 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
                 FeedbackMessages.MessageClasses.NOT_PLACED
             ),
             self._make_feedback_message(
-                self.INITIAL_FEEDBACK,
-                None
-            ),
-            self._make_feedback_message(
                 FeedbackMessages.GRADE_FEEDBACK_TPL.format(score=self.block.weighted_grade()),
                 FeedbackMessages.MessageClasses.PARTIAL_SOLUTION
+            ),
+            self._make_feedback_message(
+                self.INITIAL_FEEDBACK,
+                FeedbackMessages.MessageClasses.INITIAL_FEEDBACK
             ),
         ]
 
@@ -766,11 +784,11 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
         expected_item_feedback = []
         expected_overall_feedback = [
             self._make_feedback_message(FeedbackMessages.not_placed(3), FeedbackMessages.MessageClasses.NOT_PLACED),
-            self._make_feedback_message(self.INITIAL_FEEDBACK, None),
             self._make_feedback_message(
                 FeedbackMessages.GRADE_FEEDBACK_TPL.format(score=self.block.weighted_grade()),
                 FeedbackMessages.MessageClasses.PARTIAL_SOLUTION
-            )
+            ),
+            self._make_feedback_message(self.INITIAL_FEEDBACK, FeedbackMessages.MessageClasses.INITIAL_FEEDBACK),
         ]
 
         self._assert_item_and_overall_feedback(res, expected_item_feedback, expected_overall_feedback)
@@ -794,12 +812,12 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
                 FeedbackMessages.MessageClasses.NOT_PLACED
             ),
             self._make_feedback_message(
-                self.INITIAL_FEEDBACK,
-                None
-            ),
-            self._make_feedback_message(
                 FeedbackMessages.GRADE_FEEDBACK_TPL.format(score=self.block.weighted_grade()),
                 FeedbackMessages.MessageClasses.PARTIAL_SOLUTION
+            ),
+            self._make_feedback_message(
+                self.INITIAL_FEEDBACK,
+                FeedbackMessages.MessageClasses.INITIAL_FEEDBACK
             ),
         ]
 
@@ -814,11 +832,11 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
             self._make_feedback_message(
                 FeedbackMessages.correctly_placed(3), FeedbackMessages.MessageClasses.CORRECTLY_PLACED
             ),
-            self._make_feedback_message(self.FINAL_FEEDBACK, FeedbackMessages.MessageClasses.CORRECT_SOLUTION),
             self._make_feedback_message(
                 FeedbackMessages.GRADE_FEEDBACK_TPL.format(score=self.block.weighted_grade()),
                 FeedbackMessages.MessageClasses.CORRECT_SOLUTION
             ),
+            self._make_feedback_message(self.FINAL_FEEDBACK, FeedbackMessages.MessageClasses.FINAL_FEEDBACK),
         ]
 
         self._assert_item_and_overall_feedback(res, expected_item_feedback, expected_overall_feedback)
@@ -838,7 +856,7 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
             self._make_feedback_message(
                 FeedbackMessages.correctly_placed(3), FeedbackMessages.MessageClasses.CORRECTLY_PLACED
             ),
-            self._make_feedback_message(self.FINAL_FEEDBACK, FeedbackMessages.MessageClasses.CORRECT_SOLUTION)
+            self._make_feedback_message(self.FINAL_FEEDBACK, FeedbackMessages.MessageClasses.FINAL_FEEDBACK)
         ]
 
         self._assert_item_and_overall_feedback(res, expected_item_feedback, expected_overall_feedback)
@@ -853,11 +871,11 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
                 FeedbackMessages.correctly_placed(1), FeedbackMessages.MessageClasses.CORRECTLY_PLACED
             ),
             self._make_feedback_message(FeedbackMessages.not_placed(2), FeedbackMessages.MessageClasses.NOT_PLACED),
-            self._make_feedback_message(self.INITIAL_FEEDBACK, None),
             self._make_feedback_message(
                 FeedbackMessages.GRADE_FEEDBACK_TPL.format(score=self.block.weighted_grade()),
                 FeedbackMessages.MessageClasses.PARTIAL_SOLUTION
             ),
+            self._make_feedback_message(self.INITIAL_FEEDBACK, FeedbackMessages.MessageClasses.INITIAL_FEEDBACK),
         ]
 
         self._assert_item_and_overall_feedback(res, expected_item_feedback, expected_overall_feedback)
