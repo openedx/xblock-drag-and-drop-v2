@@ -2,7 +2,7 @@ Drag and Drop XBlock changelog
 ==============================
 
 Unreleased
----------------------------
+----------
 * Replaced `Travis` with `GitHub CI`.
 
 Version 2.3.7 (2022-02-20)
