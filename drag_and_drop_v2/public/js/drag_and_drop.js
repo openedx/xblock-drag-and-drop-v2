@@ -83,9 +83,6 @@ function DragAndDropTemplates(configuration) {
         if (item.widthPercent) {
             className += " specified-width";  // The author has specified a width for this item.
         }
-        if (item.grabbed_with) {
-            className += " grabbed-with-" + item.grabbed_with;
-        }
         var attributes = {
             'role': 'button',
             'draggable': !item.drag_disabled,
@@ -130,6 +127,14 @@ function DragAndDropTemplates(configuration) {
                 style.padding = '0';
             }
         } else {
+            $.extend(style, bankItemWidthStyles(item, ctx));
+        }
+        if (item.grabbed_with) {
+            className += " grabbed-with-" + item.grabbed_with;
+            // Clear width and maxWidth styles and use the bankItemWidthStyles
+            // This prevents inconsistency in width for grabbed items
+            delete style.width
+            delete style.maxWidth
             $.extend(style, bankItemWidthStyles(item, ctx));
         }
         // Define children

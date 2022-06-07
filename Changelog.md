@@ -1,9 +1,10 @@
 Drag and Drop XBlock changelog
 ==============================
 
-Unreleased
-----------
+Version 2.3.9 (2022-06-15)
+---------------------------
 
+* Fix draggable item width inconsistency while dragging.
 * Do not move correctly placed items when showing the answer.
 * Distribute items with multiple correct zones among these zones when showing the answer.
 
