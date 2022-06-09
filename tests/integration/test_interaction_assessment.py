@@ -196,6 +196,12 @@ class AssessmentInteractionTest(
 
     def _assert_show_answer_item_placement(self):
         zones = dict(self.all_zones)
+        print("#######################")
+        print("#######################")
+        print(self)
+        print(self.items_map)
+        print("#######################")
+        print("#######################")
         for item in self._get_items_with_zone(self.items_map).values():
             zone_titles = [zones[zone_id] for zone_id in item.zone_ids]
             # When showing answers, correct items are placed as if assessment_mode=False
