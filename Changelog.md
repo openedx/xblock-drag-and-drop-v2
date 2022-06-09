@@ -1,6 +1,12 @@
 Drag and Drop XBlock changelog
 ==============================
 
+Unreleased
+----------
+
+* Do not move correctly placed items when showing the answer.
+* Distribute items with multiple correct zones among these zones when showing the answer.
+
 Version 2.3.8 (2022-04-12)
 ---------------------------
 
@@ -9,9 +15,6 @@ Version 2.3.8 (2022-04-12)
 * Hides text when a draggable item is placed in a target zone and frontend wait for LMS response, this is done since the size of the item increases when the spinner is visible.
 * Change containers and css classes to match those from edx-platform. The problem div now contains the drag container, buttons and feedback, css classes from submit button; submit answer and action buttons were also changed.
 * Improve feedback styles, now only icons shows color related with feedback and text color remains the same also each feedback line doesn't show borders.
-
-Unreleased
----------------------------
 * Replaced `Travis` with `GitHub CI`.
 
 Version 2.3.7 (2022-02-20)

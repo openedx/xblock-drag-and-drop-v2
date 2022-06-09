@@ -5,6 +5,7 @@
 # Imports ###########################################################
 
 from __future__ import absolute_import
+from collections import Counter
 
 import copy
 import json
@@ -975,25 +976,57 @@ class DragAndDropBlock(
     def _get_correct_state(self):
         """
         Returns one of the possible correct states for the configured data.
+
+        Items dropped by user in the correct zones are retained in those zones.
+        Incorrect items are equally distributed among their correct zones (if more than one zone is correct).
         """
         state = {}
         items = copy.deepcopy(self.data.get('items', []))
+
+        zone_count = Counter()
+        correct_items = set()
+
+        def _get_preferred_zone(zone_count, zones):
+            """
+            Returns the zone with the least number of items.
+            """
+            preferred_zone = None
+            for zone in zones:
+                # Check if the current zone has the least number of items till now
+                if not preferred_zone or zone_count[preferred_zone] > zone_count[zone]:
+                    preferred_zone = zone
+
+            zone_count[preferred_zone] += 1
+            return preferred_zone
+
+        # Set states of all items dropped in correct zones
+        for item_id in self.item_state:
+            if self.item_state[item_id]['correct']:
+                state[item_id] = self.item_state[item_id]
+                correct_items.add(item_id)
+
+                zone = self.item_state[item_id]['zone']
+                zone_count[zone] += 1
+
+        # Set states of rest of the items
         for item in items:
-            zones = item.get('zones')
+            item_id = str(item['id'])
+            if item_id not in correct_items:
+                zones = item.get('zones')
 
-            # For backwards compatibility
-            if zones is None:
-                zones = []
-                zone = item.get('zone')
-                if zone is not None and zone != 'none':
-                    zones.append(zone)
+                # For backwards compatibility
+                if zones is None:
+                    zones = []
+                    zone = item.get('zone')
+                    if zone is not None and zone != 'none':
+                        zones.append(zone)
 
-            if zones:
-                zone = zones.pop()
-                state[str(item['id'])] = {
-                    'zone': zone,
-                    'correct': True,
-                }
+                if zones:
+                    zone = _get_preferred_zone(zone_count, zones)
+                    state[item_id] = {
+                        'zone': zone,
+                        'correct': True,
+                    }
 
         return {'items': state}
 

@@ -247,6 +247,28 @@ class AssessmentInteractionTest(
         self.assertEqual(show_answer_button.get_attribute('disabled'), 'true')
         self._assert_show_answer_item_placement()
 
+    @data(MIDDLE_ZONE_ID, TOP_ZONE_ID)
+    def test_show_answer_user_selected_zone(self, dropped_zone_id):
+        """
+        Test item stays in plane when showing answer if placed in correct zone.
+        """
+        zones = dict(self.all_zones)
+
+        show_answer_button = self._get_show_answer_button()
+        self.assertTrue(show_answer_button.is_displayed())
+
+        # Place an item with multiple correct zones
+        self.place_item(3, dropped_zone_id, Keys.RETURN)
+
+        # Submit maximum number of times
+        for _ in range(self.MAX_ATTEMPTS):
+            self.click_submit()
+
+        self.assertIsNone(show_answer_button.get_attribute('disabled'))
+        self.click_show_answer()
+
+        self.assert_placed_item(3, [zones[dropped_zone_id]], assessment_mode=False)
+
     def test_do_attempt_feedback_is_updated(self):
         """
         Test updating overall feedback after submitting solution in assessment mode
