@@ -116,7 +116,7 @@ class AssessmentInteractionTest(
         self.assertEqual(submit_button.get_attribute('disabled'), 'true')  # no items are placed
 
         attempts_info = self._get_attempts_info()
-        expected_text = "You have used {num} of {max} attempts.".format(num=0, max=self.MAX_ATTEMPTS)
+        expected_text = "You have used {num} of {max} submissions".format(num=0, max=self.MAX_ATTEMPTS)
         self.assertEqual(attempts_info.text, expected_text)
         self.assertEqual(attempts_info.is_displayed(), self.MAX_ATTEMPTS > 0)
 
@@ -185,7 +185,7 @@ class AssessmentInteractionTest(
         attempts_info = self._get_attempts_info()
 
         for index in range(self.MAX_ATTEMPTS):
-            expected_text = "You have used {num} of {max} attempts.".format(num=index, max=self.MAX_ATTEMPTS)
+            expected_text = "You have used {num} of {max} submissions".format(num=index, max=self.MAX_ATTEMPTS)
             self.assertEqual(attempts_info.text, expected_text)  # precondition check
             self.assertEqual(submit_button.get_attribute('disabled'), None)
             self.assertEqual(reset_button.get_attribute('disabled'), None)

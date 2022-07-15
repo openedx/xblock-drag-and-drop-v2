@@ -355,7 +355,7 @@ function DragAndDropTemplates(configuration) {
         if (ctx.max_attempts && ctx.max_attempts > 0) {
             var attemptsUsedId = "attempts-used-" + configuration.url_name;
             submitButtonProperties.attributes["aria-describedby"] = attemptsUsedId;
-            var attemptsUsedTemplate = gettext("You have used {used} of {total} attempts.");
+            var attemptsUsedTemplate = gettext("You have used {used} of {total} submissions");
             var attemptsUsedText = attemptsUsedTemplate.
                 replace("{used}", ctx.attempts).replace("{total}", ctx.max_attempts);
             attemptsUsedInfo = h("div.submission-feedback", {id: attemptsUsedId}, attemptsUsedText);

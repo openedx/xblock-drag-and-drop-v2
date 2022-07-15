@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-24 21:55-0500\n"
+"POT-Creation-Date: 2022-07-15 14:16+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -412,6 +412,10 @@ msgid "Display zone borders on the image"
 msgstr "Đᴉsdlɐʎ zønǝ bøɹdǝɹs øn ʇɥǝ ᴉɯɐƃǝ"
 
 #: templates/html/drag_and_drop_edit.html
+msgid "Display zone borders when dragging an item"
+msgstr "Đᴉsdlɐʎ zønǝ bøɹdǝɹs ʍɥǝn dɹɐƃƃᴉnƃ ɐn ᴉʇǝɯ"
+
+#: templates/html/drag_and_drop_edit.html
 msgid "Zone definitions"
 msgstr "Ƶønǝ dǝɟᴉnᴉʇᴉøns"
 
@@ -599,8 +603,8 @@ msgstr ""
 " ʇɥǝ dɹɐƃƃɐblǝ ᴉʇǝɯs ɥɐʌǝ bǝǝn dlɐɔǝd øn ʇɥǝᴉɹ ɹǝsdǝɔʇᴉʌǝ dɹødzønǝs."
 
 #: public/js/drag_and_drop.js
-msgid "You have used {used} of {total} attempts."
-msgstr "Ɏøn ɥɐʌǝ nsǝd {used} øɟ {total} ɐʇʇǝɯdʇs."
+msgid "You have used {used} of {total} submissions"
+msgstr "Ɏøn ɥɐʌǝ nsǝd {used} øɟ {total} snbɯᴉssᴉøns"
 
 #: public/js/drag_and_drop.js
 msgid "Submit"
@@ -609,6 +613,10 @@ msgstr "Snbɯᴉʇ"
 #: public/js/drag_and_drop.js
 msgid "Show Answer"
 msgstr "Sɥøʍ Ⱥnsʍǝɹ"
+
+#: public/js/drag_and_drop.js
+msgid "Actions"
+msgstr "Ⱥɔʇᴉøns"
 
 #: public/js/drag_and_drop.js
 msgid "Go to Beginning"
@@ -685,10 +693,6 @@ msgstr "Ɨʇǝɯ Ƀɐnʞ"
 #: public/js/drag_and_drop.js
 msgid "Drop Targets"
 msgstr "Đɹød Ŧɐɹƃǝʇs"
-
-#: public/js/drag_and_drop.js
-msgid "Actions"
-msgstr "Ⱥɔʇᴉøns"
 
 #: public/js/drag_and_drop.js
 msgid "An error occurred. Unable to load drag and drop problem."
