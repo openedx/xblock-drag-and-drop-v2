@@ -3,20 +3,21 @@
 # Imports ###########################################################
 
 from __future__ import absolute_import
+from copy import deepcopy
+import json
 
 import re
 import time
+from xml.sax.saxutils import escape
 
-from ddt import data, ddt
+import ddt
 from mock import Mock, patch
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
-import six
-from six.moves import range
 from xblockutils.resources import ResourceLoader
 
-from drag_and_drop_v2.default_data import (BOTTOM_ZONE_ID, FINISH_FEEDBACK,
+from drag_and_drop_v2.default_data import (BOTTOM_ZONE_ID, DEFAULT_DATA, FINISH_FEEDBACK,
                                            MIDDLE_ZONE_ID, START_FEEDBACK,
                                            TOP_ZONE_ID, TOP_ZONE_TITLE)
 from drag_and_drop_v2.utils import Constants, FeedbackMessages
@@ -72,7 +73,7 @@ class AssessmentTestMixin(object):
 
 
 # pylint: disable=bad-continuation
-@ddt
+@ddt.ddt
 class AssessmentInteractionTest(
     DefaultAssessmentDataTestMixin, AssessmentTestMixin, ParameterizedTestsMixin,
     InteractionTestBase, BaseIntegrationTest
@@ -82,29 +83,29 @@ class AssessmentInteractionTest(
     All interactions are tested using mouse (action_key=None) and four different keyboard action keys.
     If default data changes this will break.
     """
-    @data(*ITEM_DRAG_KEYBOARD_KEYS)
+    @ddt.data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_item_no_feedback_on_good_move(self, action_key):
         self.parameterized_item_positive_feedback_on_good_move_assessment(self.items_map, action_key=action_key)
 
-    @data(*ITEM_DRAG_KEYBOARD_KEYS)
+    @ddt.data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_item_no_feedback_on_bad_move(self, action_key):
         self.parameterized_item_negative_feedback_on_bad_move_assessment(
             self.items_map, self.all_zones, action_key=action_key
         )
 
-    @data(*ITEM_DRAG_KEYBOARD_KEYS)
+    @ddt.data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_move_items_between_zones(self, action_key):
         self.parameterized_move_items_between_zones(
             self.items_map, self.all_zones, action_key=action_key
         )
 
-    @data(*ITEM_DRAG_KEYBOARD_KEYS)
+    @ddt.data(*ITEM_DRAG_KEYBOARD_KEYS)
     def test_final_feedback_and_reset(self, action_key):
         self.parameterized_final_feedback_and_reset(
             self.items_map, self.feedback, action_key=action_key, assessment_mode=True
         )
 
-    @data(False, True)
+    @ddt.data(False, True)
     def test_keyboard_help(self, use_keyboard):
         self.interact_with_keyboard_help(use_keyboard=use_keyboard)
 
@@ -131,10 +132,10 @@ class AssessmentInteractionTest(
         correct_items = {0: TOP_ZONE_ID}
         misplaced_items = {1: BOTTOM_ZONE_ID, 2: MIDDLE_ZONE_ID}
 
-        for item_id, zone_id in six.iteritems(correct_items):
+        for item_id, zone_id in correct_items.items():
             self.place_item(item_id, zone_id)
 
-        for item_id, zone_id in six.iteritems(misplaced_items):
+        for item_id, zone_id in misplaced_items.items():
             self.place_item(item_id, zone_id)
 
         self.click_submit()
@@ -247,7 +248,7 @@ class AssessmentInteractionTest(
         self.assertEqual(show_answer_button.get_attribute('disabled'), 'true')
         self._assert_show_answer_item_placement()
 
-    @data(MIDDLE_ZONE_ID, TOP_ZONE_ID)
+    @ddt.data(MIDDLE_ZONE_ID, TOP_ZONE_ID)
     def test_show_answer_user_selected_zone(self, dropped_zone_id):
         """
         Test item stays in plane when showing answer if placed in correct zone.
@@ -429,3 +430,71 @@ class TestMaxItemsPerZoneAssessment(TestMaxItemsPerZone):
 
         self.place_item(7, zone_id, Keys.RETURN)
         self.assertFalse(popup.is_displayed())
+
+
+@ddt.ddt
+class ExplanationTest(
+    DefaultDataTestMixin, AssessmentTestMixin,
+    BaseIntegrationTest, InteractionTestBase
+):
+    """
+    Test the rendering of the "Explanation" block when "Show Answer" button is clicked.
+    Test "Explanation" block is not displayed if no explanation string is configured or
+    if the configured string is only white spaces.
+    """
+
+    CURRENT_EXPLANATION_TEXT = ""
+
+    def _get_scenario_xml(self):
+        problem_data = deepcopy(DEFAULT_DATA)
+        problem_data['explanation'] = self.CURRENT_EXPLANATION_TEXT
+        scenario_xml = """
+            <vertical_demo><drag-and-drop-v2 mode='{mode}' max_attempts='{max_attempts}' data='{data}'/></vertical_demo>
+        """.format(
+            mode=Constants.ASSESSMENT_MODE,
+            max_attempts=1,
+            data=escape(json.dumps(problem_data), self._additional_escapes)
+        )
+        return scenario_xml
+
+    def load_scenario(self, explanation_text: str, scenario_id: int):
+        self.CURRENT_EXPLANATION_TEXT = explanation_text
+        scenario_xml = self._get_scenario_xml()
+
+        scenario_page_id = "{base_page_id}_explanation_{page_id}".format(
+            base_page_id=self.PAGE_ID,
+            page_id=scenario_id
+        )
+
+        scenario_page_title = "{base_page_title}_explanation_{page_id}".format(
+            base_page_title=self.PAGE_TITLE,
+            page_id=scenario_id
+        )
+
+        self._add_scenario(scenario_page_id, scenario_page_title, scenario_xml)
+        self._page = self.go_to_page(scenario_page_title)
+
+    @ddt.data(
+        (1, "This is an explanation.", True),
+        (2, " ", False),
+        (3, None, False),
+    )
+    @ddt.unpack
+    def test_explanation(self, scenario_id: int, explanation: str, should_display: bool):
+        """
+        Test that the "Explanation" is displayed after the "Show Answer" button is clicked.
+        The docstring of the class explains when the explanation should be visible.
+        """
+        self.load_scenario(explanation, scenario_id)
+        show_answer_button = self._get_show_answer_button()
+        self.assertTrue(show_answer_button.is_displayed())
+
+        self.place_item(3, MIDDLE_ZONE_ID, Keys.RETURN)
+
+        self.click_submit()
+
+        self.assertIsNone(show_answer_button.get_attribute('disabled'))
+        self.click_show_answer()
+
+        explanation_block = self._get_explanation()
+        self.assertEqual(explanation_block.is_displayed(), should_display)

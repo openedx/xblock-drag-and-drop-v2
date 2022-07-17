@@ -314,6 +314,23 @@ function DragAndDropTemplates(configuration) {
         );
     };
 
+    var explanationTemplate = function (ctx) {
+        var explanation_display = ctx.explanation ? 'block' : 'none';
+        return (
+            h('.solution-span', {
+                attributes: {'aria-label': gettext('Explanation')},
+                style: {display: explanation_display}
+            }, [
+                h('span', [
+                    h('.detailed-solution', [
+                        h('p', gettext('Explanation')),
+                        h('p', gettext(ctx.explanation)),
+                    ])
+                ])
+            ])
+        );
+    };
+
     var keyboardHelpPopupTemplate = function(ctx) {
         var labelledby_id = 'modal-window-title-'+configuration.url_name;
         return (
@@ -710,6 +727,7 @@ function DragAndDropTemplates(configuration) {
                         ]),
                         h('div.dragged-items', renderCollection(itemTemplate, items_dragged, ctx)),
                     ]),
+                    explanationTemplate(ctx),
                     h('div.action', [
                         (ctx.show_submit_answer ? submitAnswerTemplate(ctx) : null),
                         sidebarTemplate(ctx)
@@ -1823,6 +1841,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         }).done(function(data) {
             state.items = data.items;
             state.showing_answer = true;
+            state.explanation = data.explanation;
             delete state.feedback;
         }).always(function() {
             state.show_answer_spinner = false;
@@ -1986,6 +2005,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             item_bank_focusable: item_bank_focusable,
             feedback_messages: state.feedback,
             overall_feedback_messages: state.overall_feedback,
+            explanation: state.explanation,
             disable_reset_button: !canReset(),
             disable_show_answer_button: !canShowAnswer(),
             disable_submit_button: !canSubmitAttempt(),

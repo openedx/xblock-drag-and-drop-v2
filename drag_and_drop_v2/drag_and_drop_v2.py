@@ -168,7 +168,7 @@ class DragAndDropBlock(
     data = Dict(
         display_name=_("Problem data"),
         help=_(
-            "Information about zones, items, feedback, and background image for this problem. "
+            "Information about zones, items, feedback, explanation and background image for this problem. "
             "This information is derived from the input that a course author provides via the interactive editor "
             "when configuring the problem."
         ),
@@ -618,7 +618,11 @@ class DragAndDropBlock(
                 self.i18n_service.gettext("There are attempts remaining")
             )
 
-        return self._get_correct_state()
+        answer = self._get_correct_state()
+
+        answer['explanation'] = self.data.get('explanation', '').strip()
+
+        return answer
 
     @XBlock.json_handler
     def expand_static_url(self, url, suffix=''):

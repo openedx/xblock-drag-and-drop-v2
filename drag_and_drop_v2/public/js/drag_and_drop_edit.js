@@ -597,6 +597,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                             start: $form.find('.intro-feedback').val(),
                             finish: $form.find('.final-feedback').val()
                         };
+                        _fn.data.explanation = $form.find('.explanation').val();
                     },
                     item: {
                         count: 0,
