@@ -302,15 +302,14 @@ function DragAndDropTemplates(configuration) {
         });
 
         return (
-            h('div.feedback', {attributes: {'role': 'group', 'aria-label': gettext('Feedback')}}, [
-                h(
-                    "div.feedback-content",
-                    {},
-                    [
-                        h('h3.title1', { style: { display: feedback_display } }, gettext('Feedback')),
-                        h('div.messages', { style: { display: feedback_display } }, gettext(feedback_messages)),
-                    ]
-                )
+            h('div.feedback', {
+                attributes: {'role': 'group', 'aria-label': gettext('Feedback')},
+                style: { display: feedback_display }
+            }, [
+                h('div.feedback-content',[
+                    h('h3.title1', gettext('Feedback')),
+                    h('div.messages', gettext(feedback_messages)),
+                ])
             ])
         );
     };
