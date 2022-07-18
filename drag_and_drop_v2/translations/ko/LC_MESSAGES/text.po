@@ -6,13 +6,14 @@
 # Jinsun Kim <jinsun.taylorkim@gmail.com>, 2020
 # OpenCraft OpenCraft <help@opencraft.com>, 2021
 # Seungheon Shin <gody8756@ajou.ac.kr>, 2020
+# Wonjae Choi <juniorleo651@gmail.com>, 2021
 msgid ""
 msgstr ""
 "Project-Id-Version: XBlocks\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-24 21:55-0500\n"
-"PO-Revision-Date: 2021-03-30 14:46+0000\n"
-"Last-Translator: OpenCraft OpenCraft <help@opencraft.com>\n"
+"PO-Revision-Date: 2016-06-09 07:11+0000\n"
+"Last-Translator: Wonjae Choi <juniorleo651@gmail.com>, 2021\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/open-edx/xblocks/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

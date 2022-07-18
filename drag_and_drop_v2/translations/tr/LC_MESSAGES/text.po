@@ -4,15 +4,15 @@
 # 
 # Translators:
 # Erdoğan Şahin, 2016
-# OpenCraft LabXchange <help+labxchange@opencraft.com>, 2021
+# 7d6b04fff6aa1b6964c4cb709cdbd24b_0b8e9dc <0f5d8258cb2bd641cccbffd85d9d9e7c_938679>, 2021
 # OpenCraft OpenCraft <help@opencraft.com>, 2021
 msgid ""
 msgstr ""
 "Project-Id-Version: XBlocks\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-24 21:55-0500\n"
-"PO-Revision-Date: 2021-03-30 14:59+0000\n"
-"Last-Translator: OpenCraft OpenCraft <help@opencraft.com>\n"
+"PO-Revision-Date: 2016-06-09 07:11+0000\n"
+"Last-Translator: OpenCraft OpenCraft <help@opencraft.com>, 2021\n"
 "Language-Team: Turkish (http://www.transifex.com/open-edx/xblocks/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
