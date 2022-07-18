@@ -555,7 +555,7 @@ msgid ""
 msgstr "TAB kehren Sie zur Liste der ziehbaren Auswahlmöglichkeit/en zurück und wiederholen Sie diesen Vorgang bis alle ziehbaren Auswahlmöglichkeit/en auf ihren jeweiligen Ablagebereichen platziert sind."
 
 #: public/js/drag_and_drop.js:348
-msgid "You have used {used} of {total} attempts."
+msgid "You have used {used} of {total} submissions"
 msgstr "Sie haben {used} von {total} Versuchen verwendet."
 
 #: public/js/drag_and_drop.js:370

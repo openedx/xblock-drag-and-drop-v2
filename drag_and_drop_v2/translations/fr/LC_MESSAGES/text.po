@@ -561,7 +561,7 @@ msgid ""
 msgstr "Appuyez à nouveau sur TAB pour revenir à la liste d’éléments glissables et répétez cette procédure jusqu’à ce que tous les éléments glissables aient été placés dans leur propre zone de dépôt."
 
 #: public/js/drag_and_drop.js:348
-msgid "You have used {used} of {total} attempts."
+msgid "You have used {used} of {total} submissions"
 msgstr "Vous avez utilisé {used} de vos {total} tentatives."
 
 #: public/js/drag_and_drop.js:370

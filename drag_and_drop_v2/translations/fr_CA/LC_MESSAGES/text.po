@@ -557,7 +557,7 @@ msgid ""
 msgstr "Appuyez sur TAB pour revenir à la liste des éléments à glisser-déposer et répétez ce processus jusqu'à ce que tous les éléments aient été placés dans leurs zones respectives."
 
 #: public/js/drag_and_drop.js:348
-msgid "You have used {used} of {total} attempts."
+msgid "You have used {used} of {total} submissions"
 msgstr "Vous avez utilisé {used} essais sur {total}."
 
 #: public/js/drag_and_drop.js:370

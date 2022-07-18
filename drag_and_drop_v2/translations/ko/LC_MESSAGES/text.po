@@ -551,7 +551,7 @@ msgid ""
 msgstr "TAB을 하여 끌기 가능한 항목의 목록으로 돌아가고 이 과정을 모든 끌기 가능한 항목들을 각각의 놓기 영역으로 옮길 때까지 반복하세요."
 
 #: public/js/drag_and_drop.js:348
-msgid "You have used {used} of {total} attempts."
+msgid "You have used {used} of {total} submissions"
 msgstr "당신은 {total}번의 시도 중 {used}만큼 사용했습니다."
 
 #: public/js/drag_and_drop.js:370

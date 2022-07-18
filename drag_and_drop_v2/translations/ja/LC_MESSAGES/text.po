@@ -550,7 +550,7 @@ msgid ""
 msgstr "TABキーを押してドラッグ可能なアイテムのリストに戻ります。各アイテムをそれぞれのドロップゾーンに配置するまで、このプロセスを繰り返します。"
 
 #: public/js/drag_and_drop.js:348
-msgid "You have used {used} of {total} attempts."
+msgid "You have used {used} of {total} submissions"
 msgstr "合計試行回数 {total} 回のうち {used} 回行いました。"
 
 #: public/js/drag_and_drop.js:370

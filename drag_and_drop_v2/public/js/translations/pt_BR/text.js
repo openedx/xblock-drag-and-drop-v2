@@ -10,7 +10,7 @@
 
   
   django.pluralidx = function(n) {
-    var v=(n > 1);
+    var v=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;
     if (typeof(v) == 'boolean') {
       return v ? 1 : 0;
     } else {
@@ -49,6 +49,7 @@
     "Correctly placed in: {zone_title}": "Corretamente posicionado em: {zone_title}",
     "Correctly placed {correct_count} item.": [
       "{correct_count}  item colocado corretamente.",
+      "{correct_count} itens colocados corretamente.",
       "{correct_count} itens colocados corretamente."
     ],
     "DEPRECATED. Keeps maximum score achieved by student as a weighted value.": "DEPRECIADO.Mant\u00e9m a pontua\u00e7\u00e3o m\u00e1xima alcan\u00e7ada pelo aluno como um valor pesado.",
@@ -56,6 +57,7 @@
     "Defines the number of times a student can try to answer this problem. If the value is not set, infinite attempts are allowed.": "Define o n\u00famero de tentativas que os estudantes podem fazer para resolver este problema. Se o valor n\u00e3o for definido, infinitas tentativas ser\u00e3o permitidas.",
     "Did not place {missing_count} required item.": [
       "{missing_count} item obrigat\u00f3rio n\u00e3o foi posicionado.",
+      "{missing_count} itens obrigat\u00f3rios n\u00e3o foram posicionados.",
       "{missing_count} itens obrigat\u00f3rios n\u00e3o foram posicionados."
     ],
     "Display label names on the image": "Exibir nomes da etiqueta na imagem",
@@ -100,10 +102,12 @@
     "Maximum items per zone": "Itens m\u00e1ximos por zona",
     "Misplaced {misplaced_count} item.": [
       "Item mal posicionado: {misplaced_count}",
+      "Itens mal posicionados: {misplaced_count}",
       "Itens mal posicionados: {misplaced_count}"
     ],
     "Misplaced {misplaced_count} item. Misplaced item was returned to item bank.": [
       "{misplaced_count} item perdido. Os itens perdidos foram devolvidos ao banco de itens.",
+      "{misplaced_count} itens perdidos. Os itens perdidos foram devolvidos ao banco de itens.",
       "{misplaced_count} itens perdidos. Os itens perdidos foram devolvidos ao banco de itens."
     ],
     "Mode": "Modo",
@@ -159,7 +163,7 @@
     "Use this zone to associate an item with the top layer of the triangle.": "Use esta zona para associar um item \u00e0 camada superior do tri\u00e2ngulo.",
     "You can complete this problem using only your keyboard by following the guidance below:": "Voc\u00ea pode completar esse problema usando seu teclado para seguir o guia abaixo:",
     "You cannot add any more items to this zone.": "Voc\u00ea n\u00e3o pode adicionar mais itens nesta \u00e1rea.",
-    "You have used {used} of {total} attempts.": "Voc\u00ea fez {used} das {total} tentativas.",
+    "You have used {used} of {total} submissions": "Voc\u00ea fez {used} das {total} tentativas.",
     "You silly, there are no zones for this one.": "N\u00e3o h\u00e1 zonas para este item.",
     "Your highest score is {score}": "Sua maior pontua\u00e7\u00e3o \u00e9 {score}",
     "Zone Layout": "Estilo da zona",
@@ -171,6 +175,7 @@
     "Zone width": "Largura da zona",
     "Zone {num}": [
       "Zona {num}",
+      "Zona {num}",
       "Zona {num}"
     ],
     "Zones": "Zonas",
@@ -179,18 +184,22 @@
     "show_answer handler should only be called for assessment mode": "A ferramenta show_answer deve somente ser executada no modo de avalia\u00e7\u00e3o",
     "{earned}/{possible} point (graded)": [
       "{earned}/{possible} ponto (corrigido)",
+      "{earned}/{possible} pontos (corrigidos)",
       "{earned}/{possible} pontos (corrigidos)"
     ],
     "{earned}/{possible} point (ungraded)": [
       "{earned}/{possible} ponto (n\u00e3o corrigido)",
+      "{earned}/{possible} pontos (n\u00e3o corrigidos)",
       "{earned}/{possible} pontos (n\u00e3o corrigidos)"
     ],
     "{possible} point possible (graded)": [
       "{possible} ponto poss\u00edvel (corrigido)",
+      "{possible} pontos poss\u00edveis (corrigidos)",
       "{possible} pontos poss\u00edveis (corrigidos)"
     ],
     "{possible} point possible (ungraded)": [
       "{possible} ponto poss\u00edvel (n\u00e3o corrigido)",
+      "{possible} pontos poss\u00edveis (n\u00e3o corrigidos)",
       "{possible} pontos poss\u00edveis (n\u00e3o corrigidos)"
     ]
   };

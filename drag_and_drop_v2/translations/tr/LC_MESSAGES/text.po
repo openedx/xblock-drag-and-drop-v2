@@ -554,7 +554,7 @@ msgid ""
 msgstr ""
 
 #: public/js/drag_and_drop.js:348
-msgid "You have used {used} of {total} attempts."
+msgid "You have used {used} of {total} submissions"
 msgstr ""
 
 #: public/js/drag_and_drop.js:370

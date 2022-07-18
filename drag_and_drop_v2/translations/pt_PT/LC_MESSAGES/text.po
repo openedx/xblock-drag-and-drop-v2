@@ -563,7 +563,7 @@ msgid ""
 msgstr "TAB de volta à lista de itens arrastáveis e repita este processo até que todos os itens arrastáveis tenham sido colocados nas suas respectivas zonas."
 
 #: public/js/drag_and_drop.js:348
-msgid "You have used {used} of {total} attempts."
+msgid "You have used {used} of {total} submissions"
 msgstr "Usou {used} de {total} tentativas."
 
 #: public/js/drag_and_drop.js:370

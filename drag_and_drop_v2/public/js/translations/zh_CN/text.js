@@ -131,7 +131,7 @@
     "Use this zone to associate an item with the middle layer of the triangle.": "\u7528\u8fd9\u4e2a\u533a\u57df\u53bb\u548c\u4e09\u89d2\u5f62\u7684\u4e2d\u95f4\u5c42\u8fde\u63a5\u6210\u4e00\u4e2a\u5bf9\u3002",
     "Use this zone to associate an item with the top layer of the triangle.": "\u7528\u8fd9\u4e2a\u533a\u57df\u53bb\u548c\u4e09\u89d2\u5f62\u7684\u9876\u5c42\u8fde\u63a5\u6210\u4e00\u5bf9\u3002",
     "You can complete this problem using only your keyboard by following the guidance below:": "\u4f7f\u7528\u952e\u76d8\u5b8c\u6210\u6b64\u9898\u76ee\uff0c\u7b80\u5355\u6b65\u9aa4\u5982\u4e0b\uff1a",
-    "You have used {used} of {total} attempts.": "\u603b\u5171{total}\u6b21\u7b54\u9898\u673a\u4f1a\uff0c\u5df2\u4f7f\u7528{used}\u6b21\u3002",
+    "You have used {used} of {total} submissions": "\u603b\u5171{total}\u6b21\u7b54\u9898\u673a\u4f1a\uff0c\u5df2\u4f7f\u7528{used}\u6b21\u3002",
     "You silly, there are no zones for this one.": "\u4f60\u8fd9\u4e2a\u5c0f\u667a\u969c\uff0c\u8fd9\u513f\u6ca1\u6709\u533a\u57df\u7559\u7ed9\u8fd9\u4e2a\u5566\u3002",
     "Your highest score is {score}": "\u60a8\u7684\u6700\u9ad8\u5206\u6570\u662f{score}",
     "Zone borders": "\u533a\u57df\u8fb9\u6846",

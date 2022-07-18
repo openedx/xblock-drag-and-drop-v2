@@ -560,7 +560,7 @@ msgid ""
 msgstr "Przyciskiem TAB wróć do listy elementów i powtarzaj czynność aż wszystkie elementy zostaną przez ciebie dopasowane do stref."
 
 #: public/js/drag_and_drop.js:348
-msgid "You have used {used} of {total} attempts."
+msgid "You have used {used} of {total} submissions"
 msgstr "Wykorzystano {used} spośród {total} możliwych podejść."
 
 #: public/js/drag_and_drop.js:370

@@ -142,7 +142,7 @@
     "Use this zone to associate an item with the middle layer of the triangle.": "U\u017cyj tej strefy, aby powi\u0105za\u0107 element ze \u015brodkow\u0105 cz\u0119\u015bci\u0105 tr\u00f3jk\u0105ta.",
     "Use this zone to associate an item with the top layer of the triangle.": "U\u017cyj tej strefy, aby powi\u0105za\u0107 element z g\u00f3rn\u0105 cz\u0119\u015bci\u0105 tr\u00f3jk\u0105ta.",
     "You can complete this problem using only your keyboard by following the guidance below:": "Mo\u017cesz wykona\u0107 to \u0107wiczenie korzystaj\u0105c wy\u0142\u0105cznie z klawiatury, post\u0119puj\u0105c zgodnie z poni\u017cszymi wskaz\u00f3wkami:",
-    "You have used {used} of {total} attempts.": "Wykorzystano {used} spo\u015br\u00f3d {total} mo\u017cliwych podej\u015b\u0107.",
+    "You have used {used} of {total} submissions": "Wykorzystano {used} spo\u015br\u00f3d {total} mo\u017cliwych podej\u015b\u0107.",
     "You silly, there are no zones for this one.": "\u0179le, ten element nie pasuje do \u017cadnej strefy.",
     "Your highest score is {score}": "Tw\u00f3j najlepszy wynik to {score}",
     "Zone borders": "Granice strefy",

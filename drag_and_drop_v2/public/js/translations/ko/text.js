@@ -155,7 +155,7 @@
     "Use this zone to associate an item with the top layer of the triangle.": "\uc774 \uc601\uc5ed\uc744 \uc774\uc6a9\ud558\uc5ec \ud56d\ubaa9\uc744 \uc0bc\uac01\ud615\uc758 \uc0c1\ub2e8\uce35\uacfc \uc5f0\uacb0\ud558\uc138\uc694.",
     "You can complete this problem using only your keyboard by following the guidance below:": "\ub2e4\uc74c \uac00\uc774\ub4dc\ub77c\uc778\uc744 \ub530\ub974\uba74 \ud0a4\ubcf4\ub4dc\ub9cc \uc0ac\uc6a9\ud574\uc11c \ubb38\uc81c\ub97c \ud574\uacb0\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4:",
     "You cannot add any more items to this zone.": "\uc774 \uc601\uc5ed\uc5d0\ub294 \ub354\uc774\uc0c1 \ud56d\ubaa9\uc744 \ucd94\uac00\ud560 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4.",
-    "You have used {used} of {total} attempts.": "\ub2f9\uc2e0\uc740 {total}\ubc88\uc758 \uc2dc\ub3c4 \uc911 {used}\ub9cc\ud07c \uc0ac\uc6a9\ud588\uc2b5\ub2c8\ub2e4.",
+    "You have used {used} of {total} submissions": "\ub2f9\uc2e0\uc740 {total}\ubc88\uc758 \uc2dc\ub3c4 \uc911 {used}\ub9cc\ud07c \uc0ac\uc6a9\ud588\uc2b5\ub2c8\ub2e4.",
     "You silly, there are no zones for this one.": "\uc5b4\ub9ac\uc11d\ub124\uc694, \uc774\uac83\uc740 \uc5b4\ub290 \uc601\uc5ed\uc5d0\ub3c4 \uc18d\ud558\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.",
     "Your highest score is {score}": "\ucd5c\uace0 \uc810\uc218\ub294 {score} \uc785\ub2c8\ub2e4.",
     "Zone Layout": "\uc601\uc5ed \ub808\uc774\uc544\uc6c3",

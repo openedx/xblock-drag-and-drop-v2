@@ -159,7 +159,7 @@
     "Use this zone to associate an item with the top layer of the triangle.": "Benutze dieses Feld um eine Auswahlm\u00f6glichkeit/en dem oberen Ablagebereich des Dreiecks zuzuordnen",
     "You can complete this problem using only your keyboard by following the guidance below:": "Sie k\u00f6nnen dieses Problem/ Fragestellung nur mit Ihrer Tastatur l\u00f6sen, indem Sie der folgenden Anleitung folgen: ",
     "You cannot add any more items to this zone.": "Sie k\u00f6nnen nicht mehr Elemente in diesem Ablagebereich ablegen.",
-    "You have used {used} of {total} attempts.": "Sie haben {used} von {total} Versuchen verwendet.",
+    "You have used {used} of {total} submissions": "Sie haben {used} von {total} Versuchen verwendet.",
     "You silly, there are no zones for this one.": "Nein, diese Auswahlm\u00f6glichkeit passt in kein Feld.",
     "Your highest score is {score}": "Ihre h\u00f6chste Punktzahl ist {score}.",
     "Zone Layout": "Layout der Ablagebereiche",

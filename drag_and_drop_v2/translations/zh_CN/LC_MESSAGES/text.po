@@ -552,7 +552,7 @@ msgid ""
 msgstr "点击TAB回到拖拽项列表，并重复此操作直至将所有项投放至相应区域。"
 
 #: public/js/drag_and_drop.js:348
-msgid "You have used {used} of {total} attempts."
+msgid "You have used {used} of {total} submissions"
 msgstr "总共{total}次答题机会，已使用{used}次。"
 
 #: public/js/drag_and_drop.js:370

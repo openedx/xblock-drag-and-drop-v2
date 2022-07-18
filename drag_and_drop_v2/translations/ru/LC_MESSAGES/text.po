@@ -562,7 +562,7 @@ msgid ""
 msgstr "С помощью TAB вернитесь к списку перетаскиваемых элементов и повторяйте указанные действия до тех пор, пока все перетаскиваемые элементы не будут помещены в соответствующие зоны."
 
 #: public/js/drag_and_drop.js:348
-msgid "You have used {used} of {total} attempts."
+msgid "You have used {used} of {total} submissions"
 msgstr "Вы использовали {used} из {total} попыток"
 
 #: public/js/drag_and_drop.js:370
