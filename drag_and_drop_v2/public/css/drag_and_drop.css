@@ -673,10 +673,15 @@
     position: relative;
 }
 
-.xblock--drag-and-drop .action .problem-action-buttons-wrapper,
-.xblock--drag-and-drop .action .submit-attempt-container {
+.xblock--drag-and-drop .action .problem-action-buttons-wrapper {
     display: inline-block;
     margin: 10px 0;
+}
+
+.xblock--drag-and-drop .action .submit-attempt-container {
+    display: inline-flex;
+    margin: 10px 0;
+    align-items: center;
 }
 
 .xblock--drag-and-drop .submission-feedback {
