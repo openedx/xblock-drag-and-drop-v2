@@ -1,6 +1,13 @@
 Drag and Drop XBlock changelog
 ==============================
 
+Version 2.3.10 (2022-07-22)
+---------------------------
+
+* Add an optional "Explanation" field.
+* Hide feedback div when there is no feedback content to display.
+* Update translations.
+
 Version 2.3.9 (2022-06-15)
 ---------------------------
 
