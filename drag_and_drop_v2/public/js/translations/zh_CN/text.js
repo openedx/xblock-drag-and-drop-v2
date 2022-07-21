@@ -74,7 +74,6 @@
     "Incorrect": "\u4e0d\u6b63\u786e",
     "Indicates whether a learner has completed the problem at least once": "\u6307\u793a\u5b66\u5458\u662f\u5426\u5df2\u7ecf\u81f3\u5c11\u5b8c\u6210\u4e86\u8be5\u4e00\u6b21",
     "Information about current positions of items that a learner has dropped on the target image.": "\u5173\u4e8e\u5b66\u5458\u5df2\u62d6\u653e\u5230\u76ee\u6807\u9879\u76ee\u7684\u90a3\u4e9b\u9879\u76ee\u5f53\u524d\u4f4d\u7f6e\u7684\u4fe1\u606f\u3002",
-    "Information about zones, items, feedback, and background image for this problem. This information is derived from the input that a course author provides via the interactive editor when configuring the problem.": "\u5173\u4e8e\u6b64\u95ee\u9898\u7684\u533a\u57df\u3001\u9879\u76ee\u3001\u53cd\u9988\u548c\u80cc\u666f\u56fe\u50cf\u7684\u4fe1\u606f\u3002\u6b64\u4fe1\u606f\u6e90\u81ea\u8bfe\u7a0b\u521b\u4f5c\u8005\u5728\u914d\u7f6e\u95ee\u9898\u65f6\u901a\u8fc7\u4ea4\u4e92\u7f16\u8f91\u7a0b\u5e8f\u63d0\u4f9b\u7684\u8f93\u5165\u5185\u5bb9\u3002",
     "Introductory feedback": "\u5f15\u8a00\u53cd\u9988",
     "Item Bank": "\u7b54\u9898\u9879\u5e93",
     "Item background color": "\u9879\u76ee\u80cc\u666f\u989c\u8272",

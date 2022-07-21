@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-16 17:51+0000\n"
+"POT-Creation-Date: 2022-07-21 22:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -256,15 +256,15 @@ msgstr ""
 msgid "There are attempts remaining"
 msgstr ""
 
-#: drag_and_drop_v2.py:696
+#: drag_and_drop_v2.py:695
 msgid "do_attempt handler should only be called for assessment mode"
 msgstr ""
 
-#: drag_and_drop_v2.py:701 drag_and_drop_v2.py:812
+#: drag_and_drop_v2.py:700 drag_and_drop_v2.py:811
 msgid "Max number of attempts reached"
 msgstr ""
 
-#: drag_and_drop_v2.py:706
+#: drag_and_drop_v2.py:705
 msgid "Submission deadline has passed."
 msgstr ""
 
@@ -548,8 +548,8 @@ msgstr ""
 
 #: public/js/drag_and_drop.js:350
 msgid ""
-"Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press CTRL"
-"+M once more to drop it here."
+"Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press "
+"CTRL+M once more to drop it here."
 msgstr ""
 
 #: public/js/drag_and_drop.js:351
@@ -656,25 +656,25 @@ msgstr ""
 msgid "You cannot add any more items to this zone."
 msgstr ""
 
-#: public/js/drag_and_drop_edit.js:110 public/js/drag_and_drop_edit.js:503
-#: public/js/drag_and_drop_edit.js:733
+#: public/js/drag_and_drop_edit.js:108 public/js/drag_and_drop_edit.js:501
+#: public/js/drag_and_drop_edit.js:731
 msgid "There was an error with your form."
 msgstr ""
 
-#: public/js/drag_and_drop_edit.js:111
+#: public/js/drag_and_drop_edit.js:109
 msgid "Please check over your submission."
 msgstr ""
 
-#: public/js/drag_and_drop_edit.js:353
+#: public/js/drag_and_drop_edit.js:351
 msgid "Zone {num}"
 msgid_plural "Zone {num}"
 msgstr[0] ""
 msgstr[1] ""
 
-#: public/js/drag_and_drop_edit.js:504
+#: public/js/drag_and_drop_edit.js:502
 msgid "Please check the values you entered."
 msgstr ""
 
-#: public/js/drag_and_drop_edit.js:726
+#: public/js/drag_and_drop_edit.js:724
 msgid "Saving"
 msgstr ""

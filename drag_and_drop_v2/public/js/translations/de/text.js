@@ -84,7 +84,6 @@
     "Incorrect": "Nicht richtig",
     "Indicates whether a learner has completed the problem at least once": "Gibt an, ob ein Lernender die Fragestellung mindestens einmal gel\u00f6st hat. ",
     "Information about current positions of items that a learner has dropped on the target image.": "Informationen \u00fcber aktuelle Positionen der Auswahlm\u00f6glichkeit/en, die ein Teilnehmer ins Zielbild gezogen hat.",
-    "Information about zones, items, feedback, and background image for this problem. This information is derived from the input that a course author provides via the interactive editor when configuring the problem.": "Informationen \u00fcber Felder, Auswahlm\u00f6glichkeit/en, Feedback und Hintergundbilder f\u00fcr diese Fragestellung. Diese Informationen ergeben sich aus den Eingaben, die ein Modulentwickler \u00fcber den interaktiven Editor bei der Konfiguration der Fragestellung macht.",
     "Introductory feedback": "Einleitendes Feedback",
     "Item Bank": "Auswahlm\u00f6glichkeit/en-Feld",
     "Item background color": "Hintergrundfarbe der Auswahlm\u00f6glichkeit/en",

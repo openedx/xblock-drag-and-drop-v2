@@ -10,7 +10,7 @@
 
   
   django.pluralidx = function(n) {
-    var v=(n > 1);
+    var v=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;
     if (typeof(v) == 'boolean') {
       return v ? 1 : 0;
     } else {
@@ -49,6 +49,7 @@
     "Correctly placed in: {zone_title}": "Corretamente posicionado em: {zone_title}",
     "Correctly placed {correct_count} item.": [
       "{correct_count}  item colocado corretamente.",
+      "{correct_count} itens colocados corretamente.",
       "{correct_count} itens colocados corretamente."
     ],
     "DEPRECATED. Keeps maximum score achieved by student as a weighted value.": "DEPRECIADO.Mant\u00e9m a pontua\u00e7\u00e3o m\u00e1xima alcan\u00e7ada pelo aluno como um valor pesado.",
@@ -56,6 +57,7 @@
     "Defines the number of times a student can try to answer this problem. If the value is not set, infinite attempts are allowed.": "Define o n\u00famero de tentativas que os estudantes podem fazer para resolver este problema. Se o valor n\u00e3o for definido, infinitas tentativas ser\u00e3o permitidas.",
     "Did not place {missing_count} required item.": [
       "{missing_count} item obrigat\u00f3rio n\u00e3o foi posicionado.",
+      "{missing_count} itens obrigat\u00f3rios n\u00e3o foram posicionados.",
       "{missing_count} itens obrigat\u00f3rios n\u00e3o foram posicionados."
     ],
     "Display label names on the image": "Exibir nomes da etiqueta na imagem",
@@ -84,7 +86,6 @@
     "Incorrect": "Incorreto",
     "Indicates whether a learner has completed the problem at least once": "Indica se um aluno completou o problema pelo menos uma vez",
     "Information about current positions of items that a learner has dropped on the target image.": "Informa\u00e7\u00f5es sobre as posi\u00e7\u00f5es atuais de itens que um aluno soltou na imagem-alvo.",
-    "Information about zones, items, feedback, and background image for this problem. This information is derived from the input that a course author provides via the interactive editor when configuring the problem.": "Informa\u00e7\u00f5es sobre zonas, itens, feedback e imagem de plano de fundo deste problema. Informa\u00e7\u00e3o obtida dos dados inseridos pelo autor do curso atrav\u00e9s dos editor interativo durante a configura\u00e7\u00e3o do problema.",
     "Introductory feedback": "Feedback introdut\u00f3rio",
     "Item Bank": "Banco de itens",
     "Item background color": "Cor do plano de fundo",
@@ -100,10 +101,12 @@
     "Maximum items per zone": "Itens m\u00e1ximos por zona",
     "Misplaced {misplaced_count} item.": [
       "Item mal posicionado: {misplaced_count}",
+      "Itens mal posicionados: {misplaced_count}",
       "Itens mal posicionados: {misplaced_count}"
     ],
     "Misplaced {misplaced_count} item. Misplaced item was returned to item bank.": [
       "{misplaced_count} item perdido. Os itens perdidos foram devolvidos ao banco de itens.",
+      "{misplaced_count} itens perdidos. Os itens perdidos foram devolvidos ao banco de itens.",
       "{misplaced_count} itens perdidos. Os itens perdidos foram devolvidos ao banco de itens."
     ],
     "Mode": "Modo",
@@ -171,6 +174,7 @@
     "Zone width": "Largura da zona",
     "Zone {num}": [
       "Zona {num}",
+      "Zona {num}",
       "Zona {num}"
     ],
     "Zones": "Zonas",
@@ -179,18 +183,22 @@
     "show_answer handler should only be called for assessment mode": "A ferramenta show_answer deve somente ser executada no modo de avalia\u00e7\u00e3o",
     "{earned}/{possible} point (graded)": [
       "{earned}/{possible} ponto (corrigido)",
+      "{earned}/{possible} pontos (corrigidos)",
       "{earned}/{possible} pontos (corrigidos)"
     ],
     "{earned}/{possible} point (ungraded)": [
       "{earned}/{possible} ponto (n\u00e3o corrigido)",
+      "{earned}/{possible} pontos (n\u00e3o corrigidos)",
       "{earned}/{possible} pontos (n\u00e3o corrigidos)"
     ],
     "{possible} point possible (graded)": [
       "{possible} ponto poss\u00edvel (corrigido)",
+      "{possible} pontos poss\u00edveis (corrigidos)",
       "{possible} pontos poss\u00edveis (corrigidos)"
     ],
     "{possible} point possible (ungraded)": [
       "{possible} ponto poss\u00edvel (n\u00e3o corrigido)",
+      "{possible} pontos poss\u00edveis (n\u00e3o corrigidos)",
       "{possible} pontos poss\u00edveis (n\u00e3o corrigidos)"
     ]
   };

@@ -80,7 +80,6 @@
     "Incorrect": "Nieprawid\u0142owo",
     "Indicates whether a learner has completed the problem at least once": "Wskazuje, czy student wykona\u0142 \u0107wiczenie przynajmniej jeden raz.",
     "Information about current positions of items that a learner has dropped on the target image.": "Informacja na temat obecnych pozycji element\u00f3w upuszczonych przez studenta na obrazek docelowy.",
-    "Information about zones, items, feedback, and background image for this problem. This information is derived from the input that a course author provides via the interactive editor when configuring the problem.": "Informacje na temat stref, element\u00f3w, komentarzy i t\u0142a \u0107wiczenia. Zbi\u00f3r informacji z p\u00f3l interaktywnego edytora uzupe\u0142nianych przez autora zadania w trakcie konfigurowania tre\u015bci.",
     "Introductory feedback": "Komentarz pocz\u0105tkowy",
     "Item Bank": "Zbi\u00f3r element\u00f3w",
     "Item background color": "Kolor t\u0142a elementu",
