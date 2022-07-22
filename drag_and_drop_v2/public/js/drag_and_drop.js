@@ -1,27 +1,22 @@
 function DragAndDropTemplates(configuration) {
     "use strict";
 
-    // Fetch the platform translations if available, or fallback to the
-    // local translations. This allows overriding of translations in themes
-    // by patching the global translations.
-    var gettext = function(string) {
-        return 'gettext' in window ?
-            window.gettext(string) :
-            (
-                'DragAndDropI18N' in window ?
-                window.DragAndDropI18N.gettext(string) :
-                string
-            );
+    var gettext;
+    var ngettext;
+    if ('DragAndDropI18N' in window) {
+        // Use DnDv2's local translations
+        gettext = window.DragAndDropI18N.gettext;
+        ngettext = window.DragAndDropI18N.ngettext;
+    } else if ('gettext' in window) {
+        // Use edxapp's global translations
+        gettext = window.gettext;
+        ngettext = window.ngettext;
     }
-    var ngettext = function(strA, strB, n) {
-        return 'gettext' in window ?
-            window.ngettext(strA, strB, n) :
-            (
-                'DragAndDropI18N' in window ?
-                window.DragAndDropI18N.ngettext(strA, strB, n) :
-                (n == 1 ? strA : strB)
-            );
-    };
+    if (typeof gettext == "undefined") {
+        // No translations -- used by test environment
+        gettext = function(string) { return string; };
+        ngettext = function(strA, strB, n) { return n == 1 ? strA : strB; };
+    }
     var h = virtualDom.h;
 
     var isMobileScreen = function() {
