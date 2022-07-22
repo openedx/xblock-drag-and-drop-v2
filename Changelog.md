@@ -1,6 +1,12 @@
 Drag and Drop XBlock changelog
 ==============================
 
+Version 2.3.11 (2022-07-22)
+---------------------------
+
+* Use global (platform-wide) translations as a fallback when XBlock translations are missing. \
+  This change also has an intended side effect - it allows overriding English text with comprehensive themes (by patching the default translation catalog).
+
 Version 2.3.10 (2022-07-22)
 ---------------------------
 
