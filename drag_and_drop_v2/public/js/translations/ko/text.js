@@ -82,7 +82,6 @@
     "Incorrect": "\uc624\ub2f5",
     "Indicates whether a learner has completed the problem at least once": "\ud559\uc2b5\uc790\uac00 \ubb38\uc81c\ub97c \ud55c \ubc88 \uc774\uc0c1 \uc644\ub8cc\ud588\ub294\uc9c0 \ud45c\uc2dc\ud569\ub2c8\ub2e4.",
     "Information about current positions of items that a learner has dropped on the target image.": "\ud559\uc2b5\uc790\uac00 \ubaa9\ud45c \uc774\ubbf8\uc9c0\uc5d0 \ub193\uc740 \ud56d\ubaa9\uc758 \ud604\uc7ac \uc704\uce58\uc5d0 \ub300\ud55c \uc815\ubcf4.",
-    "Information about zones, items, feedback, and background image for this problem. This information is derived from the input that a course author provides via the interactive editor when configuring the problem.": "\uc774 \ubb38\uc81c\uc5d0 \ub300\ud55c \uc601\uc5ed, \ud56d\ubaa9, \ud53c\ub4dc\ubc31, \ubc30\uacbd \uc774\ubbf8\uc9c0\uc5d0 \ub300\ud55c \uc815\ubcf4. \uc774 \uc815\ubcf4\ub294 \uac15\uc758\uc758 \uc800\uc790\uac00 \ubc18\uc751\ud615 \uc5d0\ub514\ud130\ub97c \ud1b5\ud574 \ubb38\uc81c\ub97c \uad6c\uc131\ud560 \ub54c \uc81c\uacf5\ud558\ub294 \uc785\ub825\uc5d0\uc11c \ube44\ub86f\ub429\ub2c8\ub2e4.",
     "Introductory feedback": "\ucd08\uae30 \ud53c\ub4dc\ubc31",
     "Item Bank": "\ud56d\ubaa9 \ucc3d\uace0",
     "Item background color": "\ud56d\ubaa9 \ubc30\uacbd \uc0c9\uc0c1",

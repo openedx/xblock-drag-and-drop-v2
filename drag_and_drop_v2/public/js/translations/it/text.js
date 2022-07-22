@@ -10,7 +10,7 @@
 
   
   django.pluralidx = function(n) {
-    var v=(n != 1);
+    var v=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;
     if (typeof(v) == 'boolean') {
       return v ? 1 : 0;
     } else {
@@ -35,6 +35,7 @@
     "Correct": "Corretto",
     "Correctly placed {correct_count} item.": [
       "{correct_count} elementi posizionati correttamente.",
+      "{correct_count} elementi posizionati correttamente.",
       "{correct_count} elementi posizionati correttamente."
     ],
     "Defines the number of points the problem is worth.": "Definisce il numero di punto che il problema vale.",
@@ -52,6 +53,7 @@
     "Max number of attempts reached": "Numero massimo di tentativi raggiunto",
     "Maximum attempts": "Tentativi massimi",
     "Misplaced {misplaced_count} item. Misplaced item was returned to item bank.": [
+      "{misplaced_count} elementi fuori posto. Gli oggetti smarriti sono stati restituiti alla banca degli articoli.",
       "{misplaced_count} elementi fuori posto. Gli oggetti smarriti sono stati restituiti alla banca degli articoli.",
       "{misplaced_count} elementi fuori posto. Gli oggetti smarriti sono stati restituiti alla banca degli articoli."
     ],

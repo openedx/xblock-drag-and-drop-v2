@@ -155,6 +155,9 @@ class BaseIntegrationTest(SeleniumBaseTest):
     def _get_feedback_message(self):
         return self._page.find_element_by_css_selector(".feedback .message")
 
+    def _get_explanation(self):
+        return self._page.find_element_by_css_selector(".solution-span")
+
     def scroll_down(self, pixels=50):
         self.browser.execute_script("$(window).scrollTop({})".format(pixels))
 
