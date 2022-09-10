@@ -185,7 +185,7 @@ Version 2.0.13 (2017-01-02)
 Version 2.0.12 (2016-11-08)
 ---------------------------
 
-* ([#108](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/108)) Grading updates:
+* ([#108](https://github.com/openedx-solutions/xblock-drag-and-drop-v2/pull/108)) Grading updates:
     * [SOL-2030][sol-2030] Grade information is now displayed beneath the display name of the problem (similar to CAPA)
     * [SOL-2094][sol-2094] Fixed problem preventing DnDv2 blocks from being scored or graded.
     * Highest grade achieved is now displayed in feedback area
@@ -197,27 +197,27 @@ Version 2.0.12 (2016-11-08)
 Version 2.0.11 (2016-10-03)
 ---------------------------
 
-* ([#106](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/106)) Don't delete misplaced items on final attempt
+* ([#106](https://github.com/openedx-solutions/xblock-drag-and-drop-v2/pull/106)) Don't delete misplaced items on final attempt
 
 Version 2.0.10 (2016-09-22)
 ---------------------------
 
-* ([#97](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/97)) Added "item" field to item.dropped event
-* ([#101](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/101)) Implement "show answer" button
-* ([#103](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/103)) Miscellaneous UI fixes
-* ([#105](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/105)) Correct an issue with background image selection
+* ([#97](https://github.com/openedx-solutions/xblock-drag-and-drop-v2/pull/97)) Added "item" field to item.dropped event
+* ([#101](https://github.com/openedx-solutions/xblock-drag-and-drop-v2/pull/101)) Implement "show answer" button
+* ([#103](https://github.com/openedx-solutions/xblock-drag-and-drop-v2/pull/103)) Miscellaneous UI fixes
+* ([#105](https://github.com/openedx-solutions/xblock-drag-and-drop-v2/pull/105)) Correct an issue with background image selection
 
 Version 2.0.9 (2016-09-01)
 --------------------------
 
-* ([#88](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/88)) Cleaned up studio editor template: styling, help texts, accessibility attributes, classes instead of IDs, etc.
-* ([#95](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/95)) Fixed flaky selenium tests
-* ([#85](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/85)) Accessibility improvements for item feedback popup
-* ([#73](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/73)) Accessibility improvements for item, zone and background image when using keyboard mode
-* ([#96](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/96)) Decoy items are properly accounted for in grade calculation and problem completion condition
-* ([#98](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/98)) Support for legacy item state
-* ([#92](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/92)) Prevented overlapping item placement: option to keep dropped item where learner dropped it was removed; items always use automatic layouts (left/center/right)
-* ([#93](https://github.com/edx-solutions/xblock-drag-and-drop-v2/pull/93)) Per-item error feedback is shown in assessment mode when an attempt is submitted
+* ([#88](https://github.com/openedx-solutions/xblock-drag-and-drop-v2/pull/88)) Cleaned up studio editor template: styling, help texts, accessibility attributes, classes instead of IDs, etc.
+* ([#95](https://github.com/openedx-solutions/xblock-drag-and-drop-v2/pull/95)) Fixed flaky selenium tests
+* ([#85](https://github.com/openedx-solutions/xblock-drag-and-drop-v2/pull/85)) Accessibility improvements for item feedback popup
+* ([#73](https://github.com/openedx-solutions/xblock-drag-and-drop-v2/pull/73)) Accessibility improvements for item, zone and background image when using keyboard mode
+* ([#96](https://github.com/openedx-solutions/xblock-drag-and-drop-v2/pull/96)) Decoy items are properly accounted for in grade calculation and problem completion condition
+* ([#98](https://github.com/openedx-solutions/xblock-drag-and-drop-v2/pull/98)) Support for legacy item state
+* ([#92](https://github.com/openedx-solutions/xblock-drag-and-drop-v2/pull/92)) Prevented overlapping item placement: option to keep dropped item where learner dropped it was removed; items always use automatic layouts (left/center/right)
+* ([#93](https://github.com/openedx-solutions/xblock-drag-and-drop-v2/pull/93)) Per-item error feedback is shown in assessment mode when an attempt is submitted
 
 Version 2.0.8 (2016-08-15)
 --------------------------
@@ -263,7 +263,7 @@ Version 2.0.2 (2016-02-18)
 * Bugfix: When configuring the draggable items, the "Image Description" was always required, even if the "Image URL" was blank. (PR #55)
 * Bugfix: When clicking certain action links in the dndv2 editor (e.g. "Add a Zone"), the browser would scroll to the top of the page (since the href="#" event was not prevented). (PR #55)
 * Bugfix: When changing tabs in the dndv2 editor, the next tab would often be scrolled down halfway. (PR #55)
-* Bugfix: In Studio, Newly added drag and drop components did not load properly, due to [a Studio bug](https://github.com/edx/edx-platform/pull/11433) that affects Cypress and Dogwood. (Fixed in Studio post-Dogwood.) (PR #55)
+* Bugfix: In Studio, Newly added drag and drop components did not load properly, due to [a Studio bug](https://github.com/openedx/edx-platform/pull/11433) that affects Cypress and Dogwood. (Fixed in Studio post-Dogwood.) (PR #55)
 * Fixed some flaky tests
 
 Version 2.0.1 (2016-02-15)

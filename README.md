@@ -1,7 +1,7 @@
 Drag and Drop XBlock v2
 =======================
 
-## Notice: This repo will be moved to the [edx organization](https://github.com/edx) in April 2021.
+## Notice: This repo will be moved to the [edx organization](https://github.com/openedx) in April 2021.
 
 This XBlock implements a friendly drag-and-drop style problem, where
 the learner has to drag items to zones on a target image.
@@ -488,7 +488,7 @@ requirements for `edx.org` itself, thus providing the required files. So far onl
 
 Updates to translated strings are supposed to be propagated to `text.po` files. EdX [i18n_tools][edx-i18n-tools] is used here along GNU Gettext and a Makefile for automation.
 
-[edx-i18n-tools]: https://github.com/edx/i18n-tools
+[edx-i18n-tools]: https://github.com/openedx/i18n-tools
 
 Translatable strings
 --------------------
