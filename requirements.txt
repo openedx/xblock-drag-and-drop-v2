@@ -1,4 +1,4 @@
-mako==1.0.7
+mako==1.2.2
 edx-i18n-tools==0.4.7
 pycodestyle==2.5.0
 django-statici18n==1.8.0
