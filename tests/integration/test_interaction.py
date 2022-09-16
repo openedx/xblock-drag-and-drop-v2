@@ -711,6 +711,8 @@ class DragScrollingTest(InteractionTestBase, BaseIntegrationTest):
     def setUp(self):
         super(DragScrollingTest, self).setUp()
         self.browser.set_window_size(320, 480)
+        wait = WebDriverWait(self.browser, 2)
+        wait.until(lambda browser: browser.get_window_size()["width"] == 320)
 
     def _get_scenario_xml(self):
         return self._get_custom_scenario_xml("data/test_html_data.json")

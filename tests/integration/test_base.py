@@ -283,6 +283,8 @@ class InteractionTestBase(object):
         # Resize window so that the entire drag container is visible.
         # Selenium has issues when dragging to an area that is off screen.
         self.browser.set_window_size(1024, 1024)
+        wait = WebDriverWait(self.browser, 2)
+        wait.until(lambda browser: browser.get_window_size()["width"] == 1024)
 
     @staticmethod
     def _get_items_with_zone(items_map):
