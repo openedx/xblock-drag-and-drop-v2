@@ -25,12 +25,12 @@ refreshes. All checking and record keeping is done on the server side.
 The following screenshot shows the Drag and Drop XBlock rendered
 inside the edX LMS before the user starts solving the problem:
 
-![Student view start](/doc/img/student-view-start.png)
+![Student view start](doc/img/student-view-start.png)
 
 This screenshot shows the XBlock after the learner successfully
 completed the Drag and Drop problem:
 
-![Student view finish](/doc/img/student-view-finish.png)
+![Student view finish](doc/img/student-view-finish.png)
 
 Installation
 ------------
@@ -93,7 +93,7 @@ Usage
 The Drag and Drop XBlock features an interactive editor. Add the Drag
 and Drop component to a lesson, then click the `EDIT` button.
 
-![Edit view](/doc/img/edit-view.png)
+![Edit view](doc/img/edit-view.png)
 
 In the first step, you can set some basic properties of the component, such as
 the title, the problem mode, the maximum number of attempts, the maximum score,
@@ -110,7 +110,7 @@ There are two problem modes available:
   limited.  When all attempts are used, the learner can click a "Show Answer"
   button to temporarily place items on their correct drop zones.
 
-![Drop zone edit](/doc/img/edit-view-zones.png)
+![Drop zone edit](doc/img/edit-view-zones.png)
 
 In the next step, you set the URL and description for the background
 image and define the properties of the drop zones. For each zone you
@@ -130,7 +130,7 @@ right to left across the zone. Items dropped in a zone will not overlap,
 but if the zone is not made large enough for all its items, they will overflow the bottom
 of the zone, and potentially overlap the zones below.
 
-![Drag item edit](/doc/img/edit-view-items.png)
+![Drag item edit](doc/img/edit-view-items.png)
 
 In the final step, you define the background and text color for drag items, as
 well as the drag items themselves. A drag item can contain either text or an
@@ -449,25 +449,26 @@ Inside a fresh virtualenv, `cd` into the root folder of this repository
 (`xblock-drag-and-drop-v2`) and run
 
 ```bash
-$ sh install_test_deps.sh
+$ git submodule update --init --recursive
+$ make requirements
 ```
 
 You can then run the entire test suite via
 
 ```bash
-$ python run_tests.py
+$ make test
 ```
 
-To only run the unit test suite, do
+To only run the quality checks, do
 
 ```bash
-$ python run_tests.py tests/unit/
+$ make test.quality
 ```
 
-Similarly, you can run the integration test suite via
+Similarly, you can run unit and integration test suite via
 
 ```bash
-$ python run_tests.py tests/integration/
+$ make test.unit
 ```
 
 
