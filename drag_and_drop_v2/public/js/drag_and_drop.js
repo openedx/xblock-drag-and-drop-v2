@@ -6,22 +6,22 @@ function DragAndDropTemplates(configuration) {
     if ('DragAndDropI18N' in window) {
         // Use DnDv2's local translations
         gettext = function(string) {
-            let translated = window.DragAndDropI18N.gettext(string);
+            var translated = window.DragAndDropI18N.gettext(string);
             // if DnDv2's translation is the same as the input, check if global has a different value
             // This is useful for overriding the XBlock's string by themes (only for English)
             if (string === translated && 'gettext' in window) {
                 translated = window.gettext(string);
             }
             return translated;
-        }
+        };
         ngettext = function(strA, strB, n) {
-            let translated = window.DragAndDropI18N.ngettext(strA, strB, n);
-            let string = n == 1 ? strA : strB;
+            var translated = window.DragAndDropI18N.ngettext(strA, strB, n);
+            var string = n == 1 ? strA : strB;
             if (string === translated && 'gettext' in window) {
                 translated = window.gettext(strA, strB, n);
             }
             return translated;
-        }
+        };
     } else if ('gettext' in window) {
         // Use edxapp's global translations
         gettext = window.gettext;
