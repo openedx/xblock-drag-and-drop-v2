@@ -302,7 +302,7 @@ class InteractionTestBase(object):
 
     @staticmethod
     def _get_items_by_zone(items_map):
-        zone_ids = set([definition.zone_ids[0] for _, definition in items_map.items() if definition.zone_ids])
+        zone_ids = {definition.zone_ids[0] for _, definition in items_map.items() if definition.zone_ids}
         return {
             zone_id: {item_key: definition for item_key, definition in items_map.items()
                       if definition.zone_ids and definition.zone_ids[0] is zone_id}

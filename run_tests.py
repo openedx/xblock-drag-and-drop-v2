@@ -9,6 +9,7 @@ because the workbench SDK's settings file is not inside any python module.
 import logging
 import os
 import sys
+import warnings
 import workbench
 
 if __name__ == "__main__":
@@ -24,6 +25,8 @@ if __name__ == "__main__":
 
     # Silence too verbose Django logging
     logging.disable(logging.DEBUG)
+    # TODO: Delete this after upgrading `xblock-sdk`.
+    warnings.simplefilter(action='ignore', category=FutureWarning)
 
     try:
         os.mkdir('var')

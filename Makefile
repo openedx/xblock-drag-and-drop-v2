@@ -59,14 +59,8 @@ install_firefox:
 
 requirements: install_firefox
 	pip install wheel
+	pip install -r xblock-sdk/requirements/base.txt -r xblock-sdk/requirements/test.txt
 	pip install -r requirements.txt
-	pip install -e xblock-sdk/
-	pip install -r xblock-sdk/requirements/base.txt && pip install -r xblock-sdk/requirements/test.txt
-	pip uninstall -y selenium
-	pip install selenium==2.53.6
-	python setup.py sdist
-	pip install dist/xblock-drag-and-drop-v2-*.tar.gz
-	pip install pylint==1.7.6
 
 test.quality: ## run quality checkers on the codebase
 	pycodestyle drag_and_drop_v2 tests --max-line-length=120

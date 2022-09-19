@@ -11,11 +11,11 @@ import copy
 import json
 import logging
 
-import pkg_resources
-import six
 import six.moves.urllib.error  # pylint: disable=import-error
 import six.moves.urllib.parse  # pylint: disable=import-error
 import six.moves.urllib.request  # pylint: disable=import-error
+import pkg_resources
+import six
 import webob
 
 from django.utils import translation
@@ -1091,6 +1091,7 @@ class DragAndDropBlock(
         for zone in self.zones:
             if zone["uid"] == uid:
                 return zone
+        return None
 
     def _get_item_stats(self):
         """
