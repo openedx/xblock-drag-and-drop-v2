@@ -5,8 +5,7 @@ from __future__ import absolute_import
 import copy
 import re
 from collections import namedtuple
-
-from bleach.sanitizer import Cleaner
+import bleach
 
 
 def _(text):
@@ -22,10 +21,25 @@ def ngettext_fallback(text_singular, text_plural, number):
         return text_plural
 
 
-def _clean_data(data):
+def sanitize_html(html_code):
+    """
+    Sanitize html_code for safe embed
+    """
+    tags = bleach.ALLOWED_TAGS + [
+        'br', 'dd', 'del', 'dl', 'dt', 'h1', 'h2', 'h3', 'h4', 'hr', 'img', 'kbd', 'p', 'pre', 's',
+        'strike', 'sub', 'sup'
+    ]
+    output = bleach.clean(
+        html_code,
+        tags=tags,
+        attributes=[],
+    )
+    return output
+
+
+def remove_html(data):
     """ Remove html tags and extra white spaces e.g newline, tabs etc from provided data """
-    cleaner = Cleaner(tags=[], strip=True)
-    cleaned_text = " ".join(re.split(r"\s+", cleaner.clean(data), flags=re.UNICODE)).strip()
+    cleaned_text = " ".join(re.split(r"\s+", bleach.clean(data, tags=[], strip=True), flags=re.UNICODE)).strip()
     return cleaned_text
 
 
@@ -143,7 +157,6 @@ class StateMigration(object):
         """
         migrations = (self._zone_v1_to_v2, self._zone_v2_to_v2p1)
         zone_id = zone.get('uid', zone.get('id'))
-
         return self._apply_migration(zone_id, zone, migrations)
 
     def apply_item_state_migrations(self, item_id, item_state):

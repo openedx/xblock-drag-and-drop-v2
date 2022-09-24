@@ -63,5 +63,5 @@ class TestZoneTitleAsHTML(BaseIntegrationTest):
         Tests HTML titles are rendered properly
         """
         zones = self._get_zones()
-        self.assertEqual(u'Zone\ndroppable\nNo items placed here', zones[0].text)
-        self.assertNotEqual(u'Zone <sup>-1</sup>\ndroppable\nNo items placed here', zones[0].text)
+        self.assertEqual('Zone\n, dropzone\ndroppable\nNo items placed here', zones[0].text)
+        self.assertNotEqual('Zone <sup>-1</sup>\ndroppable\nNo items placed here', zones[0].text)
