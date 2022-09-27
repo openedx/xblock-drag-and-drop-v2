@@ -5,7 +5,7 @@ from __future__ import absolute_import
 import copy
 import re
 from collections import namedtuple
-import bleach
+from bleach.sanitizer import Cleaner
 
 
 def _(text):
@@ -21,25 +21,10 @@ def ngettext_fallback(text_singular, text_plural, number):
         return text_plural
 
 
-def sanitize_html(html_code):
-    """
-    Sanitize html_code for safe embed
-    """
-    tags = bleach.ALLOWED_TAGS + [
-        'br', 'dd', 'del', 'dl', 'dt', 'h1', 'h2', 'h3', 'h4', 'hr', 'img', 'kbd', 'p', 'pre', 's',
-        'strike', 'sub', 'sup'
-    ]
-    output = bleach.clean(
-        html_code,
-        tags=tags,
-        attributes=[],
-    )
-    return output
-
-
-def remove_html(data):
+def clean_data(data):
     """ Remove html tags and extra white spaces e.g newline, tabs etc from provided data """
-    cleaned_text = " ".join(re.split(r"\s+", bleach.clean(data, tags=[], strip=True), flags=re.UNICODE)).strip()
+    cleaner = Cleaner(tags=[], strip=True)
+    cleaned_text = " ".join(re.split(r"\s+", cleaner.clean(data), flags=re.UNICODE)).strip()
     return cleaned_text
 
 

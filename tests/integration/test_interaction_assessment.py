@@ -20,7 +20,7 @@ from xblockutils.resources import ResourceLoader
 from drag_and_drop_v2.default_data import (BOTTOM_ZONE_ID, DEFAULT_DATA, FINISH_FEEDBACK,
                                            MIDDLE_ZONE_ID, START_FEEDBACK,
                                            TOP_ZONE_ID, TOP_ZONE_TITLE)
-from drag_and_drop_v2.utils import Constants, FeedbackMessages, sanitize_html
+from drag_and_drop_v2.utils import Constants, FeedbackMessages
 
 from .test_base import BaseIntegrationTest
 from .test_interaction import (ITEM_DRAG_KEYBOARD_KEYS, DefaultDataTestMixin,
@@ -493,10 +493,6 @@ class ExplanationTest(
         (2, " ", False, None),
         (3, None, False, None),
         (4, "12m<sup>2</sup>", True, "Explanation\n12m2"),
-        (5, '<script type="text/javascript">alert("evil script");</script>', True,
-            'Explanation\n<script type="text/javascript">alert("evil script");</script>'),
-        (6, 'Test Image <IMG SRC=j&#X41vascript:alert("evil")>', True,
-            'Explanation\nTest Image')
     )
     @ddt.unpack
     def test_explanation(self, scenario_id: int, explanation: str, should_display: bool, rendered_explanation: str):
@@ -519,5 +515,5 @@ class ExplanationTest(
         self.assertEqual(explanation_block.is_displayed(), should_display)
         if should_display:
             self.assertEqual(rendered_explanation, explanation_block.text)
-            self.assertEqual(self._get_explanation_html(sanitize_html(explanation)),
+            self.assertEqual(self._get_explanation_html(explanation),
                              explanation_block.get_attribute('innerHTML'))
