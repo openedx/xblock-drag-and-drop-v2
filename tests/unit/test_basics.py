@@ -307,6 +307,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         })
 
     def test_studio_submit(self):
+
         body = self._make_submission()
         res = self.call_handler('studio_submit', body)
         self.assertEqual(res, {'result': 'success'})

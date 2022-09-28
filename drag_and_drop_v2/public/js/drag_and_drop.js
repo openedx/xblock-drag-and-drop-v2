@@ -1995,7 +1995,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         // gain focus while keyboard placement is in progress.
         var item_bank_focusable = (state.keyboard_placement_mode || state.showing_answer) &&
             configuration.mode === DragAndDropBlock.ASSESSMENT_MODE;
-
+        
         var context = {
             drag_container_max_width: containerMaxWidth,
             // configuration - parts that never change:
@@ -2008,6 +2008,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             weighted_max_score: configuration.weighted_max_score,
             problem_html: configuration.problem_text,
             show_problem_header: configuration.show_problem_header,
+            show_answer_status: configuration.show_answer_status,
             show_submit_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
             show_show_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
             target_img_src: configuration.target_img_expanded_url,

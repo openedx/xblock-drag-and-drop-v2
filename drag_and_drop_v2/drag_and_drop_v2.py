@@ -29,7 +29,7 @@ from xblockutils.settings import ThemableXBlockMixin, XBlockWithSettingsMixin
 
 from .default_data import DEFAULT_DATA
 from .utils import (
-    Constants, DummyTranslationService, FeedbackMessage,
+    Constants, SHOWANSWER, DummyTranslationService, FeedbackMessage,
     FeedbackMessages, ItemStats, StateMigration, _clean_data, _
 )
 
@@ -131,6 +131,27 @@ class DragAndDropBlock(
         help=_('Display the heading "Problem" above the problem text?'),
         scope=Scope.settings,
         default=True,
+        enforce_type=True,
+    )
+    showanswer = String(
+        display_name=_("Show Answer"),
+        help=_("Defines when to show the answer to the problem. "
+               "A default value can be set in Advanced Settings."),
+        scope=Scope.settings,
+        default=SHOWANSWER.FINISHED,
+        values=[
+            {"display_name": _("Always"), "value": SHOWANSWER.ALWAYS},
+            {"display_name": _("Answered"), "value": SHOWANSWER.ANSWERED},
+            {"display_name": _("Attempted or Past Due"), "value": SHOWANSWER.ATTEMPTED},
+            {"display_name": _("Closed"), "value": SHOWANSWER.CLOSED},
+            {"display_name": _("Finished"), "value": SHOWANSWER.FINISHED},
+            {"display_name": _("Correct or Past Due"), "value": SHOWANSWER.CORRECT_OR_PAST_DUE},
+            {"display_name": _("Past Due"), "value": SHOWANSWER.PAST_DUE},
+            {"display_name": _("Never"), "value": SHOWANSWER.NEVER},
+            {"display_name": _("After All Attempts"), "value": SHOWANSWER.AFTER_ALL_ATTEMPTS},
+            {"display_name": _("After All Attempts or Correct"), "value": SHOWANSWER.AFTER_ALL_ATTEMPTS_OR_CORRECT},
+            {"display_name": _("Attempted"), "value": SHOWANSWER.ATTEMPTED_NO_PAST_DUE},
+        ],
         enforce_type=True,
     )
 
@@ -391,6 +412,7 @@ class DragAndDropBlock(
             "item_background_color": self.item_background_color or None,
             "item_text_color": self.item_text_color or None,
             "has_deadline_passed": self.has_submission_deadline_passed,
+            "show_answer_status": self.showanswer,
             # final feedback (data.feedback.finish) is not included - it may give away answers.
         }
 
@@ -693,6 +715,82 @@ class DragAndDropBlock(
         else:
             return False
 
+    @property
+    def closed(self):
+        """
+        Is the student still allowed to submit answers?
+        """
+        if self.used_all_attempts:
+            return True
+        if self.has_submission_deadline_passed:
+            return True
+
+        return False
+
+    @property
+    def is_attempted(self):
+        """
+        Has the problem been attempted?
+        """
+        return self.attempts > 0
+
+    @property
+    def is_finished(self):
+        """
+        Returns True if answer is closed or answer is correct.
+        """
+        return self.closed or self.is_correct
+
+    @property
+    def used_all_attempts(self):
+        """
+        Returns True if student has used all allowed attempts.
+        """
+        if self.max_attempts is None or self.max_attempts == 0:
+            return False
+        return self.attempts >= self.max_attempts
+
+    @property
+    def is_correct(self):
+        """
+        Returns True if answer is correct.
+        """
+        return self._is_answer_correct()
+
+    @property
+    def is_answer_available(self):
+        """
+        Is student allowed to see an answer?
+        """
+        if self.mode != Constants.ASSESSMENT_MODE:
+            return False
+        _answer_available = False
+        if self.showanswer == SHOWANSWER.NEVER:
+            _answer_available = False
+        elif self.showanswer == SHOWANSWER.ATTEMPTED:
+            _answer_available = self.is_attempted() or self.has_submission_deadline_passed
+        elif self.showanswer == SHOWANSWER.ANSWERED:
+            # NOTE: this is slightly different from 'attempted' -- resetting the problems
+            # makes lcp.done False, but leaves attempts unchanged.
+            _answer_available = self.is_correct
+        elif self.showanswer == SHOWANSWER.CLOSED:
+            _answer_available = self.closed
+        elif self.showanswer == SHOWANSWER.FINISHED:
+            _answer_available = self.is_finished
+        elif self.showanswer == SHOWANSWER.CORRECT_OR_PAST_DUE:
+            _answer_available = self.is_correct or self.has_submission_deadline_passed
+        elif self.showanswer == SHOWANSWER.PAST_DUE:
+            _answer_available = self.has_submission_deadline_passed
+        elif self.showanswer == SHOWANSWER.ALWAYS:
+            _answer_available = True
+        elif self.showanswer == SHOWANSWER.AFTER_ALL_ATTEMPTS:
+            _answer_available = self.used_all_attempts
+        elif self.showanswer == SHOWANSWER.AFTER_ALL_ATTEMPTS_OR_CORRECT:
+            _answer_available = self.used_all_attempts or self.is_correct
+        elif self.showanswer == SHOWANSWER.ATTEMPTED_NO_PAST_DUE:
+            _answer_available = self.is_attempted
+        return _answer_available
+
     @XBlock.handler
     def student_view_user_state(self, request, suffix=''):
         """ GET all user-specific data, and any applicable feedback """
@@ -989,7 +1087,8 @@ class DragAndDropBlock(
         if self.mode == Constants.STANDARD_MODE:
             is_finished = self._is_answer_correct()
         else:
-            is_finished = not self.attempts_remain
+            is_finished = self.is_finished
+
         return {
             'items': item_state,
             'finished': is_finished,

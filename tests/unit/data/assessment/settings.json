@@ -8,5 +8,6 @@
     "weight": 5,
     "item_background_color": "",
     "item_text_color": "",
-    "url_name": "test"
+    "url_name": "test",
+    "show_answer_status": "attempted"
 }

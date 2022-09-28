@@ -122,6 +122,23 @@ class Constants:
     ASSESSMENT_MODE = "assessment"
 
 
+class SHOWANSWER:
+    """
+    Constants for when to show answer
+    """
+    ALWAYS = "always"
+    ANSWERED = "answered"
+    ATTEMPTED = "attempted"
+    CLOSED = "closed"
+    FINISHED = "finished"
+    CORRECT_OR_PAST_DUE = "correct_or_past_due"
+    PAST_DUE = "past_due"
+    NEVER = "never"
+    AFTER_ALL_ATTEMPTS = "after_all_attempts"
+    AFTER_ALL_ATTEMPTS_OR_CORRECT = "after_all_attempts_or_correct"
+    ATTEMPTED_NO_PAST_DUE = "attempted_no_past_due"
+
+
 class StateMigration:
     """
     Helper class to apply zone data and item state migrations
