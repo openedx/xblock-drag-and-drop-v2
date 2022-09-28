@@ -1,6 +1,11 @@
 Drag and Drop XBlock changelog
 ==============================
 
+Version 2.4.0 (2022-09-23)
+---------------------------
+
+* Drop the support for Python 3.5 and Ubuntu 18.04.
+
 Version 2.3.11 (2022-07-22)
 ---------------------------
 

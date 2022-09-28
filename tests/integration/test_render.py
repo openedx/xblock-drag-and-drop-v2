@@ -34,6 +34,7 @@ class Colors(object):
             return 'rgb(255, 127, 80)'
         elif color == cls.CORNFLOWERBLUE:
             return 'rgb(100, 149, 237)'
+        return None
 
 
 @ddt
