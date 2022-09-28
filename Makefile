@@ -52,3 +52,22 @@ pull_translations: ## pull translations from transifex
 
 push_translations: ## push translations to transifex
 	cd $(WORKING_DIR) && i18n_tool transifex push
+
+install_firefox:
+	mkdir -p test_helpers
+	cd test_helpers && wget "https://ftp.mozilla.org/pub/firefox/releases/43.0/linux-x86_64/en-US/firefox-43.0.tar.bz2" && tar -xjf firefox-43.0.tar.bz2
+
+requirements: install_firefox
+	pip install wheel
+	pip install -r xblock-sdk/requirements/base.txt -r xblock-sdk/requirements/test.txt
+	pip install -r requirements.txt
+
+test.quality: ## run quality checkers on the codebase
+	pycodestyle drag_and_drop_v2 tests --max-line-length=120
+	pylint drag_and_drop_v2
+	pylint tests --rcfile=tests/pylintrc
+
+test.unit: ## run python unit and integration tests
+	PATH=test_helpers/firefox:$$PATH xvfb-run python run_tests.py
+
+test: test.quality test.unit ## Run all tests

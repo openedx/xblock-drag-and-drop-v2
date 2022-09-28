@@ -23,14 +23,12 @@ def package_data(pkg, root_list):
 
 setup(
     name='xblock-drag-and-drop-v2',
-    version='2.3.11',
+    version='2.4.0',
     description='XBlock - Drag-and-Drop v2',
     packages=['drag_and_drop_v2'],
     install_requires=[
         'XBlock',
         'xblock-utils',
-        'ddt',
-        'mock',
         'bleach',
     ],
     entry_points={
