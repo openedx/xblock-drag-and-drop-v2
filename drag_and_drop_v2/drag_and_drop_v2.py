@@ -30,7 +30,7 @@ from xblockutils.settings import ThemableXBlockMixin, XBlockWithSettingsMixin
 from .default_data import DEFAULT_DATA
 from .utils import (
     Constants, DummyTranslationService, FeedbackMessage,
-    FeedbackMessages, ItemStats, StateMigration, clean_data, _
+    FeedbackMessages, ItemStats, StateMigration, _clean_data, _
 )
 
 # Globals ###########################################################
@@ -620,7 +620,7 @@ class DragAndDropBlock(
 
         answer = self._get_correct_state()
 
-        explanation = self.data.get('explanation', '').strip()
+        explanation = _clean_data(self.data.get('explanation', '').strip())
         if hasattr(self.runtime, 'replace_urls'):
             explanation = self.runtime.replace_urls(explanation)
         if hasattr(self.runtime, 'replace_course_urls'):
@@ -1209,31 +1209,31 @@ class DragAndDropBlock(
 
         zones_display_names = {
             "zone_{}_display_name".format(zone_i):
-                clean_data(zone.get("title", ""))
+                _clean_data(zone.get("title", ""))
             for zone_i, zone in enumerate(self.data.get("zones", []))
         }
 
         zones_description = {
             "zone_{}_description".format(zone_i):
-                clean_data(zone.get("description", ""))
+                _clean_data(zone.get("description", ""))
             for zone_i, zone in enumerate(self.data.get("zones", []))
         }
 
         items_display_names = {
             "item_{}_display_name".format(item_i):
-                clean_data(item.get("displayName", ""))
+                _clean_data(item.get("displayName", ""))
             for item_i, item in enumerate(self.data.get("items", []))
         }
 
         items_image_description = {
             "item_{}_image_description".format(item_i):
-                clean_data(item.get("imageDescription", ""))
+                _clean_data(item.get("imageDescription", ""))
             for item_i, item in enumerate(self.data.get("items", []))
         }
 
         index_body = {
             "display_name": self.display_name,
-            "question_text": clean_data(self.question_text),
+            "question_text": _clean_data(self.question_text),
             "background_image_description": self.data.get("targetImgDescription", ""),
         }
         index_body.update(items_display_names)

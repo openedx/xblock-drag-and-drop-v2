@@ -21,7 +21,7 @@ def ngettext_fallback(text_singular, text_plural, number):
         return text_plural
 
 
-def clean_data(data):
+def _clean_data(data):
     """ Remove html tags and extra white spaces e.g newline, tabs etc from provided data """
     cleaner = Cleaner(tags=[], strip=True)
     cleaned_text = " ".join(re.split(r"\s+", cleaner.clean(data), flags=re.UNICODE)).strip()
