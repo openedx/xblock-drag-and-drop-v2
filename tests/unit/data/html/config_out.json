@@ -9,7 +9,7 @@
     "graded": false,
     "weighted_max_score": 1,
     "show_title": false,
-    "show_answer_status": "attempted",
+    "show_answer_status": "finished",
     "problem_text": "Solve this <strong>drag-and-drop</strong> problem.",
     "show_problem_header": false,
     "target_img_expanded_url": "/expanded/url/to/drag_and_drop_v2/public/img/triangle.png",
