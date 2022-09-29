@@ -1995,7 +1995,6 @@ function DragAndDropBlock(runtime, element, configuration) {
         // gain focus while keyboard placement is in progress.
         var item_bank_focusable = (state.keyboard_placement_mode || state.showing_answer) &&
             configuration.mode === DragAndDropBlock.ASSESSMENT_MODE;
-        
         var context = {
             drag_container_max_width: containerMaxWidth,
             // configuration - parts that never change:
