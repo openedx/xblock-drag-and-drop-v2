@@ -12,7 +12,7 @@ import six
 from six.moves import range
 from xblockutils.resources import ResourceLoader
 
-from drag_and_drop_v2.utils import FeedbackMessages
+from drag_and_drop_v2.utils import FeedbackMessages, SHOWANSWER
 
 from ..utils import TestCaseMixin, generate_max_and_attempts, make_block
 
@@ -307,7 +307,7 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
 
     def test_show_answer_not_available(self):
         """
-        Tests that do_attempt handler returns 400 error for standard mode DnDv2
+        Tests that show_answer handler returns 400 error for standard mode DnDv2
         """
         res = self.call_handler(self.SHOW_ANSWER_HANDLER, expect_json=False)
 
@@ -607,24 +607,20 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
         self.assertEqual(self.block.item_state, original_item_state)
 
     @ddt.data(
-        (None, 10, True),
-        (0, 12, True),
-        (3, 3, False),
+        (None, 10, 400),
+        (0, 12, 400),
+        (3, 3, 200),
     )
     @ddt.unpack
-    def test_show_answer_validation(self, max_attempts, attempts, expect_validation_error):
+    def test_show_answer_validation(self, max_attempts, attempts, expect_status_code):
         """
-        Test that show_answer returns a 409 when max_attempts = None, or when
+        Test that show_answer returns a 400 when max_attempts = None, or when
         there are still attempts remaining.
         """
         self.block.max_attempts = max_attempts
         self.block.attempts = attempts
         res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-
-        if expect_validation_error:
-            self.assertEqual(res.status_code, 409)
-        else:
-            self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.status_code, expect_status_code)
 
     def test_get_correct_state(self):
         """
@@ -961,3 +957,72 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
         res = self._do_attempt()
 
         self.assertFalse(res['correct'])
+
+    def test_show_answer_status_always(self):
+        """
+         Test "Show Answer" button is shown in assessment mode when course "showanswer" setting is always
+        """
+        self.block.showanswer = SHOWANSWER.ALWAYS
+        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
+
+        self.assertEqual(res.status_code, 200)
+
+    def test_show_answer_status_never(self):
+        """
+         Test "Show Answer" button is not shown in assessment mode when course "showanswer" setting is never
+        """
+        self.block.showanswer = SHOWANSWER.NEVER
+        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
+
+        self.assertEqual(res.status_code, 400)
+
+    def test_show_answer_status_attempted(self):
+        """
+         Test "Show Answer" button is shown in assessment mode when course "showanswer" setting is attempted
+        """
+        self.block.showanswer = SHOWANSWER.ATTEMPTED
+        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
+
+        self.assertEqual(res.status_code, 400)
+
+        self._do_attempt()
+
+        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
+
+        self.assertEqual(res.status_code, 200)
+
+    def test_show_answer_status_is_correct(self):
+        """
+         Test "Show Answer" button is shown in assessment mode when course "showanswer" setting is ANSWERED
+        """
+        self.block.showanswer = SHOWANSWER.ANSWERED
+        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
+
+        self.assertEqual(res.status_code, 400)
+
+        self._submit_complete_solution()
+
+        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
+
+        self.assertEqual(res.status_code, 200)
+
+    def test_show_answer_status_is_finished(self):
+        """
+         Test "Show Answer" button is shown in assessment mode when course "showanswer" setting is FINISHED
+        """
+        self.block.showanswer = SHOWANSWER.FINISHED
+        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
+
+        self.assertEqual(res.status_code, 400)
+
+        self._submit_incorrect_solution()
+        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
+        self.assertEqual(res.status_code, 400)
+
+        self._submit_complete_solution()
+        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
+        self.assertEqual(res.status_code, 200)
+
+        self.assertTrue(self.block.attempts_remain)
+
+        self.assertFalse(self.block.closed)

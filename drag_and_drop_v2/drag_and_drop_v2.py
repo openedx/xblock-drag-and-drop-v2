@@ -635,10 +635,10 @@ class DragAndDropBlock(
                 400,
                 self.i18n_service.gettext("show_answer handler should only be called for assessment mode")
             )
-        if self.attempts_remain:
+        if not self.is_answer_available:
             raise JsonHandlerError(
-                409,
-                self.i18n_service.gettext("There are attempts remaining")
+                400,
+                self.i18n_service.gettext("answer is not available")
             )
 
         answer = self._get_correct_state()
@@ -768,7 +768,7 @@ class DragAndDropBlock(
         if self.showanswer == SHOWANSWER.NEVER:
             _answer_available = False
         elif self.showanswer == SHOWANSWER.ATTEMPTED:
-            _answer_available = self.is_attempted() or self.has_submission_deadline_passed
+            _answer_available = self.is_attempted or self.has_submission_deadline_passed
         elif self.showanswer == SHOWANSWER.ANSWERED:
             # NOTE: this is slightly different from 'attempted' -- resetting the problems
             # makes lcp.done False, but leaves attempts unchanged.
