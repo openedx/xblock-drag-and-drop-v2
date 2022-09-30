@@ -20,7 +20,7 @@ from xblockutils.resources import ResourceLoader
 from drag_and_drop_v2.default_data import (BOTTOM_ZONE_ID, DEFAULT_DATA, FINISH_FEEDBACK,
                                            MIDDLE_ZONE_ID, START_FEEDBACK,
                                            TOP_ZONE_ID, TOP_ZONE_TITLE)
-from drag_and_drop_v2.utils import Constants, FeedbackMessages
+from drag_and_drop_v2.utils import Constants, FeedbackMessages, SHOWANSWER
 
 from .test_base import BaseIntegrationTest
 from .test_interaction import (ITEM_DRAG_KEYBOARD_KEYS, DefaultDataTestMixin,
@@ -39,11 +39,19 @@ class DefaultAssessmentDataTestMixin(DefaultDataTestMixin):
     Provides a test scenario with default options in assessment mode.
     """
     MAX_ATTEMPTS = 5
+    SHOW_ANSWER_STATUS = SHOWANSWER.AFTER_ALL_ATTEMPTS
 
     def _get_scenario_xml(self):  # pylint: disable=no-self-use
         return """
-            <vertical_demo><drag-and-drop-v2 mode='{mode}' max_attempts='{max_attempts}'/></vertical_demo>
-        """.format(mode=Constants.ASSESSMENT_MODE, max_attempts=self.MAX_ATTEMPTS)
+            <vertical_demo>
+                <drag-and-drop-v2
+                 mode='{mode}'
+                 max_attempts='{max_attempts}'
+                 showanswer='{show_answer_status}' />
+            </vertical_demo>
+        """.format(mode=Constants.ASSESSMENT_MODE,
+                   max_attempts=self.MAX_ATTEMPTS,
+                   show_answer_status=self.SHOW_ANSWER_STATUS)
 
 
 class AssessmentTestMixin(object):
@@ -238,7 +246,6 @@ class AssessmentInteractionTest(
         # A feedback popup should open upon final submission.
         popup = self._get_popup()
         self.assertTrue(popup.is_displayed())
-
         self.assertIsNone(show_answer_button.get_attribute('disabled'))
         self.click_show_answer()
 

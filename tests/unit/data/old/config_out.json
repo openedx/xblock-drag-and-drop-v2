@@ -9,7 +9,7 @@
     "graded": false,
     "weighted_max_score": 1,
     "show_title": true,
-    "show_answer_status": "finished",
+    "showanswer": "finished",
     "problem_text": "",
     "show_problem_header": true,
     "target_img_expanded_url": "http://i0.kym-cdn.com/photos/images/newsfeed/000/030/404/1260585284155.png",

@@ -412,7 +412,7 @@ class DragAndDropBlock(
             "item_background_color": self.item_background_color or None,
             "item_text_color": self.item_text_color or None,
             "has_deadline_passed": self.has_submission_deadline_passed,
-            "show_answer_status": self.showanswer,
+            "showanswer": self.showanswer,
             # final feedback (data.feedback.finish) is not included - it may give away answers.
         }
 

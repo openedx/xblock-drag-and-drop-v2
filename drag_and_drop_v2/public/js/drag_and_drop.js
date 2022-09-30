@@ -785,6 +785,20 @@ function DragAndDropBlock(runtime, element, configuration) {
         gettext = function(string) { return string; };
     }
 
+    var SHOW_ANSWER_STATUSES = {
+        ALWAYS: 'always',
+        ANSWERED: 'answered',
+        ATTEMPTED: 'attempted',
+        CLOSED: 'closed',
+        FINISHED: 'finished',
+        PAST_DUE: 'past_due',
+        CORRECT_OR_PAST_DUE: 'correct_or_past_due',
+        NEVER: 'never',
+        AFTER_ALL_ATTEMPTS: 'after_all_attempts',
+        AFTER_ALL_ATTEMPTS_OR_CORRECT: 'after_all_attempts_or_correct',
+        ATTEMPTED_NO_PAST_DUE: 'attempted_no_past_due'
+    };
+
     var renderView = DragAndDropTemplates(configuration);
 
     var $element = $(element);
@@ -1923,13 +1937,35 @@ function DragAndDropBlock(runtime, element, configuration) {
     var isPastDue = function () {
         return !configuration.has_deadline_passed;
     };
-
-    var canShowAnswer = function() {
-        return configuration.mode === DragAndDropBlock.ASSESSMENT_MODE && !attemptsRemain();
+    var isAttempted = function () {
+        return state.attempts > 0;
+    };
+    var isCorrect = function () {
+        return state.last_action_correct;
+    };
+    var isClosed = function () {
+        if(isPastDue() || !attemptsRemain()) return true;
+        return false;
     };
 
     var attemptsRemain = function() {
         return !configuration.max_attempts || configuration.max_attempts > state.attempts;
+    };
+
+    var canShowAnswer = function() {
+        if(configuration.mode !== DragAndDropBlock.ASSESSMENT_MODE) return false;
+        else if (configuration.showanswer === SHOW_ANSWER_STATUSES.NEVER) return false;
+        else if (configuration.showanswer === SHOW_ANSWER_STATUSES.ATTEMPTED) return isAttempted() || isPastDue();
+        else if (configuration.showanswer === SHOW_ANSWER_STATUSES.ANSWERED) return isCorrect();
+        else if (configuration.showanswer === SHOW_ANSWER_STATUSES.CLOSED) return isClosed();
+        else if (configuration.showanswer === SHOW_ANSWER_STATUSES.FINISHED) return isClosed() || isCorrect();
+        else if (configuration.showanswer === SHOW_ANSWER_STATUSES.CORRECT_OR_PAST_DUE) return isCorrect() || isPastDue();
+        else if (configuration.showanswer === SHOW_ANSWER_STATUSES.PAST_DUE) return isPastDue();
+        else if (configuration.showanswer === SHOW_ANSWER_STATUSES.ALWAYS) return true;
+        else if (configuration.showanswer === SHOW_ANSWER_STATUSES.AFTER_ALL_ATTEMPTS) return !attemptsRemain();
+        else if (configuration.showanswer === SHOW_ANSWER_STATUSES.ATTEMPTED_NO_PAST_DUE) return isAttempted();
+  
+        return false;
     };
 
     var submittingLocation = function() {
@@ -1995,6 +2031,13 @@ function DragAndDropBlock(runtime, element, configuration) {
         // gain focus while keyboard placement is in progress.
         var item_bank_focusable = (state.keyboard_placement_mode || state.showing_answer) &&
             configuration.mode === DragAndDropBlock.ASSESSMENT_MODE;
+        
+        // In assessment mode, if no value assigned to course-setting's showanswer it's value will be "finished"
+        var showanswer = configuration.showanswer;
+        if(!showanswer && configuration.mode === DragAndDropBlock.ASSESSMENT_MODE){
+            showanswer = SHOW_ANSWER_STATUSES.FINISHED;
+        }
+
         var context = {
             drag_container_max_width: containerMaxWidth,
             // configuration - parts that never change:
@@ -2007,7 +2050,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             weighted_max_score: configuration.weighted_max_score,
             problem_html: configuration.problem_text,
             show_problem_header: configuration.show_problem_header,
-            show_answer_status: configuration.show_answer_status,
+            showanswer: showanswer,
             show_submit_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
             show_show_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
             target_img_src: configuration.target_img_expanded_url,
