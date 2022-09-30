@@ -68,6 +68,6 @@ test.quality: ## run quality checkers on the codebase
 	pylint tests --rcfile=tests/pylintrc
 
 test.unit: ## run python unit and integration tests
-	PATH=test_helpers/firefox:$$PATH xvfb-run python run_tests.py
+	PATH=test_helpers/firefox:$$PATH xvfb-run python run_tests.py $(filter-out $@,$(MAKECMDGOALS))
 
 test: test.quality test.unit ## Run all tests
