@@ -955,7 +955,6 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
     def test_do_attempt_correct_takes_decoy_into_account(self):
         self._submit_solution({0: self.ZONE_1, 1: self.ZONE_2, 2: self.ZONE_2, 3: self.ZONE_2})
         res = self._do_attempt()
-
         self.assertFalse(res['correct'])
 
     def test_show_answer_status_always(self):
@@ -964,7 +963,6 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
         """
         self.block.showanswer = SHOWANSWER.ALWAYS
         res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-
         self.assertEqual(res.status_code, 200)
 
     def test_show_answer_status_never(self):
@@ -973,7 +971,6 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
         """
         self.block.showanswer = SHOWANSWER.NEVER
         res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-
         self.assertEqual(res.status_code, 400)
 
     def test_show_answer_status_attempted(self):
@@ -982,13 +979,10 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
         """
         self.block.showanswer = SHOWANSWER.ATTEMPTED
         res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-
         self.assertEqual(res.status_code, 400)
 
         self._do_attempt()
-
         res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-
         self.assertEqual(res.status_code, 200)
 
     def test_show_answer_status_is_correct(self):
@@ -997,13 +991,10 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
         """
         self.block.showanswer = SHOWANSWER.ANSWERED
         res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-
         self.assertEqual(res.status_code, 400)
 
         self._submit_complete_solution()
-
         res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-
         self.assertEqual(res.status_code, 200)
 
     def test_show_answer_status_is_finished(self):
@@ -1012,7 +1003,6 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
         """
         self.block.showanswer = SHOWANSWER.FINISHED
         res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-
         self.assertEqual(res.status_code, 400)
 
         self._submit_incorrect_solution()
@@ -1022,7 +1012,5 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
         self._submit_complete_solution()
         res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
         self.assertEqual(res.status_code, 200)
-
         self.assertTrue(self.block.attempts_remain)
-
         self.assertFalse(self.block.closed)
