@@ -1915,7 +1915,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var canSubmitAttempt = function() {
-        return Object.keys(state.items).length > 0 && isPastDue() && attemptsRemain() && !submittingLocation();
+        return Object.keys(state.items).length > 0 && !isPastDue() && attemptsRemain() && !submittingLocation();
     };
 
     var canReset = function() {
@@ -1935,7 +1935,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var isPastDue = function () {
-        return !configuration.has_deadline_passed;
+        return configuration.has_deadline_passed;
     };
     var isAttempted = function () {
         return state.attempts > 0;
@@ -1963,6 +1963,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         else if (configuration.showanswer === SHOW_ANSWER_STATUSES.PAST_DUE) return isPastDue();
         else if (configuration.showanswer === SHOW_ANSWER_STATUSES.ALWAYS) return true;
         else if (configuration.showanswer === SHOW_ANSWER_STATUSES.AFTER_ALL_ATTEMPTS) return !attemptsRemain();
+        else if (configuration.showanswer === SHOW_ANSWER_STATUSES.AFTER_ALL_ATTEMPTS_OR_CORRECT) return !attemptsRemain() || isCorrect();
         else if (configuration.showanswer === SHOW_ANSWER_STATUSES.ATTEMPTED_NO_PAST_DUE) return isAttempted();
   
         return false;

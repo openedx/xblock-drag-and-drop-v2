@@ -385,7 +385,6 @@ class DragAndDropBlock(
                 else:
                     item['expandedImageURL'] = ''
             return items
-
         return {
             "block_id": six.text_type(self.scope_ids.usage_id),
             "display_name": self.display_name,
