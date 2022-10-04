@@ -474,7 +474,8 @@ class ExplanationTest(
         self._add_scenario(scenario_page_id, scenario_page_title, scenario_xml)
         self._page = self.go_to_page(scenario_page_title)
 
-    def _get_explanation_html(self, explanation: str):
+    @staticmethod
+    def _get_explanation_html(explanation: str):
         """
         get generated html explanation
 
@@ -515,5 +516,5 @@ class ExplanationTest(
         self.assertEqual(explanation_block.is_displayed(), should_display)
         if should_display:
             self.assertEqual(rendered_explanation, explanation_block.text)
-            self.assertEqual(self._get_explanation_html(explanation),
+            self.assertEqual(ExplanationTest._get_explanation_html(explanation),
                              explanation_block.get_attribute('innerHTML'))
