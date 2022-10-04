@@ -607,8 +607,8 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
         self.assertEqual(self.block.item_state, original_item_state)
 
     @ddt.data(
-        (None, 10, 400),
-        (0, 12, 400),
+        (None, 10, 409),
+        (0, 12, 409),
         (3, 3, 200),
     )
     @ddt.unpack
@@ -971,7 +971,7 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
         """
         self.block.showanswer = SHOWANSWER.NEVER
         res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-        self.assertEqual(res.status_code, 400)
+        self.assertEqual(res.status_code, 409)
 
     def test_show_answer_status_attempted(self):
         """
@@ -979,7 +979,7 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
         """
         self.block.showanswer = SHOWANSWER.ATTEMPTED
         res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-        self.assertEqual(res.status_code, 400)
+        self.assertEqual(res.status_code, 409)
 
         self._do_attempt()
         res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
@@ -991,7 +991,7 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
         """
         self.block.showanswer = SHOWANSWER.ANSWERED
         res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-        self.assertEqual(res.status_code, 400)
+        self.assertEqual(res.status_code, 409)
 
         self._submit_complete_solution()
         res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
@@ -1003,11 +1003,11 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
         """
         self.block.showanswer = SHOWANSWER.FINISHED
         res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-        self.assertEqual(res.status_code, 400)
+        self.assertEqual(res.status_code, 409)
 
         self._submit_incorrect_solution()
         res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-        self.assertEqual(res.status_code, 400)
+        self.assertEqual(res.status_code, 409)
 
         self._submit_complete_solution()
         res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)

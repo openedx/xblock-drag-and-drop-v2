@@ -120,6 +120,7 @@ class Constants:
 
     STANDARD_MODE = "standard"
     ASSESSMENT_MODE = "assessment"
+    ATTR_KEY_USER_IS_STAFF = "edx-platform.user_is_staff"
 
 
 class SHOWANSWER:
