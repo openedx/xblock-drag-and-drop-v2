@@ -620,7 +620,7 @@ class DragAndDropBlock(
 
         answer = self._get_correct_state()
 
-        explanation = _clean_data(self.data.get('explanation', '').strip())
+        explanation = self.data.get('explanation', '').strip()
         if hasattr(self.runtime, 'replace_urls'):
             explanation = self.runtime.replace_urls(explanation)
         if hasattr(self.runtime, 'replace_course_urls'):
