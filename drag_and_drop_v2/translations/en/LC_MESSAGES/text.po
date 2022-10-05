@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-05 20:03+0200\n"
+"POT-Creation-Date: 2022-10-05 21:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -433,32 +433,33 @@ msgstr ""
 
 #: utils.py:68
 #, python-brace-format
-msgid "Correctly placed {correct_count} item."
-msgid_plural "Correctly placed {correct_count} items."
+msgid "Correctly placed {correct_count} item"
+msgid_plural "Correctly placed {correct_count} items"
 msgstr[0] ""
 msgstr[1] ""
 
 #: utils.py:79
 #, python-brace-format
-msgid "Misplaced {misplaced_count} item."
-msgid_plural "Misplaced {misplaced_count} items."
+msgid "Misplaced {misplaced_count} item"
+msgid_plural "Misplaced {misplaced_count} items"
 msgstr[0] ""
 msgstr[1] ""
 
 #: utils.py:90
 #, python-brace-format
 msgid ""
-"Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
+"Misplaced {misplaced_count} item (misplaced item was returned to the item "
+"bank)"
 msgid_plural ""
-"Misplaced {misplaced_count} items. Misplaced items were returned to item "
-"bank."
+"Misplaced {misplaced_count} items (misplaced items were returned to the item "
+"bank)"
 msgstr[0] ""
 msgstr[1] ""
 
 #: utils.py:101
 #, python-brace-format
-msgid "Did not place {missing_count} required item."
-msgid_plural "Did not place {missing_count} required items."
+msgid "Did not place {missing_count} required item"
+msgid_plural "Did not place {missing_count} required items"
 msgstr[0] ""
 msgstr[1] ""
 

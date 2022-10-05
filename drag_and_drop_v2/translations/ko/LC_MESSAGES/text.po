@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XBlocks\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-21 16:53+0000\n"
+"POT-Creation-Date: 2022-10-05 20:22+0200\n"
 "PO-Revision-Date: 2016-06-09 07:11+0000\n"
 "Last-Translator: Wonjae Choi <juniorleo651@gmail.com>, 2021\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/open-edx/xblocks/language/ko_KR/)\n"
@@ -435,30 +435,31 @@ msgstr "최종 시도가 사용되었으며, 최고 점수는 {score} 입니다"
 
 #: utils.py:68
 #, python-brace-format
-msgid "Correctly placed {correct_count} item."
-msgid_plural "Correctly placed {correct_count} items."
-msgstr[0] "{correct_count} 개의 항목을 올바르게 배치했습니다."
+msgid "Correctly placed {correct_count} item"
+msgid_plural "Correctly placed {correct_count} items"
+msgstr[0] "{correct_count} 개의 항목을 올바르게 배치했습니다"
 
 #: utils.py:79
 #, python-brace-format
-msgid "Misplaced {misplaced_count} item."
-msgid_plural "Misplaced {misplaced_count} items."
-msgstr[0] "{misplaced_count}개의 항목이 잘못 배치되었습니다."
+msgid "Misplaced {misplaced_count} item"
+msgid_plural "Misplaced {misplaced_count} items"
+msgstr[0] "{misplaced_count}개의 항목이 잘못 배치되었습니다"
 
 #: utils.py:90
 #, python-brace-format
 msgid ""
-"Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
+"Misplaced {misplaced_count} item (misplaced item was returned to the item "
+"bank)"
 msgid_plural ""
-"Misplaced {misplaced_count} items. Misplaced items were returned to item "
-"bank."
+"Misplaced {misplaced_count} items (misplaced items were returned to the item"
+" bank)"
 msgstr[0] "{misplaced_count} 개 항목을 잘못 배치했습니다. 잘못 배치 된 품목은 품목 은행에 반환되었습니다."
 
 #: utils.py:101
 #, python-brace-format
-msgid "Did not place {missing_count} required item."
-msgid_plural "Did not place {missing_count} required items."
-msgstr[0] "{missing_count}개의 필요한 항목들을 배치하지 않았습니다."
+msgid "Did not place {missing_count} required item"
+msgid_plural "Did not place {missing_count} required items"
+msgstr[0] "{missing_count}개의 필요한 항목들을 배치하지 않았습니다"
 
 #: public/js/drag_and_drop.js:48 public/js/drag_and_drop.js:399
 msgid "Submitting"

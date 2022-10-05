@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XBlocks\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-21 16:53+0000\n"
+"POT-Creation-Date: 2022-10-05 20:22+0200\n"
 "PO-Revision-Date: 2016-06-09 07:11+0000\n"
 "Last-Translator: Александр Зуев <we_test@mail.ru>, 2016\n"
 "Language-Team: Russian (http://www.transifex.com/open-edx/xblocks/language/ru/)\n"
@@ -435,29 +435,30 @@ msgstr "Последняя попытка использована, максим
 
 #: utils.py:68
 #, python-brace-format
-msgid "Correctly placed {correct_count} item."
-msgid_plural "Correctly placed {correct_count} items."
-msgstr[0] "Верно расположен {correct_count} элемент."
-msgstr[1] "Верно расположено {correct_count} элемента."
-msgstr[2] "Верно расположено {correct_count} элементов."
-msgstr[3] "Верно расположено {correct_count} элементов."
+msgid "Correctly placed {correct_count} item"
+msgid_plural "Correctly placed {correct_count} items"
+msgstr[0] "Верно расположен {correct_count} элемент"
+msgstr[1] "Верно расположено {correct_count} элемента"
+msgstr[2] "Верно расположено {correct_count} элементов"
+msgstr[3] "Верно расположено {correct_count} элементов"
 
 #: utils.py:79
 #, python-brace-format
-msgid "Misplaced {misplaced_count} item."
-msgid_plural "Misplaced {misplaced_count} items."
-msgstr[0] "Ошибочно расположен {correct_count} элемент."
-msgstr[1] "Ошибочно расположено {correct_count} элемента."
-msgstr[2] "Ошибочно расположено {correct_count} элементов."
-msgstr[3] "Ошибочно расположено {correct_count} элементов."
+msgid "Misplaced {misplaced_count} item"
+msgid_plural "Misplaced {misplaced_count} items"
+msgstr[0] "Ошибочно расположен {correct_count} элемент"
+msgstr[1] "Ошибочно расположено {correct_count} элемента"
+msgstr[2] "Ошибочно расположено {correct_count} элементов"
+msgstr[3] "Ошибочно расположено {correct_count} элементов"
 
 #: utils.py:90
 #, python-brace-format
 msgid ""
-"Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
+"Misplaced {misplaced_count} item (misplaced item was returned to the item "
+"bank)"
 msgid_plural ""
-"Misplaced {misplaced_count} items. Misplaced items were returned to item "
-"bank."
+"Misplaced {misplaced_count} items (misplaced items were returned to the item"
+" bank)"
 msgstr[0] "Ошибочно расположен {correct_count} элемент. Этот элемент возвращён в банк элементов."
 msgstr[1] "Ошибочно расположено {correct_count} элемента. Эти элементы возвращены в банк элементов."
 msgstr[2] "Ошибочно расположено {correct_count} элементов. Эти элементы возвращены в банк элементов."
@@ -465,12 +466,12 @@ msgstr[3] "Ошибочно расположено {correct_count} элемен�
 
 #: utils.py:101
 #, python-brace-format
-msgid "Did not place {missing_count} required item."
-msgid_plural "Did not place {missing_count} required items."
-msgstr[0] "Не использован {missing_count} обязательный элемент."
-msgstr[1] "Не использовано {missing_count} обязательных элемента."
-msgstr[2] "Не использовано {missing_count} обязательных элементов."
-msgstr[3] "Не использовано {missing_count} обязательных элементов."
+msgid "Did not place {missing_count} required item"
+msgid_plural "Did not place {missing_count} required items"
+msgstr[0] "Не использован {missing_count} обязательный элемент"
+msgstr[1] "Не использовано {missing_count} обязательных элемента"
+msgstr[2] "Не использовано {missing_count} обязательных элементов"
+msgstr[3] "Не использовано {missing_count} обязательных элементов"
 
 #: public/js/drag_and_drop.js:48 public/js/drag_and_drop.js:399
 msgid "Submitting"

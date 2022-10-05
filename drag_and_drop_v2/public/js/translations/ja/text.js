@@ -42,13 +42,13 @@
     "Continue": "\u7d9a\u3051\u308b",
     "Correct": "\u6b63\u89e3",
     "Correctly placed in: {zone_title}": "\u6b21\u3092\u6b63\u3057\u304f\u914d\u7f6e\u3057\u307e\u3057\u305f\uff1a\u00a0{zone_title}",
-    "Correctly placed {correct_count} item.": [
-      "{correct_count}\u3064\u306e\u30a2\u30a4\u30c6\u30e0\u3092\u6b63\u3057\u304f\u914d\u7f6e\u3057\u307e\u3057\u305f\u3002"
+    "Correctly placed {correct_count} item": [
+      "{correct_count}\u3064\u306e\u30a2\u30a4\u30c6\u30e0\u3092\u6b63\u3057\u304f\u914d\u7f6e\u3057\u307e\u3057\u305f"
     ],
     "Defines the number of points the problem is worth.": "\u5404\u554f\u984c\u306e\u914d\u70b9\u3092\u5b9a\u7fa9\u3057\u307e\u3059\u3002",
     "Defines the number of times a student can try to answer this problem. If the value is not set, infinite attempts are allowed.": "\u53d7\u8b1b\u8005\u304c\u3053\u306e\u554f\u984c\u306b\u89e3\u7b54\u3067\u304d\u308b\u56de\u6570\u3092\u6307\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044\u3002\u5024\u3092\u6307\u5b9a\u3057\u306a\u3044\u5834\u5408\u306f\u4f55\u56de\u3067\u3082\u89e3\u7b54\u3067\u304d\u308b\u3053\u3068\u306b\u306a\u308a\u307e\u3059\u3002",
-    "Did not place {missing_count} required item.": [
-      "{missing_count} \u500b\u306e\u5fc5\u9808\u30a2\u30a4\u30c6\u30e0\u3092\u914d\u7f6e\u3057\u307e\u305b\u3093\u3067\u3057\u305f\u3002"
+    "Did not place {missing_count} required item": [
+      "{missing_count} \u500b\u306e\u5fc5\u9808\u30a2\u30a4\u30c6\u30e0\u3092\u914d\u7f6e\u3057\u307e\u305b\u3093\u3067\u3057\u305f"
     ],
     "Display label names on the image": "\u753b\u50cf\u306b\u30e9\u30d9\u30eb\u540d\u3092\u8868\u793a",
     "Display the heading \"Problem\" above the problem text?": "\u554f\u984c\u30c6\u30ad\u30b9\u30c8\u306e\u4e0a\u306b\u300c\u554f\u984c\u300d\u3068\u3044\u3046\u898b\u51fa\u3057\u3092\u8868\u793a\u3057\u307e\u3059\u304b\uff1f",
@@ -83,10 +83,10 @@
     "Loading drag and drop problem.": "\u30c9\u30e9\u30c3\u30b0\u30a2\u30f3\u30c9\u30c9\u30ed\u30c3\u30d7\u554f\u984c\u3092\u8aad\u307f\u8fbc\u3093\u3067\u3044\u307e\u3059\u3002",
     "Max number of attempts reached": "\u6700\u5927\u8a66\u884c\u56de\u6570\u306b\u5230\u9054\u3057\u307e\u3057\u305f\u3002",
     "Maximum attempts": "\u6700\u5927\u8a66\u884c\u56de\u6570",
-    "Misplaced {misplaced_count} item.": [
-      "{misplaced_count} \u500b\u306e\u30a2\u30a4\u30c6\u30e0\u306e\u914d\u7f6e\u304c\u9055\u3044\u307e\u3057\u305f\u3002"
+    "Misplaced {misplaced_count} item": [
+      "{misplaced_count} \u500b\u306e\u30a2\u30a4\u30c6\u30e0\u306e\u914d\u7f6e\u304c\u9055\u3044\u307e\u3057\u305f"
     ],
-    "Misplaced {misplaced_count} item. Misplaced item was returned to item bank.": [
+    "Misplaced {misplaced_count} item (misplaced item was returned to the item bank)": [
       "{misplaced_count}\u3064\u306e\u30a2\u30a4\u30c6\u30e0\u3092\u7f6e\u304d\u5fd8\u308c\u307e\u3057\u305f\u3002 \u7f6e\u304d\u5fd8\u308c\u305f\u5546\u54c1\u306f\u5546\u54c1\u30d0\u30f3\u30af\u306b\u8fd4\u5374\u3055\u308c\u307e\u3057\u305f\u3002"
     ],
     "Mode": "\u30e2\u30fc\u30c9",

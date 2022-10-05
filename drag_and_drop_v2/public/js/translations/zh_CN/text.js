@@ -42,13 +42,13 @@
     "Continue": "\u7ee7\u7eed",
     "Correct": "\u6b63\u786e",
     "Correctly placed in: {zone_title}": "\u6b63\u786e\u7684\u653e\u5728: {zone_title}",
-    "Correctly placed {correct_count} item.": [
-      "\u6b63\u786e\u653e\u7f6e{correct_count}\u4ef6\u7269\u54c1\u3002"
+    "Correctly placed {correct_count} item": [
+      "\u6b63\u786e\u653e\u7f6e{correct_count}\u4ef6\u7269\u54c1"
     ],
     "Defines the number of points the problem is worth.": "\u8bbe\u7f6e\u6b64\u9898\u76ee\u7684\u603b\u5206\u3002",
     "Defines the number of times a student can try to answer this problem. If the value is not set, infinite attempts are allowed.": "\u8bbe\u7f6e\u5b66\u5458\u53ef\u5bf9\u6b64\u9898\u76ee\u4f5c\u7b54\u7684\u673a\u4f1a\u6b21\u6570\uff0c\u5982\u679c\u4e0d\u8bbe\u7f6e\u6b64\u503c\uff0c\u90a3\u4e48\u5b66\u5458\u53ef\u65e0\u6570\u6b21\u4f5c\u7b54\u3002",
-    "Did not place {missing_count} required item.": [
-      "\u672a\u6295\u653e{missing_count}\u4e2a\u5fc5\u987b\u9879\u3002"
+    "Did not place {missing_count} required item": [
+      "\u672a\u6295\u653e{missing_count}\u4e2a\u5fc5\u987b\u9879"
     ],
     "Display label names on the image": "\u5728\u56fe\u50cf\u4e0a\u663e\u793a\u6807\u7b7e\u540d\u79f0",
     "Display the heading \"Problem\" above the problem text?": "\u662f\u5426\u5728\u95ee\u9898\u6587\u672c\u4e0a\u65b9\u663e\u793a\u6807\u9898\u201c\u95ee\u9898\u201d\uff1f",
@@ -83,10 +83,10 @@
     "Loading drag and drop problem.": "\u52a0\u8f7d\u62d6\u653e\u95ee\u9898\u3002",
     "Max number of attempts reached": "\u5df2\u7528\u5b8c\u6240\u6709\u7b54\u9898\u673a\u4f1a",
     "Maximum attempts": "\u603b\u7b54\u9898\u673a\u4f1a",
-    "Misplaced {misplaced_count} item.": [
-      "\u8bef\u6295{misplaced_count}\u9879\u3002"
+    "Misplaced {misplaced_count} item": [
+      "\u8bef\u6295{misplaced_count}\u9879"
     ],
-    "Misplaced {misplaced_count} item. Misplaced item was returned to item bank.": [
+    "Misplaced {misplaced_count} item (misplaced item was returned to the item bank)": [
       "\u653e\u9519\u4e86{misplaced_count}\u4e2a\u9879\u76ee\u3002 \u653e\u9519\u4e86\u4f4d\u7f6e\u7684\u7269\u54c1\u88ab\u9000\u56de\u4e86\u7269\u54c1\u5e93\u3002"
     ],
     "Mode": "\u6a21\u5f0f",

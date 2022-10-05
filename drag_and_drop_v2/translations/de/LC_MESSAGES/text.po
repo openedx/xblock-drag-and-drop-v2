@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XBlocks\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-21 16:53+0000\n"
+"POT-Creation-Date: 2022-10-05 20:22+0200\n"
 "PO-Revision-Date: 2016-06-09 07:11+0000\n"
 "Last-Translator: OpenCraft OpenCraft <help@opencraft.com>, 2021\n"
 "Language-Team: German (Germany) (http://www.transifex.com/open-edx/xblocks/language/de_DE/)\n"
@@ -435,33 +435,34 @@ msgstr "Der letzter Versuch wurde gewertet, die höchste Punktzahl ist {score}."
 
 #: utils.py:68
 #, python-brace-format
-msgid "Correctly placed {correct_count} item."
-msgid_plural "Correctly placed {correct_count} items."
-msgstr[0] "Richtig platzierte {correct_count} Komponente."
-msgstr[1] "{correct_count} Gegenstände richtig platziert."
+msgid "Correctly placed {correct_count} item"
+msgid_plural "Correctly placed {correct_count} items"
+msgstr[0] "Richtig platzierte {correct_count} Komponente"
+msgstr[1] "{correct_count} Gegenstände richtig platziert"
 
 #: utils.py:79
 #, python-brace-format
-msgid "Misplaced {misplaced_count} item."
-msgid_plural "Misplaced {misplaced_count} items."
-msgstr[0] "falsch platzierte {misplaced_count} Auswahmöglichkeit. "
-msgstr[1] "Falsch platzierte {misplaced_count} Auswahlmöglichkeiten. "
+msgid "Misplaced {misplaced_count} item"
+msgid_plural "Misplaced {misplaced_count} items"
+msgstr[0] "Falsch platzierte {misplaced_count} Auswahmöglichkeit"
+msgstr[1] "Falsch platzierte {misplaced_count} Auswahlmöglichkeiten"
 
 #: utils.py:90
 #, python-brace-format
 msgid ""
-"Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
+"Misplaced {misplaced_count} item (misplaced item was returned to the item "
+"bank)"
 msgid_plural ""
-"Misplaced {misplaced_count} items. Misplaced items were returned to item "
-"bank."
+"Misplaced {misplaced_count} items (misplaced items were returned to the item"
+" bank)"
 msgstr[0] "Falsch platzierte {misplaced_count} Auswahlmöglichkeit. Falsch platzierte Auswahlmöglichkeit wurde zurück auf die Ausgangsposition gezogen."
 msgstr[1] "{misplaced_count} Gegenstände verlegt. Falsch platzierte Artikel wurden an die Artikelbank zurückgegeben."
 
 #: utils.py:101
 #, python-brace-format
-msgid "Did not place {missing_count} required item."
-msgid_plural "Did not place {missing_count} required items."
-msgstr[0] "Die benötigte Auwahlmöglichkeit wurde nicht platziert {missing_count}."
+msgid "Did not place {missing_count} required item"
+msgid_plural "Did not place {missing_count} required items"
+msgstr[0] "Die benötigte Auwahlmöglichkeit wurde nicht platziert {missing_count}"
 msgstr[1] "Die benötigte Auswahlmöglichkeiten wurden nicht platziert {missing_count}"
 
 #: public/js/drag_and_drop.js:48 public/js/drag_and_drop.js:399

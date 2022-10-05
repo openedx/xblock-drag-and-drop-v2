@@ -27,14 +27,14 @@
     "Background description": "Arkaplan a\u00e7\u0131klamas\u0131",
     "Cancel": "\u0130ptal",
     "Change background": "Arkaplan\u0131 de\u011fi\u015ftir",
-    "Correctly placed {correct_count} item.": [
-      "Do\u011fru yerle\u015ftirilmi\u015f {correct_count} \u00f6\u011fe.",
-      "Do\u011fru yerle\u015ftirilmi\u015f {correct_count} \u00f6\u011fe."
+    "Correctly placed {correct_count} item": [
+      "Do\u011fru yerle\u015ftirilmi\u015f {correct_count} \u00f6\u011fe",
+      "Do\u011fru yerle\u015ftirilmi\u015f {correct_count} \u00f6\u011fe"
     ],
     "Drag and Drop": "S\u00fcr\u00fckle ve B\u0131rak",
     "Feedback": "Geri Bildirim",
     "Hints:": "\u0130pu\u00e7lar\u0131:",
-    "Misplaced {misplaced_count} item. Misplaced item was returned to item bank.": [
+    "Misplaced {misplaced_count} item (misplaced item was returned to the item bank)": [
       "{misplaced_count} \u00f6\u011fe yanl\u0131\u015f yerle\u015ftirildi. Yanl\u0131\u015f yerle\u015ftirilen \u00f6\u011feler, \u00f6\u011fe bankas\u0131na iade edildi.",
       "{misplaced_count} \u00f6\u011fe yanl\u0131\u015f yerle\u015ftirildi. Yanl\u0131\u015f yerle\u015ftirilen \u00f6\u011feler, \u00f6\u011fe bankas\u0131na iade edildi."
     ],

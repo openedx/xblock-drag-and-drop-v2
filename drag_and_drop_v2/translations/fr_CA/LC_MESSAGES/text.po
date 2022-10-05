@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XBlocks\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-21 16:53+0000\n"
+"POT-Creation-Date: 2022-10-05 20:22+0200\n"
 "PO-Revision-Date: 2016-06-09 07:11+0000\n"
 "Last-Translator: Keivan Farzaneh <keivan.farzaneh@edulib.org>, 2017\n"
 "Language-Team: French (Canada) (http://www.transifex.com/open-edx/xblocks/language/fr_CA/)\n"
@@ -433,38 +433,39 @@ msgstr "La dernière tentative a été utilisée, le score le plus élevé est {
 
 #: utils.py:68
 #, python-brace-format
-msgid "Correctly placed {correct_count} item."
-msgid_plural "Correctly placed {correct_count} items."
-msgstr[0] "{correct_count} élément a été correctement placé."
-msgstr[1] "{correct_count} éléments ont été correctement placés."
-msgstr[2] "{correct_count} éléments ont été correctement placés."
+msgid "Correctly placed {correct_count} item"
+msgid_plural "Correctly placed {correct_count} items"
+msgstr[0] "{correct_count} élément a été correctement placé"
+msgstr[1] "{correct_count} éléments ont été correctement placés"
+msgstr[2] "{correct_count} éléments ont été correctement placés"
 
 #: utils.py:79
 #, python-brace-format
-msgid "Misplaced {misplaced_count} item."
-msgid_plural "Misplaced {misplaced_count} items."
-msgstr[0] "{misplaced_count} élément n'a pas été correctement placé."
-msgstr[1] "{misplaced_count} éléments n'ont pas été correctement placés."
-msgstr[2] "{misplaced_count} éléments n'ont pas été correctement placés."
+msgid "Misplaced {misplaced_count} item"
+msgid_plural "Misplaced {misplaced_count} items"
+msgstr[0] "{misplaced_count} élément n'a pas été correctement placé"
+msgstr[1] "{misplaced_count} éléments n'ont pas été correctement placés"
+msgstr[2] "{misplaced_count} éléments n'ont pas été correctement placés"
 
 #: utils.py:90
 #, python-brace-format
 msgid ""
-"Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
+"Misplaced {misplaced_count} item (misplaced item was returned to the item "
+"bank)"
 msgid_plural ""
-"Misplaced {misplaced_count} items. Misplaced items were returned to item "
-"bank."
+"Misplaced {misplaced_count} items (misplaced items were returned to the item"
+" bank)"
 msgstr[0] "{misplaced_count} élément n'a pas été correctement placé. L'élément mal placé a été retourné à la banque d'éléments."
 msgstr[1] "{misplaced_count} éléments n'ont pas été correctement placés. Les éléments mal placés ont été retournés à la banque d'éléments."
 msgstr[2] "{misplaced_count} éléments n'ont pas été correctement placés. Les éléments mal placés ont été retournés à la banque d'éléments."
 
 #: utils.py:101
 #, python-brace-format
-msgid "Did not place {missing_count} required item."
-msgid_plural "Did not place {missing_count} required items."
-msgstr[0] "Vous n'avez pas placé {missing_count} élément requis."
-msgstr[1] "Vous n'avez pas placé {missing_count} éléments requis."
-msgstr[2] "Vous n'avez pas placé {missing_count} éléments requis."
+msgid "Did not place {missing_count} required item"
+msgid_plural "Did not place {missing_count} required items"
+msgstr[0] "Vous n'avez pas placé {missing_count} élément requis"
+msgstr[1] "Vous n'avez pas placé {missing_count} éléments requis"
+msgstr[2] "Vous n'avez pas placé {missing_count} éléments requis"
 
 #: public/js/drag_and_drop.js:48 public/js/drag_and_drop.js:399
 msgid "Submitting"

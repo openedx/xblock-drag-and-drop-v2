@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XBlocks\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-21 16:53+0000\n"
+"POT-Creation-Date: 2022-10-05 20:22+0200\n"
 "PO-Revision-Date: 2016-06-09 07:11+0000\n"
 "Last-Translator: Salatiel Ewerton <salatiel2021@hotmail.com>, 2016\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/open-edx/xblocks/language/pt_BR/)\n"
@@ -446,16 +446,16 @@ msgstr "Tentativa final. Sua pontuação mais alta é {score}"
 
 #: utils.py:68
 #, python-brace-format
-msgid "Correctly placed {correct_count} item."
-msgid_plural "Correctly placed {correct_count} items."
-msgstr[0] "{correct_count}  item colocado corretamente."
-msgstr[1] "{correct_count} itens colocados corretamente."
-msgstr[2] "{correct_count} itens colocados corretamente."
+msgid "Correctly placed {correct_count} item"
+msgid_plural "Correctly placed {correct_count} items"
+msgstr[0] "{correct_count}  item colocado corretamente"
+msgstr[1] "{correct_count} itens colocados corretamente"
+msgstr[2] "{correct_count} itens colocados corretamente"
 
 #: utils.py:79
 #, python-brace-format
-msgid "Misplaced {misplaced_count} item."
-msgid_plural "Misplaced {misplaced_count} items."
+msgid "Misplaced {misplaced_count} item"
+msgid_plural "Misplaced {misplaced_count} items"
 msgstr[0] "Item mal posicionado: {misplaced_count}"
 msgstr[1] "Itens mal posicionados: {misplaced_count}"
 msgstr[2] "Itens mal posicionados: {misplaced_count}"
@@ -463,21 +463,22 @@ msgstr[2] "Itens mal posicionados: {misplaced_count}"
 #: utils.py:90
 #, python-brace-format
 msgid ""
-"Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
+"Misplaced {misplaced_count} item (misplaced item was returned to the item "
+"bank)"
 msgid_plural ""
-"Misplaced {misplaced_count} items. Misplaced items were returned to item "
-"bank."
+"Misplaced {misplaced_count} items (misplaced items were returned to the item"
+" bank)"
 msgstr[0] "{misplaced_count} item perdido. Os itens perdidos foram devolvidos ao banco de itens."
 msgstr[1] "{misplaced_count} itens perdidos. Os itens perdidos foram devolvidos ao banco de itens."
 msgstr[2] "{misplaced_count} itens perdidos. Os itens perdidos foram devolvidos ao banco de itens."
 
 #: utils.py:101
 #, python-brace-format
-msgid "Did not place {missing_count} required item."
-msgid_plural "Did not place {missing_count} required items."
-msgstr[0] "{missing_count} item obrigatório não foi posicionado."
-msgstr[1] "{missing_count} itens obrigatórios não foram posicionados."
-msgstr[2] "{missing_count} itens obrigatórios não foram posicionados."
+msgid "Did not place {missing_count} required item"
+msgid_plural "Did not place {missing_count} required items"
+msgstr[0] "{missing_count} item obrigatório não foi posicionado"
+msgstr[1] "{missing_count} itens obrigatórios não foram posicionados"
+msgstr[2] "{missing_count} itens obrigatórios não foram posicionados"
 
 #: public/js/drag_and_drop.js:48 public/js/drag_and_drop.js:399
 msgid "Submitting"

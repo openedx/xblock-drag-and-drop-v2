@@ -47,18 +47,18 @@
     "Correct! This one belongs to The Middle Zone.": "Correct! Celui-ci appartient \u00e0 la zone du milieu.",
     "Correct! This one belongs to The Top Zone.": "Correct! Celui-ci appartient \u00e0 la zone sup\u00e9rieur.",
     "Correctly placed in: {zone_title}": "Plac\u00e9 correctement dans\u00a0: {zone_title}",
-    "Correctly placed {correct_count} item.": [
-      "{correct_count} \u00e9l\u00e9ment correctement plac\u00e9.",
-      "{correct_count} \u00e9l\u00e9ments correctement plac\u00e9s.",
-      "{correct_count} \u00e9l\u00e9ments correctement plac\u00e9s."
+    "Correctly placed {correct_count} item": [
+      "{correct_count} \u00e9l\u00e9ment correctement plac\u00e9",
+      "{correct_count} \u00e9l\u00e9ments correctement plac\u00e9s",
+      "{correct_count} \u00e9l\u00e9ments correctement plac\u00e9s"
     ],
     "DEPRECATED. Keeps maximum score achieved by student as a weighted value.": "D\u00c9CONSEILL\u00c9. Conserve le score maximum atteint par l'\u00e9tudiant en tant que valeur pond\u00e9r\u00e9e.",
     "Defines the number of points the problem is worth.": "D\u00e9finir le nombre de points pour lequel ce probl\u00e8me compte.",
     "Defines the number of times a student can try to answer this problem. If the value is not set, infinite attempts are allowed.": "D\u00e9finit le nombre de fois qu'un \u00e9tudiant peut essayer de r\u00e9pondre au probl\u00e8me. Si aucune valeur n'est pr\u00e9cis\u00e9e, un nombre infini d'essais est autoris\u00e9.",
-    "Did not place {missing_count} required item.": [
-      "{missing_count} \u00e9l\u00e9ment requis n'a pas \u00e9t\u00e9 positionn\u00e9.",
-      "{missing_count} \u00e9l\u00e9ments requis n'ont pas \u00e9t\u00e9 positionn\u00e9s.",
-      "{missing_count} \u00e9l\u00e9ments requis n'ont pas \u00e9t\u00e9 positionn\u00e9s."
+    "Did not place {missing_count} required item": [
+      "{missing_count} \u00e9l\u00e9ment requis n'a pas \u00e9t\u00e9 positionn\u00e9",
+      "{missing_count} \u00e9l\u00e9ments requis n'ont pas \u00e9t\u00e9 positionn\u00e9s",
+      "{missing_count} \u00e9l\u00e9ments requis n'ont pas \u00e9t\u00e9 positionn\u00e9s"
     ],
     "Display label names on the image": "Afficher les noms de label sur l'image",
     "Display the heading \"Problem\" above the problem text?": "Afficher l'en-t\u00eate \u00ab\u00a0Probl\u00e8me\u00a0\u00bb au dessus du texte du probl\u00e8me\u00a0?",
@@ -101,12 +101,12 @@
     "Maximum attempts": "Nombre d'essais maximum",
     "Maximum items per zone": "Nombre maximum d'\u00e9l\u00e9ments par zone",
     "Maximum score available of the problem as a raw value between 0 and 1.": "Note maximale disponible du probl\u00e8me sous forme de valeur brute entre 0 et 1.",
-    "Misplaced {misplaced_count} item.": [
-      "{misplaced_count} \u00e9l\u00e9ment mal plac\u00e9.",
-      "{misplaced_count} \u00e9l\u00e9ments mal plac\u00e9s.",
-      "{misplaced_count} \u00e9l\u00e9ments mal plac\u00e9s."
+    "Misplaced {misplaced_count} item": [
+      "{misplaced_count} \u00e9l\u00e9ment mal plac\u00e9",
+      "{misplaced_count} \u00e9l\u00e9ments mal plac\u00e9s",
+      "{misplaced_count} \u00e9l\u00e9ments mal plac\u00e9s"
     ],
-    "Misplaced {misplaced_count} item. Misplaced item was returned to item bank.": [
+    "Misplaced {misplaced_count} item (misplaced item was returned to the item bank)": [
       "{misplaced_count} \u00e9l\u00e9ment mal plac\u00e9. Cet \u00e9l\u00e9ment est de nouveau disponible.",
       "{misplaced_count} \u00e9l\u00e9ments mal plac\u00e9s. Ces \u00e9l\u00e9ments sont de nouveaux disponibles.",
       "{misplaced_count} \u00e9l\u00e9ments mal plac\u00e9s. Ces \u00e9l\u00e9ments sont de nouveaux disponibles."

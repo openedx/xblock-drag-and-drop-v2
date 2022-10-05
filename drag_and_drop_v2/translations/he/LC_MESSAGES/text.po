@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XBlocks\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-21 16:53+0000\n"
+"POT-Creation-Date: 2022-10-05 20:22+0200\n"
 "PO-Revision-Date: 2016-06-09 07:11+0000\n"
 "Last-Translator: qualityalltext <quality@alltext.co.il>, 2016\n"
 "Language-Team: Hebrew (http://www.transifex.com/open-edx/xblocks/language/he/)\n"
@@ -434,29 +434,30 @@ msgstr "נעשה שימוש בניסיון האחרון, הציון הגבוה �
 
 #: utils.py:68
 #, python-brace-format
-msgid "Correctly placed {correct_count} item."
-msgid_plural "Correctly placed {correct_count} items."
-msgstr[0] "פריט  {correct_count} הונח נכון."
-msgstr[1] " {correct_count} פריטים הונחו נכון."
-msgstr[2] " {correct_count} פריטים הונחו נכון."
-msgstr[3] " {correct_count} פריטים הונחו נכון."
+msgid "Correctly placed {correct_count} item"
+msgid_plural "Correctly placed {correct_count} items"
+msgstr[0] "פריט  {correct_count} הונח נכון"
+msgstr[1] " {correct_count} פריטים הונחו נכון"
+msgstr[2] " {correct_count} פריטים הונחו נכון"
+msgstr[3] " {correct_count} פריטים הונחו נכון"
 
 #: utils.py:79
 #, python-brace-format
-msgid "Misplaced {misplaced_count} item."
-msgid_plural "Misplaced {misplaced_count} items."
-msgstr[0] "פריטי {misplaced_count} שאינם במקומם."
-msgstr[1] "פריטי {misplaced_count} שאינם במקומם."
-msgstr[2] "פריטי {misplaced_count} שאינם במקומם."
-msgstr[3] "פריטי {misplaced_count} שאינם במקומם."
+msgid "Misplaced {misplaced_count} item"
+msgid_plural "Misplaced {misplaced_count} items"
+msgstr[0] "פריטי {misplaced_count} שאינם במקומם"
+msgstr[1] "פריטי {misplaced_count} שאינם במקומם"
+msgstr[2] "פריטי {misplaced_count} שאינם במקומם"
+msgstr[3] "פריטי {misplaced_count} שאינם במקומם"
 
 #: utils.py:90
 #, python-brace-format
 msgid ""
-"Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
+"Misplaced {misplaced_count} item (misplaced item was returned to the item "
+"bank)"
 msgid_plural ""
-"Misplaced {misplaced_count} items. Misplaced items were returned to item "
-"bank."
+"Misplaced {misplaced_count} items (misplaced items were returned to the item"
+" bank)"
 msgstr[0] "פריט {misplaced_count} שהונח לא נכון. הפריט שהונח לא נכון הוחזר לבנק הפריטים."
 msgstr[1] " {misplaced_count} פריטים שהונחו לא נכון. הפריטים שהונחו לא נכון הוחזרו לבנק הפריטים."
 msgstr[2] " {misplaced_count} פריטים שהונחו לא נכון. הפריטים שהונחו לא נכון הוחזרו לבנק הפריטים."
@@ -464,12 +465,12 @@ msgstr[3] " {misplaced_count} פריטים שהונחו לא נכון. הפרי�
 
 #: utils.py:101
 #, python-brace-format
-msgid "Did not place {missing_count} required item."
-msgid_plural "Did not place {missing_count} required items."
-msgstr[0] "לא הניח פריט דרוש {missing_count}."
-msgstr[1] "לא הניח {missing_count} פריטים דרושים."
-msgstr[2] "לא הניח {missing_count} פריטים דרושים."
-msgstr[3] "לא הניח {missing_count} פריטים דרושים."
+msgid "Did not place {missing_count} required item"
+msgid_plural "Did not place {missing_count} required items"
+msgstr[0] "לא הניח פריט דרוש {missing_count}"
+msgstr[1] "לא הניח {missing_count} פריטים דרושים"
+msgstr[2] "לא הניח {missing_count} פריטים דרושים"
+msgstr[3] "לא הניח {missing_count} פריטים דרושים"
 
 #: public/js/drag_and_drop.js:48 public/js/drag_and_drop.js:399
 msgid "Submitting"

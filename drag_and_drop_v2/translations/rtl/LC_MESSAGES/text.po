@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-05 20:03+0200\n"
+"POT-Creation-Date: 2022-10-05 21:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -463,37 +463,39 @@ msgstr "Fᴉnɐl ɐʇʇǝɯdʇ ʍɐs nsǝd, ɥᴉƃɥǝsʇ sɔøɹǝ ᴉs {score
 
 #: utils.py
 #, python-brace-format
-msgid "Correctly placed {correct_count} item."
-msgid_plural "Correctly placed {correct_count} items."
-msgstr[0] "Ȼøɹɹǝɔʇlʎ dlɐɔǝd {correct_count} ᴉʇǝɯ."
-msgstr[1] "Ȼøɹɹǝɔʇlʎ dlɐɔǝd {correct_count} ᴉʇǝɯs."
+msgid "Correctly placed {correct_count} item"
+msgid_plural "Correctly placed {correct_count} items"
+msgstr[0] "Ȼøɹɹǝɔʇlʎ dlɐɔǝd {correct_count} ᴉʇǝɯ"
+msgstr[1] "Ȼøɹɹǝɔʇlʎ dlɐɔǝd {correct_count} ᴉʇǝɯs"
 
 #: utils.py
 #, python-brace-format
-msgid "Misplaced {misplaced_count} item."
-msgid_plural "Misplaced {misplaced_count} items."
-msgstr[0] "Mᴉsdlɐɔǝd {misplaced_count} ᴉʇǝɯ."
-msgstr[1] "Mᴉsdlɐɔǝd {misplaced_count} ᴉʇǝɯs."
+msgid "Misplaced {misplaced_count} item"
+msgid_plural "Misplaced {misplaced_count} items"
+msgstr[0] "Mᴉsdlɐɔǝd {misplaced_count} ᴉʇǝɯ"
+msgstr[1] "Mᴉsdlɐɔǝd {misplaced_count} ᴉʇǝɯs"
 
 #: utils.py
 #, python-brace-format
 msgid ""
-"Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
+"Misplaced {misplaced_count} item (misplaced item was returned to the item "
+"bank)"
 msgid_plural ""
-"Misplaced {misplaced_count} items. Misplaced items were returned to item "
-"bank."
+"Misplaced {misplaced_count} items (misplaced items were returned to the item"
+" bank)"
 msgstr[0] ""
-"Mᴉsdlɐɔǝd {misplaced_count} ᴉʇǝɯ. Mᴉsdlɐɔǝd ᴉʇǝɯ ʍɐs ɹǝʇnɹnǝd ʇø ᴉʇǝɯ bɐnʞ."
+"Mᴉsdlɐɔǝd {misplaced_count} ᴉʇǝɯ (ɯᴉsdlɐɔǝd ᴉʇǝɯ ʍɐs ɹǝʇnɹnǝd ʇø ʇɥǝ ᴉʇǝɯ "
+"bɐnʞ)"
 msgstr[1] ""
-"Mᴉsdlɐɔǝd {misplaced_count} ᴉʇǝɯs. Mᴉsdlɐɔǝd ᴉʇǝɯs ʍǝɹǝ ɹǝʇnɹnǝd ʇø ᴉʇǝɯ "
-"bɐnʞ."
+"Mᴉsdlɐɔǝd {misplaced_count} ᴉʇǝɯs (ɯᴉsdlɐɔǝd ᴉʇǝɯs ʍǝɹǝ ɹǝʇnɹnǝd ʇø ʇɥǝ ᴉʇǝɯ"
+" bɐnʞ)"
 
 #: utils.py
 #, python-brace-format
-msgid "Did not place {missing_count} required item."
-msgid_plural "Did not place {missing_count} required items."
-msgstr[0] "Đᴉd nøʇ dlɐɔǝ {missing_count} ɹǝbnᴉɹǝd ᴉʇǝɯ."
-msgstr[1] "Đᴉd nøʇ dlɐɔǝ {missing_count} ɹǝbnᴉɹǝd ᴉʇǝɯs."
+msgid "Did not place {missing_count} required item"
+msgid_plural "Did not place {missing_count} required items"
+msgstr[0] "Đᴉd nøʇ dlɐɔǝ {missing_count} ɹǝbnᴉɹǝd ᴉʇǝɯ"
+msgstr[1] "Đᴉd nøʇ dlɐɔǝ {missing_count} ɹǝbnᴉɹǝd ᴉʇǝɯs"
 
 #: public/js/drag_and_drop.js public/js/drag_and_drop.js
 msgid "Submitting"

@@ -47,18 +47,18 @@
     "Correct! This one belongs to The Middle Zone.": "Correto! Este pertence a \u00e1rea do meio.",
     "Correct! This one belongs to The Top Zone.": "Correto! Este pertence a \u00e1rea do topo.",
     "Correctly placed in: {zone_title}": "Corretamente posicionado em: {zone_title}",
-    "Correctly placed {correct_count} item.": [
-      "{correct_count}  item colocado corretamente.",
-      "{correct_count} itens colocados corretamente.",
-      "{correct_count} itens colocados corretamente."
+    "Correctly placed {correct_count} item": [
+      "{correct_count}  item colocado corretamente",
+      "{correct_count} itens colocados corretamente",
+      "{correct_count} itens colocados corretamente"
     ],
     "DEPRECATED. Keeps maximum score achieved by student as a weighted value.": "DEPRECIADO.Mant\u00e9m a pontua\u00e7\u00e3o m\u00e1xima alcan\u00e7ada pelo aluno como um valor pesado.",
     "Defines the number of points the problem is worth.": "Define o n\u00famero de pontos v\u00e1lidos para este problema.",
     "Defines the number of times a student can try to answer this problem. If the value is not set, infinite attempts are allowed.": "Define o n\u00famero de tentativas que os estudantes podem fazer para resolver este problema. Se o valor n\u00e3o for definido, infinitas tentativas ser\u00e3o permitidas.",
-    "Did not place {missing_count} required item.": [
-      "{missing_count} item obrigat\u00f3rio n\u00e3o foi posicionado.",
-      "{missing_count} itens obrigat\u00f3rios n\u00e3o foram posicionados.",
-      "{missing_count} itens obrigat\u00f3rios n\u00e3o foram posicionados."
+    "Did not place {missing_count} required item": [
+      "{missing_count} item obrigat\u00f3rio n\u00e3o foi posicionado",
+      "{missing_count} itens obrigat\u00f3rios n\u00e3o foram posicionados",
+      "{missing_count} itens obrigat\u00f3rios n\u00e3o foram posicionados"
     ],
     "Display label names on the image": "Exibir nomes da etiqueta na imagem",
     "Display the heading \"Problem\" above the problem text?": "Exibir o cabe\u00e7alho de \"Problema\" acima da descri\u00e7\u00e3o?",
@@ -99,12 +99,12 @@
     "Max number of attempts reached": "N\u00famero m\u00e1ximo de tentativas alcan\u00e7ado",
     "Maximum attempts": "M\u00e1ximo de tentativas",
     "Maximum items per zone": "Itens m\u00e1ximos por zona",
-    "Misplaced {misplaced_count} item.": [
+    "Misplaced {misplaced_count} item": [
       "Item mal posicionado: {misplaced_count}",
       "Itens mal posicionados: {misplaced_count}",
       "Itens mal posicionados: {misplaced_count}"
     ],
-    "Misplaced {misplaced_count} item. Misplaced item was returned to item bank.": [
+    "Misplaced {misplaced_count} item (misplaced item was returned to the item bank)": [
       "{misplaced_count} item perdido. Os itens perdidos foram devolvidos ao banco de itens.",
       "{misplaced_count} itens perdidos. Os itens perdidos foram devolvidos ao banco de itens.",
       "{misplaced_count} itens perdidos. Os itens perdidos foram devolvidos ao banco de itens."

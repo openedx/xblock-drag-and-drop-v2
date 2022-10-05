@@ -24,14 +24,14 @@
   django.catalog = django.catalog || {};
   
   var newcatalog = {
-    "Correctly placed {correct_count} item.": [
-      "Correct geplaatste {correct_count} item.",
-      "Correct geplaatste {correct_count} items."
+    "Correctly placed {correct_count} item": [
+      "Correct geplaatste {correct_count} item",
+      "Correct geplaatste {correct_count} items"
     ],
     "Hints:": "Hints:",
-    "Misplaced {misplaced_count} item. Misplaced item was returned to item bank.": [
-      "Misplaatste {misplaced_count} item. Misplaatste item is teruggebracht naar de itembank.",
-      "Misplaatste {misplaced_count} items. Misplaatste items zijn teruggestuurd naar de itembank."
+    "Misplaced {misplaced_count} item (misplaced item was returned to the item bank)": [
+      "Misplaatste {misplaced_count} item. Misplaatste item is teruggebracht naar de itembank",
+      "Misplaatste {misplaced_count} items. Misplaatste items zijn teruggestuurd naar de itembank"
     ],
     "Problem": "Probleem",
     "Some of your answers were not correct.": "Sommige van uw antwoorden waren niet correct.",
