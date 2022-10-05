@@ -9,5 +9,6 @@
     "item_text_color": "",
     "url_name": "test",
     "max_items_per_zone": 4,
-    "showanswer": "finished"
+    "showanswer": "finished",
+    "answer_available": false
 }

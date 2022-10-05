@@ -413,6 +413,7 @@ class DragAndDropBlock(
             "item_text_color": self.item_text_color or None,
             "has_deadline_passed": self.has_submission_deadline_passed,
             "showanswer": self.showanswer,
+            "answer_available": self.is_answer_available,
             # final feedback (data.feedback.finish) is not included - it may give away answers.
         }
 
@@ -597,7 +598,8 @@ class DragAndDropBlock(
             'grade': self._get_weighted_earned_if_set(),
             'misplaced_items': list(misplaced_ids),
             'feedback': self._present_feedback(feedback_msgs),
-            'overall_feedback': self._present_feedback(overall_feedback_msgs)
+            'overall_feedback': self._present_feedback(overall_feedback_msgs),
+            "answer_available": self.is_answer_available,
         }
 
     @XBlock.json_handler
@@ -766,7 +768,6 @@ class DragAndDropBlock(
             return False
         _current_user = self.runtime.service(self, 'user').get_current_user()
         user_is_staff = _current_user.opt_attrs.get(Constants.ATTR_KEY_USER_IS_STAFF)
-
         if self.showanswer not in [SHOWANSWER.NEVER, ''] and user_is_staff:
             # admins can see the answer unless the problem explicitly prevents it.
             return True

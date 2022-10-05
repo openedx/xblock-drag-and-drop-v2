@@ -8,5 +8,6 @@
     "item_background_color": "white",
     "item_text_color": "#000080",
     "url_name": "unique_name",
-    "showanswer": "finished"
+    "showanswer": "finished",
+    "answer_available": false
 }

@@ -9,5 +9,6 @@
     "item_background_color": "",
     "item_text_color": "",
     "url_name": "test",
-    "showanswer": "finished"
+    "showanswer": "finished",
+    "answer_available": false
 }

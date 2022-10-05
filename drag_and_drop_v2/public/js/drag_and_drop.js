@@ -1897,8 +1897,8 @@ function DragAndDropBlock(runtime, element, configuration) {
             state.grade = data.grade;
             state.feedback = data.feedback;
             state.overall_feedback = data.overall_feedback;
+            state.answer_available = data.answer_available;
             state.last_action_correct = data.correct;
-
             if (attemptsRemain()) {
                 data.misplaced_items.forEach(function(misplaced_item_id) {
                     delete state.items[misplaced_item_id]
@@ -1937,37 +1937,14 @@ function DragAndDropBlock(runtime, element, configuration) {
     var isPastDue = function () {
         return configuration.has_deadline_passed;
     };
-    var isAttempted = function () {
-        return state.attempts > 0;
-    };
-    var isCorrect = function () {
-        return state.last_action_correct;
-    };
-    var isClosed = function () {
-        if(isPastDue() || !attemptsRemain()) return true;
-        return false;
-    };
+
 
     var attemptsRemain = function() {
         return !configuration.max_attempts || configuration.max_attempts > state.attempts;
     };
-
     var canShowAnswer = function() {
-        if(configuration.mode !== DragAndDropBlock.ASSESSMENT_MODE) return false;
-        else if (configuration.showanswer === SHOW_ANSWER_STATUSES.NEVER) return false;
-        else if (configuration.showanswer === SHOW_ANSWER_STATUSES.ATTEMPTED) return isAttempted() || isPastDue();
-        else if (configuration.showanswer === SHOW_ANSWER_STATUSES.ANSWERED) return isCorrect();
-        else if (configuration.showanswer === SHOW_ANSWER_STATUSES.CLOSED) return isClosed();
-        else if (configuration.showanswer === SHOW_ANSWER_STATUSES.FINISHED) return isClosed() || isCorrect();
-        else if (configuration.showanswer === SHOW_ANSWER_STATUSES.CORRECT_OR_PAST_DUE) return isCorrect() || isPastDue();
-        else if (configuration.showanswer === SHOW_ANSWER_STATUSES.PAST_DUE) return isPastDue();
-        else if (configuration.showanswer === SHOW_ANSWER_STATUSES.ALWAYS) return true;
-        else if (configuration.showanswer === SHOW_ANSWER_STATUSES.AFTER_ALL_ATTEMPTS) return !attemptsRemain();
-        else if (configuration.showanswer === SHOW_ANSWER_STATUSES.AFTER_ALL_ATTEMPTS_OR_CORRECT) return !attemptsRemain() || isCorrect();
-        else if (configuration.showanswer === SHOW_ANSWER_STATUSES.ATTEMPTED_NO_PAST_DUE) return isAttempted();
-  
-        return false;
-    };
+        return state.answer_available || configuration.answer_available;
+    }
 
     var submittingLocation = function() {
         var result = false;
@@ -2033,11 +2010,6 @@ function DragAndDropBlock(runtime, element, configuration) {
         var item_bank_focusable = (state.keyboard_placement_mode || state.showing_answer) &&
             configuration.mode === DragAndDropBlock.ASSESSMENT_MODE;
         
-        // In assessment mode, if no value assigned to course-setting's showanswer it's value will be "finished"
-        var showanswer = configuration.showanswer;
-        if(!showanswer && configuration.mode === DragAndDropBlock.ASSESSMENT_MODE){
-            showanswer = SHOW_ANSWER_STATUSES.FINISHED;
-        }
 
         var context = {
             drag_container_max_width: containerMaxWidth,
@@ -2051,7 +2023,6 @@ function DragAndDropBlock(runtime, element, configuration) {
             weighted_max_score: configuration.weighted_max_score,
             problem_html: configuration.problem_text,
             show_problem_header: configuration.show_problem_header,
-            showanswer: showanswer,
             show_submit_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
             show_show_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
             target_img_src: configuration.target_img_expanded_url,
