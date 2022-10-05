@@ -39,9 +39,11 @@
       "{correct_count} elementi posizionati correttamente."
     ],
     "Defines the number of points the problem is worth.": "Definisce il numero di punto che il problema vale.",
+    "Defines the number of times a student can try to answer this problem. If the value is not set, infinite attempts are allowed.": "Definisce il numero di volte in cui uno studente pu\u00f2 provare a rispondere a questo problema. Se il valore non \u00e8 impostato, vengono consentiti infiniti tentativi.",
     "Display label names on the image": "Visualizza i nomi delle etichette sull'immagine",
     "Display the title to the learner?": "Mostra il titolo al discente?",
     "Drag and Drop": "Trascina e Rilascia",
+    "Explanation": "Spiegazione",
     "Final feedback": "Feedback finale",
     "Hints:": "Suggerimenti:",
     "Incorrect": "Errato",

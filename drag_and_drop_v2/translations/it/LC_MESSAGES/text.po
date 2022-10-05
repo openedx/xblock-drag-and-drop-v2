@@ -144,7 +144,7 @@ msgstr "Tentativi massimi"
 msgid ""
 "Defines the number of times a student can try to answer this problem. If the"
 " value is not set, infinite attempts are allowed."
-msgstr ""
+msgstr "Definisce il numero di volte in cui uno studente può provare a rispondere a questo problema. Se il valore non è impostato, vengono consentiti infiniti tentativi."
 
 #: drag_and_drop_v2.py:113
 msgid "Show title"
@@ -512,7 +512,7 @@ msgstr ""
 
 #: public/js/drag_and_drop.js:321 public/js/drag_and_drop.js:324
 msgid "Explanation"
-msgstr ""
+msgstr "Spiegazione"
 
 #: public/js/drag_and_drop.js:338 public/js/drag_and_drop.js:512
 #: public/js/drag_and_drop.js:555

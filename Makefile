@@ -34,7 +34,7 @@ extract_translations: ## extract strings to be translated, outputting .po files
 	sed -i'' -e 's/plural=EXPRESSION/plural=\(n != 1\)/' $(EXTRACTED_TEXT)
 
 compile_translations: ## compile translation files, outputting .mo files for each supported language
-	cd $(WORKING_DIR) && i18n_tool generate
+	cd $(WORKING_DIR) && i18n_tool generate -v
 	python manage.py compilejsi18n --namespace DragAndDropI18N --output $(JS_TARGET)
 
 detect_changed_source_translations:
@@ -48,10 +48,10 @@ build_dummy_translations: dummy_translations compile_translations ## generate an
 validate_translations: build_dummy_translations detect_changed_source_translations ## validate translations
 
 pull_translations: ## pull translations from transifex
-	cd $(WORKING_DIR) && i18n_tool transifex pull
+	tx pull -a -f --mode reviewed --minimum-perc=1
 
 push_translations: ## push translations to transifex
-	cd $(WORKING_DIR) && i18n_tool transifex push
+	tx push -s
 
 install_firefox:
 	mkdir -p test_helpers
@@ -61,6 +61,7 @@ requirements: install_firefox
 	pip install wheel
 	pip install -r xblock-sdk/requirements/base.txt -r xblock-sdk/requirements/test.txt
 	pip install -r requirements.txt
+	pip uninstall -y transifex-client
 
 test.quality: ## run quality checkers on the codebase
 	pycodestyle drag_and_drop_v2 tests --max-line-length=120

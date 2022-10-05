@@ -215,7 +215,7 @@ msgid ""
 "Information about zones, items, feedback, explanation and background image "
 "for this problem. This information is derived from the input that a course "
 "author provides via the interactive editor when configuring the problem."
-msgstr ""
+msgstr "Informations sur les zones, les éléments, les commentaires, les explications et le fonds d'écran pour ce problème. Ces informations sont dérivées des données fournies par l'auteur du cours via l'éditeur interactif lors de la configuration du problème."
 
 #: drag_and_drop_v2.py:181
 msgid ""
@@ -288,7 +288,7 @@ msgstr "Rétroaction finale"
 
 #: templates/html/drag_and_drop_edit.html:86
 msgid "Explanation Text"
-msgstr ""
+msgstr "Texte d'explication"
 
 #: templates/html/drag_and_drop_edit.html:95
 msgid "Zones"
@@ -512,7 +512,7 @@ msgstr "Rétroaction"
 
 #: public/js/drag_and_drop.js:321 public/js/drag_and_drop.js:324
 msgid "Explanation"
-msgstr ""
+msgstr "Explication"
 
 #: public/js/drag_and_drop.js:338 public/js/drag_and_drop.js:512
 #: public/js/drag_and_drop.js:555
