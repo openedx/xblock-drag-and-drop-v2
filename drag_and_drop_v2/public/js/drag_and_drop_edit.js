@@ -15,9 +15,9 @@ function DragAndDropEditBlock(runtime, element, params) {
         };
         ngettext = function(strA, strB, n) {
             var translated = window.DragAndDropI18N.ngettext(strA, strB, n);
-            var string = n == 1 ? strA : strB;
-            if (string === translated && 'gettext' in window) {
-                translated = window.gettext(strA, strB, n);
+            var string = n === 1 ? strA : strB;
+            if (string === translated && 'ngettext' in window) {
+                translated = window.ngettext(strA, strB, n);
             }
             return translated;
         };
