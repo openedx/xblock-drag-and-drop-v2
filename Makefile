@@ -53,6 +53,8 @@ pull_translations: ## pull translations from transifex
 push_translations: ## push translations to transifex
 	tx push -s
 
+check_translations_up_to_date: extract_translations compile_translations dummy_translations detect_changed_source_translations ## extract, compile, and check if translation files are up-to-date
+
 install_firefox:
 	mkdir -p test_helpers
 	cd test_helpers && wget "https://ftp.mozilla.org/pub/firefox/releases/43.0/linux-x86_64/en-US/firefox-43.0.tar.bz2" && tar -xjf firefox-43.0.tar.bz2
