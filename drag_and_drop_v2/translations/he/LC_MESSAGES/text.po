@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # e2f_HE c1 <e2f_HE_c1@outlook.com>, 2016
 # Omar Al-Ithawi <i@omardo.com>, 2019
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-07-21 16:53+0000\n"
 "PO-Revision-Date: 2016-06-09 07:11+0000\n"
-"Last-Translator: Omar Al-Ithawi <i@omardo.com>, 2019\n"
+"Last-Translator: qualityalltext <quality@alltext.co.il>, 2016\n"
 "Language-Team: Hebrew (http://www.transifex.com/open-edx/xblocks/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -263,7 +263,7 @@ msgstr "נותרו עדיים נסיונות"
 msgid "do_attempt handler should only be called for assessment mode"
 msgstr "יש לקרוא למבצע do_attempt רק עבור מצב הערכה"
 
-#: drag_and_drop_v2.py:700 drag_and_drop_v2.py:811
+#: drag_and_drop_v2.py:700 drag_and_drop_v2.py:818
 msgid "Max number of attempts reached"
 msgstr "אירעה חריגה ממספר הניסיונות המרבי"
 
@@ -422,17 +422,17 @@ msgstr "שמירה"
 msgid "Cancel"
 msgstr "ביטול"
 
-#: utils.py:56
+#: utils.py:59
 #, python-brace-format
 msgid "Your highest score is {score}"
 msgstr ""
 
-#: utils.py:57
+#: utils.py:60
 #, python-brace-format
 msgid "Final attempt was used, highest score is {score}"
 msgstr "נעשה שימוש בניסיון האחרון, הציון הגבוה ביותר הוא {score}"
 
-#: utils.py:65
+#: utils.py:68
 #, python-brace-format
 msgid "Correctly placed {correct_count} item."
 msgid_plural "Correctly placed {correct_count} items."
@@ -441,7 +441,7 @@ msgstr[1] " {correct_count} פריטים הונחו נכון."
 msgstr[2] " {correct_count} פריטים הונחו נכון."
 msgstr[3] " {correct_count} פריטים הונחו נכון."
 
-#: utils.py:76
+#: utils.py:79
 #, python-brace-format
 msgid "Misplaced {misplaced_count} item."
 msgid_plural "Misplaced {misplaced_count} items."
@@ -450,7 +450,7 @@ msgstr[1] "פריטי {misplaced_count} שאינם במקומם."
 msgstr[2] "פריטי {misplaced_count} שאינם במקומם."
 msgstr[3] "פריטי {misplaced_count} שאינם במקומם."
 
-#: utils.py:87
+#: utils.py:90
 #, python-brace-format
 msgid ""
 "Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
@@ -462,7 +462,7 @@ msgstr[1] " {misplaced_count} פריטים שהונחו לא נכון. הפרי�
 msgstr[2] " {misplaced_count} פריטים שהונחו לא נכון. הפריטים שהונחו לא נכון הוחזרו לבנק הפריטים."
 msgstr[3] " {misplaced_count} פריטים שהונחו לא נכון. הפריטים שהונחו לא נכון הוחזרו לבנק הפריטים."
 
-#: utils.py:98
+#: utils.py:101
 #, python-brace-format
 msgid "Did not place {missing_count} required item."
 msgid_plural "Did not place {missing_count} required items."
@@ -471,145 +471,144 @@ msgstr[1] "לא הניח {missing_count} פריטים דרושים."
 msgstr[2] "לא הניח {missing_count} פריטים דרושים."
 msgstr[3] "לא הניח {missing_count} פריטים דרושים."
 
-#: public/js/drag_and_drop.js:33 public/js/drag_and_drop.js:380
+#: public/js/drag_and_drop.js:48 public/js/drag_and_drop.js:399
 msgid "Submitting"
 msgstr ""
 
-#: public/js/drag_and_drop.js:147
+#: public/js/drag_and_drop.js:162
 msgid "Unknown Zone"
 msgstr ""
 
-#: public/js/drag_and_drop.js:151
+#: public/js/drag_and_drop.js:166
 msgid "Placed in: {zone_title}"
 msgstr "ממוקם ב: {zone_title}"
 
-#: public/js/drag_and_drop.js:155
+#: public/js/drag_and_drop.js:170
 msgid "Correctly placed in: {zone_title}"
 msgstr "ממוקם כהלכה ב: {zone_title}"
 
-#: public/js/drag_and_drop.js:167
+#: public/js/drag_and_drop.js:182
 msgid ", draggable, grabbed"
 msgstr ""
 
-#: public/js/drag_and_drop.js:167
+#: public/js/drag_and_drop.js:182
 msgid ", draggable"
 msgstr ""
 
-#: public/js/drag_and_drop.js:244
+#: public/js/drag_and_drop.js:259
 msgid "No items placed here"
 msgstr ""
 
-#: public/js/drag_and_drop.js:250
+#: public/js/drag_and_drop.js:265
 msgid "Items placed here: "
 msgstr ""
 
-#: public/js/drag_and_drop.js:282
+#: public/js/drag_and_drop.js:297
 msgid ", dropzone"
 msgstr ""
 
-#: public/js/drag_and_drop.js:285
+#: public/js/drag_and_drop.js:300
 msgid "droppable"
 msgstr ""
 
-#: public/js/drag_and_drop.js:306 public/js/drag_and_drop.js:310
+#: public/js/drag_and_drop.js:321 public/js/drag_and_drop.js:325
 msgid "Feedback"
 msgstr "משוב"
 
-#: public/js/drag_and_drop.js:321 public/js/drag_and_drop.js:324
+#: public/js/drag_and_drop.js:336 public/js/drag_and_drop.js:341
 msgid "Explanation"
 msgstr ""
 
-#: public/js/drag_and_drop.js:338 public/js/drag_and_drop.js:512
-#: public/js/drag_and_drop.js:555
+#: public/js/drag_and_drop.js:357 public/js/drag_and_drop.js:547
 msgid "Close"
 msgstr "סגירה"
 
-#: public/js/drag_and_drop.js:341 public/js/drag_and_drop.js:576
+#: public/js/drag_and_drop.js:360 public/js/drag_and_drop.js:595
 msgid "Keyboard Help"
 msgstr "מקלדת עזרה"
 
-#: public/js/drag_and_drop.js:344
+#: public/js/drag_and_drop.js:363
 msgid "This is a screen reader-friendly problem."
 msgstr ""
 
-#: public/js/drag_and_drop.js:345
+#: public/js/drag_and_drop.js:364
 msgid ""
 "Drag and Drop problems consist of draggable items and dropzones. Users "
 "should select a draggable item with their keyboard and then navigate to an "
 "appropriate dropzone to drop it."
 msgstr ""
 
-#: public/js/drag_and_drop.js:346
+#: public/js/drag_and_drop.js:365
 msgid ""
 "You can complete this problem using only your keyboard by following the "
 "guidance below:"
 msgstr ""
 
-#: public/js/drag_and_drop.js:348
+#: public/js/drag_and_drop.js:367
 msgid ""
 "Use only TAB and SHIFT+TAB to navigate between draggable items and drop "
 "zones."
 msgstr ""
 
-#: public/js/drag_and_drop.js:349
+#: public/js/drag_and_drop.js:368
 msgid "Press CTRL+M to select a draggable item (effectively picking it up)."
 msgstr ""
 
-#: public/js/drag_and_drop.js:350
+#: public/js/drag_and_drop.js:369
 msgid ""
 "Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press "
 "CTRL+M once more to drop it here."
 msgstr ""
 
-#: public/js/drag_and_drop.js:351
+#: public/js/drag_and_drop.js:370
 msgid ""
 "Press ESC if you want to cancel the drop operation (for example, to select a"
 " different item)."
 msgstr ""
 
-#: public/js/drag_and_drop.js:352
+#: public/js/drag_and_drop.js:371
 msgid ""
 "TAB back to the list of draggable items and repeat this process until all of"
 " the draggable items have been placed on their respective dropzones."
 msgstr ""
 
-#: public/js/drag_and_drop.js:370
+#: public/js/drag_and_drop.js:389
 msgid "You have used {used} of {total} attempts."
 msgstr "השתמשת ב-{used} מתוך {total} ניסיונות."
 
-#: public/js/drag_and_drop.js:393
+#: public/js/drag_and_drop.js:412
 msgid "Submit"
 msgstr "שלח"
 
-#: public/js/drag_and_drop.js:434
+#: public/js/drag_and_drop.js:453
 msgid "Show Answer"
 msgstr "הצג תשובה"
 
-#: public/js/drag_and_drop.js:443
+#: public/js/drag_and_drop.js:462
 msgid "Actions"
 msgstr ""
 
-#: public/js/drag_and_drop.js:447
+#: public/js/drag_and_drop.js:466
 msgid "Go to Beginning"
 msgstr ""
 
-#: public/js/drag_and_drop.js:453
+#: public/js/drag_and_drop.js:472
 msgid "Reset"
 msgstr "אתחל"
 
-#: public/js/drag_and_drop.js:473 public/js/drag_and_drop.js:1213
+#: public/js/drag_and_drop.js:506 public/js/drag_and_drop.js:1233
 msgid "Some of your answers were not correct."
 msgstr "חלק מהתשובות שלך אינן נכונות."
 
-#: public/js/drag_and_drop.js:474 public/js/drag_and_drop.js:1216
+#: public/js/drag_and_drop.js:507 public/js/drag_and_drop.js:1236
 msgid "Hints:"
 msgstr ""
 
-#: public/js/drag_and_drop.js:542
+#: public/js/drag_and_drop.js:577
 msgid "Correct"
 msgstr "נכון"
 
-#: public/js/drag_and_drop.js:542
+#: public/js/drag_and_drop.js:577
 msgid "Incorrect"
 msgstr "לא נכון"
 
@@ -617,7 +616,7 @@ msgstr "לא נכון"
 #. total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
 #. points will always be at least 1. We pluralize based on the total number of
 #. points (example: 0/1 point; 1/2 points).
-#: public/js/drag_and_drop.js:591
+#: public/js/drag_and_drop.js:610
 msgid "{earned}/{possible} point (graded)"
 msgid_plural "{earned}/{possible} points (graded)"
 msgstr[0] ""
@@ -629,7 +628,7 @@ msgstr[3] ""
 #. total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
 #. points will always be at least 1. We pluralize based on the total number of
 #. points (example: 0/1 point; 1/2 points).
-#: public/js/drag_and_drop.js:598
+#: public/js/drag_and_drop.js:617
 msgid "{earned}/{possible} point (ungraded)"
 msgid_plural "{earned}/{possible} points (ungraded)"
 msgstr[0] ""
@@ -639,7 +638,7 @@ msgstr[3] ""
 
 #. Translators: {possible} is the number of points possible (examples: 1, 3,
 #. 10).
-#: public/js/drag_and_drop.js:608
+#: public/js/drag_and_drop.js:627
 msgid "{possible} point possible (graded)"
 msgid_plural "{possible} points possible (graded)"
 msgstr[0] ""
@@ -649,7 +648,7 @@ msgstr[3] ""
 
 #. Translators: {possible} is the number of points possible (examples: 1, 3,
 #. 10).
-#: public/js/drag_and_drop.js:615
+#: public/js/drag_and_drop.js:634
 msgid "{possible} point possible (ungraded)"
 msgid_plural "{possible} points possible (ungraded)"
 msgstr[0] ""
@@ -657,40 +656,40 @@ msgstr[1] ""
 msgstr[2] ""
 msgstr[3] ""
 
-#: public/js/drag_and_drop.js:641
+#: public/js/drag_and_drop.js:660
 msgid "Drag and Drop Problem"
 msgstr ""
 
-#: public/js/drag_and_drop.js:643
+#: public/js/drag_and_drop.js:662
 msgid "Problem"
 msgstr "בעיה"
 
-#: public/js/drag_and_drop.js:668
+#: public/js/drag_and_drop.js:687
 msgid "Item Bank"
 msgstr "בנק פריטים"
 
-#: public/js/drag_and_drop.js:713
+#: public/js/drag_and_drop.js:732
 msgid "Drop Targets"
 msgstr ""
 
-#: public/js/drag_and_drop.js:878
+#: public/js/drag_and_drop.js:898
 msgid "An error occurred. Unable to load drag and drop problem."
 msgstr "אירעה שגיאה. לא ניתן להעלות בעיית גרירה ושחרור."
 
-#: public/js/drag_and_drop.js:1338
+#: public/js/drag_and_drop.js:1359
 msgid "You cannot add any more items to this zone."
 msgstr ""
 
-#: public/js/drag_and_drop_edit.js:108 public/js/drag_and_drop_edit.js:501
-#: public/js/drag_and_drop_edit.js:731
+#: public/js/drag_and_drop_edit.js:123 public/js/drag_and_drop_edit.js:516
+#: public/js/drag_and_drop_edit.js:746
 msgid "There was an error with your form."
 msgstr "היתה שגיאה בטופס שלך."
 
-#: public/js/drag_and_drop_edit.js:109
+#: public/js/drag_and_drop_edit.js:124
 msgid "Please check over your submission."
 msgstr "בדוק שנית את השליחה."
 
-#: public/js/drag_and_drop_edit.js:351
+#: public/js/drag_and_drop_edit.js:366
 msgid "Zone {num}"
 msgid_plural "Zone {num}"
 msgstr[0] ""
@@ -698,10 +697,10 @@ msgstr[1] ""
 msgstr[2] ""
 msgstr[3] ""
 
-#: public/js/drag_and_drop_edit.js:502
+#: public/js/drag_and_drop_edit.js:517
 msgid "Please check the values you entered."
 msgstr ""
 
-#: public/js/drag_and_drop_edit.js:724
+#: public/js/drag_and_drop_edit.js:739
 msgid "Saving"
 msgstr "שומר"

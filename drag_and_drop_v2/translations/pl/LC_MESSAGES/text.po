@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Maciej Kolankowski <maciej@eduprojekt.org>, 2018
 msgid ""
@@ -261,7 +261,7 @@ msgstr "Dostępne są dodatkowe próby"
 msgid "do_attempt handler should only be called for assessment mode"
 msgstr "Z do_attempt powinno się korzystać tylko w trybie oceny"
 
-#: drag_and_drop_v2.py:700 drag_and_drop_v2.py:811
+#: drag_and_drop_v2.py:700 drag_and_drop_v2.py:818
 msgid "Max number of attempts reached"
 msgstr "Wykorzystano maksymalną liczbę prób."
 
@@ -420,17 +420,17 @@ msgstr "Zapisz"
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: utils.py:56
+#: utils.py:59
 #, python-brace-format
 msgid "Your highest score is {score}"
 msgstr "Twój najlepszy wynik to {score}"
 
-#: utils.py:57
+#: utils.py:60
 #, python-brace-format
 msgid "Final attempt was used, highest score is {score}"
 msgstr "Wykorzystano ostatnie podejście, twój najlepszy wynik to {score}"
 
-#: utils.py:65
+#: utils.py:68
 #, python-brace-format
 msgid "Correctly placed {correct_count} item."
 msgid_plural "Correctly placed {correct_count} items."
@@ -439,7 +439,7 @@ msgstr[1] "Poprawnie dopasowano {correct_count} elementy."
 msgstr[2] "Poprawnie dopasowano {correct_count} elementów."
 msgstr[3] "Poprawnie dopasowano {correct_count} elementów."
 
-#: utils.py:76
+#: utils.py:79
 #, python-brace-format
 msgid "Misplaced {misplaced_count} item."
 msgid_plural "Misplaced {misplaced_count} items."
@@ -448,7 +448,7 @@ msgstr[1] "Błędnie dopasowano {misplaced_count} elementy."
 msgstr[2] "Błędnie dopasowano {misplaced_count} elementów."
 msgstr[3] "Błędnie dopasowano {misplaced_count} elementów."
 
-#: utils.py:87
+#: utils.py:90
 #, python-brace-format
 msgid ""
 "Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
@@ -460,7 +460,7 @@ msgstr[1] "Błędnie dopasowano {misplaced_count} elementy. Nieprawidłowo dopas
 msgstr[2] "Błędnie dopasowano {misplaced_count} elementów. Nieprawidłowo dopasowane elementy wróciły do puli."
 msgstr[3] "Błędnie dopasowano {misplaced_count} elementów. Nieprawidłowo dopasowane elementy wróciły do puli."
 
-#: utils.py:98
+#: utils.py:101
 #, python-brace-format
 msgid "Did not place {missing_count} required item."
 msgid_plural "Did not place {missing_count} required items."
@@ -469,145 +469,144 @@ msgstr[1] "Nie dopasowano {missing_count} wymaganych elementów."
 msgstr[2] "Nie dopasowano {missing_count} wymaganych elementów."
 msgstr[3] "Nie dopasowano {missing_count} wymaganych elementów."
 
-#: public/js/drag_and_drop.js:33 public/js/drag_and_drop.js:380
+#: public/js/drag_and_drop.js:48 public/js/drag_and_drop.js:399
 msgid "Submitting"
 msgstr "Przesyłanie"
 
-#: public/js/drag_and_drop.js:147
+#: public/js/drag_and_drop.js:162
 msgid "Unknown Zone"
 msgstr ""
 
-#: public/js/drag_and_drop.js:151
+#: public/js/drag_and_drop.js:166
 msgid "Placed in: {zone_title}"
 msgstr "Umieszczono w strefie: {zone_title}"
 
-#: public/js/drag_and_drop.js:155
+#: public/js/drag_and_drop.js:170
 msgid "Correctly placed in: {zone_title}"
 msgstr "Prawidłowo umieszczono w strefie: {zone_title}"
 
-#: public/js/drag_and_drop.js:167
+#: public/js/drag_and_drop.js:182
 msgid ", draggable, grabbed"
 msgstr "."
 
-#: public/js/drag_and_drop.js:167
+#: public/js/drag_and_drop.js:182
 msgid ", draggable"
 msgstr "."
 
-#: public/js/drag_and_drop.js:244
+#: public/js/drag_and_drop.js:259
 msgid "No items placed here"
 msgstr ""
 
-#: public/js/drag_and_drop.js:250
+#: public/js/drag_and_drop.js:265
 msgid "Items placed here: "
 msgstr ""
 
-#: public/js/drag_and_drop.js:282
+#: public/js/drag_and_drop.js:297
 msgid ", dropzone"
 msgstr ", strefa"
 
-#: public/js/drag_and_drop.js:285
+#: public/js/drag_and_drop.js:300
 msgid "droppable"
 msgstr ""
 
-#: public/js/drag_and_drop.js:306 public/js/drag_and_drop.js:310
+#: public/js/drag_and_drop.js:321 public/js/drag_and_drop.js:325
 msgid "Feedback"
 msgstr "Komentarz"
 
-#: public/js/drag_and_drop.js:321 public/js/drag_and_drop.js:324
+#: public/js/drag_and_drop.js:336 public/js/drag_and_drop.js:341
 msgid "Explanation"
 msgstr ""
 
-#: public/js/drag_and_drop.js:338 public/js/drag_and_drop.js:512
-#: public/js/drag_and_drop.js:555
+#: public/js/drag_and_drop.js:357 public/js/drag_and_drop.js:547
 msgid "Close"
 msgstr "Zamknij"
 
-#: public/js/drag_and_drop.js:341 public/js/drag_and_drop.js:576
+#: public/js/drag_and_drop.js:360 public/js/drag_and_drop.js:595
 msgid "Keyboard Help"
 msgstr "Pomoc klawiatury"
 
-#: public/js/drag_and_drop.js:344
+#: public/js/drag_and_drop.js:363
 msgid "This is a screen reader-friendly problem."
 msgstr ""
 
-#: public/js/drag_and_drop.js:345
+#: public/js/drag_and_drop.js:364
 msgid ""
 "Drag and Drop problems consist of draggable items and dropzones. Users "
 "should select a draggable item with their keyboard and then navigate to an "
 "appropriate dropzone to drop it."
 msgstr "Ćwiczenia \"przeciągnij i upuść\" składają się z dających się przeciągać elementów oraz stref, do których te elementy należy przyporządkować. Zadanie studenta polega na wyborze elementu za pomocą klawiatury, a następnie dopasowaniu elementu do odpowiedniej strefy."
 
-#: public/js/drag_and_drop.js:346
+#: public/js/drag_and_drop.js:365
 msgid ""
 "You can complete this problem using only your keyboard by following the "
 "guidance below:"
 msgstr "Możesz wykonać to ćwiczenie korzystając wyłącznie z klawiatury, postępując zgodnie z poniższymi wskazówkami:"
 
-#: public/js/drag_and_drop.js:348
+#: public/js/drag_and_drop.js:367
 msgid ""
 "Use only TAB and SHIFT+TAB to navigate between draggable items and drop "
 "zones."
 msgstr "Używaj klawiszy TAB oraz SHIFT+TAB w celu przemieszczania się pomiędzy elementami i strefami."
 
-#: public/js/drag_and_drop.js:349
+#: public/js/drag_and_drop.js:368
 msgid "Press CTRL+M to select a draggable item (effectively picking it up)."
 msgstr "Naciśnij CTRL+M, aby wybrać element (i go \"podnieść\")."
 
-#: public/js/drag_and_drop.js:350
+#: public/js/drag_and_drop.js:369
 msgid ""
 "Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press "
 "CTRL+M once more to drop it here."
 msgstr "Używając TAB i SHIFT+TAB przenieś się do wybranej strefy i naciśnij CTRL+M, aby umieścić w niej element."
 
-#: public/js/drag_and_drop.js:351
+#: public/js/drag_and_drop.js:370
 msgid ""
 "Press ESC if you want to cancel the drop operation (for example, to select a"
 " different item)."
 msgstr "Naciśnij ESC jeśli chcesz anulować rozpoczętą czynność (np. chcąc wybrać inny element)."
 
-#: public/js/drag_and_drop.js:352
+#: public/js/drag_and_drop.js:371
 msgid ""
 "TAB back to the list of draggable items and repeat this process until all of"
 " the draggable items have been placed on their respective dropzones."
 msgstr "Przyciskiem TAB wróć do listy elementów i powtarzaj czynność aż wszystkie elementy zostaną przez ciebie dopasowane do stref."
 
-#: public/js/drag_and_drop.js:370
+#: public/js/drag_and_drop.js:389
 msgid "You have used {used} of {total} attempts."
 msgstr "Wykorzystano {used} spośród {total} możliwych podejść."
 
-#: public/js/drag_and_drop.js:393
+#: public/js/drag_and_drop.js:412
 msgid "Submit"
 msgstr "Wyślij"
 
-#: public/js/drag_and_drop.js:434
+#: public/js/drag_and_drop.js:453
 msgid "Show Answer"
 msgstr "Pokaż odpowiedź"
 
-#: public/js/drag_and_drop.js:443
+#: public/js/drag_and_drop.js:462
 msgid "Actions"
 msgstr "Czynności"
 
-#: public/js/drag_and_drop.js:447
+#: public/js/drag_and_drop.js:466
 msgid "Go to Beginning"
 msgstr "Wróć do początku"
 
-#: public/js/drag_and_drop.js:453
+#: public/js/drag_and_drop.js:472
 msgid "Reset"
 msgstr "Reset"
 
-#: public/js/drag_and_drop.js:473 public/js/drag_and_drop.js:1213
+#: public/js/drag_and_drop.js:506 public/js/drag_and_drop.js:1233
 msgid "Some of your answers were not correct."
 msgstr "Część z twoich odpowiedzi nie była poprawna."
 
-#: public/js/drag_and_drop.js:474 public/js/drag_and_drop.js:1216
+#: public/js/drag_and_drop.js:507 public/js/drag_and_drop.js:1236
 msgid "Hints:"
 msgstr "Podpowiedzi:"
 
-#: public/js/drag_and_drop.js:542
+#: public/js/drag_and_drop.js:577
 msgid "Correct"
 msgstr "Prawidłowe"
 
-#: public/js/drag_and_drop.js:542
+#: public/js/drag_and_drop.js:577
 msgid "Incorrect"
 msgstr "Nieprawidłowo"
 
@@ -615,7 +614,7 @@ msgstr "Nieprawidłowo"
 #. total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
 #. points will always be at least 1. We pluralize based on the total number of
 #. points (example: 0/1 point; 1/2 points).
-#: public/js/drag_and_drop.js:591
+#: public/js/drag_and_drop.js:610
 msgid "{earned}/{possible} point (graded)"
 msgid_plural "{earned}/{possible} points (graded)"
 msgstr[0] "{earned}/{possible} punkt (graded)"
@@ -627,7 +626,7 @@ msgstr[3] "{earned}/{possible} punktów (graded)"
 #. total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
 #. points will always be at least 1. We pluralize based on the total number of
 #. points (example: 0/1 point; 1/2 points).
-#: public/js/drag_and_drop.js:598
+#: public/js/drag_and_drop.js:617
 msgid "{earned}/{possible} point (ungraded)"
 msgid_plural "{earned}/{possible} points (ungraded)"
 msgstr[0] "{earned}/{possible} punkt (ungraded)"
@@ -637,7 +636,7 @@ msgstr[3] "{earned}/{possible} punktów (ungraded)"
 
 #. Translators: {possible} is the number of points possible (examples: 1, 3,
 #. 10).
-#: public/js/drag_and_drop.js:608
+#: public/js/drag_and_drop.js:627
 msgid "{possible} point possible (graded)"
 msgid_plural "{possible} points possible (graded)"
 msgstr[0] "{possible} możliwy punkt (graded)"
@@ -647,7 +646,7 @@ msgstr[3] "{possible} możliwych punktów (graded)"
 
 #. Translators: {possible} is the number of points possible (examples: 1, 3,
 #. 10).
-#: public/js/drag_and_drop.js:615
+#: public/js/drag_and_drop.js:634
 msgid "{possible} point possible (ungraded)"
 msgid_plural "{possible} points possible (ungraded)"
 msgstr[0] "{possible} możliwy punkt (ungraded)"
@@ -655,40 +654,40 @@ msgstr[1] "{possible} możliwe punkty (ungraded)"
 msgstr[2] "{possible} możliwych punktów (ungraded)"
 msgstr[3] "{possible} możliwych punktów (ungraded)"
 
-#: public/js/drag_and_drop.js:641
+#: public/js/drag_and_drop.js:660
 msgid "Drag and Drop Problem"
 msgstr "Ćwiczenie \"przeciągnij i upuść\""
 
-#: public/js/drag_and_drop.js:643
+#: public/js/drag_and_drop.js:662
 msgid "Problem"
 msgstr "Ćwiczenie"
 
-#: public/js/drag_and_drop.js:668
+#: public/js/drag_and_drop.js:687
 msgid "Item Bank"
 msgstr "Zbiór elementów"
 
-#: public/js/drag_and_drop.js:713
+#: public/js/drag_and_drop.js:732
 msgid "Drop Targets"
 msgstr "Upuszczaj elementy"
 
-#: public/js/drag_and_drop.js:878
+#: public/js/drag_and_drop.js:898
 msgid "An error occurred. Unable to load drag and drop problem."
 msgstr "Wystąpił błąd. Nie udało się załadować ćwiczenia \"przeciągnij i upuść\"."
 
-#: public/js/drag_and_drop.js:1338
+#: public/js/drag_and_drop.js:1359
 msgid "You cannot add any more items to this zone."
 msgstr ""
 
-#: public/js/drag_and_drop_edit.js:108 public/js/drag_and_drop_edit.js:501
-#: public/js/drag_and_drop_edit.js:731
+#: public/js/drag_and_drop_edit.js:123 public/js/drag_and_drop_edit.js:516
+#: public/js/drag_and_drop_edit.js:746
 msgid "There was an error with your form."
 msgstr "Wystąpił błąd z przesyłaniem odpowiedzi."
 
-#: public/js/drag_and_drop_edit.js:109
+#: public/js/drag_and_drop_edit.js:124
 msgid "Please check over your submission."
 msgstr "Proszę jeszcze raz sprawdzić swoje ćwiczenie."
 
-#: public/js/drag_and_drop_edit.js:351
+#: public/js/drag_and_drop_edit.js:366
 msgid "Zone {num}"
 msgid_plural "Zone {num}"
 msgstr[0] ""
@@ -696,10 +695,10 @@ msgstr[1] ""
 msgstr[2] ""
 msgstr[3] ""
 
-#: public/js/drag_and_drop_edit.js:502
+#: public/js/drag_and_drop_edit.js:517
 msgid "Please check the values you entered."
 msgstr ""
 
-#: public/js/drag_and_drop_edit.js:724
+#: public/js/drag_and_drop_edit.js:739
 msgid "Saving"
 msgstr ""

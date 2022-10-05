@@ -67,6 +67,7 @@
     "Drag and Drop problems consist of draggable items and dropzones. Users should select a draggable item with their keyboard and then navigate to an appropriate dropzone to drop it.": "Drag & Drop-Fragestellungen bestehen aus ziehbaren Auswahlm\u00f6glichkeit/en und Ablagebereich. Nutzer sollten eine ziehbare Auswahlm\u00f6glichkeit mit ihrer Tastatur ausw\u00e4hlen und dann zu einem geeignetem Ablagebereich navigieren, um es dort zu platzieren.",
     "Drag the items onto the image above.": "Ziehen Sie die Auswahlm\u00f6glichkeit/en auf das obere Bild.",
     "Drop Targets": "Platzierungsm\u00f6glichkeiten ",
+    "Explanation": "Erkl\u00e4rung",
     "Feedback": "R\u00fcckmeldung",
     "Final attempt was used, highest score is {score}": "Der letzter Versuch wurde gewertet, die h\u00f6chste Punktzahl ist {score}.",
     "Final feedback": "Abschlie\u00dfendes Feedback",
