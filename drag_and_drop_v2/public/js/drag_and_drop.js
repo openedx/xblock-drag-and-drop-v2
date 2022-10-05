@@ -785,20 +785,6 @@ function DragAndDropBlock(runtime, element, configuration) {
         gettext = function(string) { return string; };
     }
 
-    var SHOW_ANSWER_STATUSES = {
-        ALWAYS: 'always',
-        ANSWERED: 'answered',
-        ATTEMPTED: 'attempted',
-        CLOSED: 'closed',
-        FINISHED: 'finished',
-        PAST_DUE: 'past_due',
-        CORRECT_OR_PAST_DUE: 'correct_or_past_due',
-        NEVER: 'never',
-        AFTER_ALL_ATTEMPTS: 'after_all_attempts',
-        AFTER_ALL_ATTEMPTS_OR_CORRECT: 'after_all_attempts_or_correct',
-        ATTEMPTED_NO_PAST_DUE: 'attempted_no_past_due'
-    };
-
     var renderView = DragAndDropTemplates(configuration);
 
     var $element = $(element);
