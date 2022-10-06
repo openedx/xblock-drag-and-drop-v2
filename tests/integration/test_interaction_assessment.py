@@ -475,17 +475,7 @@ class ExplanationTest(
         self._page = self.go_to_page(scenario_page_title)
 
     @staticmethod
-    def _get_explanation_html(explanation: str):
-        """
-        get generated html explanation
-
-        Args:
-            explanation (str): explanation text
-
-        Returns:
-            str:  generated html explanation
-        """
-
+    def _get_explanation_html(explanation: str) -> str:
         return ('<span><div class="detailed-solution"><p>Explanation</p><p>{explanation}</p></div></span>')\
             .format(explanation=explanation)
 

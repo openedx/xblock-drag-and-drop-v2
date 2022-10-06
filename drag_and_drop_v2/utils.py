@@ -142,6 +142,7 @@ class StateMigration:
         """
         migrations = (self._zone_v1_to_v2, self._zone_v2_to_v2p1)
         zone_id = zone.get('uid', zone.get('id'))
+
         return self._apply_migration(zone_id, zone, migrations)
 
     def apply_item_state_migrations(self, item_id, item_state):
