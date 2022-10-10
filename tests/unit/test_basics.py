@@ -94,7 +94,6 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             "show_title": True,
             "problem_text": "",
             "max_items_per_zone": None,
-            "showanswer": "finished",
             "answer_available": False,
             "show_problem_header": True,
             "target_img_expanded_url": '/expanded/url/to/drag_and_drop_v2/public/img/triangle.png',

@@ -412,7 +412,6 @@ class DragAndDropBlock(
             "item_background_color": self.item_background_color or None,
             "item_text_color": self.item_text_color or None,
             "has_deadline_passed": self.has_submission_deadline_passed,
-            "showanswer": self.showanswer,
             "answer_available": self.is_answer_available,
             # final feedback (data.feedback.finish) is not included - it may give away answers.
         }
@@ -748,31 +747,30 @@ class DragAndDropBlock(
         """
         Is student allowed to see an answer?
         """
-        def _return_false(_x):
-            return False
         _look_up = {
-            SHOWANSWER.NEVER: lambda _self: False,
-            SHOWANSWER.ATTEMPTED: lambda _self: _self.is_attempted or _self.has_submission_deadline_passed,
-            SHOWANSWER.ANSWERED: lambda _self: _self.is_correct,
-            SHOWANSWER.CLOSED: lambda _self: _self.closed,
-            SHOWANSWER.FINISHED: lambda _self: _self.is_finished,
-            SHOWANSWER.CORRECT_OR_PAST_DUE: lambda _self: _self.is_correct or _self.has_submission_deadline_passed,
-            SHOWANSWER.PAST_DUE: lambda _self: _self.has_submission_deadline_passed,
-            SHOWANSWER.ALWAYS: lambda _self: True,
-            SHOWANSWER.AFTER_ALL_ATTEMPTS: lambda _self: not _self.attempts_remain,
-            SHOWANSWER.AFTER_ALL_ATTEMPTS_OR_CORRECT: lambda _self: not _self.attempts_remain or _self.is_correct,
-            SHOWANSWER.ATTEMPTED_NO_PAST_DUE: lambda _self: _self.is_attempted,
+            SHOWANSWER.NEVER: lambda: False,
+            SHOWANSWER.ATTEMPTED: lambda: self.is_attempted or self.has_submission_deadline_passed,
+            SHOWANSWER.ANSWERED: lambda: self.is_correct,
+            SHOWANSWER.CLOSED: lambda: self.closed,
+            SHOWANSWER.FINISHED: lambda: self.is_finished,
+            SHOWANSWER.CORRECT_OR_PAST_DUE: lambda: self.is_correct or self.has_submission_deadline_passed,
+            SHOWANSWER.PAST_DUE: lambda: self.has_submission_deadline_passed,
+            SHOWANSWER.ALWAYS: lambda: True,
+            SHOWANSWER.AFTER_ALL_ATTEMPTS: lambda: not self.attempts_remain,
+            SHOWANSWER.AFTER_ALL_ATTEMPTS_OR_CORRECT: lambda: not self.attempts_remain or self.is_correct,
+            SHOWANSWER.ATTEMPTED_NO_PAST_DUE: lambda: self.is_attempted,
         }
 
         if self.mode != Constants.ASSESSMENT_MODE:
             return False
-        _current_user = self.runtime.service(self, 'user').get_current_user()
-        user_is_staff = _current_user.opt_attrs.get(Constants.ATTR_KEY_USER_IS_STAFF)
+        current_user = self.runtime.service(self, 'user').get_current_user()
+        user_is_staff = current_user.opt_attrs.get(Constants.ATTR_KEY_USER_IS_STAFF)
         if self.showanswer not in [SHOWANSWER.NEVER, ''] and user_is_staff:
             # admins can see the answer unless the problem explicitly prevents it.
             return True
-        check_available_fun = _look_up.get(self.showanswer, _return_false)
-        return check_available_fun(self)
+
+        check_available_function = _look_up.get(self.showanswer, lambda: False)
+        return check_available_function()
 
     @XBlock.handler
     def student_view_user_state(self, request, suffix=''):

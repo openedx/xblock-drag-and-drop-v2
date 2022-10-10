@@ -9,7 +9,6 @@
     "graded": false,
     "weighted_max_score": 1,
     "show_title": false,
-    "showanswer": "finished",
     "answer_available": false,
     "problem_text": "Solve this <strong>drag-and-drop</strong> problem.",
     "show_problem_header": false,
