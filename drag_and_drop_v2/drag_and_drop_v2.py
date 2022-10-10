@@ -1068,7 +1068,7 @@ class DragAndDropBlock(
         if self.mode == Constants.STANDARD_MODE:
             is_finished = self.is_correct
         else:
-            is_finished = self.is_finished
+            is_finished = not self.attempts_remain
 
         return {
             'items': item_state,
