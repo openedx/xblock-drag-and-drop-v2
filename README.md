@@ -471,6 +471,12 @@ Similarly, you can run unit and integration test suite via
 $ make test.unit
 ```
 
+You can run specific tests via
+
+```bash
+$ make test.unit tests.unit.test_basics.BasicTests.test_student_view_data
+```
+
 
 i18n compatibility
 ==================
