@@ -1,6 +1,12 @@
 Drag and Drop XBlock changelog
 ==============================
 
+
+Version 2.4.1 (2022-10-12)
+---------------------------
+
+* Support HTML in explanations.
+
 Version 2.4.0 (2022-09-23)
 ---------------------------
 
