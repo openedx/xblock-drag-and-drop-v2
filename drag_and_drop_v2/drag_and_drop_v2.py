@@ -747,7 +747,7 @@ class DragAndDropBlock(
         """
         Is student allowed to see an answer?
         """
-        _look_up = {
+        permission_functions = {
             SHOWANSWER.NEVER: lambda: False,
             SHOWANSWER.ATTEMPTED: lambda: self.is_attempted or self.has_submission_deadline_passed,
             SHOWANSWER.ANSWERED: lambda: self.is_correct,
@@ -763,14 +763,17 @@ class DragAndDropBlock(
 
         if self.mode != Constants.ASSESSMENT_MODE:
             return False
-        current_user = self.runtime.service(self, 'user').get_current_user()
-        user_is_staff = current_user.opt_attrs.get(Constants.ATTR_KEY_USER_IS_STAFF)
+
+        user_is_staff = False
+        if user_service := self.runtime.service(self, 'user'):
+            user_is_staff = user_service.get_current_user().opt_attrs.get(Constants.ATTR_KEY_USER_IS_STAFF)
+
         if self.showanswer not in [SHOWANSWER.NEVER, ''] and user_is_staff:
-            # admins can see the answer unless the problem explicitly prevents it.
+            # Staff users can see the answer unless the problem explicitly prevents it.
             return True
 
-        check_available_function = _look_up.get(self.showanswer, lambda: False)
-        return check_available_function()
+        check_permissions_function = permission_functions.get(self.showanswer, lambda: False)
+        return check_permissions_function()
 
     @XBlock.handler
     def student_view_user_state(self, request, suffix=''):
