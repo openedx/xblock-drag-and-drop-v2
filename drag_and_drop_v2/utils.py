@@ -5,6 +5,7 @@ from __future__ import absolute_import
 import copy
 import re
 from collections import namedtuple
+
 from bleach.sanitizer import Cleaner
 
 

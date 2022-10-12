@@ -14,8 +14,8 @@ import logging
 import six.moves.urllib.error  # pylint: disable=import-error
 import six.moves.urllib.parse  # pylint: disable=import-error
 import six.moves.urllib.request  # pylint: disable=import-error
-import pkg_resources
 import six
+import pkg_resources
 import webob
 
 from django.utils import translation
