@@ -1,7 +1,7 @@
 # FIXME: This pins Django to `1.11.29`.
 # Using Django 2.2 results in non-deterministc behavior of Selenium tests - they are randomly failing to find CSS selectors.
 edx-i18n-tools==0.4.7
-pycodestyle==2.5.0
+pycodestyle==2.6.0
 django-statici18n==1.9.0
 transifex-client==0.14.2
 bleach==3.3.1
