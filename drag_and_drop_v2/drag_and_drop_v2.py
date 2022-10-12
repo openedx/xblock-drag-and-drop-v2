@@ -137,10 +137,12 @@ class DragAndDropBlock(
     showanswer = String(
         display_name=_("Show Answer"),
         help=_("Defines when to show the answer to the problem. "
-               "A default value can be set in Advanced Settings."),
+               "A default value can be set in Advanced Settings. "
+               "To revert setting a custom value, choose the 'Default' option."),
         scope=Scope.settings,
         default=SHOWANSWER.FINISHED,
         values=[
+            {"display_name": _("Default"), "value": SHOWANSWER.DEFAULT},
             {"display_name": _("Always"), "value": SHOWANSWER.ALWAYS},
             {"display_name": _("Answered"), "value": SHOWANSWER.ANSWERED},
             {"display_name": _("Attempted or Past Due"), "value": SHOWANSWER.ATTEMPTED},
@@ -432,6 +434,7 @@ class DragAndDropBlock(
             'js_templates': js_templates,
             'id_suffix': id_suffix,
             'fields': self.fields,
+            'showanswer_set': self._field_data.has(self, 'showanswer'),  # If false, we're using an inherited value.
             'self': self,
             'data': six.moves.urllib.parse.quote(json.dumps(self.data)),
         }
@@ -486,6 +489,10 @@ class DragAndDropBlock(
         self.display_name = submissions['display_name']
         self.mode = submissions['mode']
         self.max_attempts = submissions['max_attempts']
+        if (showanswer := submissions['showanswer']) != self.showanswer:
+            self.showanswer = showanswer
+        if showanswer == SHOWANSWER.DEFAULT:
+            del self.showanswer
         self.show_title = submissions['show_title']
         self.question_text = submissions['problem_text']
         self.show_question_header = submissions['show_problem_header']

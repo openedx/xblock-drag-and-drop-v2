@@ -127,6 +127,7 @@ class SHOWANSWER:
     """
     Constants for when to show answer
     """
+    DEFAULT = "default"
     ALWAYS = "always"
     ANSWERED = "answered"
     ATTEMPTED = "attempted"
