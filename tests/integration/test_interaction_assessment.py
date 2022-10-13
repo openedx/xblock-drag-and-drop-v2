@@ -476,8 +476,7 @@ class ExplanationTest(
 
     @staticmethod
     def _get_explanation_html(explanation: str) -> str:
-        return ('<span><div class="detailed-solution"><p>Explanation</p><p>{explanation}</p></div></span>')\
-            .format(explanation=explanation)
+        return f'<span><div class="detailed-solution"><p>Explanation</p><p>{explanation}</p></div></span>'
 
     @ddt.data(
         (1, "This is an explanation.", True, "Explanation\nThis is an explanation."),
@@ -506,5 +505,4 @@ class ExplanationTest(
         self.assertEqual(explanation_block.is_displayed(), should_display)
         if should_display:
             self.assertEqual(rendered_explanation, explanation_block.text)
-            self.assertEqual(ExplanationTest._get_explanation_html(explanation),
-                             explanation_block.get_attribute('innerHTML'))
+            self.assertEqual(self._get_explanation_html(explanation), explanation_block.get_attribute('innerHTML'))
