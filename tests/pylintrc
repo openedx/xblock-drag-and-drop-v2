@@ -29,7 +29,7 @@ disable=
     line-too-long
 
 [SIMILARITIES]
-min-similarity-lines=4
+min-similarity-lines=6
 
 [OPTIONS]
 max-args=6

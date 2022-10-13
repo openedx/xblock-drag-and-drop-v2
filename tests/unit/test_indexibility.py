@@ -1,6 +1,6 @@
 import unittest
 
-from .test_advanced import BaseDragAndDropAjaxFixture
+from .test_fixtures import BaseDragAndDropAjaxFixture
 
 
 class TestPlainDragAndDropIndexibility(BaseDragAndDropAjaxFixture, unittest.TestCase):
