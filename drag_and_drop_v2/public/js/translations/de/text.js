@@ -47,15 +47,15 @@
     "Correct! This one belongs to The Middle Zone.": "Richtig! Dieses Element geh\u00f6rt zu dem mittigen Ablagebereich.",
     "Correct! This one belongs to The Top Zone.": "Richtig! Dieses Element geh\u00f6rt zu dem oberen Ablagebereich.",
     "Correctly placed in: {zone_title}": "Richtig platziert in: {zone_title}",
-    "Correctly placed {correct_count} item.": [
-      "Richtig platzierte {correct_count} Komponente.",
-      "{correct_count} Gegenst\u00e4nde richtig platziert."
+    "Correctly placed {correct_count} item": [
+      "Richtig platzierte {correct_count} Komponente",
+      "{correct_count} Gegenst\u00e4nde richtig platziert"
     ],
     "DEPRECATED. Keeps maximum score achieved by student as a weighted value.": "VERALTET. H\u00e4lt die maximal erreichte Punktzahl eines Teilnehmers mittels eines festen Wertes fest.",
     "Defines the number of points the problem is worth.": "Definiert die Anzahl der Punkte, wie die Fragestellung gewertet wird.",
     "Defines the number of times a student can try to answer this problem. If the value is not set, infinite attempts are allowed.": "Legt fest, wie oft ein Teilnehmer versuchen kann, diese Fragestellung zu l\u00f6sen. Ist der Wert nicht gesetzt, sind unendlich viele Versuche erlaubt.",
-    "Did not place {missing_count} required item.": [
-      "Die ben\u00f6tigte Auwahlm\u00f6glichkeit wurde nicht platziert {missing_count}.",
+    "Did not place {missing_count} required item": [
+      "Die ben\u00f6tigte Auwahlm\u00f6glichkeit wurde nicht platziert {missing_count}",
       "Die ben\u00f6tigte Auswahlm\u00f6glichkeiten wurden nicht platziert {missing_count}"
     ],
     "Display label names on the image": "Beschriftung auf dem Bild anzeigen",
@@ -67,6 +67,7 @@
     "Drag and Drop problems consist of draggable items and dropzones. Users should select a draggable item with their keyboard and then navigate to an appropriate dropzone to drop it.": "Drag & Drop-Fragestellungen bestehen aus ziehbaren Auswahlm\u00f6glichkeit/en und Ablagebereich. Nutzer sollten eine ziehbare Auswahlm\u00f6glichkeit mit ihrer Tastatur ausw\u00e4hlen und dann zu einem geeignetem Ablagebereich navigieren, um es dort zu platzieren.",
     "Drag the items onto the image above.": "Ziehen Sie die Auswahlm\u00f6glichkeit/en auf das obere Bild.",
     "Drop Targets": "Platzierungsm\u00f6glichkeiten ",
+    "Explanation": "Erkl\u00e4rung",
     "Feedback": "R\u00fcckmeldung",
     "Final attempt was used, highest score is {score}": "Der letzter Versuch wurde gewertet, die h\u00f6chste Punktzahl ist {score}.",
     "Final feedback": "Abschlie\u00dfendes Feedback",
@@ -97,11 +98,11 @@
     "Max number of attempts reached": "Maximale Anzahl der erreichten Versuche",
     "Maximum attempts": "Maximale Versuche",
     "Maximum items per zone": "Maximale Anzahl an Elementen pro Ablagebereich",
-    "Misplaced {misplaced_count} item.": [
-      "falsch platzierte {misplaced_count} Auswahm\u00f6glichkeit. ",
-      "Falsch platzierte {misplaced_count} Auswahlm\u00f6glichkeiten. "
+    "Misplaced {misplaced_count} item": [
+      "Falsch platzierte {misplaced_count} Auswahm\u00f6glichkeit",
+      "Falsch platzierte {misplaced_count} Auswahlm\u00f6glichkeiten"
     ],
-    "Misplaced {misplaced_count} item. Misplaced item was returned to item bank.": [
+    "Misplaced {misplaced_count} item (misplaced item was returned to the item bank)": [
       "Falsch platzierte {misplaced_count} Auswahlm\u00f6glichkeit. Falsch platzierte Auswahlm\u00f6glichkeit wurde zur\u00fcck auf die Ausgangsposition gezogen.",
       "{misplaced_count} Gegenst\u00e4nde verlegt. Falsch platzierte Artikel wurden an die Artikelbank zur\u00fcckgegeben."
     ],

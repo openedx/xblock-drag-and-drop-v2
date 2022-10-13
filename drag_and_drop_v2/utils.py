@@ -53,6 +53,9 @@ class FeedbackMessages:
         MISPLACED = INCORRECT_SOLUTION
         NOT_PLACED = INCORRECT_SOLUTION
 
+        INITIAL_FEEDBACK = "initial"
+        FINAL_FEEDBACK = "final"
+
     GRADE_FEEDBACK_TPL = _('Your highest score is {score}')
     FINAL_ATTEMPT_TPL = _('Final attempt was used, highest score is {score}')
 
@@ -62,8 +65,8 @@ class FeedbackMessages:
         Formats "correctly placed items" message
         """
         return ngettext(
-            'Correctly placed {correct_count} item.',
-            'Correctly placed {correct_count} items.',
+            'Correctly placed {correct_count} item',
+            'Correctly placed {correct_count} items',
             number
         ).format(correct_count=number)
 
@@ -73,8 +76,8 @@ class FeedbackMessages:
         Formats "misplaced items" message
         """
         return ngettext(
-            'Misplaced {misplaced_count} item.',
-            'Misplaced {misplaced_count} items.',
+            'Misplaced {misplaced_count} item',
+            'Misplaced {misplaced_count} items',
             number
         ).format(misplaced_count=number)
 
@@ -84,8 +87,8 @@ class FeedbackMessages:
         Formats "misplaced items returned to bank" message
         """
         return ngettext(
-            'Misplaced {misplaced_count} item. Misplaced item was returned to item bank.',
-            'Misplaced {misplaced_count} items. Misplaced items were returned to item bank.',
+            'Misplaced {misplaced_count} item (misplaced item was returned to the item bank)',
+            'Misplaced {misplaced_count} items (misplaced items were returned to the item bank)',
             number
         ).format(misplaced_count=number)
 
@@ -95,8 +98,8 @@ class FeedbackMessages:
         Formats "did not place required items" message
         """
         return ngettext(
-            'Did not place {missing_count} required item.',
-            'Did not place {missing_count} required items.',
+            'Did not place {missing_count} required item',
+            'Did not place {missing_count} required items',
             number
         ).format(missing_count=number)
 

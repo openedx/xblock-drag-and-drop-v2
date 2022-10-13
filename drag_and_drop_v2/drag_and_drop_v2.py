@@ -710,11 +710,15 @@ class DragAndDropBlock(
         Builds overall feedback for both standard and assessment modes
         """
         answer_correctness = self._answer_correctness()
-        is_correct = answer_correctness == self.SOLUTION_CORRECT
 
         if self.mode == Constants.STANDARD_MODE or not self.attempts:
-            feedback_key = 'finish' if is_correct else 'start'
-            return [FeedbackMessage(self.data['feedback'][feedback_key], None)], set()
+            if answer_correctness == self.SOLUTION_CORRECT:
+                feedback_key = 'finish'
+                message_class = FeedbackMessages.MessageClasses.FINAL_FEEDBACK
+            else:
+                feedback_key = 'start'
+                message_class = FeedbackMessages.MessageClasses.INITIAL_FEEDBACK
+            return [FeedbackMessage(self.data['feedback'][feedback_key], message_class)], set()
 
         items = self._get_item_raw_stats()
         missing_ids = items.required - items.placed
@@ -744,15 +748,7 @@ class DragAndDropBlock(
             _add_msg_if_exists(misplaced_ids, misplaced_template, FeedbackMessages.MessageClasses.MISPLACED)
             _add_msg_if_exists(missing_ids, FeedbackMessages.not_placed, FeedbackMessages.MessageClasses.NOT_PLACED)
 
-        if self.attempts_remain and (misplaced_ids or missing_ids):
-            problem_feedback_message = self.data['feedback']['start']
-        else:
-            problem_feedback_message = self.data['feedback']['finish']
-
-        problem_feedback_class = self.PROBLEM_FEEDBACK_CLASSES.get(answer_correctness, None)
         grade_feedback_class = self.GRADE_FEEDBACK_CLASSES.get(answer_correctness, None)
-
-        feedback_msgs.append(FeedbackMessage(problem_feedback_message, problem_feedback_class))
 
         if self.weight > 0:
             if self.attempts_remain:
@@ -764,6 +760,17 @@ class DragAndDropBlock(
                 self.i18n_service.gettext(grade_feedback_template).format(score=self.weighted_grade()),
                 grade_feedback_class)
             )
+
+        problem_feedback_class = None
+
+        if self.attempts_remain and (misplaced_ids or missing_ids):
+            problem_feedback_message = self.data['feedback']['start']
+            problem_feedback_class = FeedbackMessages.MessageClasses.INITIAL_FEEDBACK
+        else:
+            problem_feedback_message = self.data['feedback']['finish']
+            problem_feedback_class = FeedbackMessages.MessageClasses.FINAL_FEEDBACK
+
+        feedback_msgs.append(FeedbackMessage(problem_feedback_message, problem_feedback_class))
 
         return feedback_msgs, misplaced_ids
 

@@ -11,7 +11,7 @@ from drag_and_drop_v2.default_data import (BOTTOM_ZONE_ID, DEFAULT_DATA,
                                            FINISH_FEEDBACK, MIDDLE_ZONE_ID,
                                            START_FEEDBACK,
                                            TARGET_IMG_DESCRIPTION, TOP_ZONE_ID)
-from drag_and_drop_v2.utils import Constants
+from drag_and_drop_v2.utils import Constants, FeedbackMessages
 from xblock.scorable import Score
 from ..utils import TestCaseMixin, make_block
 
@@ -232,7 +232,9 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
                 'items': {},
                 'finished': False,
                 "attempts": 0,
-                'overall_feedback': [{"message": START_FEEDBACK, "message_class": None}]
+                'overall_feedback': [
+                    {"message": START_FEEDBACK, "message_class": FeedbackMessages.MessageClasses.INITIAL_FEEDBACK}
+                ],
             })
 
         assert_user_state_empty()
@@ -265,7 +267,9 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             'finished': True,
             "attempts": 0,
             "grade": 1,
-            'overall_feedback': [{"message": FINISH_FEEDBACK, "message_class": None}],
+            'overall_feedback': [
+                {"message": FINISH_FEEDBACK, "message_class": FeedbackMessages.MessageClasses.FINAL_FEEDBACK}
+            ],
         })
 
         # Reset to initial conditions

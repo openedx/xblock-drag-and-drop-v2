@@ -528,7 +528,7 @@ class InteractionTestBase(object):
         self.assertEqual(submit_button.is_enabled(), enabled)
 
     def assert_reader_feedback_messages(self, expected_message_lines):
-        expected_paragraphs = ['<p>{}</p>'.format(l) for l in expected_message_lines]
+        expected_paragraphs = ['<p>{}</p>'.format(line) for line in expected_message_lines]
         expected_html = ''.join(expected_paragraphs)
         feedback_area = self._page.find_element_by_css_selector('.reader-feedback-area')
         actual_html = feedback_area.get_attribute('innerHTML')

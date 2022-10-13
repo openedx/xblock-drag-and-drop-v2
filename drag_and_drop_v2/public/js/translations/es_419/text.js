@@ -47,28 +47,31 @@
     "Correct! This one belongs to The Middle Zone.": "Correcto! Este objeto pertenece a la Zona del medio.",
     "Correct! This one belongs to The Top Zone.": "Correcto! Este objeto pertenece a la Zona superior.",
     "Correctly placed in: {zone_title}": "Ubicado correctamente en {zone_title}",
-    "Correctly placed {correct_count} item.": [
-      "{correct_count} elemento correctamente colocado.",
-      "{correct_count} elementos correctamente colocados.",
-      "{correct_count} elementos correctamente colocados."
+    "Correctly placed {correct_count} item": [
+      "{correct_count} elemento correctamente colocado",
+      "{correct_count} elementos correctamente colocados",
+      "{correct_count} elementos correctamente colocados"
     ],
     "DEPRECATED. Keeps maximum score achieved by student as a weighted value.": "DEPRECADO. Mantiene el m\u00e1ximo puntaje alcanzado por un estudiante como un valor ponderado.",
     "Defines the number of points the problem is worth.": "Define el n\u00famero de puntos que vale este problema.",
     "Defines the number of times a student can try to answer this problem. If the value is not set, infinite attempts are allowed.": "Define el n\u00famero de veces que un estudiante puede intentar responder a este problema. Si el valor no est\u00e1 establecido, se permiten intentos infinitos.",
-    "Did not place {missing_count} required item.": [
-      "No coloc\u00f3 {missing_count} \u00edtem requerido.",
-      "No coloc\u00f3 {missing_count} \u00edtems requeridos.",
-      "No coloc\u00f3 {missing_count} \u00edtems requeridos."
+    "Did not place {missing_count} required item": [
+      "No coloc\u00f3 {missing_count} \u00edtem requerido",
+      "No coloc\u00f3 {missing_count} \u00edtems requeridos",
+      "No coloc\u00f3 {missing_count} \u00edtems requeridos"
     ],
     "Display label names on the image": "Mostrar los nombres de las zonas en la imagen",
     "Display the heading \"Problem\" above the problem text?": "\u00bfMostrar la palabra \"Problema\" sobre el texto del problema?",
     "Display the title to the learner?": "\u00bfMostrar el t\u00edtulo al estudiante?",
     "Display zone borders on the image": "Mostrar los margenes de la zona en la imagen",
+    "Display zone borders when dragging an item": "Mostrar los bordes de la zona al arrastrar un elemento",
     "Drag and Drop": "Arrastrar y soltar",
     "Drag and Drop Problem": "Problema de Arrastrar y Soltar",
     "Drag and Drop problems consist of draggable items and dropzones. Users should select a draggable item with their keyboard and then navigate to an appropriate dropzone to drop it.": "Los problemas de arrastrar y soltar contienen elementos arrastrables y zonas. Los usuarios deben seleccionar un elemento arrastrable con el teclado y llevarlo a una zona adecuada para soltarlos.",
     "Drag the items onto the image above.": "Arrastra los elementos y ubicalos en la imagen de abajo",
     "Drop Targets": "Zonas para soltar",
+    "Explanation": "Explicaci\u00f3n",
+    "Explanation Text": "Texto explicativo",
     "Feedback": "Retroalimentaci\u00f3n",
     "Final attempt was used, highest score is {score}": "Se ha utilizado el \u00faltimo intento. Su puntaje m\u00e1ximo fu\u00e9 {score}",
     "Final feedback": "Retroalimentaci\u00f3n final",
@@ -86,6 +89,7 @@
     "Incorrect": "Incorrecto",
     "Indicates whether a learner has completed the problem at least once": "Indica si un alumno ha completado el problema al menos una vez",
     "Information about current positions of items that a learner has dropped on the target image.": "Informaci\u00f3n sobre las posiciones actuales de los elementos que un alumno ha soltado en la imagen de destino.",
+    "Information about zones, items, feedback, explanation and background image for this problem. This information is derived from the input that a course author provides via the interactive editor when configuring the problem.": "Informaci\u00f3n sobre las zonas, los \u00edtems, los comentarios, la explicaci\u00f3n y la imagen de fondo de este problema. Esta informaci\u00f3n se deriva de la entrada que el autor del curso proporciona a trav\u00e9s del editor interactivo cuando configura el problema.",
     "Introductory feedback": "Retroalimentaci\u00f3n inicial",
     "Item Bank": "Items",
     "Item background color": "Color de fondo para los items",
@@ -100,12 +104,12 @@
     "Maximum attempts": "M\u00e1ximos intentos",
     "Maximum items per zone": "M\u00e1ximo de objetos por zona",
     "Maximum score available of the problem as a raw value between 0 and 1.": "M\u00e1ximo puntaje posible para este problema, como un n\u00famero entre 0 y 1.",
-    "Misplaced {misplaced_count} item.": [
-      "Coloc\u00f3 incorrectamente {misplaced_count} \u00edtem.",
-      "Coloc\u00f3 incorrectamente {misplaced_count} \u00edtems.",
-      "Coloc\u00f3 incorrectamente {misplaced_count} \u00edtems."
+    "Misplaced {misplaced_count} item": [
+      "Coloc\u00f3 incorrectamente {misplaced_count} \u00edtem",
+      "Coloc\u00f3 incorrectamente {misplaced_count} \u00edtems",
+      "Coloc\u00f3 incorrectamente {misplaced_count} \u00edtems"
     ],
-    "Misplaced {misplaced_count} item. Misplaced item was returned to item bank.": [
+    "Misplaced {misplaced_count} item (misplaced item was returned to the item bank)": [
       "{misplaced_count} art\u00edculo perdido. Los art\u00edculos perdidos se devolvieron al banco de art\u00edculos.",
       "{misplaced_count} art\u00edculos perdidos. Los art\u00edculos perdidos se devolvieron al banco de art\u00edculos.",
       "{misplaced_count} art\u00edculos perdidos. Los art\u00edculos perdidos se devolvieron al banco de art\u00edculos."

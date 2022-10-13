@@ -488,13 +488,29 @@ function DragAndDropTemplates(configuration) {
         }
 
         if (ctx.mode == DragAndDropBlock.ASSESSMENT_MODE) {
-            var content_items = [
-                (!ctx.last_action_correct) ? h("p", {}, gettext("Some of your answers were not correct.")) : null,
-                h("p", {}, gettext("Hints:")),
-                h("ul", {}, msgs.map(function(message) {
-                    return h("li", {innerHTML: gettext(message.message)});
-                }))
-            ];
+            var content_items;
+            // Check if we are dealing with feedback of limit of items in a zone
+            var limit_popup = msgs.reduce(
+                (previous, actualMessage) => previous || actualMessage.message_class === DragAndDropBlock.FEEDBACK_CLASS_ZONE_LIMIT,
+                false
+            );
+
+            if (limit_popup) {
+                content_items = [
+                    msgs.map(function(message) {
+                        return h("p", {innerHTML: gettext(message.message)});
+                    })
+                ];
+            } else {
+                content_items = [
+                    (!ctx.last_action_correct) ? h("p", {}, gettext("Some of your answers were not correct.")) : null,
+                    h("p.hints", {}, gettext("Hints:")),
+                    h("ul", {}, msgs.map(function(message) {
+                        return h("li", {innerHTML: gettext(message.message)});
+                    }))
+                ];
+            }
+
             popup_content = h(
                 ctx.last_action_correct ? "div.popup-content" : "div.popup-content.popup-content-incorrect",
                 {},
@@ -560,23 +576,7 @@ function DragAndDropTemplates(configuration) {
                     {},
                     ctx.last_action_correct ? gettext("Correct") : gettext("Incorrect")
                 ),
-                popup_content,
-                h(
-                    'div',
-                    [
-                        h(
-                            'button.unbutton.close-feedback-popup-button.close-feedback-popup-mobile-button',
-                            {},
-                            [
-                                h(
-                                    'span',
-                                    {},
-                                    gettext("Close")
-                                )
-                            ]
-                        )
-                    ]
-                )
+                popup_content
             ]
         )
     };
@@ -766,6 +766,7 @@ function DragAndDropBlock(runtime, element, configuration) {
 
     DragAndDropBlock.STANDARD_MODE = 'standard';
     DragAndDropBlock.ASSESSMENT_MODE = 'assessment';
+    DragAndDropBlock.FEEDBACK_CLASS_ZONE_LIMIT = 'limit';
 
     var Selector = {
         popup_box: '.popup',
@@ -1354,7 +1355,10 @@ function DragAndDropBlock(runtime, element, configuration) {
         var items_in_zone_count = countItemsInZone(zone, [item_id.toString()]);
         if (configuration.max_items_per_zone && configuration.max_items_per_zone <= items_in_zone_count) {
             state.last_action_correct = false;
-            state.feedback = [{message: gettext("You cannot add any more items to this zone."), message_class: null}];
+            state.feedback = [{
+                message: gettext("You cannot add any more items to this zone."),
+                message_class: DragAndDropBlock.FEEDBACK_CLASS_ZONE_LIMIT
+            }];
             applyState();
             return;
         }

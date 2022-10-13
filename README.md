@@ -1,8 +1,6 @@
 Drag and Drop XBlock v2
 =======================
 
-## Notice: This repo will be moved to the [edx organization](https://github.com/openedx) in April 2021.
-
 This XBlock implements a friendly drag-and-drop style problem, where
 the learner has to drag items to zones on a target image.
 

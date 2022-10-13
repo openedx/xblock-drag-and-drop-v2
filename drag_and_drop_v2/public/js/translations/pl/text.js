@@ -42,19 +42,19 @@
     "Continue": "Kontynuuj",
     "Correct": "Prawid\u0142owe",
     "Correctly placed in: {zone_title}": "Prawid\u0142owo umieszczono w strefie: {zone_title}",
-    "Correctly placed {correct_count} item.": [
-      "Poprawnie dopasowano {correct_count} element.",
-      "Poprawnie dopasowano {correct_count} elementy.",
-      "Poprawnie dopasowano {correct_count} element\u00f3w.",
-      "Poprawnie dopasowano {correct_count} element\u00f3w."
+    "Correctly placed {correct_count} item": [
+      "Poprawnie dopasowano {correct_count} element",
+      "Poprawnie dopasowano {correct_count} elementy",
+      "Poprawnie dopasowano {correct_count} element\u00f3w",
+      "Poprawnie dopasowano {correct_count} element\u00f3w"
     ],
     "Defines the number of points the problem is worth.": "Okre\u015bla liczb\u0119 punkt\u00f3w za wykonanie \u0107wiczenia.",
     "Defines the number of times a student can try to answer this problem. If the value is not set, infinite attempts are allowed.": "Pozwala okre\u015bli\u0107 liczb\u0119 pr\u00f3b jak\u0105 student mo\u017ce podj\u0105\u0107 w celu wykonania \u0107wiczenia. W przypadku niewpisania warto\u015bci, dopuszcza si\u0119 nielimitowan\u0105 liczb\u0119 pr\u00f3b.",
-    "Did not place {missing_count} required item.": [
-      "Nie dopasowano {missing_count} wymaganego elementu.",
-      "Nie dopasowano {missing_count} wymaganych element\u00f3w.",
-      "Nie dopasowano {missing_count} wymaganych element\u00f3w.",
-      "Nie dopasowano {missing_count} wymaganych element\u00f3w."
+    "Did not place {missing_count} required item": [
+      "Nie dopasowano {missing_count} wymaganego elementu",
+      "Nie dopasowano {missing_count} wymaganych element\u00f3w",
+      "Nie dopasowano {missing_count} wymaganych element\u00f3w",
+      "Nie dopasowano {missing_count} wymaganych element\u00f3w"
     ],
     "Display label names on the image": "Wy\u015bwietl na obrazku nazwy etykiet",
     "Display the heading \"Problem\" above the problem text?": "Czy wy\u015bwietli\u0107 nag\u0142\u00f3wek \"\u0106wiczenie\" nad tre\u015bci\u0105 \u0107wiczenia?",
@@ -89,17 +89,17 @@
     "Loading drag and drop problem.": "\u0141adowanie \u0107wiczenia \"przeci\u0105gnij i upu\u015b\u0107\".",
     "Max number of attempts reached": "Wykorzystano maksymaln\u0105 liczb\u0119 pr\u00f3b.",
     "Maximum attempts": "Maksymalna liczba pr\u00f3b",
-    "Misplaced {misplaced_count} item.": [
-      "B\u0142\u0119dnie dopasowano {misplaced_count} element.",
-      "B\u0142\u0119dnie dopasowano {misplaced_count} elementy.",
-      "B\u0142\u0119dnie dopasowano {misplaced_count} element\u00f3w.",
-      "B\u0142\u0119dnie dopasowano {misplaced_count} element\u00f3w."
+    "Misplaced {misplaced_count} item": [
+      "B\u0142\u0119dnie dopasowano {misplaced_count} element",
+      "B\u0142\u0119dnie dopasowano {misplaced_count} elementy",
+      "B\u0142\u0119dnie dopasowano {misplaced_count} element\u00f3w",
+      "B\u0142\u0119dnie dopasowano {misplaced_count} element\u00f3w"
     ],
-    "Misplaced {misplaced_count} item. Misplaced item was returned to item bank.": [
-      "B\u0142\u0119dnie dopasowano {misplaced_count} element. Nieprawid\u0142owo dopasowany element wr\u00f3ci\u0142 do puli.",
-      "B\u0142\u0119dnie dopasowano {misplaced_count} elementy. Nieprawid\u0142owo dopasowane elementy wr\u00f3ci\u0142y do puli.",
-      "B\u0142\u0119dnie dopasowano {misplaced_count} element\u00f3w. Nieprawid\u0142owo dopasowane elementy wr\u00f3ci\u0142y do puli.",
-      "B\u0142\u0119dnie dopasowano {misplaced_count} element\u00f3w. Nieprawid\u0142owo dopasowane elementy wr\u00f3ci\u0142y do puli."
+    "Misplaced {misplaced_count} item (misplaced item was returned to the item bank)": [
+      "B\u0142\u0119dnie dopasowano {misplaced_count} element (nieprawid\u0142owo dopasowany element wr\u00f3ci\u0142 do puli)",
+      "B\u0142\u0119dnie dopasowano {misplaced_count} elementy (nieprawid\u0142owo dopasowane elementy wr\u00f3ci\u0142y do puli)",
+      "B\u0142\u0119dnie dopasowano {misplaced_count} element\u00f3w (nieprawid\u0142owo dopasowane elementy wr\u00f3ci\u0142y do puli)",
+      "B\u0142\u0119dnie dopasowano {misplaced_count} element\u00f3w (nieprawid\u0142owo dopasowane elementy wr\u00f3ci\u0142y do puli)"
     ],
     "Mode": "Tryb",
     "Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press CTRL+M once more to drop it here.": "U\u017cywaj\u0105c TAB i SHIFT+TAB przenie\u015b si\u0119 do wybranej strefy i naci\u015bnij CTRL+M, aby umie\u015bci\u0107 w niej element.",

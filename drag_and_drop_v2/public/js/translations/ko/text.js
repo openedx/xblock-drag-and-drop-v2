@@ -47,14 +47,14 @@
     "Correct! This one belongs to The Middle Zone.": "\uc815\ub2f5\uc785\ub2c8\ub2e4! \uc774\uac83\uc740 \uc911\ub2e8 \uc601\uc5ed\uc5d0 \uc18d\ud569\ub2c8\ub2e4.",
     "Correct! This one belongs to The Top Zone.": "\uc815\ub2f5\uc785\ub2c8\ub2e4! \uc774\uac83\uc740 \uc0c1\ub2e8 \uc601\uc5ed\uc5d0 \uc18d\ud569\ub2c8\ub2e4.",
     "Correctly placed in: {zone_title}": "{zone_title}\uc5d0 \uc54c\ub9de\uac8c \ubc30\uce58\ub418\uc5b4 \uc788\uc74c",
-    "Correctly placed {correct_count} item.": [
-      "{correct_count} \uac1c\uc758 \ud56d\ubaa9\uc744 \uc62c\ubc14\ub974\uac8c \ubc30\uce58\ud588\uc2b5\ub2c8\ub2e4."
+    "Correctly placed {correct_count} item": [
+      "{correct_count} \uac1c\uc758 \ud56d\ubaa9\uc744 \uc62c\ubc14\ub974\uac8c \ubc30\uce58\ud588\uc2b5\ub2c8\ub2e4"
     ],
     "DEPRECATED. Keeps maximum score achieved by student as a weighted value.": "\ub300\uccb4\ub429\ub2c8\ub2e4. \ud559\uc0dd\uc774 \ub2ec\uc131\ud55c \ucd5c\ub300 \uc810\uc218\ub97c \uac00\uc911\uce58\ub85c \uc720\uc9c0\ud569\ub2c8\ub2e4.",
     "Defines the number of points the problem is worth.": "\ubb38\uc81c\uc758 \uc911\uc694\ub3c4\ub97c \uc22b\uc790\ub85c \uc9c0\uc815\ud569\ub2c8\ub2e4.",
     "Defines the number of times a student can try to answer this problem. If the value is not set, infinite attempts are allowed.": "\ud559\uc0dd\uc774 \uc774 \ubb38\uc81c\uc5d0 \ub300\ud574 \ub2f5\ud560 \uc218 \uc788\ub294 \ud69f\uc218\ub97c \uc9c0\uc815\ud569\ub2c8\ub2e4. \ub9cc\uc57d \uac12\uc774 \uc9c0\uc815\ub418\uc9c0 \uc54a\uc558\ub2e4\uba74, \ubb34\ud55c\uc815\uc73c\ub85c \uc2dc\ub3c4\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.",
-    "Did not place {missing_count} required item.": [
-      "{missing_count}\uac1c\uc758 \ud544\uc694\ud55c \ud56d\ubaa9\ub4e4\uc744 \ubc30\uce58\ud558\uc9c0 \uc54a\uc558\uc2b5\ub2c8\ub2e4."
+    "Did not place {missing_count} required item": [
+      "{missing_count}\uac1c\uc758 \ud544\uc694\ud55c \ud56d\ubaa9\ub4e4\uc744 \ubc30\uce58\ud558\uc9c0 \uc54a\uc558\uc2b5\ub2c8\ub2e4"
     ],
     "Display label names on the image": "\uc774\ubbf8\uc9c0\uc5d0 \ub808\uc774\ube14 \uc774\ub984\uc744 \ud45c\uc2dc\ud558\uae30",
     "Display the heading \"Problem\" above the problem text?": "\ubb38\uc81c \ud14d\uc2a4\ud2b8 \uc704\uc5d0 \"\ubb38\uc81c\"\uc758 \uc81c\ubaa9\uc744 \ud45c\uc2dc\ud569\ub2c8\uae4c?",
@@ -95,10 +95,10 @@
     "Max number of attempts reached": "\ucd5c\ub300 \uc2dc\ub3c4 \ud69f\uc218\uc5d0 \ub3c4\ub2ec\ud568",
     "Maximum attempts": "\ucd5c\ub300 \uc2dc\ub3c4\ud69f\uc218",
     "Maximum items per zone": "\uc601\uc5ed \ub2f9 \ucd5c\ub300 \ud56d\ubaa9 \uc218",
-    "Misplaced {misplaced_count} item.": [
-      "{misplaced_count}\uac1c\uc758 \ud56d\ubaa9\uc774 \uc798\ubabb \ubc30\uce58\ub418\uc5c8\uc2b5\ub2c8\ub2e4."
+    "Misplaced {misplaced_count} item": [
+      "{misplaced_count}\uac1c\uc758 \ud56d\ubaa9\uc774 \uc798\ubabb \ubc30\uce58\ub418\uc5c8\uc2b5\ub2c8\ub2e4"
     ],
-    "Misplaced {misplaced_count} item. Misplaced item was returned to item bank.": [
+    "Misplaced {misplaced_count} item (misplaced item was returned to the item bank)": [
       "{misplaced_count} \uac1c \ud56d\ubaa9\uc744 \uc798\ubabb \ubc30\uce58\ud588\uc2b5\ub2c8\ub2e4. \uc798\ubabb \ubc30\uce58 \ub41c \ud488\ubaa9\uc740 \ud488\ubaa9 \uc740\ud589\uc5d0 \ubc18\ud658\ub418\uc5c8\uc2b5\ub2c8\ub2e4."
     ],
     "Mode": "\ubaa8\ub4dc",

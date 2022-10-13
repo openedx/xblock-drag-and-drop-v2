@@ -1,6 +1,16 @@
 Drag and Drop XBlock changelog
 ==============================
 
+Version 2.4.1 (2022-10-06)
+---------------------------
+* Remove dots on feedback and moves final feedback to end and set bold text on assessment mode.
+* Improve CSS styles for popup feedback.
+* Remove special popup feedback styles for mobile.
+* Improve feedback message when you reach the limit of elements on a zone.
+* Fix the issue while dragging an image item on Safari mobile.
+* Fix width issue for zone container on Safari mobile
+* Update translations.
+
 Version 2.4.0 (2022-09-23)
 ---------------------------
 

@@ -30,10 +30,13 @@ jobs:
     - name: Install Required System Packages
       run: |
         sudo apt-get update
-        sudo apt-get install -y libxmlsec1-dev ubuntu-restricted-extras xvfb libxml2-dev libxslt-dev python3-dev libevent-dev python3-pip python3-venv libgtk2.0-0 libxt6
+        sudo apt-get install -y libxmlsec1-dev ubuntu-restricted-extras xvfb libxml2-dev libxslt-dev python3-dev libevent-dev python3-pip python3-venv gettext libgtk2.0-0 libxt6
 
     - name: Install Dependencies
       run: make requirements
+
+    - name: Check if translations are up-to-date
+      run: make check_translations_up_to_date
 
     - name: Run quality checks
       run: make test.quality
