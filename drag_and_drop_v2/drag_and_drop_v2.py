@@ -45,7 +45,7 @@ logger = logging.getLogger(__name__)
 # pylint: disable=bad-continuation
 @XBlock.wants('settings')
 @XBlock.wants('replace_urls')
-@XBlock.needs('user')
+@XBlock.wants('user')  # Using `needs` breaks the Course Outline page in Maple.
 @XBlock.needs('i18n')
 class DragAndDropBlock(
     ScorableXBlockMixin,
