@@ -14,8 +14,8 @@ import logging
 import six.moves.urllib.error  # pylint: disable=import-error
 import six.moves.urllib.parse  # pylint: disable=import-error
 import six.moves.urllib.request  # pylint: disable=import-error
-import pkg_resources
 import six
+import pkg_resources
 import webob
 
 from django.utils import translation
@@ -44,6 +44,7 @@ logger = logging.getLogger(__name__)
 
 # pylint: disable=bad-continuation
 @XBlock.wants('settings')
+@XBlock.wants('replace_urls')
 @XBlock.needs('i18n')
 class DragAndDropBlock(
     ScorableXBlockMixin,
@@ -620,8 +621,21 @@ class DragAndDropBlock(
 
         answer = self._get_correct_state()
 
-        answer['explanation'] = self.data.get('explanation', '').strip()
+        if explanation := self.data.get('explanation', '').strip():
+            if replace_urls_service := self.runtime.service(self, 'replace_urls'):
+                explanation = replace_urls_service.replace_urls(explanation)
 
+            # pylint: disable=fixme
+            # TODO: No longer needed after Maple.
+            else:
+                try:
+                    explanation = self.runtime.replace_urls(explanation)
+                    explanation = self.runtime.replace_course_urls(explanation)
+                    explanation = self.runtime.replace_jump_to_id_urls(explanation)
+                except (TypeError, AttributeError):
+                    logger.debug('Unable to perform URL substitution on the explanation: %s', explanation)
+
+            answer['explanation'] = explanation
         return answer
 
     @XBlock.json_handler

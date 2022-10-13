@@ -339,7 +339,7 @@ function DragAndDropTemplates(configuration) {
                 h('span', [
                     h('.detailed-solution', [
                         h('p', gettext('Explanation')),
-                        h('p', gettext(ctx.explanation)),
+                        h('p', {innerHTML: gettext(ctx.explanation)}),
                     ])
                 ])
             ])

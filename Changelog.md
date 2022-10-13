@@ -1,6 +1,11 @@
 Drag and Drop XBlock changelog
 ==============================
 
+Version 2.4.2 (2022-10-13)
+---------------------------
+
+* Support HTML in explanations.
+
 Version 2.4.1 (2022-10-06)
 ---------------------------
 * Remove dots on feedback and moves final feedback to end and set bold text on assessment mode.

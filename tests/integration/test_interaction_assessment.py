@@ -474,13 +474,18 @@ class ExplanationTest(
         self._add_scenario(scenario_page_id, scenario_page_title, scenario_xml)
         self._page = self.go_to_page(scenario_page_title)
 
+    @staticmethod
+    def _get_explanation_html(explanation: str) -> str:
+        return f'<span><div class="detailed-solution"><p>Explanation</p><p>{explanation}</p></div></span>'
+
     @ddt.data(
-        (1, "This is an explanation.", True),
-        (2, " ", False),
-        (3, None, False),
+        (1, "This is an explanation.", True, "Explanation\nThis is an explanation."),
+        (2, " ", False, None),
+        (3, None, False, None),
+        (4, "12m<sup>2</sup>", True, "Explanation\n12m2"),
     )
     @ddt.unpack
-    def test_explanation(self, scenario_id: int, explanation: str, should_display: bool):
+    def test_explanation(self, scenario_id: int, explanation: str, should_display: bool, rendered_explanation: str):
         """
         Test that the "Explanation" is displayed after the "Show Answer" button is clicked.
         The docstring of the class explains when the explanation should be visible.
@@ -498,3 +503,6 @@ class ExplanationTest(
 
         explanation_block = self._get_explanation()
         self.assertEqual(explanation_block.is_displayed(), should_display)
+        if should_display:
+            self.assertEqual(rendered_explanation, explanation_block.text)
+            self.assertEqual(self._get_explanation_html(explanation), explanation_block.get_attribute('innerHTML'))
