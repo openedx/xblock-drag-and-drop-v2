@@ -47,18 +47,18 @@
     "Correct! This one belongs to The Middle Zone.": "Correto! Este pertence \u00e0 zona interm\u00e9dia.",
     "Correct! This one belongs to The Top Zone.": "Correto! Este pertence \u00e0 zona superior.",
     "Correctly placed in: {zone_title}": "Corretamente colocado em: {zone_title}",
-    "Correctly placed {correct_count} item.": [
-      "{correct_count} item colocado corretamente.",
-      "{correct_count} itens corretamente colocados.",
-      "{correct_count} itens corretamente colocados."
+    "Correctly placed {correct_count} item": [
+      "{correct_count} item colocado corretamente",
+      "{correct_count} itens corretamente colocados",
+      "{correct_count} itens corretamente colocados"
     ],
     "DEPRECATED. Keeps maximum score achieved by student as a weighted value.": "DESCONTINUADO. Mant\u00e9m a pontua\u00e7\u00e3o m\u00e1xima alcan\u00e7ada pelo aluno como valor ponderado.",
     "Defines the number of points the problem is worth.": "Define o n\u00famero de pontos que o problema vale.",
     "Defines the number of times a student can try to answer this problem. If the value is not set, infinite attempts are allowed.": "Define o n\u00famero de vezes que um estudante pode tentar responder a este problema. Se o valor n\u00e3o estiver definido, \u00e9 permitido um n\u00famero infinito de tentativas.",
-    "Did not place {missing_count} required item.": [
-      "N\u00e3o foi colocado {missing_count} item obrigat\u00f3rio.",
-      "N\u00e3o foram colocados {missing_count} itens obrigat\u00f3rios.",
-      "N\u00e3o foram colocados {missing_count} itens obrigat\u00f3rios."
+    "Did not place {missing_count} required item": [
+      "N\u00e3o foi colocado {missing_count} item obrigat\u00f3rio",
+      "N\u00e3o foram colocados {missing_count} itens obrigat\u00f3rios",
+      "N\u00e3o foram colocados {missing_count} itens obrigat\u00f3rios"
     ],
     "Display label names on the image": "Mostrar nomes de etiquetas na imagem",
     "Display the heading \"Problem\" above the problem text?": "Mostrar o t\u00edtulo \"problema\" acima do texto do problema?",
@@ -100,12 +100,12 @@
     "Maximum attempts": "M\u00e1ximo de tentativas",
     "Maximum items per zone": "M\u00e1ximo de itens por zona",
     "Maximum score available of the problem as a raw value between 0 and 1.": "Pontua\u00e7\u00e3o m\u00e1xima dispon\u00edvel do problema com um valor bruto entre 0 e 1.",
-    "Misplaced {misplaced_count} item.": [
-      "{misplaced_count} item mal colocado.",
-      "{misplaced_count} itens mal colocados.",
-      "{misplaced_count} itens mal colocados."
+    "Misplaced {misplaced_count} item": [
+      "{misplaced_count} item mal colocado",
+      "{misplaced_count} itens mal colocados",
+      "{misplaced_count} itens mal colocados"
     ],
-    "Misplaced {misplaced_count} item. Misplaced item was returned to item bank.": [
+    "Misplaced {misplaced_count} item (misplaced item was returned to the item bank)": [
       "{misplaced_count} item mal colocado. Este item foi devolvido ao banco de itens. ",
       "{misplaced_count} itens mal colocados. Estes itens foram devolvidos ao banco de itens. ",
       "{misplaced_count} itens mal colocados. Estes itens foram devolvidos ao banco de itens. "

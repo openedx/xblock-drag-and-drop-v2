@@ -299,8 +299,8 @@ class AssessmentInteractionTest(
         feedback_lines = [
             FeedbackMessages.correctly_placed(1),
             FeedbackMessages.not_placed(3),
+            FeedbackMessages.GRADE_FEEDBACK_TPL.format(score=expected_grade),
             START_FEEDBACK,
-            FeedbackMessages.GRADE_FEEDBACK_TPL.format(score=expected_grade)
         ]
         check_feedback(feedback_lines)
 
@@ -312,8 +312,8 @@ class AssessmentInteractionTest(
             FeedbackMessages.correctly_placed(1),
             FeedbackMessages.misplaced_returned(1),
             FeedbackMessages.not_placed(2),
+            FeedbackMessages.GRADE_FEEDBACK_TPL.format(score=expected_grade),
             START_FEEDBACK,
-            FeedbackMessages.GRADE_FEEDBACK_TPL.format(score=expected_grade)
         ]
         check_feedback(feedback_lines, ["No, this item does not belong here. Try again."])
 
@@ -332,8 +332,8 @@ class AssessmentInteractionTest(
 
         feedback_lines = [
             FeedbackMessages.correctly_placed(4),
+            FeedbackMessages.FINAL_ATTEMPT_TPL.format(score=expected_grade),
             FINISH_FEEDBACK,
-            FeedbackMessages.FINAL_ATTEMPT_TPL.format(score=expected_grade)
         ]
         check_feedback(feedback_lines)
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-24 21:55-0500\n"
+"POT-Creation-Date: 2022-10-05 21:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -227,13 +227,13 @@ msgstr "Ᵽɹøblǝɯ dɐʇɐ"
 
 #: drag_and_drop_v2.py
 msgid ""
-"Information about zones, items, feedback, and background image for this "
-"problem. This information is derived from the input that a course author "
-"provides via the interactive editor when configuring the problem."
+"Information about zones, items, feedback, explanation and background image "
+"for this problem. This information is derived from the input that a course "
+"author provides via the interactive editor when configuring the problem."
 msgstr ""
-"Ɨnɟøɹɯɐʇᴉøn ɐbønʇ zønǝs, ᴉʇǝɯs, ɟǝǝdbɐɔʞ, ɐnd bɐɔʞƃɹønnd ᴉɯɐƃǝ ɟøɹ ʇɥᴉs "
-"dɹøblǝɯ. Ŧɥᴉs ᴉnɟøɹɯɐʇᴉøn ᴉs dǝɹᴉʌǝd ɟɹøɯ ʇɥǝ ᴉndnʇ ʇɥɐʇ ɐ ɔønɹsǝ ɐnʇɥøɹ "
-"dɹøʌᴉdǝs ʌᴉɐ ʇɥǝ ᴉnʇǝɹɐɔʇᴉʌǝ ǝdᴉʇøɹ ʍɥǝn ɔønɟᴉƃnɹᴉnƃ ʇɥǝ dɹøblǝɯ."
+"Ɨnɟøɹɯɐʇᴉøn ɐbønʇ zønǝs, ᴉʇǝɯs, ɟǝǝdbɐɔʞ, ǝxdlɐnɐʇᴉøn ɐnd bɐɔʞƃɹønnd ᴉɯɐƃǝ "
+"ɟøɹ ʇɥᴉs dɹøblǝɯ. Ŧɥᴉs ᴉnɟøɹɯɐʇᴉøn ᴉs dǝɹᴉʌǝd ɟɹøɯ ʇɥǝ ᴉndnʇ ʇɥɐʇ ɐ ɔønɹsǝ "
+"ɐnʇɥøɹ dɹøʌᴉdǝs ʌᴉɐ ʇɥǝ ᴉnʇǝɹɐɔʇᴉʌǝ ǝdᴉʇøɹ ʍɥǝn ɔønɟᴉƃnɹᴉnƃ ʇɥǝ dɹøblǝɯ."
 
 #: drag_and_drop_v2.py
 msgid ""
@@ -308,6 +308,10 @@ msgstr "Ɨnʇɹødnɔʇøɹʎ ɟǝǝdbɐɔʞ"
 #: templates/html/drag_and_drop_edit.html
 msgid "Final feedback"
 msgstr "Fᴉnɐl ɟǝǝdbɐɔʞ"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "Explanation Text"
+msgstr "Ɇxdlɐnɐʇᴉøn Ŧǝxʇ"
 
 #: templates/html/drag_and_drop_edit.html
 msgid "Zones"
@@ -412,6 +416,10 @@ msgid "Display zone borders on the image"
 msgstr "Đᴉsdlɐʎ zønǝ bøɹdǝɹs øn ʇɥǝ ᴉɯɐƃǝ"
 
 #: templates/html/drag_and_drop_edit.html
+msgid "Display zone borders when dragging an item"
+msgstr "Đᴉsdlɐʎ zønǝ bøɹdǝɹs ʍɥǝn dɹɐƃƃᴉnƃ ɐn ᴉʇǝɯ"
+
+#: templates/html/drag_and_drop_edit.html
 msgid "Zone definitions"
 msgstr "Ƶønǝ dǝɟᴉnᴉʇᴉøns"
 
@@ -455,37 +463,39 @@ msgstr "Fᴉnɐl ɐʇʇǝɯdʇ ʍɐs nsǝd, ɥᴉƃɥǝsʇ sɔøɹǝ ᴉs {score
 
 #: utils.py
 #, python-brace-format
-msgid "Correctly placed {correct_count} item."
-msgid_plural "Correctly placed {correct_count} items."
-msgstr[0] "Ȼøɹɹǝɔʇlʎ dlɐɔǝd {correct_count} ᴉʇǝɯ."
-msgstr[1] "Ȼøɹɹǝɔʇlʎ dlɐɔǝd {correct_count} ᴉʇǝɯs."
+msgid "Correctly placed {correct_count} item"
+msgid_plural "Correctly placed {correct_count} items"
+msgstr[0] "Ȼøɹɹǝɔʇlʎ dlɐɔǝd {correct_count} ᴉʇǝɯ"
+msgstr[1] "Ȼøɹɹǝɔʇlʎ dlɐɔǝd {correct_count} ᴉʇǝɯs"
 
 #: utils.py
 #, python-brace-format
-msgid "Misplaced {misplaced_count} item."
-msgid_plural "Misplaced {misplaced_count} items."
-msgstr[0] "Mᴉsdlɐɔǝd {misplaced_count} ᴉʇǝɯ."
-msgstr[1] "Mᴉsdlɐɔǝd {misplaced_count} ᴉʇǝɯs."
+msgid "Misplaced {misplaced_count} item"
+msgid_plural "Misplaced {misplaced_count} items"
+msgstr[0] "Mᴉsdlɐɔǝd {misplaced_count} ᴉʇǝɯ"
+msgstr[1] "Mᴉsdlɐɔǝd {misplaced_count} ᴉʇǝɯs"
 
 #: utils.py
 #, python-brace-format
 msgid ""
-"Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
+"Misplaced {misplaced_count} item (misplaced item was returned to the item "
+"bank)"
 msgid_plural ""
-"Misplaced {misplaced_count} items. Misplaced items were returned to item "
-"bank."
+"Misplaced {misplaced_count} items (misplaced items were returned to the item"
+" bank)"
 msgstr[0] ""
-"Mᴉsdlɐɔǝd {misplaced_count} ᴉʇǝɯ. Mᴉsdlɐɔǝd ᴉʇǝɯ ʍɐs ɹǝʇnɹnǝd ʇø ᴉʇǝɯ bɐnʞ."
+"Mᴉsdlɐɔǝd {misplaced_count} ᴉʇǝɯ (ɯᴉsdlɐɔǝd ᴉʇǝɯ ʍɐs ɹǝʇnɹnǝd ʇø ʇɥǝ ᴉʇǝɯ "
+"bɐnʞ)"
 msgstr[1] ""
-"Mᴉsdlɐɔǝd {misplaced_count} ᴉʇǝɯs. Mᴉsdlɐɔǝd ᴉʇǝɯs ʍǝɹǝ ɹǝʇnɹnǝd ʇø ᴉʇǝɯ "
-"bɐnʞ."
+"Mᴉsdlɐɔǝd {misplaced_count} ᴉʇǝɯs (ɯᴉsdlɐɔǝd ᴉʇǝɯs ʍǝɹǝ ɹǝʇnɹnǝd ʇø ʇɥǝ ᴉʇǝɯ"
+" bɐnʞ)"
 
 #: utils.py
 #, python-brace-format
-msgid "Did not place {missing_count} required item."
-msgid_plural "Did not place {missing_count} required items."
-msgstr[0] "Đᴉd nøʇ dlɐɔǝ {missing_count} ɹǝbnᴉɹǝd ᴉʇǝɯ."
-msgstr[1] "Đᴉd nøʇ dlɐɔǝ {missing_count} ɹǝbnᴉɹǝd ᴉʇǝɯs."
+msgid "Did not place {missing_count} required item"
+msgid_plural "Did not place {missing_count} required items"
+msgstr[0] "Đᴉd nøʇ dlɐɔǝ {missing_count} ɹǝbnᴉɹǝd ᴉʇǝɯ"
+msgstr[1] "Đᴉd nøʇ dlɐɔǝ {missing_count} ɹǝbnᴉɹǝd ᴉʇǝɯs"
 
 #: public/js/drag_and_drop.js public/js/drag_and_drop.js
 msgid "Submitting"
@@ -532,7 +542,10 @@ msgid "Feedback"
 msgstr "Fǝǝdbɐɔʞ"
 
 #: public/js/drag_and_drop.js public/js/drag_and_drop.js
-#: public/js/drag_and_drop.js
+msgid "Explanation"
+msgstr "Ɇxdlɐnɐʇᴉøn"
+
+#: public/js/drag_and_drop.js public/js/drag_and_drop.js
 msgid "Close"
 msgstr "Ȼløsǝ"
 
@@ -611,6 +624,10 @@ msgid "Show Answer"
 msgstr "Sɥøʍ Ⱥnsʍǝɹ"
 
 #: public/js/drag_and_drop.js
+msgid "Actions"
+msgstr "Ⱥɔʇᴉøns"
+
+#: public/js/drag_and_drop.js
 msgid "Go to Beginning"
 msgstr "Ǥø ʇø Ƀǝƃᴉnnᴉnƃ"
 
@@ -685,10 +702,6 @@ msgstr "Ɨʇǝɯ Ƀɐnʞ"
 #: public/js/drag_and_drop.js
 msgid "Drop Targets"
 msgstr "Đɹød Ŧɐɹƃǝʇs"
-
-#: public/js/drag_and_drop.js
-msgid "Actions"
-msgstr "Ⱥɔʇᴉøns"
 
 #: public/js/drag_and_drop.js
 msgid "An error occurred. Unable to load drag and drop problem."

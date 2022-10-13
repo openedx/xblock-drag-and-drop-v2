@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Erdoğan Şahin, 2016
 # 7d6b04fff6aa1b6964c4cb709cdbd24b_0b8e9dc <0f5d8258cb2bd641cccbffd85d9d9e7c_938679>, 2021
@@ -434,32 +434,33 @@ msgstr ""
 
 #: utils.py:65
 #, python-brace-format
-msgid "Correctly placed {correct_count} item."
-msgid_plural "Correctly placed {correct_count} items."
-msgstr[0] "Doğru yerleştirilmiş {correct_count} öğe."
-msgstr[1] "Doğru yerleştirilmiş {correct_count} öğe."
+msgid "Correctly placed {correct_count} item"
+msgid_plural "Correctly placed {correct_count} items"
+msgstr[0] "Doğru yerleştirilmiş {correct_count} öğe"
+msgstr[1] "Doğru yerleştirilmiş {correct_count} öğe"
 
 #: utils.py:76
 #, python-brace-format
-msgid "Misplaced {misplaced_count} item."
-msgid_plural "Misplaced {misplaced_count} items."
+msgid "Misplaced {misplaced_count} item"
+msgid_plural "Misplaced {misplaced_count} items"
 msgstr[0] ""
 msgstr[1] ""
 
 #: utils.py:87
 #, python-brace-format
 msgid ""
-"Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
+"Misplaced {misplaced_count} item (misplaced item was returned to the item "
+"bank)"
 msgid_plural ""
-"Misplaced {misplaced_count} items. Misplaced items were returned to item "
-"bank."
+"Misplaced {misplaced_count} items (misplaced items were returned to the item "
+"bank)"
 msgstr[0] "{misplaced_count} öğe yanlış yerleştirildi. Yanlış yerleştirilen öğeler, öğe bankasına iade edildi."
 msgstr[1] "{misplaced_count} öğe yanlış yerleştirildi. Yanlış yerleştirilen öğeler, öğe bankasına iade edildi."
 
 #: utils.py:98
 #, python-brace-format
-msgid "Did not place {missing_count} required item."
-msgid_plural "Did not place {missing_count} required items."
+msgid "Did not place {missing_count} required item"
+msgid_plural "Did not place {missing_count} required items"
 msgstr[0] ""
 msgstr[1] ""
 

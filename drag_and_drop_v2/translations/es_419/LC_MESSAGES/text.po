@@ -1,20 +1,23 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Albeiro Gonzalez <albeiro.gonzalez@edunext.co>, 2018
+# Ana Garcia, 2022
+# Ana Garcia, 2022
 # Jorge Mora Henao <georgemusic30@hotmail.com>, 2018
 # Juan Camilo Montoya Franco <juan.montoya@edunext.co>, 2017,2021
 # OpenCraft OpenCraft <help@opencraft.com>, 2021
+# Yovany Alexander Álvarez Correa <yalvarez@innovapues.com>, 2018
 # Yovany Alexander Álvarez Correa <yalvarez@innovapues.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: XBlocks\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-21 16:53+0000\n"
+"POT-Creation-Date: 2022-10-05 20:22+0200\n"
 "PO-Revision-Date: 2016-06-09 07:11+0000\n"
-"Last-Translator: Juan Camilo Montoya Franco <juan.montoya@edunext.co>, 2017,2021\n"
+"Last-Translator: Yovany Alexander Álvarez Correa <yalvarez@innovapues.com>, 2018\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/open-edx/xblocks/language/es_419/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -218,7 +221,7 @@ msgid ""
 "Information about zones, items, feedback, explanation and background image "
 "for this problem. This information is derived from the input that a course "
 "author provides via the interactive editor when configuring the problem."
-msgstr ""
+msgstr "Información sobre las zonas, los ítems, los comentarios, la explicación y la imagen de fondo de este problema. Esta información se deriva de la entrada que el autor del curso proporciona a través del editor interactivo cuando configura el problema."
 
 #: drag_and_drop_v2.py:181
 msgid ""
@@ -265,7 +268,7 @@ msgstr "Todavía hay intentos pendientes"
 msgid "do_attempt handler should only be called for assessment mode"
 msgstr "El hendler do_attempt sólo debe ser llamado para el modo calificable"
 
-#: drag_and_drop_v2.py:700 drag_and_drop_v2.py:811
+#: drag_and_drop_v2.py:700 drag_and_drop_v2.py:818
 msgid "Max number of attempts reached"
 msgstr "Máximo número de intentos alcanzado"
 
@@ -291,7 +294,7 @@ msgstr "Retroalimentación final"
 
 #: templates/html/drag_and_drop_edit.html:86
 msgid "Explanation Text"
-msgstr ""
+msgstr "Texto explicativo"
 
 #: templates/html/drag_and_drop_edit.html:95
 msgid "Zones"
@@ -390,7 +393,7 @@ msgstr "Mostrar los margenes de la zona en la imagen"
 
 #: templates/html/drag_and_drop_edit.html:201
 msgid "Display zone borders when dragging an item"
-msgstr ""
+msgstr "Mostrar los bordes de la zona al arrastrar un elemento"
 
 #: templates/html/drag_and_drop_edit.html:206
 msgid "Zone definitions"
@@ -424,190 +427,190 @@ msgstr "Guardar"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: utils.py:56
+#: utils.py:59
 #, python-brace-format
 msgid "Your highest score is {score}"
 msgstr "Tu puntaje más alto es {score}"
 
-#: utils.py:57
+#: utils.py:60
 #, python-brace-format
 msgid "Final attempt was used, highest score is {score}"
 msgstr "Se ha utilizado el último intento. Su puntaje máximo fué {score}"
 
-#: utils.py:65
+#: utils.py:68
 #, python-brace-format
-msgid "Correctly placed {correct_count} item."
-msgid_plural "Correctly placed {correct_count} items."
-msgstr[0] "{correct_count} elemento correctamente colocado."
-msgstr[1] "{correct_count} elementos correctamente colocados."
-msgstr[2] "{correct_count} elementos correctamente colocados."
+msgid "Correctly placed {correct_count} item"
+msgid_plural "Correctly placed {correct_count} items"
+msgstr[0] "{correct_count} elemento correctamente colocado"
+msgstr[1] "{correct_count} elementos correctamente colocados"
+msgstr[2] "{correct_count} elementos correctamente colocados"
 
-#: utils.py:76
+#: utils.py:79
 #, python-brace-format
-msgid "Misplaced {misplaced_count} item."
-msgid_plural "Misplaced {misplaced_count} items."
-msgstr[0] "Colocó incorrectamente {misplaced_count} ítem."
-msgstr[1] "Colocó incorrectamente {misplaced_count} ítems."
-msgstr[2] "Colocó incorrectamente {misplaced_count} ítems."
+msgid "Misplaced {misplaced_count} item"
+msgid_plural "Misplaced {misplaced_count} items"
+msgstr[0] "Colocó incorrectamente {misplaced_count} ítem"
+msgstr[1] "Colocó incorrectamente {misplaced_count} ítems"
+msgstr[2] "Colocó incorrectamente {misplaced_count} ítems"
 
-#: utils.py:87
+#: utils.py:90
 #, python-brace-format
 msgid ""
-"Misplaced {misplaced_count} item. Misplaced item was returned to item bank."
+"Misplaced {misplaced_count} item (misplaced item was returned to the item "
+"bank)"
 msgid_plural ""
-"Misplaced {misplaced_count} items. Misplaced items were returned to item "
-"bank."
+"Misplaced {misplaced_count} items (misplaced items were returned to the item"
+" bank)"
 msgstr[0] "{misplaced_count} artículo perdido. Los artículos perdidos se devolvieron al banco de artículos."
 msgstr[1] "{misplaced_count} artículos perdidos. Los artículos perdidos se devolvieron al banco de artículos."
 msgstr[2] "{misplaced_count} artículos perdidos. Los artículos perdidos se devolvieron al banco de artículos."
 
-#: utils.py:98
+#: utils.py:101
 #, python-brace-format
-msgid "Did not place {missing_count} required item."
-msgid_plural "Did not place {missing_count} required items."
-msgstr[0] "No colocó {missing_count} ítem requerido."
-msgstr[1] "No colocó {missing_count} ítems requeridos."
-msgstr[2] "No colocó {missing_count} ítems requeridos."
+msgid "Did not place {missing_count} required item"
+msgid_plural "Did not place {missing_count} required items"
+msgstr[0] "No colocó {missing_count} ítem requerido"
+msgstr[1] "No colocó {missing_count} ítems requeridos"
+msgstr[2] "No colocó {missing_count} ítems requeridos"
 
-#: public/js/drag_and_drop.js:33 public/js/drag_and_drop.js:380
+#: public/js/drag_and_drop.js:48 public/js/drag_and_drop.js:399
 msgid "Submitting"
 msgstr "Enviando"
 
-#: public/js/drag_and_drop.js:147
+#: public/js/drag_and_drop.js:162
 msgid "Unknown Zone"
 msgstr "Zona desconocida"
 
-#: public/js/drag_and_drop.js:151
+#: public/js/drag_and_drop.js:166
 msgid "Placed in: {zone_title}"
 msgstr "Ubicado en: {zone_title}"
 
-#: public/js/drag_and_drop.js:155
+#: public/js/drag_and_drop.js:170
 msgid "Correctly placed in: {zone_title}"
 msgstr "Ubicado correctamente en {zone_title}"
 
-#: public/js/drag_and_drop.js:167
+#: public/js/drag_and_drop.js:182
 msgid ", draggable, grabbed"
 msgstr ", arrastrable, tomado"
 
-#: public/js/drag_and_drop.js:167
+#: public/js/drag_and_drop.js:182
 msgid ", draggable"
 msgstr ", arrastrable"
 
-#: public/js/drag_and_drop.js:244
+#: public/js/drag_and_drop.js:259
 msgid "No items placed here"
 msgstr "No se colocaron objetos acá"
 
-#: public/js/drag_and_drop.js:250
+#: public/js/drag_and_drop.js:265
 msgid "Items placed here: "
 msgstr "Objetos colocados acá:"
 
-#: public/js/drag_and_drop.js:282
+#: public/js/drag_and_drop.js:297
 msgid ", dropzone"
 msgstr ", zona para soltar los ítems"
 
-#: public/js/drag_and_drop.js:285
+#: public/js/drag_and_drop.js:300
 msgid "droppable"
 msgstr "objeto arrastrable"
 
-#: public/js/drag_and_drop.js:306 public/js/drag_and_drop.js:310
+#: public/js/drag_and_drop.js:321 public/js/drag_and_drop.js:325
 msgid "Feedback"
 msgstr "Retroalimentación"
 
-#: public/js/drag_and_drop.js:321 public/js/drag_and_drop.js:324
+#: public/js/drag_and_drop.js:336 public/js/drag_and_drop.js:341
 msgid "Explanation"
-msgstr ""
+msgstr "Explicación"
 
-#: public/js/drag_and_drop.js:338 public/js/drag_and_drop.js:512
-#: public/js/drag_and_drop.js:555
+#: public/js/drag_and_drop.js:357 public/js/drag_and_drop.js:547
 msgid "Close"
 msgstr "Cerrar"
 
-#: public/js/drag_and_drop.js:341 public/js/drag_and_drop.js:576
+#: public/js/drag_and_drop.js:360 public/js/drag_and_drop.js:595
 msgid "Keyboard Help"
 msgstr "Ayuda de teclado"
 
-#: public/js/drag_and_drop.js:344
+#: public/js/drag_and_drop.js:363
 msgid "This is a screen reader-friendly problem."
 msgstr "Este tipo de problema es compatible con los lectores de pantalla."
 
-#: public/js/drag_and_drop.js:345
+#: public/js/drag_and_drop.js:364
 msgid ""
 "Drag and Drop problems consist of draggable items and dropzones. Users "
 "should select a draggable item with their keyboard and then navigate to an "
 "appropriate dropzone to drop it."
 msgstr "Los problemas de arrastrar y soltar contienen elementos arrastrables y zonas. Los usuarios deben seleccionar un elemento arrastrable con el teclado y llevarlo a una zona adecuada para soltarlos."
 
-#: public/js/drag_and_drop.js:346
+#: public/js/drag_and_drop.js:365
 msgid ""
 "You can complete this problem using only your keyboard by following the "
 "guidance below:"
 msgstr "Puede completar este problema usando únicamente su teclado y siguiendo las recomendaciones a continuación:"
 
-#: public/js/drag_and_drop.js:348
+#: public/js/drag_and_drop.js:367
 msgid ""
 "Use only TAB and SHIFT+TAB to navigate between draggable items and drop "
 "zones."
 msgstr "Utilice sólo las teclas TAB y SHIFT + TAB para navegar entre los elementos arrastrables y las zonas."
 
-#: public/js/drag_and_drop.js:349
+#: public/js/drag_and_drop.js:368
 msgid "Press CTRL+M to select a draggable item (effectively picking it up)."
 msgstr "Presione CTRL + M para seleccionar un elemento arrastrable (para seleccionarlo efectivamente)."
 
-#: public/js/drag_and_drop.js:350
+#: public/js/drag_and_drop.js:369
 msgid ""
 "Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press "
 "CTRL+M once more to drop it here."
 msgstr "Navegue usando TAB y MAYÚS + TAB a la zona desplegable apropiada y presione CTRL + M nuevamente para dejarlo en esa zona."
 
-#: public/js/drag_and_drop.js:351
+#: public/js/drag_and_drop.js:370
 msgid ""
 "Press ESC if you want to cancel the drop operation (for example, to select a"
 " different item)."
 msgstr "Presione ESC si desea cancelar la operación de soltar (por ejemplo, para seleccionar un elemento diferente)."
 
-#: public/js/drag_and_drop.js:352
+#: public/js/drag_and_drop.js:371
 msgid ""
 "TAB back to the list of draggable items and repeat this process until all of"
 " the draggable items have been placed on their respective dropzones."
 msgstr "Use la tecla TAB para volver a la lista de elementos arrastrables y repetir este proceso hasta que todos los elementos arrastrables estén en sus respectivas zonas."
 
-#: public/js/drag_and_drop.js:370
+#: public/js/drag_and_drop.js:389
 msgid "You have used {used} of {total} attempts."
 msgstr "Usted ha usado {used} de {total} intentos."
 
-#: public/js/drag_and_drop.js:393
+#: public/js/drag_and_drop.js:412
 msgid "Submit"
 msgstr "Enviar"
 
-#: public/js/drag_and_drop.js:434
+#: public/js/drag_and_drop.js:453
 msgid "Show Answer"
 msgstr "Mostrar Respuesta"
 
-#: public/js/drag_and_drop.js:443
+#: public/js/drag_and_drop.js:462
 msgid "Actions"
 msgstr "Acciones"
 
-#: public/js/drag_and_drop.js:447
+#: public/js/drag_and_drop.js:466
 msgid "Go to Beginning"
 msgstr "Ir al comienzo"
 
-#: public/js/drag_and_drop.js:453
+#: public/js/drag_and_drop.js:472
 msgid "Reset"
 msgstr "Reiniciar"
 
-#: public/js/drag_and_drop.js:473 public/js/drag_and_drop.js:1213
+#: public/js/drag_and_drop.js:506 public/js/drag_and_drop.js:1233
 msgid "Some of your answers were not correct."
 msgstr "Algunas de sus respuestas no fueron correctas."
 
-#: public/js/drag_and_drop.js:474 public/js/drag_and_drop.js:1216
+#: public/js/drag_and_drop.js:507 public/js/drag_and_drop.js:1236
 msgid "Hints:"
 msgstr "Sugerencias:"
 
-#: public/js/drag_and_drop.js:542
+#: public/js/drag_and_drop.js:577
 msgid "Correct"
 msgstr "Correcto"
 
-#: public/js/drag_and_drop.js:542
+#: public/js/drag_and_drop.js:577
 msgid "Incorrect"
 msgstr "Incorrecto"
 
@@ -615,7 +618,7 @@ msgstr "Incorrecto"
 #. total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
 #. points will always be at least 1. We pluralize based on the total number of
 #. points (example: 0/1 point; 1/2 points).
-#: public/js/drag_and_drop.js:591
+#: public/js/drag_and_drop.js:610
 msgid "{earned}/{possible} point (graded)"
 msgid_plural "{earned}/{possible} points (graded)"
 msgstr[0] "{earned}/{possible} punto (calificado)"
@@ -626,7 +629,7 @@ msgstr[2] "{earned}/{possible} puntos (calificado)"
 #. total number of points (examples: 0/1, 1/1, 2/3, 5/10). The total number of
 #. points will always be at least 1. We pluralize based on the total number of
 #. points (example: 0/1 point; 1/2 points).
-#: public/js/drag_and_drop.js:598
+#: public/js/drag_and_drop.js:617
 msgid "{earned}/{possible} point (ungraded)"
 msgid_plural "{earned}/{possible} points (ungraded)"
 msgstr[0] "{earned}/{possible} punto (no calificado)"
@@ -635,7 +638,7 @@ msgstr[2] "{earned}/{possible} puntos (no calificado)"
 
 #. Translators: {possible} is the number of points possible (examples: 1, 3,
 #. 10).
-#: public/js/drag_and_drop.js:608
+#: public/js/drag_and_drop.js:627
 msgid "{possible} point possible (graded)"
 msgid_plural "{possible} points possible (graded)"
 msgstr[0] "{possible} punto posible (calificado)"
@@ -644,57 +647,57 @@ msgstr[2] "{possible} puntos posibles (calificado)"
 
 #. Translators: {possible} is the number of points possible (examples: 1, 3,
 #. 10).
-#: public/js/drag_and_drop.js:615
+#: public/js/drag_and_drop.js:634
 msgid "{possible} point possible (ungraded)"
 msgid_plural "{possible} points possible (ungraded)"
 msgstr[0] "{possible} punto posible (no calificado)"
 msgstr[1] "{possible} puntos posibles (no calificado)"
 msgstr[2] "{possible} puntos posibles (no calificado)"
 
-#: public/js/drag_and_drop.js:641
+#: public/js/drag_and_drop.js:660
 msgid "Drag and Drop Problem"
 msgstr "Problema de Arrastrar y Soltar"
 
-#: public/js/drag_and_drop.js:643
+#: public/js/drag_and_drop.js:662
 msgid "Problem"
 msgstr "Problema"
 
-#: public/js/drag_and_drop.js:668
+#: public/js/drag_and_drop.js:687
 msgid "Item Bank"
 msgstr "Items"
 
-#: public/js/drag_and_drop.js:713
+#: public/js/drag_and_drop.js:732
 msgid "Drop Targets"
 msgstr "Zonas para soltar"
 
-#: public/js/drag_and_drop.js:878
+#: public/js/drag_and_drop.js:898
 msgid "An error occurred. Unable to load drag and drop problem."
 msgstr "Ocurrió un error. No fue posible cargar el problema de arrastrar y soltar."
 
-#: public/js/drag_and_drop.js:1338
+#: public/js/drag_and_drop.js:1359
 msgid "You cannot add any more items to this zone."
 msgstr "No puedes añadir más objetos a esta zona."
 
-#: public/js/drag_and_drop_edit.js:108 public/js/drag_and_drop_edit.js:501
-#: public/js/drag_and_drop_edit.js:731
+#: public/js/drag_and_drop_edit.js:123 public/js/drag_and_drop_edit.js:516
+#: public/js/drag_and_drop_edit.js:746
 msgid "There was an error with your form."
 msgstr "Ha habido un error con su formulario."
 
-#: public/js/drag_and_drop_edit.js:109
+#: public/js/drag_and_drop_edit.js:124
 msgid "Please check over your submission."
 msgstr "Por favor revise nuevamente su envío"
 
-#: public/js/drag_and_drop_edit.js:351
+#: public/js/drag_and_drop_edit.js:366
 msgid "Zone {num}"
 msgid_plural "Zone {num}"
 msgstr[0] "Zona {num}"
 msgstr[1] "Zona {num}"
 msgstr[2] "Zona {num}"
 
-#: public/js/drag_and_drop_edit.js:502
+#: public/js/drag_and_drop_edit.js:517
 msgid "Please check the values you entered."
 msgstr "Por favor revise los valores ingresados."
 
-#: public/js/drag_and_drop_edit.js:724
+#: public/js/drag_and_drop_edit.js:739
 msgid "Saving"
 msgstr "Guardando"
