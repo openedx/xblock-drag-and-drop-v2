@@ -141,7 +141,6 @@
     "The background color of draggable items in the problem (example: 'blue' or '#0000ff').": "\ubb38\uc81c\uc758 \ub04c\uae30 \uac00\ub2a5\ud55c \ud56d\ubaa9\uc758 \ubc30\uacbd \uc0c9\uc0c1 (\uc608\uc2dc: '\ud30c\ub791' \ub610\ub294 '#0000ff').",
     "The description of the problem or instructions shown to the learner.": "\ud559\uc2b5\uc790\uc5d0\uac8c \ubcf4\uc5ec\uc9c0\ub294 \ubb38\uc81c \ub610\ub294 \uc9c0\uc2dc\uc0ac\ud56d\uc758 \ub0b4\uc6a9",
     "The title of the drag and drop problem. The title is displayed to learners.": "\ub04c\uc5b4\ub193\uae30 \ubb38\uc81c\uc758 \uc81c\ubaa9. \uc81c\ubaa9\uc740 \ud559\uc2b5\uc790\uc5d0\uac8c \uacf5\uac1c\ub429\ub2c8\ub2e4.",
-    "There are attempts remaining": "\ub0a8\uc740 \uc2dc\ub3c4 \ud69f\uc218\uac00 \uc788\uc2b5\ub2c8\ub2e4.",
     "There was an error with your form.": "\ud615\uc2dd\uc5d0 \uc624\ub958\uac00 \uc788\uc2b5\ub2c8\ub2e4.",
     "This is a screen reader-friendly problem.": "\uc774 \ubb38\uc81c\ub294 \ud654\uba74 \uc774\uc6a9\uc790\uc5d0\uac8c \uc801\ud569\ud55c \ubb38\uc81c\uc785\ub2c8\ub2e4.",
     "This setting limits the number of items that can be dropped into a single zone.": "\uc774 \uc124\uc815\uc740 \ud558\ub098\uc758 \uc601\uc5ed\uc5d0 \ub193\uc77c \uc218 \uc788\ub294 \ud56d\ubaa9\uc758 \ucd5c\ub300 \uac1c\uc218\ub97c \uc124\uc815 \ud569\ub2c8\ub2e4.",

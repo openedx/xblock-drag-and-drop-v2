@@ -151,7 +151,6 @@
     "The background color of draggable items in the problem (example: 'blue' or '#0000ff').": "La couleur de fond des \u00e9l\u00e9ments glissables dans l'exercice (par exemple\u00a0: 'bleu' ou '#0000ff').",
     "The description of the problem or instructions shown to the learner.": "La description du probl\u00e8me ou les instructions affich\u00e9es \u00e0 l'\u00e9tudiant.",
     "The title of the drag and drop problem. The title is displayed to learners.": "Le titre de l'exercice de glisser-d\u00e9placer. Ce titre est affich\u00e9 aux \u00e9tudiants.",
-    "There are attempts remaining": "Il vous reste des tentatives",
     "There was an error with your form.": "Il y avait une erreur avec votre formulaire.",
     "This is a screen reader-friendly problem.": "Il s'agit d'un probl\u00e8me facile \u00e0 lire \u00e0 l'\u00e9cran.",
     "This setting limits the number of items that can be dropped into a single zone.": "Ce param\u00e8tre limite le nombre d'\u00e9l\u00e9ments pouvant \u00eatre d\u00e9pos\u00e9s dans une seule zone.",

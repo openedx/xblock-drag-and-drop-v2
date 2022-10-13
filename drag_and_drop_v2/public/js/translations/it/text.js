@@ -72,7 +72,6 @@
     "Standard": "Standard",
     "Submitting": "In fase di invio",
     "The description of the problem or instructions shown to the learner.": "Descrizione del problema o istruzioni mostrate al discente.",
-    "There are attempts remaining": "Ci sono ancora tentativi rimanenti",
     "Title": "Titolo",
     "Your highest score is {score}": "Il tuo punteggio pi\u00f9 alto \u00e8 {score}",
     "Zone borders": "Bordi della zona",

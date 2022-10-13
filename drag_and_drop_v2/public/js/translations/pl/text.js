@@ -132,7 +132,6 @@
     "The background color of draggable items in the problem (example: 'blue' or '#0000ff').": "Kolor t\u0142a dopasowywanych element\u00f3w (np. '#0000ff')",
     "The description of the problem or instructions shown to the learner.": "Opis \u0107wiczenia i/lub instrukcje dla student\u00f3w.",
     "The title of the drag and drop problem. The title is displayed to learners.": "Tytu\u0142 tego \u0107wiczenia, widoczny dla student\u00f3w.",
-    "There are attempts remaining": "Dost\u0119pne s\u0105 dodatkowe pr\u00f3by",
     "There was an error with your form.": "Wyst\u0105pi\u0142 b\u0142\u0105d z przesy\u0142aniem odpowiedzi.",
     "Title": "Tytu\u0142",
     "Unknown DnDv2 mode {mode} - course is misconfigured": "Nieznany tryb DnDv2 {mode} - kurs skonfigurowany nieprawid\u0142owo",
