@@ -127,18 +127,18 @@ class SHOWANSWER:
     """
     Constants for when to show answer
     """
-    DEFAULT = "default"
+    AFTER_ALL_ATTEMPTS = "after_all_attempts"
+    AFTER_ALL_ATTEMPTS_OR_CORRECT = "after_all_attempts_or_correct"
     ALWAYS = "always"
     ANSWERED = "answered"
     ATTEMPTED = "attempted"
-    CLOSED = "closed"
-    FINISHED = "finished"
-    CORRECT_OR_PAST_DUE = "correct_or_past_due"
-    PAST_DUE = "past_due"
-    NEVER = "never"
-    AFTER_ALL_ATTEMPTS = "after_all_attempts"
-    AFTER_ALL_ATTEMPTS_OR_CORRECT = "after_all_attempts_or_correct"
     ATTEMPTED_NO_PAST_DUE = "attempted_no_past_due"
+    CLOSED = "closed"
+    CORRECT_OR_PAST_DUE = "correct_or_past_due"
+    DEFAULT = "default"
+    FINISHED = "finished"
+    NEVER = "never"
+    PAST_DUE = "past_due"
 
 
 class StateMigration:
