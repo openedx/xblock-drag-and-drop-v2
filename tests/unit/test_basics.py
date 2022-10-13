@@ -42,6 +42,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             'show_title': False,
             'problem_text': "Problem Drag & Drop",
             'show_problem_header': False,
+            'showanswer': "attempted",
             'item_background_color': 'cornflowerblue',
             'item_text_color': 'coral',
             'weight': '5',

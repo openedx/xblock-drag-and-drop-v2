@@ -2,6 +2,7 @@
 
 from __future__ import absolute_import
 
+import itertools
 import json
 import random
 import unittest
@@ -12,7 +13,7 @@ import six
 from six.moves import range
 from xblockutils.resources import ResourceLoader
 
-from drag_and_drop_v2.utils import FeedbackMessages, SHOWANSWER
+from drag_and_drop_v2.utils import FeedbackMessages, SHOWANSWER as SA
 
 from ..utils import TestCaseMixin, generate_max_and_attempts, make_block
 
@@ -606,21 +607,223 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
 
         self.assertEqual(self.block.item_state, original_item_state)
 
+    def _validate_answer(self, expected_status_code: str):
+        """
+        Helper method to call the "Show Answer" handler and verify its return code.
+        """
+        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
+        self.assertEqual(res.status_code, expected_status_code)
+
     @ddt.data(
-        (None, 10, 409),
-        (0, 12, 409),
-        (3, 3, 200),
+        *itertools.product([SA.ALWAYS], [200]),
+        *itertools.product(
+            [
+                SA.AFTER_ALL_ATTEMPTS,
+                SA.AFTER_ALL_ATTEMPTS_OR_CORRECT,
+                SA.ANSWERED,
+                SA.ATTEMPTED,
+                SA.ATTEMPTED_NO_PAST_DUE,
+                SA.CLOSED,
+                SA.CORRECT_OR_PAST_DUE,
+                SA.DEFAULT,
+                SA.FINISHED,
+                SA.NEVER,
+                SA.PAST_DUE,
+            ],
+            [409],
+        ),
     )
     @ddt.unpack
-    def test_show_answer_validation(self, max_attempts, attempts, expect_status_code):
+    def test_show_answer_always(self, showanswer_option, expected_status_code):
         """
-        Test that show_answer returns a 400 when max_attempts = None, or when
-        there are still attempts remaining.
+        Test that a user can request an answer without submitting any attempts.
         """
-        self.block.max_attempts = max_attempts
-        self.block.attempts = attempts
-        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-        self.assertEqual(res.status_code, expect_status_code)
+        self.block.showanswer = showanswer_option
+        self._validate_answer(expected_status_code)
+
+    @ddt.data(
+        *itertools.product([SA.ALWAYS, SA.ATTEMPTED, SA.ATTEMPTED_NO_PAST_DUE], [200]),
+        *itertools.product(
+            [
+                SA.AFTER_ALL_ATTEMPTS,
+                SA.AFTER_ALL_ATTEMPTS_OR_CORRECT,
+                SA.ANSWERED,
+                SA.CLOSED,
+                SA.CORRECT_OR_PAST_DUE,
+                SA.DEFAULT,
+                SA.FINISHED,
+                SA.NEVER,
+                SA.PAST_DUE,
+            ],
+            [409],
+        ),
+    )
+    @ddt.unpack
+    def test_show_answer_for_attempted(self, showanswer_option, expected_status_code):
+        """
+        Test that a user can request an answer after submitting at least one attempt.
+        """
+        self.block.showanswer = showanswer_option
+        self.block.attempts = 1
+        self._validate_answer(expected_status_code)
+
+    @ddt.data(
+        *itertools.product(
+            [SA.AFTER_ALL_ATTEMPTS_OR_CORRECT, SA.ALWAYS, SA.ANSWERED, SA.CORRECT_OR_PAST_DUE, SA.FINISHED], [200]
+        ),
+        *itertools.product(
+            [
+                SA.AFTER_ALL_ATTEMPTS,
+                SA.ATTEMPTED,
+                SA.ATTEMPTED_NO_PAST_DUE,
+                SA.CLOSED,
+                SA.DEFAULT,
+                SA.NEVER,
+                SA.PAST_DUE,
+            ],
+            [409],
+        ),
+    )
+    @ddt.unpack
+    @mock.patch('drag_and_drop_v2.DragAndDropBlock.is_correct', return_value=True)
+    def test_show_answer_for_correct_answer(self, showanswer_option, expected_status_code, _mock_is_correct):
+        """
+        Test that a user can request an answer once they submit a correct answer.
+
+        Note: when an Instructor resets the number of Learner's attempts to zero, it doesn't reset the user's state,
+        so the answer can still be marked as correct.
+        """
+        self.block.showanswer = showanswer_option
+        self._validate_answer(expected_status_code)
+
+    @ddt.data(
+        *itertools.product(
+            [
+                SA.ALWAYS,
+                SA.ATTEMPTED,
+                SA.ATTEMPTED_NO_PAST_DUE,
+                SA.AFTER_ALL_ATTEMPTS,
+                SA.AFTER_ALL_ATTEMPTS_OR_CORRECT,
+                SA.CLOSED,
+                SA.FINISHED,
+            ],
+            [200],
+        ),
+        *itertools.product(
+            [
+                SA.ANSWERED,
+                SA.CORRECT_OR_PAST_DUE,
+                SA.DEFAULT,
+                SA.NEVER,
+                SA.PAST_DUE,
+            ],
+            [409],
+        ),
+    )
+    @ddt.unpack
+    def test_show_answer_for_no_remaining_attempts(self, showanswer_option, expected_status_code):
+        self.block.showanswer = showanswer_option
+        self.block.attempts = 1
+        self.block.max_attempts = 1
+        self._validate_answer(expected_status_code)
+
+    @ddt.data(
+        *itertools.product(
+            [
+                SA.ALWAYS,
+                SA.ATTEMPTED,
+                SA.CLOSED,
+                SA.FINISHED,
+                SA.PAST_DUE,
+                SA.CORRECT_OR_PAST_DUE,
+            ],
+            [200],
+        ),
+        *itertools.product(
+            [
+                SA.AFTER_ALL_ATTEMPTS,
+                SA.AFTER_ALL_ATTEMPTS_OR_CORRECT,
+                SA.ANSWERED,
+                SA.ATTEMPTED_NO_PAST_DUE,
+                SA.DEFAULT,
+                SA.NEVER,
+            ],
+            [409],
+        ),
+    )
+    @ddt.unpack
+    @mock.patch('drag_and_drop_v2.DragAndDropBlock.has_submission_deadline_passed', return_value=True)
+    def test_show_answer_past_due(self, showanswer_option, expected_status_code, _mock_deadline_passed):
+        """
+        Test that a user can request an answer after the due date even if they had not submitted any attempts.
+        """
+        self.block.showanswer = showanswer_option
+        self._validate_answer(expected_status_code)
+
+    @ddt.data(
+        *itertools.product(
+            [
+                SA.ALWAYS,
+                SA.ATTEMPTED,
+                SA.ATTEMPTED_NO_PAST_DUE,
+                SA.CLOSED,
+                SA.FINISHED,
+                SA.PAST_DUE,
+                SA.CORRECT_OR_PAST_DUE,
+            ],
+            [200],
+        ),
+        *itertools.product(
+            [
+                SA.AFTER_ALL_ATTEMPTS,
+                SA.AFTER_ALL_ATTEMPTS_OR_CORRECT,
+                SA.ANSWERED,
+                SA.DEFAULT,
+                SA.NEVER,
+            ],
+            [409],
+        ),
+    )
+    @ddt.unpack
+    @mock.patch('drag_and_drop_v2.DragAndDropBlock.has_submission_deadline_passed', return_value=True)
+    def test_show_answer_past_due_for_attempted(self, showanswer_option, expected_status_code, _mock_deadline_passed):
+        """
+        Test that a user can request an answer after the due date if they had submitted at least one attempt.
+        """
+        self.block.showanswer = showanswer_option
+        self.block.attempts = 1
+        self._validate_answer(expected_status_code)
+
+    @ddt.data(
+        *itertools.product(
+            [
+                SA.AFTER_ALL_ATTEMPTS,
+                SA.AFTER_ALL_ATTEMPTS_OR_CORRECT,
+                SA.ALWAYS,
+                SA.ANSWERED,
+                SA.ATTEMPTED,
+                SA.ATTEMPTED_NO_PAST_DUE,
+                SA.CLOSED,
+                SA.CORRECT_OR_PAST_DUE,
+                SA.DEFAULT,
+                SA.FINISHED,
+                SA.PAST_DUE,
+            ],
+            [200],
+        ),
+        *itertools.product([SA.NEVER], [409]),
+    )
+    @ddt.unpack
+    def test_show_answer_for_staff_user(self, showanswer_option, expected_status_code):
+        """
+        Test that a user with staff permissions can request an answer unless its visibility is set to "never".
+        """
+        mock_service = mock.MagicMock()
+        mock_service.get_current_user.opt_attrs.get.return_value = True
+        self.block.runtime.service = mock_service
+
+        self.block.showanswer = showanswer_option
+        self._validate_answer(expected_status_code)
 
     def test_get_correct_state(self):
         """
@@ -956,61 +1159,3 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
         self._submit_solution({0: self.ZONE_1, 1: self.ZONE_2, 2: self.ZONE_2, 3: self.ZONE_2})
         res = self._do_attempt()
         self.assertFalse(res['correct'])
-
-    def test_show_answer_status_always(self):
-        """
-         Test "Show Answer" button is shown in assessment mode when course "showanswer" setting is always
-        """
-        self.block.showanswer = SHOWANSWER.ALWAYS
-        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-        self.assertEqual(res.status_code, 200)
-
-    def test_show_answer_status_never(self):
-        """
-         Test "Show Answer" button is not shown in assessment mode when course "showanswer" setting is never
-        """
-        self.block.showanswer = SHOWANSWER.NEVER
-        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-        self.assertEqual(res.status_code, 409)
-
-    def test_show_answer_status_attempted(self):
-        """
-         Test "Show Answer" button is shown in assessment mode when course "showanswer" setting is attempted
-        """
-        self.block.showanswer = SHOWANSWER.ATTEMPTED
-        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-        self.assertEqual(res.status_code, 409)
-
-        self._do_attempt()
-        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-        self.assertEqual(res.status_code, 200)
-
-    def test_show_answer_status_is_correct(self):
-        """
-         Test "Show Answer" button is shown in assessment mode when course "showanswer" setting is ANSWERED
-        """
-        self.block.showanswer = SHOWANSWER.ANSWERED
-        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-        self.assertEqual(res.status_code, 409)
-
-        self._submit_complete_solution()
-        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-        self.assertEqual(res.status_code, 200)
-
-    def test_show_answer_status_is_finished(self):
-        """
-         Test "Show Answer" button is shown in assessment mode when course "showanswer" setting is FINISHED
-        """
-        self.block.showanswer = SHOWANSWER.FINISHED
-        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-        self.assertEqual(res.status_code, 409)
-
-        self._submit_incorrect_solution()
-        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-        self.assertEqual(res.status_code, 409)
-
-        self._submit_complete_solution()
-        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
-        self.assertEqual(res.status_code, 200)
-        self.assertTrue(self.block.attempts_remain)
-        self.assertFalse(self.block.closed)
