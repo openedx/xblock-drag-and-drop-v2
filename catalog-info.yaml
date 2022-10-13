@@ -31,7 +31,7 @@ spec:
   owner: 'group:tcril-engineering'
 
   # (Required) Acceptable Type Values: service, website, library
-  type: 'XBlock'
+  type: 'library'
 
   # (Required) Acceptable Lifecycle Values: experimental, production, deprecated
   lifecycle: 'production'
