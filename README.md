@@ -104,9 +104,15 @@ There are two problem modes available:
 * **Standard**: In this mode, the learner gets immediate feedback on each
   attempt to place an item, and the number of attempts is not limited.
 * **Assessment**: In this mode, the learner places all items on the board and
-  then clicks a "Submit" button to get feedback.  The number of attempts can be
-  limited.  When all attempts are used, the learner can click a "Show Answer"
-  button to temporarily place items on their correct drop zones.
+  then clicks a "Submit" button to get feedback.
+  * The number of attempts can be limited.
+  * The learner can click a "Show Answer" button to temporarily place items on their correct drop zones.    
+    You can select one of the pre-defined conditions for displaying this button. They work in the same way as in the
+    Problem XBlock, so you can read about each them in the [Problem Component documentation][capa-show-answer].  
+    By default, the value from the course "Advanced Settings" configuration is used. If you have modified this for
+    a specific XBlock but want to switch back to using the default value, select the "Default" option.
+
+[capa-show-answer]: https://edx.readthedocs.io/projects/open-edx-building-and-running-a-course/en/latest/course_components/create_problem.html#show-answer
 
 ![Drop zone edit](doc/img/edit-view-zones.png)
 
