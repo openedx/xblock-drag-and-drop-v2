@@ -8,13 +8,6 @@ kind: Component
 metadata:
   name: 'xblock-drag-and-drop-v2'
   description: "An XBlock implementing a friendly drag-and-drop style problem"
-  links:
-    - url: "https://github.com/openedx/xblock-drag-and-drop-v2"
-      title: "Source code repository"
-      # Backstage uses the MaterialUI Icon Set.
-      # https://mui.com/material-ui/material-icons/
-      # The value will be the name of the icon.
-      icon: "GitHub"
   annotations:
     # (Optional) Annotation keys and values can be whatever you want.
     # We use it in Open edX repos to have a comma-separated list of GitHub user
