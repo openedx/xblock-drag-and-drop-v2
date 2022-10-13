@@ -135,7 +135,7 @@ class DragAndDropBlock(
         enforce_type=True,
     )
     showanswer = String(
-        display_name=_("Show Answer"),
+        display_name=_("Show answer"),
         help=_("Defines when to show the answer to the problem. "
                "A default value can be set in Advanced Settings. "
                "To revert setting a custom value, choose the 'Default' option."),
