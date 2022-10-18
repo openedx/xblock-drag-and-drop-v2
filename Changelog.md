@@ -1,6 +1,11 @@
 Drag and Drop XBlock changelog
 ==============================
 
+Version 2.5.0 (2022-10-13)
+---------------------------
+
+* Make the "Show Answer" condition customizable (like in the Problem XBlock). 
+
 Version 2.4.2 (2022-10-13)
 ---------------------------
 

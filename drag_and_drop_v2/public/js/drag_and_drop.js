@@ -444,7 +444,7 @@ function DragAndDropTemplates(configuration) {
         var showAnswerButton = null;
         if (ctx.show_show_answer) {
             var options = {
-                disabled: ctx.showing_answer ? true : ctx.disable_show_answer_button,
+                disabled: !!ctx.showing_answer,
                 spinner: ctx.show_answer_spinner
             };
             showAnswerButton = sidebarButtonTemplate(
@@ -1883,8 +1883,8 @@ function DragAndDropBlock(runtime, element, configuration) {
             state.grade = data.grade;
             state.feedback = data.feedback;
             state.overall_feedback = data.overall_feedback;
+            state.answer_available = data.answer_available;
             state.last_action_correct = data.correct;
-
             if (attemptsRemain()) {
                 data.misplaced_items.forEach(function(misplaced_item_id) {
                     delete state.items[misplaced_item_id]
@@ -1901,7 +1901,7 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var canSubmitAttempt = function() {
-        return Object.keys(state.items).length > 0 && isPastDue() && attemptsRemain() && !submittingLocation();
+        return Object.keys(state.items).length > 0 && !isPastDue() && attemptsRemain() && !submittingLocation();
     };
 
     var canReset = function() {
@@ -1921,16 +1921,17 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var isPastDue = function () {
-        return !configuration.has_deadline_passed;
+        return configuration.has_deadline_passed;
     };
 
-    var canShowAnswer = function() {
-        return configuration.mode === DragAndDropBlock.ASSESSMENT_MODE && !attemptsRemain();
-    };
 
     var attemptsRemain = function() {
         return !configuration.max_attempts || configuration.max_attempts > state.attempts;
     };
+    var canShowAnswer = function() {
+        if(state.answer_available === undefined) return configuration.answer_available;
+        return state.answer_available;
+    }
 
     var submittingLocation = function() {
         var result = false;
@@ -2009,7 +2010,7 @@ function DragAndDropBlock(runtime, element, configuration) {
             problem_html: configuration.problem_text,
             show_problem_header: configuration.show_problem_header,
             show_submit_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
-            show_show_answer: configuration.mode == DragAndDropBlock.ASSESSMENT_MODE,
+            show_show_answer: canShowAnswer(),
             target_img_src: configuration.target_img_expanded_url,
             target_img_description: configuration.target_img_description,
             display_zone_labels: configuration.display_zone_labels,
@@ -2026,7 +2027,6 @@ function DragAndDropBlock(runtime, element, configuration) {
             overall_feedback_messages: state.overall_feedback,
             explanation: state.explanation,
             disable_reset_button: !canReset(),
-            disable_show_answer_button: !canShowAnswer(),
             disable_submit_button: !canSubmitAttempt(),
             submit_spinner: state.submit_spinner,
             showing_answer: state.showing_answer,

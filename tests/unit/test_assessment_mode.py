@@ -1,8 +1,6 @@
-# Imports ###########################################################
-
 from __future__ import absolute_import
 
-import json
+import itertools
 import random
 import unittest
 
@@ -10,308 +8,11 @@ import ddt
 import mock
 import six
 from six.moves import range
-from xblockutils.resources import ResourceLoader
 
-from drag_and_drop_v2.utils import FeedbackMessages
+from drag_and_drop_v2.utils import FeedbackMessages, SHOWANSWER as SA
+from .test_fixtures import BaseDragAndDropAjaxFixture
 
-from ..utils import TestCaseMixin, generate_max_and_attempts, make_block
-
-# Globals ###########################################################
-
-loader = ResourceLoader(__name__)
-
-
-# Classes ###########################################################
-
-class BaseDragAndDropAjaxFixture(TestCaseMixin):
-    ZONE_1 = None
-    ZONE_2 = None
-
-    OVERALL_FEEDBACK_KEY = 'overall_feedback'
-    FEEDBACK_KEY = 'feedback'
-
-    FEEDBACK = {
-        0: {"correct": None, "incorrect": None},
-        1: {"correct": None, "incorrect": None},
-        2: {"correct": None, "incorrect": None}
-    }
-
-    START_FEEDBACK = None
-    FINAL_FEEDBACK = None
-
-    FOLDER = None
-
-    def setUp(self):
-        self.patch_workbench()
-        self.block = make_block()
-        initial_settings = self.initial_settings()
-        for field in initial_settings:
-            setattr(self.block, field, initial_settings[field])
-        self.block.data = self.initial_data()
-
-    @staticmethod
-    def _make_feedback_message(message=None, message_class=None):
-        return {"message": message, "message_class": message_class}
-
-    @classmethod
-    def initial_data(cls):
-        return json.loads(loader.load_unicode('data/{}/data.json'.format(cls.FOLDER)))
-
-    @classmethod
-    def initial_settings(cls):
-        return json.loads(loader.load_unicode('data/{}/settings.json'.format(cls.FOLDER)))
-
-    @classmethod
-    def expected_student_data(cls):
-        return json.loads(loader.load_unicode('data/{}/config_out.json'.format(cls.FOLDER)))
-
-    def test_student_view_data(self):
-        data = self.block.student_view_data()
-        expected = self.expected_student_data()
-        expected['block_id'] = data['block_id']  # Block ids aren't stable
-        self.assertEqual(data, expected)
-
-
-@ddt.ddt
-class StandardModeFixture(BaseDragAndDropAjaxFixture):
-    """
-    Common tests for drag and drop in standard mode
-    """
-    def _make_item_feedback_message(self, item_id, key="incorrect"):
-        if self.FEEDBACK[item_id][key]:
-            return self._make_feedback_message(self.FEEDBACK[item_id][key])
-        else:
-            return None
-
-    def test_reset_no_item_feedback(self):
-        data = {"val": 1, "zone": self.ZONE_1, "x_percent": "33%", "y_percent": "11%"}
-        self.call_handler(self.DROP_ITEM_HANDLER, data)
-
-        res = self.call_handler(self.RESET_HANDLER, data={})
-        expected_overall_feedback = [
-            self._make_feedback_message(self.INITIAL_FEEDBACK, FeedbackMessages.MessageClasses.INITIAL_FEEDBACK)
-        ]
-        self.assertEqual(res[self.OVERALL_FEEDBACK_KEY], expected_overall_feedback)
-
-    def test_user_state_no_item_state(self):
-        res = self.call_handler(self.USER_STATE_HANDLER, data={})
-        expected_overall_feedback = [
-            self._make_feedback_message(self.INITIAL_FEEDBACK, FeedbackMessages.MessageClasses.INITIAL_FEEDBACK)
-        ]
-        self.assertEqual(res[self.OVERALL_FEEDBACK_KEY], expected_overall_feedback)
-
-    def test_drop_item_wrong_with_feedback(self):
-        self.block.weight = 2
-        item_id, zone_id = 0, self.ZONE_2
-        data = {"val": item_id, "zone": zone_id}
-        res = self.call_handler(self.DROP_ITEM_HANDLER, data)
-        item_feedback_message = self._make_item_feedback_message(item_id)
-        expected_feedback = [item_feedback_message] if item_feedback_message else []
-        # the item was dropped into wrong zone, but we have two items that were correctly left in the bank,
-        # so the raw score is 2 / 4.0.
-        expected_grade = self.block.weight * 2 / 4.0
-
-        self.assertEqual(res, {
-            "overall_feedback": [
-                self._make_feedback_message(self.INITIAL_FEEDBACK, FeedbackMessages.MessageClasses.INITIAL_FEEDBACK)
-            ],
-            "finished": False,
-            "correct": False,
-            "grade": expected_grade,
-            "feedback": expected_feedback
-        })
-
-    def test_drop_item_wrong_without_feedback(self):
-        self.block.weight = 2
-        item_id, zone_id = 2, self.ZONE_1
-        data = {"val": item_id, "zone": zone_id}
-        res = self.call_handler(self.DROP_ITEM_HANDLER, data)
-        item_feedback_message = self._make_item_feedback_message(item_id)
-        expected_feedback = [item_feedback_message] if item_feedback_message else []
-        # the item was dropped into wrong zone, but we have two items that were correctly left in the bank,
-        # so the raw score is 2 / 4.0.
-        expected_grade = self.block.weight * 2 / 4.0
-
-        self.assertEqual(res, {
-            "overall_feedback": [
-                self._make_feedback_message(self.INITIAL_FEEDBACK, FeedbackMessages.MessageClasses.INITIAL_FEEDBACK)
-            ],
-            "finished": False,
-            "correct": False,
-            "grade": expected_grade,
-            "feedback": expected_feedback
-        })
-
-    def test_drop_item_correct(self):
-        self.block.weight = 2
-        item_id, zone_id = 0, self.ZONE_1
-        data = {"val": item_id, "zone": zone_id}
-        res = self.call_handler(self.DROP_ITEM_HANDLER, data)
-        item_feedback_message = self._make_item_feedback_message(item_id, key="correct")
-        expected_feedback = [item_feedback_message] if item_feedback_message else []
-        # Item 0 is in correct zone, items 2 and 3 don't belong to any zone so it is correct to leave them in the bank.
-        # The only item that is not in correct position yet is item 1. The grade is therefore 3/4. The weight of the
-        # problem means that the displayed grade will be 1.5.
-        expected_grade = self.block.weight * 3 / 4.0
-
-        self.assertEqual(res, {
-            "overall_feedback": [
-                self._make_feedback_message(self.INITIAL_FEEDBACK, FeedbackMessages.MessageClasses.INITIAL_FEEDBACK)
-            ],
-            "finished": False,
-            "correct": True,
-            "grade": expected_grade,
-            "feedback": expected_feedback
-        })
-
-    @ddt.data(*[random.randint(1, 50) for _ in range(5)])  # pylint: disable=star-args
-    def test_grading(self, weight):
-        self.block.weight = weight
-
-        published_grades = []
-
-        def mock_publish(_, event, params):
-            if event == 'grade':
-                published_grades.append(params)
-        self.block.runtime.publish = mock_publish
-
-        # Before the user starts working on the problem, grade should equal zero.
-        self.assertEqual(0, self.block.raw_earned)
-
-        # Drag the first item into the correct zone.
-        self.call_handler(self.DROP_ITEM_HANDLER, {"val": 0, "zone": self.ZONE_1})
-
-        self.assertEqual(1, len(published_grades))
-        # The DnD test block has four items defined in the data fixtures:
-        # 1 item that belongs to ZONE_1, 1 item that belongs to ZONE_2, and two decoy items.
-        # After we drop the first item into ZONE_1, 3 out of 4 items are already in correct positions
-        # (1st item in ZONE_1 and two decoy items left in the bank). The grade at this point is therefore 3/4 * weight.
-        self.assertEqual(0.75, self.block.raw_earned)
-        self.assertEqual(0.75 * self.block.weight, self.block.weighted_grade())
-        self.assertEqual({'value': 0.75, 'max_value': 1, 'only_if_higher': None}, published_grades[-1])
-
-        # Drag the second item into correct zone.
-        self.call_handler(self.DROP_ITEM_HANDLER, {"val": 1, "zone": self.ZONE_2})
-
-        self.assertEqual(2, len(published_grades))
-        # All items are now placed in the right place, the user therefore gets the full grade.
-        self.assertEqual(1, self.block.raw_earned)
-        self.assertEqual({'value': 1, 'max_value': 1, 'only_if_higher': None}, published_grades[-1])
-
-    @ddt.data(True, False)
-    def test_grading_deprecation(self, grade_below_one):
-        self.assertFalse(self.block.has_submitted_answer())
-        if grade_below_one:
-            self.block.weight = 1.2
-            self.block.grade = 0.96
-        else:
-            self.block.weight = 50
-            self.block.grade = 40
-
-        published_grades = []
-        # for rescoring purposes has_submitted_answer should be true even if the block
-        # only has a deprecated weighted grade
-        self.assertTrue(self.block.has_submitted_answer())
-        self.assertIsNone(self.block._get_raw_earned_if_set())  # pylint: disable=protected-access
-
-        def mock_publish(_, event, params):
-            if event == 'grade':
-                published_grades.append(params)
-        self.block.runtime.publish = mock_publish
-
-        # Drag the first item into the correct zone.
-        self.call_handler(self.DROP_ITEM_HANDLER, {"val": 0, "zone": self.ZONE_1})
-
-        # The grade should be overridden even though self.grade will go down, since the block is at version 0
-        self.assertEqual(1, len(published_grades))
-        self.assertEqual(0.75, self.block.raw_earned)
-        self.assertEqual({'value': 0.75, 'max_value': 1, 'only_if_higher': None}, published_grades[-1])
-
-        # Drag the first item into the incorrect zone.
-        self.call_handler(self.DROP_ITEM_HANDLER, {"val": 0, "zone": self.ZONE_2})
-
-        # The grade should not be updated now that the block has a raw value in self.grade
-        self.assertEqual(1, len(published_grades))
-        self.assertEqual(0.75, self.block.raw_earned)
-
-        # Drag the first item back into the correct zone.
-        self.call_handler(self.DROP_ITEM_HANDLER, {"val": 0, "zone": self.ZONE_1})
-
-        # The grade should not be updated because user has already achieved a 0.75 raw score
-        self.assertEqual(1, len(published_grades))
-        self.assertEqual(0.75, self.block.raw_earned)
-
-        # Drag the second item into correct zone.
-        self.call_handler(self.DROP_ITEM_HANDLER, {"val": 1, "zone": self.ZONE_2})
-
-        self.assertEqual(2, len(published_grades))
-        # All items are now placed in the right place, the user therefore gets the full grade.
-        self.assertEqual(1, self.block.raw_earned)
-        self.assertEqual({'value': 1, 'max_value': 1, 'only_if_higher': None}, published_grades[-1])
-
-    def test_drop_item_final(self):
-        self.block.weight = 2
-        data = {"val": 0, "zone": self.ZONE_1}
-        self.call_handler(self.DROP_ITEM_HANDLER, data)
-
-        # Item 0 is in correct zone, items 2 and 3 don't belong to any zone so it is correct to leave them in the bank.
-        # The only item that is not in correct position yet is item 1. The raw grade is therefore 3/4.
-        expected_grade = self.block.weight * 3 / 4.0
-        expected_state = {
-            "items": {
-                "0": {"correct": True, "zone": self.ZONE_1}
-            },
-            "finished": False,
-            "attempts": 0,
-            "grade": expected_grade,
-            'overall_feedback': [
-                self._make_feedback_message(self.INITIAL_FEEDBACK, FeedbackMessages.MessageClasses.INITIAL_FEEDBACK)
-            ],
-        }
-        self.assertEqual(expected_state, self.call_handler('student_view_user_state', method="GET"))
-
-        res = self.call_handler(self.DROP_ITEM_HANDLER, {"val": 1, "zone": self.ZONE_2})
-        # All four items are in correct position, so the final raw grade is 4/4.
-        expected_grade = self.block.weight * 4 / 4.0
-        self.assertEqual(res, {
-            "overall_feedback": [
-                self._make_feedback_message(self.FINAL_FEEDBACK, FeedbackMessages.MessageClasses.FINAL_FEEDBACK)
-            ],
-            "finished": True,
-            "correct": True,
-            "grade": expected_grade,
-            "feedback": [self._make_feedback_message(self.FEEDBACK[1]["correct"])]
-        })
-
-        expected_state = {
-            "items": {
-                "0": {"correct": True, "zone": self.ZONE_1},
-                "1": {"correct": True, "zone": self.ZONE_2}
-            },
-            "finished": True,
-            "attempts": 0,
-            "grade": expected_grade,
-            'overall_feedback': [
-                self._make_feedback_message(self.FINAL_FEEDBACK, FeedbackMessages.MessageClasses.FINAL_FEEDBACK)
-            ],
-        }
-        self.assertEqual(expected_state, self.call_handler('student_view_user_state', method="GET"))
-
-    def test_do_attempt_not_available(self):
-        """
-        Tests that do_attempt handler returns 400 error for standard mode DnDv2
-        """
-        res = self.call_handler(self.DO_ATTEMPT_HANDLER, expect_json=False)
-
-        self.assertEqual(res.status_code, 400)
-
-    def test_show_answer_not_available(self):
-        """
-        Tests that do_attempt handler returns 400 error for standard mode DnDv2
-        """
-        res = self.call_handler(self.SHOW_ANSWER_HANDLER, expect_json=False)
-
-        self.assertEqual(res.status_code, 400)
+from ..utils import generate_max_and_attempts
 
 
 @ddt.ddt
@@ -606,25 +307,223 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
 
         self.assertEqual(self.block.item_state, original_item_state)
 
+    def _validate_answer(self, expected_status_code: str):
+        """
+        Helper method to call the "Show Answer" handler and verify its return code.
+        """
+        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
+        self.assertEqual(res.status_code, expected_status_code)
+
     @ddt.data(
-        (None, 10, True),
-        (0, 12, True),
-        (3, 3, False),
+        *itertools.product([SA.ALWAYS], [200]),
+        *itertools.product(
+            [
+                SA.AFTER_ALL_ATTEMPTS,
+                SA.AFTER_ALL_ATTEMPTS_OR_CORRECT,
+                SA.ANSWERED,
+                SA.ATTEMPTED,
+                SA.ATTEMPTED_NO_PAST_DUE,
+                SA.CLOSED,
+                SA.CORRECT_OR_PAST_DUE,
+                SA.DEFAULT,
+                SA.FINISHED,
+                SA.NEVER,
+                SA.PAST_DUE,
+            ],
+            [409],
+        ),
     )
     @ddt.unpack
-    def test_show_answer_validation(self, max_attempts, attempts, expect_validation_error):
+    def test_show_answer_always(self, showanswer_option, expected_status_code):
         """
-        Test that show_answer returns a 409 when max_attempts = None, or when
-        there are still attempts remaining.
+        Test that a user can request an answer without submitting any attempts.
         """
-        self.block.max_attempts = max_attempts
-        self.block.attempts = attempts
-        res = self.call_handler(self.SHOW_ANSWER_HANDLER, data={}, expect_json=False)
+        self.block.showanswer = showanswer_option
+        self._validate_answer(expected_status_code)
 
-        if expect_validation_error:
-            self.assertEqual(res.status_code, 409)
-        else:
-            self.assertEqual(res.status_code, 200)
+    @ddt.data(
+        *itertools.product([SA.ALWAYS, SA.ATTEMPTED, SA.ATTEMPTED_NO_PAST_DUE], [200]),
+        *itertools.product(
+            [
+                SA.AFTER_ALL_ATTEMPTS,
+                SA.AFTER_ALL_ATTEMPTS_OR_CORRECT,
+                SA.ANSWERED,
+                SA.CLOSED,
+                SA.CORRECT_OR_PAST_DUE,
+                SA.DEFAULT,
+                SA.FINISHED,
+                SA.NEVER,
+                SA.PAST_DUE,
+            ],
+            [409],
+        ),
+    )
+    @ddt.unpack
+    def test_show_answer_for_attempted(self, showanswer_option, expected_status_code):
+        """
+        Test that a user can request an answer after submitting at least one attempt.
+        """
+        self.block.showanswer = showanswer_option
+        self.block.attempts = 1
+        self._validate_answer(expected_status_code)
+
+    @ddt.data(
+        *itertools.product(
+            [SA.AFTER_ALL_ATTEMPTS_OR_CORRECT, SA.ALWAYS, SA.ANSWERED, SA.CORRECT_OR_PAST_DUE, SA.FINISHED], [200]
+        ),
+        *itertools.product(
+            [
+                SA.AFTER_ALL_ATTEMPTS,
+                SA.ATTEMPTED,
+                SA.ATTEMPTED_NO_PAST_DUE,
+                SA.CLOSED,
+                SA.DEFAULT,
+                SA.NEVER,
+                SA.PAST_DUE,
+            ],
+            [409],
+        ),
+    )
+    @ddt.unpack
+    @mock.patch('drag_and_drop_v2.DragAndDropBlock.is_correct', return_value=True)
+    def test_show_answer_for_correct_answer(self, showanswer_option, expected_status_code, _mock_is_correct):
+        """
+        Test that a user can request an answer once they submit a correct answer.
+
+        Note: when an Instructor resets the number of Learner's attempts to zero, it doesn't reset the user's state,
+        so the answer can still be marked as correct.
+        """
+        self.block.showanswer = showanswer_option
+        self._validate_answer(expected_status_code)
+
+    @ddt.data(
+        *itertools.product(
+            [
+                SA.ALWAYS,
+                SA.ATTEMPTED,
+                SA.ATTEMPTED_NO_PAST_DUE,
+                SA.AFTER_ALL_ATTEMPTS,
+                SA.AFTER_ALL_ATTEMPTS_OR_CORRECT,
+                SA.CLOSED,
+                SA.FINISHED,
+            ],
+            [200],
+        ),
+        *itertools.product(
+            [
+                SA.ANSWERED,
+                SA.CORRECT_OR_PAST_DUE,
+                SA.DEFAULT,
+                SA.NEVER,
+                SA.PAST_DUE,
+            ],
+            [409],
+        ),
+    )
+    @ddt.unpack
+    def test_show_answer_for_no_remaining_attempts(self, showanswer_option, expected_status_code):
+        self.block.showanswer = showanswer_option
+        self.block.attempts = 1
+        self.block.max_attempts = 1
+        self._validate_answer(expected_status_code)
+
+    @ddt.data(
+        *itertools.product(
+            [
+                SA.ALWAYS,
+                SA.ATTEMPTED,
+                SA.CLOSED,
+                SA.FINISHED,
+                SA.PAST_DUE,
+                SA.CORRECT_OR_PAST_DUE,
+            ],
+            [200],
+        ),
+        *itertools.product(
+            [
+                SA.AFTER_ALL_ATTEMPTS,
+                SA.AFTER_ALL_ATTEMPTS_OR_CORRECT,
+                SA.ANSWERED,
+                SA.ATTEMPTED_NO_PAST_DUE,
+                SA.DEFAULT,
+                SA.NEVER,
+            ],
+            [409],
+        ),
+    )
+    @ddt.unpack
+    @mock.patch('drag_and_drop_v2.DragAndDropBlock.has_submission_deadline_passed', return_value=True)
+    def test_show_answer_past_due(self, showanswer_option, expected_status_code, _mock_deadline_passed):
+        """
+        Test that a user can request an answer after the due date even if they had not submitted any attempts.
+        """
+        self.block.showanswer = showanswer_option
+        self._validate_answer(expected_status_code)
+
+    @ddt.data(
+        *itertools.product(
+            [
+                SA.ALWAYS,
+                SA.ATTEMPTED,
+                SA.ATTEMPTED_NO_PAST_DUE,
+                SA.CLOSED,
+                SA.FINISHED,
+                SA.PAST_DUE,
+                SA.CORRECT_OR_PAST_DUE,
+            ],
+            [200],
+        ),
+        *itertools.product(
+            [
+                SA.AFTER_ALL_ATTEMPTS,
+                SA.AFTER_ALL_ATTEMPTS_OR_CORRECT,
+                SA.ANSWERED,
+                SA.DEFAULT,
+                SA.NEVER,
+            ],
+            [409],
+        ),
+    )
+    @ddt.unpack
+    @mock.patch('drag_and_drop_v2.DragAndDropBlock.has_submission_deadline_passed', return_value=True)
+    def test_show_answer_past_due_for_attempted(self, showanswer_option, expected_status_code, _mock_deadline_passed):
+        """
+        Test that a user can request an answer after the due date if they had submitted at least one attempt.
+        """
+        self.block.showanswer = showanswer_option
+        self.block.attempts = 1
+        self._validate_answer(expected_status_code)
+
+    @ddt.data(
+        *itertools.product(
+            [
+                SA.AFTER_ALL_ATTEMPTS,
+                SA.AFTER_ALL_ATTEMPTS_OR_CORRECT,
+                SA.ALWAYS,
+                SA.ANSWERED,
+                SA.ATTEMPTED,
+                SA.ATTEMPTED_NO_PAST_DUE,
+                SA.CLOSED,
+                SA.CORRECT_OR_PAST_DUE,
+                SA.DEFAULT,
+                SA.FINISHED,
+                SA.PAST_DUE,
+            ],
+            [200],
+        ),
+        *itertools.product([SA.NEVER], [409]),
+    )
+    @ddt.unpack
+    def test_show_answer_for_staff_user(self, showanswer_option, expected_status_code):
+        """
+        Test that a user with staff permissions can request an answer unless its visibility is set to "never".
+        """
+        mock_service = mock.MagicMock()
+        mock_service.get_current_user.opt_attrs.get.return_value = True
+        self.block.runtime.service = mock_service
+
+        self.block.showanswer = showanswer_option
+        self._validate_answer(expected_status_code)
 
     def test_get_correct_state(self):
         """
@@ -650,51 +549,6 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
             solution[int(item_id)] = item_state['zone']
 
         self.assertIn(solution, self._get_all_solutions())
-
-
-class TestDragAndDropHtmlData(StandardModeFixture, unittest.TestCase):
-    FOLDER = "html"
-
-    ZONE_1 = "Zone <i>1</i>"
-    ZONE_2 = "Zone <b>2</b>"
-
-    FEEDBACK = {
-        0: {"correct": "Yes <b>1</b>", "incorrect": "No <b>1</b>"},
-        1: {"correct": "Yes <i>2</i>", "incorrect": "No <i>2</i>"},
-        2: {"correct": "", "incorrect": ""}
-    }
-
-    INITIAL_FEEDBACK = "HTML <strong>Intro</strong> Feed"
-    FINAL_FEEDBACK = "Final <strong>feedback</strong>!"
-
-
-class TestDragAndDropPlainData(StandardModeFixture, unittest.TestCase):
-    FOLDER = "plain"
-
-    ZONE_1 = "zone-1"
-    ZONE_2 = "zone-2"
-
-    FEEDBACK = {
-        0: {"correct": "Yes 1", "incorrect": "No 1"},
-        1: {"correct": "Yes 2", "incorrect": "No 2"},
-        2: {"correct": "", "incorrect": ""}
-    }
-
-    INITIAL_FEEDBACK = "This is the initial feedback."
-    FINAL_FEEDBACK = "This is the final feedback."
-
-
-class TestOldDataFormat(TestDragAndDropPlainData):
-    """
-    Make sure we can work with the slightly-older format for 'data' field values.
-    """
-    FOLDER = "old"
-
-    INITIAL_FEEDBACK = "Intro Feed"
-    FINAL_FEEDBACK = "Final Feed"
-
-    ZONE_1 = "Zone 1"
-    ZONE_2 = "Zone 2"
 
 
 class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
@@ -959,5 +813,4 @@ class TestDragAndDropAssessmentData(AssessmentModeFixture, unittest.TestCase):
     def test_do_attempt_correct_takes_decoy_into_account(self):
         self._submit_solution({0: self.ZONE_1, 1: self.ZONE_2, 2: self.ZONE_2, 3: self.ZONE_2})
         res = self._do_attempt()
-
         self.assertFalse(res['correct'])

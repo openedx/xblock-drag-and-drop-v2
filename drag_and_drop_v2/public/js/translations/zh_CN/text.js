@@ -121,7 +121,6 @@
     "The background color of draggable items in the problem (example: 'blue' or '#0000ff').": "\u9898\u76ee\u4e2d\u53ef\u62d6\u62fd\u9879\u7684\u80cc\u666f\u989c\u8272(\u4f8b\u5982: 'blue' or '#0000ff')\u3002",
     "The description of the problem or instructions shown to the learner.": "\u5b66\u5458\u53ef\u89c1\u7684\u9898\u76ee\u63cf\u8ff0\u6216\u4f5c\u7b54\u6307\u5f15\u3002",
     "The title of the drag and drop problem. The title is displayed to learners.": "\u62d6\u653e\u95ee\u9898\u7684\u6807\u9898\u3002\u5411\u5b66\u5458\u663e\u793a\u6807\u9898\u3002",
-    "There are attempts remaining": "\u672a\u4f7f\u7528\u5b8c\u6240\u6709\u7b54\u9898\u673a\u4f1a",
     "There was an error with your form.": "\u60a8\u7684\u8868\u683c\u6709\u4e00\u4e2a\u9519\u8bef\u3002",
     "Title": "\u6807\u9898",
     "Unknown DnDv2 mode {mode} - course is misconfigured": "\u672a\u77e5DnDv2\u6a21\u5f0f{mode} - \u8bfe\u7a0b\u914d\u7f6e\u9519\u8bef",

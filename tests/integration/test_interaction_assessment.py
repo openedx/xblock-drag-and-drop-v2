@@ -20,7 +20,7 @@ from xblockutils.resources import ResourceLoader
 from drag_and_drop_v2.default_data import (BOTTOM_ZONE_ID, DEFAULT_DATA, FINISH_FEEDBACK,
                                            MIDDLE_ZONE_ID, START_FEEDBACK,
                                            TOP_ZONE_ID, TOP_ZONE_TITLE)
-from drag_and_drop_v2.utils import Constants, FeedbackMessages
+from drag_and_drop_v2.utils import Constants, FeedbackMessages, SHOWANSWER
 
 from .test_base import BaseIntegrationTest
 from .test_interaction import (ITEM_DRAG_KEYBOARD_KEYS, DefaultDataTestMixin,
@@ -39,11 +39,19 @@ class DefaultAssessmentDataTestMixin(DefaultDataTestMixin):
     Provides a test scenario with default options in assessment mode.
     """
     MAX_ATTEMPTS = 5
+    SHOW_ANSWER_STATUS = SHOWANSWER.FINISHED
 
     def _get_scenario_xml(self):  # pylint: disable=no-self-use
         return """
-            <vertical_demo><drag-and-drop-v2 mode='{mode}' max_attempts='{max_attempts}'/></vertical_demo>
-        """.format(mode=Constants.ASSESSMENT_MODE, max_attempts=self.MAX_ATTEMPTS)
+            <vertical_demo>
+                <drag-and-drop-v2
+                 mode='{mode}'
+                 max_attempts='{max_attempts}'
+                 showanswer='{show_answer_status}' />
+            </vertical_demo>
+        """.format(mode=Constants.ASSESSMENT_MODE,
+                   max_attempts=self.MAX_ATTEMPTS,
+                   show_answer_status=self.SHOW_ANSWER_STATUS)
 
 
 class AssessmentTestMixin(object):
@@ -223,12 +231,13 @@ class AssessmentInteractionTest(
         more attempts remaining, is disabled and displays correct answers when
         clicked.
         """
-        show_answer_button = self._get_show_answer_button()
-        self.assertTrue(show_answer_button.is_displayed())
+        with self.assertRaises(NoSuchElementException):
+            self._get_show_answer_button()
 
         self.place_item(0, TOP_ZONE_ID, Keys.RETURN)
         for _ in range(self.MAX_ATTEMPTS-1):
-            self.assertEqual(show_answer_button.get_attribute('disabled'), 'true')
+            with self.assertRaises(NoSuchElementException):
+                self._get_show_answer_button()
             self.click_submit()
 
         # Place an incorrect item on the final attempt.
@@ -237,8 +246,9 @@ class AssessmentInteractionTest(
 
         # A feedback popup should open upon final submission.
         popup = self._get_popup()
-        self.assertTrue(popup.is_displayed())
+        show_answer_button = self._get_show_answer_button()
 
+        self.assertTrue(popup.is_displayed())
         self.assertIsNone(show_answer_button.get_attribute('disabled'))
         self.click_show_answer()
 
@@ -255,9 +265,6 @@ class AssessmentInteractionTest(
         """
         zones = dict(self.all_zones)
 
-        show_answer_button = self._get_show_answer_button()
-        self.assertTrue(show_answer_button.is_displayed())
-
         # Place an item with multiple correct zones
         self.place_item(3, dropped_zone_id, Keys.RETURN)
 
@@ -265,6 +272,8 @@ class AssessmentInteractionTest(
         for _ in range(self.MAX_ATTEMPTS):
             self.click_submit()
 
+        show_answer_button = self._get_show_answer_button()
+        self.assertTrue(show_answer_button.is_displayed())
         self.assertIsNone(show_answer_button.get_attribute('disabled'))
         self.click_show_answer()
 
@@ -491,13 +500,13 @@ class ExplanationTest(
         The docstring of the class explains when the explanation should be visible.
         """
         self.load_scenario(explanation, scenario_id)
-        show_answer_button = self._get_show_answer_button()
-        self.assertTrue(show_answer_button.is_displayed())
 
         self.place_item(3, MIDDLE_ZONE_ID, Keys.RETURN)
 
         self.click_submit()
 
+        show_answer_button = self._get_show_answer_button()
+        self.assertTrue(show_answer_button.is_displayed())
         self.assertIsNone(show_answer_button.get_attribute('disabled'))
         self.click_show_answer()
 

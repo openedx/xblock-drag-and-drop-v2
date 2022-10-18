@@ -42,6 +42,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             'show_title': False,
             'problem_text': "Problem Drag & Drop",
             'show_problem_header': False,
+            'showanswer': "attempted",
             'item_background_color': 'cornflowerblue',
             'item_text_color': 'coral',
             'weight': '5',
@@ -94,6 +95,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             "show_title": True,
             "problem_text": "",
             "max_items_per_zone": None,
+            "answer_available": False,
             "show_problem_header": True,
             "target_img_expanded_url": '/expanded/url/to/drag_and_drop_v2/public/img/triangle.png',
             "target_img_description": TARGET_IMG_DESCRIPTION,
@@ -307,6 +309,7 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         })
 
     def test_studio_submit(self):
+
         body = self._make_submission()
         res = self.call_handler('studio_submit', body)
         self.assertEqual(res, {'result': 'success'})

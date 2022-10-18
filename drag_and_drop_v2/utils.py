@@ -120,6 +120,25 @@ class Constants:
 
     STANDARD_MODE = "standard"
     ASSESSMENT_MODE = "assessment"
+    ATTR_KEY_USER_IS_STAFF = "edx-platform.user_is_staff"
+
+
+class SHOWANSWER:
+    """
+    Constants for when to show answer
+    """
+    AFTER_ALL_ATTEMPTS = "after_all_attempts"
+    AFTER_ALL_ATTEMPTS_OR_CORRECT = "after_all_attempts_or_correct"
+    ALWAYS = "always"
+    ANSWERED = "answered"
+    ATTEMPTED = "attempted"
+    ATTEMPTED_NO_PAST_DUE = "attempted_no_past_due"
+    CLOSED = "closed"
+    CORRECT_OR_PAST_DUE = "correct_or_past_due"
+    DEFAULT = "default"
+    FINISHED = "finished"
+    NEVER = "never"
+    PAST_DUE = "past_due"
 
 
 class StateMigration:

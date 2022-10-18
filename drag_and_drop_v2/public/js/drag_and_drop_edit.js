@@ -265,6 +265,10 @@ function DragAndDropEditBlock(runtime, element, params) {
                     $fbkTab
                         .on('change', '.problem-mode', _fn.build.form.problem.toggleAssessmentSettings);
 
+                    $fbkTab.on('change', '.showanswer', function () {
+                        _fn.build.$el.feedback.form.find('.showanswer-inherited').hide();
+                    });
+
                     $zoneTab
                         .on('change', '.background-image-type input', _fn.build.form.zone.toggleAutozoneSettings)
                         .on('click', '.add-zone', function(e) {
@@ -725,6 +729,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                             'display_name': $element.find('.display-name').val(),
                             'mode': $element.find(".problem-mode").val(),
                             'max_attempts': $element.find(".max-attempts").val(),
+                            'showanswer': $element.find(".showanswer").val(),
                             'show_title': $element.find('.show-title').is(':checked'),
                             'weight': $element.find('.weight').val(),
                             'problem_text': $element.find('.problem-text').val(),

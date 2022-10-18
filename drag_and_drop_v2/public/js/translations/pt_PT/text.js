@@ -150,7 +150,6 @@
     "The background color of draggable items in the problem (example: 'blue' or '#0000ff').": "A cor de fundo dos itens arrast\u00e1veis no problema (exemplo: 'blue' ou '#0000ff').",
     "The description of the problem or instructions shown to the learner.": "A descri\u00e7\u00e3o do problema ou instru\u00e7\u00f5es que o estudante v\u00ea.",
     "The title of the drag and drop problem. The title is displayed to learners.": "O t\u00edtulo do problema de arrastar e soltar. O t\u00edtulo \u00e9 vis\u00edvel para os estudantes.",
-    "There are attempts remaining": "Ainda h\u00e1 tentativas dispon\u00edveis",
     "There was an error with your form.": "Houve um erro com o seu formul\u00e1rio.",
     "This is a screen reader-friendly problem.": "Este \u00e9 um problema amig\u00e1vel para os leitores de ecr\u00e3.",
     "This setting limits the number of items that can be dropped into a single zone.": "Esta configura\u00e7\u00e3o limita o n\u00famero de itens que podem ser colocados numa \u00fanica zona.",

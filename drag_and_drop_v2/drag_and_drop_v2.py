@@ -29,7 +29,7 @@ from xblockutils.settings import ThemableXBlockMixin, XBlockWithSettingsMixin
 
 from .default_data import DEFAULT_DATA
 from .utils import (
-    Constants, DummyTranslationService, FeedbackMessage,
+    Constants, SHOWANSWER, DummyTranslationService, FeedbackMessage,
     FeedbackMessages, ItemStats, StateMigration, _clean_data, _
 )
 
@@ -45,6 +45,7 @@ logger = logging.getLogger(__name__)
 # pylint: disable=bad-continuation
 @XBlock.wants('settings')
 @XBlock.wants('replace_urls')
+@XBlock.wants('user')  # Using `needs` breaks the Course Outline page in Maple.
 @XBlock.needs('i18n')
 class DragAndDropBlock(
     ScorableXBlockMixin,
@@ -131,6 +132,29 @@ class DragAndDropBlock(
         help=_('Display the heading "Problem" above the problem text?'),
         scope=Scope.settings,
         default=True,
+        enforce_type=True,
+    )
+    showanswer = String(
+        display_name=_("Show answer"),
+        help=_("Defines when to show the answer to the problem. "
+               "A default value can be set in Advanced Settings. "
+               "To revert setting a custom value, choose the 'Default' option."),
+        scope=Scope.settings,
+        default=SHOWANSWER.FINISHED,
+        values=[
+            {"display_name": _("Default"), "value": SHOWANSWER.DEFAULT},
+            {"display_name": _("Always"), "value": SHOWANSWER.ALWAYS},
+            {"display_name": _("Answered"), "value": SHOWANSWER.ANSWERED},
+            {"display_name": _("Attempted or Past Due"), "value": SHOWANSWER.ATTEMPTED},
+            {"display_name": _("Closed"), "value": SHOWANSWER.CLOSED},
+            {"display_name": _("Finished"), "value": SHOWANSWER.FINISHED},
+            {"display_name": _("Correct or Past Due"), "value": SHOWANSWER.CORRECT_OR_PAST_DUE},
+            {"display_name": _("Past Due"), "value": SHOWANSWER.PAST_DUE},
+            {"display_name": _("Never"), "value": SHOWANSWER.NEVER},
+            {"display_name": _("After All Attempts"), "value": SHOWANSWER.AFTER_ALL_ATTEMPTS},
+            {"display_name": _("After All Attempts or Correct"), "value": SHOWANSWER.AFTER_ALL_ATTEMPTS_OR_CORRECT},
+            {"display_name": _("Attempted"), "value": SHOWANSWER.ATTEMPTED_NO_PAST_DUE},
+        ],
         enforce_type=True,
     )
 
@@ -391,6 +415,7 @@ class DragAndDropBlock(
             "item_background_color": self.item_background_color or None,
             "item_text_color": self.item_text_color or None,
             "has_deadline_passed": self.has_submission_deadline_passed,
+            "answer_available": self.is_answer_available,
             # final feedback (data.feedback.finish) is not included - it may give away answers.
         }
 
@@ -410,6 +435,7 @@ class DragAndDropBlock(
             'js_templates': js_templates,
             'id_suffix': id_suffix,
             'fields': self.fields,
+            'showanswer_set': self._field_data.has(self, 'showanswer'),  # If false, we're using an inherited value.
             'self': self,
             'data': six.moves.urllib.parse.quote(json.dumps(self.data)),
         }
@@ -464,6 +490,10 @@ class DragAndDropBlock(
         self.display_name = submissions['display_name']
         self.mode = submissions['mode']
         self.max_attempts = submissions['max_attempts']
+        if (showanswer := submissions['showanswer']) != self.showanswer:
+            self.showanswer = showanswer
+        if showanswer == SHOWANSWER.DEFAULT:
+            del self.showanswer
         self.show_title = submissions['show_title']
         self.question_text = submissions['problem_text']
         self.show_question_header = submissions['show_problem_header']
@@ -557,7 +587,7 @@ class DragAndDropBlock(
         # fields, either as an "input" (i.e. read value) or as output (i.e. set value) or both. As a result,
         # incorrect order of invocation causes issues:
         self._mark_complete_and_publish_grade()  # must happen before _get_feedback - sets grade
-        correct = self._is_answer_correct()  # must happen before manipulating item_state - reads item_state
+        correct = self.is_correct  # must happen before manipulating item_state - reads item_state
 
         overall_feedback_msgs, misplaced_ids = self._get_feedback(include_item_feedback=True)
 
@@ -575,7 +605,8 @@ class DragAndDropBlock(
             'grade': self._get_weighted_earned_if_set(),
             'misplaced_items': list(misplaced_ids),
             'feedback': self._present_feedback(feedback_msgs),
-            'overall_feedback': self._present_feedback(overall_feedback_msgs)
+            'overall_feedback': self._present_feedback(overall_feedback_msgs),
+            "answer_available": self.is_answer_available,
         }
 
     @XBlock.json_handler
@@ -606,17 +637,17 @@ class DragAndDropBlock(
 
         Raises:
              * JsonHandlerError with 400 error code in standard mode.
-             * JsonHandlerError with 409 error code if there are still attempts left
+             * JsonHandlerError with 409 error code if the answer is unavailable.
         """
         if self.mode != Constants.ASSESSMENT_MODE:
             raise JsonHandlerError(
                 400,
                 self.i18n_service.gettext("show_answer handler should only be called for assessment mode")
             )
-        if self.attempts_remain:
+        if not self.is_answer_available:
             raise JsonHandlerError(
                 409,
-                self.i18n_service.gettext("There are attempts remaining")
+                self.i18n_service.gettext("The answer is unavailable")
             )
 
         answer = self._get_correct_state()
@@ -692,6 +723,65 @@ class DragAndDropBlock(
             return self.has_deadline_passed()  # pylint: disable=no-member
         else:
             return False
+
+    @property
+    def closed(self):
+        """
+        Is the student still allowed to submit answers?
+        """
+        if not self.attempts_remain:
+            return True
+        if self.has_submission_deadline_passed:
+            return True
+
+        return False
+
+    @property
+    def is_attempted(self):
+        """
+        Has the problem been attempted?
+        """
+        return self.attempts > 0
+
+    @property
+    def is_finished(self):
+        """
+        Returns True if answer is closed or answer is correct.
+        """
+        return self.closed or self.is_correct
+
+    @property
+    def is_answer_available(self):
+        """
+        Is student allowed to see an answer?
+        """
+        permission_functions = {
+            SHOWANSWER.NEVER: lambda: False,
+            SHOWANSWER.ATTEMPTED: lambda: self.is_attempted or self.has_submission_deadline_passed,
+            SHOWANSWER.ANSWERED: lambda: self.is_correct,
+            SHOWANSWER.CLOSED: lambda: self.closed,
+            SHOWANSWER.FINISHED: lambda: self.is_finished,
+            SHOWANSWER.CORRECT_OR_PAST_DUE: lambda: self.is_correct or self.has_submission_deadline_passed,
+            SHOWANSWER.PAST_DUE: lambda: self.has_submission_deadline_passed,
+            SHOWANSWER.ALWAYS: lambda: True,
+            SHOWANSWER.AFTER_ALL_ATTEMPTS: lambda: not self.attempts_remain,
+            SHOWANSWER.AFTER_ALL_ATTEMPTS_OR_CORRECT: lambda: not self.attempts_remain or self.is_correct,
+            SHOWANSWER.ATTEMPTED_NO_PAST_DUE: lambda: self.is_attempted,
+        }
+
+        if self.mode != Constants.ASSESSMENT_MODE:
+            return False
+
+        user_is_staff = False
+        if user_service := self.runtime.service(self, 'user'):
+            user_is_staff = user_service.get_current_user().opt_attrs.get(Constants.ATTR_KEY_USER_IS_STAFF)
+
+        if self.showanswer not in [SHOWANSWER.NEVER, ''] and user_is_staff:
+            # Staff users can see the answer unless the problem explicitly prevents it.
+            return True
+
+        check_permissions_function = permission_functions.get(self.showanswer, lambda: False)
+        return check_permissions_function()
 
     @XBlock.handler
     def student_view_user_state(self, request, suffix=''):
@@ -819,7 +909,7 @@ class DragAndDropBlock(
         return {
             'correct': is_correct,
             'grade': self._get_weighted_earned_if_set(),
-            'finished': self._is_answer_correct(),
+            'finished': self.is_correct,
             'overall_feedback': self._present_feedback(overall_feedback),
             'feedback': self._present_feedback([item_feedback])
         }
@@ -869,7 +959,7 @@ class DragAndDropBlock(
         """
         # pylint: disable=fixme
         # TODO: (arguable) split this method into "clean" functions (with no side effects and implicit state)
-        # This method implicitly depends on self.item_state (via _is_answer_correct and _learner_raw_score)
+        # This method implicitly depends on self.item_state (via is_correct and _learner_raw_score)
         # and also updates self.raw_earned if some conditions are met. As a result this method implies some order of
         # invocation:
         # * it should be called after learner-caused updates to self.item_state is applied
@@ -880,7 +970,7 @@ class DragAndDropBlock(
         # and help avoid bugs caused by invocation order violation in future.
 
         # There's no going back from "completed" status to "incomplete"
-        self.completed = self.completed or self._is_answer_correct() or not self.attempts_remain
+        self.completed = self.completed or self.is_correct or not self.attempts_remain
 
         current_raw_earned = self._learner_raw_score()
         # ... and from higher grade to lower
@@ -987,9 +1077,10 @@ class DragAndDropBlock(
 
         overall_feedback_msgs, __ = self._get_feedback()
         if self.mode == Constants.STANDARD_MODE:
-            is_finished = self._is_answer_correct()
+            is_finished = self.is_correct
         else:
             is_finished = not self.attempts_remain
+
         return {
             'items': item_state,
             'finished': is_finished,
@@ -1188,7 +1279,8 @@ class DragAndDropBlock(
         else:
             return self.SOLUTION_PARTIAL
 
-    def _is_answer_correct(self):
+    @property
+    def is_correct(self):
         """
         Helper - checks if answer is correct
 

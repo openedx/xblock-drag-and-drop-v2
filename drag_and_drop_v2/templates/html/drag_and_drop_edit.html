@@ -49,6 +49,20 @@
                       {% trans fields.max_attempts.help %}
                     </div>
 
+                    <label class="h4 assessment-setting">
+                        <span>{% trans fields.showanswer.display_name %}</span><span class="showanswer-inherited">{% if not showanswer_set %}&nbsp{% trans "(inherited from Advanced Settings)" %}{% endif %}</span>
+                        <select class="showanswer" aria-describedby="showanswer-description-{{id_suffix}}">
+                            {% for field_value in fields.showanswer.values %}
+                                <option value="{{ field_value.value }}" {% if self.showanswer == field_value.value %}selected{% endif %}>
+                                    {{ field_value.display_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                    <div id="showanswer-description-{{id_suffix}}" class="assessment-setting form-help">
+                        {% trans fields.showanswer.help %}
+                    </div>
+
                     <label class="h4">
                         <span>{% trans fields.weight.display_name %}</span>
                         <input class="weight" type="number" step="0.1" value="{{ self.weight|unlocalize }}" />

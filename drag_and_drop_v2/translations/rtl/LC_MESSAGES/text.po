@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-05 21:51+0200\n"
+"POT-Creation-Date: 2022-10-13 22:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -181,6 +181,68 @@ msgid "Display the heading \"Problem\" above the problem text?"
 msgstr "Đᴉsdlɐʎ ʇɥǝ ɥǝɐdᴉnƃ \"Ᵽɹøblǝɯ\" ɐbøʌǝ ʇɥǝ dɹøblǝɯ ʇǝxʇ?"
 
 #: drag_and_drop_v2.py
+msgid "Show answer"
+msgstr "Sɥøʍ ɐnsʍǝɹ"
+
+#: drag_and_drop_v2.py
+msgid ""
+"Defines when to show the answer to the problem. A default value can be set "
+"in Advanced Settings. To revert setting a custom value, choose the 'Default'"
+" option."
+msgstr ""
+"Đǝɟᴉnǝs ʍɥǝn ʇø sɥøʍ ʇɥǝ ɐnsʍǝɹ ʇø ʇɥǝ dɹøblǝɯ. Ⱥ dǝɟɐnlʇ ʌɐlnǝ ɔɐn bǝ sǝʇ "
+"ᴉn Ⱥdʌɐnɔǝd Sǝʇʇᴉnƃs. Ŧø ɹǝʌǝɹʇ sǝʇʇᴉnƃ ɐ ɔnsʇøɯ ʌɐlnǝ, ɔɥøøsǝ ʇɥǝ 'Đǝɟɐnlʇ'"
+" ødʇᴉøn."
+
+#: drag_and_drop_v2.py
+msgid "Default"
+msgstr "Đǝɟɐnlʇ"
+
+#: drag_and_drop_v2.py
+msgid "Always"
+msgstr "Ⱥlʍɐʎs"
+
+#: drag_and_drop_v2.py
+msgid "Answered"
+msgstr "Ⱥnsʍǝɹǝd"
+
+#: drag_and_drop_v2.py
+msgid "Attempted or Past Due"
+msgstr "Ⱥʇʇǝɯdʇǝd øɹ Ᵽɐsʇ Đnǝ"
+
+#: drag_and_drop_v2.py
+msgid "Closed"
+msgstr "Ȼløsǝd"
+
+#: drag_and_drop_v2.py
+msgid "Finished"
+msgstr "Fᴉnᴉsɥǝd"
+
+#: drag_and_drop_v2.py
+msgid "Correct or Past Due"
+msgstr "Ȼøɹɹǝɔʇ øɹ Ᵽɐsʇ Đnǝ"
+
+#: drag_and_drop_v2.py
+msgid "Past Due"
+msgstr "Ᵽɐsʇ Đnǝ"
+
+#: drag_and_drop_v2.py
+msgid "Never"
+msgstr "Nǝʌǝɹ"
+
+#: drag_and_drop_v2.py
+msgid "After All Attempts"
+msgstr "Ⱥɟʇǝɹ Ⱥll Ⱥʇʇǝɯdʇs"
+
+#: drag_and_drop_v2.py
+msgid "After All Attempts or Correct"
+msgstr "Ⱥɟʇǝɹ Ⱥll Ⱥʇʇǝɯdʇs øɹ Ȼøɹɹǝɔʇ"
+
+#: drag_and_drop_v2.py
+msgid "Attempted"
+msgstr "Ⱥʇʇǝɯdʇǝd"
+
+#: drag_and_drop_v2.py
 msgid "Problem Weight"
 msgstr "Ᵽɹøblǝɯ Wǝᴉƃɥʇ"
 
@@ -278,8 +340,8 @@ msgid "show_answer handler should only be called for assessment mode"
 msgstr "sɥøʍ_ɐnsʍǝɹ ɥɐndlǝɹ sɥønld ønlʎ bǝ ɔɐllǝd ɟøɹ ɐssǝssɯǝnʇ ɯødǝ"
 
 #: drag_and_drop_v2.py
-msgid "There are attempts remaining"
-msgstr "Ŧɥǝɹǝ ɐɹǝ ɐʇʇǝɯdʇs ɹǝɯɐᴉnᴉnƃ"
+msgid "The answer is unavailable"
+msgstr "Ŧɥǝ ɐnsʍǝɹ ᴉs nnɐʌɐᴉlɐblǝ"
 
 #: drag_and_drop_v2.py
 msgid "do_attempt handler should only be called for assessment mode"
@@ -300,6 +362,10 @@ msgstr "Łøɐdᴉnƃ dɹɐƃ ɐnd dɹød dɹøblǝɯ."
 #: templates/html/drag_and_drop_edit.html
 msgid "Basic Settings"
 msgstr "Ƀɐsᴉɔ Sǝʇʇᴉnƃs"
+
+#: templates/html/drag_and_drop_edit.html
+msgid "(inherited from Advanced Settings)"
+msgstr "(ᴉnɥǝɹᴉʇǝd ɟɹøɯ Ⱥdʌɐnɔǝd Sǝʇʇᴉnƃs)"
 
 #: templates/html/drag_and_drop_edit.html
 msgid "Introductory feedback"
