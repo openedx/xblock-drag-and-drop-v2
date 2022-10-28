@@ -31,7 +31,7 @@ from .compat import get_grading_ignore_decoys_waffle_flag
 from .default_data import DEFAULT_DATA
 from .utils import (
     Constants, SHOWANSWER, DummyTranslationService, FeedbackMessage,
-    FeedbackMessages, ItemStats, StateMigration, _clean_data, _
+    FeedbackMessages, ItemStats, StateMigration, _clean_data, _, sanitize_html
 )
 
 # Globals ###########################################################
@@ -388,11 +388,12 @@ class DragAndDropBlock(
                     item['expandedImageURL'] = self._expand_static_url(image_url)
                 else:
                     item['expandedImageURL'] = ''
+                item['displayName'] = sanitize_html(item.get('displayName', ''))
             return items
 
         return {
             "block_id": six.text_type(self.scope_ids.usage_id),
-            "display_name": self.display_name,
+            "display_name": sanitize_html(self.display_name),
             "type": self.CATEGORY,
             "weight": self.weight,
             "mode": self.mode,
@@ -407,9 +408,9 @@ class DragAndDropBlock(
             "display_zone_borders": self.data.get('displayBorders', False),
             "display_zone_borders_dragging": self.data.get('displayBordersDragging', False),
             "items": items_without_answers(),
-            "title": self.display_name,
+            "title": sanitize_html(self.display_name),
             "show_title": self.show_title,
-            "problem_text": self.question_text,
+            "problem_text": sanitize_html(self.question_text),
             "show_problem_header": self.show_question_header,
             "target_img_expanded_url": self.target_img_expanded_url,
             "target_img_description": self.target_img_description,
@@ -667,7 +668,7 @@ class DragAndDropBlock(
                 except (TypeError, AttributeError):
                     logger.debug('Unable to perform URL substitution on the explanation: %s', explanation)
 
-            answer['explanation'] = explanation
+            answer['explanation'] = sanitize_html(explanation)
         return answer
 
     @XBlock.json_handler
@@ -885,7 +886,7 @@ class DragAndDropBlock(
         Transforms feedback messages into format expected by frontend code
         """
         return [
-            {"message": msg.message, "message_class": msg.message_class}
+            {"message": sanitize_html(msg.message), "message_class": msg.message_class}
             for msg in feedback_messages
             if msg.message
         ]
@@ -1195,7 +1196,14 @@ class DragAndDropBlock(
         """
         # Convert zone data from old to new format if necessary
         migrator = StateMigration(self)
-        return [migrator.apply_zone_migrations(zone) for zone in self.data.get('zones', [])]
+        migrated_zones = []
+
+        for zone in self.data.get('zones', []):
+            result = migrator.apply_zone_migrations(zone)
+            result['title'] = sanitize_html(result.get('title', ''))
+            migrated_zones.append(result)
+
+        return migrated_zones
 
     def _get_zone_by_uid(self, uid):
         """

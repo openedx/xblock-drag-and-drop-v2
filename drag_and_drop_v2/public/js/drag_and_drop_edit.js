@@ -448,8 +448,8 @@ function DragAndDropEditBlock(runtime, element, params) {
                                 _fn.build.$el.zonesPreview.append(
                                     _fn.tpl.zoneElement({
                                         uid: zoneObj.uid,
-                                        title: gettext(zoneObj.title),
-                                        description: gettext(zoneObj.description),
+                                        title: Handlebars.Utils.escapeExpression(gettext(zoneObj.title)),
+                                        description: Handlebars.Utils.escapeExpression(gettext(zoneObj.description)),
                                         x_percent: (+zoneObj.x) / imgWidth * 100,
                                         y_percent: (+zoneObj.y) / imgHeight * 100,
                                         width_percent: (+zoneObj.width) / imgWidth * 100,

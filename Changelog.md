@@ -1,6 +1,12 @@
 Drag and Drop XBlock changelog
 ==============================
 
+Version 3.0.0 (2022-11-18)
+---------------------------
+
+* Sanitize HTML tags to prevent XSS vulnerabilities.  
+  BREAKING CHANGE: Disallowed HTML tags (e.g. `<script>`) will no longer be rendered in LMS and Studio. 
+
 Version 2.7.0 (2022-11-15)
 ---------------------------
 

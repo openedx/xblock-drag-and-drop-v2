@@ -40,7 +40,7 @@ class TestDragAndDropTitleAndProblem(BaseIntegrationTest):
         ('plain shown', 'title1', True),
         ('plain hidden', 'title2', False),
         ('html shown', 'title with <i>HTML</i>', True),
-        ('html hidden', '<span style="color:red">Title: HTML?</span>', False)
+        ('html hidden', '<span style="color: red;">Title: HTML?</span>', False)
     )
     def test_title_parameters(self, _, display_name, show_title):
         const_page_name = 'Test show title parameter'
