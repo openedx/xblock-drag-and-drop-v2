@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-13 22:02+0200\n"
+"POT-Creation-Date: 2022-11-07 14:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,13 +19,11 @@ msgstr ""
 
 #: default_data.py
 msgid ""
-"An isosceles triangle with three layers of similar height. It is shown "
-"upright, so the widest layer is located at the bottom, and the narrowest "
-"layer is located at the top."
+"Trójkąt równoramienny z trzema strefami o podobnej wysokości. Najszersza "
+"strefa znajduje się na dole, a najwęższa na górze."
 msgstr ""
-"Ⱥn ᴉsøsɔǝlǝs ʇɹᴉɐnƃlǝ ʍᴉʇɥ ʇɥɹǝǝ lɐʎǝɹs øɟ sᴉɯᴉlɐɹ ɥǝᴉƃɥʇ. Ɨʇ ᴉs sɥøʍn "
-"ndɹᴉƃɥʇ, sø ʇɥǝ ʍᴉdǝsʇ lɐʎǝɹ ᴉs løɔɐʇǝd ɐʇ ʇɥǝ bøʇʇøɯ, ɐnd ʇɥǝ nɐɹɹøʍǝsʇ "
-"lɐʎǝɹ ᴉs løɔɐʇǝd ɐʇ ʇɥǝ ʇød."
+"Ŧɹóɾʞąʇ ɹóʍnøɹɐɯᴉǝnnʎ z ʇɹzǝɯɐ sʇɹǝɟɐɯᴉ ø dødøbnǝɾ ʍʎsøʞøśɔᴉ. Nɐɾszǝɹszɐ "
+"sʇɹǝɟɐ znɐɾdnɾǝ sᴉę nɐ dølǝ, ɐ nɐɾʍęższɐ nɐ ƃóɹzǝ."
 
 #: default_data.py
 msgid "The Top Zone"
@@ -119,8 +117,8 @@ msgstr ""
 "Ŧɥǝ ʇᴉʇlǝ øɟ ʇɥǝ dɹɐƃ ɐnd dɹød dɹøblǝɯ. Ŧɥǝ ʇᴉʇlǝ ᴉs dᴉsdlɐʎǝd ʇø lǝɐɹnǝɹs."
 
 #: drag_and_drop_v2.py
-msgid "Drag and Drop"
-msgstr "Đɹɐƃ ɐnd Đɹød"
+msgid "Przeciągnij i upuść"
+msgstr "Ᵽɹzǝɔᴉąƃnᴉɾ ᴉ ndnść"
 
 #: drag_and_drop_v2.py
 msgid "Mode"

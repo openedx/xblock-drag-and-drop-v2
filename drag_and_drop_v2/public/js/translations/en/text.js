@@ -23,6 +23,13 @@
 
   django.catalog = django.catalog || {};
   
+  var newcatalog = {
+    "Przeci\u0105gnij i upu\u015b\u0107": "Drag and drop"
+  };
+  for (var key in newcatalog) {
+    django.catalog[key] = newcatalog[key];
+  }
+  
 
   if (!django.jsi18n_initialized) {
     django.gettext = function(msgid) {
