@@ -114,7 +114,7 @@
     margin: 5px;
     padding: 10px;
     text-align: center;
-    background-color: #E41D37;
+    background-color: #1d5280;
     font-size: 14px;
     color: #fff;
     opacity: 1;
@@ -743,7 +743,8 @@
 }
 
 .xblock--drag-and-drop .btn-icon {
-//    display: block;
+    display: inline;
+    margin-right: 5px;
 }
 
 .xblock--drag-and-drop .btn-link .btn-icon {
