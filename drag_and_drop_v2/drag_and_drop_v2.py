@@ -27,6 +27,7 @@ from web_fragments.fragment import Fragment
 from xblockutils.resources import ResourceLoader
 from xblockutils.settings import ThemableXBlockMixin, XBlockWithSettingsMixin
 
+from .compat import get_config_waffle_flag
 from .default_data import DEFAULT_DATA
 from .utils import (
     Constants, SHOWANSWER, DummyTranslationService, FeedbackMessage,
@@ -1212,8 +1213,14 @@ class DragAndDropBlock(
         """
         items = self._get_item_raw_stats()
 
-        correct_count = len(items.correctly_placed) + len(items.decoy_in_bank)
-        total_count = len(items.required) + len(items.decoy)
+        correct_count = len(items.correctly_placed)
+        total_count = len(items.required)
+
+        if hasattr(self.runtime, 'course_id') and get_config_waffle_flag().is_enabled(self.runtime.course_id):
+            return correct_count, total_count
+
+        correct_count += len(items.decoy_in_bank)
+        total_count += len(items.decoy)
 
         return correct_count, total_count
 

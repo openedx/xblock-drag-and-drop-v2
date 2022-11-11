@@ -64,6 +64,9 @@ class TestCaseMixin(object):
             lambda _, html: re.sub(r'"/static/([^"]*)"', r'"/course/test-course/assets/\1"', html),
             create=True,
         )
+        self.apply_patch(
+            'drag_and_drop_v2.drag_and_drop_v2.get_config_waffle_flag'
+        )
 
     def apply_patch(self, *args, **kwargs):
         new_patch = patch(*args, **kwargs)
