@@ -65,7 +65,7 @@ class TestCaseMixin(object):
             create=True,
         )
         self.apply_patch(
-            'drag_and_drop_v2.drag_and_drop_v2.get_config_waffle_flag'
+            'drag_and_drop_v2.drag_and_drop_v2.get_grading_ignore_decoys_waffle_flag'
         )
 
     def apply_patch(self, *args, **kwargs):

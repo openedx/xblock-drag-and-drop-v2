@@ -183,7 +183,7 @@ score would be `100%`:
     score = (3 + 1) / 4
 
 Optionally, there is an alternative grading that can be enabled, by setting the
-waffle flag `drag_and_drop_v2.enable_alternative_grading`, which will drop
+waffle flag `drag_and_drop_v2.grading_ignore_decoys`, which will drop
 the decoy items entirely from the score calculation. The formula will change to:
 
     score = C / R
