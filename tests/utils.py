@@ -4,7 +4,7 @@ import json
 import random
 import re
 
-from mock import patch
+from mock import Mock, patch
 from six.moves import range
 from webob import Request
 from workbench.runtime import WorkbenchRuntime
@@ -30,6 +30,7 @@ def make_block():
     key_store = DictKeyValueStore()
     field_data = KvsFieldData(key_store)
     runtime = WorkbenchRuntime()
+    runtime.course_id = "dummy_course_id"
     def_id = runtime.id_generator.create_definition(block_type)
     usage_id = runtime.id_generator.create_usage(def_id)
     scope_ids = ScopeIds('user', block_type, def_id, usage_id)
@@ -65,7 +66,8 @@ class TestCaseMixin(object):
             create=True,
         )
         self.apply_patch(
-            'drag_and_drop_v2.drag_and_drop_v2.get_grading_ignore_decoys_waffle_flag'
+            'drag_and_drop_v2.drag_and_drop_v2.get_grading_ignore_decoys_waffle_flag',
+            lambda: Mock(is_enabled=lambda _: False),
         )
 
     def apply_patch(self, *args, **kwargs):

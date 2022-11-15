@@ -1,6 +1,11 @@
 Drag and Drop XBlock changelog
 ==============================
 
+Version 2.6.0 (2022-10-24)
+---------------------------
+
+* Add package publishing workflow.
+
 Version 2.5.0 (2022-10-13)
 ---------------------------
 

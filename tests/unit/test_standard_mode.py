@@ -6,6 +6,7 @@ import unittest
 import ddt
 
 from drag_and_drop_v2.utils import FeedbackMessages
+from mock import Mock, patch
 from tests.unit.test_fixtures import BaseDragAndDropAjaxFixture
 
 
@@ -131,6 +132,50 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
         self.call_handler(self.DROP_ITEM_HANDLER, {"val": 1, "zone": self.ZONE_2})
 
         self.assertEqual(2, len(published_grades))
+        # All items are now placed in the right place, the user therefore gets the full grade.
+        self.assertEqual(1, self.block.raw_earned)
+        self.assertEqual({'value': 1, 'max_value': 1, 'only_if_higher': None}, published_grades[-1])
+
+    @patch('drag_and_drop_v2.drag_and_drop_v2.get_grading_ignore_decoys_waffle_flag', lambda: Mock(is_enabled=lambda _: True))
+    @ddt.data(*[random.randint(1, 50) for _ in range(5)])  # pylint: disable=star-args
+    def test_grading_ignore_decoy(self, weight):
+        self.block.weight = weight
+
+        published_grades = []
+
+        def mock_publish(_, event, params):
+            if event == 'grade':
+                published_grades.append(params)
+        self.block.runtime.publish = mock_publish
+
+        # Before the user starts working on the problem, grade should equal zero.
+        self.assertEqual(0, self.block.raw_earned)
+
+        # Drag the decoy item into one of the zones
+        self.call_handler(self.DROP_ITEM_HANDLER, {"val": 2, "zone": self.ZONE_1})
+
+        self.assertEqual(1, len(published_grades))
+        # Decoy items are not considered in the grading
+        self.assertEqual(0, self.block.raw_earned)
+        self.assertEqual(0, self.block.weighted_grade())
+        self.assertEqual({'value': 0, 'max_value': 1, 'only_if_higher': None}, published_grades[-1])
+
+        # Drag the first item into the correct zone.
+        self.call_handler(self.DROP_ITEM_HANDLER, {"val": 0, "zone": self.ZONE_1})
+
+        self.assertEqual(2, len(published_grades))
+        # The DnD test block has four items defined in the data fixtures:
+        # 1 item that belongs to ZONE_1, 1 item that belongs to ZONE_2, and two decoy items.
+        # After we drop the first item into ZONE_1, 1 out of 2 items are in the expected correct positions.
+        # The grade at this point is therefore 1/2 * weight.
+        self.assertEqual(0.5, self.block.raw_earned)
+        self.assertEqual(0.5 * self.block.weight, self.block.weighted_grade())
+        self.assertEqual({'value': 0.5, 'max_value': 1, 'only_if_higher': None}, published_grades[-1])
+
+        # Drag the second item into correct zone.
+        self.call_handler(self.DROP_ITEM_HANDLER, {"val": 1, "zone": self.ZONE_2})
+
+        self.assertEqual(3, len(published_grades))
         # All items are now placed in the right place, the user therefore gets the full grade.
         self.assertEqual(1, self.block.raw_earned)
         self.assertEqual({'value': 1, 'max_value': 1, 'only_if_higher': None}, published_grades[-1])
