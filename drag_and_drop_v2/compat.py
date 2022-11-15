@@ -24,4 +24,9 @@ def get_grading_ignore_decoys_waffle_flag():
     """
     # pylint: disable=import-error,import-outside-toplevel
     from openedx.core.djangoapps.waffle_utils import CourseWaffleFlag
-    return CourseWaffleFlag(f'{WAFFLE_NAMESPACE}.{GRADING_IGNORE_DECOYS}', __name__)
+    try:
+        # HACK: The base class of the `CourseWaffleFlag` was changed in Olive.
+        #  Ref: https://github.com/openedx/public-engineering/issues/28
+        return CourseWaffleFlag(WAFFLE_NAMESPACE, GRADING_IGNORE_DECOYS, __name__)
+    except ValueError:
+        return CourseWaffleFlag(f'{WAFFLE_NAMESPACE}.{GRADING_IGNORE_DECOYS}', __name__)
