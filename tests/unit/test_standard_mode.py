@@ -136,7 +136,10 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
         self.assertEqual(1, self.block.raw_earned)
         self.assertEqual({'value': 1, 'max_value': 1, 'only_if_higher': None}, published_grades[-1])
 
-    @patch('drag_and_drop_v2.drag_and_drop_v2.get_grading_ignore_decoys_waffle_flag', lambda: Mock(is_enabled=lambda _: True))
+    @patch(
+        'drag_and_drop_v2.drag_and_drop_v2.get_grading_ignore_decoys_waffle_flag',
+        lambda: Mock(is_enabled=lambda _: True),
+    )
     @ddt.data(*[random.randint(1, 50) for _ in range(5)])  # pylint: disable=star-args
     def test_grading_ignore_decoy(self, weight):
         self.block.weight = weight
