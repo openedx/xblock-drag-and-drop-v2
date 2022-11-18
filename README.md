@@ -182,6 +182,15 @@ score would be `100%`:
 
     score = (3 + 1) / 4
 
+Optionally, there is an alternative grading that can be enabled, by setting the
+waffle flag `drag_and_drop_v2.grading_ignore_decoys`, which will drop
+the decoy items entirely from the score calculation. The formula will change to:
+
+    score = C / R
+
+Where *C* is the number of correctly placed regular items, *R* is the number of
+required regular items.
+
 Demo Course
 -----------
 
