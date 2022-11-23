@@ -48,7 +48,7 @@ build_dummy_translations: dummy_translations compile_translations ## generate an
 validate_translations: build_dummy_translations detect_changed_source_translations ## validate translations
 
 pull_translations: ## pull translations from transifex
-	tx pull -a -f --mode reviewed --minimum-perc=1
+	tx pull -t -a -f --mode reviewed --minimum-perc=1
 
 push_translations: ## push translations to transifex
 	tx push -s
