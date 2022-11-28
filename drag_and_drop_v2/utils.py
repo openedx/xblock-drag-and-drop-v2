@@ -6,7 +6,15 @@ import copy
 import re
 from collections import namedtuple
 
-from bleach.sanitizer import Cleaner
+import bleach
+
+try:
+    from bleach.css_sanitizer import CSSSanitizer
+except (ImportError, ModuleNotFoundError):
+    # pylint: disable=fixme
+    # TODO: The bleach library changes the way CSS Styles are cleaned in version 5.0.0. The edx-platform uses version
+    #  4.1.0 in Maple, so this import is handled within a try block. This can be removed for the Nutmeg release.
+    CSSSanitizer = None
 
 
 def _(text):
@@ -24,9 +32,122 @@ def ngettext_fallback(text_singular, text_plural, number):
 
 def _clean_data(data):
     """ Remove html tags and extra white spaces e.g newline, tabs etc from provided data """
-    cleaner = Cleaner(tags=[], strip=True)
+    cleaner = bleach.Cleaner(tags=[], strip=True)
     cleaned_text = " ".join(re.split(r"\s+", cleaner.clean(data), flags=re.UNICODE)).strip()
     return cleaned_text
+
+
+ALLOWED_TAGS = bleach.ALLOWED_TAGS + [
+    'br',
+    'caption',
+    'dd',
+    'del',
+    'div',
+    'dl',
+    'dt',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'hr',
+    'img',
+    'p',
+    'pre',
+    's',
+    'strike',
+    'span',
+    'sub',
+    'sup',
+    'table',
+    'tbody',
+    'td',
+    'tfoot',
+    'th',
+    'thead',
+    'tr',
+    'u',
+]
+ALLOWED_ATTRIBUTES = {
+    '*': ['class', 'style', 'id'],
+    'a': ['href', 'title', 'target', 'rel'],
+    'abbr': ['title'],
+    'acronym': ['title'],
+    'audio': ['controls', 'autobuffer', 'autoplay', 'src'],
+    'img': ['src', 'alt', 'title', 'width', 'height'],
+    'table': ['border', 'cellspacing', 'cellpadding'],
+    'td': ['style', 'scope'],
+}
+ALLOWED_STYLES = [
+    "azimuth",
+    "background-color",
+    "border-bottom-color",
+    "border-collapse",
+    "border-color",
+    "border-left-color",
+    "border-right-color",
+    "border-top-color",
+    "clear",
+    "color",
+    "cursor",
+    "direction",
+    "display",
+    "elevation",
+    "float",
+    "font",
+    "font-family",
+    "font-size",
+    "font-style",
+    "font-variant",
+    "font-weight",
+    "height",
+    "letter-spacing",
+    "line-height",
+    "overflow",
+    "pause",
+    "pause-after",
+    "pause-before",
+    "pitch",
+    "pitch-range",
+    "richness",
+    "speak",
+    "speak-header",
+    "speak-numeral",
+    "speak-punctuation",
+    "speech-rate",
+    "stress",
+    "text-align",
+    "text-decoration",
+    "text-indent",
+    "unicode-bidi",
+    "vertical-align",
+    "voice-family",
+    "volume",
+    "white-space",
+    "width",
+]
+
+
+def sanitize_html(raw_body: str) -> str:
+    """
+    Remove not allowed HTML tags to mitigate XSS vulnerabilities.
+    """
+    bleach_options = dict(
+        tags=ALLOWED_TAGS,
+        protocols=bleach.ALLOWED_PROTOCOLS,
+        strip=True,
+        attributes=ALLOWED_ATTRIBUTES,
+    )
+    if CSSSanitizer:
+        bleach_options['css_sanitizer'] = CSSSanitizer()
+    else:
+        # pylint: disable=fixme
+        # TODO: This is maintaining backward compatibility with bleach 4.1.0 used in Maple release of edx-platform.
+        #  This can be removed for the Nutmeg release which uses bleach 5.0.0
+        bleach_options['styles'] = ALLOWED_STYLES
+
+    return bleach.clean(raw_body, **bleach_options)
 
 
 class DummyTranslationService:
