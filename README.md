@@ -487,7 +487,7 @@ $ make test.unit
 You can run specific tests via
 
 ```bash
-$ make test.unit tests.unit.test_basics.BasicTests.test_student_view_data
+$ make test.unit TEST=tests.unit.test_basics.BasicTests.test_student_view_data
 ```
 
 
