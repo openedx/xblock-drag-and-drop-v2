@@ -521,6 +521,7 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
         mock_service = mock.MagicMock()
         mock_service.get_current_user.opt_attrs.get.return_value = True
         self.block.runtime.service = mock_service
+        self.block.i18n_service.gettext = str
 
         self.block.showanswer = showanswer_option
         self._validate_answer(expected_status_code)
