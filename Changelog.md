@@ -1,11 +1,18 @@
 Drag and Drop XBlock changelog
 ==============================
 
+Version 3.1.0 (2023-01-31)
+--------------------------
+
+* Upgrade to be compatible with `bleach==6.0.0` and `bleach<6.0.0`
+* Make the dependency on the `css` extras explicit.
+
 Version 3.0.0 (2022-11-18)
 ---------------------------
 
-* Sanitize HTML tags to prevent XSS vulnerabilities.  
-  BREAKING CHANGE: Disallowed HTML tags (e.g. `<script>`) will no longer be rendered in LMS and Studio. 
+* Sanitize HTML tags to prevent XSS vulnerabilities.
+
+  BREAKING CHANGE: Disallowed HTML tags (e.g. `<script>`) will no longer be rendered in LMS and Studio.
 
 Version 2.7.0 (2022-11-15)
 ---------------------------
@@ -20,7 +27,7 @@ Version 2.6.0 (2022-10-24)
 Version 2.5.0 (2022-10-13)
 ---------------------------
 
-* Make the "Show Answer" condition customizable (like in the Problem XBlock). 
+* Make the "Show Answer" condition customizable (like in the Problem XBlock).
 
 Version 2.4.2 (2022-10-13)
 ---------------------------
