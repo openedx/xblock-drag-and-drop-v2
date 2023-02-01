@@ -11,6 +11,8 @@ EXTRACTED_DJANGO := $(EXTRACT_DIR)/django-partial.po
 EXTRACTED_DJANGOJS := $(EXTRACT_DIR)/djangojs-partial.po
 EXTRACTED_TEXT := $(EXTRACT_DIR)/text.po
 
+FIREFOX_VERSION := "43.0"
+
 help: ## display this help message
 	@echo "Please use \`make <target>' where <target> is one of"
 	@perl -nle'print $& if m{^[a-zA-Z_-]+:.*?## .*$$}' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m  %-25s\033[0m %s\n", $$1, $$2}'
@@ -57,8 +59,11 @@ push_translations: ## push translations to transifex
 check_translations_up_to_date: extract_translations compile_translations dummy_translations detect_changed_source_translations ## extract, compile, and check if translation files are up-to-date
 
 install_firefox:
-	mkdir -p test_helpers
-	cd test_helpers && wget "https://ftp.mozilla.org/pub/firefox/releases/43.0/linux-x86_64/en-US/firefox-43.0.tar.bz2" && tar -xjf firefox-43.0.tar.bz2
+	@mkdir -p test_helpers
+	@test -f ./test_helpers/firefox/firefox && echo "Firefox already installed." || \
+	(cd test_helpers && \
+	wget -N "https://archive.mozilla.org/pub/firefox/releases/$(FIREFOX_VERSION)/linux-x86_64/en-US/firefox-$(FIREFOX_VERSION).tar.bz2" && \
+	tar -xjf firefox-$(FIREFOX_VERSION).tar.bz2)
 
 piptools: ## install pinned version of pip-compile and pip-sync
 	pip install -r requirements/pip.txt
