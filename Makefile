@@ -1,5 +1,6 @@
-.PHONY: clean compile_translations dummy_translations \
-	extract_translations fake_translations help
+.PHONY: clean help compile_translations dummy_translations extract_translations detect_changed_source_translations \
+		build_dummy_translations validate_translations pull_translations push_translations check_translations_up_to_date \
+		install_firefox requirements selfcheck test test.unit test.quality upgrade
 
 .DEFAULT_GOAL := help
 
@@ -59,14 +60,18 @@ install_firefox:
 	mkdir -p test_helpers
 	cd test_helpers && wget "https://ftp.mozilla.org/pub/firefox/releases/43.0/linux-x86_64/en-US/firefox-43.0.tar.bz2" && tar -xjf firefox-43.0.tar.bz2
 
-requirements: install_firefox
-	pip install wheel
-	pip install -r xblock-sdk/requirements/base.txt -r xblock-sdk/requirements/test.txt
-	pip install -r requirements.txt
-	pip uninstall -y transifex-client
+piptools: ## install pinned version of pip-compile and pip-sync
+	pip install -r requirements/pip.txt
+	pip install -r requirements/pip-tools.txt
 
-test.quality: ## run quality checkers on the codebase
-	pycodestyle drag_and_drop_v2 tests --max-line-length=120
+requirements: piptools  ## install test requirements locally
+	pip-sync requirements/ci.txt
+
+requirements_python: install_firefox piptools  ## install all requirements locally
+	pip-sync requirements/dev.txt requirements/private.*
+
+test.quality: selfcheck ## run quality checkers on the codebase
+	pycodestyle drag_and_drop_v2 tests manage.py setup.py --max-line-length=120
 	pylint drag_and_drop_v2
 	pylint tests --rcfile=tests/pylintrc
 
@@ -74,3 +79,24 @@ test.unit: ## run python unit and integration tests
 	PATH=test_helpers/firefox:$$PATH xvfb-run python run_tests.py $(TEST)
 
 test: test.quality test.unit ## Run all tests
+
+# Define PIP_COMPILE_OPTS=-v to get more information during make upgrade.
+PIP_COMPILE = pip-compile --upgrade --resolver=backtracking $(PIP_COMPILE_OPTS)
+
+upgrade: export CUSTOM_COMPILE_COMMAND=make upgrade
+upgrade: ## update the requirements/*.txt files with the latest packages satisfying requirements/*.in
+	pip install -qr requirements/pip-tools.txt
+	# Make sure to compile files after any other files they include!
+	$(PIP_COMPILE) --allow-unsafe -o requirements/pip.txt requirements/pip.in
+	$(PIP_COMPILE) -o requirements/pip-tools.txt requirements/pip-tools.in
+	pip install -qr requirements/pip.txt
+	pip install -qr requirements/pip-tools.txt
+	$(PIP_COMPILE) -o requirements/base.txt requirements/base.in
+	$(PIP_COMPILE) -o requirements/test.txt requirements/test.in
+	$(PIP_COMPILE) -o requirements/quality.txt requirements/quality.in
+	$(PIP_COMPILE) -o requirements/workbench.txt requirements/workbench.in
+	$(PIP_COMPILE) -o requirements/ci.txt requirements/ci.in
+	$(PIP_COMPILE) -o requirements/dev.txt requirements/dev.in
+
+selfcheck: ## check that the Makefile is well-formed
+	@echo "The Makefile is well-formed."
