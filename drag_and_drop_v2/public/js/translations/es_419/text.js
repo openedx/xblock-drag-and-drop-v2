@@ -4,14 +4,15 @@
                   init: function() {
                     
 
-(function(globals) {
-
-  var django = globals.django || (globals.django = {});
+'use strict';
+{
+  const globals = this;
+  const django = globals.django || (globals.django = {});
 
   
   django.pluralidx = function(n) {
-    var v=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;
-    if (typeof(v) == 'boolean') {
+    const v = n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;
+    if (typeof v === 'boolean') {
       return v ? 1 : 0;
     } else {
       return v;
@@ -23,17 +24,24 @@
 
   django.catalog = django.catalog || {};
   
-  var newcatalog = {
+  const newcatalog = {
     "\n                            Please provide a description of the image for non-visual users.\n                            The description should provide sufficient information to allow anyone\n                            to solve the problem even without seeing the image.\n                        ": "\n                            Proporcione una descripci\u00f3n de la imagen para usuarios con discapacidad visual.\n                            La descripci\u00f3n debe proporcionar informaci\u00f3n suficiente para que cualquiera \n                            pueda resolver el problema incluso sin ver la imagen.\n                        ",
+    "(inherited from Advanced Settings)": "(heredado de Configuraci\u00f3n avanzada)",
     ", draggable": ", arrastrable",
     ", draggable, grabbed": ", arrastrable, tomado",
     ", dropzone": ", zona para soltar los \u00edtems",
     "Actions": "Acciones",
     "Add a zone": "A\u00f1adir zona",
     "Add an item": "A\u00f1adir un item",
+    "After All Attempts": "Despu\u00e9s de todos los Intentos",
+    "After All Attempts or Correct": "Despu\u00e9s de todos los intentos o de corregir",
+    "Always": "Siempre",
     "An error occurred. Unable to load drag and drop problem.": "Ocurri\u00f3 un error. No fue posible cargar el problema de arrastrar y soltar.",
-    "An isosceles triangle with three layers of similar height. It is shown upright, so the widest layer is located at the bottom, and the narrowest layer is located at the top.": "Un tri\u00e1ngulo is\u00f3sceles con tres capas de altura similar. Se muestra vertical, por lo que la capa m\u00e1s ancha se encuentra en la parte inferior, y la capa m\u00e1s estrecha se encuentra en la parte superior.",
+    "An isosceles triangle with three layers of similar height. It is shown upright, so the widest layer is located at the bottom, and the narrowest layer is located at the top.": "Un tri\u00e1ngulo is\u00f3sceles con tres capas de altura similar. Se muestra vertical, por lo que la capa m\u00e1s ancha se encuentra en la parte inferior y la capa m\u00e1s estrecha se encuentra en la parte superior.",
+    "Answered": "Respondido",
     "Assessment": "Evaluaci\u00f3n",
+    "Attempted": "Intentos",
+    "Attempted or Past Due": "Intentado o Vencido",
     "Background Image": "Imagen de fondo",
     "Background URL": "URL de imagen de fondo",
     "Background description": "Descripci\u00f3n del fondo",
@@ -41,8 +49,10 @@
     "Cancel": "Cancelar",
     "Change background": "Cambiar imagen de fondo",
     "Close": "Cerrar",
+    "Closed": "Cerrado",
     "Continue": "Continuar",
     "Correct": "Correcto",
+    "Correct or Past Due": "Correcto o fecha vencida",
     "Correct! This one belongs to The Bottom Zone.": "Correcto! Este objeto pertenece a la Zona inferior.",
     "Correct! This one belongs to The Middle Zone.": "Correcto! Este objeto pertenece a la Zona del medio.",
     "Correct! This one belongs to The Top Zone.": "Correcto! Este objeto pertenece a la Zona superior.",
@@ -53,8 +63,10 @@
       "{correct_count} elementos correctamente colocados"
     ],
     "DEPRECATED. Keeps maximum score achieved by student as a weighted value.": "DEPRECADO. Mantiene el m\u00e1ximo puntaje alcanzado por un estudiante como un valor ponderado.",
+    "Default": "Por defecto",
     "Defines the number of points the problem is worth.": "Define el n\u00famero de puntos que vale este problema.",
     "Defines the number of times a student can try to answer this problem. If the value is not set, infinite attempts are allowed.": "Define el n\u00famero de veces que un estudiante puede intentar responder a este problema. Si el valor no est\u00e1 establecido, se permiten intentos infinitos.",
+    "Defines when to show the answer to the problem. A default value can be set in Advanced Settings. To revert setting a custom value, choose the 'Default' option.": "Defina cu\u00e1ndo mostrar la respuesta al problema. Se puede establecer un valor predeterminado en Configuraci\u00f3n avanzada. Para revertir la configuraci\u00f3n de un valor personalizado, elija la opci\u00f3n \"Por defecto\"",
     "Did not place {missing_count} required item": [
       "No coloc\u00f3 {missing_count} \u00edtem requerido",
       "No coloc\u00f3 {missing_count} \u00edtems requeridos",
@@ -75,6 +87,7 @@
     "Feedback": "Retroalimentaci\u00f3n",
     "Final attempt was used, highest score is {score}": "Se ha utilizado el \u00faltimo intento. Su puntaje m\u00e1ximo fu\u00e9 {score}",
     "Final feedback": "Retroalimentaci\u00f3n final",
+    "Finished": "Finalizado",
     "For example, 'http://example.com/background.png' or '/static/background.png'.": "Por ejemplo, 'http://example.com/background.png' o '/static/background.png'.",
     "Generate image and zones": "Generar imagen y zonas",
     "Generate image automatically": "Generar imagen autom\u00e1ticamente",
@@ -116,6 +129,7 @@
     ],
     "Mode": "Modo",
     "Navigate using TAB and SHIFT+TAB to the appropriate dropzone and press CTRL+M once more to drop it here.": "Navegue usando TAB y MAY\u00daS + TAB a la zona desplegable apropiada y presione CTRL + M nuevamente para dejarlo en esa zona.",
+    "Never": "Nunca",
     "No items placed here": "No se colocaron objetos ac\u00e1",
     "No, this item does not belong here. Try again.": "No. Este \u00edtem no pertenece aqu\u00ed. Intenta nuevamente",
     "Number of attempts learner used": "N\u00famero de intentos de estudiante usados",
@@ -123,6 +137,7 @@
     "Number of columns and rows.": "N\u00famero de columnas y filas.",
     "Number of rows": "N\u00famero de filas",
     "Of course it goes here! It goes anywhere!": "Por supuesto que va ac\u00e1! Va en cualquier parte!",
+    "Past Due": "Vencido",
     "Placed in: {zone_title}": "Ubicado en: {zone_title}",
     "Please check over your submission.": "Por favor revise nuevamente su env\u00edo",
     "Please check the values you entered.": "Por favor revise los valores ingresados.",
@@ -138,6 +153,7 @@
     "Saving": "Guardando",
     "Show \"Problem\" heading": "Mostrar \"Problema\" en el encabezado",
     "Show Answer": "Mostrar Respuesta",
+    "Show answer": "Mostrar respuesta",
     "Show title": "Mostrar t\u00edtulo",
     "Size of a single zone in pixels.": "Tama\u00f1o de la zona en pixeles.",
     "Some of your answers were not correct.": "Algunas de sus respuestas no fueron correctas.",
@@ -151,6 +167,7 @@
     "The Bottom Zone": "Zona inferior",
     "The Middle Zone": "Zona media",
     "The Top Zone": "Zona superior",
+    "The answer is unavailable": "La respuesta no est\u00e1 disponible",
     "The background color of draggable items in the problem (example: 'blue' or '#0000ff').": "El color de fondo de los elementos arrastrables (ejemplo: 'blue' o '#0000ff').",
     "The description of the problem or instructions shown to the learner.": "Descripci\u00f3n del problema o instrucciones mostradas al estudiante",
     "The title of the drag and drop problem. The title is displayed to learners.": "El t\u00edtulo del problema de arrastrar y soltar. El t\u00edtulo se muestra a los alumnos.",
@@ -206,43 +223,43 @@
       "{possible} puntos posibles (no calificado)"
     ]
   };
-  for (var key in newcatalog) {
+  for (const key in newcatalog) {
     django.catalog[key] = newcatalog[key];
   }
   
 
   if (!django.jsi18n_initialized) {
     django.gettext = function(msgid) {
-      var value = django.catalog[msgid];
-      if (typeof(value) == 'undefined') {
+      const value = django.catalog[msgid];
+      if (typeof value === 'undefined') {
         return msgid;
       } else {
-        return (typeof(value) == 'string') ? value : value[0];
+        return (typeof value === 'string') ? value : value[0];
       }
     };
 
     django.ngettext = function(singular, plural, count) {
-      var value = django.catalog[singular];
-      if (typeof(value) == 'undefined') {
+      const value = django.catalog[singular];
+      if (typeof value === 'undefined') {
         return (count == 1) ? singular : plural;
       } else {
-        return value[django.pluralidx(count)];
+        return value.constructor === Array ? value[django.pluralidx(count)] : value;
       }
     };
 
     django.gettext_noop = function(msgid) { return msgid; };
 
     django.pgettext = function(context, msgid) {
-      var value = django.gettext(context + '\x04' + msgid);
-      if (value.indexOf('\x04') != -1) {
+      let value = django.gettext(context + '\x04' + msgid);
+      if (value.includes('\x04')) {
         value = msgid;
       }
       return value;
     };
 
     django.npgettext = function(context, singular, plural, count) {
-      var value = django.ngettext(context + '\x04' + singular, context + '\x04' + plural, count);
-      if (value.indexOf('\x04') != -1) {
+      let value = django.ngettext(context + '\x04' + singular, context + '\x04' + plural, count);
+      if (value.includes('\x04')) {
         value = django.ngettext(singular, plural, count);
       }
       return value;
@@ -280,9 +297,9 @@
       "%Y-%m-%d"
     ],
     "DECIMAL_SEPARATOR": ",",
-    "FIRST_DAY_OF_WEEK": "1",
+    "FIRST_DAY_OF_WEEK": 1,
     "MONTH_DAY_FORMAT": "j \\d\\e F",
-    "NUMBER_GROUPING": "3",
+    "NUMBER_GROUPING": 3,
     "SHORT_DATETIME_FORMAT": "d/m/Y H:i",
     "SHORT_DATE_FORMAT": "d/m/Y",
     "THOUSAND_SEPARATOR": ".",
@@ -296,8 +313,8 @@
   };
 
     django.get_format = function(format_type) {
-      var value = django.formats[format_type];
-      if (typeof(value) == 'undefined') {
+      const value = django.formats[format_type];
+      if (typeof value === 'undefined') {
         return format_type;
       } else {
         return value;
@@ -316,8 +333,7 @@
 
     django.jsi18n_initialized = true;
   }
-
-}(this));
+};
 
 
                   }

@@ -4,14 +4,15 @@
                   init: function() {
                     
 
-(function(globals) {
-
-  var django = globals.django || (globals.django = {});
+'use strict';
+{
+  const globals = this;
+  const django = globals.django || (globals.django = {});
 
   
   django.pluralidx = function(n) {
-    var v=0;
-    if (typeof(v) == 'boolean') {
+    const v = 0;
+    if (typeof v === 'boolean') {
       return v ? 1 : 0;
     } else {
       return v;
@@ -23,7 +24,7 @@
 
   django.catalog = django.catalog || {};
   
-  var newcatalog = {
+  const newcatalog = {
     "\n                            Please provide a description of the image for non-visual users.\n                            The description should provide sufficient information to allow anyone\n                            to solve the problem even without seeing the image.\n                        ": "\n                            \uc774\ubbf8\uc9c0\ub97c \ubcfc \uc218 \uc5c6\ub294 \uc0ac\uc6a9\uc81c\ub97c \uc704\ud574 \uc774\ubbf8\uc9c0\uc758 \uc124\uba85\uc744 \uc81c\uacf5\ud558\uc138\uc694.\n                            \ub204\uad6c\ub098 \uc774\ubbf8\uc9c0\ub97c \ubcf4\uc9c0 \uc54a\uace0\ub3c4 \ubb38\uc81c\ub97c \ud480 \uc218 \uc788\ub3c4\ub85d\n                            \ucda9\ubd84\ud55c \uc815\ubcf4\ub97c \uc124\uba85\ud574\uc8fc\uc5b4\uc57c \ud569\ub2c8\ub2e4.\n                        ",
     ", draggable": ", \ub04c\uae30 \uac00\ub2a5",
     ", draggable, grabbed": ", \ub04c\uae30 \uac00\ub2a5, \uc7a1\ud600\uc788\uc74c",
@@ -183,43 +184,43 @@
       "{possible}\uc810 \uac00\ub2a5\ud568 (\ubbf8\ucc44\uc810\ub428)"
     ]
   };
-  for (var key in newcatalog) {
+  for (const key in newcatalog) {
     django.catalog[key] = newcatalog[key];
   }
   
 
   if (!django.jsi18n_initialized) {
     django.gettext = function(msgid) {
-      var value = django.catalog[msgid];
-      if (typeof(value) == 'undefined') {
+      const value = django.catalog[msgid];
+      if (typeof value === 'undefined') {
         return msgid;
       } else {
-        return (typeof(value) == 'string') ? value : value[0];
+        return (typeof value === 'string') ? value : value[0];
       }
     };
 
     django.ngettext = function(singular, plural, count) {
-      var value = django.catalog[singular];
-      if (typeof(value) == 'undefined') {
+      const value = django.catalog[singular];
+      if (typeof value === 'undefined') {
         return (count == 1) ? singular : plural;
       } else {
-        return value[django.pluralidx(count)];
+        return value.constructor === Array ? value[django.pluralidx(count)] : value;
       }
     };
 
     django.gettext_noop = function(msgid) { return msgid; };
 
     django.pgettext = function(context, msgid) {
-      var value = django.gettext(context + '\x04' + msgid);
-      if (value.indexOf('\x04') != -1) {
+      let value = django.gettext(context + '\x04' + msgid);
+      if (value.includes('\x04')) {
         value = msgid;
       }
       return value;
     };
 
     django.npgettext = function(context, singular, plural, count) {
-      var value = django.ngettext(context + '\x04' + singular, context + '\x04' + plural, count);
-      if (value.indexOf('\x04') != -1) {
+      let value = django.ngettext(context + '\x04' + singular, context + '\x04' + plural, count);
+      if (value.includes('\x04')) {
         value = django.ngettext(singular, plural, count);
       }
       return value;
@@ -242,17 +243,15 @@
       "%Y-%m-%d %H:%M:%S",
       "%Y-%m-%d %H:%M:%S.%f",
       "%Y-%m-%d %H:%M",
-      "%Y-%m-%d",
       "%m/%d/%Y %H:%M:%S",
       "%m/%d/%Y %H:%M:%S.%f",
       "%m/%d/%Y %H:%M",
-      "%m/%d/%Y",
       "%m/%d/%y %H:%M:%S",
       "%m/%d/%y %H:%M:%S.%f",
       "%m/%d/%y %H:%M",
-      "%m/%d/%y",
       "%Y\ub144 %m\uc6d4 %d\uc77c %H\uc2dc %M\ubd84 %S\ucd08",
-      "%Y\ub144 %m\uc6d4 %d\uc77c %H\uc2dc %M\ubd84"
+      "%Y\ub144 %m\uc6d4 %d\uc77c %H\uc2dc %M\ubd84",
+      "%Y-%m-%d"
     ],
     "DATE_FORMAT": "Y\ub144 n\uc6d4 j\uc77c",
     "DATE_INPUT_FORMATS": [
@@ -262,9 +261,9 @@
       "%Y\ub144 %m\uc6d4 %d\uc77c"
     ],
     "DECIMAL_SEPARATOR": ".",
-    "FIRST_DAY_OF_WEEK": "0",
+    "FIRST_DAY_OF_WEEK": 0,
     "MONTH_DAY_FORMAT": "n\uc6d4 j\uc77c",
-    "NUMBER_GROUPING": "3",
+    "NUMBER_GROUPING": 3,
     "SHORT_DATETIME_FORMAT": "Y-n-j H:i",
     "SHORT_DATE_FORMAT": "Y-n-j.",
     "THOUSAND_SEPARATOR": ",",
@@ -280,8 +279,8 @@
   };
 
     django.get_format = function(format_type) {
-      var value = django.formats[format_type];
-      if (typeof(value) == 'undefined') {
+      const value = django.formats[format_type];
+      if (typeof value === 'undefined') {
         return format_type;
       } else {
         return value;
@@ -300,8 +299,7 @@
 
     django.jsi18n_initialized = true;
   }
-
-}(this));
+};
 
 
                   }

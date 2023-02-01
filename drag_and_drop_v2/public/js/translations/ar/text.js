@@ -4,14 +4,15 @@
                   init: function() {
                     
 
-(function(globals) {
-
-  var django = globals.django || (globals.django = {});
+'use strict';
+{
+  const globals = this;
+  const django = globals.django || (globals.django = {});
 
   
   django.pluralidx = function(n) {
-    var v=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;
-    if (typeof(v) == 'boolean') {
+    const v = n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;
+    if (typeof v === 'boolean') {
       return v ? 1 : 0;
     } else {
       return v;
@@ -23,7 +24,7 @@
 
   django.catalog = django.catalog || {};
   
-  var newcatalog = {
+  const newcatalog = {
     "\n                            Please provide a description of the image for non-visual users.\n                            The description should provide sufficient information to allow anyone\n                            to solve the problem even without seeing the image.\n                        ": "\n                            \u0627\u0644\u0631\u062c\u0627\u0621 \u062a\u0642\u062f\u064a\u0645 \u0634\u0631\u062d \u0644\u0644\u0635\u0648\u0631\u0629 \u0644\u0644\u0645\u0633\u062a\u062e\u062f\u0645\u064a\u0646 \u063a\u064a\u0631 \u0627\u0644\u0645\u0631\u0626\u064a\u064a\u0646.\n                            \u0645\u0646 \u0627\u0644\u0645\u0641\u062a\u0631\u0636 \u0623\u0646 \u064a\u0648\u0641\u0631 \u0627\u0644\u0634\u0631\u062d \u0645\u0639\u0644\u0648\u0645\u0627\u062a \u0643\u0627\u0641\u064a\u0629 \u0644\u0644\u0633\u0645\u0627\u062d \u0644\u0623\u064a \u0634\u062e\u0635 \n                            \u0628\u062d\u0644 \u0627\u0644\u0645\u0633\u0623\u0644\u0629 \u062d\u062a\u0649 \u0628\u062f\u0648\u0646 \u0631\u0624\u064a\u0629 \u0627\u0644\u0635\u0648\u0631\u0629.\n                        ",
     ", draggable": "\u060c \u0642\u0627\u0628\u0644 \u0644\u0644\u0633\u062d\u0628",
     ", draggable, grabbed": "\u060c \u0642\u0627\u0628\u0644 \u0644\u0644\u0633\u062d\u0628\u060c \u0645\u0645\u0633\u0648\u0643",
@@ -227,43 +228,43 @@
       "{possible} \u0646\u0642\u0637\u0629 \u0645\u0645\u0643\u0646\u0629 (\u0628\u062f\u0648\u0646 \u0639\u0644\u0627\u0645\u0629)"
     ]
   };
-  for (var key in newcatalog) {
+  for (const key in newcatalog) {
     django.catalog[key] = newcatalog[key];
   }
   
 
   if (!django.jsi18n_initialized) {
     django.gettext = function(msgid) {
-      var value = django.catalog[msgid];
-      if (typeof(value) == 'undefined') {
+      const value = django.catalog[msgid];
+      if (typeof value === 'undefined') {
         return msgid;
       } else {
-        return (typeof(value) == 'string') ? value : value[0];
+        return (typeof value === 'string') ? value : value[0];
       }
     };
 
     django.ngettext = function(singular, plural, count) {
-      var value = django.catalog[singular];
-      if (typeof(value) == 'undefined') {
+      const value = django.catalog[singular];
+      if (typeof value === 'undefined') {
         return (count == 1) ? singular : plural;
       } else {
-        return value[django.pluralidx(count)];
+        return value.constructor === Array ? value[django.pluralidx(count)] : value;
       }
     };
 
     django.gettext_noop = function(msgid) { return msgid; };
 
     django.pgettext = function(context, msgid) {
-      var value = django.gettext(context + '\x04' + msgid);
-      if (value.indexOf('\x04') != -1) {
+      let value = django.gettext(context + '\x04' + msgid);
+      if (value.includes('\x04')) {
         value = msgid;
       }
       return value;
     };
 
     django.npgettext = function(context, singular, plural, count) {
-      var value = django.ngettext(context + '\x04' + singular, context + '\x04' + plural, count);
-      if (value.indexOf('\x04') != -1) {
+      let value = django.ngettext(context + '\x04' + singular, context + '\x04' + plural, count);
+      if (value.includes('\x04')) {
         value = django.ngettext(singular, plural, count);
       }
       return value;
@@ -286,15 +287,12 @@
       "%Y-%m-%d %H:%M:%S",
       "%Y-%m-%d %H:%M:%S.%f",
       "%Y-%m-%d %H:%M",
-      "%Y-%m-%d",
       "%m/%d/%Y %H:%M:%S",
       "%m/%d/%Y %H:%M:%S.%f",
       "%m/%d/%Y %H:%M",
-      "%m/%d/%Y",
       "%m/%d/%y %H:%M:%S",
       "%m/%d/%y %H:%M:%S.%f",
-      "%m/%d/%y %H:%M",
-      "%m/%d/%y"
+      "%m/%d/%y %H:%M"
     ],
     "DATE_FORMAT": "j F\u060c Y",
     "DATE_INPUT_FORMATS": [
@@ -311,9 +309,9 @@
       "%d %B, %Y"
     ],
     "DECIMAL_SEPARATOR": ",",
-    "FIRST_DAY_OF_WEEK": "0",
+    "FIRST_DAY_OF_WEEK": 0,
     "MONTH_DAY_FORMAT": "j F",
-    "NUMBER_GROUPING": "0",
+    "NUMBER_GROUPING": 0,
     "SHORT_DATETIME_FORMAT": "m/d/Y P",
     "SHORT_DATE_FORMAT": "d\u200f/m\u200f/Y",
     "THOUSAND_SEPARATOR": ".",
@@ -327,8 +325,8 @@
   };
 
     django.get_format = function(format_type) {
-      var value = django.formats[format_type];
-      if (typeof(value) == 'undefined') {
+      const value = django.formats[format_type];
+      if (typeof value === 'undefined') {
         return format_type;
       } else {
         return value;
@@ -347,8 +345,7 @@
 
     django.jsi18n_initialized = true;
   }
-
-}(this));
+};
 
 
                   }
