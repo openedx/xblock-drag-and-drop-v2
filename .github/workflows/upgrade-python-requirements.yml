@@ -6,18 +6,17 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        description: "Target branch against which to create requirements PR"
+        description: Target branch against which to create requirements PR
         required: true
-        # If copying this template manually, you must provide your default branch name
-        # in quotes, such as 'master'
-        default: "master"
+        default: master
 
 jobs:
   call-upgrade-python-requirements-workflow:
     uses: openedx/.github/.github/workflows/upgrade-python-requirements.yml@master
+    # Do not run on forks
+    if: github.repository_owner == 'openedx'
     with:
-    # If copying manually, also provide your default branch name in quotes here
-      branch: ${{ github.event.inputs.branch || "master" }}
+      branch: ${{ github.event.inputs.branch || 'master' }}
       # optional parameters below; fill in if you'd like github or email notifications
       # user_reviewers: ""
       # team_reviewers: ""
