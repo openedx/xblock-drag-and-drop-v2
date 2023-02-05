@@ -21,7 +21,7 @@ spec:
   # Don't forget the "user:" or "group:" prefix. Groups must be GitHub team
   # names in the openedx GitHub organization: https://github.com/orgs/openedx/teams
 
-  owner: 'group:tcril-engineering'
+  owner: 'user:Agrendalath'
 
   # (Required) Acceptable Type Values: service, website, library
   type: 'library'
