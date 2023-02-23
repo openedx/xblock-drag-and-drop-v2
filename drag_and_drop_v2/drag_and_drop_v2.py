@@ -654,7 +654,7 @@ class DragAndDropBlock(
 
         answer = self._get_correct_state()
 
-        if explanation := self.data.get('explanation', '').strip():
+        if explanation := (self.data.get('explanation') or '').strip():
             if replace_urls_service := self.runtime.service(self, 'replace_urls'):
                 explanation = replace_urls_service.replace_urls(explanation)
 

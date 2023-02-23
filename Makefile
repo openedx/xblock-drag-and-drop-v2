@@ -1,6 +1,6 @@
 .PHONY: clean help compile_translations dummy_translations extract_translations detect_changed_source_translations \
 		build_dummy_translations validate_translations pull_translations push_translations check_translations_up_to_date \
-		install_firefox requirements selfcheck test test.unit test.quality upgrade
+		install_firefox requirements selfcheck test test.python test.unit test.quality upgrade mysql
 
 .DEFAULT_GOAL := help
 
@@ -76,14 +76,19 @@ requirements_python: install_firefox piptools  ## install all requirements local
 	pip-sync requirements/dev.txt requirements/private.*
 
 test.quality: selfcheck ## run quality checkers on the codebase
-	pycodestyle drag_and_drop_v2 tests manage.py setup.py --max-line-length=120
-	pylint drag_and_drop_v2
-	pylint tests --rcfile=tests/pylintrc
+	tox -e quality
 
-test.unit: ## run python unit and integration tests
+test.python: ## run python unit and integration tests
 	PATH=test_helpers/firefox:$$PATH xvfb-run python run_tests.py $(TEST)
 
-test: test.quality test.unit ## Run all tests
+test.unit: ## run all unit tests
+	tox -- $(TEST)
+
+test.integration: ## run all integration tests
+	tox -e integration -- $(TEST)
+
+test: test.unit test.integration test.quality ## Run all tests
+	tox -e translations
 
 # Define PIP_COMPILE_OPTS=-v to get more information during make upgrade.
 PIP_COMPILE = pip-compile --upgrade --resolver=backtracking $(PIP_COMPILE_OPTS)
@@ -102,6 +107,9 @@ upgrade: ## update the requirements/*.txt files with the latest packages satisfy
 	$(PIP_COMPILE) -o requirements/workbench.txt requirements/workbench.in
 	$(PIP_COMPILE) -o requirements/ci.txt requirements/ci.in
 	$(PIP_COMPILE) -o requirements/dev.txt requirements/dev.in
+
+mysql: ## run mysql database for integration tests
+	docker run --rm -it --name mysql -p 3307:3306 -e MYSQL_ROOT_PASSWORD=rootpw -e MYSQL_DATABASE=db mysql:8
 
 selfcheck: ## check that the Makefile is well-formed
 	@echo "The Makefile is well-formed."

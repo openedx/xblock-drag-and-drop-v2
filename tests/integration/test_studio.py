@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 
+import time
+
 import six
 from six.moves import range
 from xblockutils.studio_editable_test import StudioEditableBaseTest
@@ -90,6 +92,11 @@ class TestStudio(StudioEditableBaseTest):
     @property
     def zones(self):
         return self.zones_tab.find_elements_by_css_selector('.zone-row')
+
+    def go_to_view(self, view_name='student_view', student_id="student_1"):
+        element = super().go_to_view(view_name, student_id)
+        time.sleep(0.1)  # This method is unreliable without a delay.
+        return element
 
     def test_defaults(self):
         """

@@ -10,14 +10,25 @@ on:
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
 
 jobs:
   tests:
     runs-on: ${{ matrix.os }}
+    services:
+      # Using SQLite3 for integration tests throws `django.db.utils.OperationalError: database table is locked: workbench_xblockstate`.
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: rootpw
+        ports:
+          - 3307:3306
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-20.04]
         python-version: [3.8]
+        toxenv: [py38, integration, quality, translations]
 
     steps:
     - name: checkout repo
@@ -32,18 +43,21 @@ jobs:
 
     # `libgtk2.0-0` and `libxt6` are required by an older version of Firefox.
     - name: Install Required System Packages
+      if: matrix.toxenv == 'integration'
       run: |
         sudo apt-get update
-        sudo apt-get install -y libxmlsec1-dev ubuntu-restricted-extras xvfb libxml2-dev libxslt-dev python3-dev libevent-dev python3-pip python3-venv gettext libgtk2.0-0 libxt6
+        sudo apt-get install -y libxmlsec1-dev ubuntu-restricted-extras xvfb libxml2-dev libxslt-dev libevent-dev libgtk2.0-0 libxt6
+
+    - name: Install translations dependencies
+      if: matrix.toxenv == 'translations'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gettext
 
     - name: Install Dependencies
       run: make requirements
 
-    - name: Check if translations are up-to-date
-      run: make check_translations_up_to_date
-
-    - name: Run quality checks
-      run: make test.quality
-
-    - name: Run unit tests
-      run: make test.unit
+    - name: Run Tests
+      env:
+        TOXENV: ${{ matrix.toxenv }}
+      run: tox
