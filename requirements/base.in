@@ -1,0 +1,6 @@
+# Core requirements for using this application
+-c constraints.txt
+
+django-statici18n
+bleach[css]
+xblock-utils

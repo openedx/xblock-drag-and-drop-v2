@@ -84,7 +84,7 @@ LANGUAGES = [
 STATICI18N_DOMAIN = 'text'
 STATICI18N_NAMESPACE = 'DragAndDropI18N'
 STATICI18N_PACKAGES = (
-    'drag_and_drop_v2.translations',
+    'drag_and_drop_v2',
 )
 STATICI18N_ROOT = 'drag_and_drop_v2/public/js'
 STATICI18N_OUTPUT_DIR = 'translations'

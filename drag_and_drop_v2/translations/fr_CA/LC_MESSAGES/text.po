@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-13 21:14+0200\n"
 "PO-Revision-Date: 2016-06-09 07:11+0000\n"
-"Last-Translator: Keivan Farzaneh <keivan.farzaneh@edulib.org>, 2017\n"
+"Last-Translator: Pierre Mailhot <pierre.mailhot@gmail.com>, 2017,2020-2022\n"
 "Language-Team: French (Canada) (http://www.transifex.com/open-edx/xblocks/language/fr_CA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -172,62 +172,62 @@ msgstr "Afficher l'en-tête « Problème » au-dessus du texte du problème?"
 
 #: drag_and_drop_v2.py:138
 msgid "Show answer"
-msgstr ""
+msgstr "Afficher la réponse"
 
 #: drag_and_drop_v2.py:139
 msgid ""
 "Defines when to show the answer to the problem. A default value can be set "
 "in Advanced Settings. To revert setting a custom value, choose the 'Default'"
 " option."
-msgstr ""
+msgstr "Définit quand afficher la réponse au problème. Une valeur de défaut peut être définie dans les paramètres avancés. Pour annuler la définition d'une valeur personnalisée, choisissez l'option \"Par défaut\"."
 
 #: drag_and_drop_v2.py:145
 msgid "Default"
-msgstr ""
+msgstr "Défaut"
 
 #: drag_and_drop_v2.py:146
 msgid "Always"
-msgstr ""
+msgstr "Toujours"
 
 #: drag_and_drop_v2.py:147
 msgid "Answered"
-msgstr ""
+msgstr "Répondu"
 
 #: drag_and_drop_v2.py:148
 msgid "Attempted or Past Due"
-msgstr ""
+msgstr "Tenté ou en retard"
 
 #: drag_and_drop_v2.py:149
 msgid "Closed"
-msgstr ""
+msgstr "Fermé"
 
 #: drag_and_drop_v2.py:150
 msgid "Finished"
-msgstr ""
+msgstr "Terminé"
 
 #: drag_and_drop_v2.py:151
 msgid "Correct or Past Due"
-msgstr ""
+msgstr "Correct ou en retard"
 
 #: drag_and_drop_v2.py:152
 msgid "Past Due"
-msgstr ""
+msgstr "En retard"
 
 #: drag_and_drop_v2.py:153
 msgid "Never"
-msgstr ""
+msgstr "Jamais"
 
 #: drag_and_drop_v2.py:154
 msgid "After All Attempts"
-msgstr ""
+msgstr "Après toutes les tentatives"
 
 #: drag_and_drop_v2.py:155
 msgid "After All Attempts or Correct"
-msgstr ""
+msgstr "Après toutes les tentatives ou correct"
 
 #: drag_and_drop_v2.py:156
 msgid "Attempted"
-msgstr ""
+msgstr "Tenté"
 
 #: drag_and_drop_v2.py:162
 msgid "Problem Weight"
@@ -315,7 +315,7 @@ msgstr "show_answer ne doit être utilisé que pour le mode d'évaluation"
 
 #: drag_and_drop_v2.py:649
 msgid "The answer is unavailable"
-msgstr ""
+msgstr "La réponse est indisponible"
 
 #: drag_and_drop_v2.py:798
 msgid "do_attempt handler should only be called for assessment mode"
@@ -339,7 +339,7 @@ msgstr "Paramètres de base"
 
 #: templates/html/drag_and_drop_edit.html:53
 msgid "(inherited from Advanced Settings)"
-msgstr ""
+msgstr "(hérité des Paramètres Avancés)"
 
 #: templates/html/drag_and_drop_edit.html:90
 msgid "Introductory feedback"

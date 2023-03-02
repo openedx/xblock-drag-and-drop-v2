@@ -5,6 +5,7 @@
 # Translators:
 # 7d6b04fff6aa1b6964c4cb709cdbd24b_0b8e9dc <0f5d8258cb2bd641cccbffd85d9d9e7c_938679>, 2021
 # Abdessamad Derraz <derraz.abdessamad@gmail.com>, 2021-2022
+# alexis swyngedauw, 2022
 # bill jambon <webmaster@partouze-cagoule.fr>, 2016
 # John Burke <johnb@matinee.co.uk>, 2018
 # moocit-france <contact@moocit.fr>, 2019
@@ -16,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-13 21:14+0200\n"
 "PO-Revision-Date: 2016-06-09 07:11+0000\n"
-"Last-Translator: OpenCraft OpenCraft <help@opencraft.com>, 2021\n"
+"Last-Translator: alexis swyngedauw, 2022\n"
 "Language-Team: French (http://www.transifex.com/open-edx/xblocks/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

@@ -6,6 +6,7 @@
 from __future__ import absolute_import
 
 import re
+import time
 
 from ddt import data, ddt, unpack
 from selenium.common.exceptions import WebDriverException
@@ -241,6 +242,7 @@ class ParameterizedTestsMixin(object):
             reset.click()
 
         self.wait_until_html_in(feedback['intro'], self._get_feedback_message())
+        time.sleep(0.1)
 
         locations_after_reset = get_locations()
         for item_key in items.keys():

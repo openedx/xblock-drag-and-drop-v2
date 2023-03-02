@@ -17,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-13 21:14+0200\n"
 "PO-Revision-Date: 2016-06-09 07:11+0000\n"
-"Last-Translator: Yovany Alexander Álvarez Correa <yalvarez@innovapues.com>, 2018\n"
+"Last-Translator: Ana Garcia, 2022\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/open-edx/xblocks/language/es_419/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,7 +30,7 @@ msgid ""
 "An isosceles triangle with three layers of similar height. It is shown "
 "upright, so the widest layer is located at the bottom, and the narrowest "
 "layer is located at the top."
-msgstr "Un triángulo isósceles con tres capas de altura similar. Se muestra vertical, por lo que la capa más ancha se encuentra en la parte inferior, y la capa más estrecha se encuentra en la parte superior."
+msgstr "Un triángulo isósceles con tres capas de altura similar. Se muestra vertical, por lo que la capa más ancha se encuentra en la parte inferior y la capa más estrecha se encuentra en la parte superior."
 
 #: default_data.py:14
 msgid "The Top Zone"
@@ -178,62 +178,62 @@ msgstr "¿Mostrar la palabra \"Problema\" sobre el texto del problema?"
 
 #: drag_and_drop_v2.py:138
 msgid "Show answer"
-msgstr ""
+msgstr "Mostrar respuesta"
 
 #: drag_and_drop_v2.py:139
 msgid ""
 "Defines when to show the answer to the problem. A default value can be set "
 "in Advanced Settings. To revert setting a custom value, choose the 'Default'"
 " option."
-msgstr ""
+msgstr "Defina cuándo mostrar la respuesta al problema. Se puede establecer un valor predeterminado en Configuración avanzada. Para revertir la configuración de un valor personalizado, elija la opción \"Por defecto\""
 
 #: drag_and_drop_v2.py:145
 msgid "Default"
-msgstr ""
+msgstr "Por defecto"
 
 #: drag_and_drop_v2.py:146
 msgid "Always"
-msgstr ""
+msgstr "Siempre"
 
 #: drag_and_drop_v2.py:147
 msgid "Answered"
-msgstr ""
+msgstr "Respondido"
 
 #: drag_and_drop_v2.py:148
 msgid "Attempted or Past Due"
-msgstr ""
+msgstr "Intentado o Vencido"
 
 #: drag_and_drop_v2.py:149
 msgid "Closed"
-msgstr ""
+msgstr "Cerrado"
 
 #: drag_and_drop_v2.py:150
 msgid "Finished"
-msgstr ""
+msgstr "Finalizado"
 
 #: drag_and_drop_v2.py:151
 msgid "Correct or Past Due"
-msgstr ""
+msgstr "Correcto o fecha vencida"
 
 #: drag_and_drop_v2.py:152
 msgid "Past Due"
-msgstr ""
+msgstr "Vencido"
 
 #: drag_and_drop_v2.py:153
 msgid "Never"
-msgstr ""
+msgstr "Nunca"
 
 #: drag_and_drop_v2.py:154
 msgid "After All Attempts"
-msgstr ""
+msgstr "Después de todos los Intentos"
 
 #: drag_and_drop_v2.py:155
 msgid "After All Attempts or Correct"
-msgstr ""
+msgstr "Después de todos los intentos o de corregir"
 
 #: drag_and_drop_v2.py:156
 msgid "Attempted"
-msgstr ""
+msgstr "Intentos"
 
 #: drag_and_drop_v2.py:162
 msgid "Problem Weight"
@@ -321,7 +321,7 @@ msgstr "El handlre show_answer sólo debe ser llamado para el modo calificable"
 
 #: drag_and_drop_v2.py:649
 msgid "The answer is unavailable"
-msgstr ""
+msgstr "La respuesta no está disponible"
 
 #: drag_and_drop_v2.py:798
 msgid "do_attempt handler should only be called for assessment mode"
@@ -345,7 +345,7 @@ msgstr "Configuraciones básicas"
 
 #: templates/html/drag_and_drop_edit.html:53
 msgid "(inherited from Advanced Settings)"
-msgstr ""
+msgstr "(heredado de Configuración avanzada)"
 
 #: templates/html/drag_and_drop_edit.html:90
 msgid "Introductory feedback"
