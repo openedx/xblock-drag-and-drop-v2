@@ -20,7 +20,7 @@ def load_requirements(*requirements_paths):
     constraint_files = set()
 
     # groups "pkg<=x.y.z,..." into ("pkg", "<=x.y.z,...")
-    requirement_line_regex = re.compile(r"([a-zA-Z0-9-_.]+)([<>=][^#\s]+)?")
+    requirement_line_regex = re.compile(r"([a-zA-Z0-9-_.\[\]]+)([<>=][^#\s]+)?")
 
     def add_version_constraint_or_raise(current_line, current_requirements, add_if_not_present):
         regex_match = requirement_line_regex.match(current_line)
@@ -87,6 +87,17 @@ def get_version(*file_paths):
     raise RuntimeError('Unable to find version string.')
 
 
+def package_data(pkg, root_list):
+    """Generic function to find package_data for `pkg` under `root`."""
+    data = []
+    for root in root_list:
+        for dirname, _, files in os.walk(os.path.join(pkg, root)):
+            for fname in files:
+                data.append(os.path.relpath(os.path.join(dirname, fname), pkg))
+
+    return {pkg: data}
+
+
 VERSION = get_version('drag_and_drop_v2', '__init__.py')
 
 if sys.argv[-1] == 'tag':
@@ -108,10 +119,7 @@ setup(
     entry_points={
         'xblock.v1': 'drag-and-drop-v2 = drag_and_drop_v2:DragAndDropBlock',
     },
-    include_package_data=True,
-    packages=find_packages(
-        include=['drag_and_drop_v2', 'drag_and_drop_v2.*'],
-        exclude=["*tests"],
-    ),
+    packages=['drag_and_drop_v2'],
+    package_data=package_data("drag_and_drop_v2", ["static", "templates", "public", "translations", "locale"]),
     python_requires=">=3.8",
 )
