@@ -24,9 +24,9 @@ bok-choy==0.7.1
     # via -r requirements/test.in
 boto==2.49.0
     # via xblock-sdk
-boto3==1.26.82
+boto3==1.26.84
     # via fs-s3fs
-botocore==1.29.82
+botocore==1.29.84
     # via
     #   boto3
     #   s3transfer
@@ -127,7 +127,7 @@ polib==1.2.0
     # via edx-i18n-tools
 pypng==0.20220715.0
     # via xblock-sdk
-pytest==7.2.1
+pytest==7.2.2
     # via
     #   pytest-cov
     #   pytest-django
