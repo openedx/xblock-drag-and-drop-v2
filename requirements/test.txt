@@ -24,9 +24,9 @@ bok-choy==0.7.1
     # via -r requirements/test.in
 boto==2.49.0
     # via xblock-sdk
-boto3==1.26.89
+boto3==1.26.94
     # via fs-s3fs
-botocore==1.29.89
+botocore==1.29.94
     # via
     #   boto3
     #   s3transfer
@@ -40,7 +40,7 @@ click==8.1.3
     # via cookiecutter
 cookiecutter==2.1.1
     # via xblock-sdk
-coverage[toml]==7.2.1
+coverage[toml]==7.2.2
     # via pytest-cov
 ddt==1.6.0
     # via -r requirements/test.in
@@ -165,7 +165,7 @@ selenium==2.53.6
     #   -r requirements/test.in
     #   bok-choy
     #   needle
-simplejson==3.18.3
+simplejson==3.18.4
     # via
     #   -r requirements/base.txt
     #   xblock-sdk
