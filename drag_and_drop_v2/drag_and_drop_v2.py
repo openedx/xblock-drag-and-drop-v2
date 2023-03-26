@@ -657,16 +657,8 @@ class DragAndDropBlock(
         if explanation := (self.data.get('explanation') or '').strip():
             if replace_urls_service := self.runtime.service(self, 'replace_urls'):
                 explanation = replace_urls_service.replace_urls(explanation)
-
-            # pylint: disable=fixme
-            # TODO: No longer needed after Maple.
             else:
-                try:
-                    explanation = self.runtime.replace_urls(explanation)
-                    explanation = self.runtime.replace_course_urls(explanation)
-                    explanation = self.runtime.replace_jump_to_id_urls(explanation)
-                except (TypeError, AttributeError):
-                    logger.debug('Unable to perform URL substitution on the explanation: %s', explanation)
+                logger.debug('Unable to perform URL substitution on the explanation: %s', explanation)
 
             answer['explanation'] = sanitize_html(explanation)
         return answer
@@ -1056,8 +1048,8 @@ class DragAndDropBlock(
         This method is unfortunately a bit hackish since XBlock does not provide a low-level API
         for this.
         """
-        if hasattr(self.runtime, 'replace_urls'):
-            url = self.runtime.replace_urls(u'"{}"'.format(url))[1:-1]
+        if replace_urls_service := self.runtime.service(self, 'replace_urls'):
+            url = replace_urls_service.replace_urls(f'"{url}"')[1:-1]
         elif hasattr(self.runtime, 'course_id'):
             # edX Studio uses a different runtime for 'studio_view' than 'student_view',
             # and the 'studio_view' runtime doesn't provide the replace_urls API.

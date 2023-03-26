@@ -31,6 +31,12 @@ def make_block():
     field_data = KvsFieldData(key_store)
     runtime = WorkbenchRuntime()
     runtime.course_id = "dummy_course_id"
+    # noinspection PyProtectedMember
+    runtime._services['replace_urls'] = Mock(  # pylint: disable=protected-access
+        replace_urls=lambda html, static_replace_only=False: re.sub(
+            r'"/static/([^"]*)"', r'"/course/test-course/assets/\1"', html
+        )
+    )
     def_id = runtime.id_generator.create_definition(block_type)
     usage_id = runtime.id_generator.create_usage(def_id)
     scope_ids = ScopeIds('user', block_type, def_id, usage_id)
@@ -59,11 +65,6 @@ class TestCaseMixin(object):
         self.apply_patch(
             'workbench.runtime.WorkbenchRuntime.local_resource_url',
             lambda _, _block, path: '/expanded/url/to/drag_and_drop_v2/' + path
-        )
-        self.apply_patch(
-            'workbench.runtime.WorkbenchRuntime.replace_urls',
-            lambda _, html: re.sub(r'"/static/([^"]*)"', r'"/course/test-course/assets/\1"', html),
-            create=True,
         )
         self.apply_patch(
             'drag_and_drop_v2.drag_and_drop_v2.get_grading_ignore_decoys_waffle_flag',
