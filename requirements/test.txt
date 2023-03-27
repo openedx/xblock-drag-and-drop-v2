@@ -24,9 +24,9 @@ bok-choy==0.7.1
     # via -r requirements/test.in
 boto==2.49.0
     # via xblock-sdk
-boto3==1.26.94
+boto3==1.26.99
     # via fs-s3fs
-botocore==1.29.94
+botocore==1.29.99
     # via
     #   boto3
     #   s3transfer
@@ -143,7 +143,7 @@ python-dateutil==2.8.2
     #   xblock
 python-slugify==8.0.1
     # via cookiecutter
-pytz==2022.7.1
+pytz==2023.2
     # via
     #   -r requirements/base.txt
     #   django
