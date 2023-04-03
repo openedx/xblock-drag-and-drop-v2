@@ -24,9 +24,9 @@ bok-choy==0.7.1
     # via -r requirements/test.in
 boto==2.49.0
     # via xblock-sdk
-boto3==1.26.99
+boto3==1.26.104
     # via fs-s3fs
-botocore==1.29.99
+botocore==1.29.104
     # via
     #   boto3
     #   s3transfer
@@ -119,7 +119,7 @@ packaging==23.0
     # via pytest
 path==16.6.0
     # via edx-i18n-tools
-pillow==9.4.0
+pillow==9.5.0
     # via needle
 pluggy==1.0.0
     # via pytest
@@ -143,7 +143,7 @@ python-dateutil==2.8.2
     #   xblock
 python-slugify==8.0.1
     # via cookiecutter
-pytz==2023.2
+pytz==2023.3
     # via
     #   -r requirements/base.txt
     #   django
