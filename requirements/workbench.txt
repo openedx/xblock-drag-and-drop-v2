@@ -32,11 +32,11 @@ boto==2.49.0
     # via
     #   -r requirements/test.txt
     #   xblock-sdk
-boto3==1.26.99
+boto3==1.26.104
     # via
     #   -r requirements/test.txt
     #   fs-s3fs
-botocore==1.29.99
+botocore==1.29.104
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -166,7 +166,7 @@ path==16.6.0
     # via
     #   -r requirements/test.txt
     #   edx-i18n-tools
-pillow==9.4.0
+pillow==9.5.0
     # via
     #   -r requirements/test.txt
     #   needle
@@ -202,7 +202,7 @@ python-slugify==8.0.1
     # via
     #   -r requirements/test.txt
     #   cookiecutter
-pytz==2023.2
+pytz==2023.3
     # via
     #   -r requirements/test.txt
     #   django
