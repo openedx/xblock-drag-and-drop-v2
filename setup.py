@@ -120,6 +120,6 @@ setup(
         'xblock.v1': 'drag-and-drop-v2 = drag_and_drop_v2:DragAndDropBlock',
     },
     packages=['drag_and_drop_v2'],
-    package_data=package_data("drag_and_drop_v2", ["static", "templates", "public", "translations", "locale"]),
+    package_data=package_data("drag_and_drop_v2", ["static", "templates", "public", "translations"]),
     python_requires=">=3.8",
 )
