@@ -527,6 +527,8 @@ Updates to translated strings are supposed to be propagated to `text.po` files. 
 
 [edx-i18n-tools]: https://github.com/openedx/i18n-tools
 
+Note: currently `translations` directory is a symbolic link to `conf/locale` directory. Also, 'text.po' file for locale code `en` is a symbolic link to `conf/locale/en/LC_MESSAGES/django.po` file. Both links works as a transition step to fully moving translation files to [openedx-translations](https://github.com/openedx/openedx-translations) repository
+
 Translatable strings
 --------------------
 ```bash
