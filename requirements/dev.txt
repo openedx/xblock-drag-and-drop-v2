@@ -42,12 +42,12 @@ boto==2.49.0
     #   -r requirements/quality.txt
     #   -r requirements/workbench.txt
     #   xblock-sdk
-boto3==1.26.109
+boto3==1.26.114
     # via
     #   -r requirements/quality.txt
     #   -r requirements/workbench.txt
     #   fs-s3fs
-botocore==1.29.109
+botocore==1.29.114
     # via
     #   -r requirements/quality.txt
     #   -r requirements/workbench.txt
@@ -218,7 +218,7 @@ mccabe==0.6.1
     # via
     #   -r requirements/quality.txt
     #   pylint
-mock==5.0.1
+mock==5.0.2
     # via
     #   -r requirements/quality.txt
     #   -r requirements/workbench.txt
@@ -239,7 +239,7 @@ openedx-django-pyfs==3.2.1
     #   -r requirements/quality.txt
     #   -r requirements/workbench.txt
     #   xblock
-packaging==23.0
+packaging==23.1
     # via
     #   -r requirements/pip-tools.txt
     #   -r requirements/workbench.txt
@@ -312,7 +312,7 @@ pyproject-hooks==1.0.0
     # via
     #   -r requirements/pip-tools.txt
     #   build
-pytest==7.3.0
+pytest==7.3.1
     # via
     #   -r requirements/quality.txt
     #   -r requirements/workbench.txt
