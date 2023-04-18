@@ -1,6 +1,16 @@
 Drag and Drop XBlock changelog
 ==============================
 
+Version 3.1.3 (2023-04-15)
+--------------------------
+
+* Prepare repository for upcoming changes related to [openedx-translations](https://github.com/openedx/openedx-translations).
+  * `conf/locale` directory is now the source of truth for translations.
+  * `translations` directory is now a symbolic link for backwards compatibility.
+  * `locale` symbolic link is deleted to avoid too many symbolic links.
+  * `en` translations are now extracted into `django.po` instead of `text.po`.
+  * `en` `text.po` is now a symbolic link to `django.po` for backwards compatibility.
+
 Version 3.1.0 (2023-01-31)
 --------------------------
 
