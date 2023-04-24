@@ -44,7 +44,7 @@ six==1.16.0
     #   bleach
     #   fs
     #   python-dateutil
-sqlparse==0.4.3
+sqlparse==0.4.4
     # via django
 tinycss2==1.1.1
     # via bleach
