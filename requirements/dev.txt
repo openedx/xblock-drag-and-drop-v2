@@ -42,12 +42,12 @@ boto==2.49.0
     #   -r requirements/quality.txt
     #   -r requirements/workbench.txt
     #   xblock-sdk
-boto3==1.26.118
+boto3==1.26.126
     # via
     #   -r requirements/quality.txt
     #   -r requirements/workbench.txt
     #   fs-s3fs
-botocore==1.29.118
+botocore==1.29.126
     # via
     #   -r requirements/quality.txt
     #   -r requirements/workbench.txt
@@ -94,7 +94,7 @@ cookiecutter==2.1.1
     #   -r requirements/quality.txt
     #   -r requirements/workbench.txt
     #   xblock-sdk
-coverage[toml]==7.2.3
+coverage[toml]==7.2.5
     # via
     #   -r requirements/quality.txt
     #   -r requirements/workbench.txt
@@ -107,7 +107,7 @@ distlib==0.3.6
     # via
     #   -r requirements/ci.txt
     #   virtualenv
-django==3.2.18
+django==3.2.19
     # via
     #   -r requirements/quality.txt
     #   -r requirements/workbench.txt
@@ -262,7 +262,7 @@ pillow==9.5.0
     #   needle
 pip-tools==6.13.0
     # via -r requirements/pip-tools.txt
-platformdirs==3.2.0
+platformdirs==3.5.0
     # via
     #   -r requirements/ci.txt
     #   virtualenv
@@ -353,7 +353,7 @@ pyyaml==6.0
     #   cookiecutter
     #   edx-i18n-tools
     #   xblock
-requests==2.28.2
+requests==2.30.0
     # via
     #   -r requirements/quality.txt
     #   -r requirements/workbench.txt
@@ -428,7 +428,7 @@ urllib3==1.26.15
     #   -r requirements/workbench.txt
     #   botocore
     #   requests
-virtualenv==20.22.0
+virtualenv==20.23.0
     # via
     #   -r requirements/ci.txt
     #   tox
