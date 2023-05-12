@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-23 16:10+0100\n"
+"POT-Creation-Date: 2023-05-22 18:16+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -315,15 +315,15 @@ msgstr ""
 msgid "The answer is unavailable"
 msgstr ""
 
-#: drag_and_drop_v2.py:801
+#: drag_and_drop_v2.py:793
 msgid "do_attempt handler should only be called for assessment mode"
 msgstr ""
 
-#: drag_and_drop_v2.py:806 drag_and_drop_v2.py:924
+#: drag_and_drop_v2.py:798 drag_and_drop_v2.py:916
 msgid "Max number of attempts reached"
 msgstr ""
 
-#: drag_and_drop_v2.py:811
+#: drag_and_drop_v2.py:803
 msgid "Submission deadline has passed."
 msgstr ""
 
