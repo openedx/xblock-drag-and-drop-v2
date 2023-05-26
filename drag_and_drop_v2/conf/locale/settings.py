@@ -81,6 +81,8 @@ LANGUAGES = [
     ('zh_CN', 'Chinese (China)'),
 ]
 
+LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
+
 STATICI18N_DOMAIN = 'text'
 STATICI18N_NAMESPACE = 'DragAndDropI18N'
 STATICI18N_PACKAGES = (
