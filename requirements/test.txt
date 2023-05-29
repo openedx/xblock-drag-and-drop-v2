@@ -10,7 +10,7 @@ appdirs==1.4.4
     #   fs
 arrow==1.2.3
     # via jinja2-time
-asgiref==3.6.0
+asgiref==3.7.2
     # via
     #   -r requirements/base.txt
     #   django
@@ -22,9 +22,9 @@ bok-choy==0.7.1
     # via -r requirements/test.in
 boto==2.49.0
     # via xblock-sdk
-boto3==1.26.137
+boto3==1.26.142
     # via fs-s3fs
-botocore==1.29.137
+botocore==1.29.142
     # via
     #   boto3
     #   s3transfer
@@ -38,7 +38,7 @@ click==8.1.3
     # via cookiecutter
 cookiecutter==2.1.1
     # via xblock-sdk
-coverage[toml]==7.2.5
+coverage[toml]==7.2.6
     # via pytest-cov
 ddt==1.6.0
     # via -r requirements/test.in
@@ -129,7 +129,7 @@ pytest==7.3.1
     # via
     #   pytest-cov
     #   pytest-django
-pytest-cov==4.0.0
+pytest-cov==4.1.0
     # via -r requirements/test.in
 pytest-django==4.5.2
     # via -r requirements/test.in
@@ -152,7 +152,7 @@ pyyaml==6.0
     #   cookiecutter
     #   edx-i18n-tools
     #   xblock
-requests==2.30.0
+requests==2.31.0
     # via
     #   cookiecutter
     #   xblock-sdk
@@ -190,7 +190,11 @@ tomli==2.0.1
     # via
     #   coverage
     #   pytest
-urllib3==1.26.15
+typing-extensions==4.6.2
+    # via
+    #   -r requirements/base.txt
+    #   asgiref
+urllib3==1.26.16
     # via
     #   botocore
     #   requests
