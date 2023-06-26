@@ -28,11 +28,11 @@ bleach[css]==6.0.0
     # via -r requirements/test.txt
 bok-choy==0.7.1
     # via -r requirements/test.txt
-boto3==1.26.155
+boto3==1.26.160
     # via
     #   -r requirements/test.txt
     #   fs-s3fs
-botocore==1.29.155
+botocore==1.29.160
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -180,7 +180,7 @@ pillow==9.5.0
     # via
     #   -r requirements/test.txt
     #   needle
-pluggy==1.0.0
+pluggy==1.2.0
     # via
     #   -r requirements/test.txt
     #   pytest
@@ -209,7 +209,7 @@ pypng==0.20220715.0
     # via
     #   -r requirements/test.txt
     #   xblock-sdk
-pytest==7.3.2
+pytest==7.4.0
     # via
     #   -r requirements/test.txt
     #   pytest-cov
