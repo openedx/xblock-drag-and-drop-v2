@@ -37,12 +37,12 @@ bok-choy==0.7.1
     # via
     #   -r requirements/quality.txt
     #   -r requirements/workbench.txt
-boto3==1.26.160
+boto3==1.26.165
     # via
     #   -r requirements/quality.txt
     #   -r requirements/workbench.txt
     #   fs-s3fs
-botocore==1.29.160
+botocore==1.29.165
     # via
     #   -r requirements/quality.txt
     #   -r requirements/workbench.txt
@@ -250,12 +250,12 @@ pbr==5.11.1
     # via
     #   -r requirements/quality.txt
     #   stevedore
-pillow==9.5.0
+pillow==10.0.0
     # via
     #   -r requirements/quality.txt
     #   -r requirements/workbench.txt
     #   needle
-pip-tools==6.13.0
+pip-tools==6.14.0
     # via -r requirements/pip-tools.txt
 platformdirs==3.8.0
     # via
@@ -408,6 +408,7 @@ tomli==2.0.1
     #   -r requirements/workbench.txt
     #   build
     #   coverage
+    #   pip-tools
     #   pyproject-hooks
     #   pytest
     #   tox
@@ -417,7 +418,7 @@ tox==3.28.0
     #   tox-battery
 tox-battery==0.6.1
     # via -r requirements/ci.txt
-typing-extensions==4.6.3
+typing-extensions==4.7.1
     # via
     #   -r requirements/quality.txt
     #   -r requirements/workbench.txt
