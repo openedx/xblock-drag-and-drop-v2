@@ -28,7 +28,7 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
         python-version: [3.8]
-        toxenv: [py38, django32, django42, integration, quality, translations]
+        toxenv: [django32, django42, integration-django32, integration-django42, quality-django32, quality-django42, translations-django32, translations-django42]
 
     steps:
     - name: checkout repo
