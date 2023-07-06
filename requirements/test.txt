@@ -114,7 +114,7 @@ packaging==23.1
     # via pytest
 path==16.6.0
     # via edx-i18n-tools
-pillow==9.5.0
+pillow==10.0.0
     # via needle
 pluggy==1.2.0
     # via pytest
@@ -187,7 +187,7 @@ tomli==2.0.1
     # via
     #   coverage
     #   pytest
-typing-extensions==4.6.3
+typing-extensions==4.7.1
     # via
     #   -r requirements/base.txt
     #   asgiref

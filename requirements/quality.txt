@@ -176,7 +176,7 @@ path==16.6.0
     #   edx-i18n-tools
 pbr==5.11.1
     # via stevedore
-pillow==9.5.0
+pillow==10.0.0
     # via
     #   -r requirements/test.txt
     #   needle
@@ -289,7 +289,7 @@ tomli==2.0.1
     #   -r requirements/test.txt
     #   coverage
     #   pytest
-typing-extensions==4.6.3
+typing-extensions==4.7.1
     # via
     #   -r requirements/test.txt
     #   asgiref
