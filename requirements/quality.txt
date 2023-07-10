@@ -11,7 +11,7 @@ appdirs==1.4.4
 arrow==1.2.3
     # via
     #   -r requirements/test.txt
-    #   jinja2-time
+    #   cookiecutter
 asgiref==3.7.2
     # via
     #   -r requirements/test.txt
@@ -28,11 +28,11 @@ bleach[css]==6.0.0
     # via -r requirements/test.txt
 bok-choy==0.7.1
     # via -r requirements/test.txt
-boto3==1.26.161
+boto3==1.28.1
     # via
     #   -r requirements/test.txt
     #   fs-s3fs
-botocore==1.29.161
+botocore==1.31.1
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -45,11 +45,11 @@ chardet==5.1.0
     # via
     #   -r requirements/test.txt
     #   binaryornot
-charset-normalizer==3.1.0
+charset-normalizer==3.2.0
     # via
     #   -r requirements/test.txt
     #   requests
-click==8.1.3
+click==8.1.4
     # via
     #   -r requirements/test.txt
     #   click-log
@@ -60,7 +60,7 @@ click-log==0.4.0
     # via edx-lint
 code-annotations==1.3.0
     # via edx-lint
-cookiecutter==2.1.1
+cookiecutter==2.2.0
     # via
     #   -r requirements/test.txt
     #   xblock-sdk
@@ -70,7 +70,7 @@ coverage[toml]==7.2.7
     #   pytest-cov
 ddt==1.6.0
     # via -r requirements/test.txt
-django==3.2.19
+django==3.2.20
     # via
     #   -r requirements/test.txt
     #   django-appconf
@@ -88,7 +88,7 @@ edx-i18n-tools==1.0.0
     # via -r requirements/test.txt
 edx-lint==5.3.4
     # via -r requirements/quality.in
-exceptiongroup==1.1.1
+exceptiongroup==1.1.2
     # via
     #   -r requirements/test.txt
     #   pytest
@@ -118,11 +118,6 @@ jinja2==3.1.2
     #   -r requirements/test.txt
     #   code-annotations
     #   cookiecutter
-    #   jinja2-time
-jinja2-time==0.2.0
-    # via
-    #   -r requirements/test.txt
-    #   cookiecutter
 jmespath==1.0.1
     # via
     #   -r requirements/test.txt
@@ -135,7 +130,7 @@ lazy==1.5
     #   xblock
 lazy-object-proxy==1.4.3
     # via astroid
-lxml==4.9.2
+lxml==4.9.3
     # via
     #   -r requirements/test.txt
     #   xblock
@@ -170,7 +165,7 @@ packaging==23.1
     # via
     #   -r requirements/test.txt
     #   pytest
-path==16.6.0
+path==16.7.1
     # via
     #   -r requirements/test.txt
     #   edx-i18n-tools
