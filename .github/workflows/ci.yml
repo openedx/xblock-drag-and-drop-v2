@@ -28,7 +28,7 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
         python-version: [3.8]
-        toxenv: [py38, integration, quality, translations]
+        toxenv: [py38-django32, py38-django42, integration-django32, integration-django42, quality, translations-django32, translations-django42]
 
     steps:
     - name: checkout repo
@@ -43,13 +43,13 @@ jobs:
 
     # `libgtk2.0-0` and `libxt6` are required by an older version of Firefox.
     - name: Install Required System Packages
-      if: matrix.toxenv == 'integration'
+      if: ${{ startsWith(matrix.toxenv, 'integration') }}
       run: |
         sudo apt-get update
         sudo apt-get install -y libxmlsec1-dev ubuntu-restricted-extras xvfb libxml2-dev libxslt-dev libevent-dev libgtk2.0-0 libxt6
 
     - name: Install translations dependencies
-      if: matrix.toxenv == 'translations'
+      if: ${{ startsWith(matrix.toxenv, 'translations') }}
       run: |
         sudo apt-get update
         sudo apt-get install -y gettext

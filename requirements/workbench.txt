@@ -59,7 +59,6 @@ coverage[toml]==7.2.7
     #   pytest-cov
 ddt==1.6.0
     # via -r requirements/test.txt
-django==3.2.20
     # via
     #   -r requirements/test.txt
     #   django-appconf
