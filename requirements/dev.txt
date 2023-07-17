@@ -100,7 +100,7 @@ ddt==1.6.0
     # via
     #   -r requirements/quality.txt
     #   -r requirements/workbench.txt
-distlib==0.3.6
+distlib==0.3.7
     # via
     #   -r requirements/ci.txt
     #   virtualenv
