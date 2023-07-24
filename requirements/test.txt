@@ -22,19 +22,19 @@ bok-choy==0.7.1
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.in
-boto3==1.28.3
+boto3==1.28.9
     # via fs-s3fs
-botocore==1.31.3
+botocore==1.31.9
     # via
     #   boto3
     #   s3transfer
-certifi==2023.5.7
+certifi==2023.7.22
     # via requests
 chardet==5.1.0
     # via binaryornot
 charset-normalizer==3.2.0
     # via requests
-click==8.1.5
+click==8.1.6
     # via cookiecutter
 cookiecutter==2.2.3
     # via xblock-sdk
@@ -142,7 +142,7 @@ pytz==2023.3
     #   -r requirements/base.txt
     #   django
     #   xblock
-pyyaml==6.0
+pyyaml==6.0.1
     # via
     #   -r requirements/base.txt
     #   cookiecutter
