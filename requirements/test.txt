@@ -22,9 +22,9 @@ bok-choy==0.7.1
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.in
-boto3==1.28.18
+boto3==1.28.20
     # via fs-s3fs
-botocore==1.31.18
+botocore==1.31.20
     # via
     #   boto3
     #   s3transfer
@@ -36,7 +36,7 @@ charset-normalizer==3.2.0
     # via requests
 click==8.1.6
     # via cookiecutter
-cookiecutter==2.2.3
+cookiecutter==2.3.0
     # via xblock-sdk
 coverage[toml]==7.2.7
     # via pytest-cov
@@ -91,12 +91,16 @@ mako==1.2.4
     # via
     #   -r requirements/base.txt
     #   xblock-utils
+markdown-it-py==3.0.0
+    # via rich
 markupsafe==2.1.3
     # via
     #   -r requirements/base.txt
     #   jinja2
     #   mako
     #   xblock
+mdurl==0.1.2
+    # via markdown-it-py
 mock==5.1.0
     # via -r requirements/test.in
 needle==0.5.0
@@ -115,6 +119,8 @@ pluggy==1.2.0
     # via pytest
 polib==1.2.0
     # via edx-i18n-tools
+pygments==2.16.1
+    # via rich
 pypng==0.20220715.0
     # via xblock-sdk
 pytest==7.4.0
@@ -148,6 +154,8 @@ requests==2.31.0
     # via
     #   cookiecutter
     #   xblock-sdk
+rich==13.5.2
+    # via cookiecutter
 s3transfer==0.6.1
     # via boto3
 selenium==2.53.6
@@ -187,6 +195,7 @@ typing-extensions==4.7.1
     # via
     #   -r requirements/base.txt
     #   asgiref
+    #   rich
 urllib3==1.26.16
     # via
     #   botocore
@@ -207,7 +216,7 @@ webob==1.8.7
     #   -r requirements/base.txt
     #   xblock
     #   xblock-sdk
-xblock==1.6.2
+xblock==1.7.0
     # via
     #   -r requirements/base.txt
     #   xblock-sdk

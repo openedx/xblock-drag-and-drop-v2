@@ -26,11 +26,11 @@ bok-choy==0.7.1
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
-boto3==1.28.18
+boto3==1.28.20
     # via
     #   -r requirements/test.txt
     #   fs-s3fs
-botocore==1.31.18
+botocore==1.31.20
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -51,7 +51,7 @@ click==8.1.6
     # via
     #   -r requirements/test.txt
     #   cookiecutter
-cookiecutter==2.2.3
+cookiecutter==2.3.0
     # via
     #   -r requirements/test.txt
     #   xblock-sdk
@@ -125,12 +125,20 @@ mako==1.2.4
     # via
     #   -r requirements/test.txt
     #   xblock-utils
+markdown-it-py==3.0.0
+    # via
+    #   -r requirements/test.txt
+    #   rich
 markupsafe==2.1.3
     # via
     #   -r requirements/test.txt
     #   jinja2
     #   mako
     #   xblock
+mdurl==0.1.2
+    # via
+    #   -r requirements/test.txt
+    #   markdown-it-py
 mock==5.1.0
     # via -r requirements/test.txt
 mysqlclient==2.2.0
@@ -167,6 +175,10 @@ polib==1.2.0
     # via
     #   -r requirements/test.txt
     #   edx-i18n-tools
+pygments==2.16.1
+    # via
+    #   -r requirements/test.txt
+    #   rich
 pypng==0.20220715.0
     # via
     #   -r requirements/test.txt
@@ -208,6 +220,10 @@ requests==2.31.0
     #   -r requirements/workbench.in
     #   cookiecutter
     #   xblock-sdk
+rich==13.5.2
+    # via
+    #   -r requirements/test.txt
+    #   cookiecutter
 s3transfer==0.6.1
     # via
     #   -r requirements/test.txt
@@ -253,6 +269,7 @@ typing-extensions==4.7.1
     # via
     #   -r requirements/test.txt
     #   asgiref
+    #   rich
 urllib3==1.26.16
     # via
     #   -r requirements/test.txt
@@ -276,7 +293,7 @@ webob==1.8.7
     #   -r requirements/workbench.in
     #   xblock
     #   xblock-sdk
-xblock[django]==1.6.2
+xblock[django]==1.7.0
     # via
     #   -r requirements/test.txt
     #   -r requirements/workbench.in
