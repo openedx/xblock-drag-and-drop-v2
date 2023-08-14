@@ -22,9 +22,9 @@ bok-choy==0.7.1
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.in
-boto3==1.28.20
+boto3==1.28.25
     # via fs-s3fs
-botocore==1.31.20
+botocore==1.31.25
     # via
     #   boto3
     #   s3transfer
@@ -38,7 +38,7 @@ click==8.1.6
     # via cookiecutter
 cookiecutter==2.3.0
     # via xblock-sdk
-coverage[toml]==7.2.7
+coverage[toml]==7.3.0
     # via pytest-cov
 ddt==1.6.0
     # via -r requirements/test.in
@@ -223,7 +223,7 @@ xblock==1.7.0
     #   xblock-utils
 xblock-sdk==0.7.0
     # via -r requirements/test.in
-xblock-utils==3.3.0
+xblock-utils==3.4.0
     # via -r requirements/base.txt
 
 # The following packages are considered to be unsafe in a requirements file:
