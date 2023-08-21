@@ -115,6 +115,7 @@ setup(
     description='XBlock - Drag-and-Drop v2',
     long_description=README + '\n\n' + CHANGELOG,
     long_description_content_type='text/markdown',
+    url='https://github.com/openedx/xblock-drag-and-drop-v2',
     install_requires=load_requirements('requirements/base.in'),
     entry_points={
         'xblock.v1': 'drag-and-drop-v2 = drag_and_drop_v2:DragAndDropBlock',
