@@ -22,10 +22,13 @@ bok-choy==0.7.1
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.in
-boto3==1.28.25
-    # via fs-s3fs
-botocore==1.31.25
+boto3==1.28.30
     # via
+    #   -r requirements/base.txt
+    #   fs-s3fs
+botocore==1.31.30
+    # via
+    #   -r requirements/base.txt
     #   boto3
     #   s3transfer
 certifi==2023.7.22
@@ -34,7 +37,7 @@ chardet==5.2.0
     # via binaryornot
 charset-normalizer==3.2.0
     # via requests
-click==8.1.6
+click==8.1.7
     # via cookiecutter
 cookiecutter==2.3.0
     # via xblock-sdk
@@ -58,7 +61,7 @@ django-statici18n==2.4.0
     # via -r requirements/base.txt
 edx-i18n-tools==1.1.0
     # via -r requirements/test.in
-exceptiongroup==1.1.2
+exceptiongroup==1.1.3
     # via pytest
 fs==2.4.16
     # via
@@ -68,6 +71,7 @@ fs==2.4.16
     #   xblock
 fs-s3fs==1.1.1
     # via
+    #   -r requirements/base.txt
     #   openedx-django-pyfs
     #   xblock-sdk
 idna==3.4
@@ -78,10 +82,14 @@ jinja2==3.1.2
     # via cookiecutter
 jmespath==1.0.1
     # via
+    #   -r requirements/base.txt
     #   boto3
     #   botocore
 lazy==1.5
-    # via bok-choy
+    # via
+    #   -r requirements/base.txt
+    #   bok-choy
+    #   xblock
 lxml==4.9.3
     # via
     #   -r requirements/base.txt
@@ -108,7 +116,10 @@ needle==0.5.0
 nose==1.3.7
     # via needle
 openedx-django-pyfs==3.4.0
-    # via -r requirements/test.in
+    # via
+    #   -r requirements/base.txt
+    #   -r requirements/test.in
+    #   xblock
 packaging==23.1
     # via pytest
 path==16.7.1
@@ -156,8 +167,10 @@ requests==2.31.0
     #   xblock-sdk
 rich==13.5.2
     # via cookiecutter
-s3transfer==0.6.1
-    # via boto3
+s3transfer==0.6.2
+    # via
+    #   -r requirements/base.txt
+    #   boto3
 selenium==2.53.6
     # via
     #   -c requirements/constraints.txt
@@ -198,6 +211,7 @@ typing-extensions==4.7.1
     #   rich
 urllib3==1.26.16
     # via
+    #   -r requirements/base.txt
     #   botocore
     #   requests
 web-fragments==2.1.0
@@ -216,14 +230,14 @@ webob==1.8.7
     #   -r requirements/base.txt
     #   xblock
     #   xblock-sdk
-xblock==1.7.0
+xblock[django]==1.7.0
     # via
     #   -r requirements/base.txt
     #   xblock-sdk
     #   xblock-utils
 xblock-sdk==0.7.0
     # via -r requirements/test.in
-xblock-utils==3.4.0
+xblock-utils==3.4.1
     # via -r requirements/base.txt
 
 # The following packages are considered to be unsafe in a requirements file:
