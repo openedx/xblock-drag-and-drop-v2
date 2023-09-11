@@ -10,13 +10,13 @@ asgiref==3.7.2
     # via django
 bleach[css]==6.0.0
     # via -r requirements/base.in
-boto3==1.28.40
+boto3==1.28.44
     # via fs-s3fs
-botocore==1.31.40
+botocore==1.31.44
     # via
     #   boto3
     #   s3transfer
-django==3.2.20
+django==3.2.21
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   django-appconf
@@ -53,7 +53,7 @@ python-dateutil==2.8.2
     # via
     #   botocore
     #   xblock
-pytz==2023.3
+pytz==2023.3.post1
     # via
     #   django
     #   xblock
