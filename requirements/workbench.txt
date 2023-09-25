@@ -26,11 +26,11 @@ bok-choy==0.7.1
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
-boto3==1.28.49
+boto3==1.28.53
     # via
     #   -r requirements/test.txt
     #   fs-s3fs
-botocore==1.31.49
+botocore==1.31.53
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -51,7 +51,7 @@ click==8.1.7
     # via
     #   -r requirements/test.txt
     #   cookiecutter
-cookiecutter==2.3.0
+cookiecutter==2.3.1
     # via
     #   -r requirements/test.txt
     #   xblock-sdk
@@ -265,7 +265,7 @@ tomli==2.0.1
     #   -r requirements/test.txt
     #   coverage
     #   pytest
-typing-extensions==4.7.1
+typing-extensions==4.8.0
     # via
     #   -r requirements/test.txt
     #   asgiref
