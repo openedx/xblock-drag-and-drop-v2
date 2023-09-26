@@ -4,6 +4,13 @@ Drag and Drop XBlock changelog
 Unreleased
 ---------------------------
 
+Version 4.0.0 (2024-03-12)
+--------------------------
+
+* Remove Transifex calls and bundled translation files for the OEP-58 proposal.
+
+  BREAKING CHANGE: This version removes translations for Quince and earlier releases.
+
 Version 3.4.0 (2024-01-15)
 ---------------------------
 

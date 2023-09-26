@@ -545,20 +545,6 @@ translator from edX i18n-tools.
 $ make dummy_translations
 ```
 
-Transifex translations
--------------------------------------
-
-If you want to download translations from run this command while inside project root directory
-
-```bash
-$ make pull_translations
-```
-
-Translations can be pushed to Transifex with:
-```bash
-$ make push_translations
-```
-
 Native API
 ----------
 
