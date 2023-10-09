@@ -20,17 +20,17 @@ binaryornot==0.4.4
     # via
     #   -r requirements/test.txt
     #   cookiecutter
-bleach[css]==6.0.0
+bleach[css]==6.1.0
     # via -r requirements/test.txt
 bok-choy==0.7.1
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
-boto3==1.28.57
+boto3==1.28.62
     # via
     #   -r requirements/test.txt
     #   fs-s3fs
-botocore==1.31.57
+botocore==1.31.62
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -55,7 +55,7 @@ cookiecutter==2.4.0
     # via
     #   -r requirements/test.txt
     #   xblock-sdk
-coverage[toml]==7.3.1
+coverage[toml]==7.3.2
     # via
     #   -r requirements/test.txt
     #   pytest-cov
@@ -75,7 +75,7 @@ django-appconf==1.0.5
     #   django-statici18n
 django-statici18n==2.4.0
     # via -r requirements/test.txt
-edx-i18n-tools==1.2.0
+edx-i18n-tools==1.3.0
     # via -r requirements/test.txt
 exceptiongroup==1.1.3
     # via
@@ -119,11 +119,13 @@ lxml==4.9.3
     # via
     #   -r requirements/test.txt
     #   -r requirements/workbench.in
+    #   edx-i18n-tools
     #   xblock
     #   xblock-sdk
 mako==1.2.4
     # via
     #   -r requirements/test.txt
+    #   xblock
     #   xblock-utils
 markdown-it-py==3.0.0
     # via
@@ -234,10 +236,11 @@ selenium==2.53.6
     #   -r requirements/test.txt
     #   bok-choy
     #   needle
-simplejson==3.19.1
+simplejson==3.19.2
     # via
     #   -r requirements/test.txt
     #   -r requirements/workbench.in
+    #   xblock
     #   xblock-sdk
     #   xblock-utils
 six==1.16.0
@@ -256,7 +259,7 @@ text-unidecode==1.3
     # via
     #   -r requirements/test.txt
     #   python-slugify
-tinycss2==1.1.1
+tinycss2==1.2.1
     # via
     #   -r requirements/test.txt
     #   bleach
@@ -274,7 +277,7 @@ typing-extensions==4.8.0
     #   -r requirements/test.txt
     #   asgiref
     #   rich
-urllib3==1.26.16
+urllib3==1.26.17
     # via
     #   -r requirements/test.txt
     #   botocore
@@ -297,7 +300,7 @@ webob==1.8.7
     #   -r requirements/workbench.in
     #   xblock
     #   xblock-sdk
-xblock[django]==1.8.0
+xblock[django]==1.8.1
     # via
     #   -r requirements/test.txt
     #   -r requirements/workbench.in
@@ -305,7 +308,7 @@ xblock[django]==1.8.0
     #   xblock-utils
 xblock-sdk==0.7.0
     # via -r requirements/test.txt
-xblock-utils==3.4.1
+xblock-utils==4.0.0
     # via -r requirements/test.txt
 
 # The following packages are considered to be unsafe in a requirements file:
