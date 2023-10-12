@@ -4,6 +4,10 @@ Drag and Drop XBlock changelog
 Unreleased
 ---------------------------
 
+Version 3.2.1 (2023-10-12)
+---------------------------
+
+* Added support for Django 4.2
 * The command `make extract_translations` now uses `msgcat` instead of `tail` to combine `djangojs-partial.po` into `django.po`. This is to avoid the possibility of having message compilation failure because of duplicate strings (strings shared between both files)
 
 
