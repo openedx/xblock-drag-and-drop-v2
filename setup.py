@@ -115,6 +115,13 @@ setup(
     description='XBlock - Drag-and-Drop v2',
     long_description=README + '\n\n' + CHANGELOG,
     long_description_content_type='text/markdown',
+    classifiers=[
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3.8',
+        'Framework :: Django',
+        'Framework :: Django :: 3.2',
+        'Framework :: Django :: 4.2',
+    ],
     url='https://github.com/openedx/xblock-drag-and-drop-v2',
     install_requires=load_requirements('requirements/base.in'),
     entry_points={
