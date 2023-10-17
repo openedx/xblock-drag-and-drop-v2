@@ -44,7 +44,7 @@ coverage.xml
 # Translations
 *.pot
 
-# Integration test output:
+# test output:
 /*.log
 /tests.*.png
 var/*

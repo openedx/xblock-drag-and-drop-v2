@@ -465,10 +465,6 @@ Inside a fresh virtualenv, `cd` into the root folder of this repository
 $ make requirements
 ```
 
-To run integration tests, you need to start MySQL first:
-```bash
-$ make mysql
-```
 
 You can then run the entire test suite via:
 
@@ -480,7 +476,6 @@ To run specific test groups, use one of the following commands:
 
 ```bash
 $ make test.unit
-$ make test.integration
 $ make test.quality
 $ make test.translations
 ```
@@ -490,11 +485,6 @@ To run individual unit tests, use:
 ```bash
 $ make test.unit TEST=tests/unit/test_basics.py::BasicTests::test_student_view_data
 ```
-To run individual integration tests, use:
-
-```bash
-$ make test.integration TEST=tests.integration.test_studio.TestStudio.test_custom_image
-```
 
 Manual testing (without tox)
 ----------------------------
@@ -502,7 +492,6 @@ Manual testing (without tox)
 To run tests without tox, use:
 
 ```bash
-$ make mysql
 $ make requirements_python
 $ make test.python TEST=tests.unit.test_basics.BasicTests.test_student_view_data
 ```
