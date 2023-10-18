@@ -1310,7 +1310,14 @@ function DragAndDropBlock(runtime, element, configuration) {
     };
 
     var focusFirstDraggable = function() {
-        $root.find('.item-bank .option').first().focus();
+        var draggables = $root.find('.item-bank .option[draggable=true]').toArray();
+        if (draggables.length){
+            draggables[0].focus();
+        }
+        else {
+            // In case there are no draggable options, we default focus to the first zone.
+            $root.find('.target .zone').first().focus();
+        }
     };
 
     var focusItemFeedbackPopup = function() {
