@@ -4,6 +4,11 @@ Drag and Drop XBlock changelog
 Unreleased
 ---------------------------
 
+Version 3.2.2 (2023-10-19)
+---------------------------
+
+* Fix Safari focus when there are no draggables left.
+
 Version 3.2.1 (2023-10-12)
 ---------------------------
 
