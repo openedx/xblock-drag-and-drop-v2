@@ -32,11 +32,11 @@ bok-choy==0.7.1
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt
-boto3==1.28.63
+boto3==1.28.68
     # via
     #   -r requirements/test.txt
     #   fs-s3fs
-botocore==1.31.63
+botocore==1.31.68
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -49,7 +49,7 @@ chardet==5.2.0
     # via
     #   -r requirements/test.txt
     #   binaryornot
-charset-normalizer==3.3.0
+charset-normalizer==3.3.1
     # via
     #   -r requirements/test.txt
     #   requests
@@ -214,7 +214,7 @@ pylint==2.4.2
     #   pylint-plugin-utils
 pylint-celery==0.3
     # via edx-lint
-pylint-django==2.5.3
+pylint-django==2.5.4
     # via edx-lint
 pylint-plugin-utils==0.8.2
     # via
@@ -319,7 +319,7 @@ typing-extensions==4.8.0
     #   -r requirements/test.txt
     #   asgiref
     #   rich
-urllib3==1.26.17
+urllib3==1.26.18
     # via
     #   -r requirements/test.txt
     #   botocore
