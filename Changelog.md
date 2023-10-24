@@ -4,12 +4,12 @@ Drag and Drop XBlock changelog
 Unreleased
 ---------------------------
 
-Version 3.3.0 (2023-10-17)
+Version 3.3.0 (2023-10-24)
 ---------------------------
 
 * Removed xblock-utils package
-  * Replace xblockutils.* imports with xblock.utils.* imports
-* Removed bok-choy package and its relevant test cases.
+  * Replace `xblockutils.*` imports with `xblock.utils.*`. The old imports are used as a fallback for compatibility with older releases.
+* Removed bok-choy package along with all integration tests.
 
 
 Version 3.2.2 (2023-10-19)

@@ -73,11 +73,11 @@ requirements_python: piptools  ## install all requirements locally
 test.quality: selfcheck ## run quality checkers on the codebase
 	tox -e quality
 
-test.python: ## run python unit tests
-	python run_tests.py $(TEST)
+test.python: ## run python unit tests in the local virtualenv
+	pytest --cov drag_and_drop_v2 $(TEST)
 
 test.unit: ## run all unit tests
-	tox -- $(TEST)
+	tox $(TEST)
 
 test: test.unit test.quality ## Run all tests
 	tox -e translations
@@ -96,11 +96,9 @@ upgrade: ## update the requirements/*.txt files with the latest packages satisfy
 	$(PIP_COMPILE) -o requirements/base.txt requirements/base.in
 	$(PIP_COMPILE) -o requirements/test.txt requirements/test.in
 	$(PIP_COMPILE) -o requirements/quality.txt requirements/quality.in
-	$(PIP_COMPILE) -o requirements/workbench.txt requirements/workbench.in
 	$(PIP_COMPILE) -o requirements/ci.txt requirements/ci.in
 	$(PIP_COMPILE) -o requirements/dev.txt requirements/dev.in
 	sed -i '/^[dD]jango==/d' requirements/test.txt
-	sed -i '/^[dD]jango==/d' requirements/workbench.txt
 
 selfcheck: ## check that the Makefile is well-formed
 	@echo "The Makefile is well-formed."

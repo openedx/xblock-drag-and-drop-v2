@@ -3,4 +3,4 @@
 
 django-statici18n
 bleach[css]
-XBlock[django]>=1.8.1
+XBlock[django]

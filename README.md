@@ -493,7 +493,7 @@ To run tests without tox, use:
 
 ```bash
 $ make requirements_python
-$ make test.python TEST=tests.unit.test_basics.BasicTests.test_student_view_data
+$ make test.python TEST=tests/unit/test_basics.py::BasicTests::test_student_view_data
 ```
 
 
