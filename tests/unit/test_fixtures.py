@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 import json
 
-from xblockutils.resources import ResourceLoader
+from xblock.utils.resources import ResourceLoader
 
 from tests.utils import TestCaseMixin, make_block
 

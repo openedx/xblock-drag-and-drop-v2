@@ -10,9 +10,9 @@ asgiref==3.7.2
     # via django
 bleach[css]==6.1.0
     # via -r requirements/base.in
-boto3==1.28.68
+boto3==1.28.69
     # via fs-s3fs
-botocore==1.31.68
+botocore==1.31.69
     # via
     #   boto3
     #   s3transfer
@@ -42,9 +42,7 @@ lazy==1.6
 lxml==4.9.3
     # via xblock
 mako==1.2.4
-    # via
-    #   xblock
-    #   xblock-utils
+    # via xblock
 markupsafe==2.1.3
     # via
     #   mako
@@ -64,9 +62,7 @@ pyyaml==6.0.1
 s3transfer==0.7.0
     # via boto3
 simplejson==3.19.2
-    # via
-    #   xblock
-    #   xblock-utils
+    # via xblock
 six==1.16.0
     # via
     #   bleach
@@ -82,9 +78,7 @@ typing-extensions==4.8.0
 urllib3==1.26.18
     # via botocore
 web-fragments==2.1.0
-    # via
-    #   xblock
-    #   xblock-utils
+    # via xblock
 webencodings==0.5.1
     # via
     #   bleach
@@ -92,8 +86,6 @@ webencodings==0.5.1
 webob==1.8.7
     # via xblock
 xblock[django]==1.8.1
-    # via xblock-utils
-xblock-utils==4.0.0
     # via -r requirements/base.in
 
 # The following packages are considered to be unsafe in a requirements file:

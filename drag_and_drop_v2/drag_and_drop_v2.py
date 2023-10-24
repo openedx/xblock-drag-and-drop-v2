@@ -23,9 +23,13 @@ from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 from xblock.fields import Boolean, Dict, Float, Integer, Scope, String
 from xblock.scorable import ScorableXBlockMixin, Score
+try:
+    from xblock.utils.resources import ResourceLoader
+    from xblock.utils.settings import ThemableXBlockMixin, XBlockWithSettingsMixin
+except ModuleNotFoundError:  # For backward compatibility with releases older than Quince.
+    from xblockutils.resources import ResourceLoader
+    from xblockutils.settings import ThemableXBlockMixin, XBlockWithSettingsMixin
 from web_fragments.fragment import Fragment
-from xblockutils.resources import ResourceLoader
-from xblockutils.settings import ThemableXBlockMixin, XBlockWithSettingsMixin
 
 from .compat import get_grading_ignore_decoys_waffle_flag
 from .default_data import DEFAULT_DATA

@@ -1,6 +1,6 @@
 .PHONY: clean help compile_translations dummy_translations extract_translations detect_changed_source_translations \
 		build_dummy_translations validate_translations pull_translations push_translations check_translations_up_to_date \
-		install_firefox requirements selfcheck test test.python test.unit test.quality upgrade mysql
+		requirements selfcheck test test.python test.unit test.quality upgrade
 
 .DEFAULT_GOAL := help
 
@@ -10,8 +10,6 @@ EXTRACT_DIR := $(WORKING_DIR)/conf/locale/en/LC_MESSAGES
 EXTRACTED_DJANGO_PARTIAL := $(EXTRACT_DIR)/django-partial.po
 EXTRACTED_DJANGOJS_PARTIAL := $(EXTRACT_DIR)/djangojs-partial.po
 EXTRACTED_DJANGO := $(EXTRACT_DIR)/django.po
-
-FIREFOX_VERSION := "43.0"
 
 help: ## display this help message
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -62,13 +60,6 @@ push_translations: ## push translations to transifex
 
 check_translations_up_to_date: extract_translations compile_translations dummy_translations detect_changed_source_translations ## extract, compile, and check if translation files are up-to-date
 
-install_firefox:
-	@mkdir -p test_helpers
-	@test -f ./test_helpers/firefox/firefox && echo "Firefox already installed." || \
-	(cd test_helpers && \
-	wget -N "https://archive.mozilla.org/pub/firefox/releases/$(FIREFOX_VERSION)/linux-x86_64/en-US/firefox-$(FIREFOX_VERSION).tar.bz2" && \
-	tar -xjf firefox-$(FIREFOX_VERSION).tar.bz2)
-
 piptools: ## install pinned version of pip-compile and pip-sync
 	pip install -r requirements/pip.txt
 	pip install -r requirements/pip-tools.txt
@@ -76,22 +67,19 @@ piptools: ## install pinned version of pip-compile and pip-sync
 requirements: piptools  ## install test requirements locally
 	pip-sync requirements/ci.txt
 
-requirements_python: install_firefox piptools  ## install all requirements locally
+requirements_python: piptools  ## install all requirements locally
 	pip-sync requirements/dev.txt requirements/private.*
 
 test.quality: selfcheck ## run quality checkers on the codebase
 	tox -e quality
 
-test.python: ## run python unit and integration tests
-	PATH=test_helpers/firefox:$$PATH xvfb-run python run_tests.py $(TEST)
+test.python: ## run python unit tests in the local virtualenv
+	pytest --cov drag_and_drop_v2 $(TEST)
 
 test.unit: ## run all unit tests
-	tox -- $(TEST)
+	tox $(TEST)
 
-test.integration: ## run all integration tests
-	tox -e integration -- $(TEST)
-
-test: test.unit test.integration test.quality ## Run all tests
+test: test.unit test.quality ## Run all tests
 	tox -e translations
 
 # Define PIP_COMPILE_OPTS=-v to get more information during make upgrade.
@@ -108,14 +96,9 @@ upgrade: ## update the requirements/*.txt files with the latest packages satisfy
 	$(PIP_COMPILE) -o requirements/base.txt requirements/base.in
 	$(PIP_COMPILE) -o requirements/test.txt requirements/test.in
 	$(PIP_COMPILE) -o requirements/quality.txt requirements/quality.in
-	$(PIP_COMPILE) -o requirements/workbench.txt requirements/workbench.in
 	$(PIP_COMPILE) -o requirements/ci.txt requirements/ci.in
 	$(PIP_COMPILE) -o requirements/dev.txt requirements/dev.in
 	sed -i '/^[dD]jango==/d' requirements/test.txt
-	sed -i '/^[dD]jango==/d' requirements/workbench.txt
-
-mysql: ## run mysql database for integration tests
-	docker run --rm -it --name mysql -p 3307:3306 -e MYSQL_ROOT_PASSWORD=rootpw -e MYSQL_DATABASE=db mysql:8
 
 selfcheck: ## check that the Makefile is well-formed
 	@echo "The Makefile is well-formed."

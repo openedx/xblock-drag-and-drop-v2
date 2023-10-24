@@ -44,7 +44,7 @@ coverage.xml
 # Translations
 *.pot
 
-# Integration test output:
+# test output:
 /*.log
 /tests.*.png
 var/*
@@ -58,5 +58,3 @@ target/
 # IDEs
 .idea
 .idea/*
-
-test_helpers/

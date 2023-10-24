@@ -7,8 +7,6 @@ pytest-cov                # pytest extension for code coverage statistics
 pytest-django             # pytest extension for better Django support
 ddt                       # data-driven tests
 
-bok-choy                  # integration tests
-selenium                  # integration tests
 mock                      # required by the workbench
 openedx-django-pyfs       # required by the workbench
 
