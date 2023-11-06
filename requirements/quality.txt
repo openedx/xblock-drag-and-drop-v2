@@ -28,11 +28,11 @@ bleach[css]==6.1.0
     # via
     #   -r requirements/test.txt
     #   bleach
-boto3==1.28.69
+boto3==1.28.78
     # via
     #   -r requirements/test.txt
     #   fs-s3fs
-botocore==1.31.69
+botocore==1.31.78
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -45,7 +45,7 @@ chardet==5.2.0
     # via
     #   -r requirements/test.txt
     #   binaryornot
-charset-normalizer==3.3.1
+charset-normalizer==3.3.2
     # via
     #   -r requirements/test.txt
     #   requests
@@ -71,7 +71,7 @@ coverage[toml]==7.3.2
     #   pytest-cov
 ddt==1.6.0
     # via -r requirements/test.txt
-django==3.2.22
+django==3.2.23
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/test.txt
@@ -206,14 +206,14 @@ pypng==0.20220715.0
     # via
     #   -r requirements/test.txt
     #   xblock-sdk
-pytest==7.4.2
+pytest==7.4.3
     # via
     #   -r requirements/test.txt
     #   pytest-cov
     #   pytest-django
 pytest-cov==4.1.0
     # via -r requirements/test.txt
-pytest-django==4.5.2
+pytest-django==4.6.0
     # via -r requirements/test.txt
 python-dateutil==2.8.2
     # via
