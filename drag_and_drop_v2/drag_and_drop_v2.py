@@ -80,6 +80,8 @@ class DragAndDropBlock(
         SOLUTION_INCORRECT: None
     }
 
+    i18n_js_namespace = 'DragAndDropI18N'
+
     display_name = String(
         display_name=_("Title"),
         help=_("The title of the drag and drop problem. The title is displayed to learners."),
@@ -320,10 +322,13 @@ class DragAndDropBlock(
         return correct_count / float(total_count)
 
     @staticmethod
-    def _get_statici18n_js_url():
+    def _get_deprecated_i18n_js_url():
         """
-        Returns the Javascript translation file for the currently selected language, if any found by
+        Returns the deprecated JavaScript translation file for the currently selected language, if any found by
         `pkg_resources`
+
+        This method returns pre-OEP-58 i18n files and is deprecated in favor
+        of `get_javascript_i18n_catalog_url`.
         """
         lang_code = translation.get_language()
         if not lang_code:
@@ -333,6 +338,19 @@ class DragAndDropBlock(
         for code in (translation.to_locale(lang_code), lang_code, country_code):
             if pkg_resources.resource_exists(loader.module_name, text_js.format(lang_code=code)):
                 return text_js.format(lang_code=code)
+        return None
+
+    def _get_statici18n_js_url(self):
+        """
+        Return the JavaScript translation file provided by the XBlockI18NService.
+        """
+        if url_getter_func := getattr(self.i18n_service, 'get_javascript_i18n_catalog_url', None):
+            if javascript_url := url_getter_func(self):
+                return javascript_url
+
+        if deprecated_url := self._get_deprecated_i18n_js_url():
+            return self.runtime.local_resource_url(self, deprecated_url)
+
         return None
 
     @XBlock.supports("multi_device")  # Enable this block for use in the mobile app via webview
@@ -352,14 +370,14 @@ class DragAndDropBlock(
             'public/js/drag_and_drop.js',
         ]
 
-        statici18n_js_url = self._get_statici18n_js_url()
-        if statici18n_js_url:
-            js_urls.append(statici18n_js_url)
-
         for css_url in css_urls:
             fragment.add_css_url(self.runtime.local_resource_url(self, css_url))
         for js_url in js_urls:
             fragment.add_javascript_url(self.runtime.local_resource_url(self, js_url))
+
+        statici18n_js_url = self._get_statici18n_js_url()
+        if statici18n_js_url:
+            fragment.add_javascript_url(statici18n_js_url)
 
         self.include_theme_files(fragment)
 
@@ -458,14 +476,14 @@ class DragAndDropBlock(
             'public/js/drag_and_drop_edit.js',
         ]
 
-        statici18n_js_url = self._get_statici18n_js_url()
-        if statici18n_js_url:
-            js_urls.append(statici18n_js_url)
-
         for css_url in css_urls:
             fragment.add_css_url(self.runtime.local_resource_url(self, css_url))
         for js_url in js_urls:
             fragment.add_javascript_url(self.runtime.local_resource_url(self, js_url))
+
+        statici18n_js_url = self._get_statici18n_js_url()
+        if statici18n_js_url:
+            fragment.add_javascript_url(statici18n_js_url)
 
         # Do a bit of manipulation so we get the appearance of a list of zone options on
         # items that still have just a single zone stored

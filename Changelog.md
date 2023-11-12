@@ -4,6 +4,11 @@ Drag and Drop XBlock changelog
 Unreleased
 ---------------------------
 
+Version 3.4.0 (2024-01-15)
+---------------------------
+
+* XBlockI18NService js translations support
+
 Version 3.3.0 (2023-10-24)
 ---------------------------
 
