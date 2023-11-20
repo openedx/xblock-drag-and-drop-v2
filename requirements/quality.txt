@@ -28,16 +28,16 @@ bleach[css]==6.1.0
     # via
     #   -r requirements/test.txt
     #   bleach
-boto3==1.28.84
+boto3==1.29.3
     # via
     #   -r requirements/test.txt
     #   fs-s3fs
-botocore==1.31.84
+botocore==1.32.3
     # via
     #   -r requirements/test.txt
     #   boto3
     #   s3transfer
-certifi==2023.7.22
+certifi==2023.11.17
     # via
     #   -r requirements/test.txt
     #   requests
@@ -183,7 +183,7 @@ polib==1.2.0
     #   edx-i18n-tools
 pycodestyle==2.11.1
     # via -r requirements/quality.in
-pygments==2.16.1
+pygments==2.17.1
     # via
     #   -r requirements/test.txt
     #   rich
@@ -243,7 +243,7 @@ requests==2.31.0
     #   -r requirements/test.txt
     #   cookiecutter
     #   xblock-sdk
-rich==13.6.0
+rich==13.7.0
     # via
     #   -r requirements/test.txt
     #   cookiecutter
