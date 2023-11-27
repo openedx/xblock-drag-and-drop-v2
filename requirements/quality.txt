@@ -28,16 +28,16 @@ bleach[css]==6.1.0
     # via
     #   -r requirements/test.txt
     #   bleach
-boto3==1.28.84
+boto3==1.29.6
     # via
     #   -r requirements/test.txt
     #   fs-s3fs
-botocore==1.31.84
+botocore==1.32.6
     # via
     #   -r requirements/test.txt
     #   boto3
     #   s3transfer
-certifi==2023.7.22
+certifi==2023.11.17
     # via
     #   -r requirements/test.txt
     #   requests
@@ -60,7 +60,7 @@ click-log==0.4.0
     # via edx-lint
 code-annotations==1.5.0
     # via edx-lint
-cookiecutter==2.4.0
+cookiecutter==2.5.0
     # via
     #   -r requirements/test.txt
     #   xblock-sdk
@@ -80,7 +80,7 @@ django==3.2.23
     #   edx-i18n-tools
     #   openedx-django-pyfs
     #   xblock-sdk
-django-appconf==1.0.5
+django-appconf==1.0.6
     # via
     #   -r requirements/test.txt
     #   django-statici18n
@@ -90,7 +90,7 @@ edx-i18n-tools==1.3.0
     # via -r requirements/test.txt
 edx-lint==5.3.6
     # via -r requirements/quality.in
-exceptiongroup==1.1.3
+exceptiongroup==1.2.0
     # via
     #   -r requirements/test.txt
     #   pytest
@@ -105,7 +105,7 @@ fs-s3fs==1.1.1
     #   -r requirements/test.txt
     #   openedx-django-pyfs
     #   xblock-sdk
-idna==3.4
+idna==3.6
     # via
     #   -r requirements/test.txt
     #   requests
@@ -183,7 +183,7 @@ polib==1.2.0
     #   edx-i18n-tools
 pycodestyle==2.11.1
     # via -r requirements/quality.in
-pygments==2.16.1
+pygments==2.17.2
     # via
     #   -r requirements/test.txt
     #   rich
@@ -243,7 +243,7 @@ requests==2.31.0
     #   -r requirements/test.txt
     #   cookiecutter
     #   xblock-sdk
-rich==13.6.0
+rich==13.7.0
     # via
     #   -r requirements/test.txt
     #   cookiecutter
