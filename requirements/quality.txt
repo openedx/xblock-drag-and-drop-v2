@@ -28,11 +28,11 @@ bleach[css]==6.1.0
     # via
     #   -r requirements/test.txt
     #   bleach
-boto3==1.33.6
+boto3==1.33.10
     # via
     #   -r requirements/test.txt
     #   fs-s3fs
-botocore==1.33.6
+botocore==1.33.10
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -167,7 +167,7 @@ packaging==23.2
     # via
     #   -r requirements/test.txt
     #   pytest
-path==16.7.1
+path==16.9.0
     # via
     #   -r requirements/test.txt
     #   edx-i18n-tools
