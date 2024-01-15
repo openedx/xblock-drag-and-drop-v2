@@ -20,11 +20,11 @@ bleach[css]==6.1.0
     # via
     #   -r requirements/base.txt
     #   bleach
-boto3==1.34.14
+boto3==1.34.19
     # via
     #   -r requirements/base.txt
     #   fs-s3fs
-botocore==1.34.14
+botocore==1.34.19
     # via
     #   -r requirements/base.txt
     #   boto3
@@ -78,7 +78,7 @@ idna==3.6
     # via requests
 iniconfig==2.0.0
     # via pytest
-jinja2==3.1.2
+jinja2==3.1.3
     # via cookiecutter
 jmespath==1.0.1
     # via
@@ -89,7 +89,7 @@ lazy==1.6
     # via
     #   -r requirements/base.txt
     #   xblock
-lxml==5.0.1
+lxml==5.1.0
     # via
     #   -r requirements/base.txt
     #   edx-i18n-tools
