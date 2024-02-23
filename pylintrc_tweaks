@@ -1,0 +1,19 @@
+[MASTER]
+load-plugins = edx_lint.pylint
+
+[FORMAT]
+max-line-length=120
+max-module-lines=1500
+
+[MESSAGES CONTROL]
+disable =
+    locally-disabled,
+    too-many-ancestors,
+    too-many-instance-attributes,
+    too-few-public-methods,
+    too-many-public-methods,
+    unused-argument,
+    unsubscriptable-object,
+    no-else-return,
+    consider-using-f-string,
+    feature-toggle-needs-doc

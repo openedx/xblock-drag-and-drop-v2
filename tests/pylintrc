@@ -26,7 +26,8 @@ disable=
     missing-docstring,
     no-member,
     wrong-import-order,
-    line-too-long
+    line-too-long,
+    consider-using-f-string
 
 [SIMILARITIES]
 min-similarity-lines=6
