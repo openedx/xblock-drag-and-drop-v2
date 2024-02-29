@@ -252,6 +252,9 @@ class DragAndDropBlock(
 
     block_settings_key = 'drag-and-drop-v2'
 
+    xml_attributes = Dict(help="Map of unhandled xml attributes, used only for storage between import and export",
+                          default={}, scope=Scope.settings)
+
     @property
     def score(self):
         """
@@ -1387,3 +1390,30 @@ class DragAndDropBlock(
         xblock_body["content_type"] = "Drag and Drop"
 
         return xblock_body
+
+    def add_xml_to_node(self, node):
+        """
+        Serialize the XBlock to XML for exporting.
+        """
+        super().add_xml_to_node(node)
+
+        # Serialize and add tag data if any
+        if hasattr(self, 'add_tags_to_node') and callable(self.add_tags_to_node):  # pylint: disable=no-member
+            # This comes from TaggedBlockMixin
+            self.add_tags_to_node(node)  # pylint: disable=no-member
+
+    @classmethod
+    def parse_xml(cls, node, runtime, keys, id_generator):
+        """Instantiate XBlock object from runtime XML definition.
+
+        Inherited by XBlock core.
+        """
+        breakpoint()
+        block = super().parse_xml(node, runtime, keys, id_generator)
+
+        # Deserialize and add tag data info to block if any
+        if hasattr(block, 'read_tags_from_node') and callable(block.read_tags_from_node):  # pylint: disable=no-member
+            # This comes from TaggedBlockMixin
+            block.read_tags_from_node(node)  # pylint: disable=no-member
+
+        return block
