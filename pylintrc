@@ -15,6 +15,7 @@ disable=
     unused-argument,
     unsubscriptable-object,
     no-else-return
+    disable=consider-using-f-string
 
 [SIMILARITIES]
 min-similarity-lines=4
