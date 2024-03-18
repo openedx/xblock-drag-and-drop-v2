@@ -29,5 +29,4 @@ def get_grading_ignore_decoys_waffle_flag():
         #  Ref: https://github.com/openedx/public-engineering/issues/28
         return CourseWaffleFlag(WAFFLE_NAMESPACE, GRADING_IGNORE_DECOYS, __name__)
     except ValueError:
-        # pylint: disable=toggle-missing-annotation
         return CourseWaffleFlag(f'{WAFFLE_NAMESPACE}.{GRADING_IGNORE_DECOYS}', __name__)

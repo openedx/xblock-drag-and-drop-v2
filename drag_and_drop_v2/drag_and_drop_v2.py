@@ -354,7 +354,7 @@ class DragAndDropBlock(
         return None
 
     @XBlock.supports("multi_device")  # Enable this block for use in the mobile app via webview
-    def student_view(self, context):    # pylint: disable=unused-argument
+    def student_view(self, context):
         """
         Player view, displayed to the student
         """
@@ -385,7 +385,7 @@ class DragAndDropBlock(
 
         return fragment
 
-    def student_view_data(self, context=None):  # pylint: disable=unused-argument
+    def student_view_data(self, context=None):
         """
         Get the configuration data for the student_view.
         The configuration is all the settings defined by the author, except for correct answers
@@ -443,7 +443,7 @@ class DragAndDropBlock(
             # final feedback (data.feedback.finish) is not included - it may give away answers.
         }
 
-    def studio_view(self, context):     # pylint: disable=unused-argument
+    def studio_view(self, context):
         """
         Editing view in Studio
         """
@@ -507,7 +507,7 @@ class DragAndDropBlock(
         return fragment
 
     @XBlock.json_handler
-    def studio_submit(self, submissions, suffix=''):    # pylint: disable=unused-argument
+    def studio_submit(self, submissions, suffix=''):
         """
         Handles studio save.
         """
@@ -539,7 +539,7 @@ class DragAndDropBlock(
         - In the workbench, use the usage_id.
         """
         if hasattr(self, 'location'):
-            return self.location.html_id()
+            return self.location.html_id()  # pylint: disable=no-member
         else:
             return six.text_type(self.scope_ids.usage_id)
 
@@ -577,7 +577,7 @@ class DragAndDropBlock(
             return None
 
     @XBlock.json_handler
-    def drop_item(self, item_attempt, suffix=''):   # pylint: disable=unused-argument
+    def drop_item(self, item_attempt, suffix=''):
         """
         Handles dropping item into a zone.
         """
@@ -594,7 +594,7 @@ class DragAndDropBlock(
             )
 
     @XBlock.json_handler
-    def do_attempt(self, data, suffix=''):      # pylint: disable=unused-argument
+    def do_attempt(self, data, suffix=''):
         """
         Checks submitted solution and returns feedback.
 
@@ -605,6 +605,7 @@ class DragAndDropBlock(
         self._validate_do_attempt()
 
         self.attempts += 1
+        # pylint: disable=fixme
         # TODO: Refactor this method to "freeze" item_state and pass it to methods that need access to it.
         # These implicit dependencies between methods exist because most of them use `item_state` or other
         # fields, either as an "input" (i.e. read value) or as output (i.e. set value) or both. As a result,
@@ -633,7 +634,7 @@ class DragAndDropBlock(
         }
 
     @XBlock.json_handler
-    def publish_event(self, data, suffix=''):       # pylint: disable=unused-argument
+    def publish_event(self, data, suffix=''):
         """
         Handler to publish XBlock event from frontend
         """
@@ -646,7 +647,7 @@ class DragAndDropBlock(
         return {'result': 'success'}
 
     @XBlock.json_handler
-    def reset(self, data, suffix=''):       # pylint: disable=unused-argument
+    def reset(self, data, suffix=''):
         """
         Resets problem to initial state
         """
@@ -654,7 +655,7 @@ class DragAndDropBlock(
         return self._get_user_state()
 
     @XBlock.json_handler
-    def show_answer(self, data, suffix=''):     # pylint: disable=unused-argument
+    def show_answer(self, data, suffix=''):
         """
         Returns correct answer in assessment mode.
 
@@ -685,7 +686,7 @@ class DragAndDropBlock(
         return answer
 
     @XBlock.json_handler
-    def expand_static_url(self, url, suffix=''):        # pylint: disable=unused-argument
+    def expand_static_url(self, url, suffix=''):
         """ AJAX-accessible handler for expanding URLs to static [image] files """
         return {'url': self._expand_static_url(url)}
 
@@ -735,7 +736,7 @@ class DragAndDropBlock(
         functionality.
         """
         if hasattr(self, "has_deadline_passed"):
-            return self.has_deadline_passed()
+            return self.has_deadline_passed()  # pylint: disable=no-member
         else:
             return False
 
@@ -972,6 +973,7 @@ class DragAndDropBlock(
         """
         Helper method to update `self.completed` and submit grade event if appropriate conditions met.
         """
+        # pylint: disable=fixme
         # TODO: (arguable) split this method into "clean" functions (with no side effects and implicit state)
         # This method implicitly depends on self.item_state (via is_correct and _learner_raw_score)
         # and also updates self.raw_earned if some conditions are met. As a result this method implies some order of
