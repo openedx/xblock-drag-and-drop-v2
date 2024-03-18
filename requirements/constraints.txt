@@ -12,3 +12,6 @@
 -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
 
 pylint==2.4.2
+
+# greater version has some breaking changes. Fix this in separate PR.
+xblock[django]<2.10.0
