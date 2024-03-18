@@ -14,4 +14,4 @@
 pylint==2.4.2
 
 # greater version has some breaking changes. Fix this in separate PR.
-xblock[django]<2.10.0
+xblock[django]==1.10.0
