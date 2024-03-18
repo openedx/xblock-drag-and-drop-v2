@@ -15,10 +15,8 @@ import six.moves.urllib.error  # pylint: disable=import-error
 import six.moves.urllib.parse  # pylint: disable=import-error
 import six.moves.urllib.request  # pylint: disable=import-error
 import six
-import pkg_resources
 import webob
 
-from django.utils import translation
 from xblock.core import XBlock
 from xblock.exceptions import JsonHandlerError
 from xblock.fields import Boolean, Dict, Float, Integer, Scope, String
@@ -321,25 +319,6 @@ class DragAndDropBlock(
         correct_count, total_count = self._get_item_stats()
         return correct_count / float(total_count)
 
-    @staticmethod
-    def _get_deprecated_i18n_js_url():
-        """
-        Returns the deprecated JavaScript translation file for the currently selected language, if any found by
-        `pkg_resources`
-
-        This method returns pre-OEP-58 i18n files and is deprecated in favor
-        of `get_javascript_i18n_catalog_url`.
-        """
-        lang_code = translation.get_language()
-        if not lang_code:
-            return None
-        text_js = 'public/js/translations/{lang_code}/text.js'
-        country_code = lang_code.split('-')[0]
-        for code in (translation.to_locale(lang_code), lang_code, country_code):
-            if pkg_resources.resource_exists(loader.module_name, text_js.format(lang_code=code)):
-                return text_js.format(lang_code=code)
-        return None
-
     def _get_statici18n_js_url(self):
         """
         Return the JavaScript translation file provided by the XBlockI18NService.
@@ -347,9 +326,6 @@ class DragAndDropBlock(
         if url_getter_func := getattr(self.i18n_service, 'get_javascript_i18n_catalog_url', None):
             if javascript_url := url_getter_func(self):
                 return javascript_url
-
-        if deprecated_url := self._get_deprecated_i18n_js_url():
-            return self.runtime.local_resource_url(self, deprecated_url)
 
         return None
 
