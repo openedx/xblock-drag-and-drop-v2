@@ -15,3 +15,6 @@ pylint==2.4.2
 
 # greater version has some breaking changes. Fix this in separate PR.
 xblock[django]==1.10.0
+
+
+backports-zoneinfo[tzdata]==0.2.1 ; python_version < "3.9"
