@@ -354,7 +354,7 @@ class DragAndDropBlock(
         return None
 
     @XBlock.supports("multi_device")  # Enable this block for use in the mobile app via webview
-    def student_view(self, context):
+    def student_view(self, context):    # pylint: disable=unused-argument
         """
         Player view, displayed to the student
         """
@@ -385,7 +385,7 @@ class DragAndDropBlock(
 
         return fragment
 
-    def student_view_data(self, context=None):
+    def student_view_data(self, context=None):  # pylint: disable=unused-argument
         """
         Get the configuration data for the student_view.
         The configuration is all the settings defined by the author, except for correct answers
@@ -443,7 +443,7 @@ class DragAndDropBlock(
             # final feedback (data.feedback.finish) is not included - it may give away answers.
         }
 
-    def studio_view(self, context):
+    def studio_view(self, context):     # pylint: disable=unused-argument
         """
         Editing view in Studio
         """
@@ -507,7 +507,7 @@ class DragAndDropBlock(
         return fragment
 
     @XBlock.json_handler
-    def studio_submit(self, submissions, suffix=''):
+    def studio_submit(self, submissions, suffix=''):    # pylint: disable=unused-argument
         """
         Handles studio save.
         """
@@ -577,7 +577,7 @@ class DragAndDropBlock(
             return None
 
     @XBlock.json_handler
-    def drop_item(self, item_attempt, suffix=''):
+    def drop_item(self, item_attempt, suffix=''):   # pylint: disable=unused-argument
         """
         Handles dropping item into a zone.
         """
@@ -594,7 +594,7 @@ class DragAndDropBlock(
             )
 
     @XBlock.json_handler
-    def do_attempt(self, data, suffix=''):
+    def do_attempt(self, data, suffix=''):      # pylint: disable=unused-argument
         """
         Checks submitted solution and returns feedback.
 
@@ -634,7 +634,7 @@ class DragAndDropBlock(
         }
 
     @XBlock.json_handler
-    def publish_event(self, data, suffix=''):
+    def publish_event(self, data, suffix=''):       # pylint: disable=unused-argument
         """
         Handler to publish XBlock event from frontend
         """
@@ -647,7 +647,7 @@ class DragAndDropBlock(
         return {'result': 'success'}
 
     @XBlock.json_handler
-    def reset(self, data, suffix=''):
+    def reset(self, data, suffix=''):       # pylint: disable=unused-argument
         """
         Resets problem to initial state
         """
@@ -655,7 +655,7 @@ class DragAndDropBlock(
         return self._get_user_state()
 
     @XBlock.json_handler
-    def show_answer(self, data, suffix=''):
+    def show_answer(self, data, suffix=''):     # pylint: disable=unused-argument
         """
         Returns correct answer in assessment mode.
 
@@ -686,7 +686,7 @@ class DragAndDropBlock(
         return answer
 
     @XBlock.json_handler
-    def expand_static_url(self, url, suffix=''):
+    def expand_static_url(self, url, suffix=''):        # pylint: disable=unused-argument
         """ AJAX-accessible handler for expanding URLs to static [image] files """
         return {'url': self._expand_static_url(url)}
 
