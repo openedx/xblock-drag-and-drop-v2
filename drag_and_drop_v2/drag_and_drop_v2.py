@@ -539,7 +539,7 @@ class DragAndDropBlock(
         - In the workbench, use the usage_id.
         """
         if hasattr(self, 'location'):
-            return self.location.html_id()  # pylint: disable=no-member
+            return self.location.html_id()
         else:
             return six.text_type(self.scope_ids.usage_id)
 
@@ -605,7 +605,6 @@ class DragAndDropBlock(
         self._validate_do_attempt()
 
         self.attempts += 1
-        # pylint: disable=fixme
         # TODO: Refactor this method to "freeze" item_state and pass it to methods that need access to it.
         # These implicit dependencies between methods exist because most of them use `item_state` or other
         # fields, either as an "input" (i.e. read value) or as output (i.e. set value) or both. As a result,
@@ -736,7 +735,7 @@ class DragAndDropBlock(
         functionality.
         """
         if hasattr(self, "has_deadline_passed"):
-            return self.has_deadline_passed()  # pylint: disable=no-member
+            return self.has_deadline_passed()
         else:
             return False
 
@@ -973,7 +972,6 @@ class DragAndDropBlock(
         """
         Helper method to update `self.completed` and submit grade event if appropriate conditions met.
         """
-        # pylint: disable=fixme
         # TODO: (arguable) split this method into "clean" functions (with no side effects and implicit state)
         # This method implicitly depends on self.item_state (via is_correct and _learner_raw_score)
         # and also updates self.raw_earned if some conditions are met. As a result this method implies some order of
