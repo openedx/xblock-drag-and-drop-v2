@@ -238,7 +238,7 @@ class StateMigration:
         return self._apply_migration(item_id, item_state, migrations)
 
     @classmethod
-    def _zone_v1_to_v2(cls, unused_zone_id, zone):
+    def _zone_v1_to_v2(cls, unused_zone_id, zone):      # pylint: disable=unused-argument
         """
         Migrates zone data from v1.0 format to v2.0 format.
 
@@ -257,7 +257,7 @@ class StateMigration:
         return zone
 
     @classmethod
-    def _zone_v2_to_v2p1(cls, unused_zone_id, zone):
+    def _zone_v2_to_v2p1(cls, unused_zone_id, zone):        # pylint: disable=unused-argument
         """
         Migrates zone data from v2.0 to v2.1
 
@@ -279,7 +279,7 @@ class StateMigration:
         return zone
 
     @classmethod
-    def _item_state_v1_to_v1p5(cls, unused_item_id, item):
+    def _item_state_v1_to_v1p5(cls, unused_item_id, item):      # pylint: disable=unused-argument
         """
         Migrates item_state from v1.0 to v1.5
 
@@ -295,7 +295,7 @@ class StateMigration:
             return {'top': item[0], 'left': item[1]}
 
     @classmethod
-    def _item_state_v1p5_to_v2(cls, unused_item_id, item):
+    def _item_state_v1p5_to_v2(cls, unused_item_id, item):      # pylint: disable=unused-argument
         """
         Migrates item_state from v1.5 to v2.0
 
