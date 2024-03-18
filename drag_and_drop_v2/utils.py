@@ -165,8 +165,8 @@ class FeedbackMessages:
         ).format(missing_count=number)
 
 
-FeedbackMessage = namedtuple("FeedbackMessage", ["message", "message_class"])  # pylint: disable=invalid-name
-ItemStats = namedtuple(  # pylint: disable=invalid-name
+FeedbackMessage = namedtuple("FeedbackMessage", ["message", "message_class"])
+ItemStats = namedtuple(
     'ItemStats',
     ["required", "placed", "correctly_placed", "decoy", "decoy_in_bank"]
 )
