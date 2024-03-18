@@ -16,7 +16,7 @@ asgiref==3.7.2
     # via
     #   -r requirements/quality.txt
     #   django
-astroid==2.3.3
+astroid==3.1.0
     # via
     #   -r requirements/quality.txt
     #   pylint
@@ -94,6 +94,10 @@ coverage[toml]==7.4.4
     #   pytest-cov
 ddt==1.7.2
     # via -r requirements/quality.txt
+dill==0.3.8
+    # via
+    #   -r requirements/quality.txt
+    #   pylint
 distlib==0.3.8
     # via
     #   -r requirements/ci.txt
@@ -150,7 +154,7 @@ iniconfig==2.0.0
     # via
     #   -r requirements/quality.txt
     #   pytest
-isort==4.3.21
+isort==5.13.2
     # via
     #   -r requirements/quality.txt
     #   pylint
@@ -168,10 +172,6 @@ lazy==1.6
     # via
     #   -r requirements/quality.txt
     #   xblock
-lazy-object-proxy==1.4.3
-    # via
-    #   -r requirements/quality.txt
-    #   astroid
 lxml==5.1.0
     # via
     #   -r requirements/quality.txt
@@ -192,7 +192,7 @@ markupsafe==2.1.5
     #   jinja2
     #   mako
     #   xblock
-mccabe==0.6.1
+mccabe==0.7.0
     # via
     #   -r requirements/quality.txt
     #   pylint
@@ -228,6 +228,8 @@ pip-tools==7.4.1
 platformdirs==4.2.0
     # via
     #   -r requirements/ci.txt
+    #   -r requirements/quality.txt
+    #   pylint
     #   tox
     #   virtualenv
 pluggy==1.4.0
@@ -246,9 +248,8 @@ pygments==2.17.2
     # via
     #   -r requirements/quality.txt
     #   rich
-pylint==2.4.2
+pylint==3.1.0
     # via
-    #   -c requirements/constraints.txt
     #   -r requirements/quality.txt
     #   edx-lint
     #   pylint-celery
@@ -332,7 +333,6 @@ simplejson==3.19.2
 six==1.16.0
     # via
     #   -r requirements/quality.txt
-    #   astroid
     #   bleach
     #   edx-lint
     #   fs
@@ -362,10 +362,15 @@ tomli==2.0.1
     #   build
     #   coverage
     #   pip-tools
+    #   pylint
     #   pyproject-api
     #   pyproject-hooks
     #   pytest
     #   tox
+tomlkit==0.12.4
+    # via
+    #   -r requirements/quality.txt
+    #   pylint
 tox==4.14.1
     # via -r requirements/ci.txt
 types-python-dateutil==2.9.0.20240316
@@ -376,6 +381,8 @@ typing-extensions==4.10.0
     # via
     #   -r requirements/quality.txt
     #   asgiref
+    #   astroid
+    #   pylint
     #   rich
 urllib3==1.26.18
     # via
@@ -405,10 +412,6 @@ wheel==0.43.0
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-wrapt==1.11.2
-    # via
-    #   -r requirements/quality.txt
-    #   astroid
 xblock[django]==1.10.0
     # via
     #   -c requirements/constraints.txt
