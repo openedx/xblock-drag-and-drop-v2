@@ -1,5 +1,5 @@
 .PHONY: clean help compile_translations dummy_translations extract_translations detect_changed_source_translations \
-		build_dummy_translations validate_translations pull_translations push_translations check_translations_up_to_date \
+		build_dummy_translations validate_translations check_translations_up_to_date \
 		requirements selfcheck test test.python test.unit test.quality upgrade
 
 .DEFAULT_GOAL := help
@@ -51,12 +51,6 @@ dummy_translations: ## generate dummy translation (.po) files
 build_dummy_translations: dummy_translations compile_translations ## generate and compile dummy translation files
 
 validate_translations: build_dummy_translations detect_changed_source_translations ## validate translations
-
-pull_translations: ## pull translations from transifex
-	tx pull -t -a -f --mode reviewed --minimum-perc=1
-
-push_translations: ## push translations to transifex
-	tx push -s
 
 check_translations_up_to_date: extract_translations compile_translations dummy_translations detect_changed_source_translations ## extract, compile, and check if translation files are up-to-date
 

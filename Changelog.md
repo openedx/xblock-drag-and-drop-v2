@@ -5,10 +5,16 @@ Unreleased
 ---------------------------
 
 
-Version 3.5.0 (2024-03-18)
+Version 4.1.0 (2024-03-18)
 ---------------------------
 
 * Adding python3.12 support. Removed django32 support.
+Version 4.0.0 (2024-03-12)
+--------------------------
+
+* Remove Transifex calls and bundled translation files for the OEP-58 proposal.
+
+  BREAKING CHANGE: This version removes translations for Quince and earlier releases.
 
 Version 3.4.0 (2024-01-15)
 ---------------------------
