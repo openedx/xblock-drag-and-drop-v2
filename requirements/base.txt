@@ -14,9 +14,9 @@ backports-zoneinfo==0.2.1 ; python_version < "3.9"
     #   django
 bleach[css]==6.1.0
     # via -r requirements/base.in
-boto3==1.34.64
+boto3==1.34.65
     # via fs-s3fs
-botocore==1.34.64
+botocore==1.34.65
     # via
     #   boto3
     #   s3transfer
