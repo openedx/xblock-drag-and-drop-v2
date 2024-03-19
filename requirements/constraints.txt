@@ -11,7 +11,7 @@
 # Common constraints for edx repos
 -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
 
-pylint==2.4.2
+pylint<3.0.0
 
 # greater version has some breaking changes. Fix this in separate PR.
 xblock[django]==1.10.0
