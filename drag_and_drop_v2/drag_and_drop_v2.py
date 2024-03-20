@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- # pylint: disable=too-many-lines
+# -*- coding: utf-8 -*-  # pylint: disable=too-many-lines
 #
 """ Drag and Drop v2 XBlock """
 
@@ -11,9 +11,9 @@ import copy
 import json
 import logging
 
-import six.moves.urllib.error  # pylint: disable=import-error
-import six.moves.urllib.parse  # pylint: disable=import-error
-import six.moves.urllib.request  # pylint: disable=import-error
+import six.moves.urllib.error
+import six.moves.urllib.parse
+import six.moves.urllib.request
 import six
 import webob
 
@@ -45,12 +45,11 @@ logger = logging.getLogger(__name__)
 # Classes ###########################################################
 
 
-# pylint: disable=bad-continuation
 @XBlock.wants('settings')
 @XBlock.wants('replace_urls')
 @XBlock.wants('user')  # Using `needs` breaks the Course Outline page in Maple.
 @XBlock.needs('i18n')
-class DragAndDropBlock(
+class DragAndDropBlock(  # pylint: disable=too-many-instance-attributes
     ScorableXBlockMixin,
     XBlock,
     XBlockWithSettingsMixin,
@@ -257,7 +256,8 @@ class DragAndDropBlock(
         """
         return Score(self.raw_earned, self.raw_possible)
 
-    def max_score(self):  # pylint: disable=no-self-use
+    def max_score(self):
+
         """
         Return the problem's max score, which for DnDv2 always equals 1.
         Required by the grading system in the LMS.
@@ -293,6 +293,7 @@ class DragAndDropBlock(
         """
         Returns True if the user has made a submission.
         """
+        # pylint: disable=unsubscriptable-object
         return self.fields['raw_earned'].is_set_on(self) or self.fields['grade'].is_set_on(self)
 
     def weighted_grade(self):
@@ -330,7 +331,7 @@ class DragAndDropBlock(
         return None
 
     @XBlock.supports("multi_device")  # Enable this block for use in the mobile app via webview
-    def student_view(self, context):
+    def student_view(self, context):    # pylint: disable=unused-argument
         """
         Player view, displayed to the student
         """
@@ -361,7 +362,7 @@ class DragAndDropBlock(
 
         return fragment
 
-    def student_view_data(self, context=None):
+    def student_view_data(self, context=None):  # pylint: disable=unused-argument
         """
         Get the configuration data for the student_view.
         The configuration is all the settings defined by the author, except for correct answers
@@ -419,7 +420,7 @@ class DragAndDropBlock(
             # final feedback (data.feedback.finish) is not included - it may give away answers.
         }
 
-    def studio_view(self, context):
+    def studio_view(self, context):     # pylint: disable=unused-argument,useless-suppression
         """
         Editing view in Studio
         """
@@ -483,7 +484,7 @@ class DragAndDropBlock(
         return fragment
 
     @XBlock.json_handler
-    def studio_submit(self, submissions, suffix=''):
+    def studio_submit(self, submissions, suffix=''):    # pylint: disable=unused-argument
         """
         Handles studio save.
         """
@@ -515,7 +516,7 @@ class DragAndDropBlock(
         - In the workbench, use the usage_id.
         """
         if hasattr(self, 'location'):
-            return self.location.html_id()  # pylint: disable=no-member
+            return self.location.html_id()  # pylint: disable=no-member,useless-suppression
         else:
             return six.text_type(self.scope_ids.usage_id)
 
@@ -553,7 +554,7 @@ class DragAndDropBlock(
             return None
 
     @XBlock.json_handler
-    def drop_item(self, item_attempt, suffix=''):
+    def drop_item(self, item_attempt, suffix=''):   # pylint: disable=unused-argument
         """
         Handles dropping item into a zone.
         """
@@ -570,7 +571,7 @@ class DragAndDropBlock(
             )
 
     @XBlock.json_handler
-    def do_attempt(self, data, suffix=''):
+    def do_attempt(self, data, suffix=''):      # pylint: disable=unused-argument
         """
         Checks submitted solution and returns feedback.
 
@@ -581,7 +582,7 @@ class DragAndDropBlock(
         self._validate_do_attempt()
 
         self.attempts += 1
-        # pylint: disable=fixme
+        # pylint: disable=fixme,useless-suppression
         # TODO: Refactor this method to "freeze" item_state and pass it to methods that need access to it.
         # These implicit dependencies between methods exist because most of them use `item_state` or other
         # fields, either as an "input" (i.e. read value) or as output (i.e. set value) or both. As a result,
@@ -610,7 +611,7 @@ class DragAndDropBlock(
         }
 
     @XBlock.json_handler
-    def publish_event(self, data, suffix=''):
+    def publish_event(self, data, suffix=''):       # pylint: disable=unused-argument
         """
         Handler to publish XBlock event from frontend
         """
@@ -623,7 +624,7 @@ class DragAndDropBlock(
         return {'result': 'success'}
 
     @XBlock.json_handler
-    def reset(self, data, suffix=''):
+    def reset(self, data, suffix=''):       # pylint: disable=unused-argument
         """
         Resets problem to initial state
         """
@@ -631,7 +632,7 @@ class DragAndDropBlock(
         return self._get_user_state()
 
     @XBlock.json_handler
-    def show_answer(self, data, suffix=''):
+    def show_answer(self, data, suffix=''):     # pylint: disable=unused-argument
         """
         Returns correct answer in assessment mode.
 
@@ -662,7 +663,7 @@ class DragAndDropBlock(
         return answer
 
     @XBlock.json_handler
-    def expand_static_url(self, url, suffix=''):
+    def expand_static_url(self, url, suffix=''):        # pylint: disable=unused-argument
         """ AJAX-accessible handler for expanding URLs to static [image] files """
         return {'url': self._expand_static_url(url)}
 
@@ -712,7 +713,7 @@ class DragAndDropBlock(
         functionality.
         """
         if hasattr(self, "has_deadline_passed"):
-            return self.has_deadline_passed()  # pylint: disable=no-member
+            return self.has_deadline_passed()  # pylint: disable=no-member,useless-suppression
         else:
             return False
 
@@ -776,7 +777,7 @@ class DragAndDropBlock(
         return check_permissions_function()
 
     @XBlock.handler
-    def student_view_user_state(self, request, suffix=''):
+    def student_view_user_state(self, request, suffix=''):      # pylint: disable=unused-argument
         """ GET all user-specific data, and any applicable feedback """
         data = self._get_user_state()
         return webob.Response(body=json.dumps(data).encode('utf-8'), content_type='application/json')
@@ -949,7 +950,7 @@ class DragAndDropBlock(
         """
         Helper method to update `self.completed` and submit grade event if appropriate conditions met.
         """
-        # pylint: disable=fixme
+        # pylint: disable=fixme,useless-suppression
         # TODO: (arguable) split this method into "clean" functions (with no side effects and implicit state)
         # This method implicitly depends on self.item_state (via is_correct and _learner_raw_score)
         # and also updates self.raw_earned if some conditions are met. As a result this method implies some order of
@@ -1052,7 +1053,9 @@ class DragAndDropBlock(
             # edX Studio uses a different runtime for 'studio_view' than 'student_view',
             # and the 'studio_view' runtime doesn't provide the replace_urls API.
             try:
-                from common.djangoapps.static_replace import replace_static_urls  # pylint: disable=import-error
+                # pylint: disable=import-outside-toplevel
+                from common.djangoapps.static_replace import replace_static_urls
+                # pylint: disable=redundant-u-string-prefix
                 url = replace_static_urls(u'"{}"'.format(url), None, course_id=self.runtime.course_id)[1:-1]
             except ImportError:
                 pass
@@ -1108,7 +1111,7 @@ class DragAndDropBlock(
             return preferred_zone
 
         # Set states of all items dropped in correct zones
-        for item_id in self.item_state:
+        for item_id in self.item_state:     # pylint: disable=consider-using-dict-items
             if self.item_state[item_id]['correct']:
                 state[item_id] = self.item_state[item_id]
                 correct_items.add(item_id)
@@ -1252,7 +1255,7 @@ class DragAndDropBlock(
         Returns student's grade if already explicitly set, otherwise returns None.
         This is different from self.raw_earned which returns 0 by default.
         """
-        if self.fields['raw_earned'].is_set_on(self):
+        if self.fields['raw_earned'].is_set_on(self):   # pylint: disable=unsubscriptable-object
             return self.raw_earned
         else:
             return None
@@ -1262,7 +1265,7 @@ class DragAndDropBlock(
         Returns student's grade with the problem weight applied if set, otherwise
         None.
         """
-        if self.fields['raw_earned'].is_set_on(self):
+        if self.fields['raw_earned'].is_set_on(self):   # pylint: disable=unsubscriptable-object
             return self.weighted_grade()
         else:
             return None
@@ -1319,7 +1322,7 @@ class DragAndDropBlock(
         # values may be numeric / string or dict
         # default implementation is an empty dict
 
-        xblock_body = super(DragAndDropBlock, self).index_dictionary()
+        xblock_body = super(DragAndDropBlock, self).index_dictionary()  # pylint: disable=super-with-arguments
 
         zones_display_names = {
             "zone_{}_display_name".format(zone_i):
