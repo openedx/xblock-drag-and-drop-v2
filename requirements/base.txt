@@ -6,17 +6,21 @@
 #
 appdirs==1.4.4
     # via fs
-asgiref==3.7.2
+asgiref==3.8.1
     # via django
+backports-zoneinfo==0.2.1 ; python_version < "3.9"
+    # via
+    #   -c requirements/constraints.txt
+    #   django
 bleach[css]==6.1.0
     # via -r requirements/base.in
-boto3==1.34.49
+boto3==1.34.85
     # via fs-s3fs
-botocore==1.34.49
+botocore==1.34.85
     # via
     #   boto3
     #   s3transfer
-django==3.2.24
+django==4.2.11
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   django-appconf
@@ -39,27 +43,25 @@ jmespath==1.0.1
     #   botocore
 lazy==1.6
     # via xblock
-lxml==5.1.0
+lxml==5.2.1
     # via xblock
-mako==1.3.2
+mako==1.3.3
     # via xblock
 markupsafe==2.1.5
     # via
     #   mako
     #   xblock
-openedx-django-pyfs==3.5.0
+openedx-django-pyfs==3.6.0
     # via xblock
-python-dateutil==2.8.2
+python-dateutil==2.9.0.post0
     # via
     #   botocore
     #   xblock
 pytz==2024.1
-    # via
-    #   django
-    #   xblock
+    # via xblock
 pyyaml==6.0.1
     # via xblock
-s3transfer==0.10.0
+s3transfer==0.10.1
     # via boto3
 simplejson==3.19.2
     # via xblock
@@ -69,15 +71,15 @@ six==1.16.0
     #   fs
     #   fs-s3fs
     #   python-dateutil
-sqlparse==0.4.4
+sqlparse==0.5.0
     # via django
 tinycss2==1.2.1
     # via bleach
-typing-extensions==4.10.0
+typing-extensions==4.11.0
     # via asgiref
 urllib3==1.26.18
     # via botocore
-web-fragments==2.1.0
+web-fragments==2.2.0
     # via xblock
 webencodings==0.5.1
     # via
@@ -85,7 +87,7 @@ webencodings==0.5.1
     #   tinycss2
 webob==1.8.7
     # via xblock
-xblock[django]==1.10.0
+xblock[django]==3.1.0
     # via -r requirements/base.in
 
 # The following packages are considered to be unsafe in a requirements file:
