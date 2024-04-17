@@ -4,6 +4,13 @@ Drag and Drop XBlock changelog
 Unreleased
 ---------------------------
 
+Version 4.0.1 (2024-04-17)
+--------------------------
+
+* Add Python 3.11 support.
+* Add Python 3.12 support.
+* Drop Django 3.2 support.
+
 Version 4.0.0 (2024-03-12)
 --------------------------
 
