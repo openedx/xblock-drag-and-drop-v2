@@ -43,8 +43,10 @@ jmespath==1.0.1
     #   botocore
 lazy==1.6
     # via xblock
-lxml==5.2.1
-    # via xblock
+lxml==4.9.4
+    # via
+    #   -c requirements/constraints.txt
+    #   xblock
 mako==1.3.3
     # via xblock
 markupsafe==2.1.5

@@ -90,8 +90,9 @@ lazy==1.6
     # via
     #   -r requirements/base.txt
     #   xblock
-lxml==5.2.1
+lxml==4.9.4
     # via
+    #   -c requirements/constraints.txt
     #   -r requirements/base.txt
     #   edx-i18n-tools
     #   xblock
@@ -222,7 +223,7 @@ xblock[django]==3.1.0
     # via
     #   -r requirements/base.txt
     #   xblock-sdk
-xblock-sdk==0.7.0
+xblock-sdk==0.10.0
     # via -r requirements/test.in
 
 # The following packages are considered to be unsafe in a requirements file:
