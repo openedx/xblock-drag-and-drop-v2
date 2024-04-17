@@ -41,15 +41,15 @@ class BaseDragAndDropAjaxFixture(TestCaseMixin):
 
     @classmethod
     def initial_data(cls):
-        return json.loads(loader.load_unicode('data/{}/data.json'.format(cls.FOLDER)))
+        return json.loads(loader.load_unicode(f'data/{cls.FOLDER}/data.json'))
 
     @classmethod
     def initial_settings(cls):
-        return json.loads(loader.load_unicode('data/{}/settings.json'.format(cls.FOLDER)))
+        return json.loads(loader.load_unicode(f'data/{cls.FOLDER}/settings.json'))
 
     @classmethod
     def expected_student_data(cls):
-        return json.loads(loader.load_unicode('data/{}/config_out.json'.format(cls.FOLDER)))
+        return json.loads(loader.load_unicode(f'data/{cls.FOLDER}/config_out.json'))
 
     def test_student_view_data(self):
         data = self.block.student_view_data()

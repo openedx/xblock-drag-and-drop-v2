@@ -11,9 +11,9 @@ import copy
 import json
 import logging
 
-import six.moves.urllib.error  # pylint: disable=import-error
-import six.moves.urllib.parse  # pylint: disable=import-error
-import six.moves.urllib.request  # pylint: disable=import-error
+import six.moves.urllib.error
+import six.moves.urllib.parse
+import six.moves.urllib.request
 import six
 import webob
 
@@ -45,7 +45,6 @@ logger = logging.getLogger(__name__)
 # Classes ###########################################################
 
 
-# pylint: disable=bad-continuation
 @XBlock.wants('settings')
 @XBlock.wants('replace_urls')
 @XBlock.wants('user')  # Using `needs` breaks the Course Outline page in Maple.
@@ -257,7 +256,7 @@ class DragAndDropBlock(
         """
         return Score(self.raw_earned, self.raw_possible)
 
-    def max_score(self):  # pylint: disable=no-self-use
+    def max_score(self):
         """
         Return the problem's max score, which for DnDv2 always equals 1.
         Required by the grading system in the LMS.
@@ -515,7 +514,7 @@ class DragAndDropBlock(
         - In the workbench, use the usage_id.
         """
         if hasattr(self, 'location'):
-            return self.location.html_id()  # pylint: disable=no-member
+            return self.location.html_id()
         else:
             return six.text_type(self.scope_ids.usage_id)
 
@@ -581,7 +580,6 @@ class DragAndDropBlock(
         self._validate_do_attempt()
 
         self.attempts += 1
-        # pylint: disable=fixme
         # TODO: Refactor this method to "freeze" item_state and pass it to methods that need access to it.
         # These implicit dependencies between methods exist because most of them use `item_state` or other
         # fields, either as an "input" (i.e. read value) or as output (i.e. set value) or both. As a result,
@@ -712,7 +710,7 @@ class DragAndDropBlock(
         functionality.
         """
         if hasattr(self, "has_deadline_passed"):
-            return self.has_deadline_passed()  # pylint: disable=no-member
+            return self.has_deadline_passed()
         else:
             return False
 
@@ -949,7 +947,6 @@ class DragAndDropBlock(
         """
         Helper method to update `self.completed` and submit grade event if appropriate conditions met.
         """
-        # pylint: disable=fixme
         # TODO: (arguable) split this method into "clean" functions (with no side effects and implicit state)
         # This method implicitly depends on self.item_state (via is_correct and _learner_raw_score)
         # and also updates self.raw_earned if some conditions are met. As a result this method implies some order of
@@ -1052,8 +1049,9 @@ class DragAndDropBlock(
             # edX Studio uses a different runtime for 'studio_view' than 'student_view',
             # and the 'studio_view' runtime doesn't provide the replace_urls API.
             try:
-                from common.djangoapps.static_replace import replace_static_urls  # pylint: disable=import-error
-                url = replace_static_urls(u'"{}"'.format(url), None, course_id=self.runtime.course_id)[1:-1]
+                # pylint: disable=import-outside-toplevel
+                from common.djangoapps.static_replace import replace_static_urls
+                url = replace_static_urls('"{}"'.format(url), None, course_id=self.runtime.course_id)[1:-1]
             except ImportError:
                 pass
         return url
@@ -1108,7 +1106,7 @@ class DragAndDropBlock(
             return preferred_zone
 
         # Set states of all items dropped in correct zones
-        for item_id in self.item_state:
+        for item_id in self.item_state:  # pylint: disable=consider-using-dict-items
             if self.item_state[item_id]['correct']:
                 state[item_id] = self.item_state[item_id]
                 correct_items.add(item_id)
@@ -1319,7 +1317,7 @@ class DragAndDropBlock(
         # values may be numeric / string or dict
         # default implementation is an empty dict
 
-        xblock_body = super(DragAndDropBlock, self).index_dictionary()
+        xblock_body = super().index_dictionary()
 
         zones_display_names = {
             "zone_{}_display_name".format(zone_i):

@@ -4,6 +4,8 @@ Drag and Drop XBlock changelog
 Unreleased
 ---------------------------
 
+* Adjust code styling for newer pylint versions.
+
 Version 4.0.2 (2024-04-24)
 --------------------------
 
