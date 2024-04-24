@@ -4,6 +4,12 @@ Drag and Drop XBlock changelog
 Unreleased
 ---------------------------
 
+Version 4.0.2 (2024-04-24)
+--------------------------
+
+* Unpin lxml constraint.
+
+
 Version 4.0.1 (2024-04-17)
 --------------------------
 
