@@ -32,11 +32,11 @@ binaryornot==0.4.4
     #   cookiecutter
 bleach[css]==6.1.0
     # via -r requirements/quality.txt
-boto3==1.34.90
+boto3==1.34.93
     # via
     #   -r requirements/quality.txt
     #   fs-s3fs
-botocore==1.34.90
+botocore==1.34.93
     # via
     #   -r requirements/quality.txt
     #   boto3
@@ -113,7 +113,7 @@ django-appconf==1.0.6
     #   django-statici18n
 django-statici18n==2.5.0
     # via -r requirements/quality.txt
-edx-i18n-tools==1.5.0
+edx-i18n-tools==1.6.0
     # via -r requirements/quality.txt
 edx-lint==5.3.6
     # via -r requirements/quality.txt
@@ -172,12 +172,15 @@ lazy-object-proxy==1.4.3
     # via
     #   -r requirements/quality.txt
     #   astroid
-lxml==5.2.1
+lxml[html-clean]==5.2.1
     # via
     #   -r requirements/quality.txt
     #   edx-i18n-tools
+    #   lxml-html-clean
     #   xblock
     #   xblock-sdk
+lxml-html-clean==0.1.1
+    # via -r requirements/quality.txt
 mako==1.3.3
     # via
     #   -r requirements/quality.txt
@@ -280,7 +283,7 @@ pyproject-hooks==1.0.0
     #   -r requirements/pip-tools.txt
     #   build
     #   pip-tools
-pytest==8.1.1
+pytest==8.2.0
     # via
     #   -r requirements/quality.txt
     #   pytest-cov
@@ -366,7 +369,7 @@ tomli==2.0.1
     #   pyproject-hooks
     #   pytest
     #   tox
-tox==4.14.2
+tox==4.15.0
     # via -r requirements/ci.txt
 types-python-dateutil==2.9.0.20240316
     # via
@@ -409,7 +412,7 @@ wrapt==1.11.2
     # via
     #   -r requirements/quality.txt
     #   astroid
-xblock[django]==4.0.0
+xblock[django]==4.0.1
     # via
     #   -r requirements/quality.txt
     #   xblock-sdk
