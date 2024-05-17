@@ -19,7 +19,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04]
-        toxenv: [py38-django42, py311-django42, py312-django42, py38-quality, py311-quality, py312-quality, translations]
+        python-version: [3.8, 3.11, 3.12]
+        toxenv: [django42, quality, translations]
 
     steps:
     - name: checkout repo
@@ -27,20 +28,10 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Extract the Python version from tox environment
-      run: |
-        if [[ "${{ matrix.toxenv }}" =~ py[0-9]+ ]]; then
-          PYTHON_VERSION=$(echo "${{ matrix.toxenv }}" | sed -E 's/py([0-9])([0-9]+).*/\1.\2/')
-        else
-          # Default version
-          PYTHON_VERSION=3.8
-        fi
-        echo "PYTHON_VERSION=$PYTHON_VERSION" >> $GITHUB_ENV
-
     - name: setup python
       uses: actions/setup-python@v4
       with:
-        python-version: ${{ env.PYTHON_VERSION }}
+        python-version: ${{ matrix.python-version }}
 
     - name: Install translations dependencies
       if: ${{ startsWith(matrix.toxenv, 'translations') }}

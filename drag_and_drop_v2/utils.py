@@ -80,13 +80,14 @@ def sanitize_html(raw_body: str) -> str:
     """
     Remove not allowed HTML tags to mitigate XSS vulnerabilities.
     """
-    bleach_options = dict(
-        tags=ALLOWED_TAGS,
-        protocols=bleach.ALLOWED_PROTOCOLS,
-        strip=True,
-        attributes=ALLOWED_ATTRIBUTES,
-    )
-    bleach_options['css_sanitizer'] = CSSSanitizer()
+    bleach_options = {
+        "tags": ALLOWED_TAGS,
+        "protocols": bleach.ALLOWED_PROTOCOLS,
+        "strip": True,
+        "attributes": ALLOWED_ATTRIBUTES,
+        "css_sanitizer": CSSSanitizer()
+    }
+
     return bleach.clean(raw_body, **bleach_options)
 
 
@@ -165,8 +166,8 @@ class FeedbackMessages:
         ).format(missing_count=number)
 
 
-FeedbackMessage = namedtuple("FeedbackMessage", ["message", "message_class"])  # pylint: disable=invalid-name
-ItemStats = namedtuple(  # pylint: disable=invalid-name
+FeedbackMessage = namedtuple("FeedbackMessage", ["message", "message_class"])
+ItemStats = namedtuple(
     'ItemStats',
     ["required", "placed", "correctly_placed", "decoy", "decoy_in_bank"]
 )
