@@ -23,11 +23,11 @@ binaryornot==0.4.4
     # via cookiecutter
 bleach[css]==6.1.0
     # via -r requirements/base.txt
-boto3==1.34.93
+boto3==1.34.108
     # via
     #   -r requirements/base.txt
     #   fs-s3fs
-botocore==1.34.93
+botocore==1.34.108
     # via
     #   -r requirements/base.txt
     #   boto3
@@ -42,7 +42,7 @@ click==8.1.7
     # via cookiecutter
 cookiecutter==2.6.0
     # via xblock-sdk
-coverage[toml]==7.5.0
+coverage[toml]==7.5.1
     # via pytest-cov
 ddt==1.7.2
     # via -r requirements/test.in
@@ -79,7 +79,7 @@ idna==3.7
     # via requests
 iniconfig==2.0.0
     # via pytest
-jinja2==3.1.3
+jinja2==3.1.4
     # via cookiecutter
 jmespath==1.0.1
     # via
@@ -90,7 +90,7 @@ lazy==1.6
     # via
     #   -r requirements/base.txt
     #   xblock
-lxml[html-clean]==5.2.1
+lxml[html-clean]==5.2.2
     # via
     #   -r requirements/base.txt
     #   edx-i18n-tools
@@ -99,7 +99,7 @@ lxml[html-clean]==5.2.1
     #   xblock-sdk
 lxml-html-clean==0.1.1
     # via lxml
-mako==1.3.3
+mako==1.3.5
     # via
     #   -r requirements/base.txt
     #   xblock
@@ -128,7 +128,7 @@ pluggy==1.5.0
     # via pytest
 polib==1.2.0
     # via edx-i18n-tools
-pygments==2.17.2
+pygments==2.18.0
     # via rich
 pypng==0.20220715.0
     # via xblock-sdk
