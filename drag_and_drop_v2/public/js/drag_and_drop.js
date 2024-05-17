@@ -456,7 +456,7 @@ function DragAndDropTemplates(configuration) {
         }
         var go_to_beginning_button_class = 'go-to-beginning-button';
         if (!ctx.show_go_to_beginning_button) {
-            go_to_beginning_button_class += ' sr';
+            go_to_beginning_button_class += ' hidden';
         }
         return(
             h("div.problem-action-buttons-wrapper", {attributes: {'role': 'group', 'aria-label': gettext('Actions')}}, [
