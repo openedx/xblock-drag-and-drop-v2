@@ -132,7 +132,7 @@ pygments==2.18.0
     # via rich
 pypng==0.20220715.0
     # via xblock-sdk
-pytest==8.2.0
+pytest==8.2.1
     # via
     #   pytest-cov
     #   pytest-django

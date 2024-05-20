@@ -16,7 +16,7 @@ asgiref==3.8.1
     # via
     #   -r requirements/quality.txt
     #   django
-astroid==3.2.1
+astroid==3.2.2
     # via
     #   -r requirements/quality.txt
     #   pylint
@@ -251,7 +251,7 @@ pygments==2.18.0
     # via
     #   -r requirements/quality.txt
     #   rich
-pylint==3.2.0
+pylint==3.2.1
     # via
     #   -r requirements/quality.txt
     #   edx-lint
@@ -284,7 +284,7 @@ pyproject-hooks==1.1.0
     #   -r requirements/pip-tools.txt
     #   build
     #   pip-tools
-pytest==8.2.0
+pytest==8.2.1
     # via
     #   -r requirements/quality.txt
     #   pytest-cov
