@@ -6,6 +6,11 @@ Unreleased
 
 * Adjust code styling for newer pylint versions.
 
+Version 4.0.3 (2024-05-23)
+---------------------------
+
+* Set go-to-beginning button to hidden for Screen Readers
+
 Version 4.0.2 (2024-04-24)
 --------------------------
 

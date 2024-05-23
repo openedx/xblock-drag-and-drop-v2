@@ -1052,6 +1052,16 @@ function DragAndDropBlock(runtime, element, configuration) {
         $root.find('.keyboard-help-dialog .modal-dismiss-button').focus();
     };
 
+    var focusSuccessFeedback = function() {
+        var $feedback = $element.find('.final');
+        if ($feedback.is(':visible')) {
+            $feedback.attr('tabindex', '-1');
+            $feedback.focus();
+            return true;
+        };
+        return false;
+    }
+
     var showKeyboardHelp = function(evt) {
         var focusId = document.activeElement;
         evt.preventDefault();
@@ -1829,7 +1839,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         applyState();
 
         if (manually_closed) {
-            focusFirstDraggable();
+            focusSuccessFeedback() || focusFirstDraggable();
         }
     };
 
@@ -1903,7 +1913,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         }).always(function() {
             state.submit_spinner = false;
             applyState();
-            focusItemFeedbackPopup() || focusFirstDraggable();
+            focusItemFeedbackPopup() || focusSuccessFeedback() || focusFirstDraggable();
         });
     };
 
