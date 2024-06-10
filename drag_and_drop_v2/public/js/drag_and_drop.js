@@ -318,7 +318,7 @@ function DragAndDropTemplates(configuration) {
 
         return (
             h('div.feedback', {
-                attributes: {'role': 'group', 'aria-label': gettext('Feedback')},
+                attributes: {'role': 'group', 'aria-label': gettext('Feedback'), 'aria-live': 'polite'},
                 style: { display: feedback_display }
             }, [
                 h('div.feedback-content',[
@@ -424,7 +424,7 @@ function DragAndDropTemplates(configuration) {
             iconClass = 'fa-spin fa-spinner';
         }
         return (
-            h('span.problem-action-button-wrapper', {}, [
+            h('span.problem-action-button-wrapper', {attributes: {"aria-hidden": options.disabled || false}}, [
                 h(
                     'button.problem-action-btn.btn-default.btn-small',
                     {
@@ -456,7 +456,7 @@ function DragAndDropTemplates(configuration) {
         }
         var go_to_beginning_button_class = 'go-to-beginning-button';
         if (!ctx.show_go_to_beginning_button) {
-            go_to_beginning_button_class += ' hidden';
+            go_to_beginning_button_class += ' sr';
         }
         return(
             h("div.problem-action-buttons-wrapper", {attributes: {'role': 'group', 'aria-label': gettext('Actions')}}, [
@@ -1330,6 +1330,17 @@ function DragAndDropBlock(runtime, element, configuration) {
         }
     };
 
+    var focusSubmitButton = function() {
+        var submitButton = $root.find('.btn-brand.submit').toArray();
+        if (submitButton.length){
+            submitButton[0].focus();
+        }
+        else {
+            // In case there are is no submit button, we default focus to the first zone.
+            $root.find('.target .zone').first().focus();
+        }
+    };
+
     var focusItemFeedbackPopup = function() {
         var popup = $root.find('.item-feedback-popup');
         if (popup.length && popup.is(":visible")) {
@@ -1810,8 +1821,11 @@ function DragAndDropBlock(runtime, element, configuration) {
                     // Move focus the the close button of the feedback popup.
                     focusItemFeedbackPopup();
                 } else {
-                    // Next tab press should take us to the "Go to Beginning" button.
-                    state.tab_to_go_to_beginning_button = true;
+                    if ($root.find('.item-bank .option[draggable=true]').length) {
+                        focusFirstDraggable();
+                    } else {
+                        focusSubmitButton();
+                    };
                 }
             })
             .fail(function (data) {
