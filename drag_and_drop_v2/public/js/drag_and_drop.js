@@ -459,7 +459,7 @@ function DragAndDropTemplates(configuration) {
             go_to_beginning_button_class += ' sr';
         }
         return(
-            h("div.problem-action-buttons-wrapper", {attributes: {'role': 'group', 'aria-label': gettext('Actions')}}, [
+            h("div.problem-action-buttons-wrapper", {}, [
                 sidebarButtonTemplate(
                     go_to_beginning_button_class,
                     "fa-arrow-up",
