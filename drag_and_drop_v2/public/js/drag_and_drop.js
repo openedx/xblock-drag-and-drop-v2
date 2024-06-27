@@ -318,7 +318,7 @@ function DragAndDropTemplates(configuration) {
 
         return (
             h('div.feedback', {
-                attributes: {'role': 'group', 'aria-label': gettext('Feedback')},
+                attributes: {'role': 'group', 'aria-label': gettext('Feedback'), 'aria-live': 'polite'},
                 style: { display: feedback_display }
             }, [
                 h('div.feedback-content',[
@@ -424,7 +424,7 @@ function DragAndDropTemplates(configuration) {
             iconClass = 'fa-spin fa-spinner';
         }
         return (
-            h('span.problem-action-button-wrapper', {}, [
+            h('span.problem-action-button-wrapper', {attributes: {"aria-hidden": options.disabled || false}}, [
                 h(
                     'button.problem-action-btn.btn-default.btn-small',
                     {
@@ -459,7 +459,7 @@ function DragAndDropTemplates(configuration) {
             go_to_beginning_button_class += ' sr';
         }
         return(
-            h("div.problem-action-buttons-wrapper", {attributes: {'role': 'group', 'aria-label': gettext('Actions')}}, [
+            h("div.problem-action-buttons-wrapper", {}, [
                 sidebarButtonTemplate(
                     go_to_beginning_button_class,
                     "fa-arrow-up",
@@ -1052,6 +1052,16 @@ function DragAndDropBlock(runtime, element, configuration) {
         $root.find('.keyboard-help-dialog .modal-dismiss-button').focus();
     };
 
+    var focusSuccessFeedback = function() {
+        var $feedback = $element.find('.final');
+        if ($feedback.is(':visible')) {
+            $feedback.attr('tabindex', '-1');
+            $feedback.focus();
+            return true;
+        };
+        return false;
+    }
+
     var showKeyboardHelp = function(evt) {
         var focusId = document.activeElement;
         evt.preventDefault();
@@ -1316,6 +1326,17 @@ function DragAndDropBlock(runtime, element, configuration) {
         }
         else {
             // In case there are no draggable options, we default focus to the first zone.
+            $root.find('.target .zone').first().focus();
+        }
+    };
+
+    var focusSubmitButton = function() {
+        var submitButton = $root.find('.btn-brand.submit').toArray();
+        if (submitButton.length){
+            submitButton[0].focus();
+        }
+        else {
+            // In case there are is no submit button, we default focus to the first zone.
             $root.find('.target .zone').first().focus();
         }
     };
@@ -1800,8 +1821,11 @@ function DragAndDropBlock(runtime, element, configuration) {
                     // Move focus the the close button of the feedback popup.
                     focusItemFeedbackPopup();
                 } else {
-                    // Next tab press should take us to the "Go to Beginning" button.
-                    state.tab_to_go_to_beginning_button = true;
+                    if ($root.find('.item-bank .option[draggable=true]').length) {
+                        focusFirstDraggable();
+                    } else {
+                        focusSubmitButton();
+                    };
                 }
             })
             .fail(function (data) {
@@ -1829,7 +1853,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         applyState();
 
         if (manually_closed) {
-            focusFirstDraggable();
+            focusSuccessFeedback() || focusFirstDraggable();
         }
     };
 
@@ -1903,7 +1927,7 @@ function DragAndDropBlock(runtime, element, configuration) {
         }).always(function() {
             state.submit_spinner = false;
             applyState();
-            focusItemFeedbackPopup() || focusFirstDraggable();
+            focusItemFeedbackPopup() || focusSuccessFeedback() || focusFirstDraggable();
         });
     };
 
