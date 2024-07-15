@@ -23,16 +23,16 @@ binaryornot==0.4.4
     # via cookiecutter
 bleach[css]==6.1.0
     # via -r requirements/base.txt
-boto3==1.34.131
+boto3==1.34.144
     # via
     #   -r requirements/base.txt
     #   fs-s3fs
-botocore==1.34.131
+botocore==1.34.144
     # via
     #   -r requirements/base.txt
     #   boto3
     #   s3transfer
-certifi==2024.6.2
+certifi==2024.7.4
     # via requests
 chardet==5.2.0
     # via binaryornot
@@ -42,7 +42,7 @@ click==8.1.7
     # via cookiecutter
 cookiecutter==2.6.0
     # via xblock-sdk
-coverage[toml]==7.5.4
+coverage[toml]==7.6.0
     # via pytest-cov
 ddt==1.7.2
     # via -r requirements/test.in
@@ -62,7 +62,7 @@ django-statici18n==2.5.0
     # via -r requirements/base.txt
 edx-i18n-tools==1.6.0
     # via -r requirements/test.in
-exceptiongroup==1.2.1
+exceptiongroup==1.2.2
     # via pytest
 fs==2.4.16
     # via
@@ -164,7 +164,7 @@ requests==2.32.3
     #   xblock-sdk
 rich==13.7.1
     # via cookiecutter
-s3transfer==0.10.1
+s3transfer==0.10.2
     # via
     #   -r requirements/base.txt
     #   boto3
