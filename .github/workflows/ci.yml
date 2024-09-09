@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-20.04]
+        os: [ubuntu-latest]
         python-version: [3.8, 3.11, 3.12]
         toxenv: [django42, quality, translations]
 
