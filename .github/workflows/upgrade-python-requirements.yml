@@ -17,6 +17,8 @@ jobs:
     if: github.repository_owner == 'openedx'
     with:
       branch: ${{ github.event.inputs.branch || 'master' }}
+      # TODO: Remove this when dropping Python 3.8 support.
+      python_version: 3.8
       # optional parameters below; fill in if you'd like github or email notifications
       # user_reviewers: ""
       # team_reviewers: ""
