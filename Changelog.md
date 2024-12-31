@@ -4,6 +4,11 @@ Drag and Drop XBlock changelog
 Unreleased
 ---------------------------
 
+* Dropped support for Python 3.8 and added support for Python 3.12.
+
+Version 5.0.0 (2024-12-31)
+---------------------------
+
 * Adjust code styling for newer pylint versions.
 
 Version 4.0.3 (2024-05-23)
