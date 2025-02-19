@@ -10,6 +10,3 @@
 
 # Common constraints for edx repos
 -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
-
-# For python greater than or equal to 3.9 backports.zoneinfo causing failures
-backports.zoneinfo; python_version<"3.9"
