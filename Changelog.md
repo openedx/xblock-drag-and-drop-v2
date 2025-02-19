@@ -4,6 +4,11 @@ Drag and Drop XBlock changelog
 Unreleased
 ---------------------------
 
+Version 5.0.1 (2025-02-19)
+---------------------------
+
+* Scroll to the top of the editor in iframes (in the authoring MFE).
+
 Version 5.0.0 (2025-02-19)
 ---------------------------
 

@@ -175,7 +175,11 @@ function DragAndDropEditBlock(runtime, element, params) {
                 },
 
                 scrollToTop: function() {
-                    $('.drag-builder', element).scrollTop(0);
+                    if (self !== top) {
+                        $("html,body").scrollTop(0);
+                    } else {
+                        $('.drag-builder', element).scrollTop(0);
+                    }
                 },
 
                 clickHandlers: function() {
