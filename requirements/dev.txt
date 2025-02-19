@@ -27,11 +27,11 @@ binaryornot==0.4.4
     #   cookiecutter
 bleach[css]==6.2.0
     # via -r requirements/quality.txt
-boto3==1.35.90
+boto3==1.36.23
     # via
     #   -r requirements/quality.txt
     #   fs-s3fs
-botocore==1.35.90
+botocore==1.36.23
     # via
     #   -r requirements/quality.txt
     #   boto3
@@ -40,11 +40,11 @@ build==1.2.2.post1
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-cachetools==5.5.0
+cachetools==5.5.1
     # via
     #   -r requirements/ci.txt
     #   tox
-certifi==2024.12.14
+certifi==2025.1.31
     # via
     #   -r requirements/quality.txt
     #   requests
@@ -71,7 +71,7 @@ click-log==0.4.0
     # via
     #   -r requirements/quality.txt
     #   edx-lint
-code-annotations==2.1.0
+code-annotations==2.2.0
     # via
     #   -r requirements/quality.txt
     #   edx-lint
@@ -83,7 +83,7 @@ cookiecutter==2.6.0
     # via
     #   -r requirements/quality.txt
     #   xblock-sdk
-coverage[toml]==7.6.10
+coverage[toml]==7.6.12
     # via
     #   -r requirements/quality.txt
     #   pytest-cov
@@ -97,7 +97,7 @@ distlib==0.3.9
     # via
     #   -r requirements/ci.txt
     #   virtualenv
-django==4.2.17
+django==4.2.19
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/quality.txt
@@ -106,7 +106,7 @@ django==4.2.17
     #   edx-i18n-tools
     #   openedx-django-pyfs
     #   xblock-sdk
-django-appconf==1.0.6
+django-appconf==1.1.0
     # via
     #   -r requirements/quality.txt
     #   django-statici18n
@@ -114,9 +114,9 @@ django-statici18n==2.6.0
     # via -r requirements/quality.txt
 edx-i18n-tools==1.6.3
     # via -r requirements/quality.txt
-edx-lint==5.4.1
+edx-lint==5.6.0
     # via -r requirements/quality.txt
-filelock==3.16.1
+filelock==3.17.0
     # via
     #   -r requirements/ci.txt
     #   tox
@@ -140,7 +140,7 @@ iniconfig==2.0.0
     # via
     #   -r requirements/quality.txt
     #   pytest
-isort==5.13.2
+isort==6.0.0
     # via
     #   -r requirements/quality.txt
     #   pylint
@@ -158,7 +158,7 @@ lazy==1.6
     # via
     #   -r requirements/quality.txt
     #   xblock
-lxml[html-clean]==5.3.0
+lxml[html-clean]==5.3.1
     # via
     #   -r requirements/quality.txt
     #   edx-i18n-tools
@@ -169,7 +169,7 @@ lxml-html-clean==0.4.1
     # via
     #   -r requirements/quality.txt
     #   lxml
-mako==1.3.8
+mako==1.3.9
     # via
     #   -r requirements/quality.txt
     #   xblock
@@ -210,7 +210,7 @@ path==16.16.0
     # via
     #   -r requirements/quality.txt
     #   edx-i18n-tools
-pbr==6.1.0
+pbr==6.1.1
     # via
     #   -r requirements/quality.txt
     #   stevedore
@@ -235,11 +235,11 @@ polib==1.2.0
     #   edx-i18n-tools
 pycodestyle==2.12.1
     # via -r requirements/quality.txt
-pygments==2.18.0
+pygments==2.19.1
     # via
     #   -r requirements/quality.txt
     #   rich
-pylint==3.3.3
+pylint==3.3.4
     # via
     #   -r requirements/quality.txt
     #   edx-lint
@@ -263,7 +263,7 @@ pypng==0.20220715.0
     # via
     #   -r requirements/quality.txt
     #   xblock-sdk
-pyproject-api==1.8.0
+pyproject-api==1.9.0
     # via
     #   -r requirements/ci.txt
     #   tox
@@ -279,7 +279,7 @@ pytest==8.3.4
     #   pytest-django
 pytest-cov==6.0.0
     # via -r requirements/quality.txt
-pytest-django==4.9.0
+pytest-django==4.10.0
     # via -r requirements/quality.txt
 python-dateutil==2.9.0.post0
     # via
@@ -292,7 +292,7 @@ python-slugify==8.0.4
     #   -r requirements/quality.txt
     #   code-annotations
     #   cookiecutter
-pytz==2024.2
+pytz==2025.1
     # via
     #   -r requirements/quality.txt
     #   xblock
@@ -312,11 +312,11 @@ rich==13.9.4
     # via
     #   -r requirements/quality.txt
     #   cookiecutter
-s3transfer==0.10.4
+s3transfer==0.11.2
     # via
     #   -r requirements/quality.txt
     #   boto3
-simplejson==3.19.3
+simplejson==3.20.1
     # via
     #   -r requirements/quality.txt
     #   xblock
@@ -348,18 +348,19 @@ tomlkit==0.13.2
     # via
     #   -r requirements/quality.txt
     #   pylint
-tox==4.23.2
+tox==4.24.1
     # via -r requirements/ci.txt
 types-python-dateutil==2.9.0.20241206
     # via
     #   -r requirements/quality.txt
     #   arrow
-urllib3==2.3.0
+urllib3==2.2.3
     # via
+    #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/quality.txt
     #   botocore
     #   requests
-virtualenv==20.28.0
+virtualenv==20.29.2
     # via
     #   -r requirements/ci.txt
     #   tox
@@ -382,7 +383,7 @@ wheel==0.45.1
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-xblock[django]==5.1.0
+xblock[django]==5.1.2
     # via
     #   -r requirements/quality.txt
     #   xblock-sdk
