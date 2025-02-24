@@ -18,11 +18,11 @@ binaryornot==0.4.4
     # via cookiecutter
 bleach[css]==6.2.0
     # via -r requirements/base.txt
-boto3==1.36.23
+boto3==1.36.26
     # via
     #   -r requirements/base.txt
     #   fs-s3fs
-botocore==1.36.23
+botocore==1.36.26
     # via
     #   -r requirements/base.txt
     #   boto3
