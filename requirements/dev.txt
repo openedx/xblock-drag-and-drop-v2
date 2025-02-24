@@ -27,11 +27,11 @@ binaryornot==0.4.4
     #   cookiecutter
 bleach[css]==6.2.0
     # via -r requirements/quality.txt
-boto3==1.36.23
+boto3==1.36.26
     # via
     #   -r requirements/quality.txt
     #   fs-s3fs
-botocore==1.36.23
+botocore==1.36.26
     # via
     #   -r requirements/quality.txt
     #   boto3
@@ -40,7 +40,7 @@ build==1.2.2.post1
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-cachetools==5.5.1
+cachetools==5.5.2
     # via
     #   -r requirements/ci.txt
     #   tox
@@ -332,7 +332,7 @@ sqlparse==0.5.3
     # via
     #   -r requirements/quality.txt
     #   django
-stevedore==5.4.0
+stevedore==5.4.1
     # via
     #   -r requirements/quality.txt
     #   code-annotations
