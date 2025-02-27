@@ -112,7 +112,7 @@ There are two problem modes available:
     By default, the value from the course "Advanced Settings" configuration is used. If you have modified this for
     a specific XBlock but want to switch back to using the default value, select the "Default" option.
 
-[capa-show-answer]: https://edx.readthedocs.io/projects/open-edx-building-and-running-a-course/en/latest/course_components/create_problem.html#show-answer
+[capa-show-answer]: https://docs.openedx.org/en/latest/educators/references/course_development/problem_settings.html#show-answer
 
 ![Drop zone edit](doc/img/edit-view-zones.png)
 
@@ -504,7 +504,7 @@ According to [edX docs on XBlock i18n][edx-docs-i18n], LMS runtime is capable of
 To comply with l10n requirements, XBlock is supposed to provide translations in
 `xblock_package_root/translations/locale_code/LC_MESSAGES/text.po` folder in GNU Gettext Portable Object file format.
 
-[edx-docs-i18n]: http://edx.readthedocs.io/projects/xblock-tutorial/en/latest/edx_platform/edx_lms.html#internationalization-support
+[edx-docs-i18n]: https://docs.openedx.org/projects/xblock/en/latest/xblock-tutorial/edx_platform/edx_lms.html#internationalization-support
 
 Drag and Drop v2 XBlock aims to comply with i18n requirements for Open edX platform, including a stricter set of
 requirements for `edx.org` itself, thus providing the required files. So far only two translations are available:
