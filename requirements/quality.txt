@@ -16,7 +16,7 @@ asgiref==3.8.1
     # via
     #   -r requirements/test.txt
     #   django
-astroid==3.3.8
+astroid==3.3.9
     # via
     #   pylint
     #   pylint-celery
@@ -26,11 +26,11 @@ binaryornot==0.4.4
     #   cookiecutter
 bleach[css]==6.2.0
     # via -r requirements/test.txt
-boto3==1.37.4
+boto3==1.37.9
     # via
     #   -r requirements/test.txt
     #   fs-s3fs
-botocore==1.37.4
+botocore==1.37.9
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -70,7 +70,7 @@ ddt==1.7.2
     # via -r requirements/test.txt
 dill==0.3.9
     # via pylint
-django==4.2.19
+django==4.2.20
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/test.txt
@@ -110,7 +110,7 @@ iniconfig==2.0.0
     #   pytest
 isort==6.0.1
     # via pylint
-jinja2==3.1.5
+jinja2==3.1.6
     # via
     #   -r requirements/test.txt
     #   code-annotations
@@ -155,7 +155,7 @@ mdurl==0.1.2
     # via
     #   -r requirements/test.txt
     #   markdown-it-py
-mock==5.1.0
+mock==5.2.0
     # via -r requirements/test.txt
 openedx-django-pyfs==3.7.0
     # via
@@ -187,7 +187,7 @@ pygments==2.19.1
     # via
     #   -r requirements/test.txt
     #   rich
-pylint==3.3.4
+pylint==3.3.5
     # via
     #   edx-lint
     #   pylint-celery
@@ -245,7 +245,7 @@ rich==13.9.4
     # via
     #   -r requirements/test.txt
     #   cookiecutter
-s3transfer==0.11.3
+s3transfer==0.11.4
     # via
     #   -r requirements/test.txt
     #   boto3
