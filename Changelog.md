@@ -4,6 +4,11 @@ Drag and Drop XBlock changelog
 Unreleased
 ---------------------------
 
+Version 5.0.2 (2025-04-07)
+---------------------------
+
+* Add Django 5.2 support.
+
 Version 5.0.1 (2025-02-19)
 ---------------------------
 

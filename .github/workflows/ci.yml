@@ -20,7 +20,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         python-version: [3.11, 3.12]
-        toxenv: [django42, quality, translations]
+        toxenv: [django42, django52, quality, translations]
 
     steps:
     - name: checkout repo

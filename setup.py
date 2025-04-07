@@ -153,6 +153,7 @@ setup(
         'Programming Language :: Python :: 3.12',
         'Framework :: Django',
         'Framework :: Django :: 4.2',
+        'Framework :: Django :: 5.2',
     ],
     url='https://github.com/openedx/xblock-drag-and-drop-v2',
     install_requires=load_requirements('requirements/base.in'),
