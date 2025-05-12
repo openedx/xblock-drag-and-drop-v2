@@ -16,7 +16,7 @@ asgiref==3.8.1
     # via
     #   -r requirements/quality.txt
     #   django
-astroid==3.3.9
+astroid==3.3.10
     # via
     #   -r requirements/quality.txt
     #   pylint
@@ -27,11 +27,11 @@ binaryornot==0.4.4
     #   cookiecutter
 bleach[css]==6.2.0
     # via -r requirements/quality.txt
-boto3==1.38.8
+boto3==1.38.13
     # via
     #   -r requirements/quality.txt
     #   fs-s3fs
-botocore==1.38.8
+botocore==1.38.13
     # via
     #   -r requirements/quality.txt
     #   boto3
@@ -58,7 +58,7 @@ charset-normalizer==3.4.2
     # via
     #   -r requirements/quality.txt
     #   requests
-click==8.1.8
+click==8.2.0
     # via
     #   -r requirements/pip-tools.txt
     #   -r requirements/quality.txt
@@ -97,7 +97,7 @@ distlib==0.3.9
     # via
     #   -r requirements/ci.txt
     #   virtualenv
-django==4.2.20
+django==4.2.21
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/quality.txt
@@ -193,7 +193,7 @@ mdurl==0.1.2
     #   markdown-it-py
 mock==5.2.0
     # via -r requirements/quality.txt
-openedx-django-pyfs==3.7.0
+openedx-django-pyfs==3.8.0
     # via
     #   -r requirements/quality.txt
     #   xblock
@@ -216,7 +216,7 @@ pbr==6.1.1
     #   stevedore
 pip-tools==7.4.1
     # via -r requirements/pip-tools.txt
-platformdirs==4.3.7
+platformdirs==4.3.8
     # via
     #   -r requirements/ci.txt
     #   -r requirements/quality.txt
@@ -360,11 +360,11 @@ urllib3==2.2.3
     #   -r requirements/quality.txt
     #   botocore
     #   requests
-virtualenv==20.30.0
+virtualenv==20.31.2
     # via
     #   -r requirements/ci.txt
     #   tox
-web-fragments==3.0.0
+web-fragments==3.1.0
     # via
     #   -r requirements/quality.txt
     #   xblock
