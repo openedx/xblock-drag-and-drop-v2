@@ -26,11 +26,11 @@ binaryornot==0.4.4
     #   cookiecutter
 bleach[css]==6.2.0
     # via -r requirements/test.txt
-boto3==1.38.27
+boto3==1.38.32
     # via
     #   -r requirements/test.txt
     #   fs-s3fs
-botocore==1.38.27
+botocore==1.38.32
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -70,7 +70,7 @@ ddt==1.7.2
     # via -r requirements/test.txt
 dill==0.4.0
     # via pylint
-django==4.2.21
+django==4.2.22
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/test.txt
@@ -186,6 +186,7 @@ pycodestyle==2.13.0
 pygments==2.19.1
     # via
     #   -r requirements/test.txt
+    #   pytest
     #   rich
 pylint==3.3.7
     # via
@@ -205,7 +206,7 @@ pypng==0.20220715.0
     # via
     #   -r requirements/test.txt
     #   xblock-sdk
-pytest==8.3.5
+pytest==8.4.0
     # via
     #   -r requirements/test.txt
     #   pytest-cov
@@ -275,7 +276,7 @@ tinycss2==1.4.0
     # via
     #   -r requirements/test.txt
     #   bleach
-tomlkit==0.13.2
+tomlkit==0.13.3
     # via pylint
 types-python-dateutil==2.9.0.20250516
     # via
