@@ -4,6 +4,11 @@ Drag and Drop XBlock changelog
 Unreleased
 ---------------------------
 
+Version 5.0.3 (2025-06-26)
+---------------------------
+
+* Load JS synchronously in the fragment to prevent race conditions.
+
 Version 5.0.2 (2025-04-07)
 ---------------------------
 
