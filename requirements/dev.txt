@@ -27,11 +27,11 @@ binaryornot==0.4.4
     #   cookiecutter
 bleach[css]==6.2.0
     # via -r requirements/quality.txt
-boto3==1.40.6
+boto3==1.40.11
     # via
     #   -r requirements/quality.txt
     #   fs-s3fs
-botocore==1.40.6
+botocore==1.40.11
     # via
     #   -r requirements/quality.txt
     #   boto3
@@ -83,7 +83,7 @@ cookiecutter==2.6.0
     # via
     #   -r requirements/quality.txt
     #   xblock-sdk
-coverage[toml]==7.10.3
+coverage[toml]==7.10.4
     # via
     #   -r requirements/quality.txt
     #   pytest-cov
@@ -116,7 +116,7 @@ edx-i18n-tools==1.9.0
     # via -r requirements/quality.txt
 edx-lint==5.6.0
     # via -r requirements/quality.txt
-filelock==3.18.0
+filelock==3.19.1
     # via
     #   -r requirements/ci.txt
     #   tox
@@ -173,7 +173,7 @@ mako==1.3.10
     # via
     #   -r requirements/quality.txt
     #   xblock
-markdown-it-py==3.0.0
+markdown-it-py==4.0.0
     # via
     #   -r requirements/quality.txt
     #   rich
@@ -210,7 +210,7 @@ path==16.16.0
     # via
     #   -r requirements/quality.txt
     #   edx-i18n-tools
-pbr==6.1.1
+pbr==7.0.0
     # via
     #   -r requirements/quality.txt
     #   stevedore
@@ -361,7 +361,7 @@ urllib3==2.5.0
     #   -r requirements/quality.txt
     #   botocore
     #   requests
-virtualenv==20.33.1
+virtualenv==20.34.0
     # via
     #   -r requirements/ci.txt
     #   tox
