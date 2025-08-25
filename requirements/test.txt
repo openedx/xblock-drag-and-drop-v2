@@ -18,11 +18,11 @@ binaryornot==0.4.4
     # via cookiecutter
 bleach[css]==6.2.0
     # via -r requirements/base.txt
-boto3==1.40.11
+boto3==1.40.16
     # via
     #   -r requirements/base.txt
     #   fs-s3fs
-botocore==1.40.11
+botocore==1.40.16
     # via
     #   -r requirements/base.txt
     #   boto3
@@ -37,7 +37,7 @@ click==8.2.1
     # via cookiecutter
 cookiecutter==2.6.0
     # via xblock-sdk
-coverage[toml]==7.10.4
+coverage[toml]==7.10.5
     # via pytest-cov
 ddt==1.7.2
     # via -r requirements/test.in
@@ -83,7 +83,7 @@ lazy==1.6
     # via
     #   -r requirements/base.txt
     #   xblock
-lxml[html-clean]==6.0.0
+lxml[html-clean]==6.0.1
     # via
     #   -r requirements/base.txt
     #   edx-i18n-tools
@@ -155,7 +155,7 @@ pyyaml==6.0.2
     #   cookiecutter
     #   edx-i18n-tools
     #   xblock
-requests==2.32.4
+requests==2.32.5
     # via
     #   cookiecutter
     #   xblock-sdk
@@ -186,7 +186,7 @@ tinycss2==1.4.0
     # via
     #   -r requirements/base.txt
     #   bleach
-types-python-dateutil==2.9.0.20250809
+types-python-dateutil==2.9.0.20250822
     # via arrow
 urllib3==2.5.0
     # via
