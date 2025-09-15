@@ -27,11 +27,11 @@ binaryornot==0.4.4
     #   cookiecutter
 bleach[css]==6.2.0
     # via -r requirements/quality.txt
-boto3==1.40.25
+boto3==1.40.30
     # via
     #   -r requirements/quality.txt
     #   fs-s3fs
-botocore==1.40.25
+botocore==1.40.30
     # via
     #   -r requirements/quality.txt
     #   boto3
@@ -275,7 +275,7 @@ pytest==8.4.2
     #   -r requirements/quality.txt
     #   pytest-cov
     #   pytest-django
-pytest-cov==6.3.0
+pytest-cov==7.0.0
     # via -r requirements/quality.txt
 pytest-django==4.11.1
     # via -r requirements/quality.txt
@@ -310,7 +310,7 @@ rich==14.1.0
     # via
     #   -r requirements/quality.txt
     #   cookiecutter
-s3transfer==0.13.1
+s3transfer==0.14.0
     # via
     #   -r requirements/quality.txt
     #   boto3
