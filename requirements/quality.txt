@@ -26,11 +26,11 @@ binaryornot==0.4.4
     #   cookiecutter
 bleach[css]==6.2.0
     # via -r requirements/test.txt
-boto3==1.40.30
+boto3==1.40.35
     # via
     #   -r requirements/test.txt
     #   fs-s3fs
-botocore==1.40.30
+botocore==1.40.35
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -47,7 +47,7 @@ charset-normalizer==3.4.3
     # via
     #   -r requirements/test.txt
     #   requests
-click==8.2.1
+click==8.3.0
     # via
     #   -r requirements/test.txt
     #   click-log
@@ -62,7 +62,7 @@ cookiecutter==2.6.0
     # via
     #   -r requirements/test.txt
     #   xblock-sdk
-coverage[toml]==7.10.6
+coverage[toml]==7.10.7
     # via
     #   -r requirements/test.txt
     #   pytest-cov
