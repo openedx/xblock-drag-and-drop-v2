@@ -27,11 +27,11 @@ binaryornot==0.4.4
     #   cookiecutter
 bleach[css]==6.3.0
     # via -r requirements/quality.txt
-boto3==1.41.2
+boto3==1.41.5
     # via
     #   -r requirements/quality.txt
     #   fs-s3fs
-botocore==1.41.2
+botocore==1.41.5
     # via
     #   -r requirements/quality.txt
     #   boto3
@@ -326,7 +326,7 @@ six==1.17.0
     #   fs
     #   fs-s3fs
     #   python-dateutil
-sqlparse==0.5.3
+sqlparse==0.5.4
     # via
     #   -r requirements/quality.txt
     #   django
