@@ -21,17 +21,17 @@ astroid==4.0.4
     #   -r requirements/quality.txt
     #   pylint
     #   pylint-celery
-binaryornot==0.4.4
+binaryornot==0.6.0
     # via
     #   -r requirements/quality.txt
     #   cookiecutter
 bleach[css]==6.3.0
     # via -r requirements/quality.txt
-boto3==1.42.59
+boto3==1.42.63
     # via
     #   -r requirements/quality.txt
     #   fs-s3fs
-botocore==1.42.59
+botocore==1.42.63
     # via
     #   -r requirements/quality.txt
     #   boto3
@@ -40,7 +40,7 @@ build==1.4.0
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-cachetools==7.0.2
+cachetools==7.0.4
     # via
     #   -r requirements/ci.txt
     #   tox
@@ -48,11 +48,7 @@ certifi==2026.2.25
     # via
     #   -r requirements/quality.txt
     #   requests
-chardet==6.0.0.post1
-    # via
-    #   -r requirements/quality.txt
-    #   binaryornot
-charset-normalizer==3.4.4
+charset-normalizer==3.4.5
     # via
     #   -r requirements/quality.txt
     #   requests
@@ -77,7 +73,7 @@ colorama==0.4.6
     # via
     #   -r requirements/ci.txt
     #   tox
-cookiecutter==2.7.0
+cookiecutter==2.7.1
     # via
     #   -r requirements/quality.txt
     #   xblock-sdk
@@ -95,7 +91,7 @@ distlib==0.4.0
     # via
     #   -r requirements/ci.txt
     #   virtualenv
-django==5.2.11
+django==5.2.12
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/quality.txt
@@ -212,7 +208,7 @@ path==16.16.0
     #   edx-i18n-tools
 pip-tools==7.5.3
     # via -r requirements/pip-tools.txt
-platformdirs==4.9.2
+platformdirs==4.9.4
     # via
     #   -r requirements/ci.txt
     #   -r requirements/quality.txt
@@ -286,7 +282,7 @@ python-dateutil==2.9.0.post0
     #   arrow
     #   botocore
     #   xblock
-python-discovery==1.1.0
+python-discovery==1.1.1
     # via
     #   -r requirements/ci.txt
     #   virtualenv
@@ -347,11 +343,15 @@ tinycss2==1.4.0
     # via
     #   -r requirements/quality.txt
     #   bleach
+tomli-w==1.2.0
+    # via
+    #   -r requirements/ci.txt
+    #   tox
 tomlkit==0.14.0
     # via
     #   -r requirements/quality.txt
     #   pylint
-tox==4.47.0
+tox==4.49.0
     # via -r requirements/ci.txt
 tzdata==2025.3
     # via
