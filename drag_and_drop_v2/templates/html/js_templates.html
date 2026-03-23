@@ -182,7 +182,16 @@
 </script>
 
 <script class="autozone-tpl" type="text/html">
-    <svg xmlns="http://www.w3.org/2000/svg" width="{{width}}" height="{{height}}">
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="{{width}}"
+        height="{{height}}"
+        data-producer="dndv2"
+        data-cols="{{cols}}"
+        data-rows="{{rows}}"
+        data-zone_width="{{zone_width}}"
+        data-zone_height="{{zone_height}}"
+    >
         <rect x="0" y="0" width="100%" height="100%" fill="#fff" />
         {{#each zones}}
             <rect x="{{x}}"

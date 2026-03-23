@@ -162,6 +162,22 @@ function DragAndDropEditBlock(runtime, element, params) {
 
                 parseDataUriParams: function(data_uri) {
                     var params = {};
+                    // New format: params stored as data-* attributes on the SVG element.
+                    var svg_content = decodeURIComponent(data_uri.replace(/^data:image\/svg\+xml[^,]*,/, ''));
+                    var attr_names = ['producer', 'cols', 'rows', 'zone_width', 'zone_height'];
+                    attr_names.forEach(function(name) {
+                        var attr_match = svg_content.match(new RegExp('data-' + name + '="([^"]*)"'));
+                        if (attr_match) {
+                            var val = attr_match[1];
+                            // Try to parse as number, fall back to string.
+                            var num = Number(val);
+                            params[name] = isNaN(num) ? val : num;
+                        }
+                    });
+                    if (Object.keys(params).length > 0) {
+                        return params;
+                    }
+                    // Legacy format: params encoded in the MIME type section of the data URI.
                     var match = data_uri.match(/^data:image\/svg\+xml;([^,]+),/);
                     if (match) {
                         match[1].split(';').forEach(function(str) {
@@ -550,6 +566,10 @@ function DragAndDropEditBlock(runtime, element, params) {
                             }
 
                             return {
+                                cols: cols,
+                                rows: rows,
+                                zone_width: zone_width,
+                                zone_height: zone_height,
                                 width: width,
                                 height: height,
                                 zones: zones
@@ -558,14 +578,7 @@ function DragAndDropEditBlock(runtime, element, params) {
                         generateBackgroundDataUri: function(autozone_data, params) {
                             var autozone_data = _fn.build.form.zone.calculateAutozoneData(params);
                             var svg = _fn.tpl.autozoneSvg(autozone_data).trim();
-                            var data_uri_params = _fn.build.encodeDataUriParams({
-                                producer: 'dndv2',
-                                cols: params.cols,
-                                rows: params.rows,
-                                zone_width: params.zone_width,
-                                zone_height: params.zone_height
-                            });
-                            return 'data:image/svg+xml;' + data_uri_params + ',' + encodeURIComponent(svg);
+                            return 'data:image/svg+xml,' + encodeURIComponent(svg);
                         },
                         generateZones: function(zones) {
                             // First remove all existing zones.
