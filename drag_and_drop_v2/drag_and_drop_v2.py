@@ -10,10 +10,9 @@ from collections import Counter
 import copy
 import json
 import logging
+import re
+import urllib.parse
 
-import six.moves.urllib.error
-import six.moves.urllib.parse
-import six.moves.urllib.request
 import six
 import webob
 
@@ -436,7 +435,6 @@ class DragAndDropBlock(
             'fields': self.fields,
             'showanswer_set': self._field_data.has(self, 'showanswer'),  # If false, we're using an inherited value.
             'self': self,
-            'data': six.moves.urllib.parse.quote(json.dumps(self.data)),
         }
 
         fragment = Fragment()
@@ -673,11 +671,56 @@ class DragAndDropBlock(
         else:
             return DummyTranslationService()
 
+    @staticmethod
+    def _convert_data_uri(data_uri):
+        """
+        Convert old-format auto-generated SVG data URIs to the new format.
+
+        Old format stored metadata as MIME type parameters:
+            data:image/svg+xml;producer="dndv2";cols=3;rows=1;...,<svg>...</svg>
+        Chrome 146+ rejects non-standard MIME type parameters, so the new format stores metadata as data-* attributes
+        on the SVG element:
+            data:image/svg+xml,<svg data-producer="dndv2" data-cols="3" ...>...</svg>
+        """
+        match = re.match(r"^data:image/svg\+xml;([^,]+),(.*)", data_uri, re.DOTALL)
+        if not match:
+            return data_uri
+
+        params_str = match.group(1)
+        svg_encoded = match.group(2)
+
+        # Parse the MIME type params (e.g. producer="dndv2", cols=3, ...).
+        params = {}
+        for part in params_str.split(";"):
+            kv = part.split("=", 1)
+            if len(kv) == 2:
+                key = urllib.parse.unquote(kv[0])
+                value = urllib.parse.unquote(kv[1])
+                # Strip JSON quotes from string values like "dndv2".
+                try:
+                    value = json.loads(value)
+                except (json.JSONDecodeError, ValueError):
+                    pass
+                params[key] = value
+
+        if params.get("producer") != "dndv2":
+            return data_uri
+
+        # Decode the SVG, inject data-* attributes, re-encode.
+        svg = urllib.parse.unquote(svg_encoded)
+        attrs = "".join(f' data-{k}="{v}"' for k, v in params.items())
+        # Insert data-* attributes into the opening <svg> tag.
+        svg = re.sub(r"(<svg\b)", r"\1" + attrs, svg, count=1)
+        return "data:image/svg+xml," + urllib.parse.quote(svg, safe="")
+
     @property
     def target_img_expanded_url(self):
         """ Get the expanded URL to the target image (the image items are dragged onto). """
         if self.data.get("targetImg"):
-            return self._expand_static_url(self.data["targetImg"])
+            url = self._expand_static_url(self.data["targetImg"])
+            if url.startswith("data:image/svg+xml;"):
+                url = self._convert_data_uri(url)
+            return url
         else:
             return self.default_background_image_url
 

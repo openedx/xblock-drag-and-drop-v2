@@ -6,6 +6,7 @@ import unittest
 import ddt
 import mock
 from six.moves import range
+from urllib.parse import quote, unquote
 
 from drag_and_drop_v2.default_data import (BOTTOM_ZONE_ID, DEFAULT_DATA,
                                            FINISH_FEEDBACK, MIDDLE_ZONE_ID,
@@ -393,3 +394,50 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             self.block.student_view_data()["target_img_expanded_url"],
             '/course/test-course/assets/foo.png',
         )
+
+    def test_convert_data_uri_old_format(self):
+        """Old-format data URIs (metadata in MIME params) should be converted to new format (SVG data-* attrs)."""
+        old_svg = '<svg xmlns="http://www.w3.org/2000/svg" width="680" height="140"><rect/></svg>'
+        old_uri = "data:image/svg+xml;producer=%22dndv2%22;cols=3;rows=1;zone_width=200;zone_height=100," + quote(
+            old_svg, safe=""
+        )
+
+        self.block.data["targetImg"] = old_uri
+        result = self.block.target_img_expanded_url
+
+        # Should start with clean MIME type (no params before comma).
+        assert result.startswith("data:image/svg+xml,")
+
+        # Decode and verify the SVG contains data-* attributes.
+        svg_part = unquote(result[len("data:image/svg+xml,"):])
+        assert 'data-producer="dndv2"' in svg_part
+        assert 'data-cols="3"' in svg_part
+        assert 'data-rows="1"' in svg_part
+        assert 'data-zone_width="200"' in svg_part
+        assert 'data-zone_height="100"' in svg_part
+        # Original SVG content should be preserved.
+        assert "<rect/>" in svg_part
+
+    def test_convert_data_uri_new_format_unchanged(self):
+        """New-format data URIs (metadata as SVG data-* attrs) should not be modified."""
+        new_svg = (
+            '<svg xmlns="http://www.w3.org/2000/svg" width="680" height="140"'
+            ' data-producer="dndv2" data-cols="3" data-rows="1"'
+            ' data-zone_width="200" data-zone_height="100"><rect/></svg>'
+        )
+        new_uri = "data:image/svg+xml," + quote(new_svg, safe="")
+
+        self.block.data["targetImg"] = new_uri
+        assert self.block.target_img_expanded_url == new_uri
+
+    def test_convert_data_uri_preserve_user_provided(self):
+        """Data URIs provided by users should not be converted, regardless of their structure."""
+        uri = "data:image/svg+xml;charset=utf-8,%3Csvg%3E%3C%2Fsvg%3E"
+        self.block.data["targetImg"] = uri
+        result = self.block.target_img_expanded_url
+        assert result == uri
+
+    def test_convert_data_uri_preserve_urls(self):
+        """Regular image URLs should not be converted."""
+        self.block.data["targetImg"] = "/static/foo.png"
+        assert self.block.target_img_expanded_url == "/course/test-course/assets/foo.png"
