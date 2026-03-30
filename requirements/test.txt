@@ -18,11 +18,11 @@ binaryornot==0.6.0
     # via cookiecutter
 bleach[css]==6.3.0
     # via -r requirements/base.txt
-boto3==1.42.73
+boto3==1.42.78
     # via
     #   -r requirements/base.txt
     #   fs-s3fs
-botocore==1.42.73
+botocore==1.42.78
     # via
     #   -r requirements/base.txt
     #   boto3
@@ -121,7 +121,7 @@ pluggy==1.6.0
     #   pytest-cov
 polib==1.2.0
     # via edx-i18n-tools
-pygments==2.19.2
+pygments==2.20.0
     # via
     #   pytest
     #   rich
@@ -153,7 +153,7 @@ pyyaml==6.0.3
     #   cookiecutter
     #   edx-i18n-tools
     #   xblock
-requests==2.32.5
+requests==2.33.0
     # via
     #   cookiecutter
     #   xblock-sdk
@@ -206,11 +206,11 @@ webob==1.8.9
     #   -r requirements/base.txt
     #   xblock
     #   xblock-sdk
-xblock[django]==5.3.0
+xblock[django]==6.0.0
     # via
     #   -r requirements/base.txt
     #   xblock-sdk
-xblock-sdk==0.13.0
+xblock-sdk==0.14.0
     # via -r requirements/test.in
 
 # The following packages are considered to be unsafe in a requirements file:
