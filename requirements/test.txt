@@ -18,20 +18,20 @@ binaryornot==0.6.0
     # via cookiecutter
 bleach[css]==6.3.0
     # via -r requirements/base.txt
-boto3==1.42.78
+boto3==1.42.83
     # via
     #   -r requirements/base.txt
     #   fs-s3fs
-botocore==1.42.78
+botocore==1.42.83
     # via
     #   -r requirements/base.txt
     #   boto3
     #   s3transfer
 certifi==2026.2.25
     # via requests
-charset-normalizer==3.4.6
+charset-normalizer==3.4.7
     # via requests
-click==8.3.1
+click==8.3.2
     # via cookiecutter
 cookiecutter==2.7.1
     # via xblock-sdk
@@ -153,7 +153,7 @@ pyyaml==6.0.3
     #   cookiecutter
     #   edx-i18n-tools
     #   xblock
-requests==2.33.0
+requests==2.33.1
     # via
     #   cookiecutter
     #   xblock-sdk
@@ -184,7 +184,7 @@ tinycss2==1.4.0
     # via
     #   -r requirements/base.txt
     #   bleach
-tzdata==2025.3
+tzdata==2026.1
     # via arrow
 urllib3==2.6.3
     # via
