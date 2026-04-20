@@ -18,11 +18,11 @@ binaryornot==0.6.0
     # via cookiecutter
 bleach[css]==6.3.0
     # via -r requirements/base.txt
-boto3==1.42.83
+boto3==1.42.91
     # via
     #   -r requirements/base.txt
     #   fs-s3fs
-botocore==1.42.83
+botocore==1.42.91
     # via
     #   -r requirements/base.txt
     #   boto3
@@ -81,7 +81,7 @@ lazy==1.6
     # via
     #   -r requirements/base.txt
     #   xblock
-lxml[html-clean]==6.0.2
+lxml[html-clean]==6.1.0
     # via
     #   -r requirements/base.txt
     #   edx-i18n-tools
@@ -90,7 +90,7 @@ lxml[html-clean]==6.0.2
     #   xblock-sdk
 lxml-html-clean==0.4.4
     # via lxml
-mako==1.3.10
+mako==1.3.11
     # via
     #   -r requirements/base.txt
     #   xblock
@@ -111,7 +111,7 @@ openedx-django-pyfs==4.0.0
     #   -r requirements/base.txt
     #   -r requirements/test.in
     #   xblock
-packaging==26.0
+packaging==26.1
     # via pytest
 path==16.16.0
     # via edx-i18n-tools
@@ -127,7 +127,7 @@ pygments==2.20.0
     #   rich
 pypng==0.20220715.0
     # via xblock-sdk
-pytest==9.0.2
+pytest==9.0.3
     # via
     #   pytest-cov
     #   pytest-django
@@ -157,13 +157,13 @@ requests==2.33.1
     # via
     #   cookiecutter
     #   xblock-sdk
-rich==14.3.3
+rich==15.0.0
     # via cookiecutter
 s3transfer==0.16.0
     # via
     #   -r requirements/base.txt
     #   boto3
-simplejson==3.20.2
+simplejson==4.0.1
     # via
     #   -r requirements/base.txt
     #   xblock
