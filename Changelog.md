@@ -4,6 +4,11 @@ Drag and Drop XBlock changelog
 Unreleased
 ---------------------------
 
+Version 5.0.6 (2026-04-29)
+--------------------------
+
+* Wait for `virtualDom` before initializing block.
+
 Version 5.0.5 (2026-03-23)
 --------------------------
 
