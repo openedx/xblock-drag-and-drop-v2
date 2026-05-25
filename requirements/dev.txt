@@ -27,11 +27,11 @@ binaryornot==0.6.0
     #   cookiecutter
 bleach[css]==6.3.0
     # via -r requirements/quality.txt
-boto3==1.43.9
+boto3==1.43.14
     # via
     #   -r requirements/quality.txt
     #   fs-s3fs
-botocore==1.43.9
+botocore==1.43.14
     # via
     #   -r requirements/quality.txt
     #   boto3
@@ -40,11 +40,11 @@ build==1.5.0
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-cachetools==7.1.2
+cachetools==7.1.4
     # via
     #   -r requirements/ci.txt
     #   tox
-certifi==2026.4.22
+certifi==2026.5.20
     # via
     #   -r requirements/quality.txt
     #   requests
@@ -52,7 +52,7 @@ charset-normalizer==3.4.7
     # via
     #   -r requirements/quality.txt
     #   requests
-click==8.4.0
+click==8.4.1
     # via
     #   -r requirements/pip-tools.txt
     #   -r requirements/quality.txt
@@ -127,7 +127,7 @@ fs-s3fs==1.1.1
     #   -r requirements/quality.txt
     #   openedx-django-pyfs
     #   xblock-sdk
-idna==3.15
+idna==3.16
     # via
     #   -r requirements/quality.txt
     #   requests
@@ -153,14 +153,14 @@ lazy==1.6
     # via
     #   -r requirements/quality.txt
     #   xblock
-lxml[html-clean]==6.1.0
+lxml[html-clean]==6.1.1
     # via
     #   -r requirements/quality.txt
     #   edx-i18n-tools
     #   lxml-html-clean
     #   xblock
     #   xblock-sdk
-lxml-html-clean==0.4.4
+lxml-html-clean==0.4.5
     # via
     #   -r requirements/quality.txt
     #   lxml
@@ -332,7 +332,7 @@ sqlparse==0.5.5
     # via
     #   -r requirements/quality.txt
     #   django
-stevedore==5.7.0
+stevedore==5.8.0
     # via
     #   -r requirements/quality.txt
     #   code-annotations
