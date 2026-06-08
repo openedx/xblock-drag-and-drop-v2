@@ -8,15 +8,15 @@ appdirs==1.4.4
     # via fs
 asgiref==3.11.1
     # via django
-bleach[css]==6.3.0
+bleach[css]==6.4.0
     # via -r requirements/base.in
-boto3==1.43.18
+boto3==1.43.24
     # via fs-s3fs
-botocore==1.43.18
+botocore==1.43.24
     # via
     #   boto3
     #   s3transfer
-django==5.2.14
+django==5.2.15
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   django-appconf
@@ -68,7 +68,7 @@ six==1.17.0
     #   python-dateutil
 sqlparse==0.5.5
     # via django
-tinycss2==1.4.0
+tinycss2==1.5.1
     # via bleach
 urllib3==2.7.0
     # via botocore
@@ -78,7 +78,7 @@ webencodings==0.5.1
     # via
     #   bleach
     #   tinycss2
-webob==1.8.9
+webob==1.8.10
     # via xblock
 xblock[django]==6.1.0
     # via -r requirements/base.in
