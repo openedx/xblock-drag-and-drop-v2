@@ -25,13 +25,13 @@ binaryornot==0.6.0
     # via
     #   -r requirements/quality.txt
     #   cookiecutter
-bleach[css]==6.3.0
+bleach[css]==6.4.0
     # via -r requirements/quality.txt
-boto3==1.43.18
+boto3==1.43.24
     # via
     #   -r requirements/quality.txt
     #   fs-s3fs
-botocore==1.43.18
+botocore==1.43.24
     # via
     #   -r requirements/quality.txt
     #   boto3
@@ -87,11 +87,11 @@ dill==0.4.1
     # via
     #   -r requirements/quality.txt
     #   pylint
-distlib==0.4.0
+distlib==0.4.1
     # via
     #   -r requirements/ci.txt
     #   virtualenv
-django==5.2.14
+django==5.2.15
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/quality.txt
@@ -110,7 +110,7 @@ edx-i18n-tools==2.0.0
     # via -r requirements/quality.txt
 edx-lint==6.1.0
     # via -r requirements/quality.txt
-filelock==3.29.0
+filelock==3.29.1
     # via
     #   -r requirements/ci.txt
     #   python-discovery
@@ -127,7 +127,7 @@ fs-s3fs==1.1.1
     #   -r requirements/quality.txt
     #   openedx-django-pyfs
     #   xblock-sdk
-idna==3.17
+idna==3.18
     # via
     #   -r requirements/quality.txt
     #   requests
@@ -340,7 +340,7 @@ text-unidecode==1.3
     # via
     #   -r requirements/quality.txt
     #   python-slugify
-tinycss2==1.4.0
+tinycss2==1.5.1
     # via
     #   -r requirements/quality.txt
     #   bleach
@@ -353,7 +353,7 @@ tomlkit==0.15.0
     #   -r requirements/quality.txt
     #   edx-lint
     #   pylint
-tox==4.55.0
+tox==4.55.1
     # via -r requirements/ci.txt
 tzdata==2026.2
     # via
@@ -378,7 +378,7 @@ webencodings==0.5.1
     #   -r requirements/quality.txt
     #   bleach
     #   tinycss2
-webob==1.8.9
+webob==1.8.10
     # via
     #   -r requirements/quality.txt
     #   xblock
