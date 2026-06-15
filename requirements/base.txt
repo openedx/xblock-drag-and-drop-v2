@@ -10,9 +10,9 @@ asgiref==3.11.1
     # via django
 bleach[css]==6.4.0
     # via -r requirements/base.in
-boto3==1.43.24
+boto3==1.43.29
     # via fs-s3fs
-botocore==1.43.24
+botocore==1.43.29
     # via
     #   boto3
     #   s3transfer
@@ -26,6 +26,10 @@ django-appconf==1.2.0
     # via django-statici18n
 django-statici18n==2.7.1
     # via -r requirements/base.in
+dnspython==2.8.0
+    # via pymongo
+edx-opaque-keys==4.0.0
+    # via xblock
 fs==2.4.16
     # via
     #   fs-s3fs
@@ -49,6 +53,8 @@ markupsafe==3.0.3
     #   xblock
 openedx-django-pyfs==4.0.0
     # via xblock
+pymongo==4.17.0
+    # via edx-opaque-keys
 python-dateutil==2.9.0.post0
     # via
     #   botocore
@@ -68,19 +74,21 @@ six==1.17.0
     #   python-dateutil
 sqlparse==0.5.5
     # via django
+stevedore==5.8.0
+    # via edx-opaque-keys
 tinycss2==1.5.1
     # via bleach
+typing-extensions==4.15.0
+    # via edx-opaque-keys
 urllib3==2.7.0
     # via botocore
-web-fragments==4.0.0
-    # via xblock
 webencodings==0.5.1
     # via
     #   bleach
     #   tinycss2
 webob==1.8.10
     # via xblock
-xblock[django]==6.1.0
+xblock[django]==6.3.0
     # via -r requirements/base.in
 
 # The following packages are considered to be unsafe in a requirements file:

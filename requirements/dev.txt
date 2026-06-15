@@ -27,11 +27,11 @@ binaryornot==0.6.0
     #   cookiecutter
 bleach[css]==6.4.0
     # via -r requirements/quality.txt
-boto3==1.43.24
+boto3==1.43.29
     # via
     #   -r requirements/quality.txt
     #   fs-s3fs
-botocore==1.43.24
+botocore==1.43.29
     # via
     #   -r requirements/quality.txt
     #   boto3
@@ -87,7 +87,7 @@ dill==0.4.1
     # via
     #   -r requirements/quality.txt
     #   pylint
-distlib==0.4.1
+distlib==0.4.3
     # via
     #   -r requirements/ci.txt
     #   virtualenv
@@ -106,11 +106,19 @@ django-appconf==1.2.0
     #   django-statici18n
 django-statici18n==2.7.1
     # via -r requirements/quality.txt
+dnspython==2.8.0
+    # via
+    #   -r requirements/quality.txt
+    #   pymongo
 edx-i18n-tools==2.0.0
     # via -r requirements/quality.txt
 edx-lint==6.1.0
     # via -r requirements/quality.txt
-filelock==3.29.1
+edx-opaque-keys==4.0.0
+    # via
+    #   -r requirements/quality.txt
+    #   xblock
+filelock==3.29.4
     # via
     #   -r requirements/ci.txt
     #   python-discovery
@@ -234,7 +242,7 @@ pygments==2.20.0
     #   -r requirements/quality.txt
     #   pytest
     #   rich
-pylint==4.0.5
+pylint==4.0.6
     # via
     #   -r requirements/quality.txt
     #   edx-lint
@@ -254,6 +262,10 @@ pylint-plugin-utils==0.9.0
     #   -r requirements/quality.txt
     #   pylint-celery
     #   pylint-django
+pymongo==4.17.0
+    # via
+    #   -r requirements/quality.txt
+    #   edx-opaque-keys
 pypng==0.20220715.0
     # via
     #   -r requirements/quality.txt
@@ -267,7 +279,7 @@ pyproject-hooks==1.2.0
     #   -r requirements/pip-tools.txt
     #   build
     #   pip-tools
-pytest==9.0.3
+pytest==9.1.0
     # via
     #   -r requirements/quality.txt
     #   pytest-cov
@@ -282,7 +294,7 @@ python-dateutil==2.9.0.post0
     #   arrow
     #   botocore
     #   xblock
-python-discovery==1.4.0
+python-discovery==1.4.2
     # via
     #   -r requirements/ci.txt
     #   tox
@@ -336,6 +348,7 @@ stevedore==5.8.0
     # via
     #   -r requirements/quality.txt
     #   code-annotations
+    #   edx-opaque-keys
 text-unidecode==1.3
     # via
     #   -r requirements/quality.txt
@@ -355,6 +368,10 @@ tomlkit==0.15.0
     #   pylint
 tox==4.55.1
     # via -r requirements/ci.txt
+typing-extensions==4.15.0
+    # via
+    #   -r requirements/quality.txt
+    #   edx-opaque-keys
 tzdata==2026.2
     # via
     #   -r requirements/quality.txt
@@ -364,14 +381,13 @@ urllib3==2.7.0
     #   -r requirements/quality.txt
     #   botocore
     #   requests
-virtualenv==21.4.2
+virtualenv==21.5.0
     # via
     #   -r requirements/ci.txt
     #   tox
 web-fragments==4.0.0
     # via
     #   -r requirements/quality.txt
-    #   xblock
     #   xblock-sdk
 webencodings==0.5.1
     # via
@@ -387,7 +403,7 @@ wheel==0.47.0
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-xblock[django]==6.1.0
+xblock[django]==6.3.0
     # via
     #   -r requirements/quality.txt
     #   xblock-sdk
