@@ -27,11 +27,11 @@ binaryornot==0.6.0
     #   cookiecutter
 bleach[css]==6.4.0
     # via -r requirements/quality.txt
-boto3==1.43.34
+boto3==1.43.36
     # via
     #   -r requirements/quality.txt
     #   fs-s3fs
-botocore==1.43.34
+botocore==1.43.36
     # via
     #   -r requirements/quality.txt
     #   boto3
@@ -52,7 +52,7 @@ charset-normalizer==3.4.7
     # via
     #   -r requirements/quality.txt
     #   requests
-click==8.4.1
+click==8.4.2
     # via
     #   -r requirements/pip-tools.txt
     #   -r requirements/quality.txt
@@ -77,7 +77,7 @@ cookiecutter==2.7.1
     # via
     #   -r requirements/quality.txt
     #   xblock-sdk
-coverage[toml]==7.14.2
+coverage[toml]==7.14.3
     # via
     #   -r requirements/quality.txt
     #   pytest-cov
@@ -366,7 +366,7 @@ tomlkit==0.15.0
     #   -r requirements/quality.txt
     #   edx-lint
     #   pylint
-tox==4.55.1
+tox==4.56.1
     # via -r requirements/ci.txt
 typing-extensions==4.15.0
     # via
