@@ -26,11 +26,11 @@ binaryornot==0.6.0
     #   cookiecutter
 bleach[css]==6.4.0
     # via -r requirements/test.txt
-boto3==1.43.36
+boto3==1.43.40
     # via
     #   -r requirements/test.txt
     #   fs-s3fs
-botocore==1.43.36
+botocore==1.43.40
     # via
     #   -r requirements/test.txt
     #   boto3
@@ -58,7 +58,7 @@ cookiecutter==2.7.1
     # via
     #   -r requirements/test.txt
     #   xblock-sdk
-coverage[toml]==7.14.3
+coverage[toml]==7.15.0
     # via
     #   -r requirements/test.txt
     #   pytest-cov
@@ -124,7 +124,7 @@ jmespath==1.1.0
     #   -r requirements/test.txt
     #   boto3
     #   botocore
-lazy==1.6
+lazy==2.0
     # via
     #   -r requirements/test.txt
     #   xblock
@@ -273,7 +273,7 @@ sqlparse==0.5.5
     # via
     #   -r requirements/test.txt
     #   django
-stevedore==5.8.0
+stevedore==5.9.0
     # via
     #   -r requirements/test.txt
     #   code-annotations
@@ -290,7 +290,7 @@ tomlkit==0.15.0
     # via
     #   edx-lint
     #   pylint
-typing-extensions==4.15.0
+typing-extensions==4.16.0
     # via
     #   -r requirements/test.txt
     #   edx-opaque-keys
