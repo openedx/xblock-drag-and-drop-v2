@@ -4,7 +4,7 @@
 
 .DEFAULT_GOAL := help
 
-WORKING_DIR := drag_and_drop_v2
+WORKING_DIR := src/drag_and_drop_v2
 JS_TARGET := $(WORKING_DIR)/public/js/translations
 EXTRACT_DIR := $(WORKING_DIR)/conf/locale/en/LC_MESSAGES
 EXTRACTED_DJANGO_PARTIAL := $(EXTRACT_DIR)/django-partial.po
