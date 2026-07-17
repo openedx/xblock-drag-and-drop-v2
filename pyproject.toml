@@ -1,6 +1,6 @@
 [build-system]
 requires = ["setuptools", "setuptools-scm>8.1"]
-build-backend = "setuptools.backends.legacy:build"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "xblock-drag-and-drop-v2"

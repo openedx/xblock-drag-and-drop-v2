@@ -1,11 +1,10 @@
 name: Python CI
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
     branches:
       - '**'
+  workflow_call:
   workflow_dispatch:
 
 concurrency:
@@ -15,12 +14,16 @@ concurrency:
 jobs:
   tests:
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python-version: [3.12]
+        python-version: ["3.12"]
         toxenv: [django42, django52, quality, translations]
+
+    name: ${{ matrix.toxenv }}
 
     steps:
     - name: checkout repo
@@ -28,10 +31,11 @@ jobs:
       with:
         submodules: recursive
 
-    - name: setup python
-      uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+    - name: setup uv
+      uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: "${{ matrix.python-version }}"
+        enable-cache: true
 
     - name: Install translations dependencies
       if: ${{ startsWith(matrix.toxenv, 'translations') }}
@@ -39,10 +43,8 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y gettext
 
-    - name: Install Dependencies
-      run: make requirements
+    - name: Install CI dependencies
+      run: uv sync --group ci
 
     - name: Run Tests
-      env:
-        TOXENV: ${{ matrix.toxenv }}
-      run: tox
+      run: uv run tox -e ${{ matrix.toxenv }}
