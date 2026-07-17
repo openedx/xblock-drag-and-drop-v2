@@ -4,7 +4,7 @@
 
 .DEFAULT_GOAL := help
 
-WORKING_DIR := drag_and_drop_v2
+WORKING_DIR := src/drag_and_drop_v2
 JS_TARGET := $(WORKING_DIR)/public/js/translations
 EXTRACT_DIR := $(WORKING_DIR)/conf/locale/en/LC_MESSAGES
 EXTRACTED_DJANGO_PARTIAL := $(EXTRACT_DIR)/django-partial.po
@@ -54,45 +54,24 @@ validate_translations: build_dummy_translations detect_changed_source_translatio
 
 check_translations_up_to_date: extract_translations compile_translations dummy_translations detect_changed_source_translations ## extract, compile, and check if translation files are up-to-date
 
-piptools: ## install pinned version of pip-compile and pip-sync
-	pip install -r requirements/pip.txt
-	pip install -r requirements/pip-tools.txt
-
-requirements: piptools  ## install test requirements locally
-	pip-sync requirements/ci.txt
-
-requirements_python: piptools  ## install all requirements locally
-	pip-sync requirements/dev.txt requirements/private.*
+requirements: ## install dev requirements locally
+	uv sync --group dev
 
 test.quality: selfcheck ## run quality checkers on the codebase
-	tox -e quality
+	uv run tox -e quality
 
 test.python: ## run python unit tests in the local virtualenv
 	pytest --cov drag_and_drop_v2 $(TEST)
 
 test.unit: ## run all unit tests
-	tox $(TEST)
+	uv run tox $(TEST)
 
 test: test.unit test.quality ## Run all tests
-	tox -e translations
+	uv run tox -e translations
 
-# Define PIP_COMPILE_OPTS=-v to get more information during make upgrade.
-PIP_COMPILE = pip-compile --upgrade $(PIP_COMPILE_OPTS)
-
-upgrade: export CUSTOM_COMPILE_COMMAND=make upgrade
-upgrade: ## update the requirements/*.txt files with the latest packages satisfying requirements/*.in
-	pip install -qr requirements/pip-tools.txt
-	# Make sure to compile files after any other files they include!
-	$(PIP_COMPILE) --allow-unsafe -o requirements/pip.txt requirements/pip.in
-	$(PIP_COMPILE) -o requirements/pip-tools.txt requirements/pip-tools.in
-	pip install -qr requirements/pip.txt
-	pip install -qr requirements/pip-tools.txt
-	$(PIP_COMPILE) -o requirements/base.txt requirements/base.in
-	$(PIP_COMPILE) -o requirements/test.txt requirements/test.in
-	$(PIP_COMPILE) -o requirements/quality.txt requirements/quality.in
-	$(PIP_COMPILE) -o requirements/ci.txt requirements/ci.in
-	$(PIP_COMPILE) -o requirements/dev.txt requirements/dev.in
-	sed -i '/^[dD]jango==/d' requirements/test.txt
+upgrade: ## update uv.lock with the latest packages
+	uv run --with edx-lint edx_lint write_uv_constraints pyproject.toml
+	uv lock --upgrade
 
 selfcheck: ## check that the Makefile is well-formed
 	@echo "The Makefile is well-formed."

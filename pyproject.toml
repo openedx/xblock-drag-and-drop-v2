@@ -1,0 +1,130 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm>8.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "xblock-drag-and-drop-v2"
+dynamic = ["version"]
+description = "XBlock - Drag-and-Drop v2"
+readme = "README.md"
+license = "AGPL-3.0"
+license-files = ["LICENSE"]
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.12",
+    "Framework :: Django",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.2",
+]
+dependencies = [
+    "django-statici18n",
+    "bleach[css]",
+    "XBlock[django]>=6.3",
+]
+
+[project.urls]
+Homepage = "https://github.com/openedx/xblock-drag-and-drop-v2"
+
+[project.entry-points."xblock.v1"]
+"drag-and-drop-v2" = "drag_and_drop_v2:DragAndDropBlock"
+
+[tool.setuptools_scm]
+version_scheme = "only-version"
+local_scheme = "no-local-version"
+# Dummy version number for when .git isn't accessible.
+# This happens, for example, when bind-mounting into a Docker image.
+fallback_version = "0.0.0.dev0"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["drag_and_drop_v2*"]
+
+[tool.setuptools.package-data]
+drag_and_drop_v2 = [
+    "static/**/*",
+    "templates/**/*",
+    "public/**/*",
+    "translations/**/*",
+]
+
+[tool.setuptools.exclude-package-data]
+"*" = ["tests*", "*.tests*", "spec*", "*.spec*"]
+
+[tool.uv]
+package = true
+conflicts = [
+    [{group = "test"}, {group = "django42"}],
+]
+
+[dependency-groups]
+test-base = [
+    "pytest",
+    "pytest-cov",
+    "pytest-django",
+    "ddt",
+    "mock",
+    "coverage[toml]",
+]
+test = [
+    {include-group = "test-base"},
+    "Django>=5.2,<6.0",
+    "edx-i18n-tools",
+    "openedx-django-pyfs",
+    "xblock-sdk>0.7",
+]
+django42 = [
+    {include-group = "test-base"},
+    "Django>=4.2,<4.3",
+    "edx-i18n-tools",
+    "openedx-django-pyfs",
+    "xblock-sdk>0.7",
+]
+quality = [
+    {include-group = "test"},
+    "edx-lint",
+    "pycodestyle",
+]
+doc = []
+ci = [
+    "tox",
+    "tox-uv",
+]
+dev = [
+    {include-group = "quality"},
+    {include-group = "ci"},
+    {include-group = "doc"},
+]
+
+[tool.coverage.run]
+branch = true
+source = ["drag_and_drop_v2"]
+omit = [
+    "*/tests/*",
+    "*/migrations/*",
+    "*/__pycache__/*",
+    "drag_and_drop_v2/translations/settings.py",
+]
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.semantic_release]
+commit_parser = "conventional"
+allow_zero_version = true
+major_on_zero = false
+build_command = "python -m pip install --upgrade build && SETUPTOOLS_SCM_PRETEND_VERSION=$NEW_VERSION python -m build"
+
+[tool.semantic_release.remote]
+type = "github"
