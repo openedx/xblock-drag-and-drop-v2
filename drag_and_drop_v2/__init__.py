@@ -1,4 +1,6 @@
 """ Drag and Drop v2 XBlock """
+from importlib.metadata import version
+
 from .drag_and_drop_v2 import DragAndDropBlock
 
-__version__ = "5.0.6"
+__version__ = version("xblock-drag-and-drop-v2")
