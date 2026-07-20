@@ -6,13 +6,13 @@
 #
 appdirs==1.4.4
     # via fs
-asgiref==3.11.1
+asgiref==3.12.1
     # via django
 bleach[css]==6.4.0
     # via -r requirements/base.in
-boto3==1.43.46
+boto3==1.43.51
     # via fs-s3fs
-botocore==1.43.46
+botocore==1.43.51
     # via
     #   boto3
     #   s3transfer
