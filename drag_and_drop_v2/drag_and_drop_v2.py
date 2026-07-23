@@ -977,10 +977,11 @@ class DragAndDropBlock(
                 raise JsonHandlerError(400, "Item zone data invalid.")
 
     @staticmethod
-    def _make_state_from_attempt(attempt, correct, item={}):
+    def _make_state_from_attempt(attempt, correct, item=None):
         """
         Converts "attempt" data coming from browser into "state" entry stored in item_state
         """
+        item = item or {}
         return {
             'zone': attempt['zone'],
             'correct': correct,
