@@ -255,26 +255,100 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
         # Check the result:
         self.assertTrue(self.block.completed)
         self.assertEqual(self.block.item_state, {
-            '0': {'correct': True, 'zone': TOP_ZONE_ID},
-            '1': {'correct': True, 'zone': MIDDLE_ZONE_ID},
-            '2': {'correct': True, 'zone': BOTTOM_ZONE_ID},
-            '3': {'correct': True, "zone": MIDDLE_ZONE_ID},
+            '0': {
+                'correct': True,
+                'zone': TOP_ZONE_ID,
+                'displayName': 'Goes to the top',
+                'feedback': {
+                    'correct': 'Correct! This one belongs to The Top Zone.',
+                    'incorrect': 'No, this item does not belong here. Try again.',
+                },
+                'imageURL': '',
+            },
+            '1': {
+                'correct': True,
+                'zone': MIDDLE_ZONE_ID,
+                'displayName': 'Goes to the middle',
+                'feedback': {
+                    'correct': 'Correct! This one belongs to The Middle Zone.',
+                    'incorrect': 'No, this item does not belong here. Try again.',
+                },
+                'imageURL': '',
+            },
+            '2': {
+                'correct': True,
+                'zone': BOTTOM_ZONE_ID,
+                'displayName': 'Goes to the bottom',
+                'feedback': {
+                    'correct': 'Correct! This one belongs to The Bottom Zone.',
+                    'incorrect': 'No, this item does not belong here. Try again.',
+                },
+                'imageURL': '',
+            },
+            '3': {
+                'correct': True,
+                'zone': MIDDLE_ZONE_ID,
+                'displayName': 'Goes anywhere',
+                'feedback': {
+                    'correct': 'Of course it goes here! It goes anywhere!',
+                    'incorrect': '',
+                },
+                'imageURL': '',
+            },
         })
         self.assertEqual(self.call_handler('student_view_user_state'), {
             'items': {
-                '0': {'correct': True, 'zone': TOP_ZONE_ID},
-                '1': {'correct': True, 'zone': MIDDLE_ZONE_ID},
-                '2': {'correct': True, 'zone': BOTTOM_ZONE_ID},
-                '3': {'correct': True, "zone": MIDDLE_ZONE_ID},
+                '0': {
+                    'correct': True,
+                    'zone': TOP_ZONE_ID,
+                    'displayName': 'Goes to the top',
+                    'feedback': {
+                        'correct': 'Correct! This one belongs to The Top Zone.',
+                        'incorrect': 'No, this item does not belong here. Try again.',
+                    },
+                    'imageURL': '',
+                },
+                '1': {
+                    'correct': True,
+                    'zone': MIDDLE_ZONE_ID,
+                    'displayName': 'Goes to the middle',
+                    'feedback': {
+                        'correct': 'Correct! This one belongs to The Middle Zone.',
+                        'incorrect': 'No, this item does not belong here. Try again.',
+                    },
+                    'imageURL': '',
+                },
+                '2': {
+                    'correct': True,
+                    'zone': BOTTOM_ZONE_ID,
+                    'displayName': 'Goes to the bottom',
+                    'feedback': {
+                        'correct': 'Correct! This one belongs to The Bottom Zone.',
+                        'incorrect': 'No, this item does not belong here. Try again.',
+                    },
+                    'imageURL': '',
+                },
+                '3': {
+                    'correct': True,
+                    'zone': MIDDLE_ZONE_ID,
+                    'displayName': 'Goes anywhere',
+                    'feedback': {
+                        'correct': 'Of course it goes here! It goes anywhere!',
+                        'incorrect': '',
+                    },
+                    'imageURL': '',
+                },
             },
             'finished': True,
-            "attempts": 0,
-            "grade": 1,
+            'attempts': 0,
+            'grade': 1,
             'overall_feedback': [
-                {"message": FINISH_FEEDBACK, "message_class": FeedbackMessages.MessageClasses.FINAL_FEEDBACK}
+                {
+                    'message': FINISH_FEEDBACK,
+                    'message_class': FeedbackMessages.MessageClasses.FINAL_FEEDBACK,
+                }
             ],
         })
-
         # Reset to initial conditions
         self.call_handler('reset', {})
         self.assertTrue(self.block.completed)

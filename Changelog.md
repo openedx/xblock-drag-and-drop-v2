@@ -2,7 +2,10 @@ Drag and Drop XBlock changelog
 ==============================
 
 Unreleased
----------------------------
+Version 5.0.7 (2026-07-23)
+--------------------------
+
+* Added `displayName`, `feedback`, `correct` and `imageURL` to the learner item state returned by `student_view_user_state` and stored in `item_state`.
 
 Version 5.0.6 (2026-04-29)
 --------------------------

@@ -244,7 +244,13 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
         expected_grade = self.block.weight * 3 / 4.0
         expected_state = {
             "items": {
-                "0": {"correct": True, "zone": self.ZONE_1}
+                "0": {
+                    "correct": True,
+                    "zone": self.ZONE_1,
+                    "displayName": self.block.item_state["0"]["displayName"],
+                    "feedback": self.FEEDBACK[0],
+                    "imageURL": "",
+                },
             },
             "finished": False,
             "attempts": 0,
@@ -270,8 +276,20 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
 
         expected_state = {
             "items": {
-                "0": {"correct": True, "zone": self.ZONE_1},
-                "1": {"correct": True, "zone": self.ZONE_2}
+                "0": {
+                    "correct": True,
+                    "zone": self.ZONE_1,
+                    "displayName": self.block.item_state["0"]["displayName"],
+                    "feedback": self.FEEDBACK[0],
+                    "imageURL": "",
+                },
+                "1": {
+                    "correct": True,
+                    "zone": self.ZONE_2,
+                    "displayName": self.block.item_state["1"]["displayName"],
+                    "feedback": self.FEEDBACK[1],
+                    "imageURL": "",
+                }
             },
             "finished": True,
             "attempts": 0,
