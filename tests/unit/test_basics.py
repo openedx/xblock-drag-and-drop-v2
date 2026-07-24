@@ -258,42 +258,42 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
             '0': {
                 'correct': True,
                 'zone': TOP_ZONE_ID,
-                'displayName': 'Goes to the top',
+                'display_name': 'Goes to the top',
                 'feedback': {
                     'correct': 'Correct! This one belongs to The Top Zone.',
                     'incorrect': 'No, this item does not belong here. Try again.',
                 },
-                'imageURL': '',
+                'image_url': '',
             },
             '1': {
                 'correct': True,
                 'zone': MIDDLE_ZONE_ID,
-                'displayName': 'Goes to the middle',
+                'display_name': 'Goes to the middle',
                 'feedback': {
                     'correct': 'Correct! This one belongs to The Middle Zone.',
                     'incorrect': 'No, this item does not belong here. Try again.',
                 },
-                'imageURL': '',
+                'image_url': '',
             },
             '2': {
                 'correct': True,
                 'zone': BOTTOM_ZONE_ID,
-                'displayName': 'Goes to the bottom',
+                'display_name': 'Goes to the bottom',
                 'feedback': {
                     'correct': 'Correct! This one belongs to The Bottom Zone.',
                     'incorrect': 'No, this item does not belong here. Try again.',
                 },
-                'imageURL': '',
+                'image_url': '',
             },
             '3': {
                 'correct': True,
                 'zone': MIDDLE_ZONE_ID,
-                'displayName': 'Goes anywhere',
+                'display_name': 'Goes anywhere',
                 'feedback': {
                     'correct': 'Of course it goes here! It goes anywhere!',
                     'incorrect': '',
                 },
-                'imageURL': '',
+                'image_url': '',
             },
         })
         self.assertEqual(self.call_handler('student_view_user_state'), {
@@ -301,42 +301,42 @@ class BasicTests(TestCaseMixin, unittest.TestCase):
                 '0': {
                     'correct': True,
                     'zone': TOP_ZONE_ID,
-                    'displayName': 'Goes to the top',
+                    'display_name': 'Goes to the top',
                     'feedback': {
                         'correct': 'Correct! This one belongs to The Top Zone.',
                         'incorrect': 'No, this item does not belong here. Try again.',
                     },
-                    'imageURL': '',
+                    'image_url': '',
                 },
                 '1': {
                     'correct': True,
                     'zone': MIDDLE_ZONE_ID,
-                    'displayName': 'Goes to the middle',
+                    'display_name': 'Goes to the middle',
                     'feedback': {
                         'correct': 'Correct! This one belongs to The Middle Zone.',
                         'incorrect': 'No, this item does not belong here. Try again.',
                     },
-                    'imageURL': '',
+                    'image_url': '',
                 },
                 '2': {
                     'correct': True,
                     'zone': BOTTOM_ZONE_ID,
-                    'displayName': 'Goes to the bottom',
+                    'display_name': 'Goes to the bottom',
                     'feedback': {
                         'correct': 'Correct! This one belongs to The Bottom Zone.',
                         'incorrect': 'No, this item does not belong here. Try again.',
                     },
-                    'imageURL': '',
+                    'image_url': '',
                 },
                 '3': {
                     'correct': True,
                     'zone': MIDDLE_ZONE_ID,
-                    'displayName': 'Goes anywhere',
+                    'display_name': 'Goes anywhere',
                     'feedback': {
                         'correct': 'Of course it goes here! It goes anywhere!',
                         'incorrect': '',
                     },
-                    'imageURL': '',
+                    'image_url': '',
                 },
             },
             'finished': True,

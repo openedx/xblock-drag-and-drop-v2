@@ -247,9 +247,9 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
                 "0": {
                     "correct": True,
                     "zone": self.ZONE_1,
-                    "displayName": self.block.item_state["0"]["displayName"],
+                    "display_name": self.block.item_state["0"]["display_name"],
                     "feedback": self.FEEDBACK[0],
-                    "imageURL": "",
+                    "image_url": "",
                 },
             },
             "finished": False,
@@ -279,16 +279,16 @@ class StandardModeFixture(BaseDragAndDropAjaxFixture):
                 "0": {
                     "correct": True,
                     "zone": self.ZONE_1,
-                    "displayName": self.block.item_state["0"]["displayName"],
+                    "display_name": self.block.item_state["0"]["display_name"],
                     "feedback": self.FEEDBACK[0],
-                    "imageURL": "",
+                    "image_url": "",
                 },
                 "1": {
                     "correct": True,
                     "zone": self.ZONE_2,
-                    "displayName": self.block.item_state["1"]["displayName"],
+                    "display_name": self.block.item_state["1"]["display_name"],
                     "feedback": self.FEEDBACK[1],
-                    "imageURL": "",
+                    "image_url": "",
                 }
             },
             "finished": True,

@@ -985,8 +985,8 @@ class DragAndDropBlock(
         return {
             'zone': attempt['zone'],
             'correct': correct,
-            'imageURL': item.get('imageURL'),
-            'displayName': item.get('displayName'),
+            'image_url': item.get('imageURL'),
+            'display_name': item.get('displayName'),
             'feedback': item.get('feedback', {})
         }
 

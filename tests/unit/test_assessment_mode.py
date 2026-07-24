@@ -63,8 +63,8 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
             expected_item_state = {
                 "zone": zone_id,
                 "correct": True,
-                "imageURL": "",
-                "displayName": str(item_id + 1),   # or the expected display name
+                "image_url": "",
+                "display_name": str(item_id + 1),   # or the expected display name
                 "feedback": self.FEEDBACK[item_id],
             }
 
