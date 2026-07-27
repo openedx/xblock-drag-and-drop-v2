@@ -12,7 +12,7 @@ arrow==1.4.0
     # via
     #   -r requirements/quality.txt
     #   cookiecutter
-asgiref==3.11.1
+asgiref==3.12.1
     # via
     #   -r requirements/quality.txt
     #   django
@@ -27,24 +27,24 @@ binaryornot==0.6.0
     #   cookiecutter
 bleach[css]==6.4.0
     # via -r requirements/quality.txt
-boto3==1.43.46
+boto3==1.43.56
     # via
     #   -r requirements/quality.txt
     #   fs-s3fs
-botocore==1.43.46
+botocore==1.43.56
     # via
     #   -r requirements/quality.txt
     #   boto3
     #   s3transfer
-build==1.5.1
+build==1.5.0
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-cachetools==7.1.4
+cachetools==7.1.6
     # via
     #   -r requirements/ci.txt
     #   tox
-certifi==2026.6.17
+certifi==2026.7.22
     # via
     #   -r requirements/quality.txt
     #   requests
@@ -77,7 +77,7 @@ cookiecutter==2.7.1
     # via
     #   -r requirements/quality.txt
     #   xblock-sdk
-coverage[toml]==7.15.1
+coverage[toml]==7.15.2
     # via
     #   -r requirements/quality.txt
     #   pytest-cov
@@ -118,7 +118,7 @@ edx-opaque-keys==4.0.0
     # via
     #   -r requirements/quality.txt
     #   xblock
-filelock==3.29.7
+filelock==3.32.0
     # via
     #   -r requirements/ci.txt
     #   python-discovery
@@ -214,9 +214,9 @@ path==16.16.0
     # via
     #   -r requirements/quality.txt
     #   edx-i18n-tools
-pip-tools==7.5.3
+pip-tools==7.6.0
     # via -r requirements/pip-tools.txt
-platformdirs==4.10.0
+platformdirs==4.11.0
     # via
     #   -r requirements/ci.txt
     #   -r requirements/quality.txt
@@ -270,7 +270,7 @@ pypng==0.20220715.0
     # via
     #   -r requirements/quality.txt
     #   xblock-sdk
-pyproject-api==1.10.1
+pyproject-api==1.11.0
     # via
     #   -r requirements/ci.txt
     #   tox
@@ -294,7 +294,7 @@ python-dateutil==2.9.0.post0
     #   arrow
     #   botocore
     #   xblock
-python-discovery==1.4.4
+python-discovery==1.5.0
     # via
     #   -r requirements/ci.txt
     #   tox
@@ -304,7 +304,7 @@ python-slugify==8.0.4
     #   -r requirements/quality.txt
     #   code-annotations
     #   cookiecutter
-pytz==2026.2
+pytz==2026.3.post1
     # via
     #   -r requirements/quality.txt
     #   xblock
@@ -324,7 +324,7 @@ rich==15.0.0
     # via
     #   -r requirements/quality.txt
     #   cookiecutter
-s3transfer==0.19.1
+s3transfer==0.19.2
     # via
     #   -r requirements/quality.txt
     #   boto3
@@ -361,12 +361,12 @@ tomli-w==1.2.0
     # via
     #   -r requirements/ci.txt
     #   tox
-tomlkit==0.15.0
+tomlkit==0.15.1
     # via
     #   -r requirements/quality.txt
     #   edx-lint
     #   pylint
-tox==4.56.4
+tox==4.58.0
     # via -r requirements/ci.txt
 typing-extensions==4.16.0
     # via
@@ -381,7 +381,7 @@ urllib3==2.7.0
     #   -r requirements/quality.txt
     #   botocore
     #   requests
-virtualenv==21.6.1
+virtualenv==21.7.0
     # via
     #   -r requirements/ci.txt
     #   tox
