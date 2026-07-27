@@ -930,7 +930,7 @@ class DragAndDropBlock(
 
         is_correct = self._is_attempt_correct(item_attempt)  # Student placed item in a correct zone
         if is_correct:  # In standard mode state is only updated when attempt is correct
-            self.item_state[str(item['id'])] = self._make_state_from_attempt(item_attempt, is_correct)
+            self.item_state[str(item['id'])] = self._make_state_from_attempt(item_attempt, is_correct, item)
 
         self._mark_complete_and_publish_grade()  # must happen before _get_feedback
         self._publish_item_dropped_event(item_attempt, is_correct)
@@ -961,7 +961,7 @@ class DragAndDropBlock(
             self._publish_item_to_bank_event(item['id'], is_correct)
         else:
             # State is always updated in assessment mode to store intermediate item positions
-            self.item_state[str(item['id'])] = self._make_state_from_attempt(item_attempt, is_correct)
+            self.item_state[str(item['id'])] = self._make_state_from_attempt(item_attempt, is_correct, item)
             self._publish_item_dropped_event(item_attempt, is_correct)
 
         return {}
@@ -977,13 +977,17 @@ class DragAndDropBlock(
                 raise JsonHandlerError(400, "Item zone data invalid.")
 
     @staticmethod
-    def _make_state_from_attempt(attempt, correct):
+    def _make_state_from_attempt(attempt, correct, item=None):
         """
         Converts "attempt" data coming from browser into "state" entry stored in item_state
         """
+        item = item or {}
         return {
             'zone': attempt['zone'],
-            'correct': correct
+            'correct': correct,
+            'image_url': item.get('imageURL'),
+            'display_name': item.get('displayName'),
+            'feedback': item.get('feedback', {})
         }
 
     def _mark_complete_and_publish_grade(self):

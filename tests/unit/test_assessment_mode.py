@@ -60,7 +60,13 @@ class AssessmentModeFixture(BaseDragAndDropAjaxFixture):
 
             self.assertEqual(res, {})
 
-            expected_item_state = {'zone': zone_id, 'correct': True}
+            expected_item_state = {
+                "zone": zone_id,
+                "correct": True,
+                "image_url": "",
+                "display_name": str(item_id + 1),   # or the expected display name
+                "feedback": self.FEEDBACK[item_id],
+            }
 
             self.assertIn(str(item_id), self.block.item_state)
             self.assertEqual(self.block.item_state[str(item_id)], expected_item_state)
