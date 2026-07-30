@@ -16,6 +16,12 @@ conflicts = [[
     { package = "xblock-drag-and-drop-v2", group = "django42" },
 ]]
 
+[manifest]
+constraints = [
+    { name = "django", specifier = "<6.0" },
+    { name = "elasticsearch", specifier = "<7.14.0" },
+]
+
 [[package]]
 name = "appdirs"
 version = "1.4.4"
@@ -194,7 +200,7 @@ name = "click"
 version = "8.4.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-23-xblock-drag-and-drop-v2-dev' and extra == 'group-23-xblock-drag-and-drop-v2-django42') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-quality') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-test')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/76/d4/81420972a676e8ffea40450d8c8c92943e7218a78fe9b64359836cc9876b/click-8.4.2.tar.gz", hash = "sha256:9a6cea6e60b17ebe0a44c5cc636d94f09bd66142c1cd7d8b4cd731c4917a15f6", size = 338000, upload-time = "2026-06-24T17:45:15.148Z" }
 wheels = [
@@ -1542,6 +1548,9 @@ test-base = [
     { name = "pytest-cov" },
     { name = "pytest-django" },
 ]
+workbench = [
+    { name = "xblock-sdk" },
+]
 
 [package.metadata]
 requires-dist = [
@@ -1583,7 +1592,6 @@ django42 = [
     { name = "pytest-django" },
     { name = "xblock-sdk", specifier = ">0.7" },
 ]
-doc = []
 quality = [
     { name = "coverage", extras = ["toml"] },
     { name = "ddt" },
@@ -1618,6 +1626,7 @@ test-base = [
     { name = "pytest-cov" },
     { name = "pytest-django" },
 ]
+workbench = [{ name = "xblock-sdk", specifier = ">0.7" }]
 
 [[package]]
 name = "xblock-sdk"

@@ -58,16 +58,17 @@ requirements: ## install dev requirements locally
 	uv sync --group dev
 
 test.quality: selfcheck ## run quality checkers on the codebase
-	uv run tox -e quality
+	uv run --group quality pycodestyle src/drag_and_drop_v2 tests manage.py --max-line-length=120
+	uv run --group quality pylint src/drag_and_drop_v2
+	uv run --group quality pylint tests --rcfile=tests/pylintrc
 
 test.python: ## run python unit tests in the local virtualenv
-	pytest --cov drag_and_drop_v2 $(TEST)
+	uv run --group test pytest --cov drag_and_drop_v2 $(TEST)
 
 test.unit: ## run all unit tests
-	uv run tox $(TEST)
+	uv run --group test pytest $(TEST)
 
-test: test.unit test.quality ## Run all tests
-	uv run tox -e translations
+test: test.unit test.quality check_translations_up_to_date ## Run all tests
 
 upgrade: ## update uv.lock with the latest packages
 	uv run --with edx-lint edx_lint write_uv_constraints pyproject.toml
