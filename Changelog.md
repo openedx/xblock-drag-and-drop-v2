@@ -4,6 +4,11 @@ Drag and Drop XBlock changelog
 Unreleased
 --------------------------
 
+Version 5.1.1 (2026-09-10)
+--------------------------
+
+* Adjusted `keyboard-help-dialog` positioning in `drag_and_drop.css`.
+
 Version 5.1.0 (2026-07-23)
 --------------------------
 

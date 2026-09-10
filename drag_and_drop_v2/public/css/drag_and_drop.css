@@ -731,7 +731,7 @@
 .xblock--drag-and-drop .keyboard-help-dialog {
     position: fixed;
     left: 50%;
-    top: 50%;
+    top: 25%;
     width: 1px;
     height: 1px;
     z-index: 1500;
