@@ -7,7 +7,7 @@ name = "xblock-drag-and-drop-v2"
 dynamic = ["version"]
 description = "XBlock - Drag-and-Drop v2"
 readme = "README.md"
-license = "AGPL-3.0"
+license = "AGPL-3.0-only"
 license-files = ["LICENSE"]
 requires-python = ">=3.12"
 classifiers = [
@@ -20,7 +20,7 @@ classifiers = [
 dependencies = [
     "django-statici18n",
     "bleach[css]",
-    "XBlock[django]>=6.3",
+    "XBlock[django]",
 ]
 
 [project.urls]
@@ -50,6 +50,7 @@ drag_and_drop_v2 = [
 
 [tool.setuptools.exclude-package-data]
 "*" = ["tests*", "*.tests*", "spec*", "*.spec*"]
+drag_and_drop_v2 = ["translations"]
 
 [tool.uv]
 package = true

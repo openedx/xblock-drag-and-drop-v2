@@ -58,13 +58,14 @@ requirements: ## install dev requirements locally
 	uv sync --group dev
 
 test.quality: selfcheck ## run quality checkers on the codebase
-	uv run tox -e quality
+	tox -e quality
 
 test.python: ## run python unit tests in the local virtualenv
-	uv run --group test pytest --cov src/drag_and_drop_v2 $(TEST)
+	pytest --cov src/drag_and_drop_v2 $(TEST)
 
 test.unit: ## run all unit tests
-	uv run --group test pytest $(TEST)
+	mkdir -p var
+	pytest $(TEST)
 
 test: test.unit test.quality check_translations_up_to_date ## Run all tests
 
