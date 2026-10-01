@@ -492,7 +492,6 @@ Manual testing (without tox)
 To run tests without tox, use:
 
 ```bash
-$ make requirements_python
 $ make test.python TEST=tests/unit/test_basics.py::BasicTests::test_student_view_data
 ```
 
@@ -554,4 +553,4 @@ Further information on the API for native mobile applications can be found [here
 
 Releasing
 -------------------------------------
-To release a new version, update .travis.yml and setup.py to point to your new intended version number and create a new release with that version tag via Github.
+Releases are automated via [python-semantic-release](https://python-semantic-release.readthedocs.io/). Merge a conventionally-formatted commit to `master` and the release workflow will bump the version, tag it, build the wheel, and publish to PyPI automatically.
