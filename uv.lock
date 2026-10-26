@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.12"
 resolution-markers = [
     "python_full_version >= '3.13'",
@@ -486,9 +486,9 @@ resolution-markers = [
     "python_full_version < '3.13'",
 ]
 dependencies = [
-    { name = "asgiref", marker = "extra == 'group-23-xblock-drag-and-drop-v2-dev' or extra != 'group-23-xblock-drag-and-drop-v2-django42' or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-quality') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-test')" },
-    { name = "sqlparse", marker = "extra == 'group-23-xblock-drag-and-drop-v2-dev' or extra != 'group-23-xblock-drag-and-drop-v2-django42' or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-quality') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-test')" },
-    { name = "tzdata", marker = "(sys_platform == 'win32' and extra == 'group-23-xblock-drag-and-drop-v2-dev') or (sys_platform == 'win32' and extra != 'group-23-xblock-drag-and-drop-v2-django42') or (extra == 'group-23-xblock-drag-and-drop-v2-dev' and extra == 'group-23-xblock-drag-and-drop-v2-django42') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-quality') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-test')" },
+    { name = "asgiref", marker = "extra == 'group-23-xblock-drag-and-drop-v2-dev' or extra != 'group-23-xblock-drag-and-drop-v2-django42' or extra == 'group-23-xblock-drag-and-drop-v2-quality' or extra == 'group-23-xblock-drag-and-drop-v2-test'" },
+    { name = "sqlparse", marker = "extra == 'group-23-xblock-drag-and-drop-v2-dev' or extra != 'group-23-xblock-drag-and-drop-v2-django42' or extra == 'group-23-xblock-drag-and-drop-v2-quality' or extra == 'group-23-xblock-drag-and-drop-v2-test'" },
+    { name = "tzdata", marker = "(sys_platform == 'win32' and extra != 'group-23-xblock-drag-and-drop-v2-django42') or (extra == 'group-23-xblock-drag-and-drop-v2-dev' and extra == 'group-23-xblock-drag-and-drop-v2-django42') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-quality') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-test')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/85/fe/79e692b430c7721bf4b812c328bfe687e73e3f28f56611a6a18a97e887cc/django-5.2.18.tar.gz", hash = "sha256:461c5dd06d2ea16bd5ca37d3f46e4def1d6b0fe7588c6f4e2119517bb0af8b2d", size = 10910238, upload-time = "2026-10-06T13:01:09.371Z" }
 wheels = [
@@ -501,7 +501,7 @@ version = "1.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django", version = "4.2.30", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-xblock-drag-and-drop-v2-django42'" },
-    { name = "django", version = "5.2.18", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-xblock-drag-and-drop-v2-dev' or extra != 'group-23-xblock-drag-and-drop-v2-django42' or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-quality') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-test')" },
+    { name = "django", version = "5.2.18", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-xblock-drag-and-drop-v2-dev' or extra != 'group-23-xblock-drag-and-drop-v2-django42' or extra == 'group-23-xblock-drag-and-drop-v2-quality' or extra == 'group-23-xblock-drag-and-drop-v2-test'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/d1/a2/e58bec8d7941b914af52a67c35b5709eceed2caa2848f28437f1666ed668/django_appconf-1.2.0.tar.gz", hash = "sha256:15a88d60dd942d6059f467412fe4581db632ef03018a3c183fb415d6fc9e5cec", size = 16127, upload-time = "2025-11-08T15:46:27.304Z" }
 wheels = [
@@ -514,7 +514,7 @@ version = "2.8.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django", version = "4.2.30", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-xblock-drag-and-drop-v2-django42'" },
-    { name = "django", version = "5.2.18", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-xblock-drag-and-drop-v2-dev' or extra != 'group-23-xblock-drag-and-drop-v2-django42' or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-quality') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-test')" },
+    { name = "django", version = "5.2.18", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-xblock-drag-and-drop-v2-dev' or extra != 'group-23-xblock-drag-and-drop-v2-django42' or extra == 'group-23-xblock-drag-and-drop-v2-quality' or extra == 'group-23-xblock-drag-and-drop-v2-test'" },
     { name = "django-appconf" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/33/2d/c5e7450c5f9569f08b4ce48ffea5c6d2120649c57f0c3bf23df16b3984e7/django_statici18n-2.8.0.tar.gz", hash = "sha256:0b5d99e5e6a2f6ef6c02103eb8751a0182ec7e24d5b7ea823fe41fa088798d30", size = 8015, upload-time = "2026-09-02T17:17:51.911Z" }
@@ -537,7 +537,7 @@ version = "2.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django", version = "4.2.30", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-xblock-drag-and-drop-v2-django42'" },
-    { name = "django", version = "5.2.18", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-xblock-drag-and-drop-v2-dev' or extra != 'group-23-xblock-drag-and-drop-v2-django42' or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-quality') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-test')" },
+    { name = "django", version = "5.2.18", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-xblock-drag-and-drop-v2-dev' or extra != 'group-23-xblock-drag-and-drop-v2-django42' or extra == 'group-23-xblock-drag-and-drop-v2-quality' or extra == 'group-23-xblock-drag-and-drop-v2-test'" },
     { name = "lxml", extra = ["html-clean"] },
     { name = "path" },
     { name = "polib" },
@@ -1020,7 +1020,7 @@ version = "4.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django", version = "4.2.30", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-xblock-drag-and-drop-v2-django42'" },
-    { name = "django", version = "5.2.18", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-xblock-drag-and-drop-v2-dev' or extra != 'group-23-xblock-drag-and-drop-v2-django42' or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-quality') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-test')" },
+    { name = "django", version = "5.2.18", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-xblock-drag-and-drop-v2-dev' or extra != 'group-23-xblock-drag-and-drop-v2-django42' or extra == 'group-23-xblock-drag-and-drop-v2-quality' or extra == 'group-23-xblock-drag-and-drop-v2-test'" },
     { name = "fs" },
     { name = "fs-s3fs" },
 ]
@@ -1243,7 +1243,7 @@ name = "pytest"
 version = "9.1.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-23-xblock-drag-and-drop-v2-dev' and extra == 'group-23-xblock-drag-and-drop-v2-django42') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-quality') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-test')" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
     { name = "iniconfig" },
     { name = "packaging" },
     { name = "pluggy" },
@@ -1590,7 +1590,7 @@ dependencies = [
     { name = "pyproject-api" },
     { name = "python-discovery" },
     { name = "tomli-w" },
-    { name = "typing-extensions", marker = "python_full_version < '3.13' or (extra == 'group-23-xblock-drag-and-drop-v2-dev' and extra == 'group-23-xblock-drag-and-drop-v2-django42') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-quality') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-test')" },
+    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
     { name = "virtualenv" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/63/6e/677274ae411fa13f5c2ea5c633a6abfa0886e949bd2ef53c7e564a0b0b2e/tox-4.67.1.tar.gz", hash = "sha256:a68602f64421b199016127364ee47347b958391d19c2b2e53fe95673a8fe98e9", size = 347211, upload-time = "2026-10-18T07:34:04.348Z" }
@@ -1678,7 +1678,7 @@ wheels = [
 
 [[package]]
 name = "virtualenv"
-version = "21.14.11"
+version = "21.14.13"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "distlib" },
@@ -1687,9 +1687,9 @@ dependencies = [
     { name = "platformdirs" },
     { name = "python-discovery" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/7f/be/4d1d59d309db76b5808fcfd78bd5996f4e7241366691c38fc331a3136398/virtualenv-21.14.11.tar.gz", hash = "sha256:593052d8477ea8c55a842387ce111bd08c72618f0c1133c302cafe335e570a57", size = 5503091, upload-time = "2026-10-18T07:06:34.716Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/70/aa/bff50daee0488e16d611258a9b6c5a1d0c9e128f8ca424e9f4e1c0444ef2/virtualenv-21.14.13.tar.gz", hash = "sha256:de5307ba4b9a0001d9c8ea02832d38f63ca432880f416c1bface61c4323fd905", size = 5570301, upload-time = "2026-10-22T20:10:16.952Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ce/6b/d85da8982b41190eafcb9df91dff9d83fc6989e98af4b5be4c8f85510c95/virtualenv-21.14.11-py3-none-any.whl", hash = "sha256:b319f8590a84e5de5f8f2c803ecd2237e9bc0ffa7c1e875e3169c107cecb7454", size = 5495268, upload-time = "2026-10-18T07:06:32.719Z" },
+    { url = "https://files.pythonhosted.org/packages/bb/a9/c10d8a44a29fb94a18b43fdf11f38caca53ae7c9406f11a72b1cb8f624f1/virtualenv-21.14.13-py3-none-any.whl", hash = "sha256:5fbb04138a4861580b78ba9110d529a26bc48fcc93c8ec36bc0202eeed96a788", size = 5557094, upload-time = "2026-10-22T20:10:15.096Z" },
 ]
 
 [[package]]
@@ -1715,7 +1715,7 @@ name = "webob"
 version = "1.8.11"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "legacy-cgi", marker = "python_full_version >= '3.13' or (extra == 'group-23-xblock-drag-and-drop-v2-dev' and extra == 'group-23-xblock-drag-and-drop-v2-django42') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-quality') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-test')" },
+    { name = "legacy-cgi", marker = "python_full_version >= '3.13'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/e6/92/9329872e36be90e25ba616ac6e9ee8c1be4326a1ea3fdffcdabd0eb48efb/webob-1.8.11.tar.gz", hash = "sha256:aa8c27231070b135c025e567a9cd7eda03f4df71352ffaac740cb6a75f0f81a5", size = 286047, upload-time = "2026-08-02T06:26:26.063Z" }
 wheels = [
@@ -1752,6 +1752,7 @@ django = [
 [[package]]
 name = "xblock-drag-and-drop-v2"
 source = { editable = "." }
+default-groups = []
 dependencies = [
     { name = "bleach", extra = ["css"] },
     { name = "django-statici18n" },
@@ -1764,7 +1765,7 @@ ci = [
     { name = "tox-uv" },
 ]
 dev = [
-    { name = "coverage", marker = "extra == 'group-23-xblock-drag-and-drop-v2-dev' or extra != 'group-23-xblock-drag-and-drop-v2-django42' or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-quality') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-test')" },
+    { name = "coverage", marker = "extra == 'group-23-xblock-drag-and-drop-v2-dev' or extra != 'group-23-xblock-drag-and-drop-v2-django42' or extra == 'group-23-xblock-drag-and-drop-v2-quality' or extra == 'group-23-xblock-drag-and-drop-v2-test'" },
     { name = "ddt" },
     { name = "django", version = "5.2.18", source = { registry = "https://pypi.org/simple" } },
     { name = "edx-i18n-tools" },
@@ -1792,7 +1793,7 @@ django42 = [
     { name = "xblock-sdk" },
 ]
 quality = [
-    { name = "coverage", marker = "extra == 'group-23-xblock-drag-and-drop-v2-dev' or extra != 'group-23-xblock-drag-and-drop-v2-django42' or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-quality') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-test')" },
+    { name = "coverage", marker = "extra == 'group-23-xblock-drag-and-drop-v2-dev' or extra != 'group-23-xblock-drag-and-drop-v2-django42' or extra == 'group-23-xblock-drag-and-drop-v2-quality' or extra == 'group-23-xblock-drag-and-drop-v2-test'" },
     { name = "ddt" },
     { name = "django", version = "5.2.18", source = { registry = "https://pypi.org/simple" } },
     { name = "edx-i18n-tools" },
@@ -1806,7 +1807,7 @@ quality = [
     { name = "xblock-sdk" },
 ]
 test = [
-    { name = "coverage", marker = "(extra == 'group-23-xblock-drag-and-drop-v2-dev' and extra == 'group-23-xblock-drag-and-drop-v2-django42') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-quality') or (extra != 'group-23-xblock-drag-and-drop-v2-quality' and extra == 'group-23-xblock-drag-and-drop-v2-test') or (extra != 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-test')" },
+    { name = "coverage", marker = "extra == 'group-23-xblock-drag-and-drop-v2-test' or (extra == 'group-23-xblock-drag-and-drop-v2-dev' and extra == 'group-23-xblock-drag-and-drop-v2-django42') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-quality')" },
     { name = "ddt" },
     { name = "django", version = "5.2.18", source = { registry = "https://pypi.org/simple" } },
     { name = "edx-i18n-tools" },
@@ -1912,7 +1913,7 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cookiecutter" },
     { name = "django", version = "4.2.30", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-xblock-drag-and-drop-v2-django42'" },
-    { name = "django", version = "5.2.18", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-xblock-drag-and-drop-v2-dev' or extra != 'group-23-xblock-drag-and-drop-v2-django42' or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-quality') or (extra == 'group-23-xblock-drag-and-drop-v2-django42' and extra == 'group-23-xblock-drag-and-drop-v2-test')" },
+    { name = "django", version = "5.2.18", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-xblock-drag-and-drop-v2-dev' or extra != 'group-23-xblock-drag-and-drop-v2-django42' or extra == 'group-23-xblock-drag-and-drop-v2-quality' or extra == 'group-23-xblock-drag-and-drop-v2-test'" },
     { name = "fs-s3fs" },
     { name = "lxml" },
     { name = "pypng" },
